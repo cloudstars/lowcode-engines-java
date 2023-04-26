@@ -1,0 +1,3 @@
+[submodule "formula"]
+	path = formula
+	url = git@github.com:cloudstars/formula.git
