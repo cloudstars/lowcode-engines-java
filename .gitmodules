@@ -1,3 +1,6 @@
 [submodule "formula"]
 	path = formula
 	url = git@github.com:cloudstars/formula.git
+[submodule "form"]
+	path = form
+	url = git@github.com:cloudstars/form.git
