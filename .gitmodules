@@ -1,9 +1,0 @@
-[submodule "formula"]
-	path = formula
-	url = git@github.com:cloudstars/formula.git
-[submodule "form"]
-	path = form
-	url = git@github.com:cloudstars/form.git
-[submodule "lowcode-api-engine-java"]
-	path = lowcode-api-engine-java
-	url = git@github.com:cloudstars/lowcode-api-engine-java.git
