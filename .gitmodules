@@ -1,0 +1,3 @@
+[submodule "lowcode-api-parent"]
+	path = lowcode-api-parent
+	url = git@github.com:cloudstars/lowcode-api-engine-java.git

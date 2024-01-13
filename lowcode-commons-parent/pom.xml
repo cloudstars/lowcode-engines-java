@@ -17,6 +17,8 @@
 
     <modules>
         <module>lowcode-commons-lang</module>
+        <module>lowcode-commons-test</module>
+        <module>lowcode-commons-web</module>
     </modules>
 
     <dependencies>
