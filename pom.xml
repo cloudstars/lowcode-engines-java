@@ -22,6 +22,7 @@
     <modules>
         <module>lowcode-commons-parent</module>
         <module>lowcode-api-parent</module>
+        <module>lowcode-form-parent</module>
     </modules>
 
     <dependencies>

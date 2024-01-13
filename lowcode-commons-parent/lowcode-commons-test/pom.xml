@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-commons-lang</artifactId>
+    <artifactId>lowcode-commons-test</artifactId>
     <description>单元测试公共部分，如测试框架、测试工具类等</description>
 
     <dependencies>
