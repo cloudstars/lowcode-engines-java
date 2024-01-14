@@ -4,3 +4,6 @@
 [submodule "lowcode-form-parent"]
 	path = lowcode-form-parent
 	url = git@github.com:cloudstars/lowcode-form-engine-java.git
+[submodule "lowcode-metadata-parent"]
+	path = lowcode-metadata-parent
+	url = git@github.com:cloudstars/lowcode-metadata-engine-java.git
