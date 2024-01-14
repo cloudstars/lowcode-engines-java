@@ -26,7 +26,7 @@
         <module>lowcode-api-parent</module>
         <module>lowcode-bpm-parent</module>
         <module>lowcode-excel-parent</module>
-        <module>lowcode-file-parent</module>
+        <module>lowcode-file-parent </module>
     </modules>
 
     <dependencyManagement>
