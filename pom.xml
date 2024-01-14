@@ -24,6 +24,9 @@
         <module>lowcode-metadata-parent</module>
         <module>lowcode-form-parent</module>
         <module>lowcode-api-parent</module>
+        <module>lowcode-bpm-parent</module>
+        <module>lowcode-excel-parent</module>
+        <module>lowcode-file-parent</module>
     </modules>
 
     <dependencyManagement>
@@ -44,6 +47,16 @@
                 <version>${revision}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-form-engine</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-form-engine-cf</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -59,6 +72,17 @@
                 <groupId>org.springfremawork.boot</groupId>
                 <artifactId>spring-boot-starter-freemarker</artifactId>
                 <version>${springboot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>5.2.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>3.3.1</version>
             </dependency>
 
             <dependency>
@@ -110,6 +134,11 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>1.2.83</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.7</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
