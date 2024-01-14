@@ -16,9 +16,9 @@
     </properties>
 
     <modules>
-        <module>lowcode-commons-lang</module>
-        <module>lowcode-commons-test</module>
-        <module>lowcode-commons-web</module>
+        <module>commons-lang</module>
+        <module>commons-web</module>
+        <module>commons-test</module>
     </modules>
 
     <dependencies>

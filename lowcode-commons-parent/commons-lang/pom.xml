@@ -9,9 +9,17 @@
     </parent>
 
     <artifactId>lowcode-commons-lang</artifactId>
-    <description>公共基础部分，如用户信息、异常基类等</description>
+    <description>公共基础部分，如用户信息、日志框架、异常处理等</description>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
