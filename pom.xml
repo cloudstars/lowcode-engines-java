@@ -42,6 +42,11 @@
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
+                <artifactId>lowcode-commons-util</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
                 <artifactId>lowcode-commons-web</artifactId>
                 <version>${revision}</version>
             </dependency>
