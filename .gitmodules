@@ -16,3 +16,6 @@
 [submodule "lowcode-bpm-parent"]
 	path = lowcode-bpm-parent
 	url = git@github.com:cloudstars/lowcode-bpm-engine-java.git
+[submodule "lowcode-api-proxy-parent"]
+	path = lowcode-api-proxy-parent
+	url = git@github.com:cloudstars/lowcode-api-proxy-engine-java.git
