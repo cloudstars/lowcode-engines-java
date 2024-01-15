@@ -56,7 +56,9 @@ API函数是API的一种实现方式，它的职责是...
 添加本模块的命令：
 git submodule add git@github.com:cloudstars/lowcode-function-engine-java.git ./lowcode-function-parent
 
-## 表达式引擎
+## 公式引擎
+公式（也称表达式）是通过四则运算、函数调用等元素组成的一条语句，用于计算一个动作的“值”，如a + b + max(c, d)，常用于数据默认值、条件分支等
 
+添加本模块的命令： git submodule add git@github.com:cloudstars/lowcode-formula-engine-java.git ./lowcode-formula-parent
 
 
