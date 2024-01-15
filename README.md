@@ -16,7 +16,26 @@ git submodule add git@github.com:cloudstars/lowcode-form-engine-java.git ./lowco
 添加本模块的命令：
 git submodule add git@github.com:cloudstars/lowcode-api-engine-java.git ./lowcode-api-parent
 
+## API代理引擎
+API代理是API的一种实现方式，它的职责是...
+
+添加本模块的命令：
+git submodule add git@github.com:cloudstars/lowcode-apiproxy-engine-java.git ./lowcode-apiproxy-parent
+
+
+## API编排引擎
+API编排是API的一种实现方式，它的职责是...
+
+添加本模块的命令：
+git submodule add git@github.com:cloudstars/lowcode-flow-engine-java.git ./lowcode-flow-parent
+
+## API函数引擎
+API函数是API的一种实现方式，它的职责是...
+
+添加本模块的命令：
+git submodule add git@github.com:cloudstars/lowcode-function-engine-java.git ./lowcode-function-parent
+
 ## 表达式引擎
 
-## 函数引擎
+
 

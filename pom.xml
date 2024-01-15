@@ -23,10 +23,13 @@
         <module>lowcode-commons-parent</module>
         <module>lowcode-metadata-parent</module>
         <module>lowcode-form-parent</module>
-        <module>lowcode-api-parent</module>
-        <module>lowcode-bpm-parent</module>
         <module>lowcode-excel-parent</module>
+        <module>lowcode-bpm-parent</module>
         <module>lowcode-file-parent </module>
+        <module>lowcode-api-parent</module>
+        <module>lowcode-api-proxy-parent</module>
+        <module>lowcode-api-flow-parent</module>
+        <module>lowcode-api-function-parent</module>
     </modules>
 
     <dependencyManagement>
@@ -49,12 +52,39 @@
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
+                <artifactId>lowcode-commons-util</artifactId>
+                <version>${revision}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-metadata-dev</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-metadata-engine</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
                 <artifactId>lowcode-form-engine</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
                 <artifactId>lowcode-form-engine-cf</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-api-dev</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-api-engine</artifactId>
                 <version>${revision}</version>
             </dependency>
 

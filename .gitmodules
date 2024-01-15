@@ -25,3 +25,4 @@
 [submodule "lowcode-api-function-parent"]
 	path = lowcode-api-function-parent
 	url = git@github.com:cloudstars/lowcode-api-function-engine-java.git
+

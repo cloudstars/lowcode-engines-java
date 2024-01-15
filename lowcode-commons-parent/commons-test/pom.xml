@@ -12,6 +12,11 @@
     <description>单元测试公共部分，如测试框架、测试工具类等</description>
 
     <dependencies>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-commons-lang</artifactId>
+        </dependency>
+
         <!-- 测试相关的依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

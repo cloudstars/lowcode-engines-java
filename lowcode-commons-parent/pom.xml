@@ -19,6 +19,7 @@
         <module>commons-lang</module>
         <module>commons-web</module>
         <module>commons-test</module>
+        <module>commons-util</module>
     </modules>
 
     <dependencies>
