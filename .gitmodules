@@ -19,3 +19,9 @@
 [submodule "lowcode-api-proxy-parent"]
 	path = lowcode-api-proxy-parent
 	url = git@github.com:cloudstars/lowcode-api-proxy-engine-java.git
+[submodule "lowcode-api-flow-parent"]
+	path = lowcode-api-flow-parent
+	url = git@github.com:cloudstars/lowcode-api-flow-engine-java.git
+[submodule "lowcode-api-function-parent"]
+	path = lowcode-api-function-parent
+	url = git@github.com:cloudstars/lowcode-api-function-engine-java.git
