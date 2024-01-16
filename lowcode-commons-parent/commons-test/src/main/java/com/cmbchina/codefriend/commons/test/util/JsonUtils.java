@@ -3,9 +3,13 @@ package com.cmbchina.codefriend.commons.test.util;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -31,23 +35,6 @@ public final class JsonUtils {
             throw new RuntimeException("文件" + fileName + "加载失败！");
         }
     }
-
-    public static Map<String, Object> loadMongoDataFromClasspath(String fileName) {
-        ClassPathResource resource = new ClassPathResource(fileName);
-        try {
-            byte[] data = FileCopyUtils.copyToByteArray(resource.getInputStream());
-            JSONObject jsonData = JSONObject.parseObject(new String(data, StandardCharsets.UTF_8));
-            Map<String, Object> dataMap = new HashMap<>();
-            for (String key : jsonData.keySet()) {
-                Object value = jsonData.get(key);
-                dataMap.put(key, value);
-            }
-            return dataMap;
-        } catch (IOException e) {
-            throw new RuntimeException("文件" + fileName + "加载失败！");
-        }
-    }
-
     /**
      * 从类路径下加载JSON对象列表
      *
@@ -103,13 +90,75 @@ public final class JsonUtils {
         return dataMap;
     }
 
+
+    /**
+     * 加载JSON文本
+     *
+     * @param fileName 类路径下的json文件
+     * @return
+     */
+    public static String loadJsonString(String fileName) {
+        return getJson(fileName, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * 加载JSON文本
+     *
+     * @param classpathFileName
+     * @param charset
+     * @return
+     */
+    public static String getJson(String classpathFileName, Charset charset) {
+        if (classpathFileName == null) {
+            return null;
+        } else {
+            if (classpathFileName.endsWith(".json")) {
+                return getJson(new ClassPathResource(classpathFileName), charset);
+            } else {
+                return classpathFileName;
+            }
+        }
+    }
+
+    private static String getJson(Resource source, Charset charset) {
+        try {
+            return getJson(source.getInputStream(), charset);
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to load JSON from " + source, e);
+        }
+    }
+
+    private static String getJson(InputStream source, Charset charset) {
+        try {
+            return FileCopyUtils.copyToString(new InputStreamReader(source, charset));
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to load JSON from InputStream", e);
+        }
+    }
+
     /**
      * 从类路径下加载JSON对象
      *
      * @param fileName
      * @return
      */
-    public static JSONArray loadArrayFromClasspath(String fileName) {
+    public static JSONObject loadJsonObjectFromClasspath(String fileName) {
+        ClassPathResource resource = new ClassPathResource(fileName);
+        try {
+            byte[] data = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            return JSONObject.parseObject(new String(data, StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException("文件" + fileName + "加载失败！");
+        }
+    }
+
+    /**
+     * 从类路径下加载JSON数据
+     *
+     * @param fileName
+     * @return
+     */
+    public static JSONArray loadJsonArrayFromClasspath(String fileName) {
         ClassPathResource resource = new ClassPathResource(fileName);
         try {
             byte[] data = FileCopyUtils.copyToByteArray(resource.getInputStream());
