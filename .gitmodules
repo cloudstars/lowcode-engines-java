@@ -28,3 +28,6 @@
 [submodule "lowcode-formula-parent"]
 	path = lowcode-formula-parent
 	url = git@github.com:cloudstars/lowcode-formula-engine-java.git
+[submodule "lowcode-commons-parent"]
+	path = lowcode-commons-parent
+	url = git@github.com:cloudstars/lowcode-commons-java.git

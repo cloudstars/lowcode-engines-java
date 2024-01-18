@@ -20,7 +20,7 @@
     </properties>
 
     <modules>
-        <module>lowcode-commons-parent2</module>
+        <module>lowcode-commons-parent</module>
         <module>lowcode-metadata-parent</module>
         <module>lowcode-form-parent</module>
         <module>lowcode-excel-parent</module>
