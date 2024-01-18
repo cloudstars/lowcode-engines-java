@@ -1,6 +1,13 @@
 # lowcode-tools
 低代码工具箱Java系列
 
+## 公共依赖
+定义低代码引擎公共的依赖，如日志框架、异常处理等
+
+添加本模块的命令：
+git submodule add git@github.com:cloudstars/lowcode-commons-java.git ./lowcode-commons-parent
+
+
 ## 元数据引擎
 定义软件包与资源元数据规范，提供统一的元数据管理功能
 

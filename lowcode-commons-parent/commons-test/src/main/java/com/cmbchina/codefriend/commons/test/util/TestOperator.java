@@ -7,7 +7,7 @@ import com.cmbchina.codefriend.commons.lang.Operator;
  *
  * @author 80274507
  */
-public final class OperatorUtils {
+public final class TestOperator {
 
     /**
      * 测试模拟用户

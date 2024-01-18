@@ -16,6 +16,10 @@
             <groupId>LB20.01</groupId>
             <artifactId>lowcode-commons-lang</artifactId>
         </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-commons-util</artifactId>
+        </dependency>
 
         <!-- 测试相关的依赖 -->
         <dependency>

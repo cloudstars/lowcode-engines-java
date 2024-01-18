@@ -16,6 +16,10 @@
             <groupId>LB20.01</groupId>
             <artifactId>lowcode-commons-lang</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
