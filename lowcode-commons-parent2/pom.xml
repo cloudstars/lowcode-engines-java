@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-commons-parent</artifactId>
+    <artifactId>lowcode-commons-parent2</artifactId>
     <packaging>pom</packaging>
     <description>低代码引擎公共定义parent</description>
 

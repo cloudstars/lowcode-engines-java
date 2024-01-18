@@ -4,21 +4,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>LB20.01</groupId>
-        <artifactId>lowcode-commons-parent</artifactId>
+        <artifactId>lowcode-commons-parent2</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-commons-web</artifactId>
-    <description>web接入公共部分</description>
+    <artifactId>lowcode-commons-lang</artifactId>
+    <description>公共基础部分，如用户信息、日志框架、异常处理等</description>
 
     <dependencies>
         <dependency>
-            <groupId>LB20.01</groupId>
-            <artifactId>lowcode-commons-lang</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 

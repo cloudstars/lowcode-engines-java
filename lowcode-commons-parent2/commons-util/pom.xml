@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>LB20.01</groupId>
-        <artifactId>lowcode-commons-parent</artifactId>
+        <artifactId>lowcode-commons-parent2</artifactId>
         <version>${revision}</version>
     </parent>
 
