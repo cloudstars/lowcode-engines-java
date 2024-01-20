@@ -74,22 +74,17 @@
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
+                <artifactId>lowcode-metadata-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
                 <artifactId>lowcode-form-engine</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
                 <artifactId>lowcode-form-engine-cf</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-api-dev</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-api-engine</artifactId>
                 <version>${revision}</version>
             </dependency>
 
