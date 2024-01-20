@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>LB20.01</groupId>
+        <artifactId>lowcode-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lowcode-app-devops-server</artifactId>
+    <description>低代码应用开发&amp;运维Server</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-metadata-dev-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-metadata-ops-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-form-dev-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-form-ops-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+
+</project>

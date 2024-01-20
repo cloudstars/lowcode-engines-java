@@ -20,6 +20,7 @@
     </properties>
 
     <modules>
+        <!-- 以下为应用级的子模块 -->
         <module>lowcode-commons-parent</module>
         <module>lowcode-metadata-parent</module>
         <module>lowcode-form-parent</module>
@@ -31,6 +32,11 @@
         <module>lowcode-api-flow-parent</module>
         <module>lowcode-api-function-parent</module>
         <module>lowcode-formula-parent</module>
+
+        <!-- 以下为应用相关的服务 -->
+        <module>app-devops-server</module>
+        <module>app-runtime-server</module>
+        <module>app-job-scheduler-server</module>
     </modules>
 
     <dependencyManagement>
@@ -58,18 +64,12 @@
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-commons-util</artifactId>
-                <version>${revision}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-dev</artifactId>
+                <artifactId>lowcode-metadata-dev-hander</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-engine</artifactId>
+                <artifactId>lowcode-metadata-runtime-hander</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -87,7 +87,6 @@
                 <artifactId>lowcode-api-dev</artifactId>
                 <version>${revision}</version>
             </dependency>
-
             <dependency>
                 <groupId>LB20.01</groupId>
                 <artifactId>lowcode-api-engine</artifactId>
