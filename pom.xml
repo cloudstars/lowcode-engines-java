@@ -92,6 +92,11 @@
                 <artifactId>lowcode-form-engine-cf</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-api-provider</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
