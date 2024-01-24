@@ -20,7 +20,27 @@
         </dependency>
         <dependency>
             <groupId>LB20.01</groupId>
+            <artifactId>lowcode-base-runtime-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-render-runtime-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
             <artifactId>lowcode-form-runtime-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-bpm-runtime-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-file-runtime-web</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -28,7 +48,6 @@
         <dependency>
             <groupId>LB20.01</groupId>
             <artifactId>lowcode-commons-test</artifactId>
-            <version>${revision}</version>
         </dependency>
     </dependencies>
 
