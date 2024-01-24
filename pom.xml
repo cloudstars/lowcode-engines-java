@@ -69,27 +69,22 @@
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-dev-hander</artifactId>
+                <artifactId>lowcode-metadata-dev-handler</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-runtime-hander</artifactId>
+                <artifactId>lowcode-metadata-runtime-handler</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-client</artifactId>
+                <artifactId>lowcode-metadata-runtime-client</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-form-engine</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-form-engine-cf</artifactId>
+                <artifactId>lowcode-form-runtime</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -112,6 +107,12 @@
                 <groupId>org.springfremawork.boot</groupId>
                 <artifactId>spring-boot-starter-freemarker</artifactId>
                 <version>${springboot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${springboot.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>

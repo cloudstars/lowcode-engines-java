@@ -24,12 +24,32 @@
         </dependency>
         <dependency>
             <groupId>LB20.01</groupId>
+            <artifactId>lowcode-base-dev-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-render-dev-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
             <artifactId>lowcode-form-dev-web</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>LB20.01</groupId>
             <artifactId>lowcode-form-ops-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-bpm-dev-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>LB20.01</groupId>
+            <artifactId>lowcode-bpm-ops-web</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
