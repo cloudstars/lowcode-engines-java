@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>LB20.01</groupId>
+    <groupId>net.cf</groupId>
     <artifactId>lowcode-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -32,65 +32,35 @@
         <module>lowcode-api-flow-parent</module>
         <module>lowcode-api-function-parent</module>
         <module>lowcode-formula-parent</module>
-
-        <!-- 以下为应用相关的服务 -->
-        <module>app-devops-server</module>
-        <module>app-runtime-server</module>
-        <module>app-job-scheduler-server</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>LB20.01</groupId>
+                <groupId>net.cf</groupId>
                 <artifactId>lowcode-commons-lang</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>LB20.01</groupId>
+                <groupId>net.cf</groupId>
                 <artifactId>lowcode-commons-util</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>LB20.01</groupId>
+                <groupId>net.cf</groupId>
                 <artifactId>lowcode-commons-util-js</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>LB20.01</groupId>
+                <groupId>net.cf</groupId>
                 <artifactId>lowcode-commons-web</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>LB20.01</groupId>
+                <groupId>net.cf</groupId>
                 <artifactId>lowcode-commons-test</artifactId>
                 <version>${revision}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-dev-handler</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-runtime-handler</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-runtime-client</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-form-runtime</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-api-provider</artifactId>
-                <version>${revision}</version>
             </dependency>
 
             <dependency>
