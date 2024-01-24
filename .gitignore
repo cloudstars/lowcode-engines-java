@@ -3,6 +3,9 @@ target/
 .idea
 *.iml
 
+# maven
+.flattened-pom.xml
+
 # Compiled class file
 *.class
 
