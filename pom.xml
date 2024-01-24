@@ -20,6 +20,7 @@
     </properties>
 
     <modules>
+        <!-- 以下为应用级的子模块 -->
         <module>lowcode-commons-parent</module>
         <module>lowcode-metadata-parent</module>
         <module>lowcode-form-parent</module>
@@ -31,6 +32,11 @@
         <module>lowcode-api-flow-parent</module>
         <module>lowcode-api-function-parent</module>
         <module>lowcode-formula-parent</module>
+
+        <!-- 以下为应用相关的服务 -->
+        <module>app-devops-server</module>
+        <module>app-runtime-server</module>
+        <module>app-job-scheduler-server</module>
     </modules>
 
     <dependencyManagement>
@@ -38,6 +44,16 @@
             <dependency>
                 <groupId>LB20.01</groupId>
                 <artifactId>lowcode-commons-lang</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-commons-util</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>LB20.01</groupId>
+                <artifactId>lowcode-commons-util-js</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -53,39 +69,27 @@
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-commons-util</artifactId>
-                <version>${revision}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-dev</artifactId>
+                <artifactId>lowcode-metadata-dev-handler</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-metadata-engine</artifactId>
+                <artifactId>lowcode-metadata-runtime-handler</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-form-engine</artifactId>
+                <artifactId>lowcode-metadata-runtime-client</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-form-engine-cf</artifactId>
+                <artifactId>lowcode-form-runtime</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>LB20.01</groupId>
-                <artifactId>lowcode-api-dev</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>LB20.01</groupId>
-                <artifactId>lowcode-api-engine</artifactId>
+                <artifactId>lowcode-api-provider</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -103,6 +107,12 @@
                 <groupId>org.springfremawork.boot</groupId>
                 <artifactId>spring-boot-starter-freemarker</artifactId>
                 <version>${springboot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${springboot.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -146,7 +156,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
-                <version>1.2.9</version>
+                <version>1.2.16</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
