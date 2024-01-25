@@ -51,11 +51,6 @@
             </dependency>
             <dependency>
                 <groupId>net.cf</groupId>
-                <artifactId>lowcode-commons-web</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.cf</groupId>
                 <artifactId>lowcode-commons-test</artifactId>
                 <version>${revision}</version>
                 <scope>test</scope>
