@@ -29,8 +29,6 @@
         <module>lowcode-file-parent </module>
         <module>lowcode-api-parent</module>
         <module>lowcode-api-proxy-parent</module>
-        <module>lowcode-api-flow-parent</module>
-        <module>lowcode-api-function-parent</module>
         <module>lowcode-formula-parent</module>
     </modules>
 
