@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.cf</groupId>
+    <groupId>io.github.cloudstars</groupId>
     <artifactId>lowcode-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -22,7 +22,7 @@
     <modules>
         <!-- 以下为应用级的子模块 -->
         <module>lowcode-commons-parent</module>
-        <module>lowcode-metadata-parent</module>
+        <!--<module>lowcode-metadata-parent</module>-->
         <module>lowcode-form-parent</module>
         <module>lowcode-excel-parent</module>
         <module>lowcode-bpm-parent</module>
@@ -35,22 +35,27 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>net.cf</groupId>
+                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-lang</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>net.cf</groupId>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-commons-db</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-util</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>net.cf</groupId>
+                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-util-js</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>net.cf</groupId>
+                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-test</artifactId>
                 <version>${revision}</version>
                 <scope>test</scope>
