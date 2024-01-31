@@ -1,0 +1,29 @@
+package net.cf.api.engine.impl;
+
+import net.cf.api.commons.enums.ApiTypeEnum;
+import net.cf.api.engine.ApiExecutorRegistration;
+import net.cf.api.provider.executor.ApiExecutor;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author 80345746
+ * @version v1.0
+ * @date 2024/1/17 15:19
+ */
+public class ApiExecutorRegistrationImpl implements ApiExecutorRegistration {
+
+    private Map<ApiTypeEnum, ApiExecutor> apiRtEngineMap = new HashMap<>(8);
+
+    @Override
+    public void register(ApiExecutor apiExecutor) {
+        apiRtEngineMap.put(apiExecutor.getType(), apiExecutor);
+    }
+
+    @Override
+    public ApiExecutor find(ApiTypeEnum apiType) {
+        return apiRtEngineMap.get(apiType);
+    }
+
+}

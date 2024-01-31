@@ -1,0 +1,11 @@
+{
+  "applyId": 1,
+  "userId": "zhangsan",
+  "startDate": "2023-06-08",
+  "endDate": "2023-06-11",
+  "reason": "出差培训（变更）",
+  "attach": {
+    "id": 4,
+    "name": "这是一个文件名"
+  }
+}

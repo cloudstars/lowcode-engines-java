@@ -1,0 +1,13 @@
+{
+  "name": "test-update-simple-sqls",
+  "desc": "测试简单的SQL更新语句",
+  "sqls": [{
+    "name": "update-without-params",
+    "desc": "简单的更新语句，不带参数",
+    "sql": "update A set a1 = -1, a2 = 1.1, a3 = '1' where 1 = 1"
+  }, {
+    "name": "update-with-params",
+    "desc": "简单的插入语句，带参数",
+    "sql": "update tableA set a1 = B.b1, a2 = B.b2, a3 = B.b3 from B where A.id = B.id"
+  }]
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.cloudstars</groupId>
+        <artifactId>lowcode-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lowcode-file-parent</artifactId>
+    <packaging>pom</packaging>
+    <description>低代码文件存储 parent</description>
+
+    <properties>
+    </properties>
+
+    <modules>
+        <module>file-engine-commons</module>
+        <module>file-engine</module>
+        <module>file-engine-repository</module>
+        <module>file-engine-repository-testcases</module>
+        <module>file-engine-repository-impl-parent</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-file-engine-commons</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-file-engine-repository</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-file-engine-repository-testcases</artifactId>
+                <version>${revision}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

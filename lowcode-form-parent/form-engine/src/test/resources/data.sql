@@ -1,0 +1,1 @@
+insert into oql.travel (USER_ID, START_DATE, END_DATE, REASON, ENTP_KEY, CREATED_BY, CREATED_AT, MODIFIED_BY, MODIFIED_AT) values ('user01', '2023-06-04', '2023-06-10', '参与阿里云栖大会', 'CMB', 'user001', '2023-06-10 10:10:10.100', NULL, NULL);

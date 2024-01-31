@@ -1,0 +1,24 @@
+{
+  "userId": "wangwu",
+  "startDate": "2023-06-07",
+  "endDate": "2023-06-10",
+  "reason": "出差培训",
+  "attach": {
+    "id": 123,
+    "name": "这是一个文件名"
+  },
+  "schedules": [
+    {
+      "startDate": "2023-06-07",
+      "endDate": "2023-06-08",
+      "destination": "北京",
+      "todo": "项目会议"
+    },
+    {
+      "startDate": "2023-06-09",
+      "endDate": "2023-06-10",
+      "destination": "南京",
+      "todo": "学术研讨"
+    }
+  ]
+}

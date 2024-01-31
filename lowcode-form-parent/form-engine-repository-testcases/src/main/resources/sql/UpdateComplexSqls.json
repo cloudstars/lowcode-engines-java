@@ -1,0 +1,9 @@
+{
+  "name": "test-update-complex-sqls",
+  "desc": "测试复杂的SQL更新语句",
+  "sqls": [{
+    "name": "update-a-from-b",
+    "desc": "复杂的更新语句",
+    "sql": "update A set a1 = B.b1, a2 = B.b2, a3 = B.b3 from B where A.id = B.id"
+  }]
+}

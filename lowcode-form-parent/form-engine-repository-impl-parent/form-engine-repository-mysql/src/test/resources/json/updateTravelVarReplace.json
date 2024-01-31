@@ -1,0 +1,14 @@
+{
+  "userId": "zhangsan",
+  "startDate": "2023-06-07",
+  "endDate": "2023-06-10",
+  "reason": "出差培训",
+  "attach": {
+    "id": 123,
+    "name": "这是一个文件名"
+  },
+  "enterpriseKey": "CMB",
+  "modifiedBy": "zhangsan",
+  "modifiedAt": "2023-06-07 11:11:11.123",
+  "applyId": 1
+}

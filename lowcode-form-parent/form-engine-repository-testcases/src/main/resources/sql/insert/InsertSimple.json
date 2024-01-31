@@ -1,0 +1,13 @@
+{
+  "name": "test-insert-simple-sqls",
+  "desc": "测试简单的SQL插入语句",
+  "sqlList": [{
+    "name": "insert-without-params",
+    "desc": "简单的插入语句，不带参数",
+    "sql": "insert into A(a1, a2, a3) values (-1, 1.1, '1')"
+  }, {
+    "name": "insert-with-params",
+    "desc": "简单的插入语句，带参数",
+    "sql": "insert into tableA(a1, a2, a3) values (#{aa1}, #{aa2}, #{aa3})"
+  }]
+}
