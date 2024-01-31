@@ -15,8 +15,8 @@
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-test</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
