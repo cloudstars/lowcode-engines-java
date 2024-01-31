@@ -1,0 +1,104 @@
+[
+  {
+    "applyId": 1,
+    "userId": "user001",
+    "startDate": 1685808000000,
+    "endDate": 1686326400000,
+    "reason": "参与阿里云栖大会1",
+    "attach": null,
+    "status": "INIT",
+    "enterpriseKey": "CMB",
+    "createdBy": "user001",
+    "createdAt": 1686708610100,
+    "modifiedBy": null,
+    "modifiedAt": null,
+    "schedules": [
+      {
+        "scheduleId": 1,
+        "travel": 1,
+        "startDate": 1685808000000,
+        "endDate": 1685980800000,
+        "destination": "南京",
+        "todo": "参与阿里云栖大会1-1",
+        "status": "INIT",
+        "enterpriseKey": "CMB",
+        "createdBy": "user001",
+        "createdAt": 1686708610100,
+        "modifiedBy": null,
+        "modifiedAt": null
+      },
+      {
+        "scheduleId": 2,
+        "travel": 1,
+        "todo": "参与阿里云栖大会1-2",
+        "createdAt": 1686708610100,
+        "endDate": 1686326400000,
+        "createdBy": "user001",
+        "destination": "北京",
+        "enterpriseKey": "CMB",
+        "startDate": 1686067200000,
+        "status": "INIT",
+        "modifiedBy": null,
+        "modifiedAt": null
+      }
+    ]
+  },
+  {
+    "applyId": 2,
+    "userId": "user002",
+    "startDate": 1685808000000,
+    "endDate": 1686326400000,
+    "reason": "参与阿里云栖大会2",
+    "attach": null,
+    "status": "PASSED",
+    "enterpriseKey": "CMB",
+    "createdBy": "user002",
+    "createdAt": 1686708610100,
+    "modifiedBy": null,
+    "modifiedAt": null,
+    "schedules": [
+      {
+        "scheduleId": 3,
+        "travel": 2,
+        "startDate": 1685808000000,
+        "endDate": 1685980800000,
+        "destination": "南京",
+        "todo": "参与阿里云栖大会2-1",
+        "status": "PASSED",
+        "enterpriseKey": "CMB",
+        "createdBy": "user002",
+        "createdAt": 1686535810100,
+        "modifiedBy": null,
+        "modifiedAt": null
+      },
+      {
+        "scheduleId": 4,
+        "travel": 2,
+        "startDate": 1685980800000,
+        "endDate": 1686240000000,
+        "destination": "南京",
+        "todo": "参与阿里云栖大会2-2",
+        "status": "INIT",
+        "enterpriseKey": "CMB",
+        "createdAt": 1686535810100,
+        "createdBy": "user002",
+        "modifiedBy": null,
+        "modifiedAt": null
+      },
+      {
+        "scheduleId": 5,
+        "travel": 2,
+        "startDate": 1686326400000,
+        "endDate": 1686326400000,
+        "destination": "南京",
+        "todo": "参与阿里云栖大会2-3",
+        "status": "INIT",
+        "enterpriseKey": "CMB",
+        "createdBy": "user002",
+        "createdAt": 1686535810100,
+        "modifiedBy": null,
+        "modifiedAt": null
+      }
+    ]
+  }
+]

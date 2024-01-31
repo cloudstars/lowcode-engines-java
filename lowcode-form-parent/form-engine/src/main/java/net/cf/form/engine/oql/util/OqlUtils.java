@@ -1,0 +1,94 @@
+package net.cf.form.engine.oql.util;
+
+import net.cf.form.engine.oql.ast.OqlObject;
+import net.cf.form.engine.oql.ast.statement.*;
+import net.cf.form.engine.oql.ast.statement.*;
+import net.cf.form.engine.oql.parser.OqlStatementParser;
+import net.cf.form.engine.oql.visitor.OqlAstOutputVisitor;
+
+import java.util.List;
+
+/**
+ * OQL工具类
+ *
+ * @author clouds
+ */
+public class OqlUtils {
+
+    /**
+     * 创建一个输出访问器
+     *
+     * @param out
+     * @return
+     */
+    public static OqlAstOutputVisitor createAstOutputVisitor(Appendable out) {
+        return new OqlAstOutputVisitor(out);
+    }
+
+    /**
+     * 将一个OQL对象转为字符串
+     *
+     * @param object
+     * @return
+     */
+    public static String toOqlString(OqlObject object) {
+        StringBuilder out = new StringBuilder();
+        object.accept(new OqlAstOutputVisitor(out));
+        return out.toString();
+    }
+
+    /**
+     * 解析并返回唯一的一条插入 OQL 语句
+     *
+     * @param oql
+     * @return
+     */
+    public static OqlInsertStatement parseSingleInsertStatement(String oql) {
+        OqlStatementParser parser = new OqlStatementParser(oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlInsertStatement);
+        return (OqlInsertStatement) statements.get(0);
+    }
+
+    /**
+     * 解析并返回唯一的一条更新 OQL 语句
+     *
+     * @param oql
+     * @return
+     */
+    public static OqlUpdateStatement parseSingleUpdateStatement(String oql) {
+        OqlStatementParser parser = new OqlStatementParser(oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlUpdateStatement);
+        return (OqlUpdateStatement) statements.get(0);
+    }
+
+    /**
+     * 解析并返回唯一的一条删除 OQL 语句
+     *
+     * @param oql
+     * @return
+     */
+    public static OqlDeleteStatement parseSingleDeleteStatement(String oql) {
+        OqlStatementParser parser = new OqlStatementParser(oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlDeleteStatement);
+        return (OqlDeleteStatement) statements.get(0);
+    }
+
+    /**
+     * 解析并返回唯一的一条查询 OQL 语句
+     *
+     * @param oql
+     * @return
+     */
+    public static OqlSelectStatement parseSingleSelectStatement(String oql) {
+        OqlStatementParser parser = new OqlStatementParser(oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlSelectStatement);
+        return (OqlSelectStatement) statements.get(0);
+    }
+
+
+
+}
