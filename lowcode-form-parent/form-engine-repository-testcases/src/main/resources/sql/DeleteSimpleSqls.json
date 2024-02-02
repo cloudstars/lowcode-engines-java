@@ -14,5 +14,22 @@
     "name": "delete-with-params",
     "desc": "简单的删除语句，带条件，带参数",
     "sql": "delete tableA where a1 = #{a1} and a2 = #{a2} and a3 = #{a3}"
-  }]
+  },
+    {
+      "name": "delete-by-id-param",
+      "desc": "根据主键id变量删除数据",
+      "sql": "delete from tableA where applyId = #{applyId}"
+    },
+    {
+      "name": "delete-by-in-id",
+      "desc": "根据多个主键id删除数据",
+      "sql": "delete from tableA where applyId in (1, 2)"
+    },
+    {
+      "name": "delete-by-in-id-param",
+      "desc": "根据多个主键id变量删除数据",
+      "sql": "delete from tableA where applyId in (#{applyId0}, #{applyId1})"
+    }
+
+  ]
 }
