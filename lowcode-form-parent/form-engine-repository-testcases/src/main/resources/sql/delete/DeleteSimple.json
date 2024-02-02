@@ -1,0 +1,25 @@
+{
+  "name": "test-delete-simple-sqls",
+  "desc": "测试单表删除语句",
+  "sqls": [{
+    "name": "delete-by-id",
+    "desc": "根据主键id删除数据",
+    "sql": "delete from Travel where applyId = 1"
+    },
+    {
+      "name": "delete-by-id-param",
+      "desc": "根据主键id变量删除数据",
+      "sql": "delete from Travel where applyId = #{applyId}"
+    },
+    {
+      "name": "delete-by-in-id",
+      "desc": "根据多个主键id删除数据",
+      "sql": "delete from Travel where applyId in (1, 2)"
+    },
+    {
+      "name": "delete-by-in-id-param",
+      "desc": "根据多个主键id变量删除数据",
+      "sql": "delete from Travel where applyId in (#{applyId0}, #{applyId1})"
+    }
+  ]
+}
