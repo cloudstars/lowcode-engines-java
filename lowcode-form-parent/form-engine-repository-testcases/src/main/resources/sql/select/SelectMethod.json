@@ -1,6 +1,6 @@
 {
   "name": "SELECT_METHOD",
-  "desc": "查询不同的列",
+  "desc": "查询时使用函数的案例",
   "sqlList": [
     {
       "name": "SELECT_SUBSTRING_FIELD",
