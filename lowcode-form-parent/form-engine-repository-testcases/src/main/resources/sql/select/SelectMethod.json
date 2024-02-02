@@ -5,112 +5,112 @@
     {
       "name": "SELECT_SUBSTRING_FIELD",
       "desc": "字符串字段截取子字符串",
-      "sql": "select SUBSTRING(userId, 2, 4) as str from Travel where SUBSTRING(userId, 2, 3) = 'abc'"
+      "sql": "select SUBSTRING(userId, 2, 4) as str from tableA where SUBSTRING(userId, 2, 3) = 'abc'"
     },
     {
       "name": "SELECT_SUBSTRING_CONSTANT",
       "desc": "常量截取子字符串",
-      "sql": "select userId, SUBSTRING('abcdefg', 2, 4) as str1, SUBSTRING('黄河之水天上来', 2, 4) as str2 from Travel where SUBSTRING('abcdefg', 2, 3) = 'bcd' and SUBSTRING('黄河之水天上来', 2, 3) = '河之水'"
+      "sql": "select userId, SUBSTRING('abcdefg', 2, 4) as str1, SUBSTRING('黄河之水天上来', 2, 4) as str2 from tableA where SUBSTRING('abcdefg', 2, 3) = 'bcd' and SUBSTRING('黄河之水天上来', 2, 3) = '河之水'"
     },
     {
       "name": "SELECT_SUBSTRING_VAR",
       "desc": "变量截取子字符串",
-      "sql": "select userId, SUBSTRING(#{str1}, #{start1}, #{length1}) as str1 from Travel where SUBSTRING(#{str2}, #{start2}, #{length2})='bcd'"
+      "sql": "select userId, SUBSTRING(#{str1}, #{start1}, #{length1}) as str1 from tableA where SUBSTRING(#{str2}, #{start2}, #{length2})='bcd'"
     },
     {
       "name": "SELECT_LENGTH_FIELD",
       "desc": "查询字符串字段长度",
-      "sql": "select LENGTH(userId) as length from Travel where LENGTH(userId) = 5 "
+      "sql": "select LENGTH(userId) as length from tableA where LENGTH(userId) = 5 "
     },
     {
       "name": "SELECT_LENGTH_CONSTANT",
       "desc": "查询字符串常量长度",
-      "sql": "select LENGTH('abcdefg') as length1, LENGTH('海上明月共潮生') as length2 from Travel where LENGTH('abcdefg') = 7 and LENGTH('春江潮水连海平') = 7 "
+      "sql": "select LENGTH('abcdefg') as length1, LENGTH('海上明月共潮生') as length2 from tableA where LENGTH('abcdefg') = 7 and LENGTH('春江潮水连海平') = 7 "
     },
     {
       "name": "SELECT_LENGTH_VAR",
       "desc": "查询字符串变量长度",
-      "sql": "select LENGTH(#{str1}) as length from Travel where LENGTH(#{str2}) = 5 "
+      "sql": "select LENGTH(#{str1}) as length from tableA where LENGTH(#{str2}) = 5 "
     },
     {
       "name": "SELECT_CONCAT_FIELD",
       "desc": "查询字符串类型字段拼接",
-      "sql": "select CONCAT(userId, 'a', '低代码') as str from Travel where CONCAT(userId, 'a', '低代码') = '123456a低代码'"
+      "sql": "select CONCAT(userId, 'a', '低代码') as str from tableA where CONCAT(userId, 'a', '低代码') = '123456a低代码'"
     },
     {
       "name": "SELECT_CONCAT_VAR",
       "desc": "查询字符串变量拼接",
-      "sql": "select CONCAT(userId, 'a', #{str1}) as str from Travel where CONCAT(userId, 'a', #{str1}) = '123456a低代码'"
+      "sql": "select CONCAT(userId, 'a', #{str1}) as str from tableA where CONCAT(userId, 'a', #{str1}) = '123456a低代码'"
     },
     {
       "name": "SELECT_TRIM_FIELD",
       "desc": "查询字符串类型字段去除两边空格",
-      "sql": "select TRIM(userId) as str from Travel where TRIM(userId) = '123456'"
+      "sql": "select TRIM(userId) as str from tableA where TRIM(userId) = '123456'"
     },
     {
       "name": "SELECT_TRIM_CONSTANT",
       "desc": "查询字符串常量去除两边空格",
-      "sql": "select TRIM(' abcdefg ') as str1, TRIM(' 海上明月共潮生 ') as str2 from Travel where TRIM(' abcdefg ') = 'abcdefg' and TRIM(' 海上明月共潮生 ') ='海上明月共潮生'"
+      "sql": "select TRIM(' abcdefg ') as str1, TRIM(' 海上明月共潮生 ') as str2 from tableA where TRIM(' abcdefg ') = 'abcdefg' and TRIM(' 海上明月共潮生 ') ='海上明月共潮生'"
     },
     {
       "name": "SELECT_TRIM_VAR",
       "desc": "查询字符串变量去除两边空格",
-      "sql": "select TRIM(#{str1}) as str from Travel where TRIM(#{str2}) = '低代码'"
+      "sql": "select TRIM(#{str1}) as str from tableA where TRIM(#{str2}) = '低代码'"
     },
     {
       "name": "SELECT_LTRIM_FIELD",
       "desc": "查询字符串类型字段去除左边空格",
-      "sql": "select LTRIM(userId) as str from Travel where LTRIM(userId) = '123456'"
+      "sql": "select LTRIM(userId) as str from tableA where LTRIM(userId) = '123456'"
     },
     {
       "name": "SELECT_LTRIM_CONSTANT",
       "desc": "查询字符串常量去除左边空格",
-      "sql": "select LTRIM(' abcdefg ') as str1, LTRIM(' 海上明月共潮生 ') as str2 from Travel where LTRIM(' abcdefg ') = 'abcdefg' and LTRIM(' 海上明月共潮生 ') ='海上明月共潮生'"
+      "sql": "select LTRIM(' abcdefg ') as str1, LTRIM(' 海上明月共潮生 ') as str2 from tableA where LTRIM(' abcdefg ') = 'abcdefg' and LTRIM(' 海上明月共潮生 ') ='海上明月共潮生'"
     },
     {
       "name": "SELECT_LTRIM_VAR",
       "desc": "查询字符串变量去除左边空格",
-      "sql": "select LTRIM(#{str1}) as str from Travel where LTRIM(#{str2}) = '低代码'"
+      "sql": "select LTRIM(#{str1}) as str from tableA where LTRIM(#{str2}) = '低代码'"
     },
     {
       "name": "SELECT_RTRIM_FIELD",
       "desc": "查询字符串类型字段去除右边空格",
-      "sql": "select RTRIM(userId) as str from Travel where RTRIM(userId) = '123456'"
+      "sql": "select RTRIM(userId) as str from tableA where RTRIM(userId) = '123456'"
     },
     {
       "name": "SELECT_RTRIM_CONSTANT",
       "desc": "查询字符串常量去除右边空格",
-      "sql": "select RTRIM(' abcdefg ') as str1, RTRIM(' 海上明月共潮生 ') as str2 from Travel where RTRIM(' abcdefg ') = 'abcdefg' and RTRIM(' 海上明月共潮生 ') ='海上明月共潮生'"
+      "sql": "select RTRIM(' abcdefg ') as str1, RTRIM(' 海上明月共潮生 ') as str2 from tableA where RTRIM(' abcdefg ') = 'abcdefg' and RTRIM(' 海上明月共潮生 ') ='海上明月共潮生'"
     },
     {
       "name": "SELECT_RTRIM_VAR",
       "desc": "查询字符串变量去除右边空格",
-      "sql": "select RTRIM(#{str1}) as str from Travel where RTRIM(#{str2}) = '低代码'"
+      "sql": "select RTRIM(#{str1}) as str from tableA where RTRIM(#{str2}) = '低代码'"
     },
     {
       "name": "SELECT_NOW",
       "desc": "查询now函数",
-      "sql": "select userId, now() from Travel where startDate < now()"
+      "sql": "select userId, now() from tableA where startDate < now()"
     },
     {
       "name": "SELECT_DATE_GET",
       "desc": "查询年月日提取",
-      "sql": "select YEAR(startDate) as year, MONTH(startDate) as month, DAY(startDate) as day from Travel where YEAR(endDate) = 2023 and MONTH(endDate) = 6 and DAY(endDate) = 11"
+      "sql": "select YEAR(startDate) as year, MONTH(startDate) as month, DAY(startDate) as day from tableA where YEAR(endDate) = 2023 and MONTH(endDate) = 6 and DAY(endDate) = 11"
     },
     {
       "name": "SELECT_TIMESTAMP",
       "desc": "查询时间戳",
-      "sql": "select TIMESTAMP(startDate) as ts from Travel where 1 = 1"
+      "sql": "select TIMESTAMP(startDate) as ts from tableA where 1 = 1"
     },
     {
       "name": "SELECT_DATE_FORMAT",
       "desc": "查询时间转化",
-      "sql": "select DATE_FORMAT(startDate, '%Y-%m-%d %H:%i:%s') as ts from Travel where 1 = 1"
+      "sql": "select DATE_FORMAT(startDate, '%Y-%m-%d %H:%i:%s') as ts from tableA where 1 = 1"
     },
     {
       "name": "SELECT_DATE_FORMAT_VAR",
       "desc": "查询变量时间转化",
-      "sql": "select DATE_FORMAT(#{date}, #{format}) as ts from Travel where 1 = 1"
+      "sql": "select DATE_FORMAT(#{date}, #{format}) as ts from tableA where 1 = 1"
     }
   ]
 }
