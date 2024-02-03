@@ -16,11 +16,11 @@
     </properties>
 
     <modules>
-        <module>file-engine-commons</module>
+        <module>file-commons</module>
         <module>file-engine</module>
-        <module>file-engine-repository</module>
-        <module>file-engine-repository-testcases</module>
-        <module>file-engine-repository-impl-parent</module>
+        <module>file-repository</module>
+        <module>file-repository-testcases</module>
+        <module>file-repository-impl-parent</module>
     </modules>
 
     <dependencyManagement>

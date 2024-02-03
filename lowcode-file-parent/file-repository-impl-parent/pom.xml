@@ -14,8 +14,8 @@
     <description>低代码文件存储层实现parent</description>
 
     <modules>
-        <module>file-engine-repository-ecs</module>
-        <module>file-engine-repository-cfdata</module>
+        <module>file-repository-ecs</module>
+        <module>file-repository-cfdata</module>
     </modules>
 
     <dependencyManagement>
