@@ -118,7 +118,7 @@ public class OqlSelect extends OqlObjectImpl {
             cloneItems.add(selectItem.clone());
         }
         select.setSelectItems(cloneItems);
-        select.setFrom(this.from.clone());
+        select.setFrom(this.from._clone());
         select.setWhere(this.where.clone());
 
         return null;

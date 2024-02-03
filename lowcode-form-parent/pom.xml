@@ -13,46 +13,46 @@
     <description>低代码表单引擎parent</description>
 
     <modules>
-        <module>form-engine-commons</module>
+        <module>form-commons</module>
         <module>form-engine</module>
-        <module>form-engine-repository</module>
-        <module>form-engine-repository-testcases</module>
-        <module>form-engine-repository-impl-parent</module>
+        <module>form-repository</module>
+        <module>form-repository-testcases</module>
+        <module>form-repository-impl-parent</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-form-engine-commons</artifactId>
+                <artifactId>lowcode-form-commons</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-form-engine-repository</artifactId>
+                <artifactId>lowcode-form-repository</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-form-engine-repository-testcases</artifactId>
+                <artifactId>lowcode-form-repository-testcases</artifactId>
                 <version>${revision}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-form-engine-repository-mysql</artifactId>
+                <artifactId>lowcode-form-repository-mysql</artifactId>
                 <version>${revision}</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-form-engine-repository-mongo</artifactId>
+                <artifactId>lowcode-form-repository-mongo</artifactId>
                 <version>${revision}</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-form-engine-repository-cfdata</artifactId>
+                <artifactId>lowcode-form-repository-cfdata</artifactId>
                 <version>${revision}</version>
                 <scope>runtime</scope>
             </dependency>

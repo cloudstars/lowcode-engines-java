@@ -1,20 +1,19 @@
 package net.cf.form.engine;
 
+import net.cf.commons.lang.BusinessException;
 import net.cf.commons.util.ObjectReference;
 import net.cf.commons.util.ObjectUtils;
 import net.cf.form.engine.object.XObject;
 import net.cf.form.engine.sqlbuilder.insert.InsertSqlStatementBuilder;
-import net.cf.form.engine.repository.FormEngineRepository;
-import net.cf.form.engine.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.engine.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
-import net.cf.form.engine.repository.sql.ast.statement.SqlExprTableSource;
-import net.cf.form.engine.repository.sql.ast.statement.SqlInsertStatement;
-import net.cf.form.engine.repository.sql.util.SqlExprUtils;
-import net.cf.commons.lang.BusinessException;
+import net.cf.form.repository.FormRepository;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
+import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.util.SqlExprUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
@@ -27,7 +26,7 @@ public class ObjectRecordEngineImpl implements ObjectRecordEngine {
     private final Logger logger = LoggerFactory.getLogger(ObjectRecordEngineImpl.class);
 
     @Resource
-    private FormEngineRepository repository;
+    private FormRepository repository;
 
     @Override
     public String createOne(XObject object, Object data) {
@@ -48,7 +47,7 @@ public class ObjectRecordEngineImpl implements ObjectRecordEngine {
     }
 
     private void checkObject(XObject object) {
-        if (!StringUtils.hasLength(object.getPrimaryFieldName())) {
+        if (object.getPrimaryField() == null) {
             throw new BusinessException("对象不合法，不存在主键字段！");
         }
     }
@@ -80,7 +79,7 @@ public class ObjectRecordEngineImpl implements ObjectRecordEngine {
                 builder.appendInsertValuesItem(SqlExprUtils.toSqlExpr(value.toString()));
             }
 
-            if (fieldName.equals(object.getPrimaryFieldName())) {
+            if (fieldName.equals(object.getPrimaryField().getName())) {
                 primaryFieldGetMethodRef.setRef(method);
             }
         }
@@ -95,7 +94,7 @@ public class ObjectRecordEngineImpl implements ObjectRecordEngine {
         SqlInsertStatement insertSql = this.buildInsertSql(object, dataMap);
         this.repository.insert(insertSql);
 
-        Object recordId = dataMap.get(object.getPrimaryFieldName());
+        Object recordId = dataMap.get(object.getPrimaryField().getName());
         logger.info("记录创建成功，对象编号：{}，记录ID：{}", object.getName(), recordId);
 
         return recordId.toString();

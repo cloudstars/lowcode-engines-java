@@ -6,9 +6,6 @@ import net.cf.form.engine.oql.ast.expr.OqlListExpr;
 import net.cf.form.engine.oql.ast.expr.identifier.*;
 import net.cf.form.engine.oql.ast.expr.literal.*;
 import net.cf.form.engine.oql.ast.expr.operation.*;
-import net.cf.form.engine.oql.ast.expr.identifier.*;
-import net.cf.form.engine.oql.ast.expr.literal.*;
-import net.cf.form.engine.oql.ast.expr.operation.*;
 import net.cf.form.engine.oql.ast.statement.OqlExprObjectSource;
 import net.cf.form.engine.oql.ast.statement.OqlObjectSource;
 import net.cf.form.engine.oql.ast.statement.OqlSelectItem;
@@ -611,6 +608,20 @@ public class OqlExprParser extends OqlParser {
     protected OqlObjectSource parseObjectSource() {
         String objectName = this.lexer.stringVal();
         OqlObjectSource objectSource = new OqlExprObjectSource(objectName);
+        this.lexer.nextToken();
+        if (this.lexer.token == Token.AS) {
+            this.lexer.nextToken();
+            String alias = this.lexer.stringVal();
+            objectSource.setAlias(alias);
+            this.lexer.nextToken();
+        }
+
+        return objectSource;
+    }
+
+    protected OqlExprObjectSource parseExprObjectSource() {
+        String objectName = this.lexer.stringVal();
+        OqlExprObjectSource objectSource = new OqlExprObjectSource(objectName);
         this.lexer.nextToken();
         if (this.lexer.token == Token.AS) {
             this.lexer.nextToken();

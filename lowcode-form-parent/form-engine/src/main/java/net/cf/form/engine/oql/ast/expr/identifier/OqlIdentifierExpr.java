@@ -2,8 +2,6 @@ package net.cf.form.engine.oql.ast.expr.identifier;
 
 import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
-import net.cf.form.engine.repository.data.DataField;
-import net.cf.form.engine.repository.data.DataObject;
 
 /**
  * 标识符
@@ -13,11 +11,6 @@ import net.cf.form.engine.repository.data.DataObject;
 public class OqlIdentifierExpr extends OqlExprImpl implements OqlNameExpr {
 
     protected String name;
-
-    private DataField resolvedField;
-
-    private DataObject resolvedOwnerObject;
-
 
     public OqlIdentifierExpr() {
     }
@@ -34,24 +27,6 @@ public class OqlIdentifierExpr extends OqlExprImpl implements OqlNameExpr {
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Deprecated
-    public DataField getResolvedField() {
-        return resolvedField;
-    }
-
-    public void setResolvedField(DataField resolvedField) {
-        this.resolvedField = resolvedField;
-    }
-
-    @Deprecated
-    public DataObject getResolvedOwnerObject() {
-        return resolvedOwnerObject;
-    }
-
-    public void setResolvedOwnerObject(DataObject resolvedOwnerObject) {
-        this.resolvedOwnerObject = resolvedOwnerObject;
     }
 
     @Override

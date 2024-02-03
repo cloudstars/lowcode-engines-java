@@ -3,9 +3,6 @@ package net.cf.form.engine.oql.ast.statement;
 import net.cf.form.engine.oql.ast.OqlObjectImpl;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
 
-import java.util.Arrays;
-import java.util.List;
-
 
 /**
  * OQL 对象数据源抽象实现类
@@ -13,8 +10,6 @@ import java.util.List;
  * @author clouds
  */
 public abstract class OqlObjectSourceImpl extends OqlObjectImpl implements OqlObjectSource {
-
-    protected OqlExpr flashback;
 
     protected String alias;
 
@@ -27,7 +22,6 @@ public abstract class OqlObjectSourceImpl extends OqlObjectImpl implements OqlOb
     }
 
     public OqlObjectSourceImpl(OqlExpr flashback, String alias) {
-        this.flashback = flashback;
         this.alias = alias;
     }
 
@@ -42,23 +36,7 @@ public abstract class OqlObjectSourceImpl extends OqlObjectImpl implements OqlOb
     }
 
     @Override
-    public OqlExpr getFlashback() {
-        return this.flashback;
-    }
-
-    @Override
-    public void setFlashback(OqlExpr flashback) {
-        this.flashback = flashback;
-        this.addChild(flashback);
-    }
-
-    @Override
-    public OqlObjectSource clone() {
+    public OqlObjectSource _clone() {
         throw new UnsupportedOperationException(this.getClass().getName());
-    }
-
-    @Override
-    public List<OqlExpr> getChildren() {
-        return Arrays.asList(this.flashback);
     }
 }

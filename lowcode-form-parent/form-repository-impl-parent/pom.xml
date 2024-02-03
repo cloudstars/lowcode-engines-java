@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.cloudstars</groupId>
+        <artifactId>lowcode-form-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lowcode-form-repository-impl-parent</artifactId>
+    <packaging>pom</packaging>
+    <description>低代码表单引擎存储层实现parent</description>
+
+    <modules>
+        <module>form-repository-mongo</module>
+        <module>form-repository-mysql</module>
+        <module>form-repository-cfdata</module>
+        <module>form-repository-cfdata-proxy</module>
+        <module>form-repository-cfdata-server</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-form-repository-cfdata-proxy</artifactId>
+                <version>${revision}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-form-repository-cfdata-server</artifactId>
+                <version>${revision}</version>
+                <scope>runtime</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

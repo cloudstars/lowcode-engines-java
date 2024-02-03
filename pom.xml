@@ -43,7 +43,7 @@
     <scm>
         <connection>scm:git:https://github.com/cloudstars/lowcode-engines-java.git</connection>
         <developerConnection>scm:git:ssh://github.com:cloudstars/lowcode-engines-java.git</developerConnection>
-        <url>https://github.com/cloudstars/lowcode-form-engine-java</url>
+        <url>https://github.com/cloudstars/lowcode-engines-java</url>
     </scm>
 
     <modules>

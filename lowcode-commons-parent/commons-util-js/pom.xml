@@ -12,7 +12,7 @@
     <description>JS工具类</description>
 
     <properties>
-        <graalvm.version>21.1.0</graalvm.version>
+        <graalvm.version>22.3.1</graalvm.version>
     </properties>
 
     <dependencies>
