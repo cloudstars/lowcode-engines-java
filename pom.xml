@@ -57,6 +57,7 @@
         <module>lowcode-api-proxy-parent</module>
         <module>lowcode-api-flow-parent</module>
         <module>lowcode-formula-parent</module>
+        <module>lowcode-api-flow-parent</module>
     </modules>
 
     <dependencyManagement>
