@@ -76,7 +76,7 @@ public class OqlUpdateStatement extends OqlStatementImpl implements OqlStatement
     @Override
     public OqlUpdateStatement clone() {
         OqlUpdateStatement statement = new OqlUpdateStatement();
-        statement.setObjectSource(this.objectSource.clone());
+        statement.setObjectSource(this.objectSource._clone());
         for (OqlUpdateSetItem setItem : this.setItems) {
             statement.addSetItem(setItem);
         }

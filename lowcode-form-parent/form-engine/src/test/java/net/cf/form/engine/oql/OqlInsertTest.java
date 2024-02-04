@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql;
 
-import net.cf.form.engine.OqlRecordEngine;
+import net.cf.form.engine.ObjectQLEngine;
 import net.cf.form.engine.oql.ast.statement.OqlInsertStatement;
 import net.cf.form.engine.oql.util.OqlUtils;
 import org.junit.Assert;
@@ -13,7 +13,7 @@ public class OqlInsertTest {
     private final String INSERT_TRAVEL_APPLY_PARAMS = "insert into TravelApply(applyName, enterpriseKey) values (#{ek}, #{an})";
 
     @Resource
-    private OqlRecordEngine recordEngine;
+    private ObjectQLEngine recordEngine;
 
     public void testInsertTravelApply() {
         OqlInsertStatement stmt = OqlUtils.parseSingleInsertStatement(INSERT_TRAVEL_APPLY);

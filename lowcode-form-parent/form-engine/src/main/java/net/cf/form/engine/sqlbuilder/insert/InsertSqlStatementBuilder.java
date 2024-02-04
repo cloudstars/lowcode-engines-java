@@ -2,10 +2,10 @@ package net.cf.form.engine.sqlbuilder.insert;
 
 import net.cf.form.engine.oql.ast.statement.OqlInsertStatement;
 import net.cf.form.engine.sqlbuilder.AbstractSqlStatementBuilder;
-import net.cf.form.engine.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.engine.repository.sql.ast.statement.SqlExprTableSource;
-import net.cf.form.engine.repository.sql.ast.statement.SqlInsertInto;
-import net.cf.form.engine.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
+import net.cf.form.repository.sql.ast.statement.SqlInsertInto;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 
 /**
  * 插入SQL语句构建器

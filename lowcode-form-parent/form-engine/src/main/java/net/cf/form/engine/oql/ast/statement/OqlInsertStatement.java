@@ -3,26 +3,23 @@ package net.cf.form.engine.oql.ast.statement;
 import net.cf.form.engine.oql.ast.OqlObject;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-public class OqlInsertStatement extends OqlStatementImpl implements OqlStatement {
-
-    private final OqlInsertInto insertInto;
+public class OqlInsertStatement extends OqlInsertInto implements OqlStatement {
 
     public OqlInsertStatement(OqlInsertInto insertInto) {
-        this.insertInto = insertInto;
-        this.addChild(insertInto);
-    }
-
-    public OqlInsertInto getInsertInto() {
-        return insertInto;
+        this.objectSource = insertInto.objectSource;
+        super.addFields(insertInto.fields);
+        super.addValuesList(insertInto.valuesList);
     }
 
     @Override
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.acceptChild(visitor, this.insertInto);
+            this.acceptChild(visitor, this.objectSource);
+            this.acceptChildren(visitor, this.fields);
+            this.acceptChildren(visitor, this.valuesList);
         }
 
         visitor.endVisit(this);
@@ -30,6 +27,11 @@ public class OqlInsertStatement extends OqlStatementImpl implements OqlStatement
 
     @Override
     public List<OqlObject> getChildren() {
-        return Arrays.asList(this.insertInto);
+        List<OqlObject> children = new ArrayList();
+        children.add(this.objectSource);
+        children.addAll(this.fields);
+        children.addAll(this.valuesList);
+
+        return children;
     }
 }

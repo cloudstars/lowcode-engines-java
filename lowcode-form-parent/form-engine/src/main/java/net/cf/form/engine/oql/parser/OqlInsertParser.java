@@ -18,7 +18,7 @@ public class OqlInsertParser extends OqlExprParser {
         this.accept(Token.INTO);
 
         OqlInsertInto insert = new OqlInsertInto();
-        insert.setObjectSource(this.parseObjectSource());
+        insert.setObjectSource(this.parseExprObjectSource());
         this.parseIntoFields(insert);
         this.parserValuesList(insert);
 

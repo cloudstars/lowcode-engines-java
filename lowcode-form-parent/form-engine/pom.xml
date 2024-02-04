@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-engine-repository</artifactId>
+            <artifactId>lowcode-form-repository</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->
@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-engine-commons</artifactId>
+            <artifactId>lowcode-form-commons</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-engine-repository-mongo</artifactId>
+            <artifactId>lowcode-form-repository-mongo</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

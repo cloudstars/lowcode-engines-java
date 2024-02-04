@@ -43,7 +43,7 @@
     <scm>
         <connection>scm:git:https://github.com/cloudstars/lowcode-engines-java.git</connection>
         <developerConnection>scm:git:ssh://github.com:cloudstars/lowcode-engines-java.git</developerConnection>
-        <url>https://github.com/cloudstars/lowcode-form-engine-java</url>
+        <url>https://github.com/cloudstars/lowcode-engines-java</url>
     </scm>
 
     <modules>
@@ -130,15 +130,15 @@
                 <version>${springboot.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>8.0.22</version>
                 <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-mongodb</artifactId>
-                <version>${springboot.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mongodb</groupId>
@@ -173,6 +173,19 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>5.2.0</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

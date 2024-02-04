@@ -2,9 +2,6 @@ package net.cf.form.engine.object;
 
 import net.cf.form.commons.FieldDefinition;
 import net.cf.form.commons.ObjectDefinition;
-import net.cf.form.engine.field.UniqueFields;
-import net.cf.form.engine.field.XField;
-import net.cf.form.engine.repository.data.DbType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,33 +48,22 @@ public class XObjectTestImpl implements XObject {
     }
 
     @Override
-    public List<UniqueFields> getUniqueFields() {
-        return null;
-    }
-
-    @Override
     public List<XField> getFields() {
         return this.fields;
     }
 
     @Override
-    public String getPrimaryFieldName() {
-        return this.objectDef.getPrimaryFieldName();
-    }
-
-    @Override
-    public ValidationResult validate(Map<String, Object> dataMap) {
+    public XField getField(String fieldName) {
         return null;
     }
 
     @Override
-    public boolean isPersistence() {
-        return false;
+    public XField getPrimaryField() {
+        return null;
     }
 
     @Override
-    public DbType getDbType() {
-        return null;
+    public void validate(Map<String, Object> dataMap) {
     }
 
     @Override
@@ -86,17 +72,7 @@ public class XObjectTestImpl implements XObject {
     }
 
     @Override
-    public List<XObject> getSubObjects() {
-        return null;
-    }
-
-    @Override
-    public List<XObject> getOneByOneRefObjects() {
-        return null;
-    }
-
-    @Override
-    public List<XObject> getOneByManyRefObjects() {
+    public List<XObject> getDetailObjects() {
         return null;
     }
 

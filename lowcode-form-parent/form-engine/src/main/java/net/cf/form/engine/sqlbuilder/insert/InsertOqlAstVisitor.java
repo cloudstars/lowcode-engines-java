@@ -5,10 +5,10 @@ import net.cf.form.engine.oql.ast.expr.literal.OqlCharExpr;
 import net.cf.form.engine.oql.ast.statement.OqlExprObjectSource;
 import net.cf.form.engine.oql.ast.statement.OqlInsertValues;
 import net.cf.form.engine.oql.visitor.OqlAstVisitorAdaptor;
-import net.cf.form.engine.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.engine.repository.sql.ast.expr.literal.SqlCharExpr;
-import net.cf.form.engine.repository.sql.ast.statement.SqlExprTableSource;
-import net.cf.form.engine.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
+import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 
 /**
  * MyOql select语句输出 AST访问器
@@ -31,8 +31,7 @@ public final class InsertOqlAstVisitor extends OqlAstVisitorAdaptor {
     @Override
     public boolean visit(OqlExprObjectSource x) {
         SqlExprTableSource tableSource = new SqlExprTableSource();
-        OqlIdentifierExpr identifierExpr = (OqlIdentifierExpr) x.getFlashback();
-        tableSource.setExpr(new SqlIdentifierExpr(identifierExpr.getName()));
+        tableSource.setExpr(new SqlIdentifierExpr(tableSource.getName().getSimpleName()));
         tableSource.setAlias(x.getAlias());
         this.builder.tableSource(tableSource);
 

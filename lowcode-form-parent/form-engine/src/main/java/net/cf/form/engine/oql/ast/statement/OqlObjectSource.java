@@ -1,6 +1,5 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.expr.OqlExpr;
 import net.cf.form.engine.oql.ast.OqlObject;
 
 /**
@@ -24,21 +23,6 @@ public interface OqlObjectSource<T extends OqlObjectSource> extends OqlObject<T>
      */
     void setAlias(String alias);
 
-    /**
-     * 获取对象名
-     *
-     * @return
-     */
-    OqlExpr getFlashback();
-
-    /**
-     * 设置对象名
-     *
-     * @param flashback
-     */
-    void setFlashback(OqlExpr flashback);
-
-    @Override
-    T clone();
+    T _clone();
 
 }

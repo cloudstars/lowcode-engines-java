@@ -1,16 +1,16 @@
 package net.cf.form.engine.oql.ast.statement;
 
 import net.cf.form.engine.oql.ast.OqlObject;
-import net.cf.form.engine.oql.ast.OqlObjectImpl;
+import net.cf.form.engine.oql.ast.OqlReplaceable;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OqlInsertInto extends OqlObjectImpl {
+public class OqlInsertInto extends OqlStatementImpl implements OqlReplaceable {
 
-    protected OqlObjectSource objectSource;
+    protected OqlExprObjectSource objectSource;
 
     protected final List<OqlExpr> fields = new ArrayList();
 
@@ -19,11 +19,11 @@ public class OqlInsertInto extends OqlObjectImpl {
     public OqlInsertInto() {
     }
 
-    public OqlObjectSource getObjectSource() {
+    public OqlExprObjectSource getObjectSource() {
         return objectSource;
     }
 
-    public void setObjectSource(OqlObjectSource objectSource) {
+    public void setObjectSource(OqlExprObjectSource objectSource) {
         this.objectSource = objectSource;
         this.addChild(objectSource);
     }
@@ -67,7 +67,7 @@ public class OqlInsertInto extends OqlObjectImpl {
     }
 
     @Override
-    public void accept0(OqlAstVisitor visitor) {
+    protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.acceptChild(visitor, this.objectSource);
             this.acceptChildren(visitor, this.fields);
@@ -90,7 +90,7 @@ public class OqlInsertInto extends OqlObjectImpl {
     @Override
     public OqlInsertInto clone() {
         OqlInsertInto x = new OqlInsertInto();
-        x.setObjectSource(this.objectSource.clone());
+        x.setObjectSource(this.objectSource._clone());
         for (OqlExpr field : this.fields) {
             x.fields.add(field.clone());
         }
@@ -99,5 +99,11 @@ public class OqlInsertInto extends OqlObjectImpl {
         }
 
         return x;
+    }
+
+
+    @Override
+    public boolean replace(OqlExpr source, OqlExpr target) {
+        return false;
     }
 }

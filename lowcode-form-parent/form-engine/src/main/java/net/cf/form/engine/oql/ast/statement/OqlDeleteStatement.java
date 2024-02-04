@@ -57,7 +57,7 @@ public class OqlDeleteStatement extends OqlStatementImpl implements OqlStatement
     @Override
     public OqlDeleteStatement clone() {
         OqlDeleteStatement statement = new OqlDeleteStatement();
-        statement.setObjectSource(this.objectSource.clone());
+        statement.setObjectSource(this.objectSource._clone());
         if (this.whereClause != null) {
             statement.setWhereClause(this.whereClause.clone());
         }
