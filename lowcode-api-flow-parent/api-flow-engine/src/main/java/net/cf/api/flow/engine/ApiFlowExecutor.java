@@ -1,6 +1,7 @@
 package net.cf.api.flow.engine;
 
 
+import net.cf.api.flow.engine.entity.ExecuteContext;
 import net.cf.api.flow.engine.entity.ExecuteResult;
 
 /**
@@ -9,5 +10,5 @@ import net.cf.api.flow.engine.entity.ExecuteResult;
  * @Date: Created on 2024/2/5
  */
 public interface ApiFlowExecutor {
-    ExecuteResult execute();
+    ExecuteResult execute(ExecuteContext executeContext);
 }

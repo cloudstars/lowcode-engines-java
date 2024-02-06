@@ -1,0 +1,29 @@
+package net.cf.api.flow.engine.action;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.List;
+
+/**
+ * @Description:
+ * @Author: Wu Yuefeng
+ * @Date: Created on 2024/2/6
+ */
+public abstract class AbstractHasChildrenAction extends AbstractAction {
+
+    protected List<AbstractAction> actions;
+
+    private static final String CHILDREN_KEY = "children";
+
+    protected AbstractHasChildrenAction(JSONObject config) {
+        super(config);
+
+        JSONArray children = config.getJSONArray(CHILDREN_KEY);
+        this.actions = ActionBuilder.build(children);
+    }
+
+    public List<AbstractAction> getActions() {
+        return actions;
+    }
+}
