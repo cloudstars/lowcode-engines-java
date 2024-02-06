@@ -7,5 +7,5 @@ package net.cf.api.engine;
  * @date 2024/1/17 11:21
  */
 public interface ApiExecuteDispatcher {
-    Object dispatcher(Object input, String apiKey);
+    Object dispatch(Object input, String apiKey);
 }

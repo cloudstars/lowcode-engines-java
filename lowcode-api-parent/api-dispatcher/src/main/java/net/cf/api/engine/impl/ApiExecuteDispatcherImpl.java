@@ -41,7 +41,7 @@ public class ApiExecuteDispatcherImpl implements ApiExecuteDispatcher {
     public final ApiDefinitionLoader apiDefinitionLoader;
 
     @Override
-    public Object dispatcher(Object input, String apiKey) {
+    public Object dispatch(Object input, String apiKey) {
         ApiDefinition apiDefinition = findApiDefinition(apiKey);
         // 请求参数类型绑定
         Object reqParams = dataMappingService.convert(apiDefinition.getInput(), input);
