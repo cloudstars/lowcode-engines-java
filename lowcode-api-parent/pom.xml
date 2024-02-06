@@ -17,7 +17,7 @@
 
     <modules>
         <module>api-commons</module>
-        <module>api-engine</module>
+        <module>api-dispatcher</module>
         <module>api-provider</module>
     </modules>
 

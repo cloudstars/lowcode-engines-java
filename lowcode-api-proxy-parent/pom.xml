@@ -16,7 +16,7 @@
     </properties>
 
     <modules>
-        <module>api-proxy-engine</module>
+        <module>api-proxy-executor</module>
     </modules>
 
     <dependencyManagement>
