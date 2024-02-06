@@ -72,7 +72,7 @@ public class ApiExecuteDispatcherImplTest {
     public void dispatcherSimpleTest() {
         ApiExecuteDispatcher dispatcher = new ApiExecuteDispatcherImpl(apiExecutorRegistration, appLoggerFactory, dataMappingService, apiDefinitionLoader);
         String apiKey = "1231231";
-        Object result = dispatcher.dispatcher(new HashMap<>(), apiKey);
+        Object result = dispatcher.dispatch(new HashMap<>(), apiKey);
         Assert.assertNotNull(result);
     }
 
@@ -80,20 +80,20 @@ public class ApiExecuteDispatcherImplTest {
     public void dispatcherErrorApiTest() {
         ApiExecuteDispatcher dispatcher = new ApiExecuteDispatcherImpl(apiExecutorRegistration, appLoggerFactory, dataMappingService, apiDefinitionLoader);
         String apiKey = "error";
-        Assert.assertThrows(IllegalArgumentException.class, () -> dispatcher.dispatcher(new HashMap<>(), apiKey));
+        Assert.assertThrows(IllegalArgumentException.class, () -> dispatcher.dispatch(new HashMap<>(), apiKey));
     }
 
     @Test
     public void dispatcherApiNotFoundTest() {
         ApiExecuteDispatcher dispatcher = new ApiExecuteDispatcherImpl(apiExecutorRegistration, appLoggerFactory, dataMappingService, apiDefinitionLoader);
         String apiKey = "notFound";
-        Assert.assertThrows(BusinessException.class, () -> dispatcher.dispatcher(new HashMap<>(), apiKey));
+        Assert.assertThrows(BusinessException.class, () -> dispatcher.dispatch(new HashMap<>(), apiKey));
     }
 
     @Test
     public void dispatcherExecutorNotFoundTest() {
         ApiExecuteDispatcher dispatcher = new ApiExecuteDispatcherImpl(apiExecutorRegistration, appLoggerFactory, dataMappingService, apiDefinitionLoader);
         String apiKey = "notFoundExecutor";
-        Assert.assertThrows(BusinessException.class, () -> dispatcher.dispatcher(new HashMap<>(), apiKey));
+        Assert.assertThrows(BusinessException.class, () -> dispatcher.dispatch(new HashMap<>(), apiKey));
     }
 }
