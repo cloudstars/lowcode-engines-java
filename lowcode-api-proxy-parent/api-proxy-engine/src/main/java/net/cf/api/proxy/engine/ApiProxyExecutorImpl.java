@@ -51,6 +51,7 @@ public class ApiProxyExecutorImpl implements ApiProxyExecutor {
         Map<String, Object> headers = new HashMap<>(httpHeaders.size());
         headers.putAll(httpHeaders);
         httpApiResponse.setHeaders(headers);
+        httpApiResponse.setCode(responseEntity.getStatusCodeValue());
         return httpApiResponse;
     }
 }

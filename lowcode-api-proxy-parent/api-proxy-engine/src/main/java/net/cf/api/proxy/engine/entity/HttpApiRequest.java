@@ -2,7 +2,9 @@ package net.cf.api.proxy.engine.entity;
 
 import org.springframework.http.HttpMethod;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author 80345746
@@ -78,6 +80,12 @@ public class HttpApiRequest {
             return this;
         }
         public HttpApiRequest build() {
+            if (Objects.isNull(this.headers)) {
+                this.headers = new HashMap<>(8);
+            }
+            if (Objects.isNull(this.queries)) {
+                this.queries = new HashMap<>(8);
+            }
             HttpApiRequest httpApiRequest = new HttpApiRequest(this.method, this.url, this.queries, this.headers, this.body);
             return httpApiRequest;
         }

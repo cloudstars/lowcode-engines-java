@@ -5,7 +5,7 @@ package net.cf.api.proxy.engine.filter.builtin.auth.token;
  * @version v1.0
  * @date 2024/1/30 19:18
  */
-public interface TokenFactory {
+public interface TokenManager {
     Token getToken();
     void removeToken();
 }

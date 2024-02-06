@@ -15,19 +15,19 @@ import java.util.Map;
  */
 public class BaseTokenAuthExecuteFilter implements AuthExecuteFilter {
 
-    private final TokenFactory tokenFactory;
-    private final TokenAuthConfig tokenAuthConfig;
+    private final TokenManager tokenManager;
+    private final TokenAuthConfigure tokenAuthConfigure;
 
-    public BaseTokenAuthExecuteFilter(TokenFactory tokenFactory, TokenAuthConfig tokenAuthConfig) {
-        this.tokenFactory = tokenFactory;
-        this.tokenAuthConfig = tokenAuthConfig;
+    public BaseTokenAuthExecuteFilter(TokenManager tokenManager, TokenAuthConfigure tokenAuthConfigure) {
+        this.tokenManager = tokenManager;
+        this.tokenAuthConfigure = tokenAuthConfigure;
     }
 
     @Override
     public void preHandle(HttpApiRequest httpApiRequest) {
-        Token token = tokenFactory.getToken();
-        TokenPosEnum tokenPos = tokenAuthConfig.getTargetPos();
-        String key = tokenAuthConfig.getTargetKey();
+        Token token = tokenManager.getToken();
+        TokenPosEnum tokenPos = tokenAuthConfigure.getTargetPos();
+        String key = tokenAuthConfigure.getTargetKey();
         switch (tokenPos) {
             case QUERY:
                 Map<String, Object> queries = httpApiRequest.getQueries();
@@ -49,7 +49,7 @@ public class BaseTokenAuthExecuteFilter implements AuthExecuteFilter {
     @Override
     public void postHandle(HttpApiRequest httpApiRequest, HttpApiResponse httpApiResponse) {
         if (HttpStatus.FORBIDDEN.value() == httpApiResponse.getCode() || HttpStatus.UNAUTHORIZED.value() == httpApiResponse.getCode()) {
-            tokenFactory.removeToken();
+            tokenManager.removeToken();
         }
     }
 }

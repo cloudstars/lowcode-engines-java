@@ -7,7 +7,7 @@ import net.cf.api.proxy.engine.enums.TokenPosEnum;
  * @version v1.0
  * @date 2024/1/30 19:37
  */
-public interface TokenAuthConfig {
+public interface TokenAuthConfigure {
     TokenPosEnum getTargetPos();
 
     String getTargetKey();
