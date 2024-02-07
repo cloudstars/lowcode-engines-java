@@ -5,7 +5,7 @@ package net.cf.api.flow.engine.enums;
  * @Author: Wu Yuefeng
  * @Date: Created on 2024/2/6
  */
-public enum ExecuteStatusEnum {
+public enum ApiFlowStatusEnum {
     NORMAL,
     BREAK,
     CONTINUE,
