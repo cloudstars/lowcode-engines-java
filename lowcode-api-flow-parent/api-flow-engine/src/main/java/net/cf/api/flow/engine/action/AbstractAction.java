@@ -21,7 +21,7 @@ public abstract class AbstractAction {
 
     protected abstract void execute(ExecuteContext executeContext);
 
-    protected void doExecute(ExecuteContext executeContext) {
+    public void doExecute(ExecuteContext executeContext) {
         execute(executeContext);
     }
 
