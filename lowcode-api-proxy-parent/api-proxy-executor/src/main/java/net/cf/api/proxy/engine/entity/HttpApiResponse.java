@@ -5,6 +5,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.Map;
 
 /**
+ * http应答
  * @author 80345746
  * @version v1.0
  * @date 2024/1/17 23:33

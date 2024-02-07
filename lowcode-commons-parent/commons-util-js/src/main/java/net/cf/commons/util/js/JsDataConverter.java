@@ -109,7 +109,7 @@ final class JsDataConverter {
                 field.setAccessible(true);
                 try {
                     Object fieldValue = field.get(value);
-                    mapObject.put(field.getName(), fieldValue);
+                    mapObject.put(field.getName(), JsDataConverter.toJsObject(fieldValue));
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }

@@ -15,25 +15,25 @@ public class Operator {
     /**
      * 用户号
      */
-    private String userId;
+    private String key;
 
     /**
      * 用户名
      */
-    private String userName;
+    private String name;
 
     public Operator() {
     }
 
-    public Operator(String tenantId, String userId, String userName) {
+    public Operator(String tenantId, String key, String name) {
         this.tenantId = tenantId;
-        this.userId = userId;
-        this.userName = userName;
+        this.key = key;
+        this.name = name;
     }
 
-    public Operator(String userId, String userName) {
-        this.userId = userId;
-        this.userName = userName;
+    public Operator(String key, String name) {
+        this.key = key;
+        this.name = name;
     }
 
     public String getTenantId() {
@@ -44,19 +44,19 @@ public class Operator {
         this.tenantId = tenantId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getKey() {
+        return key;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 }

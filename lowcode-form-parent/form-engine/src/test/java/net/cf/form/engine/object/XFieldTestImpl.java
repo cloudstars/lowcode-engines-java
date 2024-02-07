@@ -46,7 +46,7 @@ public class XFieldTestImpl implements XField {
     }
 
     @Override
-    public DataTypeEnums getDataType() {
+    public DataType getDataType() {
         return null;
     }
 

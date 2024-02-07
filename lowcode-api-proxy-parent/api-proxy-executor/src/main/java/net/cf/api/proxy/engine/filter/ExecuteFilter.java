@@ -4,6 +4,7 @@ import net.cf.api.proxy.engine.entity.HttpApiRequest;
 import net.cf.api.proxy.engine.entity.HttpApiResponse;
 
 /**
+ * 过滤器接口
  * @author 80345746
  * @version v1.0
  * @date 2024/1/29 11:10

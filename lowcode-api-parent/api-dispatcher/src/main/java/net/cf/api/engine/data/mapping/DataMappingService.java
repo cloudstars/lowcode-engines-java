@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * 数据类型映射服务
  * @author 80345746
  * @version v1.0
  * @date 2024/1/25 15:00

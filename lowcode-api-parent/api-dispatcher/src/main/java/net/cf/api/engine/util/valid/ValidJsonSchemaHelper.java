@@ -20,6 +20,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 /**
+ * schema校验工具类
  * @author 80345746
  * @version v1.0
  * @date 2024/1/23 17:36
