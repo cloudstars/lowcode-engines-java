@@ -27,10 +27,9 @@ public final class JsScriptUtils {
      * @return
      */
     public static Object eval(String script) {
-        try (Context context = Context.newBuilder().build()) {
-            Value value = context.eval("js", script);
-            return JsDataConverter.toJavaObject(value);
-        }
+        Context context = Context.newBuilder().build();
+        Value value = context.eval("js", script);
+        return JsDataConverter.toJavaObject(value);
     }
 
 
@@ -42,12 +41,10 @@ public final class JsScriptUtils {
      * @return
      */
     public static Object execute(String script, Object... arguments) {
-        Value value;
-        try (Context context = Context.newBuilder().build()) {
-            value = context.eval("js", script);
-            assert (value.canExecute());
-            JsFunction jsFunction = new JsFunction(value);
-            return jsFunction.execute(arguments);
-        }
+        Context context = Context.newBuilder().build();
+        Value value = context.eval("js", script);
+        assert (value.canExecute());
+        JsFunction jsFunction = new JsFunction(context, value);
+        return jsFunction.executeOnce(arguments);
     }
 }

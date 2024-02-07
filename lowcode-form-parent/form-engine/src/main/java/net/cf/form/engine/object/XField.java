@@ -55,7 +55,7 @@ public interface XField {
      *
      * @return
      */
-    DataTypeEnums getDataType();
+    DataType getDataType();
 
     /**
      * 获取数据的长度

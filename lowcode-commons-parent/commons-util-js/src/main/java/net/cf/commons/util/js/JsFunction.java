@@ -1,5 +1,6 @@
 package net.cf.commons.util.js;
 
+import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
 /**
@@ -9,10 +10,18 @@ import org.graalvm.polyglot.Value;
  */
 public class JsFunction {
 
+    private Context context;
+
     /**
      * Graalvm的值
      */
     private Value function;
+
+    public JsFunction(Context context, Value function) {
+        assert (function.canExecute());
+        this.context = context;
+        this.function = function;
+    }
 
     public JsFunction(Value function) {
         assert (function.canExecute());
@@ -20,18 +29,22 @@ public class JsFunction {
     }
 
     /**
-     * 带参数执行函数
+     * 带参数执行函数（只能执行一次）
      *
      * @param arguments
      * @return
      */
-    public Object execute(Object... arguments) {
+    public Object executeOnce(Object... arguments) {
         for (int i = 0, l = arguments.length; i < l; i++) {
             // 需要进行转换后，JS代码才能识别
             arguments[i] = JsDataConverter.toJsObject(arguments[i]);
         }
 
         Value result = function.execute(arguments);
+        if (context != null) {
+            context.close();
+        }
+
         return JsDataConverter.toJavaObject(result);
     }
 }

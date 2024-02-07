@@ -35,7 +35,7 @@ public class JsScriptUtilsTest {
         JsFunction functionResultPropB = (JsFunction) mapResultPropB;
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("b", "b");
-        Object functionBResult = functionResultPropB.execute(paramMap);
+        Object functionBResult = functionResultPropB.executeOnce(paramMap);
         assert ("b".equals(functionBResult));
     }
 
@@ -47,7 +47,7 @@ public class JsScriptUtilsTest {
         JsFunction function = (JsFunction) result;
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("redundant", true);
-        Object functionResult = function.execute(paramMap);
+        Object functionResult = function.executeOnce(paramMap);
         Assert.assertTrue(functionResult != null && functionResult instanceof List && ((List<?>) functionResult).size() == 2);
     }
 }

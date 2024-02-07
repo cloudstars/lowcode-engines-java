@@ -15,7 +15,7 @@ public class XFieldProperty {
     /**
      * 字段属性的值类型
      */
-    private DataTypeEnums dataType;
+    private DataType dataType;
 
     /**
      * 字段属性的数据长度
@@ -40,11 +40,11 @@ public class XFieldProperty {
         this.name = name;
     }
 
-    public DataTypeEnums getDataType() {
+    public DataType getDataType() {
         return dataType;
     }
 
-    public void setDataType(DataTypeEnums dataType) {
+    public void setDataType(DataType dataType) {
         this.dataType = dataType;
     }
 
