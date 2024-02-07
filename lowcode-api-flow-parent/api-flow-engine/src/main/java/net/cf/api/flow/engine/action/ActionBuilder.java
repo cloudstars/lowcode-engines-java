@@ -2,6 +2,7 @@ package net.cf.api.flow.engine.action;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import net.cf.api.flow.engine.constant.ActionDefineConstant;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 public class ActionBuilder {
 
-    private final static Map<String, Constructor<AbstractAction>> ACTION_MAP = new HashMap<>();
+    private static final  Map<String, Constructor<AbstractAction>> ACTION_MAP = new HashMap<>();
 
     static {
         buildActionConstructorMap();
@@ -30,7 +31,7 @@ public class ActionBuilder {
     }
 
     private static AbstractAction buildChild(JSONObject child) {
-        String type = child.getString("type");
+        String type = child.getString(ActionDefineConstant.TYPE);
         if (type.isEmpty()) {
             throw new RuntimeException("schema不合法，缺少type字段：" + child);
         }

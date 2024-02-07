@@ -2,6 +2,7 @@ package net.cf.api.flow.engine;
 
 import com.alibaba.fastjson.JSONObject;
 import net.cf.api.flow.engine.action.AbstractInitAction;
+import net.cf.api.flow.engine.constant.ContextConstant;
 import net.cf.api.flow.engine.entity.ExecuteContext;
 import net.cf.api.flow.engine.entity.ExecuteResult;
 
@@ -22,7 +23,7 @@ public class ApiFlowExecutorImpl implements ApiFlowExecutor {
     public ExecuteResult execute(ExecuteContext executeContext) {
         abstractInitAction.execute(executeContext);
         ExecuteResult executeResult = new ExecuteResult();
-        executeResult.setOutput(executeContext.getResponseData());
+        executeResult.setOutput(executeContext.get(ContextConstant.OUTPUT));
         return executeResult;
     }
 }

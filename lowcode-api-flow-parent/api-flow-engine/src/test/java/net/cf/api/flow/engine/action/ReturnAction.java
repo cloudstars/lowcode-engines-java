@@ -1,10 +1,11 @@
 package net.cf.api.flow.engine.action;
 
 import com.alibaba.fastjson.JSONObject;
+import net.cf.api.flow.engine.constant.ContextConstant;
 import net.cf.api.flow.engine.entity.ExecuteContext;
+import net.cf.api.flow.engine.util.ExprUtil;
 
-import java.util.HashMap;
-import java.util.Map;
+import static net.cf.api.flow.engine.constant.ActionDefineConstant.TARGET_NAME;
 
 /**
  * @Description:
@@ -16,19 +17,15 @@ public class ReturnAction extends AbstractAction {
 
     private String targetName;
 
-    private String dataType;
-
     public ReturnAction(JSONObject config) {
         super(config);
-        this.targetName = config.getString("targetName").trim();
-        this.dataType = config.getString("dataType").trim();
+        this.targetName = config.getString(TARGET_NAME).trim();
     }
 
     @Override
     public void execute(ExecuteContext executeContext) {
-        String inputValue = (String) executeContext.getRequestData().get("a");
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("a", inputValue);
-        executeContext.setResponseData(responseData);
+        String expression = ExprUtil.getExpressionByTargetName(targetName);
+        Object outputValue = executeContext.get(expression);
+        executeContext.set(ContextConstant.OUTPUT, outputValue);
     }
 }
