@@ -41,6 +41,7 @@ public class JsFunction {
         }
 
         Value result = function.execute(arguments);
+        // 此处关闭context,如果没有调用executeOnce,可能存在内存泄露
         if (context != null) {
             context.close();
         }
