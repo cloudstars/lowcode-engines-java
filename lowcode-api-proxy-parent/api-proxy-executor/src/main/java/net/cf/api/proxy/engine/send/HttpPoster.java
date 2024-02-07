@@ -9,5 +9,5 @@ import org.springframework.http.ResponseEntity;
  * @date 2024/1/27 17:46
  */
 public interface HttpPoster {
-    ResponseEntity<?> send(RequestEntity<?> requestEntity);
+    ResponseEntity send(RequestEntity requestEntity);
 }
