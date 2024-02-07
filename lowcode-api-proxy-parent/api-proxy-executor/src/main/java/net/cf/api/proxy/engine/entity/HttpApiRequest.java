@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
+ * http请求
  * @author 80345746
  * @version v1.0
  * @date 2024/1/17 23:21
