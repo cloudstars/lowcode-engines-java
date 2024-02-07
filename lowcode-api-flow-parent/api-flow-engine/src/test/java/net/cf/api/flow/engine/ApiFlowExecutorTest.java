@@ -1,6 +1,7 @@
 package net.cf.api.flow.engine;
 
 import com.alibaba.fastjson.JSON;
+import net.cf.api.flow.engine.action.StartAction;
 import net.cf.api.flow.engine.entity.ExecuteContext;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,9 +35,10 @@ public class ApiFlowExecutorTest {
 
     @Test
     public void testExecute() {
-        ApiFlowExecutor apiFlowExecutor = new ApiFlowExecutorImpl();
         ExecuteContext executeContext = new ExecuteContext();
         executeContext.setConfig(JSON.parseObject(config));
+        ApiFlowExecutor apiFlowExecutor = new ApiFlowExecutorImpl(new StartAction(JSON.parseObject(config)));
+
         // 输入
         Map<String, Object> inputData = new HashMap<>();
         inputData.put("a", "b");

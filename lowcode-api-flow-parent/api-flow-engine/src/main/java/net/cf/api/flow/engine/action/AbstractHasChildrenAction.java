@@ -2,6 +2,7 @@ package net.cf.api.flow.engine.action;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import net.cf.api.flow.engine.entity.ExecuteContext;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public abstract class AbstractHasChildrenAction extends AbstractAction {
     protected List<AbstractAction> actions;
 
     private static final String CHILDREN_KEY = "children";
+
+    protected abstract void execute(ExecuteContext executeContext);
 
     protected AbstractHasChildrenAction(JSONObject config) {
         super(config);

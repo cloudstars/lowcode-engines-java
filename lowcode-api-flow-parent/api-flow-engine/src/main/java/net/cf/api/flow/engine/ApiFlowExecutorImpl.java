@@ -1,7 +1,7 @@
 package net.cf.api.flow.engine;
 
 import com.alibaba.fastjson.JSONObject;
-import net.cf.api.flow.engine.action.StartAction;
+import net.cf.api.flow.engine.action.AbstractInitAction;
 import net.cf.api.flow.engine.entity.ExecuteContext;
 import net.cf.api.flow.engine.entity.ExecuteResult;
 
@@ -12,11 +12,15 @@ import net.cf.api.flow.engine.entity.ExecuteResult;
  */
 public class ApiFlowExecutorImpl implements ApiFlowExecutor {
 
+    private final AbstractInitAction abstractInitAction;
+
+    public ApiFlowExecutorImpl(AbstractInitAction abstractInitAction) {
+        this.abstractInitAction = abstractInitAction;
+    }
+
     @Override
     public ExecuteResult execute(ExecuteContext executeContext) {
-        JSONObject config = executeContext.getConfig();
-        new StartAction(config).execute(executeContext);
-
+        abstractInitAction.execute(executeContext);
         ExecuteResult executeResult = new ExecuteResult();
         executeResult.setOutput(executeContext.getResponseData());
         return executeResult;

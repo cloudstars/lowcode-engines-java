@@ -9,7 +9,7 @@ import net.cf.api.flow.engine.entity.ExecuteContext;
  * @Date: Created on 2024/2/6
  */
 @ActionAnno(type = "start")
-public class StartAction extends AbstractHasChildrenAction {
+public class StartAction extends AbstractInitAction {
     public StartAction(JSONObject config) {
         super(config);
     }
@@ -17,8 +17,6 @@ public class StartAction extends AbstractHasChildrenAction {
     @Override
     public void execute(ExecuteContext executeContext) {
         for (AbstractAction action : actions) {
-            // todo: 判断是否结束
-
             action.doExecute(executeContext);
         }
     }
