@@ -70,17 +70,12 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-db</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-util</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-util-js</artifactId>
+                <artifactId>lowcode-commons-js</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

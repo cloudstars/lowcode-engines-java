@@ -37,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-util-js</artifactId>
+            <artifactId>lowcode-commons-js</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
