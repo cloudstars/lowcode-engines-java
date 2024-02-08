@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-commons-util-js</artifactId>
+    <artifactId>lowcode-commons-js</artifactId>
     <description>JS工具类</description>
 
     <properties>

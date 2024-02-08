@@ -18,7 +18,7 @@
     <modules>
         <module>commons-lang</module>
         <module>commons-util</module>
-        <module>commons-util-js</module>
+        <module>commons-js</module>
         <module>commons-test</module>
     </modules>
 
