@@ -37,11 +37,6 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-js</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-form-repository-mongo</artifactId>
             <scope>test</scope>
         </dependency>

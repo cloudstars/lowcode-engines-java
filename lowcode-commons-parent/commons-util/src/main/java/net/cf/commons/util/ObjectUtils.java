@@ -1,5 +1,6 @@
 package net.cf.commons.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -79,4 +80,14 @@ public final class ObjectUtils {
         return new ObjectReference<T>(ref);
     }
 
+    /**
+     * 将一个字符串解析为Java对象
+     *
+     * @param content
+     * @param classType
+     * @return
+     */
+    public static <T extends Object> T parseObject(String content, Class<T> classType) {
+        return JSONObject.parseObject(content, classType);
+    }
 }

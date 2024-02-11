@@ -1,6 +1,5 @@
 package net.cf.form.engine.object;
 
-import net.cf.commons.util.js.JsScriptUtils;
 import net.cf.form.commons.DefaultValue;
 import net.cf.form.commons.DefaultValueType;
 import net.cf.form.commons.FieldDefinition;
@@ -71,7 +70,8 @@ public class XFieldTestImpl implements XField {
         if (DefaultValueType.LITERAL == defaultValueType) {
             return defaultValue.getValue();
         } else if (DefaultValueType.FORMULA == defaultValueType) {
-            return JsScriptUtils.eval(defaultValue.getValue());
+            //return JsScriptUtils.eval(defaultValue.getValue());
+            return null;
         }
 
         return null;

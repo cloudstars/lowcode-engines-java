@@ -1,4 +1,4 @@
-package net.cf.commons.util;
+package net.cf.commons.test.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

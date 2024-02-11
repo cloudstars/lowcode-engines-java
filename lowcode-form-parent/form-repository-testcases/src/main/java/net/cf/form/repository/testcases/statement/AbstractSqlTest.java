@@ -2,7 +2,7 @@ package net.cf.form.repository.testcases.statement;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import net.cf.commons.util.FileUtils;
+import net.cf.commons.test.util.FileUtils;
 
 import java.util.HashMap;
 import java.util.Map;

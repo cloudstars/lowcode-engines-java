@@ -20,7 +20,6 @@
         <spring.core.version>5.3.22</spring.core.version>
         <revision>1.0-SNAPSHOT</revision>
         <gpg.keyname>722ADF29D554D3EB</gpg.keyname>
-        <fastjson.version>1.2.83</fastjson.version>
     </properties>
 
     <licenses>
@@ -75,7 +74,7 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-js</artifactId>
+                <artifactId>lowcode-commons-util-test</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -110,7 +109,6 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
                 <version>${spring.core.version}</version>
-                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -170,7 +168,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
+                <version>1.2.83</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>

@@ -8,38 +8,24 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-commons-js</artifactId>
-    <description>JS工具类</description>
-
-    <properties>
-        <graalvm.version>21.1.0</graalvm.version>
-    </properties>
+    <artifactId>lowcode-commons-util-test</artifactId>
+    <description>单元测试工具类</description>
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-lang</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-commons-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.graalvm.js</groupId>
-            <artifactId>js</artifactId>
-            <version>${graalvm.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.graalvm.js</groupId>
-            <artifactId>js-scriptengine</artifactId>
-            <version>${graalvm.version}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-test</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 

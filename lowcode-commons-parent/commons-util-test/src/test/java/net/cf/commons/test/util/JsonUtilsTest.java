@@ -1,4 +1,4 @@
-package net.cf.commons.util;
+package net.cf.commons.test.util;
 
 import org.junit.Assert;
 import org.junit.Test;

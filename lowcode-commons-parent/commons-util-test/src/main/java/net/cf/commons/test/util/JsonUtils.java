@@ -1,13 +1,11 @@
-package net.cf.commons.util;
+package net.cf.commons.test.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Time;
+import java.util.*;
 
 /**
  * JSON工具类
@@ -117,6 +115,105 @@ public final class JsonUtils {
         return true;
     }
 
+    /**
+     * 判断源对象中的属性是否在目标对象中都存在，并且值相等
+     *
+     * @param source
+     * @param target
+     * @return
+     */
+    public static boolean equalsObjectWithProperties(Object source, Object target, List<String> properties) {
+        if (source == null) {
+            return true;
+        }
+
+        if (target == null) {
+            return false;
+        }
+
+        // 只要有一个是基础类型就直接比较
+        if (JsonUtils.isGeneralValue(source) || JsonUtils.isGeneralValue(target)) {
+            return source.equals(target);
+        }
+
+        // 两个都是对象类型时
+        Object sourceJson = JSON.parse(JSON.toJSONString(source));
+        Object targetJson = JSON.parse(JSON.toJSONString(target));
+        if (sourceJson instanceof JSONObject && targetJson instanceof JSONObject) {
+            return JsonUtils.equalsJsonObjectWithProperties((JSONObject) sourceJson, (JSONObject) targetJson, properties);
+        } else if (sourceJson instanceof JSONArray && targetJson instanceof JSONArray) {
+            return JsonUtils.equalsJsonArrayWithProperties((JSONArray) sourceJson, (JSONArray) targetJson, properties);
+        } else {
+            return sourceJson.equals(targetJson);
+        }
+    }
+
+    /**
+     * 判断源对象中的属性是否在目标对象中都存在，并且值相等
+     *
+     * @param source
+     * @param target
+     * @return
+     */
+    public static <S extends Object, T extends Object> boolean equalsListWithProperties(List<S> source, List<T> target, List<String> properties) {
+        if (source == null) {
+            return true;
+        }
+
+        if (target == null) {
+            return false;
+        }
+
+        for (int i = 0, l = source.size(); i < l; i++) {
+            Object svi = source.get(i);
+            Object tvi = target.get(i);
+            if (!JsonUtils.equalsObjectWithProperties(svi, tvi, properties)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 判断源对象中的属性是否在目标对象中都存在，并且值相等
+     *
+     * @param source
+     * @param target
+     * @return
+     */
+    public static boolean equalsJsonObjectWithProperties(JSONObject source, JSONObject target, List<String> properties) {
+        if (source == null) {
+            return true;
+        }
+
+        if (target == null) {
+            return false;
+        }
+
+        for (String property : properties) {
+            Object svi = source.get(property);
+            Object tvi = target.get(property);
+            if (!JsonUtils.equalsObjectWithProperties(svi, tvi, properties)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * 判断源对象中的属性是否在目标对象中都存在，并且值相等
+     *
+     * @param source
+     * @param target
+     * @return
+     */
+    public static boolean equalsJsonArrayWithProperties(JSONArray source, JSONArray target, List<String> properties) {
+        return JsonUtils.equalsListWithProperties(source, target, properties);
+    }
+
 
     /**
      * 判断源对象中的属性是否在目标对象中都存在，并且值相等
@@ -135,7 +232,7 @@ public final class JsonUtils {
         }
 
         // 只要有一个是基础类型就直接比较
-        if (ObjectUtils.isGeneralValue(source) || ObjectUtils.isGeneralValue(target)) {
+        if (JsonUtils.isGeneralValue(source) || JsonUtils.isGeneralValue(target)) {
             return source.equals(target);
         }
 
@@ -196,14 +293,12 @@ public final class JsonUtils {
     }
 
     /**
-     * 将一个字符串解析为Java对象
+     * 是否基础类型的值
      *
-     * @param content
-     * @param classType
-     * @return
+     * @param value
      */
-    public static <T extends Object> T parseObject(String content, Class<T> classType) {
-        return JSONObject.parseObject(content, classType);
+    private static boolean isGeneralValue(Object value) {
+        return (value == null || value instanceof String || value instanceof Number || value instanceof Boolean || value instanceof Date || value instanceof Time);
     }
 
 }
