@@ -14,6 +14,8 @@ import net.cf.form.engine.sqlbuilder.insert.InsertSqlStatementBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,9 +35,20 @@ public class ObjectQLEngineImpl implements ObjectQLEngine {
     private XObjectResolver objectResolver;
 
     @Resource
-    private FormRepositoryResolver driverResolver;
+    private FormRepositoryProvider driverResolver;
 
     @Override
+    public Map<String, Object> queryOne(OqlSelectStatement statement, Map<String, Object> dataMap) {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryList(OqlSelectStatement statement, Map<String, Object> dataMap) {
+        return null;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int create(OqlInsertStatement statement) {
         InsertSqlStatementBuilder builder = new InsertSqlStatementBuilder();
         InsertOqlAstVisitor visitor = new InsertOqlAstVisitor(builder);
@@ -50,11 +63,12 @@ public class ObjectQLEngineImpl implements ObjectQLEngine {
     private FormRepository resolveRepository(OqlInsertStatement statement) {
         String objectName = ((OqlIdentifierExpr) statement.getObjectSource().getExpr()).getName();
         XObject object = this.objectResolver.resolveObject(objectName);
-        FormRepository repository = this.driverResolver.resolveRepository(object);
+        FormRepository repository = this.driverResolver.getByObject(object);
         return repository;
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String create(OqlInsertStatement statement, Map<String, Object> dataMap) {
         // 语法检查s
         InsertStatementCheckOqlAstVisitor checkVisitor = new InsertStatementCheckOqlAstVisitor(this.objectResolver);
@@ -63,45 +77,38 @@ public class ObjectQLEngineImpl implements ObjectQLEngine {
 
         // 根据object的定义校验数据
 
-
-
-
         return null;
     }
 
 
     @Override
-    public List<String> batchCreate(OqlInsertStatement statement, List<Map<String, Object>> dataMaps) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<String> createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps) {
         return null;
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void modify(OqlUpdateStatement statement, Map<String, Object> dataMap) {
 
     }
 
     @Override
-    public void batchModify(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void modifyList(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps) {
 
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void remove(OqlDeleteStatement statement, Map<String, Object> dataMap) {
 
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void batchRemove(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps) {
 
     }
 
-    @Override
-    public Map<String, Object> queryOne(OqlSelectStatement statement, Map<String, Object> dataMap) {
-        return null;
-    }
-
-    @Override
-    public List<Map<String, Object>> queryList(OqlSelectStatement statement, Map<String, Object> dataMap) {
-        return null;
-    }
 }

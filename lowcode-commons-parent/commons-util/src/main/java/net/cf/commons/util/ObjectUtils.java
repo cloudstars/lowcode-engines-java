@@ -90,4 +90,50 @@ public final class ObjectUtils {
     public static <T extends Object> T parseObject(String content, Class<T> classType) {
         return JSONObject.parseObject(content, classType);
     }
+
+
+    /**
+     * 获取一个对象的属性值
+     *
+     * @param object
+     * @param propertyName
+     * @return
+     */
+    public static Object getPropertyValue(Object object, String propertyName) {
+        if (object == null) {
+            return null;
+        }
+
+        if (object instanceof Map) {
+            return ((Map) object).get(propertyName);
+        }
+
+        Class clazz = object.getClass();
+        Method method;
+        if (propertyName.startsWith("is")) {
+            try {
+                method = clazz.getDeclaredMethod(propertyName);
+            } catch (NoSuchMethodException e1) {
+                return null;
+            }
+        } else {
+            String cPropertyName = StringUtils.capitalize(propertyName);
+            try {
+                method = clazz.getDeclaredMethod("get" + cPropertyName);
+            } catch (NoSuchMethodException e2) {
+                try {
+                    method = clazz.getDeclaredMethod("is" + cPropertyName);
+                } catch (NoSuchMethodException e3) {
+                    return null;
+                }
+            }
+        }
+
+        try {
+            return method.invoke(object);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

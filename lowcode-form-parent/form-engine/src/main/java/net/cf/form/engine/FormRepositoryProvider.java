@@ -8,12 +8,12 @@ import net.cf.form.repository.FormRepository;
  *
  * @author clouds
  */
-public interface FormRepositoryResolver {
+public interface FormRepositoryProvider<O extends XObject> {
 
     /**
      * 根据对象获取对象存储层的驱动
      *
      * @param object
      */
-    FormRepository resolveRepository(XObject object);
+    FormRepository getByObject(O object);
 }

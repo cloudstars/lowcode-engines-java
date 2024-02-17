@@ -1,8 +1,10 @@
 package net.cf.form.repository.ast.util;
 
+import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLObject;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import net.cf.form.repository.sql.ast.SqlObject;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlStatement;
 
 import java.util.List;
@@ -51,6 +53,25 @@ public class SqlTestUtils {
 
         DruidSQLTypesASTVisitor druidSqlVisitor = new DruidSQLTypesASTVisitor();
         druidSql.accept(druidSqlVisitor);
+        List<SQLObject> druidSqlNodes = druidSqlVisitor.getNodes();
+
+        return SqlTestUtils.isTypesEquals(sqlNodes, druidSqlNodes);
+    }
+
+    /**
+     * 判断 CodeFriend 的 SQL 表达示的结构是否与 Druid 的 SQL 语句的结构一致
+     *
+     * @param expr
+     * @param druidExpr
+     * @return
+     */
+    public static boolean equals(SqlExpr expr, SQLExpr druidExpr) {
+        SqlTypesAstVisitor sqlVisitor = new SqlTypesAstVisitor();
+        expr.accept(sqlVisitor);
+        List<SqlObject> sqlNodes = sqlVisitor.getNodes();
+
+        DruidSQLTypesASTVisitor druidSqlVisitor = new DruidSQLTypesASTVisitor();
+        druidExpr.accept(druidSqlVisitor);
         List<SQLObject> druidSqlNodes = druidSqlVisitor.getNodes();
 
         return SqlTestUtils.isTypesEquals(sqlNodes, druidSqlNodes);

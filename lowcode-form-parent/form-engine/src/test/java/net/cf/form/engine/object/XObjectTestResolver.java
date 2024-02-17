@@ -27,7 +27,7 @@ public class XObjectTestResolver implements XObjectResolver {
         for (Map.Entry<String, String> entry : objectsJson.entrySet()) {
             ObjectDefinition objectDef = ObjectUtils.parseObject(entry.getValue(), ObjectDefinition.class);
             XObject object = new XObjectTestImpl(objectDef);
-            objectMap.put(object.getName(), object);
+            objectMap.put(object.getCode(), object);
         }
     }
 

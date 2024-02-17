@@ -252,7 +252,7 @@ public class Lexer {
                     if (isEOF()) {
                         token = Token.EOF;
                     } else {
-                        throw new ParserException("illegal.char, " + this.ch + ", " + this.info());
+                        throw new ParseException("illegal.char, " + this.ch + ", " + this.info());
                     }
 
                     return;
@@ -294,7 +294,7 @@ public class Lexer {
         char first = this.ch;
         boolean firstFlag = CharTypes.isFirstIdentifierChar(first);
         if (!firstFlag) {
-            throw new ParserException("illegal identifier. " + this.info());
+            throw new ParseException("illegal identifier. " + this.info());
         } else {
             this.mark = this.pos;
             // 从第二个字符开始扫描
@@ -331,7 +331,7 @@ public class Lexer {
         }
 
         if (this.bufPos < 4) {
-            throw new ParserException("illegal variable. " + this.info());
+            throw new ParseException("illegal variable. " + this.info());
         }
 
         this.strVal = this.subStr(this.mark, this.bufPos);
@@ -381,7 +381,7 @@ public class Lexer {
             }
         }
 
-        throw new ParserException("unclosed str. " + this.info());
+        throw new ParseException("unclosed str. " + this.info());
     }
 
     /**
@@ -514,7 +514,7 @@ public class Lexer {
                 }
                 break;
             default:
-                throw new ParserException("TODO. " + this.info());
+                throw new ParseException("TODO. " + this.info());
         }
     }
 
@@ -602,7 +602,7 @@ public class Lexer {
             }
 
             if (this.ch == CharTypes.EOF) {
-                throw new ParserException("unterminated /* comment. " + this.info());
+                throw new ParseException("unterminated /* comment. " + this.info());
             }
 
             this.scanChar();

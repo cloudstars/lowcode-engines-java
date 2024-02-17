@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class MysqlFormRepositoryImpl implements FormRepository {
+public class MySQLFormRepositoryImpl implements FormRepository {
 
-    public MysqlFormRepositoryImpl() {
+    public MySQLFormRepositoryImpl() {
     }
 
     @Override

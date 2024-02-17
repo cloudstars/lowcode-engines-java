@@ -3,11 +3,18 @@ package net.cf.form.engine.object;
 import java.util.List;
 
 /**
- * 对象的字段
+ * 模型的字段
  *
  * @author clouds
  */
-public interface XField {
+public interface XField<P extends XFieldProperty> {
+
+    /**
+     * 获取字段的编号
+     *
+     * @return
+     */
+    String getCode();
 
     /**
      * 获取字段的名称
@@ -15,13 +22,6 @@ public interface XField {
      * @return
      */
     String getName();
-
-    /**
-     * 获取字段的标题
-     *
-     * @return
-     */
-    String getTitle();
 
     /**
      * 获取字段的列名
@@ -69,7 +69,14 @@ public interface XField {
      *
      * @return
      */
-    short getDataPrecision();
+    int getDataPrecision();
+
+    /**
+     * 获取字段的子属性
+     *
+     * @return
+     */
+    List<P> getProperties();
 
     /**
      * 获取默认值
@@ -78,10 +85,4 @@ public interface XField {
      */
     Object getDefaultValue();
 
-    /**
-     * 获取字段的子属性
-     *
-     * @return
-     */
-    List<XFieldProperty> getSubFields();
 }

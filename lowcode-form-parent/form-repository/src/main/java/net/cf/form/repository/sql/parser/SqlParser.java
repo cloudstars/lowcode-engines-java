@@ -120,7 +120,7 @@ public abstract class SqlParser {
         }
 
         buf.append(", ").append(this.lexer.info());
-        throw new ParserException(buf.toString());
+        throw new SqlParseException(buf.toString());
     }
 
 }

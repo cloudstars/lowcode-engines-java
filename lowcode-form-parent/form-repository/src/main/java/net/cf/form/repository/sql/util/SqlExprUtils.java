@@ -1,14 +1,19 @@
 package net.cf.form.repository.sql.util;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExprGroup;
 import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOperator;
-import net.cf.form.repository.sql.parser.ParserException;
 import net.cf.form.repository.sql.parser.SqlExprParser;
+import net.cf.form.repository.sql.parser.SqlParseException;
 import net.cf.form.repository.sql.parser.SqlParserFeature;
 import net.cf.form.repository.sql.parser.Token;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 public final class SqlExprUtils {
@@ -20,7 +25,7 @@ public final class SqlExprUtils {
         SqlExprParser parser = SqlParserUtils.createExprParser(sql, new SqlParserFeature[0]);
         SqlExpr expr = parser.expr();
         if (parser.getLexer().token() != Token.EOF) {
-            throw new ParserException("illegal sql expr : " + sql + ", " + parser.getLexer().info());
+            throw new SqlParseException("illegal sql expr : " + sql + ", " + parser.getLexer().info());
         } else {
             return expr;
         }
@@ -107,6 +112,34 @@ public final class SqlExprUtils {
             }
 
             return first;
+        }
+    }
+
+    /**
+     * 从Java对象转换为AST表达式对象
+     *
+     * @param o
+     * @return
+     */
+    public static SqlExpr fromJavaObject(Object o) {
+        if (o == null) {
+            return new SqlNullExpr();
+        } else if (o instanceof String) {
+            return new SqlCharExpr((String) o);
+        } else if (o instanceof BigDecimal) {
+            return new SqlDecimalExpr((BigDecimal) o);
+        } else if (o instanceof Date) {
+            return new SqlDateExpr((Date) o);
+        } else if (o instanceof Time) {
+            return new SqlTimeExpr((Time) o);
+        } else if (o instanceof Number) {
+            if ((o instanceof Byte) || (o instanceof Short) || (o instanceof Integer) || (o instanceof Long) || o instanceof BigInteger) {
+                return new SqlIntegerExpr((Number) o);
+            } else {
+                return new SqlNumberExpr((Number) o);
+            }
+        } else {
+            throw new SqlParseException("not support class : " + o.getClass());
         }
     }
 

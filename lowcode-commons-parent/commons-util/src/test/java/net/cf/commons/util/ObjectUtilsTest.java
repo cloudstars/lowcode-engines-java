@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(JUnit4ClassRunner.class)
@@ -47,6 +48,30 @@ public class ObjectUtilsTest {
         Assert.assertTrue(methodBB != null && methodBB.equals(T.class.getDeclaredMethod("getBb")));
         Method methodS = methodMap.get("s");
         Assert.assertTrue(methodS != null && methodS.equals(T.class.getDeclaredMethod("getS")));
+    }
+
+    @Test
+    public void testGetProperty() {
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("aa", "hello");
+        dataMap.put("bb", "world");
+        Object mapValueAA = ObjectUtils.getPropertyValue(dataMap, "aa");
+        Assert.assertTrue("hello".equals(mapValueAA));
+        Object mapValueBB = ObjectUtils.getPropertyValue(dataMap, "bb");
+        Assert.assertTrue("world".equals(mapValueBB));
+        Object mapValueCC = ObjectUtils.getPropertyValue(dataMap, "cc");
+        Assert.assertTrue(mapValueCC == null);
+
+        T object = new T();
+        object.b = true;
+        object.bb = false;
+        object.s = "Hello, world!";
+        Object tValueB = ObjectUtils.getPropertyValue(object, "b");
+        Assert.assertTrue(tValueB instanceof Boolean && (Boolean) tValueB);
+        Object tValueBB = ObjectUtils.getPropertyValue(object, "bb");
+        Assert.assertTrue(tValueB instanceof Boolean && !((Boolean) tValueBB));
+        Object tValueS = ObjectUtils.getPropertyValue(object, "s");
+        Assert.assertTrue("Hello, world!".equals(tValueS));
     }
 
     private class T {

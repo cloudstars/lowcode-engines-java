@@ -13,6 +13,64 @@ import java.util.Map;
 public interface ObjectRecordEngine {
 
     /**
+     * 查询一条记录，返回全部字段的数据
+     *
+     * @param object
+     * @param recordId
+     * @return
+     */
+    Map<String, Object> queryOne(XObject object, String recordId);
+
+    /**
+     * 查询一条记录，返回指定字段的数据
+     *
+     * @param object
+     * @param recordId
+     * @param fields 要查询的字段名列表
+     * @return
+     */
+    Map<String, Object> queryOne(XObject object, String recordId, List<String> fields);
+
+    /**
+     * 查询批量记录，返回全部字段的数据
+     *
+     * @param object
+     * @param recordIds
+     * @return
+     */
+    List<Map<String, Object>> queryList(XObject object, List<String> recordIds);
+
+    /**
+     * 统计符合条件的记录数量
+     *
+     * @param object
+     * @param queryMap
+     * @return
+     */
+    int count(XObject object, Map<String, Object> queryMap);
+
+    /**
+     * 查询指定页的记录列表
+     *
+     * @param object
+     * @param pageIndex
+     * @param pageSize
+     * @param queryMap
+     * @return
+     */
+    List<Map<String, Object>> queryPageList(XObject object, int pageIndex, int pageSize, Map<String, Object> queryMap);
+
+    /**
+     * 查询批量记录，返回指定字段的数据
+     *
+     * @param object
+     * @param recordIds
+     * @param fields 要查询的字段名列表
+     * @return
+     */
+    List<Map<String, Object>> queryList(XObject object, List<String> recordIds, List<String> fields);
+
+    /**
      * 创建一条记录
      *
      * @param object 对象
@@ -74,43 +132,5 @@ public interface ObjectRecordEngine {
      * @param recordIds
      */
     void removeOne(XObject object, List<String> recordIds);
-
-    /**
-     * 查询一条记录，返回全部字段的数据
-     *
-     * @param object
-     * @param recordId
-     * @return
-     */
-    Map<String, Object> queryOne(XObject object, String recordId);
-
-    /**
-     * 查询一条记录，返回指定字段的数据
-     *
-     * @param object
-     * @param recordId
-     * @param fields 要查询的字段名列表
-     * @return
-     */
-    Map<String, Object> queryOne(XObject object, String recordId, List<String> fields);
-
-    /**
-     * 查询批量记录，返回全部字段的数据
-     *
-     * @param object
-     * @param recordIds
-     * @return
-     */
-    List<Map<String, Object>> queryList(XObject object, List<String> recordIds);
-
-    /**
-     * 查询批量记录，返回指定字段的数据
-     *
-     * @param object
-     * @param recordIds
-     * @param fields 要查询的字段名列表
-     * @return
-     */
-    List<Map<String, Object>> queryList(XObject object, List<String> recordIds, List<String> fields);
 
 }

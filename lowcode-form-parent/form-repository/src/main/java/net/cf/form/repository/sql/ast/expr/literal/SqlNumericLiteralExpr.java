@@ -9,7 +9,6 @@ public abstract class SqlNumericLiteralExpr extends SqlExprImpl implements SqlLi
 
     protected Number number;
 
-
     public SqlNumericLiteralExpr() {
     }
 

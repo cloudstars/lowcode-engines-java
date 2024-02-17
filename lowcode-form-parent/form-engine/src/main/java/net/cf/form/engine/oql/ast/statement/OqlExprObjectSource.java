@@ -1,5 +1,6 @@
 package net.cf.form.engine.oql.ast.statement;
 
+import net.cf.form.engine.object.XObject;
 import net.cf.form.engine.oql.ast.OqlReplaceable;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
 import net.cf.form.engine.oql.ast.expr.identifier.OqlIdentifierExpr;
@@ -13,6 +14,8 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 public class OqlExprObjectSource extends OqlObjectSourceImpl implements OqlReplaceable {
 
     protected OqlExpr expr;
+
+    protected XObject resolvedObject;
 
     public OqlExprObjectSource() {
     }
@@ -44,6 +47,14 @@ public class OqlExprObjectSource extends OqlObjectSourceImpl implements OqlRepla
         }
 
         this.expr = x;
+    }
+
+    public XObject getResolvedObject() {
+        return resolvedObject;
+    }
+
+    public void setResolvedObject(XObject resolvedObject) {
+        this.resolvedObject = resolvedObject;
     }
 
     @Override

@@ -266,10 +266,14 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             this.visit((SqlAggregateExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             this.visit((SqlBinaryOpExpr) x);
-        } else if (clazz == SqlCharExpr.class) {
-            this.visit((SqlCharExpr) x, parameterized);
         } else if (clazz == SqlNullExpr.class) {
             this.visit((SqlNullExpr) x);
+        } else if (clazz == SqlDateExpr.class) {
+            this.visit((SqlDateExpr) x);
+        } else if (clazz == SqlTimeExpr.class) {
+            this.visit((SqlTimeExpr) x);
+        } else if (clazz == SqlCharExpr.class) {
+            this.visit((SqlCharExpr) x, parameterized);
         } else if (clazz == SqlIntegerExpr.class) {
             this.printInteger((SqlIntegerExpr) x, parameterized);
         } else if (clazz == SqlNumberExpr.class) {
@@ -344,7 +348,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     @Override
     public boolean visit(SqlBooleanExpr x) {
-        this.printChars(x.getValue() ? "true" : "false");
+        this.print(x.getValue() ? "true" : "false");
 
         return false;
     }
@@ -379,6 +383,27 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     public boolean visit(SqlNumberExpr x) {
         this.print(x.getNumber().toString());
 
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlDateExpr x) {
+        this.print(this.uppercase ? "DATE " : "date ");
+        this.printChars(x.getText());
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlTimeExpr x) {
+        this.print(this.uppercase ? "TIME " : "time ");
+        this.printChars(x.getText());
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlDateTimeExpr x) {
+        this.print(this.uppercase ? "DATETIME " : "datetime ");
+        this.printChars(x.getText());
         return false;
     }
 

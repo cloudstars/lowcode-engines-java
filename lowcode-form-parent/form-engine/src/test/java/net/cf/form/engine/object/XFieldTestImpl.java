@@ -15,12 +15,12 @@ public class XFieldTestImpl implements XField {
     }
 
     @Override
-    public String getName() {
+    public String getCode() {
         return fieldDef.getName();
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
         return fieldDef.getTitle();
     }
 
@@ -55,7 +55,7 @@ public class XFieldTestImpl implements XField {
     }
 
     @Override
-    public short getDataPrecision() {
+    public int getDataPrecision() {
         return 0;
     }
 
@@ -78,7 +78,7 @@ public class XFieldTestImpl implements XField {
     }
 
     @Override
-    public List<XFieldProperty> getSubFields() {
+    public List<XFieldProperty> getProperties() {
         return null;
     }
 }

@@ -584,7 +584,7 @@ public class SqlExprParser extends SqlParser {
             sb.append(this.lexer.token.name != null ? this.lexer.token.name : this.lexer.token.toString());
             sb.append(" ");
             sb.append(this.lexer.info());
-            throw new ParserException(sb.toString());
+            throw new SqlParseException(sb.toString());
         }
     }
 

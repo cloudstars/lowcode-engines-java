@@ -12,34 +12,29 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class XObjectTestImpl implements XObject {
+public class XObjectTestImpl implements XObject<XFieldTestImpl> {
 
     private final ObjectDefinition objectDef;
 
-    private final List<XField> fields = new ArrayList<>();
+    private final List<XFieldTestImpl> fields = new ArrayList<>();
 
     public XObjectTestImpl(ObjectDefinition objectDef) {
         this.objectDef = objectDef;
         List<FieldDefinition> fieldDefs = objectDef.getFields();
         for (FieldDefinition fieldDef : fieldDefs) {
-            XField field = new XFieldTestImpl(fieldDef);
+            XFieldTestImpl field = new XFieldTestImpl(fieldDef);
             fields.add(field);
         }
     }
 
     @Override
-    public String getName() {
+    public String getCode() {
         return objectDef.getName();
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
         return objectDef.getTitle();
-    }
-
-    @Override
-    public boolean isMultiTenant() {
-        return false;
     }
 
     @Override
@@ -48,17 +43,17 @@ public class XObjectTestImpl implements XObject {
     }
 
     @Override
-    public List<XField> getFields() {
+    public List<XFieldTestImpl> getFields() {
         return this.fields;
     }
 
     @Override
-    public XField getField(String fieldName) {
+    public XFieldTestImpl getField(String fieldCode) {
         return null;
     }
 
     @Override
-    public XField getPrimaryField() {
+    public XFieldTestImpl getPrimaryField() {
         return null;
     }
 
@@ -68,7 +63,7 @@ public class XObjectTestImpl implements XObject {
 
     @Override
     public String getTableName() {
-        return this.getName();
+        return this.getCode();
     }
 
     @Override

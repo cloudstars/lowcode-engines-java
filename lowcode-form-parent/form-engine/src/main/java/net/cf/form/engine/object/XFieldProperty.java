@@ -1,74 +1,53 @@
 package net.cf.form.engine.object;
 
 /**
- * 子段的属性
+ * 字段的属性（当字段需要拆子属性存储时需要定义）
  *
  * @author clouds
  */
-public class XFieldProperty {
+public interface XFieldProperty {
 
     /**
-     * 字段属性的名称
+     * 获取字段属性的编号
+     *
+     * @return
      */
-    private String name;
+    String getCode();
 
     /**
-     * 字段属性的值类型
+     * 获取字段属性的列名称
+     *
+     * @return
      */
-    private DataType dataType;
+    String getColumnName();
 
     /**
-     * 字段属性的数据长度
+     * 获取字段属性的数据类型
+     *
+     * @return
      */
-    private int dataLength;
+    DataType getDataType();
+
 
     /**
-     * 字段属性的数据精度
+     * 获取字段属性的最大长度
+     *
+     * @return
      */
-    private short dataPrecision;
+    int getDataLength();
 
     /**
-     * 字段属性的默认值
+     * 获取字段属性的精度
+     *
+     * @return
      */
-    private Object defaultValue;
+    short getDataPrecision();
 
-    public String getName() {
-        return name;
-    }
+    /**
+     * 获取字段属性的默认值
+     *
+     * @return
+     */
+    Object getDefaultValue();
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public DataType getDataType() {
-        return dataType;
-    }
-
-    public void setDataType(DataType dataType) {
-        this.dataType = dataType;
-    }
-
-    public int getDataLength() {
-        return dataLength;
-    }
-
-    public void setDataLength(int dataLength) {
-        this.dataLength = dataLength;
-    }
-
-    public short getDataPrecision() {
-        return dataPrecision;
-    }
-
-    public void setDataPrecision(short dataPrecision) {
-        this.dataPrecision = dataPrecision;
-    }
-
-    public Object getDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(Object defaultValue) {
-        this.defaultValue = defaultValue;
-    }
 }

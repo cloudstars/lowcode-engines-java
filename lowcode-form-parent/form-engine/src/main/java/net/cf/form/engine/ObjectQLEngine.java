@@ -15,6 +15,23 @@ import java.util.Map;
  */
 public interface ObjectQLEngine {
 
+    /**
+     * 查询记录，限制返回一条
+     *
+     * @param statement
+     * @param dataMap
+     * @return
+     */
+    Map<String, Object> queryOne(OqlSelectStatement statement, Map<String, Object> dataMap);
+
+    /**
+     * 查询记录，不限制条件
+     *
+     * @param statement
+     * @param dataMap
+     * @return
+     */
+    List<Map<String, Object>> queryList(OqlSelectStatement statement, Map<String, Object> dataMap);
 
     /**
      * 创建记录
@@ -40,7 +57,7 @@ public interface ObjectQLEngine {
      * @param dataMaps
      * @return
      */
-    List<String> batchCreate(OqlInsertStatement statement, List<Map<String, Object>> dataMaps);
+    List<String> createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps);
 
     /**
      * 更新记录
@@ -58,7 +75,7 @@ public interface ObjectQLEngine {
      * @param dataMaps
      * @return
      */
-    void batchModify(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps);
+    void modifyList(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps);
 
     /**
      * 移除记录
@@ -76,21 +93,4 @@ public interface ObjectQLEngine {
      */
     void batchRemove(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps);
 
-    /**
-     * 查询记录，限制返回一条
-     *
-     * @param statement
-     * @param dataMap
-     * @return
-     */
-    Map<String, Object> queryOne(OqlSelectStatement statement, Map<String, Object> dataMap);
-
-    /**
-     * 查询记录，不限制条件
-     *
-     * @param statement
-     * @param dataMap
-     * @return
-     */
-    List<Map<String, Object>> queryList(OqlSelectStatement statement, Map<String, Object> dataMap);
 }

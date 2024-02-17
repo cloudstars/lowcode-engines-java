@@ -347,7 +347,7 @@ public class OqlExprParser extends OqlParser {
             case LITERAL_FLOAT:
                 String floatValue = this.lexer.stringVal();
                 if (!StringUtils.isNumber(floatValue.toCharArray())) {
-                    throw new ParserException(floatValue + " is not a number! " + this.lexer.info());
+                    throw new ParseException(floatValue + " is not a number! " + this.lexer.info());
                 }
 
                 expr = new OqlNumberExpr(Float.parseFloat(floatValue));
@@ -580,7 +580,7 @@ public class OqlExprParser extends OqlParser {
             sb.append(this.lexer.token.name != null ? this.lexer.token.name : this.lexer.token.toString());
             sb.append(" ");
             sb.append(this.lexer.info());
-            throw new ParserException(sb.toString());
+            throw new ParseException(sb.toString());
         }
     }
 

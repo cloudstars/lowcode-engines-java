@@ -9,7 +9,7 @@ public class SqlIntegerExpr extends SqlNumericLiteralExpr implements SqlValuable
         super(Integer.parseInt(value));
     }
 
-    public SqlIntegerExpr(int value) {
+    public SqlIntegerExpr(Number value) {
         super(value);
     }
 

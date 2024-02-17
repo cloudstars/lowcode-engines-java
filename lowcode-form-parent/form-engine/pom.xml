@@ -24,6 +24,11 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-form-repository</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.core.version}</version>
+        </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>

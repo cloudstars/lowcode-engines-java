@@ -147,6 +147,79 @@ public interface SqlAstVisitor {
     }
 
     /**
+     * 开始访问 SqlDecimalExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlDecimalExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlDecimalExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlDecimalExpr x) {
+    }
+
+    /**
+     * 开始访问 SqlTimestampExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlDateTimeExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlTimestampExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlDateTimeExpr x) {
+    }
+
+
+    /**
+     * 开始访问 SqlDateExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlDateExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlDateExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlDateExpr x) {
+    }
+
+    /**
+     * 开始访问 SqlTimeExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlTimeExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlTimeExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlTimeExpr x) {
+    }
+
+    /**
      * 开始访问 SqlNullExpr 节点
      *
      * @param x

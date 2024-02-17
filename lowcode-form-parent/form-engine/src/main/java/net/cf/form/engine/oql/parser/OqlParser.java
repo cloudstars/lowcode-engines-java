@@ -99,7 +99,7 @@ public abstract class OqlParser {
         }
 
         buf.append(", ").append(this.lexer.info());
-        throw new ParserException(buf.toString());
+        throw new ParseException(buf.toString());
     }
 
 }

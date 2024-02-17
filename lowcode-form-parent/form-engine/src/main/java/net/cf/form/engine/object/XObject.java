@@ -8,7 +8,14 @@ import java.util.Map;
  *
  * 动态对象接口
  */
-public interface XObject {
+public interface XObject<F extends XField> {
+
+    /**
+     * 获取对象的编号
+     *
+     * @return
+     */
+    String getCode();
 
     /**
      * 获取对象的名称
@@ -18,40 +25,33 @@ public interface XObject {
     String getName();
 
     /**
-     * 获取对象的标题
-     *
-     * @return
-     */
-    String getTitle();
-
-    /**
      * 是否多租户对象
      *
      * @return
-     */
-    boolean isMultiTenant();
+
+    boolean isMultiTenant(); */
 
     /**
      * 获取对象的字段列表
      *
      * @return
      */
-    List<XField> getFields();
+    List<F> getFields();
 
     /**
      * 根据字段名称获取字段
      *
-     * @param fieldName
+     * @param fieldCode
      * @return
      */
-    XField getField(String fieldName);
+    F getField(String fieldCode);
 
     /**
      * 获取主键字段
      *
      * @return
      */
-    XField getPrimaryField();
+    F getPrimaryField();
 
     /**
      * 是否由驱动生成的主键
