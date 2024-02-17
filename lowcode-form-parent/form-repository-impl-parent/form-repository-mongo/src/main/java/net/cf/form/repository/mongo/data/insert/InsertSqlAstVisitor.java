@@ -8,6 +8,11 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 插入SQL语句AST访问器
+ *
+ * @author clouds
+ */
 public class InsertSqlAstVisitor implements SqlAstVisitor {
 
     /**
@@ -34,7 +39,7 @@ public class InsertSqlAstVisitor implements SqlAstVisitor {
             columnNames.add(x.getSimpleName());
         }
 
-        return true;
+        return false;
     }
 
 
@@ -57,6 +62,6 @@ public class InsertSqlAstVisitor implements SqlAstVisitor {
             this.columnIndex++;
         }
 
-        return SqlAstVisitor.super.visit(x);
+        return false;
     }
 }

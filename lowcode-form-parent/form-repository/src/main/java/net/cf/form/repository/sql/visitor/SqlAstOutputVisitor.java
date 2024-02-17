@@ -490,6 +490,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
 
+    @Override
     public boolean visit(SqlInsertStatement x) {
         this.print(this.uppercase ? "INSERT INTO " : "insert into ");
 

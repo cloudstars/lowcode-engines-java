@@ -19,6 +19,7 @@ import java.util.List;
 public class SimpleInsertSqlsTest extends AbstractSimpleInsertSqlsTest {
 
     @Test
+    @Override
     public void testInsertWithoutParams() {
         super.testInsertWithoutParams();
     }
