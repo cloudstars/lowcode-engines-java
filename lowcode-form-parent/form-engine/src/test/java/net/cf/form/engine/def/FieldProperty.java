@@ -1,4 +1,4 @@
-package net.cf.form.commons;
+package net.cf.form.engine.def;
 
 /**
  * 字段属性

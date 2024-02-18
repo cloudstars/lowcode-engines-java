@@ -13,7 +13,6 @@
     <description>低代码表单引擎parent</description>
 
     <modules>
-        <module>form-commons</module>
         <module>form-engine</module>
         <module>form-repository</module>
         <module>form-repository-testcases</module>
@@ -22,11 +21,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-form-commons</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-form-repository</artifactId>

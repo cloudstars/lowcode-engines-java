@@ -37,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-commons</artifactId>
+            <artifactId>lowcode-form-repository-mysql</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

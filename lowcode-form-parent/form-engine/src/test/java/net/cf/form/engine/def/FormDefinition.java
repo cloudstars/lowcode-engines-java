@@ -1,4 +1,4 @@
-package net.cf.form.commons;
+package net.cf.form.engine.def;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class ObjectDefinition {
+public class FormDefinition {
 
     /**
      * 名称

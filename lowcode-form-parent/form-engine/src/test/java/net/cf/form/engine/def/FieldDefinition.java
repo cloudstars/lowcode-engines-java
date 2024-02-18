@@ -1,9 +1,9 @@
-package net.cf.form.commons;
+package net.cf.form.engine.def;
 
 import java.util.List;
 
 /**
- * 字段定义
+ * 表单字段定义
  *
  * @author clouds
  */

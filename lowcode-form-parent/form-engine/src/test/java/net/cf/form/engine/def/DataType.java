@@ -1,6 +1,4 @@
-package net.cf.form.commons;
-
-import java.sql.Time;
+package net.cf.form.engine.def;
 
 /**
  * 数据类型

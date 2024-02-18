@@ -1,7 +1,7 @@
 package net.cf.form.engine.object;
 
-import net.cf.form.commons.FieldDefinition;
-import net.cf.form.commons.ObjectDefinition;
+import net.cf.form.engine.def.FieldDefinition;
+import net.cf.form.engine.def.FormDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class XObjectTestImpl implements XObject<XFieldTestImpl> {
 
-    private final ObjectDefinition objectDef;
+    private final FormDefinition objectDef;
 
     private final List<XFieldTestImpl> fields = new ArrayList<>();
 
-    public XObjectTestImpl(ObjectDefinition objectDef) {
+    public XObjectTestImpl(FormDefinition objectDef) {
         this.objectDef = objectDef;
         List<FieldDefinition> fieldDefs = objectDef.getFields();
         for (FieldDefinition fieldDef : fieldDefs) {

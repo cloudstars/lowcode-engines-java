@@ -1,8 +1,8 @@
 package net.cf.form.engine.object;
 
-import net.cf.form.commons.DefaultValue;
-import net.cf.form.commons.DefaultValueType;
-import net.cf.form.commons.FieldDefinition;
+import net.cf.form.engine.def.DefaultValue;
+import net.cf.form.engine.def.DefaultValueType;
+import net.cf.form.engine.def.FieldDefinition;
 
 import java.util.List;
 
