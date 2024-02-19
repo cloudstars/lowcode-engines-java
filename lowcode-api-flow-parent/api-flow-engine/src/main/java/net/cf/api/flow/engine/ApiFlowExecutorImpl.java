@@ -1,6 +1,5 @@
 package net.cf.api.flow.engine;
 
-import com.alibaba.fastjson.JSONObject;
 import net.cf.api.flow.engine.action.AbstractInitAction;
 import net.cf.api.flow.engine.constant.ContextConstant;
 import net.cf.api.flow.engine.entity.ExecuteContext;

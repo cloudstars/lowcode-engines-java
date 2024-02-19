@@ -12,7 +12,9 @@ import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.util.SqlExprUtils;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public final class SqlInListExpr extends SqlExprImpl implements SqlReplaceable {
     private boolean not;

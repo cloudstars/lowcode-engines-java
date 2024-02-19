@@ -1,9 +1,9 @@
 package net.cf.form.repository.sql.ast.statement;
 
-import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import net.cf.form.repository.sql.ast.SqlObjectImpl;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 public class SqlUpdateSetItem extends SqlObjectImpl implements SqlReplaceable {
 

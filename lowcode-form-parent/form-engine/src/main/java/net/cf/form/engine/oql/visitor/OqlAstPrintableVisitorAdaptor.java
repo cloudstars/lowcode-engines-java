@@ -7,7 +7,6 @@ import net.cf.form.engine.oql.ast.expr.identifier.OqlIdentifierExpr;
 import net.cf.form.engine.oql.ast.expr.identifier.OqlMethodInvokeExpr;
 import net.cf.form.engine.oql.ast.expr.identifier.OqlPropertyExpr;
 import net.cf.form.engine.oql.ast.expr.literal.*;
-import net.cf.form.engine.oql.ast.expr.literal.*;
 import net.cf.form.engine.oql.ast.expr.operation.OqlBinaryOpExpr;
 import net.cf.form.engine.oql.ast.expr.operation.OqlNotExpr;
 

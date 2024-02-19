@@ -1,8 +1,8 @@
 package net.cf.formula.engine.util;
 
 import net.cf.formula.engine.ast.expr.FxExpr;
-import net.cf.formula.engine.ast.expr.operation.FxBinaryOpExpr;
 import net.cf.formula.engine.ast.expr.literal.FxLiteralExpr;
+import net.cf.formula.engine.ast.expr.operation.FxBinaryOpExpr;
 
 public class FxExprUtils {
 

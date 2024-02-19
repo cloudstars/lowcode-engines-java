@@ -6,7 +6,9 @@ import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
 import net.cf.form.repository.sql.util.SqlUtils;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class SqlBinaryOpExprGroup extends SqlExprImpl implements SqlReplaceable {
 

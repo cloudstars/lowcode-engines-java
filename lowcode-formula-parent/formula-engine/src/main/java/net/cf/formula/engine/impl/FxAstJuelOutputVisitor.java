@@ -8,8 +8,8 @@ import net.cf.formula.engine.ast.expr.identifier.FxPropertyExpr;
 import net.cf.formula.engine.ast.expr.literal.FxCharExpr;
 import net.cf.formula.engine.ast.expr.literal.FxIntegerExpr;
 import net.cf.formula.engine.ast.expr.literal.FxNullExpr;
-import net.cf.formula.engine.ast.expr.operation.FxBinaryOpExpr;
 import net.cf.formula.engine.ast.expr.literal.FxNumberExpr;
+import net.cf.formula.engine.ast.expr.operation.FxBinaryOpExpr;
 import net.cf.formula.engine.visitor.FxAstOutputVisitor;
 import net.cf.formula.engine.visitor.ParenthesizedOutput;
 

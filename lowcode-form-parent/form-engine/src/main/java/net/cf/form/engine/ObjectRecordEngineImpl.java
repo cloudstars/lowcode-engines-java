@@ -2,8 +2,8 @@ package net.cf.form.engine;
 
 import net.cf.commons.util.ObjectReference;
 import net.cf.commons.util.ObjectUtils;
-import net.cf.form.engine.object.XFieldProperty;
 import net.cf.form.engine.object.XField;
+import net.cf.form.engine.object.XFieldProperty;
 import net.cf.form.engine.object.XObject;
 import net.cf.form.engine.sqlbuilder.insert.InsertSqlStatementBuilder;
 import net.cf.form.repository.FormRepository;

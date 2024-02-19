@@ -3,7 +3,6 @@ package net.cf.api.proxy.engine.filter.chain;
 import net.cf.api.proxy.engine.entity.HttpApiRequest;
 import net.cf.api.proxy.engine.entity.HttpApiResponse;
 import net.cf.api.proxy.engine.filter.ExecuteFilter;
-import net.cf.api.proxy.engine.filter.chain.ExecuteFilterChain;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;

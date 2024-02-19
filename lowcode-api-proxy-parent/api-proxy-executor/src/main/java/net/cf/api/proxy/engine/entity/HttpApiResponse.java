@@ -1,7 +1,5 @@
 package net.cf.api.proxy.engine.entity;
 
-import org.springframework.util.MultiValueMap;
-
 import java.util.Map;
 
 /**

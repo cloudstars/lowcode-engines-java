@@ -7,7 +7,6 @@ import net.cf.form.engine.oql.ast.expr.identifier.OqlNameExpr;
 import net.cf.form.engine.oql.ast.expr.identifier.OqlPropertyExpr;
 import net.cf.form.engine.oql.ast.expr.literal.OqlIntegerExpr;
 import net.cf.form.engine.oql.ast.statement.*;
-import net.cf.form.engine.oql.ast.statement.*;
 
 import java.util.List;
 

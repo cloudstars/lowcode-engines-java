@@ -1,8 +1,8 @@
 package net.cf.form.repository.sql.ast.expr.identifier;
 
+import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
 
 /**
  * Select语中的查询所有列 "*" 的表达式

@@ -1,8 +1,8 @@
 package net.cf.form.repository.sql.ast.expr.literal;
 
-import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
 import net.cf.form.repository.sql.ast.expr.SqlValuableExpr;
+import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 public final class SqlNullExpr extends SqlExprImpl implements SqlLiteralExpr, SqlValuableExpr {
 

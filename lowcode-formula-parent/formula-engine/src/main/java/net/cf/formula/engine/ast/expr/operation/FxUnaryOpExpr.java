@@ -1,7 +1,7 @@
 package net.cf.formula.engine.ast.expr.operation;
 
-import net.cf.formula.engine.ast.expr.FxExprImpl;
 import net.cf.formula.engine.ast.expr.FxExpr;
+import net.cf.formula.engine.ast.expr.FxExprImpl;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
 import java.util.Collections;

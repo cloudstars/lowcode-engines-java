@@ -1,10 +1,12 @@
 package net.cf.form.repository.ast.expr;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
-import com.alibaba.druid.sql.ast.expr.*;
+import com.alibaba.druid.sql.ast.expr.SQLIntegerExpr;
+import com.alibaba.druid.sql.ast.expr.SQLNumberExpr;
 import com.alibaba.druid.sql.parser.SQLExprParser;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.literal.*;
+import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlNumberExpr;
 import net.cf.form.repository.sql.parser.SqlExprParser;
 import org.junit.Assert;
 import org.junit.Test;
