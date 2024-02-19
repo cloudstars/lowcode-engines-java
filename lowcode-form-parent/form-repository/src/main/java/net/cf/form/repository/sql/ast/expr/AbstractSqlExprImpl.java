@@ -2,6 +2,7 @@ package net.cf.form.repository.sql.ast.expr;
 
 import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -10,6 +11,8 @@ import java.util.List;
  * @author clouds
  */
 public abstract class AbstractSqlExprImpl extends AbstractSqlObjectImpl implements SqlExpr {
+
+    public AbstractSqlExprImpl() {}
 
     @Override
     public SqlExpr _clone() {
@@ -23,6 +26,6 @@ public abstract class AbstractSqlExprImpl extends AbstractSqlObjectImpl implemen
      */
     @Override
     public List<SqlExpr> getChildren() {
-        return null;
+        return Collections.emptyList();
     }
 }

@@ -105,12 +105,6 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
     }
 
     @Override
-    public SqlObject _clone() {
-        throw new UnsupportedOperationException(this.getClass().getName());
-    }
-
-
-    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         this.output(builder);

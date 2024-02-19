@@ -10,7 +10,7 @@ public class Operator {
     /**
      * 租户号
      */
-    private String tenantId;
+    private String tenantKey;
 
     /**
      * 用户号
@@ -25,8 +25,8 @@ public class Operator {
     public Operator() {
     }
 
-    public Operator(String tenantId, String key, String name) {
-        this.tenantId = tenantId;
+    public Operator(String tenantKey, String key, String name) {
+        this.tenantKey = tenantKey;
         this.key = key;
         this.name = name;
     }
@@ -36,12 +36,12 @@ public class Operator {
         this.name = name;
     }
 
-    public String getTenantId() {
-        return tenantId;
+    public String getTenantKey() {
+        return tenantKey;
     }
 
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
+    public void setTenantKey(String tenantKey) {
+        this.tenantKey = tenantKey;
     }
 
     public String getKey() {
