@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlListExpr extends OqlExprImpl implements OqlReplaceable {
+public class OqlListExpr extends AbstractOqlExprImpl implements OqlReplaceable {
 
     private final List<OqlExpr> items = new ArrayList<>();
 

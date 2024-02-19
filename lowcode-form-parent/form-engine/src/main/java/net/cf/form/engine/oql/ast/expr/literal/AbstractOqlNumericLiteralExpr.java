@@ -1,19 +1,21 @@
 package net.cf.form.engine.oql.ast.expr.literal;
 
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 
 /**
  * 数字型时字面量表达式
+ *
+ * @author clouds
  */
-public abstract class OqlNumericLiteralExpr extends OqlExprImpl implements OqlLiteralExpr {
+public abstract class AbstractOqlNumericLiteralExpr extends AbstractOqlExprImpl implements OqlLiteralExpr {
 
     protected Number number;
 
 
-    public OqlNumericLiteralExpr() {
+    public AbstractOqlNumericLiteralExpr() {
     }
 
-    public OqlNumericLiteralExpr(Number number) {
+    public AbstractOqlNumericLiteralExpr(Number number) {
         this.number = number;
     }
 
@@ -40,6 +42,6 @@ public abstract class OqlNumericLiteralExpr extends OqlExprImpl implements OqlLi
      *
      * @return
      */
-    public abstract OqlNumericLiteralExpr clone();
+    public abstract AbstractOqlNumericLiteralExpr clone();
 }
 

@@ -10,14 +10,14 @@ import java.util.Collection;
  *
  * @author clouds
  */
-public abstract class OqlObjectImpl implements OqlObject {
+public abstract class AbstractOqlObjectImpl implements OqlObject {
 
     /**
      * 父节点
      */
     protected OqlObject parent;
 
-    public OqlObjectImpl() {
+    public AbstractOqlObjectImpl() {
     }
 
     @Override

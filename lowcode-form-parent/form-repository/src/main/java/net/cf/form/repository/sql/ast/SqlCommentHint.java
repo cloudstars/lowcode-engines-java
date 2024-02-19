@@ -7,7 +7,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlCommentHint extends SqlObjectImpl implements SqlHint {
+public class SqlCommentHint extends AbstractSqlObjectImpl implements SqlHint {
     private String text;
 
     public SqlCommentHint() {

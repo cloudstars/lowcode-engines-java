@@ -4,7 +4,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
-public final class SqlLimit extends SqlObjectImpl implements SqlReplaceable {
+public final class SqlLimit extends AbstractSqlObjectImpl implements SqlReplaceable {
     private SqlExpr rowCount;
     private SqlExpr offset;
 

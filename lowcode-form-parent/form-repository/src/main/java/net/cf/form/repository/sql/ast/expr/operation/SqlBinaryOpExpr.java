@@ -4,7 +4,7 @@ package net.cf.form.repository.sql.ast.expr.operation;
 import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SqlBinaryOpExpr extends SqlExprImpl implements SqlReplaceable {
+public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceable {
 
     protected SqlExpr left;
     protected SqlExpr right;

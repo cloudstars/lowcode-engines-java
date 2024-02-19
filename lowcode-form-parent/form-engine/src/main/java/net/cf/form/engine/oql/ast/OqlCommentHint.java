@@ -7,7 +7,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
  *
  * @author clouds
  */
-public class OqlCommentHint extends OqlObjectImpl implements OqlHint {
+public class OqlCommentHint extends AbstractOqlObjectImpl implements OqlHint {
     private String text;
 
     public OqlCommentHint() {

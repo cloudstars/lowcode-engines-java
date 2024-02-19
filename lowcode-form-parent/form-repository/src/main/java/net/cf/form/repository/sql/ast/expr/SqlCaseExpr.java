@@ -1,7 +1,7 @@
 package net.cf.form.repository.sql.ast.expr;
 
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.SqlObjectImpl;
+import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SqlCaseExpr extends SqlExprImpl implements SqlReplaceable {
+public class SqlCaseExpr extends AbstractSqlExprImpl implements SqlReplaceable {
     private static final long serialVersionUID = 1L;
     private final List<Item> items = new ArrayList();
     private SqlExpr valueExpr;
@@ -128,7 +128,7 @@ public class SqlCaseExpr extends SqlExprImpl implements SqlReplaceable {
         return x;
     }
 
-    public static class Item extends SqlObjectImpl implements SqlReplaceable {
+    public static class Item extends AbstractSqlObjectImpl implements SqlReplaceable {
         private SqlExpr conditionExpr;
         private SqlExpr valueExpr;
 

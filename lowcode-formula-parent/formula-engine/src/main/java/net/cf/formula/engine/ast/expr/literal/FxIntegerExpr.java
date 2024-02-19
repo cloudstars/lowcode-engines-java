@@ -3,7 +3,7 @@ package net.cf.formula.engine.ast.expr.literal;
 import net.cf.formula.engine.ast.expr.FxValuableExpr;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
-public class FxIntegerExpr extends FxNumericLiteralExpr implements FxValuableExpr {
+public class FxIntegerExpr extends AbstractFxNumericLiteralExpr implements FxValuableExpr {
 
     public FxIntegerExpr(String value) {
         super(Integer.parseInt(value));

@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObjectImpl;
+import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
 
 
 /**
@@ -8,10 +8,10 @@ import net.cf.form.engine.oql.ast.OqlObjectImpl;
  *
  * @author clouds
  */
-public abstract class OqlStatementImpl extends OqlObjectImpl implements OqlStatement {
+public abstract class AbstractOqlStatementImpl extends AbstractOqlObjectImpl implements OqlStatement {
     protected boolean afterSemi;
 
-    public OqlStatementImpl() {
+    public AbstractOqlStatementImpl() {
     }
 
     @Override

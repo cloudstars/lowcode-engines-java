@@ -2,13 +2,13 @@ package net.cf.form.engine.oql.ast.expr.operation;
 
 import net.cf.form.engine.oql.ast.OqlReplaceable;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OqlBinaryOpExprGroup extends OqlExprImpl implements OqlReplaceable {
+public class OqlBinaryOpExprGroup extends AbstractOqlExprImpl implements OqlReplaceable {
 
     private final OqlBinaryOperator operator;
 

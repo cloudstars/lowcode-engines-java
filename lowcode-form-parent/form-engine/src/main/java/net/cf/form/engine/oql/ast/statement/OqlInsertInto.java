@@ -8,7 +8,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OqlInsertInto extends OqlStatementImpl implements OqlReplaceable {
+public class OqlInsertInto extends AbstractOqlStatementImpl implements OqlReplaceable {
 
     protected OqlExprObjectSource objectSource;
 

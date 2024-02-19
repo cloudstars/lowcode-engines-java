@@ -1,7 +1,7 @@
 package net.cf.formula.engine.ast.expr.operation;
 
 import net.cf.formula.engine.ast.expr.FxExpr;
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class FxBinaryOpExpr extends FxExprImpl {
+public class FxBinaryOpExpr extends AbstractFxExprImpl {
 
     /**
      * 左表达式

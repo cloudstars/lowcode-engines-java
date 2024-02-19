@@ -7,7 +7,7 @@ import net.cf.formula.engine.visitor.FxAstVisitor;
  *
  * @author clouds
  */
-public class FxCommentHint extends FxObjectImpl implements FxHint {
+public class FxCommentHint extends AbstractFxObjectImpl implements FxHint {
     private String text;
 
     public FxCommentHint() {

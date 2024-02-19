@@ -1,7 +1,7 @@
 package net.cf.formula.engine.ast.expr.identifier;
 
 import net.cf.formula.engine.ast.expr.FxExpr;
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class FxMethodInvokeExpr extends FxExprImpl {
+public class FxMethodInvokeExpr extends AbstractFxExprImpl {
 
     protected final List<FxExpr> arguments = new ArrayList();
 

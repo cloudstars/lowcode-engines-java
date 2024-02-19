@@ -1,6 +1,6 @@
 package net.cf.form.repository.sql.ast.statement;
 
-import net.cf.form.repository.sql.ast.SqlObjectImpl;
+import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
@@ -8,7 +8,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class SqlOrderBy extends SqlObjectImpl implements SqlReplaceable {
+public final class SqlOrderBy extends AbstractSqlObjectImpl implements SqlReplaceable {
 
     protected final List<SqlSelectOrderByItem> items = new ArrayList();
 

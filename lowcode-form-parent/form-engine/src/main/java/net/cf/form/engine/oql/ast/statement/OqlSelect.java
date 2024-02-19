@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.ast.statement;
 
 import net.cf.form.engine.oql.ast.OqlObject;
-import net.cf.form.engine.oql.ast.OqlObjectImpl;
+import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlSelect extends OqlObjectImpl {
+public class OqlSelect extends AbstractOqlObjectImpl {
 
     /**
      * 查询的列表

@@ -7,7 +7,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlUpdateStatement extends SqlStatementImpl implements SqlStatement {
+public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlStatement {
 
     protected SqlTableSource tableSource;
 

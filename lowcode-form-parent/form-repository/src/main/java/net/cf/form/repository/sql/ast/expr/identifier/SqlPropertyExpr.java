@@ -1,6 +1,6 @@
 package net.cf.form.repository.sql.ast.expr.identifier;
 
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class SqlPropertyExpr extends SqlExprImpl implements SqlName {
+public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
 
     /**
      * 属性的归属

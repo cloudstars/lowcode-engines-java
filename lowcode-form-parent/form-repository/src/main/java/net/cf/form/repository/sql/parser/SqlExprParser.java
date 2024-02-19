@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class SqlExprParser extends SqlParser {
+public class SqlExprParser extends AbstractSqlParser {
 
     /**
      * 聚合函数的名称

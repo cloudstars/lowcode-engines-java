@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObjectImpl;
+import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
 import net.cf.form.engine.oql.ast.OqlReplaceable;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
@@ -8,7 +8,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class OqlSelectOrderBy extends OqlObjectImpl implements OqlReplaceable {
+public final class OqlSelectOrderBy extends AbstractOqlObjectImpl implements OqlReplaceable {
 
     protected final List<OqlSelectOrderByItem> items = new ArrayList();
 

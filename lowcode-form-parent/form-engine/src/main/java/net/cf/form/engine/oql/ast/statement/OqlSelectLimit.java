@@ -1,12 +1,12 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObjectImpl;
+import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
 import net.cf.form.engine.oql.ast.OqlReplaceable;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 
-public final class OqlSelectLimit extends OqlObjectImpl implements OqlReplaceable {
+public final class OqlSelectLimit extends AbstractOqlObjectImpl implements OqlReplaceable {
 
     private int offset = -1;
 

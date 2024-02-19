@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.ast.expr.operation;
 
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.Collections;
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public final class OqlNotExpr extends OqlExprImpl {
+public final class OqlNotExpr extends AbstractOqlExprImpl {
 
     public OqlExpr expr;
 

@@ -1,7 +1,7 @@
 package net.cf.form.repository.sql.ast.expr.identifier;
 
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**
@@ -9,7 +9,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlVariantRefExpr extends SqlExprImpl {
+public class SqlVariantRefExpr extends AbstractSqlExprImpl {
 
     private String name;
 

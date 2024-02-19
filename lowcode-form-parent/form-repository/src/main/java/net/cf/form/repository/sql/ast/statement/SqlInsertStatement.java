@@ -1,7 +1,7 @@
 package net.cf.form.repository.sql.ast.statement;
 
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.SqlObjectImpl;
+import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
@@ -43,7 +43,7 @@ public class SqlInsertStatement extends SqlInsertInto implements SqlStatement {
         return children;
     }
 
-    public static class ValuesClause extends SqlObjectImpl implements SqlReplaceable {
+    public static class ValuesClause extends AbstractSqlObjectImpl implements SqlReplaceable {
 
         private final List<SqlExpr> values = new ArrayList<>();
 

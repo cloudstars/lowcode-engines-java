@@ -1,6 +1,6 @@
 package net.cf.formula.engine.ast.expr.identifier;
 
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class FxPropertyExpr extends FxExprImpl implements FxNameExpr {
+public class FxPropertyExpr extends AbstractFxExprImpl implements FxNameExpr {
 
     /**
      * 属性的归属

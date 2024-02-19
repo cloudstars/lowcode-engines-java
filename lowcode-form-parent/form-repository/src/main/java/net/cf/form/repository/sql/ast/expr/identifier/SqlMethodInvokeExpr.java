@@ -1,7 +1,7 @@
 package net.cf.form.repository.sql.ast.expr.identifier;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class SqlMethodInvokeExpr extends SqlExprImpl {
+public class SqlMethodInvokeExpr extends AbstractSqlExprImpl {
 
     protected String methodName;
 

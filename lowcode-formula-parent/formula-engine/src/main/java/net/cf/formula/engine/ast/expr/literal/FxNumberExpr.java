@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  *
  * @author clouds
  */
-public class FxNumberExpr extends FxNumericLiteralExpr implements FxValuableExpr {
+public class FxNumberExpr extends AbstractFxNumericLiteralExpr implements FxValuableExpr {
 
     private char[] chars;
 

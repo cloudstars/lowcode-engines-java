@@ -10,14 +10,14 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class FxObjectImpl implements FxObject {
+public abstract class AbstractFxObjectImpl implements FxObject {
 
     /**
      * 父节点
      */
     protected FxObject parent;
 
-    public FxObjectImpl() {
+    public AbstractFxObjectImpl() {
     }
 
     @Override

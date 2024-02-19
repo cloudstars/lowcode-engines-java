@@ -10,7 +10,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlJoinTableSource extends SqlTableSourceImpl implements SqlReplaceable {
+public class SqlJoinTableSource extends AbstractSqlTableSourceImpl implements SqlReplaceable {
 
     protected SqlTableSource left;
     protected JoinType joinType;

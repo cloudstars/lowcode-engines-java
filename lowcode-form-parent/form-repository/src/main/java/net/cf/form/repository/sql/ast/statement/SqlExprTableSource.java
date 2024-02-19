@@ -13,7 +13,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlExprTableSource extends SqlTableSourceImpl implements SqlReplaceable {
+public class SqlExprTableSource extends AbstractSqlTableSourceImpl implements SqlReplaceable {
 
     protected SqlExpr expr;
 

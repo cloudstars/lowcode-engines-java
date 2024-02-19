@@ -1,6 +1,6 @@
 package net.cf.formula.engine.ast.expr;
 
-import net.cf.formula.engine.ast.FxObjectImpl;
+import net.cf.formula.engine.ast.AbstractFxObjectImpl;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class FxExprImpl extends FxObjectImpl implements FxExpr {
+public abstract class AbstractFxExprImpl extends AbstractFxObjectImpl implements FxExpr {
 
     /**
      * 克隆

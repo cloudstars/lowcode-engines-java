@@ -1,13 +1,13 @@
 package net.cf.form.engine.oql.ast.expr;
 
-import net.cf.form.engine.oql.ast.OqlObjectImpl;
+import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
 
 /**
  * OQL 表达式实现抽象类
  *
  * @author clouds
  */
-public abstract class OqlExprImpl extends OqlObjectImpl implements OqlExpr {
+public abstract class AbstractOqlExprImpl extends AbstractOqlObjectImpl implements OqlExpr {
 
     @Override
     public OqlExpr clone() {

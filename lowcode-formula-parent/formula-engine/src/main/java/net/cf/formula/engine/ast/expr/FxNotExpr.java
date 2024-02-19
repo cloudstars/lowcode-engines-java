@@ -12,7 +12,7 @@ import java.util.List;
  * @author clouds
  */
 @Deprecated
-public final class FxNotExpr extends FxExprImpl {
+public final class FxNotExpr extends AbstractFxExprImpl {
     public FxExpr expr;
 
     public FxNotExpr() {

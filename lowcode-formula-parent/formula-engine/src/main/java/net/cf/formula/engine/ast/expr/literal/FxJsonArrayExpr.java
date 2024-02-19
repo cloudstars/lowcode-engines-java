@@ -1,13 +1,13 @@
 package net.cf.formula.engine.ast.expr.literal;
 
 import net.cf.formula.engine.ast.expr.FxExpr;
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FxJsonArrayExpr extends FxExprImpl {
+public class FxJsonArrayExpr extends AbstractFxExprImpl {
 
     private List<FxExpr> items = new ArrayList();
 

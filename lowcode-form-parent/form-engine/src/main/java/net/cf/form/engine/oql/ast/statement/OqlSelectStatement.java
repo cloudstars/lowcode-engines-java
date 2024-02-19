@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlSelectStatement extends OqlStatementImpl {
+public class OqlSelectStatement extends AbstractOqlStatementImpl {
 
     protected OqlSelect select;
 

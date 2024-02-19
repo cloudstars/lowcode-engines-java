@@ -1,18 +1,20 @@
 package net.cf.form.repository.sql.ast.expr.literal;
 
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 
 /**
  * 数字型时字面量表达式
+ *
+ * @author clouds 
  */
-public abstract class SqlNumericLiteralExpr extends SqlExprImpl implements SqlLiteralExpr {
+public abstract class AbstractSqlNumericLiteralExpr extends AbstractSqlExprImpl implements SqlLiteralExpr {
 
     protected Number number;
 
-    public SqlNumericLiteralExpr() {
+    public AbstractSqlNumericLiteralExpr() {
     }
 
-    public SqlNumericLiteralExpr(Number number) {
+    public AbstractSqlNumericLiteralExpr(Number number) {
         this.number = number;
     }
 
@@ -39,6 +41,6 @@ public abstract class SqlNumericLiteralExpr extends SqlExprImpl implements SqlLi
      *
      * @return
      */
-    public abstract SqlNumericLiteralExpr _clone();
+    public abstract AbstractSqlNumericLiteralExpr _clone();
 }
 

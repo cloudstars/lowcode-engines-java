@@ -5,7 +5,7 @@ package net.cf.form.engine.oql.parser;
  *
  * @author clouds
  */
-public abstract class OqlParser {
+public abstract class AbstractOqlParser {
 
     /**
      * 词法分析器
@@ -17,11 +17,11 @@ public abstract class OqlParser {
      */
     private int errorEndPos;
 
-    public OqlParser(Lexer lexer) {
+    public AbstractOqlParser(Lexer lexer) {
         this.lexer = lexer;
     }
 
-    public OqlParser(String oql) {
+    public AbstractOqlParser(String oql) {
         this(new Lexer(oql));
     }
 

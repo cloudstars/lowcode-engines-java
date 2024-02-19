@@ -8,7 +8,7 @@ import net.cf.formula.engine.visitor.FxAstVisitor;
  *
  * @author clouds
  */
-public class FxCharExpr extends FxTextLiteralExpr implements FxValuableExpr {
+public class FxCharExpr extends AbstractFxTextLiteralExpr implements FxValuableExpr {
 
     public FxCharExpr(String text) {
         super(text);

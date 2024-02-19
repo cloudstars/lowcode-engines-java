@@ -2,7 +2,7 @@ package net.cf.form.repository.sql.ast.statement;
 
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**
@@ -10,7 +10,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlSelectItem extends SqlExprImpl implements SqlReplaceable {
+public class SqlSelectItem extends AbstractSqlExprImpl implements SqlReplaceable {
 
     /**
      * 字段表达式

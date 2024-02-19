@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlExprParser extends OqlParser {
+public class OqlExprParser extends AbstractOqlParser {
 
     /**
      * 聚合函数的名称

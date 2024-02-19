@@ -6,7 +6,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OqlDeleteStatement extends OqlStatementImpl implements OqlStatement {
+public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlStatement {
 
     protected OqlObjectSource objectSource;
 

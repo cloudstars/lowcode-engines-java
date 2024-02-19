@@ -1,7 +1,7 @@
 package net.cf.formula.engine.ast.expr.literal;
 
 import net.cf.formula.engine.ast.expr.FxExpr;
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FxJsonObjectExpr extends FxExprImpl {
+public class FxJsonObjectExpr extends AbstractFxExprImpl {
 
     private Map<String, FxExpr> items = new HashMap<>();
 

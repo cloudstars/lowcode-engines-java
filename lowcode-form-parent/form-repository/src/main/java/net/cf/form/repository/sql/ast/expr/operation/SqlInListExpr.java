@@ -7,7 +7,7 @@ package net.cf.form.repository.sql.ast.expr.operation;
 
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.util.SqlExprUtils;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public final class SqlInListExpr extends SqlExprImpl implements SqlReplaceable {
+public final class SqlInListExpr extends AbstractSqlExprImpl implements SqlReplaceable {
     private boolean not;
     private SqlExpr expr;
     private List<SqlExpr> targetList = new ArrayList();

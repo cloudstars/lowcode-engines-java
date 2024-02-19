@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObjectImpl;
+import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
 
 
@@ -9,19 +9,19 @@ import net.cf.form.engine.oql.ast.expr.OqlExpr;
  *
  * @author clouds
  */
-public abstract class OqlObjectSourceImpl extends OqlObjectImpl implements OqlObjectSource {
+public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl implements OqlObjectSource {
 
     protected String alias;
 
 
-    public OqlObjectSourceImpl() {
+    public AbstractOqlObjectSourceImpl() {
     }
 
-    public OqlObjectSourceImpl(String alias) {
+    public AbstractOqlObjectSourceImpl(String alias) {
         this.alias = alias;
     }
 
-    public OqlObjectSourceImpl(OqlExpr flashback, String alias) {
+    public AbstractOqlObjectSourceImpl(OqlExpr flashback, String alias) {
         this.alias = alias;
     }
 

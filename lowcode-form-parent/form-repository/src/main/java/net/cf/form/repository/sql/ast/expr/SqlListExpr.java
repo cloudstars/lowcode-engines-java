@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SqlListExpr extends SqlExprImpl implements SqlReplaceable {
+public class SqlListExpr extends AbstractSqlExprImpl implements SqlReplaceable {
     private final List<SqlExpr> items;
 
     public SqlListExpr() {

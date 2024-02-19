@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.ast.expr.identifier;
 
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 import net.cf.form.engine.oql.ast.statement.OqlObjectSource;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
@@ -9,7 +9,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
  *
  * @author clouds
  */
-public final class OqlAllFieldExpr extends OqlExprImpl {
+public final class OqlAllFieldExpr extends AbstractOqlExprImpl {
 
     private transient OqlObjectSource resolvedObjectSource;
 

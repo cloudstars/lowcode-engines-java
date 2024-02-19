@@ -1,20 +1,20 @@
 package net.cf.form.repository.sql.ast.expr.literal;
 
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 
 /**
  * 文本型的字面量表达式
  *
  * @author clouds
  */
-public abstract class SqlTextLiteralExpr extends SqlExprImpl implements SqlLiteralExpr {
+public abstract class AbstractSqlTextLiteralExpr extends AbstractSqlExprImpl implements SqlLiteralExpr {
 
     protected String text;
 
-    public SqlTextLiteralExpr(){
+    public AbstractSqlTextLiteralExpr(){
     }
 
-    public SqlTextLiteralExpr(String text){
+    public AbstractSqlTextLiteralExpr(String text){
         this.text = text;
     }
 
@@ -26,5 +26,5 @@ public abstract class SqlTextLiteralExpr extends SqlExprImpl implements SqlLiter
         this.text = text;
     }
 
-    public abstract SqlTextLiteralExpr _clone();
+    public abstract AbstractSqlTextLiteralExpr _clone();
 }

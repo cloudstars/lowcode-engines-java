@@ -1,6 +1,6 @@
 package net.cf.formula.engine.ast.expr.identifier;
 
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
 /**
@@ -8,7 +8,7 @@ import net.cf.formula.engine.visitor.FxAstVisitor;
  *
  * @author clouds
  */
-public class FxIdentifierExpr extends FxExprImpl implements FxNameExpr {
+public class FxIdentifierExpr extends AbstractFxExprImpl implements FxNameExpr {
 
     protected String name;
 

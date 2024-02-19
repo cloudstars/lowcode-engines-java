@@ -6,7 +6,7 @@ package net.cf.form.repository.sql.parser;
  *
  * @author clouds
  */
-public abstract class SqlParser {
+public abstract class AbstractSqlParser {
 
     /**
      * 词法分析器
@@ -18,15 +18,15 @@ public abstract class SqlParser {
      */
     private int errorEndPos;
 
-    public SqlParser(Lexer lexer) {
+    public AbstractSqlParser(Lexer lexer) {
         this.lexer = lexer;
     }
 
-    public SqlParser(String Sql) {
+    public AbstractSqlParser(String Sql) {
         this(new Lexer(Sql));
     }
 
-    public SqlParser(String sql, SqlParserFeature... features) {
+    public AbstractSqlParser(String sql, SqlParserFeature... features) {
         this(sql);
 
         for(int i = 0, l = features.length; i < l; i++) {

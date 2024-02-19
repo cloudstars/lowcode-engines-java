@@ -8,7 +8,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
  *
  * @author clouds
  */
-public class OqlNumberExpr extends OqlNumericLiteralExpr implements OqlValuableExpr {
+public class OqlNumberExpr extends AbstractOqlNumericLiteralExpr implements OqlValuableExpr {
 
     public OqlNumberExpr() {
     }

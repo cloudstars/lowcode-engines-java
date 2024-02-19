@@ -10,7 +10,7 @@ import java.util.*;
  *
  * @author clouds
  */
-public abstract class SqlObjectImpl implements SqlObject {
+public abstract class AbstractSqlObjectImpl implements SqlObject {
 
     protected SqlObject parent;
     protected Map<String, Object> attributes;
@@ -18,7 +18,7 @@ public abstract class SqlObjectImpl implements SqlObject {
     protected int sourceLine;
     protected int sourceColumn;
 
-    public SqlObjectImpl() {
+    public AbstractSqlObjectImpl() {
     }
 
     @Override

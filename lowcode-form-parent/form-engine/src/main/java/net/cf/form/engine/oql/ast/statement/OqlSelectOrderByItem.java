@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObjectImpl;
+import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
 import net.cf.form.engine.oql.ast.OqlReplaceable;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
 import net.cf.form.engine.oql.ast.expr.literal.OqlIntegerExpr;
@@ -9,7 +9,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 import java.util.Arrays;
 import java.util.List;
 
-public final class OqlSelectOrderByItem extends OqlObjectImpl implements OqlReplaceable {
+public final class OqlSelectOrderByItem extends AbstractOqlObjectImpl implements OqlReplaceable {
 
     protected OqlExpr expr;
 

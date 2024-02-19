@@ -1,20 +1,20 @@
 package net.cf.form.engine.oql.ast.expr.literal;
 
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 
 /**
  * 文本型的字面量表达式
  *
  * @author clouds
  */
-public abstract class OqlTextLiteralExpr extends OqlExprImpl implements OqlLiteralExpr {
+public abstract class AbstractOqlTextLiteralExpr extends AbstractOqlExprImpl implements OqlLiteralExpr {
 
     protected String text;
 
-    public OqlTextLiteralExpr(){
+    public AbstractOqlTextLiteralExpr(){
     }
 
-    public OqlTextLiteralExpr(String text){
+    public AbstractOqlTextLiteralExpr(String text){
         this.text = text;
     }
 
@@ -26,5 +26,5 @@ public abstract class OqlTextLiteralExpr extends OqlExprImpl implements OqlLiter
         this.text = text;
     }
 
-    public abstract OqlTextLiteralExpr clone();
+    public abstract AbstractOqlTextLiteralExpr clone();
 }

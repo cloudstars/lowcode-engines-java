@@ -7,7 +7,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlSelectStatement extends SqlStatementImpl {
+public class SqlSelectStatement extends AbstractSqlStatementImpl {
 
     protected SqlSelect select;
 

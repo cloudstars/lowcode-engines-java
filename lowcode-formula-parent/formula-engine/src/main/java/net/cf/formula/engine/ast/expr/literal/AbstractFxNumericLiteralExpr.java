@@ -1,19 +1,21 @@
 package net.cf.formula.engine.ast.expr.literal;
 
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 
 /**
  * 数字型时字面量表达式
+ *
+ * @author clouds
  */
-public abstract class FxNumericLiteralExpr extends FxExprImpl implements FxLiteralExpr {
+public abstract class AbstractFxNumericLiteralExpr extends AbstractFxExprImpl implements FxLiteralExpr {
 
     protected Number number;
 
 
-    public FxNumericLiteralExpr() {
+    public AbstractFxNumericLiteralExpr() {
     }
 
-    public FxNumericLiteralExpr(Number number) {
+    public AbstractFxNumericLiteralExpr(Number number) {
         this.number = number;
     }
 
@@ -40,6 +42,6 @@ public abstract class FxNumericLiteralExpr extends FxExprImpl implements FxLiter
      *
      * @return
      */
-    public abstract FxNumericLiteralExpr clone();
+    public abstract AbstractFxNumericLiteralExpr clone();
 }
 

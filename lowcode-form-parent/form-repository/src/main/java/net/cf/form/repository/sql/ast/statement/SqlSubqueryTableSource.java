@@ -2,7 +2,7 @@ package net.cf.form.repository.sql.ast.statement;
 
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
-public class SqlSubqueryTableSource extends SqlTableSourceImpl {
+public class SqlSubqueryTableSource extends AbstractSqlTableSourceImpl {
 
     protected SqlSelect select;
 

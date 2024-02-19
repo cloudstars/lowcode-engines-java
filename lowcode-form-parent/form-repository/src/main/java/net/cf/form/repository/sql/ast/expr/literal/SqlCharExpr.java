@@ -8,7 +8,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlCharExpr extends SqlTextLiteralExpr implements SqlValuableExpr {
+public class SqlCharExpr extends AbstractSqlTextLiteralExpr implements SqlValuableExpr {
 
     public SqlCharExpr(String text) {
         super(text);

@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.ast.expr.identifier;
 
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlPropertyExpr extends OqlExprImpl implements OqlNameExpr {
+public class OqlPropertyExpr extends AbstractOqlExprImpl implements OqlNameExpr {
 
     /**
      * 属性的归属

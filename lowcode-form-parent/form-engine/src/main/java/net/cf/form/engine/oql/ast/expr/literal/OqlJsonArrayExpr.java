@@ -1,13 +1,13 @@
 package net.cf.form.engine.oql.ast.expr.literal;
 
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OqlJsonArrayExpr extends OqlExprImpl {
+public class OqlJsonArrayExpr extends AbstractOqlExprImpl {
 
     private List<OqlExpr> items = new ArrayList();
 

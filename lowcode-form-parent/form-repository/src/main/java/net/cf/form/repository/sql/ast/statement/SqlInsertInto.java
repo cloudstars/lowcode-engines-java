@@ -8,7 +8,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlInsertInto extends SqlStatementImpl implements SqlReplaceable {
+public class SqlInsertInto extends AbstractSqlStatementImpl implements SqlReplaceable {
 
     protected SqlExprTableSource tableSource;
 

@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.ast.expr.identifier;
 
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 /**
@@ -8,7 +8,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
  *
  * @author clouds
  */
-public class OqlIdentifierExpr extends OqlExprImpl implements OqlNameExpr {
+public class OqlIdentifierExpr extends AbstractOqlExprImpl implements OqlNameExpr {
 
     protected String name;
 

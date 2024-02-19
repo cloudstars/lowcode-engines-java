@@ -3,7 +3,7 @@ package net.cf.form.engine.oql.ast.expr.literal;
 import net.cf.form.engine.oql.ast.expr.OqlValuableExpr;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
-public class OqlIntegerExpr extends OqlNumericLiteralExpr implements OqlValuableExpr {
+public class OqlIntegerExpr extends AbstractOqlNumericLiteralExpr implements OqlValuableExpr {
 
     public OqlIntegerExpr(String value) {
         super(Integer.parseInt(value));

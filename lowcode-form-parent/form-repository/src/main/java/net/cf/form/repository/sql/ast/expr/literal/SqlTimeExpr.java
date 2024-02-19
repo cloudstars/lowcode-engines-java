@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class SqlTimeExpr extends SqlTextLiteralExpr implements SqlValuableExpr {
+public class SqlTimeExpr extends AbstractSqlTextLiteralExpr implements SqlValuableExpr {
     //public static final SqlDataType DATA_TYPE = new SqlDataTypeImpl("time");
 
     private static String TIME_PATTERN = "HH:mm:ss";

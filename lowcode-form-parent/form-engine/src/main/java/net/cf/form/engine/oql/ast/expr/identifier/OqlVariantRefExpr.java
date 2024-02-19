@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.ast.expr.identifier;
 
 import net.cf.form.engine.oql.ast.OqlObject;
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 /**
@@ -9,7 +9,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
  *
  * @author clouds
  */
-public class OqlVariantRefExpr extends OqlExprImpl {
+public class OqlVariantRefExpr extends AbstractOqlExprImpl {
 
     private String name;
 

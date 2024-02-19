@@ -1,16 +1,16 @@
 package net.cf.form.repository.sql.ast.statement;
 
-import net.cf.form.repository.sql.ast.SqlObjectImpl;
+import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
 import net.cf.form.repository.sql.util.SqlUtils;
 
-public abstract class SqlTableSourceImpl extends SqlObjectImpl implements SqlTableSource {
+public abstract class AbstractSqlTableSourceImpl extends AbstractSqlObjectImpl implements SqlTableSource {
 
     protected String alias;
 
-    public SqlTableSourceImpl() {
+    public AbstractSqlTableSourceImpl() {
     }
 
-    public SqlTableSourceImpl(String alias) {
+    public AbstractSqlTableSourceImpl(String alias) {
         this.alias = alias;
     }
 

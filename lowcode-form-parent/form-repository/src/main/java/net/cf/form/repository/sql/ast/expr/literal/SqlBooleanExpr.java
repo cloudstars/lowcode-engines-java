@@ -1,10 +1,10 @@
 package net.cf.form.repository.sql.ast.expr.literal;
 
-import net.cf.form.repository.sql.ast.expr.SqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.ast.expr.SqlValuableExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
-public final class SqlBooleanExpr extends SqlExprImpl implements SqlLiteralExpr, SqlValuableExpr {
+public final class SqlBooleanExpr extends AbstractSqlExprImpl implements SqlLiteralExpr, SqlValuableExpr {
 
     private boolean value;
 

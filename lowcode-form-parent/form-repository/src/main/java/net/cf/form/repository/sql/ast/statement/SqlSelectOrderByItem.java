@@ -1,12 +1,12 @@
 package net.cf.form.repository.sql.ast.statement;
 
-import net.cf.form.repository.sql.ast.SqlObjectImpl;
+import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
-public final class SqlSelectOrderByItem extends SqlObjectImpl implements SqlReplaceable {
+public final class SqlSelectOrderByItem extends AbstractSqlObjectImpl implements SqlReplaceable {
 
     protected SqlExpr expr;
 

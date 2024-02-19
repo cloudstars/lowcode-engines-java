@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.ast.expr.literal;
 
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
-import net.cf.form.engine.oql.ast.expr.OqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OqlJsonObjectExpr extends OqlExprImpl {
+public class OqlJsonObjectExpr extends AbstractOqlExprImpl {
 
     private Map<String, OqlExpr> items = new HashMap<>();
 

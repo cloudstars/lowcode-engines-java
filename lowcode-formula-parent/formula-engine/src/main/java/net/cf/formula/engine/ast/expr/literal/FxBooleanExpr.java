@@ -1,11 +1,11 @@
 package net.cf.formula.engine.ast.expr.literal;
 
 import net.cf.formula.engine.ast.expr.FxExpr;
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 import net.cf.formula.engine.ast.expr.FxValuableExpr;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 
-public final class FxBooleanExpr extends FxExprImpl implements FxExpr, FxLiteralExpr, FxValuableExpr {
+public final class FxBooleanExpr extends AbstractFxExprImpl implements FxExpr, FxLiteralExpr, FxValuableExpr {
 
     private boolean value;
 

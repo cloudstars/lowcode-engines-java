@@ -2,7 +2,7 @@ package net.cf.form.repository.sql.ast.statement;
 
 
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.SqlObjectImpl;
+import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.util.List;
@@ -12,14 +12,14 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class SqlStatementImpl extends SqlObjectImpl implements SqlStatement {
+public abstract class AbstractSqlStatementImpl extends AbstractSqlObjectImpl implements SqlStatement {
 
     /**
      * SQL语句后是否有冒号
      */
     protected boolean afterSemi;
 
-    public SqlStatementImpl() {
+    public AbstractSqlStatementImpl() {
     }
 
     public List<SqlObject> getChildren() {

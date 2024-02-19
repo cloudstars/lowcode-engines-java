@@ -5,7 +5,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.math.BigDecimal;
 
-public class SqlDecimalExpr extends SqlNumericLiteralExpr implements SqlValuableExpr {
+public class SqlDecimalExpr extends AbstractSqlNumericLiteralExpr implements SqlValuableExpr {
     //public static final SqlDataType DATA_TYPE = new SqlDataTypeImpl("DECIMAL");
 
     //private BigDecimal value;

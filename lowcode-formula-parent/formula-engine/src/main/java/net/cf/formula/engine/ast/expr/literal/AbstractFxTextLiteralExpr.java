@@ -1,20 +1,20 @@
 package net.cf.formula.engine.ast.expr.literal;
 
-import net.cf.formula.engine.ast.expr.FxExprImpl;
+import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
 
 /**
  * 文本型的字面量表达式
  *
  * @author clouds
  */
-public abstract class FxTextLiteralExpr extends FxExprImpl implements FxLiteralExpr {
+public abstract class AbstractFxTextLiteralExpr extends AbstractFxExprImpl implements FxLiteralExpr {
 
     protected String text;
 
-    public FxTextLiteralExpr(){
+    public AbstractFxTextLiteralExpr(){
     }
 
-    public FxTextLiteralExpr(String text){
+    public AbstractFxTextLiteralExpr(String text){
         this.text = text;
     }
 
@@ -26,5 +26,5 @@ public abstract class FxTextLiteralExpr extends FxExprImpl implements FxLiteralE
         this.text = text;
     }
 
-    public abstract FxTextLiteralExpr clone();
+    public abstract AbstractFxTextLiteralExpr clone();
 }

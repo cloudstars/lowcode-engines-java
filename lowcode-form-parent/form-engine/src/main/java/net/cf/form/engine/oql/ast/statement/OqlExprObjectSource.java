@@ -11,7 +11,7 @@ import net.cf.form.engine.oql.visitor.OqlAstVisitor;
  *
  * @author clouds
  */
-public class OqlExprObjectSource extends OqlObjectSourceImpl implements OqlReplaceable {
+public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements OqlReplaceable {
 
     protected OqlExpr expr;
 
