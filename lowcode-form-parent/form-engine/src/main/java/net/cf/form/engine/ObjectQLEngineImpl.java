@@ -31,8 +31,8 @@ public class ObjectQLEngineImpl implements ObjectQLEngine {
 
     private static Logger logger = LoggerFactory.getLogger(ObjectQLEngineImpl.class);
 
-    @Resource
-    private XObjectResolver objectResolver;
+    //@Resource
+    //private XObjectResolver objectResolver;
 
     @Resource
     private FormRepositoryProvider driverResolver;
@@ -60,9 +60,14 @@ public class ObjectQLEngineImpl implements ObjectQLEngine {
         return effectedRows;
     }
 
+    /**
+     * 根据模型决定使用哪个存储
+     *
+     * @param statement
+     * @return
+     */
     private FormRepository resolveRepository(OqlInsertStatement statement) {
-        String objectName = ((OqlIdentifierExpr) statement.getObjectSource().getExpr()).getName();
-        XObject object = this.objectResolver.resolveObject(objectName);
+        XObject object = statement.getObjectSource().getResolvedObject();
         FormRepository repository = this.driverResolver.getByObject(object);
         return repository;
     }
@@ -71,7 +76,7 @@ public class ObjectQLEngineImpl implements ObjectQLEngine {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String create(OqlInsertStatement statement, Map<String, Object> dataMap) {
         // 语法检查s
-        InsertStatementCheckOqlAstVisitor checkVisitor = new InsertStatementCheckOqlAstVisitor(this.objectResolver);
+        InsertStatementCheckOqlAstVisitor checkVisitor = new InsertStatementCheckOqlAstVisitor();
         statement.accept(checkVisitor);
 
 

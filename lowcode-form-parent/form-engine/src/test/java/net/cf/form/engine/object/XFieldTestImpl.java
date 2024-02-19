@@ -50,13 +50,23 @@ public class XFieldTestImpl implements XField {
     }
 
     @Override
-    public int getDataLength() {
+    public Integer getDataLength() {
         return 0;
     }
 
     @Override
-    public int getDataPrecision() {
+    public Integer getDataPrecision() {
         return 0;
+    }
+
+    @Override
+    public Number getMinValue() {
+        return null;
+    }
+
+    @Override
+    public Number getMaxValue() {
+        return null;
     }
 
     @Override

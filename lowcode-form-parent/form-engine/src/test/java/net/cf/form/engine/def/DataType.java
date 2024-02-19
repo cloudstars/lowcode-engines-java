@@ -8,8 +8,7 @@ package net.cf.form.engine.def;
 public enum DataType {
     String,
     Number,
-    DateTime,
-    Time,
+    Date,
     Boolean,
     Object
 }

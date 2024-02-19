@@ -2,7 +2,6 @@ package net.cf.form.engine.object;
 
 import net.cf.commons.test.util.FileUtils;
 import net.cf.commons.util.ObjectUtils;
-import net.cf.form.engine.XObjectResolver;
 import net.cf.form.engine.def.FormDefinition;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,4 @@
-package net.cf.form.engine;
-
-import net.cf.form.engine.object.XObject;
+package net.cf.form.engine.object;
 
 /**
  * XObject解析器

@@ -1,7 +1,6 @@
 package net.cf.form.engine.oql.visitor;
 
 import net.cf.commons.lang.BusinessException;
-import net.cf.form.engine.XObjectResolver;
 import net.cf.form.engine.object.XField;
 import net.cf.form.engine.object.XObject;
 import net.cf.form.engine.oql.ast.expr.OqlExpr;
@@ -14,17 +13,14 @@ import java.util.List;
 
 public class InsertStatementCheckOqlAstVisitor implements OqlAstVisitor {
 
-    private final XObjectResolver objectResolver;
-
-    public InsertStatementCheckOqlAstVisitor(XObjectResolver objectResolver) {
-        this.objectResolver = objectResolver;
+    public InsertStatementCheckOqlAstVisitor() {
     }
 
     @Override
     public boolean visit(OqlInsertInto x) {
         OqlExprObjectSource objectSource = x.getObjectSource();
         String objectName = ((OqlIdentifierExpr) objectSource.getExpr()).getName();
-        XObject object = this.objectResolver.resolveObject(objectName);
+        XObject object = objectSource.getResolvedObject();
         if (object == null) {
             throw new BusinessException("对象" + objectName + "不存在！");
         }

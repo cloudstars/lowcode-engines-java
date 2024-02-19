@@ -10,18 +10,18 @@ import java.util.List;
 public interface XField<P extends XFieldProperty> {
 
     /**
-     * 获取字段的编号
-     *
-     * @return
-     */
-    String getCode();
-
-    /**
      * 获取字段的名称
      *
      * @return
      */
     String getName();
+
+    /**
+     * 获取字段的编号
+     *
+     * @return
+     */
+    String getCode();
 
     /**
      * 获取字段的列名
@@ -30,12 +30,17 @@ public interface XField<P extends XFieldProperty> {
      */
     String getColumnName();
 
+    /**
+     * 是否主键字段
+     *
+     * @return
+     */
     default boolean isPrimary() {
         return false;
     }
 
     /**
-     * 是否自动生成的主键
+     * 是否自动生成的主键字段
      *
      * @return
      */
@@ -62,14 +67,28 @@ public interface XField<P extends XFieldProperty> {
      *
      * @return
      */
-    int getDataLength();
+    Integer getDataLength();
 
     /**
      * 获取数据的精度
      *
      * @return
      */
-    int getDataPrecision();
+    Integer getDataPrecision();
+
+    /**
+     * 获取最小值
+     *
+     * @return
+     */
+    Number getMinValue();
+
+    /**
+     * 获取最大值
+     *
+     * @return
+     */
+    Number getMaxValue();
 
     /**
      * 获取字段的子属性

@@ -1,6 +1,5 @@
 package net.cf.form.engine.oql.visitor;
 
-import net.cf.form.engine.XObjectResolver;
 import net.cf.form.engine.object.XObject;
 import net.cf.form.engine.oql.ast.expr.identifier.OqlIdentifierExpr;
 import net.cf.form.engine.oql.ast.statement.OqlInsertInto;
@@ -10,23 +9,19 @@ import java.util.Map;
 
 public class DefaultValueGenerateOqlAstVisitor implements OqlAstVisitor {
 
-    private XObjectResolver resolver;
-
     private Map<String, Object> dataMap;
 
-    public DefaultValueGenerateOqlAstVisitor(XObjectResolver resolver) {
-        this.resolver = resolver;
+    public DefaultValueGenerateOqlAstVisitor() {
     }
 
-    public DefaultValueGenerateOqlAstVisitor(XObjectResolver resolver, Map<String, Object> dataMap) {
-        this.resolver = resolver;
+    public DefaultValueGenerateOqlAstVisitor(Map<String, Object> dataMap) {
         this.dataMap = dataMap;
     }
 
     @Override
     public boolean visit(OqlInsertInto x) {
         String objectName = ((OqlIdentifierExpr) x.getObjectSource().getExpr()).getName();
-        XObject object = this.resolver.resolveObject(objectName);
+        XObject object = x.getObjectSource().getResolvedObject();
 
         return true;
     }
