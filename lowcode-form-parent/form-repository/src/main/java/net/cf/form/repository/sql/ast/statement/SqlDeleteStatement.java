@@ -60,11 +60,11 @@ public class SqlDeleteStatement extends AbstractSqlStatementImpl implements SqlS
     }
 
     @Override
-    public SqlDeleteStatement _clone() {
+    public SqlDeleteStatement cloneMe() {
         SqlDeleteStatement statement = new SqlDeleteStatement();
-        statement.setTableSource(this.tableSource._clone());
+        statement.setTableSource(this.tableSource.cloneMe());
         if (this.where != null) {
-            statement.setWhere(this.where._clone());
+            statement.setWhere(this.where.cloneMe());
         }
 
         return statement;

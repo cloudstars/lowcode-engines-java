@@ -13,9 +13,9 @@ public class FxExprUtils {
         if (a == b) {
             return true;
         } else if (a != null && b != null) {
-            Class<?> clazz_a = a.getClass();
+            /*Class<?> clazz_a = a.getClass();
             Class<?> clazz_b = b.getClass();
-            /*if (clazz_a == FxPropertyExpr.class && clazz_b == FxIdentifierExpr.class) {
+            if (clazz_a == FxPropertyExpr.class && clazz_b == FxIdentifierExpr.class) {
                 return ((FxPropertyExpr) a).equals((FxIdentifierExpr) b);
             } else if (clazz_a != clazz_b) {
                 return false;

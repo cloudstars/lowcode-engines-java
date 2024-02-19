@@ -72,10 +72,10 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
     }
 
     @Override
-    public SqlPropertyExpr _clone() {
+    public SqlPropertyExpr cloneMe() {
         SqlName owner_x = null;
         if (this.owner != null) {
-            owner_x = this.owner._clone();
+            owner_x = this.owner.cloneMe();
         }
 
         SqlPropertyExpr x = new SqlPropertyExpr(owner_x, this.name);

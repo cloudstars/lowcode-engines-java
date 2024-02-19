@@ -32,6 +32,6 @@ public interface SqlTableSource extends SqlObject {
     boolean containsAlias(String alias);
 
     @Override
-    SqlTableSource _clone();
+    SqlTableSource cloneMe();
 
 }

@@ -29,7 +29,7 @@ public class SqlDecimalExpr extends AbstractSqlNumericLiteralExpr implements Sql
     }
 
     @Override
-    public SqlDecimalExpr _clone() {
+    public SqlDecimalExpr cloneMe() {
         return new SqlDecimalExpr((BigDecimal) this.number);
     }
 

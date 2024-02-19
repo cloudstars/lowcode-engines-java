@@ -39,7 +39,7 @@ public class SqlNumberExpr extends AbstractSqlNumericLiteralExpr implements SqlV
     }
 
     @Override
-    public SqlNumberExpr _clone() {
+    public SqlNumberExpr cloneMe() {
         SqlNumberExpr x = new SqlNumberExpr();
         x.number = this.number;
         return x;

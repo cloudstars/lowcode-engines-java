@@ -15,7 +15,7 @@ public abstract class AbstractSqlExprImpl extends AbstractSqlObjectImpl implemen
     public AbstractSqlExprImpl() {}
 
     @Override
-    public SqlExpr _clone() {
+    public SqlExpr cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 

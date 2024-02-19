@@ -80,11 +80,11 @@ public class SqlExprTableSource extends AbstractSqlTableSourceImpl implements Sq
     }
 
     @Override
-    public SqlExprTableSource _clone() {
+    public SqlExprTableSource cloneMe() {
         SqlExprTableSource x = new SqlExprTableSource();
         x.alias = this.alias;
         if (this.expr != null) {
-            x.setExpr(this.expr._clone());
+            x.setExpr(this.expr.cloneMe());
         }
 
         return x;

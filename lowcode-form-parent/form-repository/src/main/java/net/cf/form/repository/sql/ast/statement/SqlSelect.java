@@ -147,27 +147,27 @@ public class SqlSelect extends AbstractSqlObjectImpl {
     }
 
     @Override
-    public SqlSelect _clone() {
+    public SqlSelect cloneMe() {
         SqlSelect select = new SqlSelect();
         List<SqlSelectItem> cloneItems = new ArrayList<>();
         for (SqlSelectItem selectItem : selectItems) {
-            cloneItems.add(selectItem._clone());
+            cloneItems.add(selectItem.cloneMe());
         }
         select.setSelectItems(cloneItems);
         if (this.from != null) {
-            select.setFrom(this.from._clone());
+            select.setFrom(this.from.cloneMe());
         }
         if (this.where != null) {
-            select.setWhere(this.where._clone());
+            select.setWhere(this.where.cloneMe());
         }
         if (this.groupBy != null) {
-            select.setGroupBy(this.groupBy._clone());
+            select.setGroupBy(this.groupBy.cloneMe());
         }
         if (this.orderBy != null) {
-            select.setOrderBy(this.orderBy._clone());
+            select.setOrderBy(this.orderBy.cloneMe());
         }
         if (this.limit != null) {
-            setLimit(this.limit._clone());
+            setLimit(this.limit.cloneMe());
         }
 
         return select;

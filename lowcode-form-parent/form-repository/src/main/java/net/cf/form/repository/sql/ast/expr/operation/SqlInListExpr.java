@@ -49,13 +49,13 @@ public final class SqlInListExpr extends AbstractSqlExprImpl implements SqlRepla
         SqlInListExpr x = new SqlInListExpr();
         x.not = this.not;
         if (this.expr != null) {
-            x.setExpr(this.expr._clone());
+            x.setExpr(this.expr.cloneMe());
         }
 
         Iterator var2 = this.targetList.iterator();
         while(var2.hasNext()) {
             SqlExpr e = (SqlExpr)var2.next();
-            SqlExpr e2 = e._clone();
+            SqlExpr e2 = e.cloneMe();
             e2.setParent(x);
             x.targetList.add(e2);
         }

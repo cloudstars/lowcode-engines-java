@@ -3,7 +3,7 @@ package net.cf.form.repository.sql.ast;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**
- * Sql AST 中的节点的顶层抽象
+ * Sql Ast 中的节点的顶层抽象
  *
  * @author clouds
  */
@@ -15,6 +15,15 @@ public interface SqlObject {
      * @param visitor
      */
     void accept(SqlAstVisitor visitor);
+
+    /**
+     * 克隆自已
+     *
+     * 备注：起名为"cloneMe"是为了避免与Object的clone名称冲突
+     *
+     * @return
+     */
+    SqlObject cloneMe();
 
     /**
      * 获取父节点

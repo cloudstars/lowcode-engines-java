@@ -61,11 +61,11 @@ public class SqlSelectItem extends AbstractSqlExprImpl implements SqlReplaceable
     }
 
     @Override
-    public SqlSelectItem _clone() {
+    public SqlSelectItem cloneMe() {
         SqlSelectItem x = new SqlSelectItem();
         x.alias = this.alias;
         if (this.expr != null) {
-            x.setExpr(this.expr._clone());
+            x.setExpr(this.expr.cloneMe());
         }
 
         return x;

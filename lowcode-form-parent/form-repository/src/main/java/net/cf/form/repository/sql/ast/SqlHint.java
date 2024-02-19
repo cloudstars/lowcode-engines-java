@@ -8,5 +8,5 @@ package net.cf.form.repository.sql.ast;
 public interface SqlHint extends SqlObject {
 
     @Override
-    SqlHint _clone();
+    SqlHint cloneMe();
 }

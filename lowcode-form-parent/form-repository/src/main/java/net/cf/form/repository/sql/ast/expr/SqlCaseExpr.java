@@ -108,21 +108,21 @@ public class SqlCaseExpr extends AbstractSqlExprImpl implements SqlReplaceable {
     }
 
     @Override
-    public SqlCaseExpr _clone() {
+    public SqlCaseExpr cloneMe() {
         SqlCaseExpr x = new SqlCaseExpr();
         Iterator var2 = this.items.iterator();
 
         while(var2.hasNext()) {
             Item item = (Item)var2.next();
-            x.addItem(item._clone());
+            x.addItem(item.cloneMe());
         }
 
         if (this.valueExpr != null) {
-            x.setValueExpr(this.valueExpr._clone());
+            x.setValueExpr(this.valueExpr.cloneMe());
         }
 
         if (this.elseExpr != null) {
-            x.setElseExpr(this.elseExpr._clone());
+            x.setElseExpr(this.elseExpr.cloneMe());
         }
 
         return x;
@@ -179,14 +179,14 @@ public class SqlCaseExpr extends AbstractSqlExprImpl implements SqlReplaceable {
         }
 
         @Override
-        public Item _clone() {
+        public Item cloneMe() {
             Item x = new Item();
             if (this.conditionExpr != null) {
-                x.setConditionExpr(this.conditionExpr._clone());
+                x.setConditionExpr(this.conditionExpr.cloneMe());
             }
 
             if (this.valueExpr != null) {
-                x.setValueExpr(this.valueExpr._clone());
+                x.setValueExpr(this.valueExpr.cloneMe());
             }
 
             return x;

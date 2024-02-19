@@ -21,7 +21,7 @@ public final class SqlNullExpr extends AbstractSqlExprImpl implements SqlLiteral
     }
 
     @Override
-    public SqlNullExpr _clone() {
+    public SqlNullExpr cloneMe() {
         return new SqlNullExpr();
     }
 }

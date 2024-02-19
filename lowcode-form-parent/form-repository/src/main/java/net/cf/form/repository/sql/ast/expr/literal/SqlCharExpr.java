@@ -26,7 +26,7 @@ public class SqlCharExpr extends AbstractSqlTextLiteralExpr implements SqlValuab
     }
 
     @Override
-    public SqlCharExpr _clone() {
+    public SqlCharExpr cloneMe() {
         return new SqlCharExpr(this.text);
     }
 }

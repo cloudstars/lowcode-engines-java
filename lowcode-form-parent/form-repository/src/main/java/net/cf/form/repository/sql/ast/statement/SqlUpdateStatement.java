@@ -81,14 +81,14 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
     }
 
     @Override
-    public SqlUpdateStatement _clone() {
+    public SqlUpdateStatement cloneMe() {
         SqlUpdateStatement statement = new SqlUpdateStatement();
-        statement.setTableSource(this.tableSource._clone());
+        statement.setTableSource(this.tableSource.cloneMe());
         for (SqlUpdateSetItem setItem : this.items) {
             statement.addSetItem(setItem);
         }
         if (this.where != null) {
-            statement.setWhere(this.where._clone());
+            statement.setWhere(this.where.cloneMe());
         }
 
         return statement;

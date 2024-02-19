@@ -32,7 +32,7 @@ public class SqlCommentHint extends AbstractSqlObjectImpl implements SqlHint {
     }
 
     @Override
-    public SqlCommentHint _clone() {
+    public SqlCommentHint cloneMe() {
         return new SqlCommentHint(this.text);
     }
 

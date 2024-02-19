@@ -31,7 +31,7 @@ public final class SqlAllColumnExpr extends AbstractSqlExprImpl {
     }
 
     @Override
-    public SqlAllColumnExpr _clone() {
+    public SqlAllColumnExpr cloneMe() {
         SqlAllColumnExpr x = new SqlAllColumnExpr();
         x.resolvedObjectSource = this.resolvedObjectSource;
         return x;

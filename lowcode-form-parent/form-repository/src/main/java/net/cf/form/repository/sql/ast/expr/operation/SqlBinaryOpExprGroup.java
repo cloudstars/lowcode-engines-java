@@ -31,10 +31,10 @@ public class SqlBinaryOpExprGroup extends AbstractSqlExprImpl implements SqlRepl
     }
 
     @Override
-    public SqlExpr _clone() {
+    public SqlExpr cloneMe() {
         SqlBinaryOpExprGroup x = new SqlBinaryOpExprGroup(this.operator);
         for (SqlExpr item : this.items) {
-            SqlExpr item2 = item._clone();
+            SqlExpr item2 = item.cloneMe();
             item2.setParent(this);
             x.items.add(item2);
         }

@@ -36,7 +36,7 @@ public class SqlDateTimeExpr extends AbstractSqlTextLiteralExpr implements SqlVa
     }
 
     @Override
-    public SqlDateTimeExpr _clone() {
+    public SqlDateTimeExpr cloneMe() {
         SqlDateTimeExpr x = new SqlDateTimeExpr();
         if (this.text != null) {
             x.setText(this.text);

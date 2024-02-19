@@ -26,5 +26,5 @@ public abstract class AbstractSqlTextLiteralExpr extends AbstractSqlExprImpl imp
         this.text = text;
     }
 
-    public abstract AbstractSqlTextLiteralExpr _clone();
+    public abstract AbstractSqlTextLiteralExpr cloneMe();
 }

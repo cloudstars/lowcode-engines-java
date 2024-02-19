@@ -62,7 +62,7 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl {
     }
 
     @Override
-    public SqlVariantRefExpr _clone() {
+    public SqlVariantRefExpr cloneMe() {
         SqlVariantRefExpr var = new SqlVariantRefExpr(this.name);
         return var;
     }

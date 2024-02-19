@@ -86,16 +86,16 @@ public class SqlSelectGroupByClause extends AbstractSqlObjectImpl implements Sql
     }
 
     @Override
-    public SqlSelectGroupByClause _clone() {
+    public SqlSelectGroupByClause cloneMe() {
         SqlSelectGroupByClause x = new SqlSelectGroupByClause();
         for (SqlExpr item : this.items) {
-            SqlExpr item2 = item._clone();
+            SqlExpr item2 = item.cloneMe();
             item2.setParent(x);
             x.items.add(item2);
         }
 
         if (this.having != null) {
-            x.setHaving(this.having._clone());
+            x.setHaving(this.having.cloneMe());
         }
 
         x.distinct = this.distinct;

@@ -31,7 +31,7 @@ public final class SqlBooleanExpr extends AbstractSqlExprImpl implements SqlLite
     }
 
     @Override
-    public SqlBooleanExpr _clone() {
+    public SqlBooleanExpr cloneMe() {
         return new SqlBooleanExpr(this.value);
     }
 

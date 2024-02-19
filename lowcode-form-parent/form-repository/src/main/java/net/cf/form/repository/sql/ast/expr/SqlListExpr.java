@@ -53,13 +53,13 @@ public class SqlListExpr extends AbstractSqlExprImpl implements SqlReplaceable {
     }
 
     @Override
-    public SqlListExpr _clone() {
+    public SqlListExpr cloneMe() {
         SqlListExpr x = new SqlListExpr();
         Iterator var2 = this.items.iterator();
 
         while (var2.hasNext()) {
             SqlExpr item = (SqlExpr) var2.next();
-            SqlExpr item2 = item._clone();
+            SqlExpr item2 = item.cloneMe();
             item2.setParent(x);
             x.items.add(item2);
         }

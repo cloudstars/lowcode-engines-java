@@ -28,7 +28,7 @@ public class SqlIntegerExpr extends AbstractSqlNumericLiteralExpr implements Sql
     }
 
     @Override
-    public SqlIntegerExpr _clone() {
+    public SqlIntegerExpr cloneMe() {
         return new SqlIntegerExpr(this.number.intValue());
     }
 }

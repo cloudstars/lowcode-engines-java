@@ -61,13 +61,14 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    private OqlExpr exprRest(OqlExpr expr) {
-        expr = this.multiplicativeRest(expr);
-        expr = this.additiveRest(expr);
-        expr = this.relationalRest(expr);
-        expr = this.andRest(expr);
-        expr = this.orRest(expr);
-        return expr;
+    private OqlExpr exprRest(final OqlExpr expr) {
+        OqlExpr targetExpr = expr;
+        targetExpr = this.multiplicativeRest(targetExpr);
+        targetExpr = this.additiveRest(targetExpr);
+        targetExpr = this.relationalRest(targetExpr);
+        targetExpr = this.andRest(targetExpr);
+        targetExpr = this.orRest(targetExpr);
+        return targetExpr;
     }
 
     /**
@@ -91,7 +92,8 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    private OqlExpr orRest(OqlExpr expr) {
+    private OqlExpr orRest(final OqlExpr expr) {
+        OqlExpr targetExpr = expr;
         while (true) {
             Token token = this.lexer.token;
             if (token != Token.OR && token != Token.BARBAR) {
@@ -100,10 +102,10 @@ public class OqlExprParser extends AbstractOqlParser {
 
             this.lexer.nextToken();
             OqlExpr rightExp = this.and();
-            expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.Or, rightExp);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Or, rightExp);
         }
 
-        return expr;
+        return targetExpr;
     }
 
 
@@ -128,7 +130,8 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    private OqlExpr andRest(OqlExpr expr) {
+    private OqlExpr andRest(final OqlExpr expr) {
+        OqlExpr targetExpr = expr;
         while (true) {
             Token token = this.lexer.token;
             if (token != Token.AND && token != Token.AMPAMP) {
@@ -137,10 +140,10 @@ public class OqlExprParser extends AbstractOqlParser {
 
             this.lexer.nextToken();
             OqlExpr rightExp = this.relational();
-            expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.And, rightExp);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.And, rightExp);
         }
 
-        return expr;
+        return targetExpr;
     }
 
     /**
@@ -160,27 +163,28 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    private OqlExpr multiplicativeRest(OqlExpr expr) {
-        Token token = this.lexer.token;
+    private OqlExpr multiplicativeRest(final OqlExpr expr) {
+        OqlExpr targetExpr = expr;
         OqlExpr rightExpr;
+        Token token = this.lexer.token;
         if (token == Token.STAR) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.Multiply, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Multiply, rightExpr);
+            targetExpr = this.multiplicativeRest(targetExpr);
         } else if (token == Token.SLASH) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.Divide, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Divide, rightExpr);
+            targetExpr = this.multiplicativeRest(targetExpr);
         } else if (token == Token.PERCENT) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.Modulus, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Modulus, rightExpr);
+            targetExpr = this.multiplicativeRest(targetExpr);
         }
 
-        return expr;
+        return targetExpr;
     }
 
 
@@ -204,22 +208,23 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    private OqlExpr additiveRest(OqlExpr expr) {
-        Token token = this.lexer.token;
+    private OqlExpr additiveRest(final OqlExpr expr) {
+        OqlExpr targetExpr = expr;
         OqlExpr rightExpr;
+        Token token = this.lexer.token;
         if (token == Token.PLUS) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.Add, rightExpr);
-            expr = this.additiveRest(expr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Add, rightExpr);
+            targetExpr = this.additiveRest(targetExpr);
         } else if (token == Token.SUB) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.Subtract, rightExpr);
-            expr = this.additiveRest(expr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Subtract, rightExpr);
+            targetExpr = this.additiveRest(targetExpr);
         }
 
-        return expr;
+        return targetExpr;
     }
 
 
@@ -239,51 +244,52 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    private OqlExpr relationalRest(OqlExpr expr) {
-        Token token = this.lexer.token;
+    private OqlExpr relationalRest(final OqlExpr expr) {
+        OqlExpr targetExpr = expr;
         OqlExpr rightExp;
+        Token token = this.lexer.token;
         switch (token) {
             case EQ:
             case EQEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.Equal, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Equal, rightExp);
                 break;
             case LTGT:
             case BANGEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.NotEqual, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.NotEqual, rightExp);
                 break;
             case LT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.LessThan, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.LessThan, rightExp);
                 break;
             case LTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.LessThanOrEqual, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.LessThanOrEqual, rightExp);
                 break;
             case GT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.GreaterThan, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.GreaterThan, rightExp);
                 break;
             case GTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new OqlBinaryOpExpr(expr, OqlBinaryOperator.GreaterThanOrEqual, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.GreaterThanOrEqual, rightExp);
                 break;
             case LIKE:
                 this.lexer.nextToken();
                 rightExp = this.expr();
                 this.lexer.nextToken();
-                expr = new OqlLikeOpExpr(expr, rightExp);
+                targetExpr = new OqlLikeOpExpr(targetExpr, rightExp);
 
                 if (this.lexer.token == Token.ESCAPE) {
                     this.lexer.nextToken();
-                    ((OqlLikeOpExpr) expr).setEscape(this.lexer.stringVal());
+                    ((OqlLikeOpExpr) targetExpr).setEscape(this.lexer.stringVal());
                     this.lexer.nextToken();
                 }
 
@@ -292,7 +298,7 @@ public class OqlExprParser extends AbstractOqlParser {
                 this.lexer.nextToken();
                 this.accept(Token.LPAREN);
                 OqlListExpr listExpr = new OqlListExpr();
-                expr = new OqlInOpExpr(expr, listExpr);
+                targetExpr = new OqlInOpExpr(targetExpr, listExpr);
                 this.exprList(listExpr.getItems(), listExpr);
                 this.accept(Token.RPAREN);
 
@@ -301,12 +307,12 @@ public class OqlExprParser extends AbstractOqlParser {
                 this.lexer.nextToken();
 
                 OqlJsonArrayExpr array = new OqlJsonArrayExpr();
-                expr = new OqlArrayContainsOpExpr(expr, array);
+                targetExpr = new OqlArrayContainsOpExpr(targetExpr, array);
                 if (this.lexer.token == Token.ANY) {
-                    ((OqlArrayContainsOpExpr) expr).setOption(OqlArrayContainsOption.ANY);
+                    ((OqlArrayContainsOpExpr) targetExpr).setOption(OqlArrayContainsOption.ANY);
                     this.lexer.nextToken();
                 } else if (this.lexer.token == Token.ALL) {
-                    ((OqlArrayContainsOpExpr) expr).setOption(OqlArrayContainsOption.ALL);
+                    ((OqlArrayContainsOpExpr) targetExpr).setOption(OqlArrayContainsOption.ALL);
                     this.lexer.nextToken();
                 }
 
@@ -319,7 +325,7 @@ public class OqlExprParser extends AbstractOqlParser {
                 break;
         }
 
-        return expr;
+        return targetExpr;
     }
 
 
@@ -438,22 +444,22 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    private OqlExpr primaryRest(OqlExpr expr) {
+    private OqlExpr primaryRest(final OqlExpr expr) {
         if (expr == null) {
             throw new IllegalArgumentException("expr parse error: null.");
         } else {
+            OqlExpr targetExpr = expr;
             Token token = this.lexer.token;
 
             if (token == Token.DOT) {
                 this.lexer.nextToken();
-                expr = this.dotRest(expr);
-                return this.primaryRest(expr);
+                targetExpr = this.dotRest(targetExpr);
+                targetExpr = this.primaryRest(targetExpr);
             } else if (this.lexer.token == Token.LPAREN) {
-                OqlExpr method = this.methodInvokeRest(expr);
-                return method;
+                targetExpr = this.methodInvokeRest(targetExpr);
             }
 
-            return expr;
+            return targetExpr;
         }
     }
 
@@ -463,16 +469,18 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    protected OqlExpr dotRest(OqlExpr expr) {
+    protected OqlExpr dotRest(final OqlExpr expr) {
+        OqlExpr targetExpr = expr;
         String name;
         if (this.lexer.token == Token.IDENTIFIER) {
             name = this.lexer.stringVal();
             this.lexer.nextToken();
-            expr = new OqlPropertyExpr((OqlNameExpr) expr, name);
+            targetExpr = new OqlPropertyExpr((OqlNameExpr) targetExpr, name);
         }
 
-        expr = this.primaryRest(expr);
-        return expr;
+        targetExpr = this.primaryRest(targetExpr);
+
+        return targetExpr;
     }
 
     /**
@@ -481,7 +489,7 @@ public class OqlExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    protected OqlExpr methodInvokeRest(OqlExpr expr) {
+    protected OqlExpr methodInvokeRest(final OqlExpr expr) {
         this.accept(Token.LPAREN);
 
         if (expr instanceof OqlIdentifierExpr) {

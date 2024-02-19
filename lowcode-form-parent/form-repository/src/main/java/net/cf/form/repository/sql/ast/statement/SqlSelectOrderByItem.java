@@ -44,9 +44,9 @@ public final class SqlSelectOrderByItem extends AbstractSqlObjectImpl implements
     }
 
     @Override
-    public SqlSelectOrderByItem _clone() {
+    public SqlSelectOrderByItem cloneMe() {
         SqlSelectOrderByItem x = new SqlSelectOrderByItem();
-        x.setExpr(this.expr._clone());
+        x.setExpr(this.expr.cloneMe());
         x.setAscending(this.isAscending());
         return x;
     }

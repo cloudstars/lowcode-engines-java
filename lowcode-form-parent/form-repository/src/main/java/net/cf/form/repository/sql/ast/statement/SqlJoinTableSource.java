@@ -230,24 +230,24 @@ public class SqlJoinTableSource extends AbstractSqlTableSourceImpl implements Sq
     }
 
     @Override
-    public SqlJoinTableSource _clone() {
+    public SqlJoinTableSource cloneMe() {
         SqlJoinTableSource x = new SqlJoinTableSource();
         x.alias = this.alias;
         if (this.left != null) {
-            x.setLeft(this.left._clone());
+            x.setLeft(this.left.cloneMe());
         }
 
         x.joinType = this.joinType;
         if (this.right != null) {
-            x.setRight(this.right._clone());
+            x.setRight(this.right.cloneMe());
         }
 
         if (this.condition != null) {
-            x.setCondition(this.condition._clone());
+            x.setCondition(this.condition.cloneMe());
         }
 
         for (SqlExpr item : this.using) {
-            SqlExpr item2 = item._clone();
+            SqlExpr item2 = item.cloneMe();
             item2.setParent(x);
             x.using.add(item2);
         }

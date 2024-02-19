@@ -49,10 +49,10 @@ public final class SqlNotExpr extends AbstractSqlExprImpl {
     }
 
     @Override
-    public SqlNotExpr _clone() {
+    public SqlNotExpr cloneMe() {
         SqlNotExpr x = new SqlNotExpr();
         if (this.expr != null) {
-            x.setExpr(this.expr._clone());
+            x.setExpr(this.expr.cloneMe());
         }
 
         return x;

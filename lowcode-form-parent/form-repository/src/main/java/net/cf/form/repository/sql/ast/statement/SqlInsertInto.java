@@ -80,17 +80,17 @@ public class SqlInsertInto extends AbstractSqlStatementImpl implements SqlReplac
     }
 
     @Override
-    public SqlInsertInto _clone() {
+    public SqlInsertInto cloneMe() {
         SqlInsertInto x = new SqlInsertInto();
         if (this.tableSource != null) {
-            x.setTableSource(this.getTableSource()._clone());
+            x.setTableSource(this.getTableSource().cloneMe());
         }
 
         for (SqlExpr field : this.columns) {
-            x.columns.add(field._clone());
+            x.columns.add(field.cloneMe());
         }
         for (SqlInsertStatement.ValuesClause valuesItem : this.valuesList) {
-            x.valuesList.add(valuesItem._clone());
+            x.valuesList.add(valuesItem.cloneMe());
         }
 
         return x;

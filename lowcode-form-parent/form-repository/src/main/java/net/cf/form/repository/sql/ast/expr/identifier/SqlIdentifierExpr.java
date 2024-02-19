@@ -69,7 +69,7 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
     }
 
     @Override
-    public SqlIdentifierExpr _clone() {
+    public SqlIdentifierExpr cloneMe() {
         SqlIdentifierExpr x = new SqlIdentifierExpr(this.name);
         return x;
     }

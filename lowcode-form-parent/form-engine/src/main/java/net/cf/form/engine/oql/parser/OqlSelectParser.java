@@ -94,37 +94,38 @@ public class OqlSelectParser extends OqlExprParser {
      *
      * @return
      */
-    private OqlExpr parseSelectItemExpr(OqlExpr expr) {
+    private OqlExpr parseSelectItemExpr(final OqlExpr expr) {
+        OqlExpr targetExpr = null;
         Token token = this.lexer.token;
         switch (token) {
             case STAR:
                 if (expr == null) {
-                    expr = new OqlAllFieldExpr();
+                    targetExpr = new OqlAllFieldExpr();
                 } else {
-                    expr = new OqlPropertyExpr((OqlNameExpr) expr, Token.STAR.getName());
+                    targetExpr = new OqlPropertyExpr((OqlNameExpr) expr, Token.STAR.getName());
                 }
                 this.lexer.nextToken();
                 break;
             case LITERAL_STRING:
             case LITERAL_INT:
             case LITERAL_FLOAT:
-                expr = this.primary();
+                targetExpr = this.primary();
                 break;
             case IDENTIFIER:
                 String identifier = this.lexer.stringVal();
                 this.lexer.nextToken();
                 if (expr == null) {
-                    expr = new OqlIdentifierExpr(identifier);
+                    targetExpr = new OqlIdentifierExpr(identifier);
                     if (this.lexer.token == Token.LPAREN) {
-                        expr = this.methodInvokeRest(expr);
+                        targetExpr = this.methodInvokeRest(expr);
                     }
                 } else {
-                    expr = new OqlPropertyExpr((OqlNameExpr) expr, identifier);
+                    targetExpr = new OqlPropertyExpr((OqlNameExpr) expr, identifier);
                 }
 
                 if (this.lexer.token == Token.DOT) {
                     this.lexer.nextToken();
-                    expr = parseSelectItemExpr(expr);
+                    targetExpr = parseSelectItemExpr(expr);
                 }
 
                 break;
@@ -132,7 +133,7 @@ public class OqlSelectParser extends OqlExprParser {
                 printError(token);
         }
 
-        return expr;
+        return targetExpr;
     }
 
     /**

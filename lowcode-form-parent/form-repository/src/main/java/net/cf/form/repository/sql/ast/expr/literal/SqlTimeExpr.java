@@ -36,7 +36,7 @@ public class SqlTimeExpr extends AbstractSqlTextLiteralExpr implements SqlValuab
     }
 
     @Override
-    public SqlTimeExpr _clone() {
+    public SqlTimeExpr cloneMe() {
         SqlTimeExpr x = new SqlTimeExpr();
         if (this.text != null) {
             x.setText(this.text);

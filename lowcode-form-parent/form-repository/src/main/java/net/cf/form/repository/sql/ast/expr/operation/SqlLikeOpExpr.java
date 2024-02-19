@@ -25,7 +25,7 @@ public class SqlLikeOpExpr extends SqlBinaryOpExpr {
     }
 
     @Override
-    public SqlLikeOpExpr _clone() {
+    public SqlLikeOpExpr cloneMe() {
         SqlLikeOpExpr x = new SqlLikeOpExpr();
         super._cloneTo(x);
         x.setEscape(this.escape);

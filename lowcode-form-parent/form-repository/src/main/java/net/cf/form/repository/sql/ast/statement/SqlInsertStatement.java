@@ -93,10 +93,10 @@ public class SqlInsertStatement extends SqlInsertInto implements SqlStatement {
         }
 
         @Override
-        public ValuesClause _clone() {
+        public ValuesClause cloneMe() {
             ValuesClause x = new ValuesClause();
             for (SqlExpr value : this.values) {
-                x.addValue(value._clone());
+                x.addValue(value.cloneMe());
             }
             return x;
         }

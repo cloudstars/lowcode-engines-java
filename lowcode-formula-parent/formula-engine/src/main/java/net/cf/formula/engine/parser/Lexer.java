@@ -652,14 +652,14 @@ public class Lexer {
         int line = 1;
         int column = 1;
 
-        for (int i = 0; i < this.startPos; ++column) {
+        for (int i = 0; i < this.startPos; i++) {
             char ch = this.text.charAt(i);
             if (ch == '\n') {
+                line++;
                 column = 1;
-                ++line;
+            } else {
+                column++;
             }
-
-            ++i;
         }
 
         this.posLine = line;

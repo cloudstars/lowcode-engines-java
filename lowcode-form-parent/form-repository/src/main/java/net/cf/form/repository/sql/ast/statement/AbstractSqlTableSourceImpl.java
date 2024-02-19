@@ -25,7 +25,7 @@ public abstract class AbstractSqlTableSourceImpl extends AbstractSqlObjectImpl i
     }
 
     @Override
-    public SqlTableSource _clone() {
+    public SqlTableSource cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 

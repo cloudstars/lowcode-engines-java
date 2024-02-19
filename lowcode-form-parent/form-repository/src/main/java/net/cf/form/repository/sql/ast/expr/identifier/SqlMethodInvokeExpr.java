@@ -80,11 +80,11 @@ public class SqlMethodInvokeExpr extends AbstractSqlExprImpl {
     }
 
     @Override
-    public SqlMethodInvokeExpr _clone() {
+    public SqlMethodInvokeExpr cloneMe() {
         SqlMethodInvokeExpr x = new SqlMethodInvokeExpr();
         x.methodName = this.methodName;
         for (SqlExpr arg : this.arguments) {
-            x.addArgument(arg._clone());
+            x.addArgument(arg.cloneMe());
         }
 
         return x;

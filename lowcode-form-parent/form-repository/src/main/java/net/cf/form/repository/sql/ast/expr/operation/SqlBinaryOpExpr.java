@@ -106,7 +106,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
     }
 
     @Override
-    public SqlBinaryOpExpr _clone() {
+    public SqlBinaryOpExpr cloneMe() {
         SqlBinaryOpExpr x = new SqlBinaryOpExpr();
         this._cloneTo(x);
         return x;
@@ -114,17 +114,17 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
 
     protected void _cloneTo(SqlBinaryOpExpr x) {
         if (this.left != null) {
-            x.setLeft(this.left._clone());
+            x.setLeft(this.left.cloneMe());
         }
 
         if (this.right != null) {
-            x.setRight(this.right._clone());
+            x.setRight(this.right.cloneMe());
         }
 
         x.operator = this.operator;
         x.parenthesized = this.parenthesized;
         if (this.hint != null) {
-            x.hint = this.hint._clone();
+            x.hint = this.hint.cloneMe();
         }
     }
 
@@ -268,7 +268,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
                 }
 
                 if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
-                    a = ((SqlExpr) group.getItems().get(0))._clone();
+                    a = ((SqlExpr) group.getItems().get(0)).cloneMe();
                 }
             }
 
@@ -280,7 +280,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
             } else if (b instanceof SqlBinaryOpExprGroup) {
                 group = (SqlBinaryOpExprGroup) b;
                 if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
-                    b = ((SqlExpr) group.getItems().get(0))._clone();
+                    b = ((SqlExpr) group.getItems().get(0)).cloneMe();
                 }
             }
 

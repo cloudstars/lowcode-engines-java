@@ -52,11 +52,11 @@ public class SqlSubqueryTableSource extends AbstractSqlTableSourceImpl {
     }
 
     @Override
-    public SqlSubqueryTableSource _clone() {
+    public SqlSubqueryTableSource cloneMe() {
         SqlSubqueryTableSource x = new SqlSubqueryTableSource();
         x.alias = this.alias;
         if (this.select != null) {
-            x.select = this.select._clone();
+            x.select = this.select.cloneMe();
             x.select.setParent(x);
         }
 

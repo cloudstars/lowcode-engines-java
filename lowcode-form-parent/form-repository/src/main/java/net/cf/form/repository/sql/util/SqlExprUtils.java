@@ -46,7 +46,7 @@ public final class SqlExprUtils {
                 }
 
                 if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
-                    a = (group.getItems().get(0))._clone();
+                    a = (group.getItems().get(0)).cloneMe();
                 }
             }
 
@@ -58,7 +58,7 @@ public final class SqlExprUtils {
             } else if (b instanceof SqlBinaryOpExprGroup) {
                 group = (SqlBinaryOpExprGroup) b;
                 if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
-                    b = (group.getItems().get(0))._clone();
+                    b = (group.getItems().get(0)).cloneMe();
                 }
             }
 

@@ -23,7 +23,7 @@ public class SqlDateExpr extends AbstractSqlTextLiteralExpr implements SqlValuab
     }
 
     @Override
-    public SqlDateExpr _clone() {
+    public SqlDateExpr cloneMe() {
         SqlDateExpr x = new SqlDateExpr();
         x.text = this.text;
         return x;

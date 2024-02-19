@@ -15,7 +15,7 @@ import java.util.List;
 public interface SqlExpr extends SqlObject {
 
     @Override
-    SqlExpr _clone();
+    SqlExpr cloneMe();
 
     SqlDataType computeDataType();
 

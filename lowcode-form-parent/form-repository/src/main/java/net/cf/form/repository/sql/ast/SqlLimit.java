@@ -72,14 +72,14 @@ public final class SqlLimit extends AbstractSqlObjectImpl implements SqlReplacea
     }
 
     @Override
-    public SqlLimit _clone() {
+    public SqlLimit cloneMe() {
         SqlLimit x = new SqlLimit();
         if (this.offset != null) {
-            x.setOffset(this.offset._clone());
+            x.setOffset(this.offset.cloneMe());
         }
 
         if (this.rowCount != null) {
-            x.setRowCount(this.rowCount._clone());
+            x.setRowCount(this.rowCount.cloneMe());
         }
 
         return x;

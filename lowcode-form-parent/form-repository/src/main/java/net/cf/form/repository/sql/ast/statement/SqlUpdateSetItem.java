@@ -38,14 +38,14 @@ public class SqlUpdateSetItem extends AbstractSqlObjectImpl implements SqlReplac
     }
 
     @Override
-    public SqlUpdateSetItem _clone() {
+    public SqlUpdateSetItem cloneMe() {
         SqlUpdateSetItem x = new SqlUpdateSetItem();
         if (this.field != null) {
-            x.setField(this.field._clone());
+            x.setField(this.field.cloneMe());
         }
 
         if (this.value != null) {
-            x.setValue(this.value._clone());
+            x.setValue(this.value.cloneMe());
         }
 
         return x;

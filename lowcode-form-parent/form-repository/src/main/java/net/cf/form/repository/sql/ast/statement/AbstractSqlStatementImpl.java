@@ -40,7 +40,7 @@ public abstract class AbstractSqlStatementImpl extends AbstractSqlObjectImpl imp
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 
-    public SqlStatement _clone() {
+    public SqlStatement cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 

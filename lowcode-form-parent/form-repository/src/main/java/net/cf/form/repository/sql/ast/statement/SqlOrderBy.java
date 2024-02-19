@@ -63,10 +63,10 @@ public final class SqlOrderBy extends AbstractSqlObjectImpl implements SqlReplac
     }
 
     @Override
-    public SqlOrderBy _clone() {
+    public SqlOrderBy cloneMe() {
         SqlOrderBy x = new SqlOrderBy();
         for (SqlSelectOrderByItem item : this.items) {
-            x.addItem(item._clone());
+            x.addItem(item.cloneMe());
         }
 
         return x;

@@ -38,7 +38,7 @@ public class SqlSelectStatement extends AbstractSqlStatementImpl {
     }
 
     @Override
-    public SqlStatement _clone() {
+    public SqlStatement cloneMe() {
         return null;
     }
 }

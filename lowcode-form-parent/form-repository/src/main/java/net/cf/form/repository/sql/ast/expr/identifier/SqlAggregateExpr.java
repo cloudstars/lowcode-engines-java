@@ -41,7 +41,7 @@ public class SqlAggregateExpr extends SqlMethodInvokeExpr implements SqlReplacea
     }
 
     @Override
-    public SqlMethodInvokeExpr _clone() {
+    public SqlMethodInvokeExpr cloneMe() {
         SqlMethodInvokeExpr x = new SqlMethodInvokeExpr();
         x.setMethodName(this.getMethodName());
         for (SqlExpr argument : this.arguments) {

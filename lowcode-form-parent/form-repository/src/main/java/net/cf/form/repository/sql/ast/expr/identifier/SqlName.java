@@ -17,6 +17,6 @@ public interface SqlName extends SqlExpr {
     String getSimpleName();
 
     @Override
-    SqlName _clone();
+    SqlName cloneMe();
 
 }

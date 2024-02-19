@@ -47,7 +47,6 @@ public class SqlExprParser extends AbstractSqlParser {
     }
 
 
-
     public SqlExprParser(Lexer lexer) {
         super(lexer);
     }
@@ -167,27 +166,28 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    private SqlExpr multiplicativeRest(SqlExpr expr) {
-        Token token = this.lexer.token;
+    private SqlExpr multiplicativeRest(final SqlExpr expr) {
+        SqlExpr targetExpr = expr;
         SqlExpr rightExpr;
+        Token token = this.lexer.token;
         if (token == Token.STAR) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.Multiply, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Multiply, rightExpr);
+            targetExpr = this.multiplicativeRest(targetExpr);
         } else if (token == Token.SLASH) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.Divide, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Divide, rightExpr);
+            targetExpr = this.multiplicativeRest(targetExpr);
         } else if (token == Token.PERCENT) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.Modulus, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Modulus, rightExpr);
+            targetExpr = this.multiplicativeRest(targetExpr);
         }
 
-        return expr;
+        return targetExpr;
     }
 
 
@@ -211,22 +211,23 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    private SqlExpr additiveRest(SqlExpr expr) {
-        Token token = this.lexer.token;
+    private SqlExpr additiveRest(final SqlExpr expr) {
+        SqlExpr targetExpr = expr;
         SqlExpr rightExpr;
+        Token token = this.lexer.token;
         if (token == Token.PLUS) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.Add, rightExpr);
-            expr = this.additiveRest(expr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Add, rightExpr);
+            targetExpr = this.additiveRest(targetExpr);
         } else if (token == Token.SUB) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.Subtract, rightExpr);
-            expr = this.additiveRest(expr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Subtract, rightExpr);
+            targetExpr = this.additiveRest(targetExpr);
         }
 
-        return expr;
+        return targetExpr;
     }
 
 
@@ -246,51 +247,52 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    private SqlExpr relationalRest(SqlExpr expr) {
-        Token token = this.lexer.token;
+    private SqlExpr relationalRest(final SqlExpr expr) {
+        SqlExpr targetExpr = expr;
         SqlExpr rightExp;
+        Token token = this.lexer.token;
         switch (token) {
             case EQ:
             case EQEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.Equality, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Equality, rightExp);
                 break;
             case LTGT:
             case BANGEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.NotEqual, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.NotEqual, rightExp);
                 break;
             case LT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.LessThan, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.LessThan, rightExp);
                 break;
             case LTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.LessThanOrEqual, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.LessThanOrEqual, rightExp);
                 break;
             case GT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.GreaterThan, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.GreaterThan, rightExp);
                 break;
             case GTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.GreaterThanOrEqual, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.GreaterThanOrEqual, rightExp);
                 break;
             case LIKE:
                 this.lexer.nextToken();
                 rightExp = this.expr();
                 this.lexer.nextToken();
-                expr = new SqlLikeOpExpr(expr, rightExp);
+                targetExpr = new SqlLikeOpExpr(targetExpr, rightExp);
 
                 if (this.lexer.token == Token.ESCAPE) {
                     this.lexer.nextToken();
-                    ((SqlLikeOpExpr) expr).setEscape(this.lexer.stringVal());
+                    ((SqlLikeOpExpr) targetExpr).setEscape(this.lexer.stringVal());
                     this.lexer.nextToken();
                 }
 
@@ -298,8 +300,8 @@ public class SqlExprParser extends AbstractSqlParser {
             case IN:
                 this.lexer.nextToken();
                 this.accept(Token.LPAREN);
-                expr = new SqlInListExpr(expr);
-                this.exprList(((SqlInListExpr) expr).getTargetList(), expr);
+                targetExpr = new SqlInListExpr(targetExpr);
+                this.exprList(((SqlInListExpr) targetExpr).getTargetList(), targetExpr);
                 this.accept(Token.RPAREN);
 
                 break;
@@ -307,12 +309,12 @@ public class SqlExprParser extends AbstractSqlParser {
                 this.lexer.nextToken();
 
                 /*SqlJsonArrayExpr array = new SqlJsonArrayExpr();
-                expr = new SqlArrayContainsOpExpr(expr, array);
+                targetExpr = new SqlArrayContainsOpExpr(targetExpr, array);
                 if (this.lexer.token == Token.ANY) {
-                    ((SqlArrayContainsOpExpr) expr).setOption(SqlArrayContainsOption.ANY);
+                    ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlArrayContainsOption.ANY);
                     this.lexer.nextToken();
                 } else if (this.lexer.token == Token.ALL) {
-                    ((SqlArrayContainsOpExpr) expr).setOption(SqlArrayContainsOption.ALL);
+                    ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlArrayContainsOption.ALL);
                     this.lexer.nextToken();
                 }
 
@@ -325,7 +327,7 @@ public class SqlExprParser extends AbstractSqlParser {
                 break;
         }
 
-        return expr;
+        return targetExpr;
     }
 
 
@@ -532,33 +534,33 @@ public class SqlExprParser extends AbstractSqlParser {
     public final void exprList(Collection<SqlExpr> exprCol, SqlObject parent) {
         int countCommaCount = 0;
         //if (this.lexer.token != Token.RPAREN && this.lexer.token != Token.EOF) {
-            while (this.lexer.token != Token.RPAREN) {
-                SqlExpr expr = null;
-                if (this.lexer.token == Token.COMMA) {
-                    // expr = new SqlUndefinedExpr();
-                } else {
-                    expr = this.expr();
-                }
-
-                //if (expr != null) {
-                    if (this.lexer.token == Token.AS) {
-                        accept(Token.AS);
-                        String alias = this.lexer.stringVal();
-                        this.lexer.nextToken();
-                        expr = new SqlSelectItem(expr, alias);
-                    }
-
-                    expr.setParent(parent);
-                    exprCol.add(expr);
-                //}
-
-                if (this.lexer.token != Token.COMMA) {
-                    return;
-                }
-                countCommaCount++;
-
-                this.lexer.nextToken();
+        while (this.lexer.token != Token.RPAREN) {
+            SqlExpr expr = null;
+            if (this.lexer.token == Token.COMMA) {
+                // expr = new SqlUndefinedExpr();
+            } else {
+                expr = this.expr();
             }
+
+            //if (expr != null) {
+            if (this.lexer.token == Token.AS) {
+                accept(Token.AS);
+                String alias = this.lexer.stringVal();
+                this.lexer.nextToken();
+                expr = new SqlSelectItem(expr, alias);
+            }
+
+            expr.setParent(parent);
+            exprCol.add(expr);
+            //}
+
+            if (this.lexer.token != Token.COMMA) {
+                return;
+            }
+            countCommaCount++;
+
+            this.lexer.nextToken();
+        }
         //}
 
         // 逗号的数量 + 1 等于 元数的个数，不足时初充SqlUndefinedExpr，如：(1,)
@@ -597,7 +599,7 @@ public class SqlExprParser extends AbstractSqlParser {
         SqlTableSource tableSource = null;
         SqlJoinTableSource.JoinType joinType = null;
         while (this.lexer.token != Token.WHERE) {
-            if  (this.lexer.token == Token.LEFT) {
+            if (this.lexer.token == Token.LEFT) {
                 joinType = SqlJoinTableSource.JoinType.LEFT_OUTER_JOIN;
                 this.lexer.nextToken();
                 this.accept(Token.JOIN);

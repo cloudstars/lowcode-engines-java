@@ -10,5 +10,5 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
  */
 public interface SqlLiteralExpr extends SqlExpr {
 
-    SqlLiteralExpr _clone();
+    SqlLiteralExpr cloneMe();
 }

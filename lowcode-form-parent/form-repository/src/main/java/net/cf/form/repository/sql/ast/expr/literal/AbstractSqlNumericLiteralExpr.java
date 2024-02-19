@@ -41,6 +41,6 @@ public abstract class AbstractSqlNumericLiteralExpr extends AbstractSqlExprImpl 
      *
      * @return
      */
-    public abstract AbstractSqlNumericLiteralExpr _clone();
+    public abstract AbstractSqlNumericLiteralExpr cloneMe();
 }
 
