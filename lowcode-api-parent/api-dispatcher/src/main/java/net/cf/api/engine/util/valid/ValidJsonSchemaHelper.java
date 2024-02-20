@@ -9,7 +9,7 @@ import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
-import net.cf.commons.lang.BusinessException;
+import net.cf.api.engine.exception.ApiDispatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -56,10 +56,10 @@ public class ValidJsonSchemaHelper {
             report = jsonSchema.validate(dataNode, true);
         } catch (IOException e) {
             log.warn("请求数据废json标准[{}]", jsonData, e);
-            throw new BusinessException("数据非json标准");
+            throw new ApiDispatchException("数据非json标准");
         } catch (ProcessingException e) {
             log.warn("schema校验执行异常，当前schema定义为[{}]", schema, e);
-            throw new BusinessException("schema校验异常");
+            throw new ApiDispatchException("schema校验异常");
         }
         return exchangeValidResult(report);
     }

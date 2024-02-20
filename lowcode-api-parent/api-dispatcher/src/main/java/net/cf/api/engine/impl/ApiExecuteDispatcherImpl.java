@@ -9,10 +9,10 @@ import net.cf.api.engine.ApiExecuteDispatcher;
 import net.cf.api.engine.ApiExecutorRegistration;
 import net.cf.api.engine.AppLoggerFactory;
 import net.cf.api.engine.data.mapping.DataMappingService;
+import net.cf.api.engine.exception.ApiDispatchException;
 import net.cf.api.engine.util.valid.ValidJsonSchemaHelper;
 import net.cf.api.engine.util.valid.ValidResult;
 import net.cf.api.provider.executor.ApiExecutor;
-import net.cf.commons.lang.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +59,7 @@ public class ApiExecuteDispatcherImpl implements ApiExecuteDispatcher {
     private ApiDefinition findApiDefinition(String apiKey) {
         ApiDefinition apiDefinition = apiDefinitionLoader.find(apiKey);
         if (Objects.isNull(apiDefinition)) {
-            throw new BusinessException("api不存在");
+            throw new ApiDispatchException("api不存在");
         }
         return apiDefinition;
     }
@@ -75,7 +75,7 @@ public class ApiExecuteDispatcherImpl implements ApiExecuteDispatcher {
         ValidResult validate = ValidJsonSchemaHelper.validate(JSON.toJSONString(input), JSON.toJSONString(reqParams));
         if (validate.isFail()) {
             log.warn("参数校验失败，校验信息如下：[{}]", validate.getErrorMsgList());
-            throw new BusinessException("参数校验失败");
+            throw new ApiDispatchException("参数校验失败");
         }
     }
 
@@ -86,7 +86,7 @@ public class ApiExecuteDispatcherImpl implements ApiExecuteDispatcher {
         }
         ApiExecutor apiExecutor = apiExecutorRegistration.find(type);
         if (Objects.isNull(apiExecutor)) {
-            throw new BusinessException("api执行器不存在");
+            throw new ApiDispatchException("api执行器不存在");
         }
         return apiExecutor;
     }

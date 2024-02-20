@@ -4,10 +4,10 @@ import net.cf.api.commons.definition.ApiDefinition;
 import net.cf.api.commons.enums.ApiTypeEnum;
 import net.cf.api.engine.data.mapping.DataMappingHandler;
 import net.cf.api.engine.data.mapping.DataMappingService;
+import net.cf.api.engine.exception.ApiDispatchException;
 import net.cf.api.engine.impl.ApiExecuteDispatcherImpl;
 import net.cf.api.engine.impl.ApiExecutorRegistrationImpl;
 import net.cf.api.provider.executor.ApiExecutor;
-import net.cf.commons.lang.BusinessException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -87,13 +87,13 @@ public class ApiExecuteDispatcherImplTest {
     public void dispatcherApiNotFoundTest() {
         ApiExecuteDispatcher dispatcher = new ApiExecuteDispatcherImpl(apiExecutorRegistration, appLoggerFactory, dataMappingService, apiDefinitionLoader);
         String apiKey = "notFound";
-        Assert.assertThrows(BusinessException.class, () -> dispatcher.dispatch(new HashMap<>(), apiKey));
+        Assert.assertThrows(ApiDispatchException.class, () -> dispatcher.dispatch(new HashMap<>(), apiKey));
     }
 
     @Test
     public void dispatcherExecutorNotFoundTest() {
         ApiExecuteDispatcher dispatcher = new ApiExecuteDispatcherImpl(apiExecutorRegistration, appLoggerFactory, dataMappingService, apiDefinitionLoader);
         String apiKey = "notFoundExecutor";
-        Assert.assertThrows(BusinessException.class, () -> dispatcher.dispatch(new HashMap<>(), apiKey));
+        Assert.assertThrows(ApiDispatchException.class, () -> dispatcher.dispatch(new HashMap<>(), apiKey));
     }
 }
