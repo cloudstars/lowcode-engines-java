@@ -15,10 +15,6 @@
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-lang</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>

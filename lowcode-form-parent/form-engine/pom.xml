@@ -12,38 +12,35 @@
     <description>表单业务对象引擎</description>
 
     <dependencies>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-lang</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-util</artifactId>
-        </dependency>
+        <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-form-repository</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring.core.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-form-repository-mysql</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-form-repository-mongo</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-form-repository-cfdata</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-commons-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-repository-mysql</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-repository-mongo</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

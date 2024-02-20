@@ -16,7 +16,7 @@ public interface ExcelEngine {
      * @param config
      * @param workbook
      */
-    void _import(ExcelImportConfig config, Workbook workbook);
+    void doImport(ExcelImportConfig config, Workbook workbook);
 
     /**
      * 导出Excel

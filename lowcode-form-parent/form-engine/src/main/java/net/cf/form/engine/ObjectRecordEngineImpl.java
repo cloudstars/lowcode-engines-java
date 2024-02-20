@@ -1,11 +1,11 @@
 package net.cf.form.engine;
 
-import net.cf.commons.util.ObjectReference;
-import net.cf.commons.util.ObjectUtils;
+
 import net.cf.form.engine.object.XField;
 import net.cf.form.engine.object.XFieldProperty;
 import net.cf.form.engine.object.XObject;
 import net.cf.form.engine.sqlbuilder.insert.InsertSqlStatementBuilder;
+import net.cf.form.engine.util.ObjectUtils;
 import net.cf.form.repository.FormRepository;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
@@ -69,7 +69,7 @@ public class ObjectRecordEngineImpl implements ObjectRecordEngine {
     public String createOne(XObject object, Object data) {
         assert (object != null && data != null);
 
-        ObjectReference<Method> primaryFieldGetMethodRef = ObjectUtils.createRef(null);
+        ObjectUtils.Reference<Method> primaryFieldGetMethodRef = ObjectUtils.createRef(null);
         SqlInsertStatement insertSql = this.buildInsertSql(object, data, primaryFieldGetMethodRef);
         FormRepository repository = this.repositoryProvider.getByObject(object);
         repository.insert(insertSql);
@@ -92,7 +92,7 @@ public class ObjectRecordEngineImpl implements ObjectRecordEngine {
      * @param primaryFieldGetMethodRef
      * @return
      */
-    private SqlInsertStatement buildInsertSql(XObject object, Object data, ObjectReference primaryFieldGetMethodRef) {
+    private SqlInsertStatement buildInsertSql(XObject object, Object data, ObjectUtils.Reference<Method> primaryFieldGetMethodRef) {
         InsertSqlStatementBuilder builder = new InsertSqlStatementBuilder();
         builder.tableSource(new SqlExprTableSource(object.getTableName()));
         Map<String, Method> getMethods = ObjectUtils.getDeclaredGetMethodMap(data);

@@ -13,13 +13,14 @@
     <description>低代码表单存储层接口</description>
 
     <dependencies>
+        <!-- 编译时依赖 -->
         <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-lang</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-util</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
