@@ -1,14 +1,11 @@
-package net.cf.commons.util;
+package net.cf.form.engine.util;
 
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Time;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,15 +14,6 @@ public final class ObjectUtils {
     private static final Logger logger = LoggerFactory.getLogger(ObjectUtils.class);
 
     private ObjectUtils() {
-    }
-
-    /**
-     * 是否基础类型的值
-     *
-     * @param value
-     */
-    public static boolean isGeneralValue(Object value) {
-        return (value == null || value instanceof String || value instanceof Number || value instanceof Boolean || value instanceof Date || value instanceof Time);
     }
 
     /**
@@ -76,21 +64,9 @@ public final class ObjectUtils {
      * @param ref
      * @return
      */
-    public static <T extends Object> ObjectReference createRef(T ref) {
-        return new ObjectReference<T>(ref);
+    public static <T extends Object> Reference createRef(T ref) {
+        return new Reference<T>(ref);
     }
-
-    /**
-     * 将一个字符串解析为Java对象
-     *
-     * @param content
-     * @param classType
-     * @return
-     */
-    public static <T extends Object> T parseObject(String content, Class<T> classType) {
-        return JSONObject.parseObject(content, classType);
-    }
-
 
     /**
      * 获取一个对象的属性值
@@ -136,4 +112,20 @@ public final class ObjectUtils {
         }
     }
 
+    public static class Reference<T> {
+
+        private T ref;
+
+        public Reference(T ref) {
+            this.ref = ref;
+        }
+
+        public T getRef() {
+            return ref;
+        }
+
+        public void setRef(T ref) {
+            this.ref = ref;
+        }
+    }
 }

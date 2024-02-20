@@ -64,21 +64,6 @@
         <dependencies>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-lang</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-util</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-util-test</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-test</artifactId>
                 <version>${revision}</version>
                 <scope>test</scope>
@@ -108,6 +93,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
+                <version>${spring.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
                 <version>${spring.core.version}</version>
             </dependency>
             <dependency>

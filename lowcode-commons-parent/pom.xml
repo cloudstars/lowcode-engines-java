@@ -16,9 +16,6 @@
     </properties>
 
     <modules>
-        <module>commons-lang</module>
-        <module>commons-util</module>
-        <module>commons-util-test</module>
         <module>commons-test</module>
     </modules>
 

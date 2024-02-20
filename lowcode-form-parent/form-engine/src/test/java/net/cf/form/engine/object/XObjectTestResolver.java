@@ -1,7 +1,7 @@
 package net.cf.form.engine.object;
 
+import com.alibaba.fastjson.JSONObject;
 import net.cf.commons.test.util.FileUtils;
-import net.cf.commons.util.ObjectUtils;
 import net.cf.form.engine.def.FormDefinition;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class XObjectTestResolver implements XObjectResolver {
     protected void loadObjects() {
         Map<String, String> objectsJson = FileUtils.loadTextsFromClasspath("object/*.json");
         for (Map.Entry<String, String> entry : objectsJson.entrySet()) {
-            FormDefinition objectDef = ObjectUtils.parseObject(entry.getValue(), FormDefinition.class);
+            FormDefinition objectDef = JSONObject.parseObject(entry.getValue(), FormDefinition.class);
             XObject object = new XObjectTestImpl(objectDef);
             objectMap.put(object.getCode(), object);
         }

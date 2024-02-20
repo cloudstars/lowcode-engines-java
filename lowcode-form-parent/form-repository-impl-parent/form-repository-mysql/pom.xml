@@ -17,10 +17,6 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-form-repository</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-util</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
