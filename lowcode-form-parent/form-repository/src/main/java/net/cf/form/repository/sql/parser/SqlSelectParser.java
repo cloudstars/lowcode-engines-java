@@ -25,8 +25,8 @@ public class SqlSelectParser extends SqlExprParser {
         super(lexer);
     }
 
-    public SqlSelectParser(String Sql) {
-        this(new Lexer(Sql));
+    public SqlSelectParser(String sql) {
+        this(new Lexer(sql));
     }
 
     /**
@@ -111,7 +111,7 @@ public class SqlSelectParser extends SqlExprParser {
                 break;
             case LITERAL_STRING:
             case LITERAL_INT:
-            case LITERAL_FLOAT:
+            case LITERAL_NUMBER:
                 expr = this.primary();
                 break;
             case IDENTIFIER:

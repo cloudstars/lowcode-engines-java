@@ -8,8 +8,8 @@ public class SqlDeleteParser extends SqlExprParser {
         super(lexer);
     }
 
-    public SqlDeleteParser(String Sql) {
-        this(new Lexer(Sql));
+    public SqlDeleteParser(String sql) {
+        this(new Lexer(sql));
     }
 
     public SqlDeleteStatement statement() {

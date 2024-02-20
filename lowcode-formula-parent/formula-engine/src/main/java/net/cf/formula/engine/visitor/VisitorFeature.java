@@ -6,13 +6,13 @@ package net.cf.formula.engine.visitor;
  * @author clouds
  */
 public enum VisitorFeature {
-    OutputUCase,
-    OutputPrettyFormat,
-    OutputParameterized;
+    OUTPUT_U_CASE,
+    OUTPUT_PRETTY_FORMAT,
+    OUTPUT_PARAMETERIZED;
 
     public final int mask = 1 << this.ordinal();
 
-    private VisitorFeature() {
+    VisitorFeature() {
     }
 
     public static boolean isEnabled(int features, VisitorFeature feature) {

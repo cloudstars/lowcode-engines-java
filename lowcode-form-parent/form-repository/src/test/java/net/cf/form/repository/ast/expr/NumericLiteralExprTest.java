@@ -28,15 +28,15 @@ public class NumericLiteralExprTest {
     public final String INTEGER2 = "-123";
 
 
-    public final String FLOAT1 = "123.456";
+    public final String NUMBER1 = "123.456";
 
-    public final String FLOAT2 = "-123.456";
+    public final String NUMBER2 = "-123.456";
 
-    public final String FLOAT3 = ".123";
+    public final String NUMBER3 = ".123";
 
-    public final String FLOAT4 = "0.123";
+    public final String NUMBER4 = "0.123";
 
-    public final String FLOAT5 = "1.";
+    public final String NUMBER5 = "1.";
 
 
     @Test
@@ -65,67 +65,67 @@ public class NumericLiteralExprTest {
         Assert.assertTrue(-123 == ((SqlIntegerExpr) expr).getValue());
     }
     @Test
-    public void testFloat1() {
-        SQLExprParser p = new SQLExprParser(FLOAT1);
+    public void testNumber1() {
+        SQLExprParser p = new SQLExprParser(NUMBER1);
         SQLExpr e = p.primary();
         Assert.assertTrue(e instanceof SQLNumberExpr);
         Assert.assertTrue(123.456f == ((SQLNumberExpr) e).getNumber().floatValue());
 
 
-        SqlExprParser parser = new SqlExprParser(FLOAT1);
+        SqlExprParser parser = new SqlExprParser(NUMBER1);
         SqlExpr expr = parser.primary();
         Assert.assertTrue(expr instanceof SqlNumberExpr);
         Assert.assertTrue(123.456f == ((SqlNumberExpr) expr).getValue().floatValue());
     }
 
     @Test
-    public void testFloat2() {
-        SQLExprParser p = new SQLExprParser(FLOAT2);
+    public void testNumber2() {
+        SQLExprParser p = new SQLExprParser(NUMBER2);
         SQLExpr e = p.primary();
         Assert.assertTrue(e instanceof SQLNumberExpr);
         Assert.assertTrue(-123.456f == ((SQLNumberExpr) e).getNumber().floatValue());
 
-        SqlExprParser parser = new SqlExprParser(FLOAT2);
+        SqlExprParser parser = new SqlExprParser(NUMBER2);
         SqlExpr expr = parser.primary();
         Assert.assertTrue(expr instanceof SqlNumberExpr);
         Assert.assertTrue(-123.456f == ((SqlNumberExpr) expr).getValue().floatValue());
     }
 
     @Test
-    public void testFloat3() {
-        SQLExprParser p = new SQLExprParser(FLOAT3);
+    public void testNumber3() {
+        SQLExprParser p = new SQLExprParser(NUMBER3);
         SQLExpr e = p.primary();
         Assert.assertTrue(e instanceof SQLNumberExpr);
         Assert.assertTrue(0.123f == ((SQLNumberExpr) e).getNumber().floatValue());
 
-        SqlExprParser parser = new SqlExprParser(FLOAT3);
+        SqlExprParser parser = new SqlExprParser(NUMBER3);
         SqlExpr expr = parser.primary();
         Assert.assertTrue(expr instanceof SqlNumberExpr);
         Assert.assertTrue(0.123f == ((SqlNumberExpr) expr).getValue().floatValue());
     }
 
     @Test
-    public void testFloat4() {
-        SQLExprParser p = new SQLExprParser(FLOAT4);
+    public void testNumber4() {
+        SQLExprParser p = new SQLExprParser(NUMBER4);
         SQLExpr e = p.primary();
         Assert.assertTrue(e instanceof SQLNumberExpr);
         Assert.assertTrue(0.123d == ((SQLNumberExpr) e).getNumber().doubleValue());
 
-        SqlExprParser parser = new SqlExprParser(FLOAT4);
+        SqlExprParser parser = new SqlExprParser(NUMBER4);
         SqlExpr expr = parser.primary();
         Assert.assertTrue(expr instanceof SqlNumberExpr);
         Assert.assertTrue(0.123d == ((SqlNumberExpr) expr).getNumber().doubleValue());
     }
 
     @Test
-    public void testFloat5() {
-        SQLExprParser p = new SQLExprParser(FLOAT5);
+    public void testNumber5() {
+        SQLExprParser p = new SQLExprParser(NUMBER5);
         SQLExpr e = p.primary();
         Assert.assertTrue(e instanceof SQLNumberExpr);
         Assert.assertTrue(1.f == ((SQLNumberExpr) e).getNumber().floatValue());
 
 
-        SqlExprParser parser = new SqlExprParser(FLOAT5);
+        SqlExprParser parser = new SqlExprParser(NUMBER5);
         SqlExpr expr = parser.primary();
         Assert.assertTrue(expr instanceof SqlNumberExpr);
         Assert.assertTrue(1.f == ((SqlNumberExpr) expr).getValue().floatValue());

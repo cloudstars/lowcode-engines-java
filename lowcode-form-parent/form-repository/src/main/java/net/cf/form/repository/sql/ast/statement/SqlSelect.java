@@ -1,7 +1,7 @@
 package net.cf.form.repository.sql.ast.statement;
 
-import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
+import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 

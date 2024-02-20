@@ -6,10 +6,10 @@ package net.cf.form.engine.oql.parser;
  * @author clouds
  */
 public enum ParserFeature {
-    KeepComments,
-    SkipComments,
-    KeepSourceLocation,
-    PrintOqlWhileParsingFailed;
+    KEEP_COMMENTS,
+    SKIP_COMMENTS,
+    KEEP_SOURCE_LOCATION,
+    PRINT_OQL_WHILE_PARSING_FAILED;
 
     public final int mask = 1 << this.ordinal();
 
@@ -58,14 +58,15 @@ public enum ParserFeature {
     public static int of(ParserFeature... features) {
         if (features == null) {
             return 0;
-        } else {
-            int value = 0;
-            for (int i = 0; i < features.length; i++) {
-                ParserFeature feature = features[i];
-                value |= feature.mask;
-            }
-
-            return value;
         }
+
+        int value = 0;
+        for (int i = 0; i < features.length; i++) {
+            ParserFeature feature = features[i];
+            value |= feature.mask;
+        }
+
+        return value;
     }
+
 }

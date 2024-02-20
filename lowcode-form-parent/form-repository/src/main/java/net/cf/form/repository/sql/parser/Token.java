@@ -35,7 +35,7 @@ public enum Token {
     LATERAL,
     LITERAL_STRING,
     LITERAL_INT,
-    LITERAL_FLOAT,
+    LITERAL_NUMBER,
     NULL("NULL"),
     TRUE("TRUE"),
     FALSE("FALSE"),

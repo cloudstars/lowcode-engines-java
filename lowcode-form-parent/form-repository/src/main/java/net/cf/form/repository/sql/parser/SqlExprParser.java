@@ -12,6 +12,7 @@ import net.cf.form.repository.sql.ast.statement.SqlJoinTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -38,12 +39,12 @@ public class SqlExprParser extends AbstractSqlParser {
      */
     private boolean isParsingArray = false;
 
-    public SqlExprParser(String Sql) {
-        super(Sql);
+    public SqlExprParser(String sql) {
+        super(sql);
     }
 
-    public SqlExprParser(String Sql, SqlParserFeature[] features) {
-        super(Sql);
+    public SqlExprParser(String sql, SqlParserFeature[] features) {
+        super(sql);
     }
 
 
@@ -67,13 +68,14 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    private SqlExpr exprRest(SqlExpr expr) {
-        expr = this.multiplicativeRest(expr);
-        expr = this.additiveRest(expr);
-        expr = this.relationalRest(expr);
-        expr = this.andRest(expr);
-        expr = this.orRest(expr);
-        return expr;
+    private SqlExpr exprRest(final SqlExpr expr) {
+        SqlExpr tExpr = expr;
+        tExpr = this.multiplicativeRest(tExpr);
+        tExpr = this.additiveRest(tExpr);
+        tExpr = this.relationalRest(tExpr);
+        tExpr = this.andRest(tExpr);
+        tExpr = this.orRest(tExpr);
+        return tExpr;
     }
 
     /**
@@ -97,7 +99,8 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    private SqlExpr orRest(SqlExpr expr) {
+    private SqlExpr orRest(final SqlExpr expr) {
+        SqlExpr tExpr = expr;
         while (true) {
             Token token = this.lexer.token;
             if (token != Token.OR && token != Token.BARBAR) {
@@ -106,10 +109,10 @@ public class SqlExprParser extends AbstractSqlParser {
 
             this.lexer.nextToken();
             SqlExpr rightExp = this.and();
-            expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.BooleanOr, rightExp);
+            tExpr = new SqlBinaryOpExpr(tExpr, SqlBinaryOperator.BooleanOr, rightExp);
         }
 
-        return expr;
+        return tExpr;
     }
 
 
@@ -134,7 +137,8 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    private SqlExpr andRest(SqlExpr expr) {
+    private SqlExpr andRest(final SqlExpr expr) {
+        SqlExpr tExpr = expr;
         while (true) {
             Token token = this.lexer.token;
             if (token != Token.AND && token != Token.AMPAMP) {
@@ -143,10 +147,10 @@ public class SqlExprParser extends AbstractSqlParser {
 
             this.lexer.nextToken();
             SqlExpr rightExp = this.relational();
-            expr = new SqlBinaryOpExpr(expr, SqlBinaryOperator.BooleanAnd, rightExp);
+            tExpr = new SqlBinaryOpExpr(tExpr, SqlBinaryOperator.BooleanAnd, rightExp);
         }
 
-        return expr;
+        return tExpr;
     }
 
     /**
@@ -352,13 +356,9 @@ public class SqlExprParser extends AbstractSqlParser {
                 expr = new SqlIntegerExpr(this.lexer.stringVal());
                 this.lexer.nextToken();
                 break;
-            case LITERAL_FLOAT:
-                String floatValue = this.lexer.stringVal();
-                //if (!StringUtils.isNumber(floatValue.toCharArray())) {
-                //    throw new ParserException(floatValue + " is not a number! " + this.lexer.info());
-                //}
-
-                expr = new SqlNumberExpr(Float.parseFloat(floatValue));
+            case LITERAL_NUMBER:
+                String numberValue = this.lexer.stringVal();
+                expr = new SqlNumberExpr(new BigDecimal(numberValue.toCharArray()));
                 this.lexer.nextToken();
                 break;
             case TRUE:
@@ -446,23 +446,24 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    private SqlExpr primaryRest(SqlExpr expr) {
+    private SqlExpr primaryRest(final SqlExpr expr) {
         if (expr == null) {
             throw new IllegalArgumentException("expr parse error: null.");
-        } else {
-            Token token = this.lexer.token;
-
-            if (token == Token.DOT) {
-                this.lexer.nextToken();
-                expr = this.dotRest(expr);
-                return this.primaryRest(expr);
-            } else if (this.lexer.token == Token.LPAREN) {
-                SqlExpr method = this.methodInvokeRest(expr);
-                return method;
-            }
-
-            return expr;
         }
+
+        SqlExpr tExpr = expr;
+        Token token = this.lexer.token;
+
+        if (token == Token.DOT) {
+            this.lexer.nextToken();
+            tExpr = this.dotRest(tExpr);
+            return this.primaryRest(tExpr);
+        } else if (this.lexer.token == Token.LPAREN) {
+            SqlExpr method = this.methodInvokeRest(tExpr);
+            return method;
+        }
+
+        return tExpr;
     }
 
     /**
@@ -471,16 +472,17 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    protected SqlExpr dotRest(SqlExpr expr) {
+    protected SqlExpr dotRest(final SqlExpr expr) {
         String name;
+        SqlExpr tExpr = expr;
         if (this.lexer.token == Token.IDENTIFIER) {
             name = this.lexer.stringVal();
             this.lexer.nextToken();
-            expr = new SqlPropertyExpr((SqlName) expr, name);
+            tExpr = new SqlPropertyExpr((SqlName) tExpr, name);
         }
 
-        expr = this.primaryRest(expr);
-        return expr;
+        tExpr = this.primaryRest(tExpr);
+        return tExpr;
     }
 
     /**
@@ -489,7 +491,7 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param expr
      * @return
      */
-    protected SqlExpr methodInvokeRest(SqlExpr expr) {
+    protected SqlExpr methodInvokeRest(final SqlExpr expr) {
         this.accept(Token.LPAREN);
 
         if (expr instanceof SqlIdentifierExpr) {

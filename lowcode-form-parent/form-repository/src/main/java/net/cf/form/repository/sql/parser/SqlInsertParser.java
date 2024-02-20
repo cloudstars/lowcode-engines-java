@@ -9,8 +9,8 @@ public class SqlInsertParser extends SqlExprParser {
         super(lexer);
     }
 
-    public SqlInsertParser(String Sql) {
-        this(new Lexer(Sql));
+    public SqlInsertParser(String sql) {
+        this(new Lexer(sql));
     }
 
     public SqlInsertInto insertInto() {

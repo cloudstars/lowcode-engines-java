@@ -53,13 +53,14 @@ public class OqlAstPrintableVisitorAdaptor extends OqlAstVisitorAdaptor implemen
     }
 
     @Override
-    public void print(String text) {
+    public void print(final String text) {
         if (this.appender != null) {
-            if (this.upperCase && text != null) {
-                text = text.toUpperCase();
+            String printText = text;
+            if (this.upperCase && printText != null) {
+                printText = printText.toUpperCase();
             }
             try {
-                this.appender.append(text);
+                this.appender.append(printText);
             } catch (IOException e) {
                 throw new FastOqlException("println error", e);
             }

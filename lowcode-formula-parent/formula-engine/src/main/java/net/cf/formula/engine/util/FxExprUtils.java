@@ -9,33 +9,6 @@ public class FxExprUtils {
     public FxExprUtils() {
     }
 
-    public static boolean equals(FxExpr a, FxExpr b) {
-        if (a == b) {
-            return true;
-        } else if (a != null && b != null) {
-            /*Class<?> clazz_a = a.getClass();
-            Class<?> clazz_b = b.getClass();
-            if (clazz_a == FxPropertyExpr.class && clazz_b == FxIdentifierExpr.class) {
-                return ((FxPropertyExpr) a).equals((FxIdentifierExpr) b);
-            } else if (clazz_a != clazz_b) {
-                return false;
-            } else if (clazz_a == FxIdentifierExpr.class) {
-                FxIdentifierExpr x_a = (FxIdentifierExpr) a;
-                FxIdentifierExpr x_b = (FxIdentifierExpr) b;
-                return x_a.hashCode() == x_b.hashCode();
-            } else if (clazz_a == FxBinaryOpExpr.class) {
-                FxBinaryOpExpr x_a = (FxBinaryOpExpr) a;
-                FxBinaryOpExpr x_b = (FxBinaryOpExpr) b;
-                return x_a.equals(x_b);
-            } else */
-            {
-                return a.equals(b);
-            }
-        } else {
-            return false;
-        }
-    }
-
     public static boolean isLiteralExpr(FxExpr expr) {
         if (expr instanceof FxLiteralExpr) {
             return true;

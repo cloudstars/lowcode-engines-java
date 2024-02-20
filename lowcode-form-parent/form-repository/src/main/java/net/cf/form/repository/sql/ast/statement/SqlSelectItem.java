@@ -1,8 +1,8 @@
 package net.cf.form.repository.sql.ast.statement;
 
 import net.cf.form.repository.sql.ast.SqlReplaceable;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**

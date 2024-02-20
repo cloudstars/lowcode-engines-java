@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObject;
 import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
+import net.cf.form.engine.oql.ast.OqlObject;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;

@@ -117,7 +117,7 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.expr();
         Assert.assertTrue(expr instanceof FxUnaryOpExpr);
         FxUnaryOpExpr unaryOpExpr = (FxUnaryOpExpr) expr;
-        Assert.assertTrue(unaryOpExpr.getOperator() == FxUnaryOperator.Not);
+        Assert.assertTrue(unaryOpExpr.getOperator() == FxUnaryOperator.NOT);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.expr();
         Assert.assertTrue(expr instanceof FxUnaryOpExpr);
         FxUnaryOpExpr unaryOpExpr = (FxUnaryOpExpr) expr;
-        Assert.assertTrue(unaryOpExpr.getOperator() == FxUnaryOperator.Not);
+        Assert.assertTrue(unaryOpExpr.getOperator() == FxUnaryOperator.NOT);
     }
 
     @Test
@@ -169,7 +169,7 @@ public class LogicOpExprTest {
         Assert.assertTrue(binaryOpExprR0.getOperator() == FxBinaryOperator.Or);
         Assert.assertTrue(binaryOpExprR0.getLeft() instanceof FxUnaryOpExpr);
         FxUnaryOpExpr binaryOpExprRL = (FxUnaryOpExpr) binaryOpExprR0.getLeft();
-        Assert.assertTrue(binaryOpExprRL.getOperator() == FxUnaryOperator.Not);
+        Assert.assertTrue(binaryOpExprRL.getOperator() == FxUnaryOperator.NOT);
     }
 
     @Test

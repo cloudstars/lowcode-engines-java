@@ -1,8 +1,8 @@
 package net.cf.form.engine.oql.ast.expr.operation;
 
 import net.cf.form.engine.oql.ast.OqlReplaceable;
-import net.cf.form.engine.oql.ast.expr.OqlExpr;
 import net.cf.form.engine.oql.ast.expr.AbstractOqlExprImpl;
+import net.cf.form.engine.oql.ast.expr.OqlExpr;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
@@ -62,10 +62,6 @@ public class OqlBinaryOpExprGroup extends AbstractOqlExprImpl implements OqlRepl
                 for (OqlExpr item2 : group.items) {
                     this.add(item2);
                 }
-
-                return;
-            } else {
-
             }
         } else {
             this.items.add(index, item);

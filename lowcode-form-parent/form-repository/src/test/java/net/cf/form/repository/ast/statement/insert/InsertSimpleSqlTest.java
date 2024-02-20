@@ -2,12 +2,12 @@ package net.cf.form.repository.ast.statement.insert;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
+import net.cf.form.repository.ast.statement.AbstractSqlTest;
 import net.cf.form.repository.ast.util.SqlTestUtils;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.ast.statement.SqlStatement;
 import net.cf.form.repository.sql.parser.SqlStatementParser;
-import net.cf.form.repository.testcases.statement.insert.AbstractSimpleInsertSqlsTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,17 +16,20 @@ import org.junit.runners.JUnit4;
 import java.util.List;
 
 @RunWith(JUnit4.class)
-public class SimpleInsertSqlsTest extends AbstractSimpleInsertSqlsTest {
+public class InsertSimpleSqlTest extends AbstractSqlTest {
 
-    @Test
-    @Override
-    public void testInsertWithoutParams() {
-        super.testInsertWithoutParams();
+    public InsertSimpleSqlTest() {
+        super("sql/insert/InsertSimple.json");
     }
 
+    /**
+     * 测试不带参数的Insert语句的解析
+     */
+    @Test
+    public void testInsertWithoutParams() {
+        String sql = this.sqlMap.get("insert-without-params");
+        assert (sql != null);
 
-    @Override
-    protected void testInsertWithoutParams(String sql) {
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);
@@ -41,14 +44,12 @@ public class SimpleInsertSqlsTest extends AbstractSimpleInsertSqlsTest {
         Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
     }
 
+    /**
+     * 测试带参数的Insert语句的解析
+     */
     @Test
-    @Override
     public void testInsertWithParams() {
-        super.testInsertWithParams();
-    }
-
-    @Override
-    protected void testInsertWithParams(String sql) {
+        String sql = this.sqlMap.get("insert-with-params");
         SqlStatementParser parser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = parser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);

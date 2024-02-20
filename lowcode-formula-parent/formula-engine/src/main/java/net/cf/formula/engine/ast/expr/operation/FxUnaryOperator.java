@@ -7,7 +7,7 @@ package net.cf.formula.engine.ast.expr.operation;
  */
 public enum FxUnaryOperator {
 
-    Not("!", 170);
+    NOT("!", 170);
     private final String name;
 
     private final int priority;

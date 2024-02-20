@@ -35,7 +35,7 @@ public class FxAstOutputVisitor extends FxAstVisitorAdaptor implements Printable
 
 
     public FxAstOutputVisitor(Appendable appender) {
-        this.features |= VisitorFeature.OutputPrettyFormat.mask;
+        this.features |= VisitorFeature.OUTPUT_PRETTY_FORMAT.mask;
         this.appender = appender;
     }
 

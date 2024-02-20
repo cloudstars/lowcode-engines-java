@@ -46,9 +46,9 @@ public final class SqlUtils {
             if (a.equalsIgnoreCase(b)) {
                 return true;
             } else {
-                String normalize_a = normalize(a);
-                String normalize_b = normalize(b);
-                return normalize_a.equalsIgnoreCase(normalize_b);
+                String normalizeA = normalize(a);
+                String normalizeB = normalize(b);
+                return normalizeA.equalsIgnoreCase(normalizeB);
             }
         } else {
             return false;

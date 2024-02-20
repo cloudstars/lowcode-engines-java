@@ -2,13 +2,13 @@ package net.cf.form.repository.ast.statement.select;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
+import net.cf.form.repository.ast.statement.AbstractSqlTest;
 import net.cf.form.repository.ast.util.SqlTestUtils;
 import net.cf.form.repository.sql.ast.statement.SqlJoinTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.form.repository.sql.ast.statement.SqlStatement;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.parser.SqlStatementParser;
-import net.cf.form.repository.testcases.statement.select.AbstractSelectJoinTablesTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,16 +22,20 @@ import java.util.List;
  * @author clouds
  */
 @RunWith(JUnit4.class)
-public class SelectJoinTablesTest extends AbstractSelectJoinTablesTest {
+public class SelectJoinTablesTest extends AbstractSqlTest {
 
-    @Test
-    @Override
-    public void testSelectImplicitCrossJoin() {
-        super.testSelectImplicitCrossJoin();
+    public SelectJoinTablesTest() {
+        super("sql/select/SelectJoinTables.json");
     }
 
-    @Override
-    protected void testSelectImplicitCrossJoin(String sql) {
+    /**
+     * 测试两个表的隐式交叉连接
+     */
+    @Test
+    public void testSelectImplicitCrossJoin() {
+        String sql = this.sqlMap.get("SELECT_IMPLICIT_CROSS_JOIN");
+        assert (sql != null);
+
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);
@@ -48,14 +52,14 @@ public class SelectJoinTablesTest extends AbstractSelectJoinTablesTest {
         Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
     }
 
+    /**
+     * 测试两个表的显示交叉连接
+     */
     @Test
-    @Override
     public void testSelectExplicitCrossJoin() {
-        super.testSelectExplicitCrossJoin();
-    }
+        String sql = this.sqlMap.get("SELECT_EXPLICIT_CROSS_JOIN");
+        assert (sql != null);
 
-    @Override
-    protected void testSelectExplicitCrossJoin(String sql) {
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);
@@ -72,14 +76,12 @@ public class SelectJoinTablesTest extends AbstractSelectJoinTablesTest {
         Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
     }
 
+    /**
+     * 测试两个表Join
+     */
     @Test
-    @Override
     public void testSelectJoin() {
-        super.testSelectJoin();
-    }
-
-    @Override
-    protected void testSelectJoin(String sql) {
+        String sql = this.sqlMap.get("SELECT_JOIN");
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);
@@ -97,14 +99,12 @@ public class SelectJoinTablesTest extends AbstractSelectJoinTablesTest {
         Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
     }
 
+    /**
+     * 测试两个表Left Join
+     */
     @Test
-    @Override
     public void testSelectLeftJoin() {
-        super.testSelectLeftJoin();
-    }
-
-    @Override
-    protected void testSelectLeftJoin(String sql) {
+        String sql = this.sqlMap.get("SELECT_LEFT_JOIN");
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);
@@ -121,14 +121,12 @@ public class SelectJoinTablesTest extends AbstractSelectJoinTablesTest {
         Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
     }
 
+    /**
+     * 测试两个表 Join On Condition
+     */
     @Test
-    @Override
     public void testSelectJoinOn() {
-        super.testSelectJoinOn();
-    }
-
-    @Override
-    protected void testSelectJoinOn(String sql) {
+        String sql = this.sqlMap.get("SELECT_JOIN_ON");
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);

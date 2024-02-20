@@ -43,7 +43,7 @@ public class MultiplicativeOpExprTest {
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxIntegerExpr);
         Assert.assertTrue(binaryOpExpr.getRight() instanceof FxIntegerExpr);
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Multiply);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.MULTIPLY);
     }
 
     @Test
@@ -56,10 +56,10 @@ public class MultiplicativeOpExprTest {
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxBinaryOpExpr);
         Assert.assertTrue(binaryOpExpr.getRight() instanceof FxIntegerExpr);
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Divide);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.DIVIDE);
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExprL = (FxBinaryOpExpr) binaryOpExpr.getLeft();
-        Assert.assertTrue(binaryOpExprL.getOperator() == FxBinaryOperator.Multiply);
+        Assert.assertTrue(binaryOpExprL.getOperator() == FxBinaryOperator.MULTIPLY);
     }
 
     @Test
@@ -71,10 +71,10 @@ public class MultiplicativeOpExprTest {
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxBinaryOpExpr);
         Assert.assertTrue(binaryOpExpr.getRight() instanceof FxIntegerExpr);
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Multiply);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.MULTIPLY);
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExprL = (FxBinaryOpExpr) binaryOpExpr.getLeft();
-        Assert.assertTrue(binaryOpExprL.getOperator() == FxBinaryOperator.Divide);
+        Assert.assertTrue(binaryOpExprL.getOperator() == FxBinaryOperator.DIVIDE);
     }
 
     @Test
@@ -86,10 +86,10 @@ public class MultiplicativeOpExprTest {
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxIntegerExpr);
         Assert.assertTrue(binaryOpExpr.getRight() instanceof FxBinaryOpExpr);
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Divide);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.DIVIDE);
         FxBinaryOpExpr binaryOpExprR = (FxBinaryOpExpr) binaryOpExpr.getRight();
         Assert.assertTrue(binaryOpExprR.isParenthesized());
-        Assert.assertTrue(binaryOpExprR.getOperator() == FxBinaryOperator.Subtract);
+        Assert.assertTrue(binaryOpExprR.getOperator() == FxBinaryOperator.SUBTRACT);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class MultiplicativeOpExprTest {
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.isParenthesized());
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Divide);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.DIVIDE);
     }
 
     @Test
@@ -115,6 +115,6 @@ public class MultiplicativeOpExprTest {
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.isParenthesized());
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Modulus);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.MODULUS);
     }
 }

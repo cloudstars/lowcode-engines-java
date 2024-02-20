@@ -1,7 +1,7 @@
 {
   "name": "SELECT_METHOD",
   "desc": "查询时使用函数的案例",
-  "sqlList": [
+  "sqls": [
     {
       "name": "SELECT_SUBSTRING_FIELD",
       "desc": "字符串字段截取子字符串",

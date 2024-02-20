@@ -1,7 +1,7 @@
 {
   "name": "SELECT_ITEMS",
   "desc": "查询不同的列",
-  "sqlList": [
+  "sqls": [
     {
       "name": "SELECT_ALL_COLUMNS",
       "desc": "仅查询一列",

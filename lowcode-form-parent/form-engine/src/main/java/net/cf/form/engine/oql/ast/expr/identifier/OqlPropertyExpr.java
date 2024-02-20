@@ -65,12 +65,12 @@ public class OqlPropertyExpr extends AbstractOqlExprImpl implements OqlNameExpr 
 
     @Override
     public OqlPropertyExpr clone() {
-        OqlNameExpr owner_x = null;
+        OqlNameExpr ownerX = null;
         if (this.owner != null) {
-            owner_x = this.owner.clone();
+            ownerX = this.owner.clone();
         }
 
-        OqlPropertyExpr x = new OqlPropertyExpr(owner_x, this.name);
+        OqlPropertyExpr x = new OqlPropertyExpr(ownerX, this.name);
         return x;
     }
 

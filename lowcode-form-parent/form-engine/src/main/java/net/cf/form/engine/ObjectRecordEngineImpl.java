@@ -155,7 +155,7 @@ public class ObjectRecordEngineImpl implements ObjectRecordEngine {
 
             Object fieldValue = entry.getValue();
             List<XFieldProperty> properties = field.getProperties();
-            if (properties != null && properties.size() > 0 ) {
+            if (properties != null && properties.size() > 0) {
                 for (XFieldProperty property : properties) {
                     builder.appendColumn(new SqlIdentifierExpr(property.getColumnName()));
                     Object propertyValue = ObjectUtils.getPropertyValue(fieldValue, property.getCode());

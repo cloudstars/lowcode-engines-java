@@ -8,11 +8,11 @@ package net.cf.form.engine.oql.ast.expr.operation;
 public enum OqlBinaryOperator {
 
     /* 算术运算符 */
-    Multiply("*", 60),
-    Divide("/", 60),
-    Modulus("%", 60),
-    Add("+", 70),
-    Subtract("-", 70),
+    MULTIPLY("*", 60),
+    DIVIDE("/", 60),
+    MODULUS("%", 60),
+    ADD("+", 70),
+    SUBTRACT("-", 70),
 
     /* 关系运算符 */
     Equal("=", 110),
@@ -90,11 +90,11 @@ public enum OqlBinaryOperator {
      */
     public boolean isArithmetic() {
         switch (this) {
-            case Add:
-            case Subtract:
-            case Multiply:
-            case Divide:
-            case Modulus:
+            case ADD:
+            case SUBTRACT:
+            case MULTIPLY:
+            case DIVIDE:
+            case MODULUS:
                 return true;
             default:
                 return false;

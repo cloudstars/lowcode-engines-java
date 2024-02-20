@@ -1,7 +1,7 @@
 {
   "name": "SELECT_JOIN_TABLES",
   "desc": "查询表的JOIN",
-  "sqlList": [
+  "sqls": [
     {
       "name": "SELECT_IMPLICIT_CROSS_JOIN",
       "desc": "测试两个表的隐式交叉连接",

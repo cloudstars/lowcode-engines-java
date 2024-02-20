@@ -2,6 +2,7 @@ package net.cf.form.repository.ast.statement.select;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
+import net.cf.form.repository.ast.statement.AbstractSqlTest;
 import net.cf.form.repository.ast.util.SqlTestUtils;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
@@ -10,7 +11,6 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.form.repository.sql.ast.statement.SqlStatement;
 import net.cf.form.repository.sql.parser.SqlStatementParser;
-import net.cf.form.repository.testcases.statement.select.AbstractSelectColumnsTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,16 +19,20 @@ import org.junit.runners.JUnit4;
 import java.util.List;
 
 @RunWith(JUnit4.class)
-public class SelectColumnsTest extends AbstractSelectColumnsTest {
+public class SelectColumnsTest extends AbstractSqlTest {
 
-    @Test
-    @Override
-    public void testSelectAllColumns() {
-        super.testSelectAllColumns();
+    public SelectColumnsTest() {
+        super("sql/select/SelectColumns.json");
     }
 
-    @Override
-    protected void testSelectAllColumns(String sql) {
+    /**
+     * 测试仅查询一列的SQL语句的解析
+     */
+    @Test
+    public void testSelectAllColumns() {
+        String sql = this.sqlMap.get("SELECT_ALL_COLUMNS");
+        assert (sql != null);
+
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);
@@ -44,14 +48,14 @@ public class SelectColumnsTest extends AbstractSelectColumnsTest {
         Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
     }
 
+    /**
+     * 测试仅查询一列的SQL语句的解析
+     */
     @Test
-    @Override
     public void testSelectOneColumn() {
-        super.testSelectOneColumn();
-    }
+        String sql = this.sqlMap.get("SELECT_ONE_COLUMN");
+        assert (sql != null);
 
-    @Override
-    protected void testSelectOneColumn(String sql) {
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);
@@ -68,14 +72,15 @@ public class SelectColumnsTest extends AbstractSelectColumnsTest {
         Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
     }
 
-    @Test
-    @Override
-    public void testSelectMultipleColumns() {
-        super.testSelectMultipleColumns();
-    }
 
-    @Override
-    protected void testSelectMultipleColumns(String sql) {
+    /**
+     * 测试查询多列的SQL语句的解析
+     */
+    @Test
+    public void testSelectMultipleColumns() {
+        String sql = this.sqlMap.get("SELECT_MULTIPLE_COLUMNS");
+        assert (sql != null);
+
         SqlStatementParser sqlParser = new SqlStatementParser(sql);
         List<SqlStatement> stmts = sqlParser.parseStatementList();
         Assert.assertTrue(stmts != null && stmts.size() == 1);

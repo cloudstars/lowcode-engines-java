@@ -1,20 +1,23 @@
 {
   "name": "test-delete-simple-sqls",
   "desc": "测试简单的SQL删除语句",
-  "sqls": [{
-    "name": "delete-without-conditions",
-    "desc": "简单的删除语句，不带条件不被允许",
-    "sql": "delete from A",
-    "error": true
-  }, {
-    "name": "delete-without-params",
-    "desc": "简单的删除语句，带条件，不带参数",
-    "sql": "delete A where 1 = 1"
-  }, {
-    "name": "delete-with-params",
-    "desc": "简单的删除语句，带条件，带参数",
-    "sql": "delete tableA where a1 = #{a1} and a2 = #{a2} and a3 = #{a3}"
-  },
+  "sqls": [
+    {
+      "name": "delete-without-conditions",
+      "desc": "简单的删除语句，不带条件不被允许",
+      "sql": "delete from A",
+      "error": true
+    },
+    {
+      "name": "delete-without-params",
+      "desc": "简单的删除语句，带条件，不带参数",
+      "sql": "delete A where 1 = 1"
+    },
+    {
+      "name": "delete-with-params",
+      "desc": "简单的删除语句，带条件，带参数",
+      "sql": "delete tableA where a1 = #{a1} and a2 = #{a2} and a3 = #{a3}"
+    },
     {
       "name": "delete-by-id-param",
       "desc": "根据主键id变量删除数据",
@@ -30,6 +33,5 @@
       "desc": "根据多个主键id变量删除数据",
       "sql": "delete from tableA where applyId in (#{applyId0}, #{applyId1})"
     }
-
   ]
 }

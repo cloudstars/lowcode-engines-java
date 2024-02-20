@@ -94,20 +94,6 @@ public class CharTypes {
         return c <= whitespaceFlags.length && whitespaceFlags[c] || c == CHINESE_WHITESPACE;
     }
 
-    public static String trim(String value) {
-        int len = value.length();
-
-        int st;
-        for (st = 0; st < len && isWhitespace(value.charAt(st)); ++st) {
-        }
-
-        while (st < len && isWhitespace(value.charAt(len - 1))) {
-            --len;
-        }
-
-        return st <= 0 && len >= value.length() ? value : value.substring(st, len);
-    }
-
     /**
      * 初始化十六进制字符特征数组
      */

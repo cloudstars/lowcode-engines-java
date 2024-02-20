@@ -220,12 +220,6 @@ public class Lexer {
                     this.scanNumber();
                     return;
                 case '0':
-                    if (this.charAt(this.pos + 1) == 'x') {
-                        this.scanChar();
-                        this.scanChar();
-                        // 扫描十六进制 this.scanHexaDecimal();
-                        break;
-                    }
                 case '1':
                 case '2':
                 case '3':
@@ -453,7 +447,7 @@ public class Lexer {
                 this.token = Token.IDENTIFIER;
             }
         } else {
-            this.token = Token.LITERAL_FLOAT;
+            this.token = Token.LITERAL_NUMBER;
         }
 
         this.strVal = this.subStr(this.mark, this.bufPos);

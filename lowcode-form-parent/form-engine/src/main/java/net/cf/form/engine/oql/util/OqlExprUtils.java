@@ -16,33 +16,6 @@ public class OqlExprUtils {
     public OqlExprUtils() {
     }
 
-    public static boolean equals(OqlExpr a, OqlExpr b) {
-        if (a == b) {
-            return true;
-        } else if (a != null && b != null) {
-            Class<?> clazz_a = a.getClass();
-            Class<?> clazz_b = b.getClass();
-            /*if (clazz_a == OqlPropertyExpr.class && clazz_b == OqlIdentifierExpr.class) {
-                return ((OqlPropertyExpr) a).equals((OqlIdentifierExpr) b);
-            } else if (clazz_a != clazz_b) {
-                return false;
-            } else if (clazz_a == OqlIdentifierExpr.class) {
-                OqlIdentifierExpr x_a = (OqlIdentifierExpr) a;
-                OqlIdentifierExpr x_b = (OqlIdentifierExpr) b;
-                return x_a.hashCode() == x_b.hashCode();
-            } else if (clazz_a == OqlBinaryOpExpr.class) {
-                OqlBinaryOpExpr x_a = (OqlBinaryOpExpr) a;
-                OqlBinaryOpExpr x_b = (OqlBinaryOpExpr) b;
-                return x_a.equals(x_b);
-            } else */
-            {
-                return a.equals(b);
-            }
-        } else {
-            return false;
-        }
-    }
-
     public static boolean isLiteralExpr(OqlExpr expr) {
         if (expr instanceof OqlLiteralExpr) {
             return true;

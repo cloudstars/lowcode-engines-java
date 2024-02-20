@@ -1,7 +1,7 @@
 package net.cf.formula.engine.ast.expr.literal;
 
-import net.cf.formula.engine.ast.expr.FxExpr;
 import net.cf.formula.engine.ast.expr.AbstractFxExprImpl;
+import net.cf.formula.engine.ast.expr.FxExpr;
 import net.cf.formula.engine.ast.expr.FxValuableExpr;
 import net.cf.formula.engine.visitor.FxAstVisitor;
 

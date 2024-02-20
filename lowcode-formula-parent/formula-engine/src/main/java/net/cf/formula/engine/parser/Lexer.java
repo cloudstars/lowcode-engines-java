@@ -199,12 +199,6 @@ public class Lexer {
                     this.scanNumber();
                     return;
                 case '0':
-                    if (this.charAt(this.pos + 1) == 'x') {
-                        this.scanChar();
-                        this.scanChar();
-                        // 扫描十六进制 this.scanHexaDecimal();
-                        break;
-                    }
                 case '1':
                 case '2':
                 case '3':
@@ -678,7 +672,7 @@ public class Lexer {
             buf.append(" ").append(this.getStringValue());
         }
 
-        if (ParserFeature.isEnabled(this.features, ParserFeature.PrintFxWhileParsingFailed)) {
+        if (ParserFeature.isEnabled(this.features, ParserFeature.PRINT_FX_WHILE_PARSING_FAILED)) {
             buf.append(", fx : ");
             buf.append(this.text);
         }

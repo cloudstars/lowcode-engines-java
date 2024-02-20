@@ -7,13 +7,13 @@ package net.cf.form.engine.object;
  */
 public enum DataType {
 
-    String("字符串"),
-    Integer("整数"),
-    Decimal("小数"),
-    Boolean("布尔"),
-    Date("日期"),
-    Time("时间"),
-    Object("对象");
+    STRING("字符串"),
+    INTEGER("整数"),
+    DECIMAL("小数"),
+    BOOLEAN("布尔"),
+    DATE("日期"),
+    TIME("时间"),
+    OBJECT("对象");
 
     private String desc;
 
@@ -21,7 +21,7 @@ public enum DataType {
         this.desc = desc;
     }
 
-    public java.lang.String getDesc() {
+    public String getDesc() {
         return desc;
     }
 }

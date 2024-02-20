@@ -48,7 +48,6 @@
     </scm>
 
     <modules>
-        <!-- 以下为应用级的子模块 -->
         <module>lowcode-commons-parent</module>
         <module>lowcode-form-parent</module>
         <module>lowcode-excel-parent</module>
@@ -121,15 +120,21 @@
                 <version>${springboot.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-mongodb</artifactId>
-                <version>${springboot.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>8.0.22</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>2.1.214</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${springboot.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mongodb</groupId>
@@ -138,16 +143,16 @@
                 <scope>runtime</scope>
             </dependency>
             <dependency>
+                <groupId>de.flapdoodle.embed</groupId>
+                <artifactId>de.flapdoodle.embed.mongo</artifactId>
+                <version>4.7.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>1.2.16</version>
                 <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>2.1.214</version>
-                <scope>test</scope>
             </dependency>
 
             <dependency>

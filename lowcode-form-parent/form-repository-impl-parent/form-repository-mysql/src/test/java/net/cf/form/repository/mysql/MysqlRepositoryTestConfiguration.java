@@ -1,5 +1,6 @@
 package net.cf.form.repository.mysql;
 
+import net.cf.form.repository.testcases.statement.InitDataLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,6 +10,11 @@ import javax.sql.DataSource;
 
 @Configuration
 public class MysqlRepositoryTestConfiguration {
+
+    @Bean
+    public InitDataLoader initDataLoader() {
+        return new MysqlInitDataLoader();
+    }
 
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {

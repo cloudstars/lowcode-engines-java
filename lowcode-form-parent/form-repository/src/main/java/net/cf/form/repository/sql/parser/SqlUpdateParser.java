@@ -9,8 +9,8 @@ public class SqlUpdateParser extends SqlExprParser {
         super(lexer);
     }
 
-    public SqlUpdateParser(String Sql) {
-        this(new Lexer(Sql));
+    public SqlUpdateParser(String sql) {
+        this(new Lexer(sql));
     }
 
     public SqlUpdateStatement statement() {

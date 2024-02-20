@@ -22,8 +22,8 @@ public abstract class AbstractSqlParser {
         this.lexer = lexer;
     }
 
-    public AbstractSqlParser(String Sql) {
-        this(new Lexer(Sql));
+    public AbstractSqlParser(String sql) {
+        this(new Lexer(sql));
     }
 
     public AbstractSqlParser(String sql, SqlParserFeature... features) {

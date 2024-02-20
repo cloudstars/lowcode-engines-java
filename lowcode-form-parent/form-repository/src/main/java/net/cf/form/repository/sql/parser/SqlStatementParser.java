@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class SqlStatementParser extends SqlExprParser {
 
-    public SqlStatementParser(String Sql) {
-        super(Sql);
+    public SqlStatementParser(String sql) {
+        super(sql);
     }
 
     public List<SqlStatement> parseStatementList() {

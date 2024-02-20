@@ -38,7 +38,7 @@ public class AdditiveOpExprTest {
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxIntegerExpr);
         Assert.assertTrue(binaryOpExpr.getRight() instanceof FxIntegerExpr);
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Add);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.ADD);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class AdditiveOpExprTest {
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxBinaryOpExpr);
         Assert.assertTrue(binaryOpExpr.getRight() instanceof FxIntegerExpr);
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Add);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.ADD);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class AdditiveOpExprTest {
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxBinaryOpExpr);
         Assert.assertTrue(binaryOpExpr.getRight() instanceof FxIntegerExpr);
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Subtract);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.SUBTRACT);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class AdditiveOpExprTest {
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
         Assert.assertTrue(binaryOpExpr.getLeft() instanceof FxIntegerExpr);
         Assert.assertTrue(binaryOpExpr.getRight() instanceof FxBinaryOpExpr);
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Subtract);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.SUBTRACT);
         Assert.assertTrue(((FxBinaryOpExpr) binaryOpExpr.getRight()).isParenthesized());
     }
 

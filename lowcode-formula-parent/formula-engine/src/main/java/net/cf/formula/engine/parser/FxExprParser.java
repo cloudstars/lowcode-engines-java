@@ -51,13 +51,14 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    private FxExpr exprRest(FxExpr expr) {
-        expr = this.multiplicativeRest(expr);
-        expr = this.additiveRest(expr);
-        expr = this.relationalRest(expr);
-        expr = this.andRest(expr);
-        expr = this.orRest(expr);
-        return expr;
+    private FxExpr exprRest(final FxExpr expr) {
+        FxExpr tExpr = expr;
+        tExpr = this.multiplicativeRest(tExpr);
+        tExpr = this.additiveRest(tExpr);
+        tExpr = this.relationalRest(tExpr);
+        tExpr = this.andRest(tExpr);
+        tExpr = this.orRest(tExpr);
+        return tExpr;
     }
 
     /**
@@ -80,8 +81,9 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    private FxExpr orRest(FxExpr expr) {
-        while(true) {
+    private FxExpr orRest(final FxExpr expr) {
+        FxExpr tExpr = expr;
+        while (true) {
             Token token = this.lexer.token;
             if (token != Token.OR && token != Token.BARBAR) {
                 break;
@@ -89,10 +91,10 @@ public class FxExprParser {
 
             this.lexer.nextToken();
             FxExpr rightExp = this.and();
-            expr = new FxBinaryOpExpr(expr, FxBinaryOperator.Or, rightExp);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.Or, rightExp);
         }
 
-        return expr;
+        return tExpr;
     }
 
 
@@ -116,8 +118,9 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    private FxExpr andRest(FxExpr expr) {
-        while(true) {
+    private FxExpr andRest(final FxExpr expr) {
+        FxExpr tExpr = expr;
+        while (true) {
             Token token = this.lexer.token;
             if (token != Token.AND && token != Token.AMPAMP) {
                 break;
@@ -125,10 +128,10 @@ public class FxExprParser {
 
             this.lexer.nextToken();
             FxExpr rightExp = this.relational();
-            expr = new FxBinaryOpExpr(expr, FxBinaryOperator.And, rightExp);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.And, rightExp);
         }
 
-        return expr;
+        return tExpr;
     }
 
     /**
@@ -148,27 +151,28 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    private FxExpr multiplicativeRest(FxExpr expr) {
+    private FxExpr multiplicativeRest(final FxExpr expr) {
         Token token = this.lexer.token;
+        FxExpr tExpr = expr;
         FxExpr rightExpr;
         if (token == Token.STAR) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new FxBinaryOpExpr(expr, FxBinaryOperator.Multiply, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.MULTIPLY, rightExpr);
+            tExpr = this.multiplicativeRest(tExpr);
         } else if (token == Token.SLASH) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new FxBinaryOpExpr(expr, FxBinaryOperator.Divide, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.DIVIDE, rightExpr);
+            tExpr = this.multiplicativeRest(tExpr);
         } else if (token == Token.PERCENT) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            expr = new FxBinaryOpExpr(expr, FxBinaryOperator.Modulus, rightExpr);
-            expr = this.multiplicativeRest(expr);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.MODULUS, rightExpr);
+            tExpr = this.multiplicativeRest(tExpr);
         }
 
-        return expr;
+        return tExpr;
     }
 
 
@@ -192,22 +196,23 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    private FxExpr additiveRest(FxExpr expr) {
+    private FxExpr additiveRest(final FxExpr expr) {
         Token token = this.lexer.token;
+        FxExpr tExpr = expr;
         FxExpr rightExpr;
         if (token == Token.PLUS) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            expr = new FxBinaryOpExpr(expr, FxBinaryOperator.Add, rightExpr);
-            expr = this.additiveRest(expr);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.ADD, rightExpr);
+            tExpr = this.additiveRest(tExpr);
         } else if (token == Token.SUB) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            expr = new FxBinaryOpExpr(expr, FxBinaryOperator.Subtract, rightExpr);
-            expr = this.additiveRest(expr);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.SUBTRACT, rightExpr);
+            tExpr = this.additiveRest(tExpr);
         }
 
-        return expr;
+        return tExpr;
     }
 
 
@@ -227,45 +232,46 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    private FxExpr relationalRest(FxExpr expr) {
+    private FxExpr relationalRest(final FxExpr expr) {
         Token token = this.lexer.token;
-        FxExpr rightExp = null;
+        FxExpr rightExp;
+        FxExpr tExpr = expr;
         switch (token) {
             case EQEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new FxBinaryOpExpr(expr, FxBinaryOperator.Equal, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.Equal, rightExp);
                 break;
             case BANGEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new FxBinaryOpExpr(expr, FxBinaryOperator.NotEqual, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.NotEqual, rightExp);
                 break;
             case LT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new FxBinaryOpExpr(expr, FxBinaryOperator.LessThan, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.LessThan, rightExp);
                 break;
             case LTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new FxBinaryOpExpr(expr, FxBinaryOperator.LessThanOrEqual, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.LessThanOrEqual, rightExp);
                 break;
             case GT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new FxBinaryOpExpr(expr, FxBinaryOperator.GreaterThan, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.GreaterThan, rightExp);
                 break;
             case GTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                expr = new FxBinaryOpExpr(expr, FxBinaryOperator.GreaterThanOrEqual, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.GreaterThanOrEqual, rightExp);
                 break;
             default:
                 break;
         }
 
-        return expr;
+        return tExpr;
     }
 
 
@@ -309,7 +315,7 @@ public class FxExprParser {
             case BANG:
             case NOT:
                 this.lexer.nextToken();
-                expr = new FxUnaryOpExpr(FxUnaryOperator.Not, this.primary());
+                expr = new FxUnaryOpExpr(FxUnaryOperator.NOT, this.primary());
                 break;
             case LBRACKET:
                 this.lexer.nextToken();
@@ -363,23 +369,25 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    private FxExpr primaryRest(FxExpr expr) {
+    private FxExpr primaryRest(final FxExpr expr) {
         if (expr == null) {
             throw new IllegalArgumentException("expr");
-        } else {
-            Token token = this.lexer.token;
-
-            if (token == Token.DOT) {
-                this.lexer.nextToken();
-                expr = this.dotRest(expr);
-                return this.primaryRest(expr);
-            } else if (this.lexer.token == Token.LPAREN) {
-                FxExpr method = this.methodInvokeRest(expr);
-                return method;
-            }
-
-            return expr;
         }
+
+        FxExpr tExpr = expr;
+        Token token = this.lexer.token;
+
+        if (token == Token.DOT) {
+            this.lexer.nextToken();
+            tExpr = this.dotRest(tExpr);
+            return this.primaryRest(tExpr);
+        } else if (this.lexer.token == Token.LPAREN) {
+            FxExpr method = this.methodInvokeRest(tExpr);
+            return method;
+        }
+
+        return tExpr;
+
     }
 
     /**
@@ -388,16 +396,17 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    protected FxExpr dotRest(FxExpr expr) {
+    protected FxExpr dotRest(final FxExpr expr) {
         String name;
+        FxExpr tExpr = expr;
         if (this.lexer.token == Token.IDENTIFIER) {
             name = this.lexer.getStringValue();
             this.lexer.nextToken();
-            expr = new FxPropertyExpr((FxNameExpr) expr, name);
+            tExpr = new FxPropertyExpr((FxNameExpr) tExpr, name);
         }
 
-        expr = this.primaryRest(expr);
-        return expr;
+        tExpr = this.primaryRest(tExpr);
+        return tExpr;
     }
 
     /**
@@ -406,7 +415,7 @@ public class FxExprParser {
      * @param expr
      * @return
      */
-    protected FxExpr methodInvokeRest(FxExpr expr) {
+    protected FxExpr methodInvokeRest(final FxExpr expr) {
         this.accept(Token.LPAREN);
 
         if (expr instanceof FxIdentifierExpr) {

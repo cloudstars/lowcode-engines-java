@@ -6,10 +6,10 @@ package net.cf.formula.engine.parser;
  * @author clouds
  */
 public enum ParserFeature {
-    KeepComments,
-    SkipComments,
-    KeepSourceLocation,
-    PrintFxWhileParsingFailed;
+    KEEP_COMMENTS,
+    SKIP_COMMENTS,
+    KEEP_SOURCE_LOCATION,
+    PRINT_FX_WHILE_PARSING_FAILED;
 
     public final int mask = 1 << this.ordinal();
 

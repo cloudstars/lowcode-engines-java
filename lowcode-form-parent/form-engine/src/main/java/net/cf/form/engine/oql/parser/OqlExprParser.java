@@ -170,17 +170,17 @@ public class OqlExprParser extends AbstractOqlParser {
         if (token == Token.STAR) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Multiply, rightExpr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.MULTIPLY, rightExpr);
             targetExpr = this.multiplicativeRest(targetExpr);
         } else if (token == Token.SLASH) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Divide, rightExpr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.DIVIDE, rightExpr);
             targetExpr = this.multiplicativeRest(targetExpr);
         } else if (token == Token.PERCENT) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Modulus, rightExpr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.MODULUS, rightExpr);
             targetExpr = this.multiplicativeRest(targetExpr);
         }
 
@@ -215,12 +215,12 @@ public class OqlExprParser extends AbstractOqlParser {
         if (token == Token.PLUS) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Add, rightExpr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.ADD, rightExpr);
             targetExpr = this.additiveRest(targetExpr);
         } else if (token == Token.SUB) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Subtract, rightExpr);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.SUBTRACT, rightExpr);
             targetExpr = this.additiveRest(targetExpr);
         }
 

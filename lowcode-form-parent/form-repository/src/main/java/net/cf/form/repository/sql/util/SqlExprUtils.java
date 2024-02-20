@@ -31,44 +31,49 @@ public final class SqlExprUtils {
         }
     }
 
-    public static SqlExpr and(SqlExpr a, SqlExpr b) {
+    public static SqlExpr and(final SqlExpr a, final SqlExpr b) {
         if (a == null) {
             return b;
-        } else if (b == null) {
+        }
+
+        if (b == null) {
             return a;
-        } else {
-            SqlBinaryOpExprGroup group;
-            if (a instanceof SqlBinaryOpExprGroup) {
-                group = (SqlBinaryOpExprGroup) a;
-                if (group.getOperator() == SqlBinaryOperator.BooleanAnd) {
-                    group.add(b);
-                    return group;
-                }
+        }
 
-                if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
-                    a = (group.getItems().get(0)).cloneMe();
-                }
-            }
 
-            if (b instanceof SqlBinaryOpExpr) {
-                SqlBinaryOpExpr bb = (SqlBinaryOpExpr) b;
-                if (bb.getOperator() == SqlBinaryOperator.BooleanAnd) {
-                    return and(and(a, bb.getLeft()), bb.getRight());
-                }
-            } else if (b instanceof SqlBinaryOpExprGroup) {
-                group = (SqlBinaryOpExprGroup) b;
-                if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
-                    b = (group.getItems().get(0)).cloneMe();
-                }
-            }
-
-            if (a instanceof SqlBinaryOpExpr && b instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) b).getOperator() == SqlBinaryOperator.BooleanAnd) {
-                group = (SqlBinaryOpExprGroup) b;
-                group.add(0, a);
+        SqlBinaryOpExprGroup group;
+        SqlExpr ta = a;
+        SqlExpr tb = b;
+        if (ta instanceof SqlBinaryOpExprGroup) {
+            group = (SqlBinaryOpExprGroup) ta;
+            if (group.getOperator() == SqlBinaryOperator.BooleanAnd) {
+                group.add(tb);
                 return group;
-            } else {
-                return new SqlBinaryOpExpr(a, SqlBinaryOperator.BooleanAnd, b);
             }
+
+            if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
+                ta= (group.getItems().get(0)).cloneMe();
+            }
+        }
+
+        if (tb instanceof SqlBinaryOpExpr) {
+            SqlBinaryOpExpr bb = (SqlBinaryOpExpr) tb;
+            if (bb.getOperator() == SqlBinaryOperator.BooleanAnd) {
+                return and(and(ta, bb.getLeft()), bb.getRight());
+            }
+        } else if (tb instanceof SqlBinaryOpExprGroup) {
+            group = (SqlBinaryOpExprGroup) tb;
+            if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
+                tb = (group.getItems().get(0)).cloneMe();
+            }
+        }
+
+        if (ta instanceof SqlBinaryOpExpr && tb instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) tb).getOperator() == SqlBinaryOperator.BooleanAnd) {
+            group = (SqlBinaryOpExprGroup) tb;
+            group.add(0, ta);
+            return group;
+        } else {
+            return new SqlBinaryOpExpr(ta, SqlBinaryOperator.BooleanAnd, tb);
         }
     }
 
