@@ -15,16 +15,16 @@ import java.util.Map;
  */
 public class ApiExecutorRegistrationImpl implements ApiExecutorRegistration {
 
-    private Map<ApiTypeEnum, ApiExecutor> apiRtEngineMap = new HashMap<>(8);
+    private Map<ApiTypeEnum, ApiExecutor> executorMap = new HashMap<>(8);
 
     @Override
     public void register(ApiExecutor apiExecutor) {
-        apiRtEngineMap.put(apiExecutor.getType(), apiExecutor);
+        executorMap.put(apiExecutor.getType(), apiExecutor);
     }
 
     @Override
     public ApiExecutor find(ApiTypeEnum apiType) {
-        return apiRtEngineMap.get(apiType);
+        return executorMap.get(apiType);
     }
 
 }
