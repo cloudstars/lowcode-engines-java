@@ -1,6 +1,7 @@
 package net.cf.excel.engine;
 
-import net.cf.excel.engine.config.ExcelImportConfig;
+import net.cf.excel.engine.config.ExcelBuildConfig;
+import net.cf.excel.engine.config.ExcelParseConfig;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface ExcelEngine {
      * @return List<Map<String,Object>>
      * @description 解析一个Excel文件,返回解析出的数据
      */
-    List<Map<String, Object>> parseExcel(Workbook workbook, ExcelImportConfig config);
+    List<Map<String, Object>> parseExcel(Workbook workbook, ExcelParseConfig config);
 
     /**
      * @param data
@@ -27,5 +28,5 @@ public interface ExcelEngine {
      * @return Workbook
      * @description 基于数据和配置生成Excel
      */
-    Workbook buildExcel(List<Map<String, Object>> data, ExcelImportConfig config);
+    Workbook buildExcel(List<Map<String, Object>> data, ExcelBuildConfig config);
 }

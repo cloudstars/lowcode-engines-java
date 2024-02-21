@@ -10,5 +10,5 @@ public interface CellDataType {
     /**
      * 单元格的反格式化
      */
-    void unformat();
+    void unFormat();
 }

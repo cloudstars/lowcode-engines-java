@@ -1,27 +1,21 @@
 package net.cf.excel.engine;
 
-import net.cf.excel.engine.config.ExcelImportConfig;
+import net.cf.excel.engine.config.ExcelBuildConfig;
+import net.cf.excel.engine.config.ExcelParseConfig;
 import org.apache.poi.ss.usermodel.Workbook;
+
+import java.util.List;
+import java.util.Map;
 
 public class ExcelEngineImpl implements ExcelEngine {
 
-    /**
-     * Excel数据存储器
-     */
-    private ExcelDataStore excelDataStore;
-
-    private ExcelEngineImpl(ExcelDataStore excelDataStore) {
-        this.excelDataStore = excelDataStore;
-    }
-
-
     @Override
-    public void doImport(ExcelImportConfig config, Workbook workbook) {
-
+    public List<Map<String, Object>> parseExcel(Workbook workbook, ExcelParseConfig config) {
+        return null;
     }
 
     @Override
-    public Workbook export(ExcelImportConfig config) {
+    public Workbook buildExcel(List<Map<String, Object>> data, ExcelBuildConfig config) {
         return null;
     }
 }
