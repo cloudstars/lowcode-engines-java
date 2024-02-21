@@ -10,7 +10,15 @@ import net.cf.api.proxy.engine.enums.TokenPosEnum;
  * @date 2024/1/30 19:37
  */
 public interface TokenAuthConfigure {
+    /**
+     * 获取token传递的位置
+     * @return 位置信息
+     */
     TokenPosEnum getTargetPos();
 
+    /**
+     * 获取存放token的key
+     * @return 返回存放token的key
+     */
     String getTargetKey();
 }

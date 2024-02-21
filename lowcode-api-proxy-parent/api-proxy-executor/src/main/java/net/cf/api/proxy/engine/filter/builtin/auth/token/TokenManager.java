@@ -7,6 +7,14 @@ package net.cf.api.proxy.engine.filter.builtin.auth.token;
  * @date 2024/1/30 19:18
  */
 public interface TokenManager {
+    /**
+     * 获取token
+     * @return 返回token
+     */
     Token getToken();
+
+    /**
+     * 移除token
+     */
     void removeToken();
 }
