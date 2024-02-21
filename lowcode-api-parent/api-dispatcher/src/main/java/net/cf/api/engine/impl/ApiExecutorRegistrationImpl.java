@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class ApiExecutorRegistrationImpl implements ApiExecutorRegistration {
 
-    private Map<ApiTypeEnum, ApiExecutor> executorMap = new HashMap<>(8);
+    private final Map<ApiTypeEnum, ApiExecutor> executorMap = new HashMap<>(8);
 
     @Override
     public void register(ApiExecutor apiExecutor) {

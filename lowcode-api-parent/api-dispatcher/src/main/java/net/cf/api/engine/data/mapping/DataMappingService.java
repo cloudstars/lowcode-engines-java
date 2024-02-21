@@ -20,16 +20,31 @@ public class DataMappingService {
 
     private Map<TypeBind, DataMappingHandler> dataMappingHandlers;
 
+    /**
+     * 构造函数
+     * @param dataMappingHandlers  注入数据类型映射handler
+     */
     public DataMappingService(List<DataMappingHandler> dataMappingHandlers) {
         Map<TypeBind, DataMappingHandler> map = dataMappingHandlers.stream().collect(Collectors.toMap(e -> e.getTypeBind(), e -> e));
         this.dataMappingHandlers = map;
     }
 
+    /**
+     * 基于schema转换类型
+     * @param jsonSchema schema
+     * @param input 输入
+     * @return 输出
+     */
     public Object convert(JSONObject jsonSchema, Object input) {
         Map<String, String> paramTypeMap = getParamTypes(jsonSchema);
         return typeMapping(paramTypeMap, input);
     }
 
+    /**
+     * 获取参数路径path和类型
+     * @param jsonSchema schema
+     * @return 返回
+     */
     public Map<String, String> getParamTypes(JSONObject jsonSchema) {
         Map<String, String> result = new HashMap<>();
         if (CollectionUtils.isEmpty(jsonSchema)) {
@@ -41,6 +56,12 @@ public class DataMappingService {
         return result;
     }
 
+    /**
+     * 深度优先遍历json
+     * @param jsonSchema schema
+     * @param path 路径
+     * @param result 结果
+     */
     public void dsf(JSONObject jsonSchema, ArrayList<Object> path, Map<String, String> result) {
         if (CollectionUtils.isEmpty(jsonSchema)) {
             return;
@@ -74,7 +95,12 @@ public class DataMappingService {
     }
 
 
-
+    /**
+     * 类型映射
+     * @param paramTypeMap 参数路径
+     * @param input 请求
+     * @return 结果
+     */
     public Object typeMapping(Map<String, String> paramTypeMap, Object input) {
         paramTypeMap.forEach((k, v) -> {
             Object eval = JSONPath.eval(input, k);
@@ -91,6 +117,13 @@ public class DataMappingService {
         });
         return input;
     }
+
+    /**
+     * 单个字段类型绑定处理
+     * @param targetType 目标类型
+     * @param obj 原始数据
+     * @return 返回结果
+     */
     public Object mapping(String targetType, Object obj) {
         String sourceType = obj.getClass().getSimpleName();
         TypeBind typeBind = new TypeBind(targetType, sourceType);

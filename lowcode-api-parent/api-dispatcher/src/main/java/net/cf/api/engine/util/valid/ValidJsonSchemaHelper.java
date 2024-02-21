@@ -32,6 +32,12 @@ public class ValidJsonSchemaHelper {
     private ValidJsonSchemaHelper() {
     }
 
+    /**
+     * 通过schema校验json字符串
+     * @param schema  schema
+     * @param jsonData json字符串
+     * @return 校验结果
+     */
     public static ValidResult validate(String schema, String jsonData) {
         if (!StringUtils.hasText(schema)) {
             log.info("请求schema配置为空，默认校验通过");

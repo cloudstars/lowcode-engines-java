@@ -9,8 +9,8 @@ import java.util.Objects;
  * @date 2024/1/25 18:18
  */
 public class TypeBind {
-    String targetType;
-    String sourceType;
+    private String targetType;
+    private String sourceType;
 
     public TypeBind(String targetType, String sourceType) {
         this.targetType = targetType;
@@ -30,4 +30,5 @@ public class TypeBind {
     public int hashCode() {
         return Objects.hash(targetType, sourceType);
     }
+
 }

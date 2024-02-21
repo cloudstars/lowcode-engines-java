@@ -9,5 +9,10 @@ import net.cf.api.commons.definition.ApiDefinition;
  * @date 2024/2/2 8:50
  */
 public interface ApiDefinitionLoader {
-    public ApiDefinition find(String apiKey);
+    /**
+     * 通过apiKey查找api定义
+     * @param apiKey apiKey
+     * @return api定义
+     */
+    ApiDefinition find(String apiKey);
 }

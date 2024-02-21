@@ -1,6 +1,7 @@
 package net.cf.api.commons.enums;
 
 /**
+ * api是否公开枚举
  * @author 80345746
  * @version v1.0
  * @date 2024/1/17 11:21

@@ -10,7 +10,7 @@ import java.util.List;
  * @date 2024/1/23 17:37
  */
 public class ValidResult {
-    private List<String> errorMsgList = new ArrayList<>();
+    private final List<String> errorMsgList = new ArrayList<>();
     private Boolean passed = Boolean.TRUE;
 
     public boolean isFail() {

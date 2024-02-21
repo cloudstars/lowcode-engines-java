@@ -5,6 +5,7 @@ import net.cf.api.commons.enums.ApiPublicizedEnum;
 import net.cf.api.commons.enums.ApiTypeEnum;
 
 /**
+ * api定义
  * @author 80345746
  * @version v1.0
  * @date 2024/1/17 21:45

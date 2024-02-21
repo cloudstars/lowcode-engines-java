@@ -27,6 +27,10 @@ import java.util.Objects;
 public class ApiExecuteDispatcherImpl implements ApiExecuteDispatcher {
 
     private static final Logger log = LoggerFactory.getLogger(ApiExecuteDispatcherImpl.class);
+    private final ApiExecutorRegistration apiExecutorRegistration;
+    private final AppLoggerFactory appLoggerFactory;
+    private final DataMappingService dataMappingService;
+    private final ApiDefinitionLoader apiDefinitionLoader;
 
     public ApiExecuteDispatcherImpl(ApiExecutorRegistration apiExecutorRegistration, AppLoggerFactory appLoggerFactory, DataMappingService dataMappingService, ApiDefinitionLoader apiDefinitionLoader) {
         this.apiExecutorRegistration = apiExecutorRegistration;
@@ -35,11 +39,13 @@ public class ApiExecuteDispatcherImpl implements ApiExecuteDispatcher {
         this.apiDefinitionLoader = apiDefinitionLoader;
     }
 
-    public final ApiExecutorRegistration apiExecutorRegistration;
-    public final AppLoggerFactory appLoggerFactory;
-    public final DataMappingService dataMappingService;
-    public final ApiDefinitionLoader apiDefinitionLoader;
 
+    /**
+     * 分发api
+     * @param input  输入
+     * @param apiKey apiKey
+     * @return 返回结果
+     */
     @Override
     public Object dispatch(Object input, String apiKey) {
         ApiDefinition apiDefinition = findApiDefinition(apiKey);
