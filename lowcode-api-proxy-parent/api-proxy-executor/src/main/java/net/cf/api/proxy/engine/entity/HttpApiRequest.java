@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * http请求
+ *
  * @author 80345746
  * @version v1.0
  * @date 2024/1/17 23:21
@@ -58,28 +59,35 @@ public class HttpApiRequest {
         private Map<String, Object> queries;
         private Map<String, Object> headers;
         private Object body;
-        HttpApiRequestBuilder() {}
+
+        HttpApiRequestBuilder() {
+        }
 
         public HttpApiRequestBuilder method(HttpMethod httpMethod) {
             this.method = httpMethod;
             return this;
         }
+
         public HttpApiRequestBuilder url(String url) {
             this.url = url;
             return this;
         }
+
         public HttpApiRequestBuilder queries(Map<String, Object> queries) {
             this.queries = queries;
             return this;
         }
-        public HttpApiRequestBuilder  headers(Map<String, Object> httpHeaders) {
+
+        public HttpApiRequestBuilder headers(Map<String, Object> httpHeaders) {
             this.headers = httpHeaders;
             return this;
         }
+
         public HttpApiRequestBuilder body(Object body) {
             this.body = body;
             return this;
         }
+
         public HttpApiRequest build() {
             if (Objects.isNull(this.headers)) {
                 this.headers = new HashMap<>(8);

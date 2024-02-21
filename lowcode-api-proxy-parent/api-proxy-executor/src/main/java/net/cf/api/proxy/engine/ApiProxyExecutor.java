@@ -10,5 +10,10 @@ import net.cf.api.proxy.engine.entity.HttpApiResponse;
  * @date 2024/1/29 11:46
  */
 public interface ApiProxyExecutor {
+    /**
+     * api代理执行器
+     * @param httpApiRequest api执行请求
+     * @return api执行结果
+     */
     HttpApiResponse execute(HttpApiRequest httpApiRequest);
 }
