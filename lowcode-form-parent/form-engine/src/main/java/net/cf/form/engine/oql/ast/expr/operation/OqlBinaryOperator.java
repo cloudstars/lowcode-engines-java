@@ -15,21 +15,21 @@ public enum OqlBinaryOperator {
     SUBTRACT("-", 70),
 
     /* 关系运算符 */
-    Equal("=", 110),
-    NotEqual("!=", 110),
-    GreaterThan(">", 110),
-    GreaterThanOrEqual(">=", 110),
-    LessThan("<", 110),
-    LessThanOrEqual("<=", 110),
-    Like("LIKE", 110),
-    NotLike("NOT_LIKE", 110),
-    In("IN", 110),
-    Contains("CONTAINS", 110),
+    EQUAL("=", 110),
+    NOT_EQUAL("!=", 110),
+    GREATER_THAN(">", 110),
+    GREATER_THAN_OR_EQUAL(">=", 110),
+    LESS_THAN("<", 110),
+    LESS_THAN_OR_EQUAL("<=", 110),
+    LIKE("LIKE", 110),
+    NOT_LIKE("NOT_LIKE", 110),
+    IN("IN", 110),
+    CONTAINS("CONTAINS", 110),
 
     /* 逻辑运算符 */
-    And("AND", 150),
-    Or("OR", 160),
-    Not("NOT", 170);
+    AND("AND", 150),
+    OR("OR", 160),
+    NOT("NOT", 170);
 
     public final String name;
 
@@ -59,15 +59,15 @@ public enum OqlBinaryOperator {
      */
     public boolean isRelational() {
         switch (this) {
-            case Equal:
-            case NotEqual:
-            case GreaterThan:
-            case GreaterThanOrEqual:
-            case LessThan:
-            case LessThanOrEqual:
-            case Like:
-            case NotLike:
-            case In:
+            case EQUAL:
+            case NOT_EQUAL:
+            case GREATER_THAN:
+            case GREATER_THAN_OR_EQUAL:
+            case LESS_THAN:
+            case LESS_THAN_OR_EQUAL:
+            case LIKE:
+            case NOT_LIKE:
+            case IN:
                 return true;
             default:
                 return false;
@@ -80,7 +80,7 @@ public enum OqlBinaryOperator {
      * @return
      */
     public boolean isLogical() {
-        return this == And || this == Or || this == Not;
+        return this == AND || this == OR || this == NOT;
     }
 
     /**

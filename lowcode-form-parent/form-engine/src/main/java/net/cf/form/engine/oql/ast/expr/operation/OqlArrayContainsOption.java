@@ -8,7 +8,7 @@ package net.cf.form.engine.oql.ast.expr.operation;
 public enum OqlArrayContainsOption {
 
     ANY,
-    ALL,
+    ALL;
 
     OqlArrayContainsOption() {
     }

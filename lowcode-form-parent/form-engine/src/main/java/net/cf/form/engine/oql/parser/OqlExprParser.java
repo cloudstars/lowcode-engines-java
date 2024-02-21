@@ -102,7 +102,7 @@ public class OqlExprParser extends AbstractOqlParser {
 
             this.lexer.nextToken();
             OqlExpr rightExp = this.and();
-            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Or, rightExp);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.OR, rightExp);
         }
 
         return targetExpr;
@@ -140,7 +140,7 @@ public class OqlExprParser extends AbstractOqlParser {
 
             this.lexer.nextToken();
             OqlExpr rightExp = this.relational();
-            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.And, rightExp);
+            targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.AND, rightExp);
         }
 
         return targetExpr;
@@ -253,33 +253,33 @@ public class OqlExprParser extends AbstractOqlParser {
             case EQEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.Equal, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.EQUAL, rightExp);
                 break;
             case LTGT:
             case BANGEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.NotEqual, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.NOT_EQUAL, rightExp);
                 break;
             case LT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.LessThan, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.LESS_THAN, rightExp);
                 break;
             case LTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.LessThanOrEqual, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.LESS_THAN_OR_EQUAL, rightExp);
                 break;
             case GT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.GreaterThan, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.GREATER_THAN, rightExp);
                 break;
             case GTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.GreaterThanOrEqual, rightExp);
+                targetExpr = new OqlBinaryOpExpr(targetExpr, OqlBinaryOperator.GREATER_THAN_OR_EQUAL, rightExp);
                 break;
             case LIKE:
                 this.lexer.nextToken();

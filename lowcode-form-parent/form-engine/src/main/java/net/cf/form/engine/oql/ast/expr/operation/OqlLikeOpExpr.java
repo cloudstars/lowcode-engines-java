@@ -13,7 +13,7 @@ public class OqlLikeOpExpr extends OqlBinaryOpExpr {
     }
 
     public OqlLikeOpExpr(OqlExpr left, OqlExpr right) {
-        super(left, OqlBinaryOperator.Like, right);
+        super(left, OqlBinaryOperator.LIKE, right);
     }
 
     public String getEscape() {

@@ -11,7 +11,7 @@ public class OqlArrayContainsOpExpr extends OqlBinaryOpExpr {
     }
 
     public OqlArrayContainsOpExpr(OqlExpr expr, OqlJsonArrayExpr values) {
-        super(expr, OqlBinaryOperator.Contains, values);
+        super(expr, OqlBinaryOperator.CONTAINS, values);
     }
 
     public OqlJsonArrayExpr getValues() {

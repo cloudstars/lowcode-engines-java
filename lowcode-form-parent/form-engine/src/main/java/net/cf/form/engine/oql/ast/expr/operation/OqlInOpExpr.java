@@ -9,7 +9,7 @@ public class OqlInOpExpr extends OqlBinaryOpExpr {
     }
 
     public OqlInOpExpr(OqlExpr expr, OqlListExpr values) {
-        super(expr, OqlBinaryOperator.In, values);
+        super(expr, OqlBinaryOperator.IN, values);
     }
 
     public OqlListExpr getValues() {

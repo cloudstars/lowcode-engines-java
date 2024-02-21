@@ -693,7 +693,7 @@ public class Lexer {
             buf.append(" ").append(this.strVal);
         }
 
-        if (ParserFeature.isEnabled(this.features, ParserFeature.PrintSqlWhileParsingFailed)) {
+        if (ParserFeature.isEnabled(this.features, ParserFeature.PRINT_SQL_WHILE_PARSING_FAILED)) {
             buf.append(", method : ");
             buf.append(this.text);
         }

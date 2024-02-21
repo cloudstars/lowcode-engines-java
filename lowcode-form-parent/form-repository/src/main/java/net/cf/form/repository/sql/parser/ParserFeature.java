@@ -6,10 +6,10 @@ package net.cf.form.repository.sql.parser;
  * @author clouds
  */
 public enum ParserFeature {
-    KeepComments,
-    SkipComments,
-    KeepSourceLocation,
-    PrintSqlWhileParsingFailed;
+    KEEP_COMMENTS,
+    SKIP_COMMENTS,
+    KEEP_SOURCE_LOCATION,
+    PRINT_SQL_WHILE_PARSING_FAILED;
 
     public final int mask = 1 << this.ordinal();
 
