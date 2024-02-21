@@ -1,5 +1,7 @@
 package net.cf.api.engine.data.mapping;
 
+import java.util.Objects;
+
 /**
  * 类型绑定对象
  * @author 80345746
@@ -19,8 +21,13 @@ public class TypeBind {
     public boolean equals(Object obj) {
         if (obj instanceof TypeBind) {
             TypeBind other = (TypeBind) obj;
-            return this.sourceType == other.sourceType && this.targetType == other.targetType;
+            return Objects.equals(this.sourceType, other.sourceType) && Objects.equals(this.targetType, other.targetType);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(targetType, sourceType);
     }
 }

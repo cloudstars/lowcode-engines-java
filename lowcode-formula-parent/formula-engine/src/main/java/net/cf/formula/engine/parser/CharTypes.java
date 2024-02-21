@@ -173,10 +173,4 @@ public class CharTypes {
             }
         }
     }
-
-    public static void main(String[] args) {
-        System.out.println(Character.charCount(65288));
-        System.out.println(Character.charCount(65289));
-
-    }
 }

@@ -68,12 +68,12 @@ public class FxPropertyExpr extends AbstractFxExprImpl implements FxNameExpr {
 
     @Override
     public FxPropertyExpr clone() {
-        FxNameExpr owner_x = null;
+        FxNameExpr ownerX = null;
         if (this.owner != null) {
-            owner_x = this.owner.clone();
+            ownerX = this.owner.clone();
         }
 
-        FxPropertyExpr x = new FxPropertyExpr(owner_x, this.name);
+        FxPropertyExpr x = new FxPropertyExpr(ownerX, this.name);
         return x;
     }
 

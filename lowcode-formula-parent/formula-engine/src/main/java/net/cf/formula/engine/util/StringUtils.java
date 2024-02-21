@@ -1,6 +1,9 @@
 package net.cf.formula.engine.util;
 
 public class StringUtils {
+    private StringUtils() {
+
+    }
 
     /**
      * 是否是一个数字

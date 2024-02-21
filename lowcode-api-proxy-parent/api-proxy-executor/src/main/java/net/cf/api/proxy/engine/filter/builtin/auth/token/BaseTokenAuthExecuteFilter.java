@@ -39,6 +39,7 @@ public class BaseTokenAuthExecuteFilter implements AuthExecuteFilter {
                 headers.put(key, token.getData());
                 break;
             case BODY:
+            default:
                 Object body = httpApiRequest.getBody();
                 if (body instanceof Map) {
                     Map<String, String> map = (Map<String, String>) body;

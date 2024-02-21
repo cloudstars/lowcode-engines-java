@@ -20,13 +20,14 @@ public enum VisitorFeature {
     }
 
     public static int config(int features, VisitorFeature feature, boolean state) {
+        int result = features;
         if (state) {
-            features |= feature.mask;
+            result |= feature.mask;
         } else {
-            features &= ~feature.mask;
+            result &= ~feature.mask;
         }
 
-        return features;
+        return result;
     }
 
     public static int of(VisitorFeature... features) {
