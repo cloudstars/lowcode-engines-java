@@ -50,7 +50,7 @@ public class RelationalOpExprTest {
         FxExpr expr = exprParser.relational();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Equal);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.EQUAL);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class RelationalOpExprTest {
         FxExpr expr = exprParser.relational();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.NotEqual);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.NOT_EQUAL);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class RelationalOpExprTest {
         FxExpr expr = exprParser.relational();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.LessThan);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.LESS_THAN);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class RelationalOpExprTest {
         FxExpr expr = exprParser.relational();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.LessThanOrEqual);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.LESS_THAN_OR_EQUAL);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class RelationalOpExprTest {
         FxExpr expr = exprParser.relational();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.GreaterThan);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.GREATER_THAN);
     }
 
     @Test
@@ -120,7 +120,7 @@ public class RelationalOpExprTest {
         FxExpr expr = exprParser.relational();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.GreaterThanOrEqual);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.GREATER_THAN_OR_EQUAL);
     }
 
 
@@ -135,7 +135,7 @@ public class RelationalOpExprTest {
         FxExpr expr = exprParser.relational();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Equal);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.EQUAL);
     }
 
 }

@@ -32,7 +32,7 @@ public class PrintableVisitorAdaptor extends SqlAstVisitorAdaptor implements Pri
     protected boolean upperCase = false;
 
     public PrintableVisitorAdaptor(Appendable appender) {
-        this.features |= VisitorFeature.OutputPrettyFormat.mask;
+        this.features |= VisitorFeature.OUTPUT_PRETTY_FORMAT.mask;
         this.appender = appender;
     }
 
@@ -54,12 +54,13 @@ public class PrintableVisitorAdaptor extends SqlAstVisitorAdaptor implements Pri
 
     @Override
     public void print(String text) {
+        String tText = text;
         if (this.appender != null) {
-            if (this.upperCase && text != null) {
-                text = text.toUpperCase();
+            if (this.upperCase && tText != null) {
+                tText = tText.toUpperCase();
             }
             try {
-                this.appender.append(text);
+                this.appender.append(tText);
             } catch (IOException e) {
                 throw new FastSqlException("println error", e);
             }

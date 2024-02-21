@@ -47,7 +47,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
      */
     protected final void nullSafeAcceptChild(SqlAstVisitor visitor, List<? extends SqlObject> children) {
         if (children != null) {
-            for(int i = 0; i < children.size(); ++i) {
+            for (int i = 0; i < children.size(); ++i) {
                 this.nullSafeAcceptChild(visitor, children.get(i));
             }
         }
@@ -145,13 +145,13 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
                 this.attributes = new HashMap(1);
             }
 
-            List<String> comments = (List)this.attributes.get("rowFormat.before_comment");
+            List<String> comments = (List) this.attributes.get("rowFormat.before_comment");
             if (comments == null) {
                 comments = new ArrayList(2);
                 this.attributes.put("rowFormat.before_comment", comments);
             }
 
-            ((List)comments).add(comment);
+            ((List) comments).add(comment);
         }
     }
 
@@ -160,7 +160,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
             this.attributes = new HashMap(1);
         }
 
-        List<String> attrComments = (List)this.attributes.get("rowFormat.before_comment");
+        List<String> attrComments = (List) this.attributes.get("rowFormat.before_comment");
         if (attrComments == null) {
             this.attributes.put("rowFormat.before_comment", comments);
         } else {
@@ -170,7 +170,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
     }
 
     public List<String> getBeforeCommentsDirect() {
-        return this.attributes == null ? null : (List)this.attributes.get("rowFormat.before_comment");
+        return this.attributes == null ? null : (List) this.attributes.get("rowFormat.before_comment");
     }
 
     public void addAfterComment(String comment) {
@@ -178,13 +178,13 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
             this.attributes = new HashMap(1);
         }
 
-        List<String> comments = (List)this.attributes.get("rowFormat.after_comment");
+        List<String> comments = (List) this.attributes.get("rowFormat.after_comment");
         if (comments == null) {
             comments = new ArrayList(2);
             this.attributes.put("rowFormat.after_comment", comments);
         }
 
-        ((List)comments).add(comment);
+        ((List) comments).add(comment);
     }
 
     public void addAfterComment(List<String> comments) {
@@ -193,7 +193,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
                 this.attributes = new HashMap(1);
             }
 
-            List<String> attrComments = (List)this.attributes.get("rowFormat.after_comment");
+            List<String> attrComments = (List) this.attributes.get("rowFormat.after_comment");
             if (attrComments == null) {
                 this.attributes.put("rowFormat.after_comment", comments);
             } else {
@@ -204,14 +204,14 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
     }
 
     public List<String> getAfterCommentsDirect() {
-        return this.attributes == null ? null : (List)this.attributes.get("rowFormat.after_comment");
+        return this.attributes == null ? null : (List) this.attributes.get("rowFormat.after_comment");
     }
 
     public boolean hasBeforeComment() {
         if (this.attributes == null) {
             return false;
         } else {
-            List<String> comments = (List)this.attributes.get("rowFormat.before_comment");
+            List<String> comments = (List) this.attributes.get("rowFormat.before_comment");
             if (comments == null) {
                 return false;
             } else {
@@ -224,7 +224,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
         if (this.attributes == null) {
             return false;
         } else {
-            List<String> comments = (List)this.attributes.get("rowFormat.after_comment");
+            List<String> comments = (List) this.attributes.get("rowFormat.after_comment");
             if (comments == null) {
                 return false;
             } else {

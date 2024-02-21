@@ -95,13 +95,13 @@ public class Lexer {
 
     public void config(SqlParserFeature feature, boolean state) {
         this.features = SqlParserFeature.config(this.features, feature, state);
-        if (feature == SqlParserFeature.OptimizedForParameterized) {
+        if (feature == SqlParserFeature.OPTIMIZED_FOR_PARAMETERIZED) {
             this.optimizedForParameterized = state;
-        } else if (feature == SqlParserFeature.KeepComments) {
+        } else if (feature == SqlParserFeature.KEEP_COMMENTS) {
             this.keepComments = state;
-        } else if (feature == SqlParserFeature.KeepSourceLocation) {
+        } else if (feature == SqlParserFeature.KEEP_SOURCE_LOCATION) {
             this.keepSourceLocation = state;
-        } else if (feature == SqlParserFeature.SkipComments) {
+        } else if (feature == SqlParserFeature.SKIP_COMMENTS) {
             this.skipComment = state;
         }
     }

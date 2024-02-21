@@ -81,7 +81,7 @@ public class SqlInsertStatement extends SqlInsertInto implements SqlStatement {
         @Override
         protected void accept0(SqlAstVisitor visitor) {
             if (visitor.visit(this)) {
-                for(int i = 0; i < this.values.size(); ++i) {
+                for (int i = 0; i < this.values.size(); ++i) {
                     Object item = this.values.get(i);
                     if (item instanceof SqlObject) {
                         ((SqlObject) item).accept(visitor);

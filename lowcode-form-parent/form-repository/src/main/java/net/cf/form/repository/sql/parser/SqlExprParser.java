@@ -109,7 +109,7 @@ public class SqlExprParser extends AbstractSqlParser {
 
             this.lexer.nextToken();
             SqlExpr rightExp = this.and();
-            tExpr = new SqlBinaryOpExpr(tExpr, SqlBinaryOperator.BooleanOr, rightExp);
+            tExpr = new SqlBinaryOpExpr(tExpr, SqlBinaryOperator.BOOLEAN_OR, rightExp);
         }
 
         return tExpr;
@@ -147,7 +147,7 @@ public class SqlExprParser extends AbstractSqlParser {
 
             this.lexer.nextToken();
             SqlExpr rightExp = this.relational();
-            tExpr = new SqlBinaryOpExpr(tExpr, SqlBinaryOperator.BooleanAnd, rightExp);
+            tExpr = new SqlBinaryOpExpr(tExpr, SqlBinaryOperator.BOOLEAN_AND, rightExp);
         }
 
         return tExpr;
@@ -177,17 +177,17 @@ public class SqlExprParser extends AbstractSqlParser {
         if (token == Token.STAR) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Multiply, rightExpr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.MULTIPLY, rightExpr);
             targetExpr = this.multiplicativeRest(targetExpr);
         } else if (token == Token.SLASH) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Divide, rightExpr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.DIVIDE, rightExpr);
             targetExpr = this.multiplicativeRest(targetExpr);
         } else if (token == Token.PERCENT) {
             this.lexer.nextToken();
             rightExpr = this.primary();
-            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Modulus, rightExpr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.MODULUS, rightExpr);
             targetExpr = this.multiplicativeRest(targetExpr);
         }
 
@@ -222,12 +222,12 @@ public class SqlExprParser extends AbstractSqlParser {
         if (token == Token.PLUS) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Add, rightExpr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.ADD, rightExpr);
             targetExpr = this.additiveRest(targetExpr);
         } else if (token == Token.SUB) {
             this.lexer.nextToken();
             rightExpr = this.multiplicative();
-            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Subtract, rightExpr);
+            targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.SUBTRACT, rightExpr);
             targetExpr = this.additiveRest(targetExpr);
         }
 
@@ -260,33 +260,33 @@ public class SqlExprParser extends AbstractSqlParser {
             case EQEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.Equality, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.EQUALITY, rightExp);
                 break;
             case LTGT:
             case BANGEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.NotEqual, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.NOT_EQUAL, rightExp);
                 break;
             case LT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.LessThan, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.LESS_THAN, rightExp);
                 break;
             case LTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.LessThanOrEqual, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.LESS_THAN_OR_EQUAL, rightExp);
                 break;
             case GT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.GreaterThan, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.GREATER_THAN, rightExp);
                 break;
             case GTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.GreaterThanOrEqual, rightExp);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, SqlBinaryOperator.GREATER_THAN_OR_EQUAL, rightExp);
                 break;
             case LIKE:
                 this.lexer.nextToken();

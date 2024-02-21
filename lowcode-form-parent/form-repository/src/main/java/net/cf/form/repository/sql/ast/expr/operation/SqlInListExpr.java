@@ -33,7 +33,7 @@ public final class SqlInListExpr extends AbstractSqlExprImpl implements SqlRepla
         String[] var3 = values;
         int var4 = values.length;
 
-        for(int var5 = 0; var5 < var4; ++var5) {
+        for (int var5 = 0; var5 < var4; ++var5) {
             String value = var3[var5];
             this.targetList.add(new SqlCharExpr(value));
         }
@@ -53,8 +53,8 @@ public final class SqlInListExpr extends AbstractSqlExprImpl implements SqlRepla
         }
 
         Iterator var2 = this.targetList.iterator();
-        while(var2.hasNext()) {
-            SqlExpr e = (SqlExpr)var2.next();
+        while (var2.hasNext()) {
+            SqlExpr e = (SqlExpr) var2.next();
             SqlExpr e2 = e.cloneMe();
             e2.setParent(x);
             x.targetList.add(e2);
@@ -110,8 +110,8 @@ public final class SqlInListExpr extends AbstractSqlExprImpl implements SqlRepla
 
             if (this.targetList != null) {
                 Iterator var2 = this.targetList.iterator();
-                while(var2.hasNext()) {
-                    SqlExpr item = (SqlExpr)var2.next();
+                while (var2.hasNext()) {
+                    SqlExpr item = (SqlExpr) var2.next();
                     if (item != null) {
                         item.accept(visitor);
                     }
@@ -138,7 +138,7 @@ public final class SqlInListExpr extends AbstractSqlExprImpl implements SqlRepla
             this.setExpr(target);
             return true;
         } else {
-            for(int i = this.targetList.size() - 1; i >= 0; --i) {
+            for (int i = this.targetList.size() - 1; i >= 0; --i) {
                 if (this.targetList.get(i) == expr) {
                     if (target == null) {
                         this.targetList.remove(i);

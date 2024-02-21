@@ -8,31 +8,31 @@ package net.cf.form.repository.sql.ast.expr.operation;
 public enum SqlBinaryOperator {
 
     /* 算术运算符 */
-    Multiply("*", 60),
-    Divide("/", 60),
-    Modulus("%", 60),
-    Add("+", 70),
-    Subtract("-", 70),
+    MULTIPLY("*", 60),
+    DIVIDE("/", 60),
+    MODULUS("%", 60),
+    ADD("+", 70),
+    SUBTRACT("-", 70),
 
     /* 关系运算符 */
-    Equality("=", 110),
-    NotEqual("!=", 110),
-    GreaterThan(">", 110),
-    GreaterThanOrEqual(">=", 110),
-    LessThan("<", 110),
-    LessThanOrEqual("<=", 110),
-    Like("LIKE", 110),
-    NotLike("NOT_LIKE", 110),
-    In("IN", 110),
-    Contains("CONTAINS", 110),
-    Is("IS", 110),
-    IsNot("IS NOT", 110),
-    Escape("ESCAPE", 110),
+    EQUALITY("=", 110),
+    NOT_EQUAL("!=", 110),
+    GREATER_THAN(">", 110),
+    GREATER_THAN_OR_EQUAL(">=", 110),
+    LESS_THAN("<", 110),
+    LESS_THAN_OR_EQUAL("<=", 110),
+    LIKE("LIKE", 110),
+    NOT_LIKE("NOT_LIKE", 110),
+    IN("IN", 110),
+    CONTAINS("CONTAINS", 110),
+    IS("IS", 110),
+    IS_NOT("IS NOT", 110),
+    ESCAPE("ESCAPE", 110),
     /* 逻辑运算符 */
-    BooleanAnd("AND", 140),
-    BooleanXor("XOR", 150),
-    BooleanOr("OR", 160),
-    Not("NOT", 170);
+    BOOLEAN_AND("AND", 140),
+    BOOLEAN_XOR("XOR", 150),
+    BOOLEAN_OR("OR", 160),
+    NOT("NOT", 170);
 
     public final String name;
 
@@ -62,15 +62,15 @@ public enum SqlBinaryOperator {
      */
     public boolean isRelational() {
         switch (this) {
-            case Equality:
-            case NotEqual:
-            case GreaterThan:
-            case GreaterThanOrEqual:
-            case LessThan:
-            case LessThanOrEqual:
-            case Like:
-            case NotLike:
-            case In:
+            case EQUALITY:
+            case NOT_EQUAL:
+            case GREATER_THAN:
+            case GREATER_THAN_OR_EQUAL:
+            case LESS_THAN:
+            case LESS_THAN_OR_EQUAL:
+            case LIKE:
+            case NOT_LIKE:
+            case IN:
                 return true;
             default:
                 return false;
@@ -83,7 +83,7 @@ public enum SqlBinaryOperator {
      * @return
      */
     public boolean isLogical() {
-        return this == BooleanAnd || this == BooleanOr || this == Not;
+        return this == BOOLEAN_AND || this == BOOLEAN_OR || this == NOT;
     }
 
     /**
@@ -93,11 +93,11 @@ public enum SqlBinaryOperator {
      */
     public boolean isArithmetic() {
         switch (this) {
-            case Add:
-            case Subtract:
-            case Multiply:
-            case Divide:
-            case Modulus:
+            case ADD:
+            case SUBTRACT:
+            case MULTIPLY:
+            case DIVIDE:
+            case MODULUS:
                 return true;
             default:
                 return false;

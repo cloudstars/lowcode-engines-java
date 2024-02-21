@@ -91,7 +91,7 @@ public class FxExprParser {
 
             this.lexer.nextToken();
             FxExpr rightExp = this.and();
-            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.Or, rightExp);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.OR, rightExp);
         }
 
         return tExpr;
@@ -128,7 +128,7 @@ public class FxExprParser {
 
             this.lexer.nextToken();
             FxExpr rightExp = this.relational();
-            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.And, rightExp);
+            tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.AND, rightExp);
         }
 
         return tExpr;
@@ -240,32 +240,32 @@ public class FxExprParser {
             case EQEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.Equal, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.EQUAL, rightExp);
                 break;
             case BANGEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.NotEqual, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.NOT_EQUAL, rightExp);
                 break;
             case LT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.LessThan, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.LESS_THAN, rightExp);
                 break;
             case LTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.LessThanOrEqual, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.LESS_THAN_OR_EQUAL, rightExp);
                 break;
             case GT:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.GreaterThan, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.GREATER_THAN, rightExp);
                 break;
             case GTEQ:
                 this.lexer.nextToken();
                 rightExp = this.additive();
-                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.GreaterThanOrEqual, rightExp);
+                tExpr = new FxBinaryOpExpr(tExpr, FxBinaryOperator.GREATER_THAN_OR_EQUAL, rightExp);
                 break;
             default:
                 break;

@@ -66,8 +66,8 @@ public class SqlCaseExpr extends AbstractSqlExprImpl implements SqlReplaceable {
 
             Iterator var2 = this.items.iterator();
 
-            while(var2.hasNext()) {
-                Item item = (Item)var2.next();
+            while (var2.hasNext()) {
+                Item item = (Item) var2.next();
                 if (item != null) {
                     item.accept(visitor);
                 }
@@ -112,8 +112,8 @@ public class SqlCaseExpr extends AbstractSqlExprImpl implements SqlReplaceable {
         SqlCaseExpr x = new SqlCaseExpr();
         Iterator var2 = this.items.iterator();
 
-        while(var2.hasNext()) {
-            Item item = (Item)var2.next();
+        while (var2.hasNext()) {
+            Item item = (Item) var2.next();
             x.addItem(item.cloneMe());
         }
 

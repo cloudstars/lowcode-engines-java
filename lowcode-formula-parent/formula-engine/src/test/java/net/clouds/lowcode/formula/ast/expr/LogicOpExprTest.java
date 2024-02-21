@@ -56,7 +56,7 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.and();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.And);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.AND);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.and();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.And);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.AND);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.or();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Or);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.OR);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.or();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Or);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.OR);
     }
 
     @Test
@@ -144,11 +144,11 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.or();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Or);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.OR);
         FxExpr binaryOpExprR = binaryOpExpr.getRight();
         Assert.assertTrue(binaryOpExprR instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExprR0 = (FxBinaryOpExpr) binaryOpExprR;
-        Assert.assertTrue(binaryOpExprR0.getOperator() == FxBinaryOperator.And);
+        Assert.assertTrue(binaryOpExprR0.getOperator() == FxBinaryOperator.AND);
     }
 
     @Test
@@ -162,11 +162,11 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.and();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.And);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.AND);
         FxExpr binaryOpExprR = binaryOpExpr.getRight();
         Assert.assertTrue(binaryOpExprR instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExprR0 = (FxBinaryOpExpr) binaryOpExprR;
-        Assert.assertTrue(binaryOpExprR0.getOperator() == FxBinaryOperator.Or);
+        Assert.assertTrue(binaryOpExprR0.getOperator() == FxBinaryOperator.OR);
         Assert.assertTrue(binaryOpExprR0.getLeft() instanceof FxUnaryOpExpr);
         FxUnaryOpExpr binaryOpExprRL = (FxUnaryOpExpr) binaryOpExprR0.getLeft();
         Assert.assertTrue(binaryOpExprRL.getOperator() == FxUnaryOperator.NOT);
@@ -183,14 +183,14 @@ public class LogicOpExprTest {
         FxExpr expr = exprParser.or();
         Assert.assertTrue(expr instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExpr = (FxBinaryOpExpr) expr;
-        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.Or);
+        Assert.assertTrue(binaryOpExpr.getOperator() == FxBinaryOperator.OR);
         FxExpr binaryOpExprR = binaryOpExpr.getRight();
         Assert.assertTrue(binaryOpExprR instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExprR0 = (FxBinaryOpExpr) binaryOpExprR;
-        Assert.assertTrue(binaryOpExprR0.getOperator() == FxBinaryOperator.And);
+        Assert.assertTrue(binaryOpExprR0.getOperator() == FxBinaryOperator.AND);
         Assert.assertTrue(binaryOpExprR0.getRight() instanceof FxBinaryOpExpr);
         FxBinaryOpExpr binaryOpExprRR = (FxBinaryOpExpr) binaryOpExprR0.getRight();
-        Assert.assertTrue(binaryOpExprRR.getOperator() == FxBinaryOperator.LessThan);
+        Assert.assertTrue(binaryOpExprRR.getOperator() == FxBinaryOperator.LESS_THAN);
     }
 
 }

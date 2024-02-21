@@ -6,9 +6,9 @@ package net.cf.form.engine.def;
  * @author clouds
  */
 public enum DataType {
-    String,
-    Number,
-    Date,
-    Boolean,
-    Object
+    STRING,
+    NUMBER,
+    DATE,
+    BOOLEAN,
+    OBJECT
 }

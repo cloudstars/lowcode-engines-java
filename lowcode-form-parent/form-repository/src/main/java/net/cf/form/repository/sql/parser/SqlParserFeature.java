@@ -2,10 +2,10 @@ package net.cf.form.repository.sql.parser;
 
 
 public enum SqlParserFeature {
-    OptimizedForParameterized,
-    KeepComments,
-    SkipComments,
-    KeepSourceLocation;
+    OPTIMIZED_FOR_PARAMETERIZED,
+    KEEP_COMMENTS,
+    SKIP_COMMENTS,
+    KEEP_SOURCE_LOCATION;
 
     public final int mask = 1 << this.ordinal();
 
@@ -34,7 +34,7 @@ public enum SqlParserFeature {
             SqlParserFeature[] var2 = features;
             int var3 = features.length;
 
-            for(int var4 = 0; var4 < var3; ++var4) {
+            for (int var4 = 0; var4 < var3; ++var4) {
                 SqlParserFeature feature = var2[var4];
                 value |= feature.mask;
             }

@@ -201,20 +201,20 @@ public class InsertSqlAstVisitor extends SqlAstVisitorAdaptor {
         return false;
     }
 
-    protected void printChars(String text) {
-        if (text == null) {
+    protected void printChars(final String text) {
+        String tText = text;
+        if (tText == null) {
             this.print(this.uppercase ? "NULL" : "null");
         } else {
             this.print('\'');
-            int index = text.indexOf(39);
+            int index = tText.indexOf(39);
             if (index >= 0) {
-                text = text.replaceAll("'", "''");
+                tText = tText.replaceAll("'", "''");
             }
 
-            this.print(text);
+            this.print(tText);
             this.print('\'');
         }
-
     }
 
     protected void print(long value) {

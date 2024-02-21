@@ -76,25 +76,25 @@ public class StringUtils {
                 }
             }
 
-            if (i < chars.length) {
-                ch = chars[i];
-                if (ch >= '0' && ch <= '9') {
-                    return true;
-                } else if (ch != 'e' && ch != 'E') {
-                    if (allowSigns || ch != 'd' && ch != 'D' && ch != 'f' && ch != 'F') {
-                        if (ch != 'l' && ch != 'L') {
-                            return ch == '.';
-                        } else {
-                            return foundDigit && !hasExp;
-                        }
+            if (i >= chars.length) {
+                return !allowSigns && foundDigit;
+            }
+
+            ch = chars[i];
+            if (ch >= '0' && ch <= '9') {
+                return true;
+            } else if (ch != 'e' && ch != 'E') {
+                if (allowSigns || ch != 'd' && ch != 'D' && ch != 'f' && ch != 'F') {
+                    if (ch != 'l' && ch != 'L') {
+                        return ch == '.';
                     } else {
-                        return foundDigit;
+                        return foundDigit && !hasExp;
                     }
                 } else {
-                    return false;
+                    return foundDigit;
                 }
             } else {
-                return !allowSigns && foundDigit;
+                return false;
             }
         }
     }

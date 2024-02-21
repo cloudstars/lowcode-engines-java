@@ -37,7 +37,7 @@ public enum VisitorFeature {
             VisitorFeature[] var2 = features;
             int var3 = features.length;
 
-            for(int var4 = 0; var4 < var3; ++var4) {
+            for (int var4 = 0; var4 < var3; ++var4) {
                 VisitorFeature feature = var2[var4];
                 value |= feature.mask;
             }

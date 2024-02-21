@@ -32,7 +32,7 @@ public class OqlAstPrintableVisitorAdaptor extends OqlAstVisitorAdaptor implemen
     protected boolean upperCase = false;
 
     public OqlAstPrintableVisitorAdaptor(Appendable appender) {
-        this.features |= OqlAstVisitorFeature.OutputPrettyFormat.mask;
+        this.features |= OqlAstVisitorFeature.OUTPUT_PRETTY_FORMAT.mask;
         this.appender = appender;
     }
 

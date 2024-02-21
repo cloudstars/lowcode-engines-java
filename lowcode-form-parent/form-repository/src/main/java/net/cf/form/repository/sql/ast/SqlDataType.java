@@ -6,12 +6,12 @@ package net.cf.form.repository.sql.ast;
  * @author clouds 
  */
 public enum SqlDataType {
-    Text,
-    Integer,
-    Decimal,
-    Date,
-    Time,
-    DateTime,
-    Boolean,
-    Object
+    TEXT,
+    INTEGER,
+    DECIMAL,
+    DATE,
+    TIME,
+    DATE_TIME,
+    BOOLEAN,
+    OBJECT
 }

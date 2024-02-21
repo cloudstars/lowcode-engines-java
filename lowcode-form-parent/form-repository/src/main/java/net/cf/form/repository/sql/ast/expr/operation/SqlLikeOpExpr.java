@@ -13,7 +13,7 @@ public class SqlLikeOpExpr extends SqlBinaryOpExpr {
     }
 
     public SqlLikeOpExpr(SqlExpr left, SqlExpr right) {
-        super(left, SqlBinaryOperator.Like, right);
+        super(left, SqlBinaryOperator.LIKE, right);
     }
 
     public String getEscape() {
@@ -27,7 +27,7 @@ public class SqlLikeOpExpr extends SqlBinaryOpExpr {
     @Override
     public SqlLikeOpExpr cloneMe() {
         SqlLikeOpExpr x = new SqlLikeOpExpr();
-        super._cloneTo(x);
+        super.cloneT(x);
         x.setEscape(this.escape);
         return x;
     }

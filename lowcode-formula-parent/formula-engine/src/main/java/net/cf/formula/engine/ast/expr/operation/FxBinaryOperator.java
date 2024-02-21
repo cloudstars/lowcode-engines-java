@@ -15,17 +15,16 @@ public enum FxBinaryOperator {
     SUBTRACT("-", 70),
 
     /* 关系运算符 */
-    Equal("==", 110),
-    NotEqual("!=", 110),
-    GreaterThan(">", 110),
-    GreaterThanOrEqual(">=", 110),
-    LessThan("<", 110),
-    LessThanOrEqual("<=", 110),
-    //Like("LIKE", 110),
+    EQUAL("==", 110),
+    NOT_EQUAL("!=", 110),
+    GREATER_THAN(">", 110),
+    GREATER_THAN_OR_EQUAL(">=", 110),
+    LESS_THAN("<", 110),
+    LESS_THAN_OR_EQUAL("<=", 110),
 
     /* 逻辑运算符 */
-    And("&&", 150),
-    Or("||", 160);
+    AND("&&", 150),
+    OR("||", 160);
 
     public final String name;
 
@@ -55,12 +54,12 @@ public enum FxBinaryOperator {
      */
     public boolean isRelational() {
         switch (this) {
-            case Equal:
-            case NotEqual:
-            case GreaterThan:
-            case GreaterThanOrEqual:
-            case LessThan:
-            case LessThanOrEqual:
+            case EQUAL:
+            case NOT_EQUAL:
+            case GREATER_THAN:
+            case GREATER_THAN_OR_EQUAL:
+            case LESS_THAN:
+            case LESS_THAN_OR_EQUAL:
             //case Like:
                 return true;
             default:
@@ -74,7 +73,7 @@ public enum FxBinaryOperator {
      * @return
      */
     public boolean isLogical() {
-        return this == And || this == Or;
+        return this == AND || this == OR;
     }
 
     /**

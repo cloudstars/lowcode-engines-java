@@ -6,10 +6,10 @@ package net.cf.form.repository.sql.visitor;
  * @author clouds
  */
 public enum VisitorFeature {
-    OutputUCase,
-    OutputPrettyFormat,
-    OutputParameterized,
-    OutputNameQuote;
+    OUTPUT_U_CASE,
+    OUTPUT_PRETTY_FORMAT,
+    OUTPUT_PARAMETERIZED,
+    OUTPUT_NAME_QUOTE;
 
     public final int mask = 1 << this.ordinal();
 
@@ -35,7 +35,7 @@ public enum VisitorFeature {
             return 0;
         } else {
             int value = 0;
-            for(int i = 0, l = features.length; i < l; i++) {
+            for (int i = 0, l = features.length; i < l; i++) {
                 VisitorFeature feature = features[i];
                 value |= feature.mask;
             }

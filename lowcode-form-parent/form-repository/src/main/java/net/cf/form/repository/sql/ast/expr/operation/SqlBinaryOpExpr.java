@@ -108,11 +108,11 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
     @Override
     public SqlBinaryOpExpr cloneMe() {
         SqlBinaryOpExpr x = new SqlBinaryOpExpr();
-        this._cloneTo(x);
+        this.cloneT(x);
         return x;
     }
 
-    protected void _cloneTo(SqlBinaryOpExpr x) {
+    protected void cloneT(SqlBinaryOpExpr x) {
         if (this.left != null) {
             x.setLeft(this.left.cloneMe());
         }
@@ -253,44 +253,48 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
         }
     }
 
-    public static SqlExpr and(SqlExpr a, SqlExpr b) {
+    public static SqlExpr and(final SqlExpr a, final SqlExpr b) {
         if (a == null) {
             return b;
-        } else if (b == null) {
+        }
+
+        if (b == null) {
             return a;
-        } else {
-            SqlBinaryOpExprGroup group;
-            if (a instanceof SqlBinaryOpExprGroup) {
-                group = (SqlBinaryOpExprGroup) a;
-                if (group.getOperator() == SqlBinaryOperator.BooleanAnd) {
-                    group.add(b);
-                    return group;
-                }
+        }
 
-                if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
-                    a = ((SqlExpr) group.getItems().get(0)).cloneMe();
-                }
-            }
-
-            if (b instanceof SqlBinaryOpExpr) {
-                SqlBinaryOpExpr bb = (SqlBinaryOpExpr) b;
-                if (bb.operator == SqlBinaryOperator.BooleanAnd) {
-                    return and(and(a, bb.left), bb.right);
-                }
-            } else if (b instanceof SqlBinaryOpExprGroup) {
-                group = (SqlBinaryOpExprGroup) b;
-                if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
-                    b = ((SqlExpr) group.getItems().get(0)).cloneMe();
-                }
-            }
-
-            if (a instanceof SqlBinaryOpExpr && b instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) b).getOperator() == SqlBinaryOperator.BooleanAnd) {
-                group = (SqlBinaryOpExprGroup) b;
-                group.add(0, a);
+        SqlExpr tA = a;
+        SqlExpr tB = b;
+        SqlBinaryOpExprGroup group;
+        if (tA instanceof SqlBinaryOpExprGroup) {
+            group = (SqlBinaryOpExprGroup) tA;
+            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
+                group.add(tB);
                 return group;
-            } else {
-                return new SqlBinaryOpExpr(a, SqlBinaryOperator.BooleanAnd, b);
             }
+
+            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR && group.getItems().size() == 1) {
+                tA = ((SqlExpr) group.getItems().get(0)).cloneMe();
+            }
+        }
+
+        if (tB instanceof SqlBinaryOpExpr) {
+            SqlBinaryOpExpr bb = (SqlBinaryOpExpr) tB;
+            if (bb.operator == SqlBinaryOperator.BOOLEAN_AND) {
+                return and(and(tA, bb.left), bb.right);
+            }
+        } else if (tB instanceof SqlBinaryOpExprGroup) {
+            group = (SqlBinaryOpExprGroup) tB;
+            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR && group.getItems().size() == 1) {
+                tB = ((SqlExpr) group.getItems().get(0)).cloneMe();
+            }
+        }
+
+        if (a instanceof SqlBinaryOpExpr && b instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) b).getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
+            group = (SqlBinaryOpExprGroup) b;
+            group.add(0, a);
+            return group;
+        } else {
+            return new SqlBinaryOpExpr(a, SqlBinaryOperator.BOOLEAN_AND, b);
         }
     }
 
@@ -306,7 +310,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
         } else {
             if (a instanceof SqlBinaryOpExprGroup) {
                 SqlBinaryOpExprGroup group = (SqlBinaryOpExprGroup) a;
-                if (group.getOperator() == SqlBinaryOperator.BooleanOr) {
+                if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR) {
                     group.add(b);
                     return group;
                 }
@@ -314,12 +318,12 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
 
             if (b instanceof SqlBinaryOpExpr) {
                 SqlBinaryOpExpr bb = (SqlBinaryOpExpr) b;
-                if (bb.operator == SqlBinaryOperator.BooleanOr) {
+                if (bb.operator == SqlBinaryOperator.BOOLEAN_OR) {
                     return or(or(a, bb.left), bb.right);
                 }
             }
 
-            return new SqlBinaryOpExpr(a, SqlBinaryOperator.BooleanOr, b);
+            return new SqlBinaryOpExpr(a, SqlBinaryOperator.BOOLEAN_OR, b);
         }
     }
 
@@ -338,11 +342,11 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
     }
 
     public static SqlBinaryOpExpr isNotNull(SqlExpr expr) {
-        return new SqlBinaryOpExpr(expr, SqlBinaryOperator.IsNot, new SqlNullExpr());
+        return new SqlBinaryOpExpr(expr, SqlBinaryOperator.IS_NOT, new SqlNullExpr());
     }
 
     public static SqlBinaryOpExpr isNull(SqlExpr expr) {
-        return new SqlBinaryOpExpr(expr, SqlBinaryOperator.Is, new SqlNullExpr());
+        return new SqlBinaryOpExpr(expr, SqlBinaryOperator.IS, new SqlNullExpr());
     }
 
     public boolean replace(SqlExpr expr, SqlExpr target) {
@@ -364,7 +368,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
         } else {
             if (this.left instanceof SqlBinaryOpExpr) {
                 SqlBinaryOperator operator = ((SqlBinaryOpExpr) this.left).getOperator();
-                if (operator == SqlBinaryOperator.BooleanAnd && ((SqlBinaryOpExpr) this.left).replace(expr, target)) {
+                if (operator == SqlBinaryOperator.BOOLEAN_AND && ((SqlBinaryOpExpr) this.left).replace(expr, target)) {
                     return true;
                 }
             }
@@ -383,7 +387,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
 
     public boolean contains(SqlExpr item) {
         if (item instanceof SqlBinaryOpExpr) {
-            if (this.equalsIgoreOrder((SqlBinaryOpExpr)item)) {
+            if (this.equalsIgoreOrder((SqlBinaryOpExpr) item)) {
                 return true;
             } else {
                 return this.left.equals(item) || this.right.equals(item);
@@ -417,9 +421,9 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
         } else {
             SqlBinaryOpExpr binaryA = (SqlBinaryOpExpr) a;
             SqlBinaryOpExpr binaryB = (SqlBinaryOpExpr) b;
-            if (binaryA.operator != SqlBinaryOperator.Equality) {
+            if (binaryA.operator != SqlBinaryOperator.EQUALITY) {
                 return false;
-            } else if (binaryB.operator != SqlBinaryOperator.Equality) {
+            } else if (binaryB.operator != SqlBinaryOperator.EQUALITY) {
                 return false;
             } else if (!(binaryA.right instanceof SqlLiteralExpr) && !(binaryA.right instanceof SqlVariantRefExpr)) {
                 return false;
@@ -430,11 +434,11 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
     }
 
     public static boolean isOr(SqlExpr x) {
-        return x instanceof SqlBinaryOpExpr && ((SqlBinaryOpExpr) x).getOperator() == SqlBinaryOperator.BooleanOr;
+        return x instanceof SqlBinaryOpExpr && ((SqlBinaryOpExpr) x).getOperator() == SqlBinaryOperator.BOOLEAN_OR;
     }
 
     public static boolean isAnd(SqlExpr x) {
-        return x instanceof SqlBinaryOpExpr && ((SqlBinaryOpExpr) x).getOperator() == SqlBinaryOperator.BooleanAnd;
+        return x instanceof SqlBinaryOpExpr && ((SqlBinaryOpExpr) x).getOperator() == SqlBinaryOperator.BOOLEAN_AND;
     }
 
     public boolean isLeftNameAndRightLiteral() {
@@ -458,22 +462,22 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
     }
 
     public static SqlBinaryOpExpr conditionEq(String column, String value) {
-        return new SqlBinaryOpExpr(SqlExprUtils.toSqlExpr(column), SqlBinaryOperator.Equality, new SqlCharExpr(value));
+        return new SqlBinaryOpExpr(SqlExprUtils.toSqlExpr(column), SqlBinaryOperator.EQUALITY, new SqlCharExpr(value));
     }
 
     public static SqlBinaryOpExpr conditionEq(String column, int value) {
-        return new SqlBinaryOpExpr(SqlExprUtils.toSqlExpr(column), SqlBinaryOperator.Equality, new SqlIntegerExpr(value));
+        return new SqlBinaryOpExpr(SqlExprUtils.toSqlExpr(column), SqlBinaryOperator.EQUALITY, new SqlIntegerExpr(value));
     }
 
     public static SqlBinaryOpExpr conditionLike(String column, String value) {
-        return new SqlBinaryOpExpr(SqlExprUtils.toSqlExpr(column), SqlBinaryOperator.Like, new SqlCharExpr(value));
+        return new SqlBinaryOpExpr(SqlExprUtils.toSqlExpr(column), SqlBinaryOperator.LIKE, new SqlCharExpr(value));
     }
 
     public static SqlBinaryOpExpr conditionLike(String column, SqlExpr value) {
-        return new SqlBinaryOpExpr(SqlExprUtils.toSqlExpr(column), SqlBinaryOperator.Like, value);
+        return new SqlBinaryOpExpr(SqlExprUtils.toSqlExpr(column), SqlBinaryOperator.LIKE, value);
     }
 
     public static SqlBinaryOpExpr eq(SqlExpr a, SqlExpr b) {
-        return new SqlBinaryOpExpr(a, SqlBinaryOperator.Equality, b);
+        return new SqlBinaryOpExpr(a, SqlBinaryOperator.EQUALITY, b);
     }
 }

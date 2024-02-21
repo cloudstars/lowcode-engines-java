@@ -46,34 +46,34 @@ public final class SqlExprUtils {
         SqlExpr tb = b;
         if (ta instanceof SqlBinaryOpExprGroup) {
             group = (SqlBinaryOpExprGroup) ta;
-            if (group.getOperator() == SqlBinaryOperator.BooleanAnd) {
+            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
                 group.add(tb);
                 return group;
             }
 
-            if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
+            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR && group.getItems().size() == 1) {
                 ta= (group.getItems().get(0)).cloneMe();
             }
         }
 
         if (tb instanceof SqlBinaryOpExpr) {
             SqlBinaryOpExpr bb = (SqlBinaryOpExpr) tb;
-            if (bb.getOperator() == SqlBinaryOperator.BooleanAnd) {
+            if (bb.getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
                 return and(and(ta, bb.getLeft()), bb.getRight());
             }
         } else if (tb instanceof SqlBinaryOpExprGroup) {
             group = (SqlBinaryOpExprGroup) tb;
-            if (group.getOperator() == SqlBinaryOperator.BooleanOr && group.getItems().size() == 1) {
+            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR && group.getItems().size() == 1) {
                 tb = (group.getItems().get(0)).cloneMe();
             }
         }
 
-        if (ta instanceof SqlBinaryOpExpr && tb instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) tb).getOperator() == SqlBinaryOperator.BooleanAnd) {
+        if (ta instanceof SqlBinaryOpExpr && tb instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) tb).getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
             group = (SqlBinaryOpExprGroup) tb;
             group.add(0, ta);
             return group;
         } else {
-            return new SqlBinaryOpExpr(ta, SqlBinaryOperator.BooleanAnd, tb);
+            return new SqlBinaryOpExpr(ta, SqlBinaryOperator.BOOLEAN_AND, tb);
         }
     }
 
@@ -89,7 +89,7 @@ public final class SqlExprUtils {
         } else {
             if (a instanceof SqlBinaryOpExprGroup) {
                 SqlBinaryOpExprGroup group = (SqlBinaryOpExprGroup) a;
-                if (group.getOperator() == SqlBinaryOperator.BooleanOr) {
+                if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR) {
                     group.add(b);
                     return group;
                 }
@@ -97,12 +97,12 @@ public final class SqlExprUtils {
 
             if (b instanceof SqlBinaryOpExpr) {
                 SqlBinaryOpExpr bb = (SqlBinaryOpExpr) b;
-                if (bb.getOperator() == SqlBinaryOperator.BooleanOr) {
+                if (bb.getOperator() == SqlBinaryOperator.BOOLEAN_OR) {
                     return or(or(a, bb.getLeft()), bb.getRight());
                 }
             }
 
-            return new SqlBinaryOpExpr(a, SqlBinaryOperator.BooleanOr, b);
+            return new SqlBinaryOpExpr(a, SqlBinaryOperator.BOOLEAN_OR, b);
         }
     }
 

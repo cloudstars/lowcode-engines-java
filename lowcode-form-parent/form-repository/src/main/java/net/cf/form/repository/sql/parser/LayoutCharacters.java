@@ -10,7 +10,7 @@ public interface LayoutCharacters {
     /**
      * Tabulator column increment.
      */
-    final static int TabInc = 8;
+    final static int TAB_INC = 8;
 
     /**
      * Tabulator character.

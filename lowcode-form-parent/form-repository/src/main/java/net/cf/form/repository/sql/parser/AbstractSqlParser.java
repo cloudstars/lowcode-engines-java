@@ -29,7 +29,7 @@ public abstract class AbstractSqlParser {
     public AbstractSqlParser(String sql, SqlParserFeature... features) {
         this(sql);
 
-        for(int i = 0, l = features.length; i < l; i++) {
+        for (int i = 0, l = features.length; i < l; i++) {
             SqlParserFeature feature = features[i];
             this.config(feature, true);
         }

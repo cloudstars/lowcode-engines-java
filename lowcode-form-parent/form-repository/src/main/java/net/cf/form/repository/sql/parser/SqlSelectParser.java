@@ -98,37 +98,38 @@ public class SqlSelectParser extends SqlExprParser {
      *
      * @return
      */
-    private SqlExpr parseSelectItemExpr(SqlExpr expr) {
+    private SqlExpr parseSelectItemExpr(final SqlExpr expr) {
+        SqlExpr tExpr = expr;
         Token token = this.lexer.token;
         switch (token) {
             case STAR:
-                if (expr == null) {
-                    expr = new SqlAllColumnExpr();
+                if (tExpr == null) {
+                    tExpr = new SqlAllColumnExpr();
                 } else {
-                    expr = new SqlPropertyExpr((SqlName) expr, Token.STAR.getName());
+                    tExpr = new SqlPropertyExpr((SqlName) tExpr, Token.STAR.getName());
                 }
                 this.lexer.nextToken();
                 break;
             case LITERAL_STRING:
             case LITERAL_INT:
             case LITERAL_NUMBER:
-                expr = this.primary();
+                tExpr = this.primary();
                 break;
             case IDENTIFIER:
                 String identifier = this.lexer.stringVal();
                 this.lexer.nextToken();
-                if (expr == null) {
-                    expr = new SqlIdentifierExpr(identifier);
+                if (tExpr == null) {
+                    tExpr = new SqlIdentifierExpr(identifier);
                     if (this.lexer.token == Token.LPAREN) {
-                        expr = this.methodInvokeRest(expr);
+                        tExpr = this.methodInvokeRest(tExpr);
                     }
                 } else {
-                    expr = new SqlPropertyExpr((SqlName) expr, identifier);
+                    tExpr = new SqlPropertyExpr((SqlName) tExpr, identifier);
                 }
 
                 if (this.lexer.token == Token.DOT) {
                     this.lexer.nextToken();
-                    expr = parseSelectItemExpr(expr);
+                    tExpr = parseSelectItemExpr(tExpr);
                 }
 
                 break;
@@ -136,7 +137,7 @@ public class SqlSelectParser extends SqlExprParser {
                 printError(token);
         }
 
-        return expr;
+        return tExpr;
     }
 
     /**

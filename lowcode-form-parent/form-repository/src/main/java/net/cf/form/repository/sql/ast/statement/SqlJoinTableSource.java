@@ -331,12 +331,12 @@ public class SqlJoinTableSource extends AbstractSqlTableSourceImpl implements Sq
         }
     }
 
-    public boolean match(String alias_a, String alias_b) {
+    public boolean match(String aliasA, String aliasB) {
         if (this.left != null && this.right != null) {
-            if (this.left.containsAlias(alias_a) && this.right.containsAlias(alias_b)) {
+            if (this.left.containsAlias(aliasA) && this.right.containsAlias(aliasB)) {
                 return true;
             } else {
-                return this.right.containsAlias(alias_a) && this.left.containsAlias(alias_b);
+                return this.right.containsAlias(aliasA) && this.left.containsAlias(aliasB);
             }
         } else {
             return false;

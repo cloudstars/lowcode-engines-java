@@ -6,9 +6,9 @@ package net.cf.form.engine.oql.visitor;
  * @author clouds
  */
 public enum OqlAstVisitorFeature {
-    OutputUCase,
-    OutputPrettyFormat,
-    OutputParameterized;
+    OUTPUT_U_CASE,
+    OUTPUT_PRETTY_FORMAT,
+    OUTPUT_PARAMETERIZED;
 
     public final int mask = 1 << this.ordinal();
 
@@ -37,7 +37,7 @@ public enum OqlAstVisitorFeature {
             OqlAstVisitorFeature[] var2 = features;
             int var3 = features.length;
 
-            for(int var4 = 0; var4 < var3; ++var4) {
+            for (int var4 = 0; var4 < var3; ++var4) {
                 OqlAstVisitorFeature feature = var2[var4];
                 value |= feature.mask;
             }

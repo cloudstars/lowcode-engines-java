@@ -52,15 +52,15 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     public SqlAstOutputVisitor(Appendable appender) {
         this.printStatementAfterSemi = SqlAstOutputVisitor.defaultPrintStatementAfterSemi;
-        this.features |= VisitorFeature.OutputPrettyFormat.mask;
+        this.features |= VisitorFeature.OUTPUT_PRETTY_FORMAT.mask;
         this.appender = appender;
     }
 
     public SqlAstOutputVisitor(Appendable appender, boolean parameterized) {
         this.printStatementAfterSemi = SqlAstOutputVisitor.defaultPrintStatementAfterSemi;
-        this.features |= VisitorFeature.OutputPrettyFormat.mask;
+        this.features |= VisitorFeature.OUTPUT_PRETTY_FORMAT.mask;
         this.appender = appender;
-        this.config(VisitorFeature.OutputParameterized, parameterized);
+        this.config(VisitorFeature.OUTPUT_PARAMETERIZED, parameterized);
     }
 
     @Override
@@ -329,20 +329,20 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
 
-    protected void printChars(String text) {
-        if (text == null) {
+    protected void printChars(final String text) {
+        String tText = text;
+        if (tText == null) {
             this.print(this.uppercase ? "NULL" : "null");
         } else {
             this.print('\'');
-            int index = text.indexOf(39);
+            int index = tText.indexOf(39);
             if (index >= 0) {
-                text = text.replaceAll("'", "''");
+                tText = tText.replaceAll("'", "''");
             }
 
-            this.print(text);
+            this.print(tText);
             this.print('\'');
         }
-
     }
 
 
@@ -712,24 +712,24 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     public void config(VisitorFeature feature, boolean state) {
         super.config(feature, state);
-        if (feature == VisitorFeature.OutputUCase) {
+        if (feature == VisitorFeature.OUTPUT_U_CASE) {
             this.uppercase = state;
-        } else if (feature == VisitorFeature.OutputParameterized) {
+        } else if (feature == VisitorFeature.OUTPUT_PARAMETERIZED) {
             this.parameterized = state;
-        } else if (feature == VisitorFeature.OutputNameQuote) {
+        } else if (feature == VisitorFeature.OUTPUT_NAME_QUOTE) {
             this.printNameQuote = state;
         }
     }
 
     public void setFeatures(int features) {
         super.setFeatures(features);
-        this.uppercase = this.isEnabled(VisitorFeature.OutputUCase);
-        this.parameterized = this.isEnabled(VisitorFeature.OutputParameterized);
-        this.printNameQuote = this.isEnabled(VisitorFeature.OutputNameQuote);
+        this.uppercase = this.isEnabled(VisitorFeature.OUTPUT_U_CASE);
+        this.parameterized = this.isEnabled(VisitorFeature.OUTPUT_PARAMETERIZED);
+        this.printNameQuote = this.isEnabled(VisitorFeature.OUTPUT_NAME_QUOTE);
     }
 
     public boolean isPrettyFormat() {
-        return this.isEnabled(VisitorFeature.OutputPrettyFormat);
+        return this.isEnabled(VisitorFeature.OUTPUT_PRETTY_FORMAT);
     }
 
     public char getNameQuote() {

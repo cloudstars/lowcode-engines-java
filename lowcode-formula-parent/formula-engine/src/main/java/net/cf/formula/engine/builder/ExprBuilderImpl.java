@@ -20,7 +20,7 @@ public class ExprBuilderImpl implements ExprBuilder {
         if (this.expr == null) {
             this.expr = expr;
         } else {
-            this.expr = new FxBinaryOpExpr(this.expr, FxBinaryOperator.Or, expr);
+            this.expr = new FxBinaryOpExpr(this.expr, FxBinaryOperator.OR, expr);
         }
 
         return this;
@@ -31,7 +31,7 @@ public class ExprBuilderImpl implements ExprBuilder {
         if (this.expr == null) {
             this.expr = expr;
         } else {
-            this.expr = new FxBinaryOpExpr(this.expr, FxBinaryOperator.And, expr);
+            this.expr = new FxBinaryOpExpr(this.expr, FxBinaryOperator.AND, expr);
         }
 
         return this;
