@@ -1,26 +1,26 @@
 package net.cf.excel.engine.config;
 
-import net.cf.excel.engine.commons.ExcelColumn;
+import net.cf.excel.engine.commons.parse.ExcelSheetField;
 
 import java.util.List;
 
 /**
- * Excel解析配置
- *
- * @author clouds
+ * @Author: 胡凌云
+ * @CreateTime: 2024-02-21 17:03
+ * @Description: Excel解析配置
  */
 public class ExcelParseConfig {
 
     /**
      * EXCEL的列配置
      */
-    private List<ExcelColumn> columns;
+    private List<ExcelSheetField> sheetFields;
 
-    public List<ExcelColumn> getColumns() {
-        return columns;
+    public List<ExcelSheetField> getSheetFields() {
+        return sheetFields;
     }
 
-    public void setColumns(List<ExcelColumn> columns) {
-        this.columns = columns;
+    public void setSheetFields(List<ExcelSheetField> sheetFields) {
+        this.sheetFields = sheetFields;
     }
 }

@@ -21,7 +21,6 @@ public class ExcelTitleInfo {
      */
     private int firstColumn;
 
-
     /**
      * 是否合并单元格
      */
@@ -78,5 +77,11 @@ public class ExcelTitleInfo {
 
     public void setColumnMerge(boolean columnMerge) {
         this.columnMerge = columnMerge;
+    }
+
+    public String getUniqueTitle() {
+        if (parentTitle == null || parentTitle.isEmpty()) {
+            return title;
+        }else return parentTitle + "." + title;
     }
 }
