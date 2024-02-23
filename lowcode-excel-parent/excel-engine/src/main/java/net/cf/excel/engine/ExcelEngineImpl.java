@@ -1,7 +1,9 @@
 package net.cf.excel.engine;
 
 import net.cf.excel.engine.commons.ExcelMergeInfo;
-import net.cf.excel.engine.commons.parse.*;
+import net.cf.excel.engine.commons.parse.DataParseInfo;
+import net.cf.excel.engine.commons.parse.ExcelSheetField;
+import net.cf.excel.engine.commons.parse.ExcelTitleInfo;
 import net.cf.excel.engine.config.ExcelBuildConfig;
 import net.cf.excel.engine.config.ExcelParseConfig;
 import org.apache.poi.ss.usermodel.*;
@@ -41,12 +43,12 @@ public class ExcelEngineImpl implements ExcelEngine {
         //标题处理
         boolean hasSubField = hasSubField(excelSheetFields);
         int titleEndRow = hasSubField ? config.getTitleStartRow() + 1 : config.getTitleStartRow();
-        List<ExcelTitleInfo> titleInfoList = getSheetTitleInfo(sheet, titleStartRow, titleEndRow, excelSheetFields, hasSubField);
+        List<ExcelTitleInfo> titleInfos = parseSheetTitleInfo(sheet, titleStartRow, titleEndRow, excelSheetFields, hasSubField);
 
         //数据处理
         int dataStartRow = titleEndRow + 1;
         int dataEndRow = sheet.getLastRowNum();
-        records = getExcelData();
+        records = parseSheetData(new DataParseInfo(sheet, formulaEvaluator, titleInfos, excelSheetFields, dataStartRow, dataEndRow));
 
         return records;
     }
@@ -100,8 +102,8 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param hasSubField
      * @return
      */
-    private static List<ExcelTitleInfo> getSheetTitleInfo(Sheet sheet, int titleStartRow, int titleEndRow, List<ExcelSheetField> excelSheetFields,
-                                                          boolean hasSubField) {
+    private List<ExcelTitleInfo> parseSheetTitleInfo(Sheet sheet, int titleStartRow, int titleEndRow, List<ExcelSheetField> excelSheetFields,
+                                                     boolean hasSubField) {
         List<ExcelTitleInfo> titleInfoList = new ArrayList<>();
         Map<Integer, ExcelMergeInfo> titleMergeMap = getTitleMergeMap(sheet, titleStartRow, titleEndRow, hasSubField);
 
@@ -157,7 +159,7 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param colIndex
      * @return
      */
-    private static String getCellTitle(Sheet sheet, int rowIndex, int colIndex) {
+    private String getCellTitle(Sheet sheet, int rowIndex, int colIndex) {
         Row row = sheet.getRow(rowIndex);
         Cell cell = row.getCell(colIndex);
         if (cell == null) return null;
@@ -173,7 +175,7 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param hasSubField
      * @return
      */
-    private static Map<Integer, ExcelMergeInfo> getTitleMergeMap(Sheet sheet, int titleStartRow, int titleEndRow, boolean hasSubField) {
+    private Map<Integer, ExcelMergeInfo> getTitleMergeMap(Sheet sheet, int titleStartRow, int titleEndRow, boolean hasSubField) {
         //key为合并单元格开始的列，值为合并区域信息
         Map<Integer, ExcelMergeInfo> titleMergeMap = new HashMap<>(1);
         for (CellRangeAddress cellAddress : sheet.getMergedRegions()) {
@@ -211,8 +213,12 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param sheetFieldNames
      * @return
      */
-    private static boolean existIExcelSheetField(ExcelTitleInfo excelTitleInfo, List<String> sheetFieldNames) {
+    private boolean existIExcelSheetField(ExcelTitleInfo excelTitleInfo, List<String> sheetFieldNames) {
         return sheetFieldNames.contains(excelTitleInfo.getUniqueTitle());
+    }
+
+    private List<Map<String, Object>> parseSheetData(DataParseInfo dataParseInfo) {
+        return null;
     }
 
     @Override

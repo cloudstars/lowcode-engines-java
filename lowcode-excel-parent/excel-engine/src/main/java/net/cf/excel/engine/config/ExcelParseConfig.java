@@ -1,6 +1,6 @@
 package net.cf.excel.engine.config;
 
-import net.cf.excel.engine.commons.parse.ParseField;
+import net.cf.excel.engine.ParseField;
 
 import java.util.List;
 
