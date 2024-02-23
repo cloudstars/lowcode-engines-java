@@ -54,4 +54,12 @@ public class ExcelMergeInfo {
     public void setColumnEndIndex(int columnEndIndex) {
         this.columnEndIndex = columnEndIndex;
     }
+
+    public boolean isRowMerge() {
+        return rowStartIndex != rowEndIndex;
+    }
+
+    public boolean isColumnMerge() {
+        return columnStartIndex != columnEndIndex;
+    }
 }

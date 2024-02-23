@@ -1,4 +1,4 @@
-package net.cf.excel.engine.commons;
+package net.cf.excel.engine.commons.parse;
 
 /**
  * @Author: 胡凌云
@@ -20,7 +20,6 @@ public class ExcelTitleInfo {
      * 起始列
      */
     private int firstColumn;
-
 
     /**
      * 是否合并单元格
@@ -78,5 +77,11 @@ public class ExcelTitleInfo {
 
     public void setColumnMerge(boolean columnMerge) {
         this.columnMerge = columnMerge;
+    }
+
+    public String getUniqueTitle() {
+        if (parentTitle == null || parentTitle.isEmpty()) {
+            return title;
+        }else return parentTitle + "." + title;
     }
 }

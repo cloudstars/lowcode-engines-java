@@ -6,5 +6,6 @@ public enum DataType {
     FLOAT,
     BIG_DECIMAL,
     DATE,
-    TIME;
+    TIME,
+    LIST;
 }

@@ -1,26 +1,36 @@
 package net.cf.excel.engine.config;
 
-import net.cf.excel.engine.commons.ExcelColumn;
+import net.cf.excel.engine.ParseField;
 
 import java.util.List;
 
 /**
- * Excel解析配置
- *
- * @author clouds
+ * @Author: 胡凌云
+ * @CreateTime: 2024-02-21 17:03
+ * @Description: Excel解析配置
  */
 public class ExcelParseConfig {
 
     /**
      * EXCEL的列配置
      */
-    private List<ExcelColumn> columns;
+    private List<ParseField> parseFields;
 
-    public List<ExcelColumn> getColumns() {
-        return columns;
+    private int titleStartRow;
+
+    public List<ParseField> getParseFields() {
+        return parseFields;
     }
 
-    public void setColumns(List<ExcelColumn> columns) {
-        this.columns = columns;
+    public void setParseFields(List<ParseField> parseFields) {
+        this.parseFields = parseFields;
+    }
+
+    public int getTitleStartRow() {
+        return titleStartRow;
+    }
+
+    public void setTitleStartRow(int titleStartRow) {
+        this.titleStartRow = titleStartRow;
     }
 }
