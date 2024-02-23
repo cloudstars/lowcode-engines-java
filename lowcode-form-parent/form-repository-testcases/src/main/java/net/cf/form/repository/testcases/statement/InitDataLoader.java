@@ -14,5 +14,5 @@ public interface InitDataLoader {
      *
      * @param initDatas
      */
-    void load(List initDatas);
+    void load(List<InitData> initDatas);
 }

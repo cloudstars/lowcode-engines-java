@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
-import net.cf.form.engine.oql.ast.expr.OqlExpr;
+import net.cf.form.engine.oql.AbstractOqlObjectImpl;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 
 
 /**
@@ -21,7 +21,7 @@ public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl 
         this.alias = alias;
     }
 
-    public AbstractOqlObjectSourceImpl(OqlExpr flashback, String alias) {
+    public AbstractOqlObjectSourceImpl(SqlExpr flashback, String alias) {
         this.alias = alias;
     }
 
@@ -36,7 +36,7 @@ public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl 
     }
 
     @Override
-    public OqlObjectSource _clone() {
+    public OqlObjectSource cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 }

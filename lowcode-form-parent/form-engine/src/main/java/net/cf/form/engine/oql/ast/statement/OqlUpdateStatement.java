@@ -1,7 +1,9 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObject;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
+import net.cf.form.repository.sql.ast.SqlObject;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +12,12 @@ public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlS
 
     protected OqlObjectSource objectSource;
 
-    protected final List<OqlUpdateSetItem> setItems = new ArrayList<>();
+    protected final List<SqlUpdateSetItem> setItems = new ArrayList<>();
 
-    protected OqlWhereClause whereClause;
+    /**
+     * 查询条件
+     */
+    private SqlExpr where;
 
     public OqlUpdateStatement() {
     }
@@ -26,62 +31,62 @@ public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlS
         this.addChild(objectSource);
     }
 
-    public List<OqlUpdateSetItem> getSetItems() {
+    public List<SqlUpdateSetItem> getSetItems() {
         return setItems;
     }
 
-    public void addSetItems(List<OqlUpdateSetItem> setItems) {
-        for (OqlUpdateSetItem setItem : setItems) {
+    public void addSetItems(List<SqlUpdateSetItem> setItems) {
+        for (SqlUpdateSetItem setItem : setItems) {
             this.addSetItem(setItem);
         }
     }
 
-    public void addSetItem(OqlUpdateSetItem setItem) {
+    public void addSetItem(SqlUpdateSetItem setItem) {
         this.setItems.add(setItem);
         this.addChild(setItem);
     }
 
-    public OqlWhereClause getWhereClause() {
-        return whereClause;
+    public SqlExpr getWhere() {
+        return where;
     }
 
-    public void setWhereClause(OqlWhereClause whereClause) {
-        this.whereClause = whereClause;
-        this.addChild(whereClause);
+    public void setWhere(SqlExpr where) {
+        this.where = where;
+        this.addChild(where);
     }
 
     @Override
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.acceptChild(visitor, this.objectSource);
-            this.acceptChildren(visitor, this.setItems);
-            this.acceptChild(visitor, this.whereClause);
+            this.objectSource.accept(visitor);
+            this.nullSafeAcceptChild(visitor, this.setItems);
+            this.where.accept(visitor);
         }
 
         visitor.endVisit(this);
     }
 
     @Override
-    public List<OqlObject> getChildren() {
-        List<OqlObject> children = new ArrayList<>();
+    public List<SqlObject> getChildren() {
+        List<SqlObject> children = new ArrayList<>();
         children.add(this.objectSource);
         children.addAll(this.setItems);
-        if (this.whereClause != null) {
-            children.add(this.whereClause);
+        if (this.where != null) {
+            children.add(this.where);
         }
 
         return children;
     }
 
     @Override
-    public OqlUpdateStatement clone() {
+    public OqlUpdateStatement cloneMe() {
         OqlUpdateStatement statement = new OqlUpdateStatement();
-        statement.setObjectSource(this.objectSource._clone());
-        for (OqlUpdateSetItem setItem : this.setItems) {
+        statement.setObjectSource(this.objectSource.cloneMe());
+        for (SqlUpdateSetItem setItem : this.setItems) {
             statement.addSetItem(setItem);
         }
-        if (this.whereClause != null) {
-            statement.setWhereClause(this.whereClause.clone());
+        if (this.where != null) {
+            statement.setWhere(this.where.cloneMe());
         }
 
         return statement;

@@ -1,9 +1,9 @@
 package net.cf.form.engine.oql.util;
 
-import net.cf.form.engine.oql.ast.OqlObject;
 import net.cf.form.engine.oql.ast.statement.*;
 import net.cf.form.engine.oql.parser.OqlStatementParser;
 import net.cf.form.engine.oql.visitor.OqlAstOutputVisitor;
+import net.cf.form.repository.sql.ast.SqlObject;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class OqlUtils {
      * @param object
      * @return
      */
-    public static String toOqlString(OqlObject object) {
+    public static String toOqlString(SqlObject object) {
         StringBuilder out = new StringBuilder();
         object.accept(new OqlAstOutputVisitor(out));
         return out.toString();

@@ -123,7 +123,7 @@ public class PrintableVisitorAdaptor extends SqlAstVisitorAdaptor implements Pri
      *
      * @param x
      */
-    protected final void printExpr(SqlExpr x) {
+    protected void printExpr(SqlExpr x) {
         Class<?> clazz = x.getClass();
         if (clazz == SqlCharExpr.class) {
             this.visit((SqlCharExpr) x);

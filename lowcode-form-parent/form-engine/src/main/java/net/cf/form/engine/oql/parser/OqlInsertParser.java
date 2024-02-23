@@ -1,7 +1,9 @@
 package net.cf.form.engine.oql.parser;
 
 import net.cf.form.engine.oql.ast.statement.OqlInsertInto;
-import net.cf.form.engine.oql.ast.statement.OqlInsertValues;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.parser.Lexer;
+import net.cf.form.repository.sql.parser.Token;
 
 public class OqlInsertParser extends OqlExprParser {
 
@@ -55,9 +57,9 @@ public class OqlInsertParser extends OqlExprParser {
      *
      * @return
      */
-    private OqlInsertValues parseInsertValues() {
+    private SqlInsertStatement.ValuesClause parseInsertValues() {
         this.accept(Token.LPAREN);
-        OqlInsertValues insertValues = new OqlInsertValues();
+        SqlInsertStatement.ValuesClause insertValues = new SqlInsertStatement.ValuesClause();
         this.parseCommaSeperatedList(() -> {
             insertValues.addValue(this.primary());
         });

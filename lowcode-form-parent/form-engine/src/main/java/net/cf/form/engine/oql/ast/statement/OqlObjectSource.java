@@ -1,13 +1,13 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObject;
+import net.cf.form.repository.sql.ast.SqlObject;
 
 /**
  * OQL 对象源
  *
  * @author clouds
  */
-public interface OqlObjectSource<T extends OqlObjectSource> extends OqlObject<T> {
+public interface OqlObjectSource extends SqlObject {
 
     /**
      * 获取别名
@@ -23,6 +23,11 @@ public interface OqlObjectSource<T extends OqlObjectSource> extends OqlObject<T>
      */
     void setAlias(String alias);
 
-    T _clone();
+    /**
+     * 克隆自已
+     *
+     * @return
+     */
+    OqlObjectSource cloneMe();
 
 }

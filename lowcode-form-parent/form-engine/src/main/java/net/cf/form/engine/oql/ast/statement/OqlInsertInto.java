@@ -1,20 +1,22 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObject;
-import net.cf.form.engine.oql.ast.OqlReplaceable;
-import net.cf.form.engine.oql.ast.expr.OqlExpr;
+
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
+import net.cf.form.repository.sql.ast.SqlObject;
+import net.cf.form.repository.sql.ast.SqlReplaceable;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OqlInsertInto extends AbstractOqlStatementImpl implements OqlReplaceable {
+public class OqlInsertInto extends AbstractOqlStatementImpl implements SqlReplaceable {
 
     protected OqlExprObjectSource objectSource;
 
-    protected final List<OqlExpr> fields = new ArrayList();
+    protected final List<SqlExpr> fields = new ArrayList();
 
-    protected final List<OqlInsertValues> valuesList = new ArrayList();
+    protected final List<SqlInsertStatement.ValuesClause> valuesList = new ArrayList();
 
     public OqlInsertInto() {
     }
@@ -28,58 +30,53 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements OqlReplac
         this.addChild(objectSource);
     }
 
-    public List<OqlExpr> getFields() {
+    public List<SqlExpr> getFields() {
         return fields;
     }
 
-    public void addFields(List<OqlExpr> fields) {
-        for (OqlExpr field : fields) {
+    public void addFields(List<SqlExpr> fields) {
+        for (SqlExpr field : fields) {
             this.addField(field);
         }
     }
 
-    public void addField(OqlExpr field) {
+    public void addField(SqlExpr field) {
         this.fields.add(field);
         this.addChild(field);
     }
 
-    public void addField(int index, OqlExpr field) {
+    public void addField(int index, SqlExpr field) {
         this.fields.add(index, field);
         this.addChild(field);
     }
 
-    public List<OqlInsertValues> getValuesList() {
+    public List<SqlInsertStatement.ValuesClause> getValuesList() {
         return valuesList;
     }
 
-    public void addValues(OqlInsertValues values) {
+    public void addValues(SqlInsertStatement.ValuesClause values) {
         this.valuesList.add(values);
         this.addChild(values);
     }
 
-    /*public void setValuesList(List<OqlInsertValues> valuesList) {
-        this.valuesList.clear();
-        this.valuesList.addAll(valuesList);
-    }*/
-
-    public void addValuesList(List<OqlInsertValues> valuesList) {
+    public void addValuesList(List<SqlInsertStatement.ValuesClause> valuesList) {
         this.valuesList.addAll(valuesList);
     }
 
     @Override
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.acceptChild(visitor, this.objectSource);
-            this.acceptChildren(visitor, this.fields);
-            this.acceptChildren(visitor, this.valuesList);
+            this.objectSource.accept(visitor);
+            this.nullSafeAcceptChild(visitor, this.fields);
+            this.nullSafeAcceptChild(visitor, this.valuesList);
         }
 
         visitor.endVisit(this);
     }
 
     @Override
-    public List<OqlObject> getChildren() {
-        List<OqlObject> children = new ArrayList();
+    public List<SqlObject> getChildren() {
+        List<SqlObject> children = new ArrayList();
         children.add(this.objectSource);
         children.addAll(this.fields);
         children.addAll(this.valuesList);
@@ -90,12 +87,12 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements OqlReplac
     @Override
     public OqlInsertInto clone() {
         OqlInsertInto x = new OqlInsertInto();
-        x.setObjectSource(this.objectSource._clone());
-        for (OqlExpr field : this.fields) {
-            x.fields.add(field.clone());
+        x.setObjectSource(this.objectSource.cloneMe());
+        for (SqlExpr field : this.fields) {
+            x.fields.add(field.cloneMe());
         }
-        for (OqlInsertValues valuesItem : this.valuesList) {
-            x.valuesList.add(valuesItem.clone());
+        for (SqlInsertStatement.ValuesClause valuesItem : this.valuesList) {
+            x.valuesList.add(valuesItem.cloneMe());
         }
 
         return x;
@@ -103,7 +100,7 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements OqlReplac
 
 
     @Override
-    public boolean replace(OqlExpr source, OqlExpr target) {
+    public boolean replace(SqlExpr source, SqlExpr target) {
         return false;
     }
 }

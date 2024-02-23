@@ -1,8 +1,9 @@
 package net.cf.form.engine.oql.parser;
 
-import net.cf.form.engine.oql.ast.statement.OqlUpdateSetItem;
 import net.cf.form.engine.oql.ast.statement.OqlUpdateStatement;
-import net.cf.form.engine.oql.ast.statement.OqlWhereClause;
+import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
+import net.cf.form.repository.sql.parser.Lexer;
+import net.cf.form.repository.sql.parser.Token;
 
 public class OqlUpdateParser extends OqlExprParser {
 
@@ -20,9 +21,9 @@ public class OqlUpdateParser extends OqlExprParser {
         OqlUpdateStatement statement = new OqlUpdateStatement();
         statement.setObjectSource(this.parseObjectSource());
         this.parseSetItems(statement);
-        if (this.lexer.token == Token.WHERE) {
+        if (this.lexer.token() == Token.WHERE) {
             this.lexer.nextToken();
-            statement.setWhereClause(new OqlWhereClause(this.expr()));
+            statement.setWhere(this.expr());
         }
 
         return statement;
@@ -36,7 +37,7 @@ public class OqlUpdateParser extends OqlExprParser {
     private void parseSetItems(OqlUpdateStatement statement) {
         this.accept(Token.SET);
         this.parseCommaSeperatedList(() -> {
-            OqlUpdateSetItem setItem = new OqlUpdateSetItem();
+            SqlUpdateSetItem setItem = new SqlUpdateSetItem();
             setItem.setField(this.primary());
             this.accept(Token.EQ);
             setItem.setValue(this.primary());

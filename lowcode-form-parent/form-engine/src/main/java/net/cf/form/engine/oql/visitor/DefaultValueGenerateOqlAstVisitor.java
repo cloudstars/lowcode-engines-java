@@ -1,9 +1,9 @@
 package net.cf.form.engine.oql.visitor;
 
 import net.cf.form.engine.object.XObject;
-import net.cf.form.engine.oql.ast.expr.identifier.OqlIdentifierExpr;
 import net.cf.form.engine.oql.ast.statement.OqlInsertInto;
-import net.cf.form.engine.oql.ast.statement.OqlInsertValues;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 
 import java.util.Map;
 
@@ -20,14 +20,14 @@ public class DefaultValueGenerateOqlAstVisitor implements OqlAstVisitor {
 
     @Override
     public boolean visit(OqlInsertInto x) {
-        String objectName = ((OqlIdentifierExpr) x.getObjectSource().getExpr()).getName();
+        String objectName = ((SqlIdentifierExpr) x.getObjectSource().getExpr()).getName();
         XObject object = x.getObjectSource().getResolvedObject();
 
         return true;
     }
 
     @Override
-    public boolean visit(OqlInsertValues x) {
+    public boolean visit(SqlInsertStatement.ValuesClause x) {
         // 从value子句中解析字段
 
         return true;

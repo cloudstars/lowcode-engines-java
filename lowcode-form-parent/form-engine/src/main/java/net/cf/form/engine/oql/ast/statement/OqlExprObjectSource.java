@@ -1,47 +1,48 @@
 package net.cf.form.engine.oql.ast.statement;
 
 import net.cf.form.engine.object.XObject;
-import net.cf.form.engine.oql.ast.OqlReplaceable;
-import net.cf.form.engine.oql.ast.expr.OqlExpr;
-import net.cf.form.engine.oql.ast.expr.identifier.OqlIdentifierExpr;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
+import net.cf.form.repository.sql.ast.SqlReplaceable;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**
  * 表达式形式的对象源
  *
  * @author clouds
  */
-public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements OqlReplaceable {
+public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements SqlReplaceable {
 
-    protected OqlExpr expr;
+    protected SqlExpr expr;
 
     protected XObject resolvedObject;
 
     public OqlExprObjectSource() {
     }
 
-    public OqlExprObjectSource(OqlExpr expr) {
+    public OqlExprObjectSource(SqlExpr expr) {
         this(expr, null);
     }
 
     public OqlExprObjectSource(String objectName) {
-        this(new OqlIdentifierExpr(objectName), null);
+        this(new SqlIdentifierExpr(objectName), null);
     }
 
     public OqlExprObjectSource(String objectName, String alias) {
-        super(new OqlIdentifierExpr(objectName), alias);
+        super(new SqlIdentifierExpr(objectName), alias);
     }
 
-    public OqlExprObjectSource(OqlExpr expr, String alias) {
+    public OqlExprObjectSource(SqlExpr expr, String alias) {
         this.setExpr(expr);
         this.setAlias(alias);
     }
 
-    public OqlExpr getExpr() {
+    public SqlExpr getExpr() {
         return this.expr;
     }
 
-    public void setExpr(OqlExpr x) {
+    public void setExpr(SqlExpr x) {
         if (x != null) {
             x.setParent(this);
         }
@@ -70,19 +71,19 @@ public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements 
 
 
     @Override
-    public OqlExprObjectSource _clone() {
+    public OqlExprObjectSource cloneMe() {
         OqlExprObjectSource x = new OqlExprObjectSource();
         x.alias = this.alias;
         if (this.expr != null) {
-            x.setExpr(this.expr.clone());
+            x.setExpr(this.expr.cloneMe());
         }
 
         return x;
     }
 
     @Override
-    public boolean replace(OqlExpr source, OqlExpr target) {
-        if (source == this.expr && target instanceof OqlIdentifierExpr) {
+    public boolean replace(SqlExpr source, SqlExpr target) {
+        if (source == this.expr && target instanceof SqlIdentifierExpr) {
             this.setExpr(target);
             return true;
         } else {

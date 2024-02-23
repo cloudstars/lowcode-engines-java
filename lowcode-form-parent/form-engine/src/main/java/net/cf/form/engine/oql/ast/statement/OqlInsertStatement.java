@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObject;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
+import net.cf.form.repository.sql.ast.SqlObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +17,17 @@ public class OqlInsertStatement extends OqlInsertInto implements OqlStatement {
     @Override
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.acceptChild(visitor, this.objectSource);
-            this.acceptChildren(visitor, this.fields);
-            this.acceptChildren(visitor, this.valuesList);
+            this.objectSource.accept(visitor);
+            this.nullSafeAcceptChild(visitor, this.fields);
+            this.nullSafeAcceptChild(visitor, this.valuesList);
         }
 
         visitor.endVisit(this);
     }
 
     @Override
-    public List<OqlObject> getChildren() {
-        List<OqlObject> children = new ArrayList();
+    public List<SqlObject> getChildren() {
+        List<SqlObject> children = new ArrayList();
         children.add(this.objectSource);
         children.addAll(this.fields);
         children.addAll(this.valuesList);

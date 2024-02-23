@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.visitor;
 
-import net.cf.form.engine.oql.ast.OqlObject;
+import net.cf.form.repository.sql.ast.SqlObject;
 
 /**
  * 自定义输出函数接口
@@ -13,5 +13,5 @@ public interface OqlObjectPrinterFunction {
     /**
      * 自定义输出动作
      */
-    void print(OqlObject object);
+    void print(SqlObject object);
 }

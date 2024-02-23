@@ -14,7 +14,7 @@ public interface SqlObject {
      *
      * @param visitor
      */
-    void accept(SqlAstVisitor visitor);
+    <T extends SqlAstVisitor> void accept(T visitor);
 
     /**
      * 克隆自已

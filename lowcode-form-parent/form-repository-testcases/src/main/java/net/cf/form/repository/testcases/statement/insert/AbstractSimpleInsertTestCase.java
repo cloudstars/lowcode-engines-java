@@ -1,6 +1,7 @@
 package net.cf.form.repository.testcases.statement.insert;
 
 import net.cf.form.repository.FormRepository;
+import net.cf.form.repository.testcases.statement.AbstractTestCase;
 import net.cf.form.repository.testcases.statement.InitDataLoader;
 
 /**
@@ -8,18 +9,14 @@ import net.cf.form.repository.testcases.statement.InitDataLoader;
  *
  * @author clouds
  */
-public abstract class AbstractSimpleInsertTestCase {
-
-    protected final FormRepository repository;
-
-    protected final InitDataLoader initDataLoader;
+public abstract class AbstractSimpleInsertTestCase extends AbstractTestCase {
 
     protected AbstractSimpleInsertTestCase(FormRepository repository, InitDataLoader initDataLoader) {
-        this.repository = repository;
-        this.initDataLoader = initDataLoader;
+        super(repository, initDataLoader);
     }
 
-    protected void test1() {}
+    protected void test1() {
+    }
 
     protected void test2() {}
 

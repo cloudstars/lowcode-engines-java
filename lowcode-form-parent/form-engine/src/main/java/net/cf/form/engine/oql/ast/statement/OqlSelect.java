@@ -1,8 +1,12 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
-import net.cf.form.engine.oql.ast.OqlObject;
+import net.cf.form.engine.oql.AbstractOqlObjectImpl;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
+import net.cf.form.repository.sql.ast.SqlLimit;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
+import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
+import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +21,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     /**
      * 查询的列表
      */
-    private List<OqlSelectItem> selectItems = new ArrayList<>();
+    private List<SqlSelectItem> selectItems = new ArrayList<>();
 
     /**
      * 查询的对象
@@ -27,22 +31,22 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     /**
      * 查询条件
      */
-    private OqlWhereClause where;
+    private SqlExpr where;
 
     /**
      * Group By 子句
      */
-    private OqlSelectGroupBy groupBy;
+    private SqlSelectGroupByClause groupBy;
 
-    private OqlSelectOrderBy orderBy;
+    private SqlOrderBy orderBy;
 
-    private OqlSelectLimit limit;
+    private SqlLimit limit;
 
-    public List<OqlSelectItem> getSelectItems() {
+    public List<SqlSelectItem> getSelectItems() {
         return selectItems;
     }
 
-    public void setSelectItems(List<OqlSelectItem> selectItems) {
+    public void setSelectItems(List<SqlSelectItem> selectItems) {
         this.selectItems = selectItems;
         this.addChildren(selectItems);
     }
@@ -56,38 +60,38 @@ public class OqlSelect extends AbstractOqlObjectImpl {
         this.addChild(from);
     }
 
-    public OqlWhereClause getWhere() {
+    public SqlExpr getWhere() {
         return where;
     }
 
-    public void setWhere(OqlWhereClause where) {
+    public void setWhere(SqlExpr where) {
         this.where = where;
         this.addChild(where);
     }
 
-    public OqlSelectGroupBy getGroupBy() {
+    public SqlSelectGroupByClause getGroupBy() {
         return groupBy;
     }
 
-    public void setGroupBy(OqlSelectGroupBy groupBy) {
+    public void setGroupBy(SqlSelectGroupByClause groupBy) {
         this.groupBy = groupBy;
         this.addChild(groupBy);
     }
 
-    public OqlSelectOrderBy getOrderBy() {
+    public SqlOrderBy getOrderBy() {
         return orderBy;
     }
 
-    public void setOrderBy(OqlSelectOrderBy orderBy) {
+    public void setOrderBy(SqlOrderBy orderBy) {
         this.orderBy = orderBy;
         this.addChild(orderBy);
     }
 
-    public OqlSelectLimit getLimit() {
+    public SqlLimit getLimit() {
         return limit;
     }
 
-    public void setLimit(OqlSelectLimit limit) {
+    public void setLimit(SqlLimit limit) {
         this.limit = limit;
     }
 
@@ -95,7 +99,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.selectItems != null) {
-                this.acceptChildren(visitor, this.selectItems);
+                this.nullSafeAcceptChild(visitor, this.selectItems);
             }
 
             if (this.from != null) {
@@ -111,22 +115,22 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     }
 
     @Override
-    public OqlSelect clone() {
+    public OqlSelect cloneMe() {
         OqlSelect select = new OqlSelect();
-        List<OqlSelectItem> cloneItems = new ArrayList<>();
-        for (OqlSelectItem selectItem : selectItems) {
-            cloneItems.add(selectItem.clone());
+        List<SqlSelectItem> cloneItems = new ArrayList<>();
+        for (SqlSelectItem selectItem : selectItems) {
+            cloneItems.add(selectItem.cloneMe());
         }
         select.setSelectItems(cloneItems);
-        select.setFrom(this.from._clone());
-        select.setWhere(this.where.clone());
+        select.setFrom(this.from.cloneMe());
+        select.setWhere(this.where.cloneMe());
 
         return null;
     }
 
-    @Override
-    public List<OqlObject> getChildren() {
-        List<OqlObject> children = new ArrayList<>();
+    /*@Override
+    public List<SqlObject> getChildren() {
+        List<SqlObject> children = new ArrayList<>();
         children.addAll(this.selectItems);
         children.add(this.from);
         children.add(this.where);
@@ -134,5 +138,5 @@ public class OqlSelect extends AbstractOqlObjectImpl {
         children.add(this.orderBy);
         children.add(this.limit);
         return children;
-    }
+    }*/
 }

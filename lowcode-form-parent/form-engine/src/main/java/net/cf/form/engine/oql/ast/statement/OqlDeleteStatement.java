@@ -1,7 +1,8 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObject;
 import net.cf.form.engine.oql.visitor.OqlAstVisitor;
+import net.cf.form.repository.sql.ast.SqlObject;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
 
     protected OqlObjectSource objectSource;
 
-    protected OqlWhereClause whereClause;
+    protected SqlExpr where;
 
     public OqlDeleteStatement() {
     }
@@ -24,42 +25,43 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
         this.addChild(objectSource);
     }
 
-    public OqlWhereClause getWhereClause() {
-        return whereClause;
+    public SqlExpr getWhere() {
+        return where;
     }
 
-    public void setWhereClause(OqlWhereClause whereClause) {
-        this.whereClause = whereClause;
-        this.addChild(whereClause);
+    public void setWhere(SqlExpr where) {
+        this.where = where;
+        this.addChild(where);
     }
 
     @Override
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.acceptChild(visitor, this.objectSource);
-            this.acceptChild(visitor, this.whereClause);
+            this.nullSafeAcceptChild(visitor, this.objectSource);
+            this.nullSafeAcceptChild(visitor, this.where);
         }
 
         visitor.endVisit(this);
     }
 
+
     @Override
-    public List<OqlObject> getChildren() {
-        List<OqlObject> children = new ArrayList<>();
+    public List<SqlObject> getChildren() {
+        List<SqlObject> children = new ArrayList<>();
         children.add(this.objectSource);
-        if (this.whereClause != null) {
-            children.add(this.whereClause);
+        if (this.where != null) {
+            children.add(this.where);
         }
 
         return children;
     }
 
     @Override
-    public OqlDeleteStatement clone() {
+    public OqlDeleteStatement cloneMe() {
         OqlDeleteStatement statement = new OqlDeleteStatement();
-        statement.setObjectSource(this.objectSource._clone());
-        if (this.whereClause != null) {
-            statement.setWhereClause(this.whereClause.clone());
+        statement.setObjectSource(this.objectSource.cloneMe());
+        if (this.where != null) {
+            statement.setWhere(this.where.cloneMe());
         }
 
         return statement;

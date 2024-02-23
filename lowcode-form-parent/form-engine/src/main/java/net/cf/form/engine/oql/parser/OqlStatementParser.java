@@ -27,7 +27,7 @@ public class OqlStatementParser extends OqlExprParser {
         OqlStatement stmt = null;
         while (true) {
             semi = false;
-            switch (this.lexer.token) {
+            switch (this.lexer.token()) {
                 case EOF:
                     return statementList;
                 case SEMI:
@@ -55,7 +55,7 @@ public class OqlStatementParser extends OqlExprParser {
                     statementList.add(stmt);
                     break;
                 default:
-                    printError(this.lexer.token);
+                    printError(this.lexer.token());
                     break;
             }
         }
@@ -68,7 +68,7 @@ public class OqlStatementParser extends OqlExprParser {
      */
     private OqlSelectStatement parseSelectStatement() {
         OqlSelectParser selectParser = new OqlSelectParser(this.lexer);
-        OqlSelect select = selectParser.select();
+        OqlSelect select = selectParser.oqlSelect();
         return new OqlSelectStatement(select);
     }
 

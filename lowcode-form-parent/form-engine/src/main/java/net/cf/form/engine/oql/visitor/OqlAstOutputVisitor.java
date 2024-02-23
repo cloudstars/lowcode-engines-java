@@ -1,16 +1,13 @@
 package net.cf.form.engine.oql.visitor;
 
-import net.cf.form.engine.oql.ast.OqlCommentHint;
-import net.cf.form.engine.oql.ast.OqlObject;
-import net.cf.form.engine.oql.ast.expr.OqlExpr;
-import net.cf.form.engine.oql.ast.expr.identifier.*;
-import net.cf.form.engine.oql.ast.expr.literal.*;
-import net.cf.form.engine.oql.ast.expr.operation.OqlBinaryOpExpr;
-import net.cf.form.engine.oql.ast.expr.operation.OqlNotExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
 import net.cf.form.engine.oql.ast.statement.OqlExprObjectSource;
 import net.cf.form.engine.oql.ast.statement.OqlSelect;
-import net.cf.form.engine.oql.ast.statement.OqlSelectItem;
-import net.cf.form.engine.oql.parser.Token;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
+import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +17,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class OqlAstOutputVisitor extends OqlAstPrintableVisitorAdaptor {
+public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVisitor {
 
 
     public OqlAstOutputVisitor(Appendable appender) {
@@ -28,73 +25,18 @@ public class OqlAstOutputVisitor extends OqlAstPrintableVisitorAdaptor {
     }
 
     @Override
-    public boolean visit(OqlCommentHint x) {
-        this.print("/*");
-        this.print(x.getText());
-        this.print("*/");
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlNotExpr x) {
-        this.print("not(");
-        this.printExpr(x.getExpr());
-        this.print(')');
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlCharExpr x) {
-        this.printChars(x.getText());
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlBooleanExpr x) {
-        this.printChars(x.getValue() ? "true" : "false");
-
-        return false;
-    }
-
-
-    @Override
-    public boolean visit(OqlIntegerExpr x) {
-        Integer value = x.getValue();
-        this.print(value.toString());
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlNumberExpr x) {
-        this.print(x.getNumber().toString());
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlNullExpr x) {
-        this.print("null");
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlJsonObjectExpr x) {
+    public boolean visit(SqlJsonObjectExpr x) {
         this.print('{');
         int i = 0;
-        for (Map.Entry<String, OqlExpr> entry : x.getItems().entrySet()) {
+        for (Map.Entry<String, SqlExpr> entry : x.getItems().entrySet()) {
             if (i++ > 0) {
                 print(", ");
             }
             this.printJsonChar(entry.getKey());
             this.print(":");
-            OqlExpr value = entry.getValue();
-            if (value instanceof OqlCharExpr) {
-                this.printJsonChar(((OqlCharExpr) value).getText());
+            SqlExpr value = entry.getValue();
+            if (value instanceof SqlCharExpr) {
+                this.printJsonChar(((SqlCharExpr) value).getText());
             } else {
                 this.printExpr(value);
             }
@@ -112,13 +54,17 @@ public class OqlAstOutputVisitor extends OqlAstPrintableVisitorAdaptor {
     }
 
     @Override
-    public boolean visit(OqlJsonArrayExpr x) {
+    public boolean visit(SqlJsonArrayExpr x) {
         this.print('[');
-        List<OqlExpr> items = x.getItems();
+        List<SqlExpr> items = x.getItems();
         if (!items.isEmpty()) {
-            this.outputByCommaSeparated(items, (item) -> {
-                this.printExpr((OqlExpr) item);
-            });
+            int i = 0;
+            for (SqlExpr item : x.getItems()) {
+                if (i++ > 0) {
+                    this.print(",");
+                }
+                this.printExpr(item);
+            }
         }
         this.print(']');
 
@@ -126,96 +72,22 @@ public class OqlAstOutputVisitor extends OqlAstPrintableVisitorAdaptor {
     }
 
     @Override
-    public boolean visit(OqlIdentifierExpr x) {
-        this.print(x.getName());
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlPropertyExpr x) {
-        OqlNameExpr owner = x.getOwner();
-        if (owner != null) {
-            if (owner instanceof OqlIdentifierExpr) {
-                visit((OqlIdentifierExpr) owner);
-            } else if (owner instanceof OqlPropertyExpr) {
-                visit((OqlPropertyExpr) owner);
-            }
-            this.print('.');
-        }
-        this.print(x.getName());
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlVariantRefExpr x) {
-        this.print(x.getName());
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlBinaryOpExpr x) {
-        this.outputByParenthesized(x, (e) -> {
-            this.printExpr(x.getLeft());
-            this.print(' ');
-            this.print(x.getOperator().name);
-            this.print(' ');
-            this.printExpr(x.getRight());
-        });
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlMethodInvokeExpr x) {
-        this.printMethod(x);
-
-        return false;
-    }
-
-    /**
-     * 加小括号输出表达式
-     *
-     * @param x
-     * @param function
-     */
-    protected void outputByParenthesized(OqlObject x, OqlObjectPrinterFunction function) {
-        print("(");
-        function.print(x);
-        print(")");
-    }
-
-    @Override
     public boolean visit(OqlSelect x) {
         this.print("select ");
-        this.outputByCommaSeparated(x.getSelectItems(), (selectItem) -> {
-            this.visit((OqlSelectItem) selectItem);
-        });
+        int i = 0;
+        for (SqlSelectItem selectItem : x.getSelectItems()) {
+            if (i++ > 0) {
+                this.print(",");
+            }
+            this.visit(selectItem);
+        }
+
         this.print(" from ");
         this.visit((OqlExprObjectSource) x.getFrom());
         if (x.getWhere() != null) {
             this.print(" where ");
             this.printExpr(x.getWhere());
         }
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlSelectItem x) {
-        this.printExpr(x.getExpr());
-        if (x.getAlias() != null) {
-            this.print(" as " + x.getAlias());
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlAllFieldExpr x) {
-        this.print(Token.STAR.name);
 
         return false;
     }

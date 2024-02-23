@@ -22,7 +22,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
     }
 
     @Override
-    public final void accept(SqlAstVisitor visitor) {
+    public final <T extends SqlAstVisitor> void accept(T visitor) {
         if (visitor == null) {
             throw new IllegalArgumentException("visitor is null.");
         } else {
@@ -166,7 +166,6 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
         } else {
             attrComments.addAll(comments);
         }
-
     }
 
     public List<String> getBeforeCommentsDirect() {

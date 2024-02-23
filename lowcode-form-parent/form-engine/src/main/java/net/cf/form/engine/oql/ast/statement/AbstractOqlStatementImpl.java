@@ -1,7 +1,10 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.AbstractOqlObjectImpl;
 
+import net.cf.form.engine.oql.AbstractOqlObjectImpl;
+import net.cf.form.repository.sql.ast.SqlObject;
+
+import java.util.List;
 
 /**
  * OQL 语句实现抽象类
@@ -24,7 +27,12 @@ public abstract class AbstractOqlStatementImpl extends AbstractOqlObjectImpl imp
         this.afterSemi = afterSemi;
     }
 
-    public OqlStatement clone() {
+    public List<SqlObject> getChildren() {
+        throw new UnsupportedOperationException(this.getClass().getName());
+    }
+
+    @Override
+    public OqlStatement cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 

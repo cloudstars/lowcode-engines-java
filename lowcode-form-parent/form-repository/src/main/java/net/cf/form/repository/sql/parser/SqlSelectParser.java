@@ -7,11 +7,9 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
-import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
-import net.cf.form.repository.sql.ast.statement.SqlSelect;
-import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
-import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.form.repository.sql.ast.statement.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,19 +36,19 @@ public class SqlSelectParser extends SqlExprParser {
         this.accept(Token.SELECT);
 
         SqlSelect select = new SqlSelect();
-        this.parseSelectList(select);
-        this.parseFrom(select);
+        select.setSelectItems(this.parseSelectItems());
+        select.setFrom(this.parseFrom());
         if (this.lexer.token == Token.WHERE) {
-            this.parseWhere(select);
+            select.setWhere((this.parseWhere()));
         }
         if (this.lexer.token == Token.GROUP) {
-            this.parseGroupBy(select);
+            select.setGroupBy(this.parseGroupBy());
         }
         if (this.lexer.token == Token.ORDER) {
-            this.parseOrderBy(select);
+            select.setOrderBy((this.parseOrderBy()));
         }
         if (this.lexer.token == Token.LIMIT) {
-            this.parseLimit(select);
+            select.setLimit(this.parseLimit());
         }
 
         return select;
@@ -62,9 +60,8 @@ public class SqlSelectParser extends SqlExprParser {
      *
      * @return
      */
-    private void parseSelectList(SqlSelect query) {
-        List<SqlSelectItem> selectList = query.getSelectItems();
-
+    protected List<SqlSelectItem> parseSelectItems() {
+        List<SqlSelectItem> selectList = new ArrayList<>();
         while (true) {
             SqlExpr selectItemExpr = this.parseSelectItemExpr(null);
             SqlSelectItem selectItem = new SqlSelectItem(selectItemExpr);
@@ -83,14 +80,15 @@ public class SqlSelectParser extends SqlExprParser {
             }
 
             selectList.add(selectItem);
-            selectItem.setParent(query);
 
             if (this.lexer.token != Token.COMMA) {
-                return;
+                break;
             }
 
             this.lexer.nextToken();
         }
+
+        return selectList;
     }
 
     /**
@@ -143,29 +141,26 @@ public class SqlSelectParser extends SqlExprParser {
     /**
      * 解析 select 语句中 from
      *
-     * @param select
      */
-    private void parseFrom(SqlSelect select) {
+    private SqlTableSource parseFrom() {
         accept(Token.FROM);
-        select.setFrom(parseTableSource());
+        return parseTableSource();
     }
 
     /**
      * 解析 select 语句中 where
      *
-     * @param select
      */
-    private void parseWhere(SqlSelect select) {
+    protected SqlExpr parseWhere() {
         accept(Token.WHERE);
-        select.setWhere(this.expr());
+        return this.expr();
     }
 
     /**
      * 解析 select 语句中 group by
      *
-     * @param select
      */
-    private void parseGroupBy(SqlSelect select) {
+    protected SqlSelectGroupByClause parseGroupBy() {
         this.accept(Token.GROUP);
         this.accept(Token.BY);
 
@@ -188,15 +183,14 @@ public class SqlSelectParser extends SqlExprParser {
             groupBy.setHaving(expr);
         }
 
-        select.setGroupBy(groupBy);
+        return groupBy;
     }
 
     /**
      * 解析 select 语句中 order by
      *
-     * @param select
      */
-    private void parseOrderBy(SqlSelect select) {
+    protected SqlOrderBy parseOrderBy() {
         this.accept(Token.ORDER);
         this.accept(Token.BY);
 
@@ -221,15 +215,14 @@ public class SqlSelectParser extends SqlExprParser {
             this.lexer.nextToken();
         }
 
-        select.setOrderBy(orderBy);
+        return orderBy;
     }
 
     /**
      * 解析 select 语句中 limit
      *
-     * @param select
      */
-    private void parseLimit(SqlSelect select) {
+    protected SqlLimit parseLimit() {
         this.accept(Token.LIMIT);
 
         SqlLimit limit = new SqlLimit();
@@ -249,6 +242,6 @@ public class SqlSelectParser extends SqlExprParser {
             limit.setRowCount(((SqlIntegerExpr) rowCountExpr).getValue());
         }
 
-        select.setLimit(limit);
+        return limit;
     }
 }

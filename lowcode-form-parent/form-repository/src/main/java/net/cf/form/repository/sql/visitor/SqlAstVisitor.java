@@ -256,6 +256,42 @@ public interface SqlAstVisitor {
     }
 
     /**
+     * 开始访问 SqlJsonObjectExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlJsonObjectExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlJsonObjectExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlJsonObjectExpr x) {
+    }
+
+    /**
+     * 开始访问 SqlJsonArrayExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlJsonArrayExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlJsonArrayExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlJsonArrayExpr x) {
+    }
+
+    /**
      * 开始访问 SqlIdentifierExpr 节点
      *
      * @param x

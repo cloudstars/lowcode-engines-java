@@ -1,13 +1,13 @@
 package net.cf.form.engine.oql.ast.statement;
 
-import net.cf.form.engine.oql.ast.OqlObject;
+import net.cf.form.repository.sql.ast.SqlObject;
 
 /**
  * OQL 语句
  *
  * @author clouds
  */
-public interface OqlStatement<T extends OqlStatement> extends OqlObject<T> {
+public interface OqlStatement extends SqlObject {
 
     /**
      * 本语句是否在 ";" 之后
@@ -23,7 +23,12 @@ public interface OqlStatement<T extends OqlStatement> extends OqlObject<T> {
      */
     void setAfterSemi(boolean var1);
 
+    /**
+     * 克隆自已
+     *
+     * @return
+     */
     @Override
-    T clone();
+    OqlStatement cloneMe();
 
 }

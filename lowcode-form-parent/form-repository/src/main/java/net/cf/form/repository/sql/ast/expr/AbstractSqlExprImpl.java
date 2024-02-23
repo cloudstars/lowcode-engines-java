@@ -12,7 +12,8 @@ import java.util.List;
  */
 public abstract class AbstractSqlExprImpl extends AbstractSqlObjectImpl implements SqlExpr {
 
-    public AbstractSqlExprImpl() {}
+    public AbstractSqlExprImpl() {
+    }
 
     @Override
     public SqlExpr cloneMe() {

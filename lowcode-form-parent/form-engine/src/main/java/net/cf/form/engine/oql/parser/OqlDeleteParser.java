@@ -1,7 +1,8 @@
 package net.cf.form.engine.oql.parser;
 
 import net.cf.form.engine.oql.ast.statement.OqlDeleteStatement;
-import net.cf.form.engine.oql.ast.statement.OqlWhereClause;
+import net.cf.form.repository.sql.parser.Lexer;
+import net.cf.form.repository.sql.parser.Token;
 
 public class OqlDeleteParser extends OqlExprParser {
 
@@ -19,9 +20,9 @@ public class OqlDeleteParser extends OqlExprParser {
 
         OqlDeleteStatement statement = new OqlDeleteStatement();
         statement.setObjectSource(this.parseObjectSource());
-        if (this.lexer.token == Token.WHERE) {
+        if (this.lexer.token() == Token.WHERE) {
             this.lexer.nextToken();
-            statement.setWhereClause(new OqlWhereClause(this.expr()));
+            statement.setWhere(this.expr());
         }
 
         return statement;

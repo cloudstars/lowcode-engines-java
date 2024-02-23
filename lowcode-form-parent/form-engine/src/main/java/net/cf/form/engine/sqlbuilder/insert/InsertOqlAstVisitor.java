@@ -1,9 +1,6 @@
 package net.cf.form.engine.sqlbuilder.insert;
 
-import net.cf.form.engine.oql.ast.expr.identifier.OqlIdentifierExpr;
-import net.cf.form.engine.oql.ast.expr.literal.OqlCharExpr;
 import net.cf.form.engine.oql.ast.statement.OqlExprObjectSource;
-import net.cf.form.engine.oql.ast.statement.OqlInsertValues;
 import net.cf.form.engine.oql.visitor.OqlAstVisitorAdaptor;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
@@ -39,7 +36,7 @@ public final class InsertOqlAstVisitor extends OqlAstVisitorAdaptor {
     }
 
     @Override
-    public boolean visit(OqlIdentifierExpr identifierExpr) {
+    public boolean visit(SqlIdentifierExpr identifierExpr) {
         SqlIdentifierExpr sqlIdentifierExpr = new SqlIdentifierExpr(identifierExpr.getName());
         if (!isInValues) { // 说明在 values 前面出现
             this.builder.appendColumn(sqlIdentifierExpr);
@@ -51,14 +48,14 @@ public final class InsertOqlAstVisitor extends OqlAstVisitorAdaptor {
     }
 
     @Override
-    public boolean visit(OqlCharExpr x) {
+    public boolean visit(SqlCharExpr x) {
         this.builder.appendInsertValuesItem(new SqlCharExpr(x.getText()));
 
         return false;
     }
 
     @Override
-    public boolean visit(OqlInsertValues insertValues) {
+    public boolean visit(SqlInsertStatement.ValuesClause insertValues) {
         this.isInValues = true;
 
         SqlInsertStatement.ValuesClause valuesClause = new SqlInsertStatement.ValuesClause();
