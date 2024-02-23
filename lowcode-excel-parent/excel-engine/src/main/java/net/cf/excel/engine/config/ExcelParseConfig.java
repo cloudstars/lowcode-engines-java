@@ -1,6 +1,6 @@
 package net.cf.excel.engine.config;
 
-import net.cf.excel.engine.commons.parse.ExcelSheetField;
+import net.cf.excel.engine.commons.parse.ParseField;
 
 import java.util.List;
 
@@ -14,13 +14,23 @@ public class ExcelParseConfig {
     /**
      * EXCEL的列配置
      */
-    private List<ExcelSheetField> sheetFields;
+    private List<ParseField> parseFields;
 
-    public List<ExcelSheetField> getSheetFields() {
-        return sheetFields;
+    private int titleStartRow;
+
+    public List<ParseField> getParseFields() {
+        return parseFields;
     }
 
-    public void setSheetFields(List<ExcelSheetField> sheetFields) {
-        this.sheetFields = sheetFields;
+    public void setParseFields(List<ParseField> parseFields) {
+        this.parseFields = parseFields;
+    }
+
+    public int getTitleStartRow() {
+        return titleStartRow;
+    }
+
+    public void setTitleStartRow(int titleStartRow) {
+        this.titleStartRow = titleStartRow;
     }
 }

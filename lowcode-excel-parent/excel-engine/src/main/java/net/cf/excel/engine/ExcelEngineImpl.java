@@ -1,11 +1,9 @@
 package net.cf.excel.engine;
 
 import net.cf.excel.engine.commons.ExcelMergeInfo;
-import net.cf.excel.engine.commons.parse.ExcelSheetField;
+import net.cf.excel.engine.commons.parse.*;
 import net.cf.excel.engine.config.ExcelBuildConfig;
 import net.cf.excel.engine.config.ExcelParseConfig;
-import net.cf.excel.engine.commons.ExcelTitleInfo;
-import net.cf.excel.engine.converter.ParseConverter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 
@@ -23,12 +21,8 @@ public class ExcelEngineImpl implements ExcelEngine {
     private static final int MAX_COL = 200;
 
     /**
-     * 标题的起始行
-     */
-    private static final int TITLE_START_ROW = 0;
-
-    /**
      * 解析excel文件
+     *
      * @param workbook
      * @param config
      * @return
@@ -37,15 +31,17 @@ public class ExcelEngineImpl implements ExcelEngine {
     public List<Map<String, Object>> parseExcel(Workbook workbook, ExcelParseConfig config) {
         //初始化
         List<Map<String, Object>> records;
-        List<ExcelSheetField> sheetFields = config.getSheetFields();
+        List<ParseField> parseFields = config.getParseFields();
+        List<ExcelSheetField> excelSheetFields = buildExcelSheetField(parseFields);
+        int titleStartRow = config.getTitleStartRow();
         FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
         Sheet sheet = workbook.getSheetAt(0);
         validateSheet(sheet);
 
         //标题处理
-        boolean hasSubField = hasSubField(sheetFields);
-        int titleEndRow = hasSubField ? TITLE_START_ROW + 1 : TITLE_START_ROW;
-        List<ExcelTitleInfo> titleInfoList = getSheetTitleInfo(sheet, TITLE_START_ROW, titleEndRow, sheetFields, hasSubField);
+        boolean hasSubField = hasSubField(excelSheetFields);
+        int titleEndRow = hasSubField ? config.getTitleStartRow() + 1 : config.getTitleStartRow();
+        List<ExcelTitleInfo> titleInfoList = getSheetTitleInfo(sheet, titleStartRow, titleEndRow, excelSheetFields, hasSubField);
 
         //数据处理
         int dataStartRow = titleEndRow + 1;
@@ -53,6 +49,24 @@ public class ExcelEngineImpl implements ExcelEngine {
         records = getExcelData();
 
         return records;
+    }
+
+    private List<ExcelSheetField> buildExcelSheetField(List<ParseField> parseFields) {
+        List<ExcelSheetField> excelSheetFields = new ArrayList<>();
+        for (ParseField parseField : parseFields) {
+            if (parseField instanceof SingleParseField) {
+                excelSheetFields.add(new ExcelSheetField((SingleParseField) parseField, null));
+            } else if (parseField instanceof GroupParseField) {
+                List<ExcelSheetField> subFields = new ArrayList<>();
+                ExcelSheetField groupSheetField = new ExcelSheetField((GroupParseField) parseField, subFields);
+                for (SingleParseField singleParseField : ((GroupParseField) parseField).getSubField()) {
+                    subFields.add(new ExcelSheetField(singleParseField, groupSheetField));
+                }
+                excelSheetFields.addAll(subFields);
+                excelSheetFields.add(groupSheetField);
+            }
+        }
+        return excelSheetFields;
     }
 
     /**
@@ -67,9 +81,9 @@ public class ExcelEngineImpl implements ExcelEngine {
         }
     }
 
-    private boolean hasSubField(List<ExcelSheetField> sheetFields) {
-        for (ExcelSheetField sheetField : sheetFields) {
-            if (sheetField.hasSubField()) {
+    private boolean hasSubField(List<ExcelSheetField> excelSheetFields) {
+        for (ExcelSheetField excelSheetField : excelSheetFields) {
+            if (excelSheetField.isHasSubField()) {
                 return true;
             }
         }
@@ -82,11 +96,11 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param sheet
      * @param titleStartRow
      * @param titleEndRow
-     * @param ExcelSheetFields
+     * @param excelSheetFields
      * @param hasSubField
      * @return
      */
-    private static List<ExcelTitleInfo> getSheetTitleInfo(Sheet sheet, int titleStartRow, int titleEndRow, List<ExcelSheetField> ExcelSheetFields,
+    private static List<ExcelTitleInfo> getSheetTitleInfo(Sheet sheet, int titleStartRow, int titleEndRow, List<ExcelSheetField> excelSheetFields,
                                                           boolean hasSubField) {
         List<ExcelTitleInfo> titleInfoList = new ArrayList<>();
         Map<Integer, ExcelMergeInfo> titleMergeMap = getTitleMergeMap(sheet, titleStartRow, titleEndRow, hasSubField);
@@ -96,22 +110,22 @@ public class ExcelEngineImpl implements ExcelEngine {
         while (colIndex < colEndIndex) {
             //如果列不属于合并单元格
             if (!titleMergeMap.containsKey(colIndex)) {
-                String title = getTitleCell(sheet, titleStartRow, colIndex);
+                String title = getCellTitle(sheet, titleStartRow, colIndex);
                 titleInfoList.add(new ExcelTitleInfo(null, title, colIndex, false, false));
                 colIndex++;
             } else {
-                //得到所有IExcelSheetField名称,用来判断当前列是否需要被解析
-                List<String> sheetFieldNames = ExcelSheetFields.stream().map(ExcelSheetField::getUniqueName).collect(Collectors.toList());
+                //得到所有sheetField名称,用来判断当前列是否需要被解析
+                List<String> sheetFieldNames = excelSheetFields.stream().map(ExcelSheetField::getUniqueName).collect(Collectors.toList());
                 ExcelMergeInfo titleMergeInfo = titleMergeMap.get(colIndex);
                 //仅考虑列合并或者行合并的场景
                 if (titleMergeInfo.isRowMerge() && !titleMergeInfo.isColumnMerge()) {
-                    String title = getTitleCell(sheet, titleStartRow, colIndex);
+                    String title = getCellTitle(sheet, titleStartRow, colIndex);
                     ExcelTitleInfo titleInfo = new ExcelTitleInfo(null, title, colIndex, true, false);
                     if (existIExcelSheetField(titleInfo, sheetFieldNames)) {
                         titleInfoList.add(titleInfo);
                     }
                 } else if (!titleMergeInfo.isRowMerge() && titleMergeInfo.isColumnMerge()) {
-                    String parentTitle = getTitleCell(sheet, titleStartRow, colIndex);
+                    String parentTitle = getCellTitle(sheet, titleStartRow, colIndex);
                     if (sheetFieldNames.contains(parentTitle)) {
                         ExcelTitleInfo titleInfo = new ExcelTitleInfo(null, parentTitle, colIndex, false, true);
                         if (existIExcelSheetField(titleInfo, sheetFieldNames)) {
@@ -121,7 +135,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                     int lastColumn = titleMergeInfo.getColumnEndIndex();
                     int detailColIndex = colIndex;
                     while (detailColIndex <= lastColumn) {
-                        String title = getTitleCell(sheet, titleEndRow, detailColIndex);
+                        String title = getCellTitle(sheet, titleEndRow, detailColIndex);
                         ExcelTitleInfo titleInfo = new ExcelTitleInfo(parentTitle, title, detailColIndex, false, false);
                         if (existIExcelSheetField(titleInfo, sheetFieldNames)) {
                             titleInfoList.add(titleInfo);
@@ -143,7 +157,7 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param colIndex
      * @return
      */
-    private static String getTitleCell(Sheet sheet, int rowIndex, int colIndex) {
+    private static String getCellTitle(Sheet sheet, int rowIndex, int colIndex) {
         Row row = sheet.getRow(rowIndex);
         Cell cell = row.getCell(colIndex);
         if (cell == null) return null;
