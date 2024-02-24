@@ -14,14 +14,14 @@ import java.util.List;
 public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
 
     /**
-     * 属性的归属
-     */
-    private SqlName owner;
-
-    /**
      * 属性的名称
      */
     private String name;
+
+    /**
+     * 属性的归属
+     */
+    private SqlName owner;
 
     public SqlPropertyExpr(String owner, String name) {
         this(new SqlIdentifierExpr(owner), name);
@@ -47,6 +47,8 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
         this.addChild(owner);
     }
 
+
+    @Override
     public String getName() {
         return this.name;
     }
@@ -82,8 +84,4 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
         return x;
     }
 
-    @Override
-    public String getSimpleName() {
-        return this.name;
-    }
 }

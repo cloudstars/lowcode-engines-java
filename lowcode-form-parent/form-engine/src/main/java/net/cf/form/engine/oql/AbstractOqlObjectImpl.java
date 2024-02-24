@@ -25,15 +25,16 @@ public abstract class AbstractOqlObjectImpl extends AbstractSqlObjectImpl {
         }
     }
 
-    @Override
-    protected void accept0(SqlAstVisitor visitor) {
-        this.accept(visitor);
-    }
-
     /**
      * 接受一个visitor
      *
      * @param visitor
      */
     protected abstract void accept0(OqlAstVisitor visitor);
+
+    @Override
+    protected void accept0(SqlAstVisitor visitor) {
+        this.accept(visitor);
+    }
+
 }

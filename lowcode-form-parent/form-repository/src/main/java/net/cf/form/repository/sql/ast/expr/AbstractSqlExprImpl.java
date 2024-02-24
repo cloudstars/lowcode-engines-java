@@ -1,16 +1,19 @@
 package net.cf.form.repository.sql.ast.expr;
 
 import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
-
-import java.util.Collections;
-import java.util.List;
+import net.cf.form.repository.sql.ast.SqlDataType;
 
 /**
- * SQL 表达式实现抽象类
+ * SQL 表达式抽象实现类
  *
  * @author clouds
  */
 public abstract class AbstractSqlExprImpl extends AbstractSqlObjectImpl implements SqlExpr {
+
+    /**
+     * 表达式的数据类型
+     */
+    protected SqlDataType dataType;
 
     public AbstractSqlExprImpl() {
     }
@@ -20,13 +23,8 @@ public abstract class AbstractSqlExprImpl extends AbstractSqlObjectImpl implemen
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 
-    /**
-     * 不知道干啥用的，先留着
-     *
-     * @return
-     */
     @Override
-    public List<SqlExpr> getChildren() {
-        return Collections.emptyList();
+    public SqlDataType computeDataType() {
+        return SqlDataType.NULL;
     }
 }

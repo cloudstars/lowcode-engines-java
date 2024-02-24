@@ -1,6 +1,6 @@
 package net.cf.form.engine.sqlbuilder.delete;
 
-import net.cf.form.engine.oql.ast.statement.OqlDeleteStatement;
+import net.cf.form.engine.oql.ast.OqlDeleteStatement;
 import net.cf.form.engine.sqlbuilder.AbstractSqlStatementBuilder;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 

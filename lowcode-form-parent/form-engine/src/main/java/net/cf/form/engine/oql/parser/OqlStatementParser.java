@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.parser;
 
-import net.cf.form.engine.oql.ast.statement.*;
+import net.cf.form.engine.oql.ast.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class OqlStatementParser extends OqlExprParser {
      * @return
      */
     private OqlInsertStatement parseInsertStatement() {
-        OqlInsertParser insertParser = new OqlInsertParser(this.lexer);
+        OqlInsertIntoParser insertParser = new OqlInsertIntoParser(this.lexer);
         OqlInsertInto insert = insertParser.insertInto();
         return new OqlInsertStatement(insert);
     }
@@ -89,7 +89,7 @@ public class OqlStatementParser extends OqlExprParser {
      * @return
      */
     private OqlUpdateStatement parseUpdateStatement() {
-        OqlUpdateParser parser = new OqlUpdateParser(this.lexer);
+        OqlUpdateStatementParser parser = new OqlUpdateStatementParser(this.lexer);
         return parser.statement();
     }
 
@@ -99,7 +99,7 @@ public class OqlStatementParser extends OqlExprParser {
      * @return
      */
     private OqlDeleteStatement parseDeleteStatement() {
-        OqlDeleteParser parser = new OqlDeleteParser(this.lexer);
+        OqlDeleteStatementParser parser = new OqlDeleteStatementParser(this.lexer);
         return parser.statement();
     }
 }

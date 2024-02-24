@@ -56,7 +56,7 @@ public class InsertSimpleSqlTest extends AbstractSqlTest {
         Assert.assertTrue(stmts.get(0) instanceof SqlInsertStatement);
         SqlInsertStatement stmt0 = (SqlInsertStatement) stmts.get(0);
         Assert.assertTrue(stmt0.getTableSource() instanceof SqlExprTableSource);
-        Assert.assertTrue("tableA".equals(stmt0.getTableName().getSimpleName()));
+        Assert.assertTrue("tableA".equals(stmt0.getTableName().getName()));
         Assert.assertTrue(stmt0.getColumns().size() == 3);
         Assert.assertTrue(stmt0.getValues().getValues().size() == 3);
         Assert.assertTrue(SqlTestUtils.equalsIgnoreWhiteSpace(stmt0.toString(), sql));

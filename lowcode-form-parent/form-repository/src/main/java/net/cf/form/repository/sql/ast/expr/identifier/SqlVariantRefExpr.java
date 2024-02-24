@@ -9,10 +9,21 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlVariantRefExpr extends AbstractSqlExprImpl {
+public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
 
+    /**
+     * 变量引用的名称，如#{id}、${id}
+     */
     private String name;
 
+    /**
+     * 变量的名称
+     */
+    private String varName;
+
+    /**
+     * 变量出现在SQL语名中的序号（从0开始）
+     */
     private int index;
 
     public SqlVariantRefExpr() {
@@ -20,20 +31,19 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl {
     }
 
     public SqlVariantRefExpr(String name) {
-        this.index = -1;
-        this.name = name;
+        this(name, null);
     }
 
     public SqlVariantRefExpr(String name, SqlObject parent) {
-        this.index = -1;
+        if ((name.startsWith("#{") && name.endsWith("}")) || (name.startsWith("${") && name.endsWith("}"))) {
+            this.varName = name.substring(2, name.length() -1);
+        }
         this.name = name;
         this.parent = parent;
+        this.index = -1;
     }
 
-    /**
-     * 获取变量引用的名称
-     * @return
-     */
+    @Override
     public String getName() {
         return this.name;
     }
@@ -45,6 +55,15 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * 获取变量的名称
+     *
+     * @return
+     */
+    public String getVarName() {
+        return varName;
     }
 
     public int getIndex() {

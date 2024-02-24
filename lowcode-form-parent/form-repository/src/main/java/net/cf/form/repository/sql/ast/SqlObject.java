@@ -2,8 +2,11 @@ package net.cf.form.repository.sql.ast;
 
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
- * Sql Ast 中的节点的顶层抽象
+ * SQL AST 中的节点的顶层抽象
  *
  * @author clouds
  */
@@ -14,16 +17,7 @@ public interface SqlObject {
      *
      * @param visitor
      */
-    <T extends SqlAstVisitor> void accept(T visitor);
-
-    /**
-     * 克隆自已
-     *
-     * 备注：起名为"cloneMe"是为了避免与Object的clone名称冲突
-     *
-     * @return
-     */
-    SqlObject cloneMe();
+    void accept(SqlAstVisitor visitor);
 
     /**
      * 获取父节点
@@ -40,9 +34,32 @@ public interface SqlObject {
     void setParent(SqlObject parent);
 
     /**
+     * 获取子节点列表
+     *
+     * @return
+     */
+    default List<? extends SqlObject> getChildren() {
+        return Collections.emptyList();
+    }
+
+    /**
+     * 克隆
+     *
+     * @return
+     */
+    SqlObject cloneMe();
+
+    /**
      * 输出到 Appendable
      *
      * @param appendable
      */
     void output(Appendable appendable);
+
+    /**
+     * 获取注释信息
+     *
+     * @return
+     */
+    SqlCommentHint getHint();
 }

@@ -9,13 +9,13 @@ import javax.annotation.Resource;
 
 @Component
 @Profile("mongo")
-public class FormRepositoryProviderTestImpl implements FormRepositoryProvider {
+public class FormRepositoryProviderTestImpl implements FormRepositoryProvider<XObjectTestImpl> {
 
     @Resource
     private FormRepository repositoryDriver;
-    
+
     @Override
-    public FormRepository getByObject(XObject object) {
+    public FormRepository getByObject(XObjectTestImpl object) {
         return repositoryDriver;
     }
 }

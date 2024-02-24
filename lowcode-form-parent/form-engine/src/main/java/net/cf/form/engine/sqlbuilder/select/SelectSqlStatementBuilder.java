@@ -1,6 +1,6 @@
 package net.cf.form.engine.sqlbuilder.select;
 
-import net.cf.form.engine.oql.ast.statement.OqlSelectStatement;
+import net.cf.form.engine.oql.ast.OqlSelectStatement;
 import net.cf.form.engine.sqlbuilder.AbstractSqlStatementBuilder;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 

@@ -6,12 +6,15 @@ package net.cf.form.repository.sql.ast;
  * @author clouds 
  */
 public enum SqlDataType {
-    TEXT,
-    INTEGER,
-    DECIMAL,
+    NULL,
+    STRING,
+    NUMBER,
     DATE,
     TIME,
-    DATE_TIME,
     BOOLEAN,
-    OBJECT
+    ARRAY,
+    /**
+     * 对应数据库自动生成的ID，如Mongo的_id，MySQL的自增主键
+     */
+    OBJECT_ID;
 }

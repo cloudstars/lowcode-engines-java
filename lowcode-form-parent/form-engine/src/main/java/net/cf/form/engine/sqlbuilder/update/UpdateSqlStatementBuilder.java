@@ -1,6 +1,6 @@
 package net.cf.form.engine.sqlbuilder.update;
 
-import net.cf.form.engine.oql.ast.statement.OqlUpdateStatement;
+import net.cf.form.engine.oql.ast.OqlUpdateStatement;
 import net.cf.form.engine.sqlbuilder.AbstractSqlStatementBuilder;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 

@@ -36,7 +36,7 @@ public class InsertSqlAstVisitor implements SqlAstVisitor {
     @Override
     public boolean visit(SqlIdentifierExpr x) {
         if (!isInValues) {
-            columnNames.add(x.getSimpleName());
+            columnNames.add(x.getName());
         }
 
         return false;

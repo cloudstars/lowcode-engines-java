@@ -2,15 +2,14 @@ package net.cf.form.repository.ast.util;
 
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.expr.SqlListExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.*;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExprGroup;
-import net.cf.form.repository.sql.ast.expr.operation.SqlNotExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
@@ -25,11 +24,6 @@ public class SqlTypesAstVisitor implements SqlAstVisitor {
         return nodes;
     }
 
-    @Override
-    public boolean visit(SqlNotExpr x) {
-        this.nodes.add(x);
-        return true;
-    }
 
     @Override
     public boolean visit(SqlCharExpr x) {

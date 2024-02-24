@@ -1,6 +1,6 @@
 package net.cf.form.engine.record;
 
-import net.cf.form.engine.ObjectRecordEngine;
+import net.cf.form.engine.RecordEngine;
 import net.cf.form.engine.object.TravelApply;
 
 import javax.annotation.Resource;
@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 public class RecordInsertTest {
 
     @Resource
-    private ObjectRecordEngine recordEngine;
+    private RecordEngine recordEngine;
 
     public void testInsert() {
         TravelApply apply = new TravelApply();

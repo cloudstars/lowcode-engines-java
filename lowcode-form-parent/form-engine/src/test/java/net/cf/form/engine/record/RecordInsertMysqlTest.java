@@ -1,6 +1,6 @@
 package net.cf.form.engine.record;
 
-import net.cf.form.engine.ObjectRecordEngine;
+import net.cf.form.engine.RecordEngine;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,6 +14,6 @@ import javax.annotation.Resource;
 public class RecordInsertMysqlTest {
 
     @Resource
-    private ObjectRecordEngine recordEngine;
+    private RecordEngine recordEngine;
     
 }

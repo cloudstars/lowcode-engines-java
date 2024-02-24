@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * 动态对象接口
  */
-public interface XObject<F extends XField> {
+public interface XObject{
 
     /**
      * 获取对象的编号
@@ -36,7 +36,7 @@ public interface XObject<F extends XField> {
      *
      * @return
      */
-    List<F> getFields();
+    <T extends XField> List<T> getFields();
 
     /**
      * 根据字段名称获取字段
@@ -44,14 +44,14 @@ public interface XObject<F extends XField> {
      * @param fieldCode
      * @return
      */
-    F getField(String fieldCode);
+    <T extends XField> T getField(String fieldCode);
 
     /**
      * 获取主键字段
      *
      * @return
      */
-    F getPrimaryField();
+    <T extends XField> T getPrimaryField();
 
     /**
      * 是否由驱动生成的主键

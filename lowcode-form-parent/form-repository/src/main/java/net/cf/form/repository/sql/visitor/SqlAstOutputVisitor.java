@@ -2,14 +2,13 @@ package net.cf.form.repository.sql.visitor;
 
 import net.cf.form.repository.sql.ast.SqlCommentHint;
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.expr.SqlCaseExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlCaseExpr;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.SqlListExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExprGroup;
-import net.cf.form.repository.sql.ast.expr.operation.SqlNotExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.parser.Token;
 
@@ -288,19 +287,9 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             this.visit((SqlCaseExpr) x);
         } else if (clazz == SqlListExpr.class) {
             this.visit((SqlListExpr) x);
-        } else if (clazz == SqlNotExpr.class) {
-            this.visit((SqlNotExpr) x);
         } else {
             x.accept(this);
         }
-    }
-
-    @Override
-    public boolean visit(SqlNotExpr x) {
-        this.print(this.uppercase ? "NOT " : "not ");
-        this.printExpr(x.getExpr());
-
-        return false;
     }
 
     @Override
@@ -401,7 +390,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
     @Override
-    public boolean visit(SqlDateTimeExpr x) {
+    public boolean visit(SqlTimestampExpr x) {
         this.print(this.uppercase ? "DATETIME " : "datetime ");
         this.printChars(x.getText());
         return false;
@@ -416,7 +405,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     @Override
     public boolean visit(SqlIdentifierExpr x) {
-        this.print(x.getSimpleName());
+        this.print(x.getName());
 
         return false;
     }
@@ -432,7 +421,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             }
             this.print('.');
         }
-        this.print(x.getSimpleName());
+        this.print(x.getName());
 
         return false;
     }

@@ -3,7 +3,7 @@ package net.cf.form.repository.sql.ast;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**
- * 注释
+ * SQL 注释
  *
  * @author clouds
  */

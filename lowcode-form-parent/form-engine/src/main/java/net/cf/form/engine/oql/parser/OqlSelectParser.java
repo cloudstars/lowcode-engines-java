@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.parser;
 
-import net.cf.form.engine.oql.ast.statement.OqlObjectSource;
-import net.cf.form.engine.oql.ast.statement.OqlSelect;
+import net.cf.form.engine.oql.ast.OqlObjectSource;
+import net.cf.form.engine.oql.ast.OqlSelect;
 import net.cf.form.repository.sql.parser.Lexer;
 import net.cf.form.repository.sql.parser.SqlSelectParser;
 import net.cf.form.repository.sql.parser.Token;

@@ -1,6 +1,6 @@
 package net.cf.form.engine.oql.visitor;
 
-import net.cf.form.engine.oql.ast.expr.OqlObjectExpandExpr;
+import net.cf.form.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.visitor.PrintableVisitorAdaptor;
 

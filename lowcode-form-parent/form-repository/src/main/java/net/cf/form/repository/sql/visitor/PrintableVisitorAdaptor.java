@@ -7,8 +7,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.literal.*;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.operation.SqlNotExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -139,8 +138,6 @@ public class PrintableVisitorAdaptor extends SqlAstVisitorAdaptor implements Pri
             this.visit((SqlIdentifierExpr) x);
         } else if (clazz == SqlPropertyExpr.class) {
             this.visit((SqlPropertyExpr) x);
-        } else if (clazz == SqlNotExpr.class) {
-            this.visit((SqlNotExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             this.visit((SqlBinaryOpExpr) x);
         } else if (clazz == SqlMethodInvokeExpr.class) {

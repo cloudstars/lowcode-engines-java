@@ -1,7 +1,7 @@
 package net.cf.form.engine.oql.visitor;
 
 import net.cf.form.engine.object.XObject;
-import net.cf.form.engine.oql.ast.statement.OqlInsertInto;
+import net.cf.form.engine.oql.ast.OqlInsertInto;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 

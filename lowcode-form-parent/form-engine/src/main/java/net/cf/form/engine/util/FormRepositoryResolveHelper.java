@@ -2,7 +2,7 @@ package net.cf.form.engine.util;
 
 import net.cf.form.engine.FormRepositoryProvider;
 import net.cf.form.engine.object.XObject;
-import net.cf.form.engine.oql.ast.statement.OqlInsertStatement;
+import net.cf.form.engine.oql.ast.OqlInsertStatement;
 import net.cf.form.repository.FormRepository;
 import org.springframework.stereotype.Component;
 

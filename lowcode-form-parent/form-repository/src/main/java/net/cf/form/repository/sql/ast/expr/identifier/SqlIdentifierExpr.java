@@ -11,10 +11,19 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  */
 public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
 
+    /**
+     * 标识符的名称
+     */
     protected String name;
 
+    /**
+     * 对应数据表中的列
+     */
     private SqlObject resolvedColumn;
 
+    /**
+     * 归属的节点，如当前节点出现在SqlPropertyExpr中时，xx.name，name的name就是xx
+     */
     private SqlObject resolvedOwnerObject;
 
     public SqlIdentifierExpr() {
@@ -25,20 +34,16 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
     }
 
     @Override
-    public String getSimpleName() {
-        return this.name;
-    }
-
-    public String getLowerName() {
-        return this.name == null ? null : this.name.toLowerCase();
-    }
-
     public String getName() {
         return this.name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLowerName() {
+        return this.name == null ? null : this.name.toLowerCase();
     }
 
     public SqlObject getResolvedColumn() {
@@ -64,14 +69,14 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
     }
 
     @Override
-    public String toString() {
-        return this.name;
-    }
-
-    @Override
     public SqlIdentifierExpr cloneMe() {
         SqlIdentifierExpr x = new SqlIdentifierExpr(this.name);
         return x;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 
 }

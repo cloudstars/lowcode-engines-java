@@ -1,10 +1,7 @@
 package net.cf.form.repository.sql.ast.expr;
 
-import net.cf.form.repository.sql.ast.SqlCommentHint;
 import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.form.repository.sql.ast.SqlObject;
-
-import java.util.List;
 
 /**
  *
@@ -14,12 +11,19 @@ import java.util.List;
  */
 public interface SqlExpr extends SqlObject {
 
+    /**
+     * 克隆
+     *
+     * @return SQL表达式
+     */
     @Override
     SqlExpr cloneMe();
 
+    /**
+     * 获取表达式的数据类型
+     *
+     * @return
+     */
     SqlDataType computeDataType();
 
-    List<SqlExpr> getChildren();
-
-    SqlCommentHint getHint();
 }

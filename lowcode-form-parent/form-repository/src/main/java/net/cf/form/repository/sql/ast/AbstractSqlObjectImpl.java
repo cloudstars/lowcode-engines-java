@@ -12,17 +12,36 @@ import java.util.*;
  */
 public abstract class AbstractSqlObjectImpl implements SqlObject {
 
+    /**
+     * 父节点
+     */
     protected SqlObject parent;
-    protected Map<String, Object> attributes;
+
+    /*
+     * 注释信息
+     */
     protected SqlCommentHint hint;
+
+    /**
+     * 节点的属性
+     */
+    protected final Map<String, Object> attributes = new HashMap<>();
+
+    /**
+     * 表达式在源码中的行号
+     */
     protected int sourceLine;
+
+    /**
+     * 表达式在源码中的列表
+     */
     protected int sourceColumn;
 
     public AbstractSqlObjectImpl() {
     }
 
     @Override
-    public final <T extends SqlAstVisitor> void accept(T visitor) {
+    public final void accept(SqlAstVisitor visitor) {
         if (visitor == null) {
             throw new IllegalArgumentException("visitor is null.");
         } else {
@@ -100,6 +119,11 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
     }
 
     @Override
+    public SqlObject cloneMe() {
+        throw new UnsupportedOperationException(this.getClass().getName());
+    }
+
+    @Override
     public void output(Appendable appendable) {
         this.accept(SqlVisitorUtils.createAstOutputVisitor(appendable));
     }
@@ -111,11 +135,16 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
         return builder.toString();
     }
 
-    public Map<String, Object> getAttributes() {
-        if (this.attributes == null) {
-            this.attributes = new HashMap(1);
-        }
+    @Override
+    public SqlCommentHint getHint() {
+        return this.hint;
+    }
 
+    public void setHint(SqlCommentHint hint) {
+        this.hint = hint;
+    }
+
+    public Map<String, Object> getAttributes() {
         return this.attributes;
     }
 
@@ -128,108 +157,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
     }
 
     public void putAttribute(String name, Object value) {
-        if (this.attributes == null) {
-            this.attributes = new HashMap(1);
-        }
-
         this.attributes.put(name, value);
-    }
-
-    public Map<String, Object> getAttributesDirect() {
-        return this.attributes;
-    }
-
-    public void addBeforeComment(String comment) {
-        if (comment != null) {
-            if (this.attributes == null) {
-                this.attributes = new HashMap(1);
-            }
-
-            List<String> comments = (List) this.attributes.get("rowFormat.before_comment");
-            if (comments == null) {
-                comments = new ArrayList(2);
-                this.attributes.put("rowFormat.before_comment", comments);
-            }
-
-            ((List) comments).add(comment);
-        }
-    }
-
-    public void addBeforeComment(List<String> comments) {
-        if (this.attributes == null) {
-            this.attributes = new HashMap(1);
-        }
-
-        List<String> attrComments = (List) this.attributes.get("rowFormat.before_comment");
-        if (attrComments == null) {
-            this.attributes.put("rowFormat.before_comment", comments);
-        } else {
-            attrComments.addAll(comments);
-        }
-    }
-
-    public List<String> getBeforeCommentsDirect() {
-        return this.attributes == null ? null : (List) this.attributes.get("rowFormat.before_comment");
-    }
-
-    public void addAfterComment(String comment) {
-        if (this.attributes == null) {
-            this.attributes = new HashMap(1);
-        }
-
-        List<String> comments = (List) this.attributes.get("rowFormat.after_comment");
-        if (comments == null) {
-            comments = new ArrayList(2);
-            this.attributes.put("rowFormat.after_comment", comments);
-        }
-
-        ((List) comments).add(comment);
-    }
-
-    public void addAfterComment(List<String> comments) {
-        if (comments != null) {
-            if (this.attributes == null) {
-                this.attributes = new HashMap(1);
-            }
-
-            List<String> attrComments = (List) this.attributes.get("rowFormat.after_comment");
-            if (attrComments == null) {
-                this.attributes.put("rowFormat.after_comment", comments);
-            } else {
-                attrComments.addAll(comments);
-            }
-
-        }
-    }
-
-    public List<String> getAfterCommentsDirect() {
-        return this.attributes == null ? null : (List) this.attributes.get("rowFormat.after_comment");
-    }
-
-    public boolean hasBeforeComment() {
-        if (this.attributes == null) {
-            return false;
-        } else {
-            List<String> comments = (List) this.attributes.get("rowFormat.before_comment");
-            if (comments == null) {
-                return false;
-            } else {
-                return !comments.isEmpty();
-            }
-        }
-    }
-
-    public boolean hasAfterComment() {
-        if (this.attributes == null) {
-            return false;
-        } else {
-            List<String> comments = (List) this.attributes.get("rowFormat.after_comment");
-            if (comments == null) {
-                return false;
-            } else {
-                return !comments.isEmpty();
-            }
-        }
     }
 
     public int getSourceLine() {
@@ -246,22 +174,5 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
 
     public void setSourceColumn(int sourceColumn) {
         this.sourceColumn = sourceColumn;
-    }
-
-    public SqlCommentHint getHint() {
-        return this.hint;
-    }
-
-    public void setHint(SqlCommentHint hint) {
-        this.hint = hint;
-    }
-
-    /**
-     * 不确定这个怎么用，先保留着
-     *
-     * @return
-     */
-    public SqlDataType computeDataType() {
-        return null;
     }
 }

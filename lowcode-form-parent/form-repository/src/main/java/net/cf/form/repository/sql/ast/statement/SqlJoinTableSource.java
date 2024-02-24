@@ -3,7 +3,7 @@ package net.cf.form.repository.sql.ast.statement;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.util.SqlUtils;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 

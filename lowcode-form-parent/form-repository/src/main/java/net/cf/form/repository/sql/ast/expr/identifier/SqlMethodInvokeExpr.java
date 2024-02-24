@@ -14,8 +14,14 @@ import java.util.List;
  */
 public class SqlMethodInvokeExpr extends AbstractSqlExprImpl {
 
+    /**
+     * 方法的名称
+     */
     protected String methodName;
 
+    /**
+     * 方法的参数
+     */
     protected final List<SqlExpr> arguments = new ArrayList();
 
 

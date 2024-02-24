@@ -1,8 +1,8 @@
 package net.cf.form.engine.oql.parser;
 
-import net.cf.form.engine.oql.ast.expr.OqlObjectExpandExpr;
-import net.cf.form.engine.oql.ast.statement.OqlExprObjectSource;
-import net.cf.form.engine.oql.ast.statement.OqlObjectSource;
+import net.cf.form.engine.oql.ast.OqlObjectExpandExpr;
+import net.cf.form.engine.oql.ast.OqlExprObjectSource;
+import net.cf.form.engine.oql.ast.OqlObjectSource;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.parser.Lexer;

@@ -1,6 +1,6 @@
 package net.cf.form.engine.sqlbuilder.insert;
 
-import net.cf.form.engine.oql.ast.statement.OqlExprObjectSource;
+import net.cf.form.engine.oql.ast.OqlExprObjectSource;
 import net.cf.form.engine.oql.visitor.OqlAstVisitorAdaptor;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
@@ -28,7 +28,7 @@ public final class InsertOqlAstVisitor extends OqlAstVisitorAdaptor {
     @Override
     public boolean visit(OqlExprObjectSource x) {
         SqlExprTableSource tableSource = new SqlExprTableSource();
-        tableSource.setExpr(new SqlIdentifierExpr(tableSource.getName().getSimpleName()));
+        tableSource.setExpr(new SqlIdentifierExpr(tableSource.getName().getName()));
         tableSource.setAlias(x.getAlias());
         this.builder.tableSource(tableSource);
 

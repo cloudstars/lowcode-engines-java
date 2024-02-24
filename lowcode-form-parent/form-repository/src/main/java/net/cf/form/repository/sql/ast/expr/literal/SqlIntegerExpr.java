@@ -1,6 +1,5 @@
 package net.cf.form.repository.sql.ast.expr.literal;
 
-import net.cf.form.repository.sql.ast.expr.SqlValuableExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 public class SqlIntegerExpr extends AbstractSqlNumericLiteralExpr implements SqlValuableExpr {

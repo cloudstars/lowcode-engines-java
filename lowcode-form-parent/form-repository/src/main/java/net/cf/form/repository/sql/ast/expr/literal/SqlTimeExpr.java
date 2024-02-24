@@ -1,6 +1,5 @@
 package net.cf.form.repository.sql.ast.expr.literal;
 
-import net.cf.form.repository.sql.ast.expr.SqlValuableExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.text.ParseException;
@@ -8,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SqlTimeExpr extends AbstractSqlTextLiteralExpr implements SqlValuableExpr {
-    //public static final SqlDataType DATA_TYPE = new SqlDataTypeImpl("time");
 
     private static String TIME_PATTERN = "HH:mm:ss";
 

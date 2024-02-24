@@ -3,10 +3,10 @@ package net.cf.form.repository.sql.parser;
 import net.cf.form.repository.sql.FastSqlException;
 import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.SqlListExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
-import net.cf.form.repository.sql.ast.expr.operation.*;
+import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlJoinTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
@@ -382,24 +382,20 @@ public class SqlExprParser extends AbstractSqlParser {
                 this.lexer.nextToken();
                 break;
             case BANG:
-            case NOT:
-                this.lexer.nextToken();
-                expr = new SqlNotExpr(this.primary());
-                break;
             case LBRACKET:
                 this.lexer.nextToken();
-                /*expr = new SqlJsonArrayExpr();
+                expr = new SqlJsonArrayExpr();
                 this.isParsingArray = true;
                 if (this.lexer.token != Token.RBRACKET) {
                     this.exprList(((SqlJsonArrayExpr) expr).getItems(), expr);
-                }*/
+                }
 
                 this.accept(Token.RBRACKET);
                 this.isParsingArray = false;
                 break;
             case LBRACE:
                 this.lexer.nextToken();
-                /*expr = new SqlJsonObjectExpr();
+                expr = new SqlJsonObjectExpr();
                 if (this.lexer.token != Token.RBRACE) {
                     while (this.lexer.token != Token.RBRACE) {
                         String key = this.lexer.stringVal();
@@ -410,7 +406,7 @@ public class SqlExprParser extends AbstractSqlParser {
                             this.lexer.nextToken();
                         }
                     }
-                }*/
+                }
                 this.accept(Token.RBRACE);
                 break;
             case LPAREN:
@@ -497,7 +493,7 @@ public class SqlExprParser extends AbstractSqlParser {
         if (expr instanceof SqlIdentifierExpr) {
             SqlMethodInvokeExpr methodInvokeExpr = null;
             SqlIdentifierExpr idExpr = (SqlIdentifierExpr) expr;
-            String methodName = idExpr.getSimpleName();
+            String methodName = idExpr.getName();
             String methodNameUppercase = methodName.toUpperCase();
             if (AGGREGATE_FUNCTIONS.contains(methodNameUppercase)) {
                 boolean distinct = false;

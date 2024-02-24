@@ -95,7 +95,7 @@ public class SqlStatementParser extends SqlExprParser {
      * @return
      */
     private SqlInsertStatement parseInsertStatement() {
-        SqlInsertParser insertParser = new SqlInsertParser(this.lexer);
+        SqlInsertIntoParser insertParser = new SqlInsertIntoParser(this.lexer);
         SqlInsertInto insertInto = insertParser.insertInto();
         return new SqlInsertStatement(insertInto);
     }
@@ -106,7 +106,7 @@ public class SqlStatementParser extends SqlExprParser {
      * @return
      */
     private SqlUpdateStatement parseUpdateStatement() {
-        SqlUpdateParser parser = new SqlUpdateParser(this.lexer);
+        SqlUpdateStatementParser parser = new SqlUpdateStatementParser(this.lexer);
         return parser.statement();
     }
 
@@ -116,7 +116,7 @@ public class SqlStatementParser extends SqlExprParser {
      * @return
      */
     private SqlDeleteStatement parseDeleteStatement() {
-        SqlDeleteParser parser = new SqlDeleteParser(this.lexer);
+        SqlDeleteStatementParser parser = new SqlDeleteStatementParser(this.lexer);
         return parser.statement();
     }
 }

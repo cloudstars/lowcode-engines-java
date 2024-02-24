@@ -2,9 +2,9 @@ package net.cf.form.repository.sql.util;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.literal.*;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExprGroup;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOperator;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.parser.SqlExprParser;
 import net.cf.form.repository.sql.parser.SqlParseException;
 import net.cf.form.repository.sql.parser.SqlParserFeature;

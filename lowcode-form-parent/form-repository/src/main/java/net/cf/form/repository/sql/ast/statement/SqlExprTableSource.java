@@ -64,7 +64,7 @@ public class SqlExprTableSource extends AbstractSqlTableSourceImpl implements Sq
         } else if (this.expr instanceof SqlIdentifierExpr) {
             return ((SqlIdentifierExpr) this.expr).getName();
         } else {
-            return this.expr instanceof SqlPropertyExpr ? ((SqlPropertyExpr) this.expr).getSimpleName() : null;
+            return this.expr instanceof SqlPropertyExpr ? ((SqlPropertyExpr) this.expr).getName() : null;
         }
     }
 

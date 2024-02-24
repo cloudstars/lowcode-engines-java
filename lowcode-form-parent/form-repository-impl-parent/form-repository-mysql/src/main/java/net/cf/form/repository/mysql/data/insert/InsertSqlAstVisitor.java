@@ -1,14 +1,13 @@
 package net.cf.form.repository.mysql.data.insert;
 
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.expr.SqlCaseExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlCaseExpr;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.SqlListExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.operation.SqlBinaryOpExprGroup;
-import net.cf.form.repository.sql.ast.expr.operation.SqlNotExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.visitor.SqlAstVisitorAdaptor;
 
@@ -100,8 +99,8 @@ public class InsertSqlAstVisitor extends SqlAstVisitorAdaptor {
             this.visit((SqlBinaryOpExpr) x);
         } else if (clazz == SqlNullExpr.class) {
             this.visit((SqlNullExpr) x);
-        } else if (clazz == SqlDateTimeExpr.class) {
-            this.visit((SqlDateTimeExpr) x);
+        } else if (clazz == SqlTimestampExpr.class) {
+            this.visit((SqlTimestampExpr) x);
         } else if (clazz == SqlDateExpr.class) {
             this.visit((SqlDateExpr) x);
         } else if (clazz == SqlTimeExpr.class) {
@@ -122,8 +121,6 @@ public class InsertSqlAstVisitor extends SqlAstVisitorAdaptor {
             this.visit((SqlCaseExpr) x);
         } else if (clazz == SqlListExpr.class) {
             this.visit((SqlListExpr) x);
-        } else if (clazz == SqlNotExpr.class) {
-            this.visit((SqlNotExpr) x);
         } else {
             x.accept(this);
         }
@@ -131,7 +128,7 @@ public class InsertSqlAstVisitor extends SqlAstVisitorAdaptor {
 
     @Override
     public boolean visit(SqlIdentifierExpr x) {
-        this.print(x.getSimpleName());
+        this.print(x.getName());
         return false;
     }
 
@@ -146,7 +143,7 @@ public class InsertSqlAstVisitor extends SqlAstVisitorAdaptor {
             }
             this.print('.');
         }
-        this.print(x.getSimpleName());
+        this.print(x.getName());
 
         return false;
     }
@@ -159,7 +156,7 @@ public class InsertSqlAstVisitor extends SqlAstVisitorAdaptor {
     }
 
     @Override
-    public boolean visit(SqlDateTimeExpr x) {
+    public boolean visit(SqlTimestampExpr x) {
         this.printChars(x.getText());
         return false;
     }

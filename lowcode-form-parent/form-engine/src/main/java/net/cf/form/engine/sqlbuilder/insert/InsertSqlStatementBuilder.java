@@ -1,6 +1,6 @@
 package net.cf.form.engine.sqlbuilder.insert;
 
-import net.cf.form.engine.oql.ast.statement.OqlInsertStatement;
+import net.cf.form.engine.oql.ast.OqlInsertStatement;
 import net.cf.form.engine.sqlbuilder.AbstractSqlStatementBuilder;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;

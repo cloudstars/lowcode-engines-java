@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class XObjectTestImpl implements XObject<XFieldTestImpl> {
+public class XObjectTestImpl implements XObject {
 
     private final FormDefinition objectDef;
 

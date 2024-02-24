@@ -2,8 +2,8 @@ package net.cf.form.engine.oql.visitor;
 
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
-import net.cf.form.engine.oql.ast.statement.OqlExprObjectSource;
-import net.cf.form.engine.oql.ast.statement.OqlSelect;
+import net.cf.form.engine.oql.ast.OqlExprObjectSource;
+import net.cf.form.engine.oql.ast.OqlSelect;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
