@@ -9,7 +9,7 @@ public class SqlDecimalExpr extends AbstractSqlNumericLiteralExpr implements Sql
 
     //private BigDecimal value;
 
-    private transient String literal;
+    private String literal;
 
     public SqlDecimalExpr() {
     }

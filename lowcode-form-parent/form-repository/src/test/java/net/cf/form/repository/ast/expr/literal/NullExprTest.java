@@ -1,4 +1,4 @@
-package net.cf.form.repository.ast.expr;
+package net.cf.form.repository.ast.expr.literal;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.expr.SQLNullExpr;
