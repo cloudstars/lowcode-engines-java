@@ -75,6 +75,6 @@ public class FieldTestImpl implements XField {
 
     @Override
     public Map<String, Object> getAttributeValues() {
-        return this.fieldDef.getAttrValueMap();
+        return this.fieldDef.getAttributeValueMap();
     }
 }

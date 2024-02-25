@@ -7,7 +7,7 @@ import net.cf.form.repository.FormRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FormRepositoryResolveHelper {
+public class FormRepositoryResolver {
 
     private FormRepositoryProvider resolveRepository;
 

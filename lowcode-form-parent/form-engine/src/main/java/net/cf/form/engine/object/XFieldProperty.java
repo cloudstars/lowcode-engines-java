@@ -42,7 +42,6 @@ public interface XFieldProperty {
      * @return
      */
     DataType getDataType();
-
     /**
      * 获取字段属性的最大长度
      *

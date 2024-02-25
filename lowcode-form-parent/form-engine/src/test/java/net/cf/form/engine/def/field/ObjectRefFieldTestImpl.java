@@ -23,7 +23,7 @@ public class ObjectRefFieldTestImpl extends FieldTestImpl implements XObjectRefF
     /**
      * 是否允许引用多个相关表记录，当模型引用类型是相关表是有效
      */
-    private boolean isMultipleLookupRef;
+    private boolean isMultiLookupRef;
 
     public ObjectRefFieldTestImpl(FieldDef fieldDef, ObjectRefType objectRefType, XObject refObject) {
         super(fieldDef);
@@ -44,14 +44,14 @@ public class ObjectRefFieldTestImpl extends FieldTestImpl implements XObjectRefF
             return true;
         }
 
-        return this.isMultipleLookupRef;
+        return this.isMultiLookupRef;
     }
 
-    public boolean isMultipleLookupRef() {
-        return isMultipleLookupRef;
+    public boolean isMultiLookupRef() {
+        return isMultiLookupRef;
     }
 
-    public void setMultipleLookupRef(boolean multipleLookupRef) {
-        isMultipleLookupRef = multipleLookupRef;
+    public void setMultiLookupRef(boolean multiLookupRef) {
+        isMultiLookupRef = multiLookupRef;
     }
 }

@@ -35,16 +35,8 @@ public abstract class AbstractFieldTypeImpl implements XFieldType {
      *
      * @return
      */
-    public List<FieldTypeAttributeDescriptor> getAttributeDescriptors() {
+    public List<AttributeDescriptor> getAttributeDescriptors() {
         return Collections.emptyList();
     }
 
-    /**
-     * 获取字段类型的子属性描述列表
-     *
-     * @return
-     */
-    public List<FieldTypePropertyDescriptor> getPropertyDescriptors() {
-        return Collections.emptyList();
-    }
 }

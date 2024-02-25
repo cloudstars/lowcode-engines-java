@@ -64,8 +64,8 @@ public final class ObjectUtils {
      * @param ref
      * @return
      */
-    public static <T extends Object> Reference createRef(T ref) {
-        return new Reference<T>(ref);
+    public static <T extends Object> Ref createRef(T ref) {
+        return new Ref<T>(ref);
     }
 
     /**
@@ -112,11 +112,11 @@ public final class ObjectUtils {
         }
     }
 
-    public static class Reference<T> {
+    public static class Ref<T> {
 
         private T ref;
 
-        public Reference(T ref) {
+        public Ref(T ref) {
             this.ref = ref;
         }
 

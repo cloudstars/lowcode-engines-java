@@ -25,16 +25,16 @@ public class ObjectRefFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public List<FieldTypeAttributeDescriptor> getAttributeDescriptors() {
-        FieldTypeAttributeDescriptor refTypeAttr = new FieldTypeAttributeDescriptor();
+    public List<AttributeDescriptor> getAttributeDescriptors() {
+        AttributeDescriptor refTypeAttr = new AttributeDescriptor();
         refTypeAttr.setName("模型引用类型");
         refTypeAttr.setCode("refType");
-        DescriptorOption option1 = new DescriptorOption("引用主表", "MASTER");
-        DescriptorOption option2 = new DescriptorOption("引用子表", "DETAIL");
-        DescriptorOption option3 = new DescriptorOption("引用相关表", "LOOKUP");
+        AttributeDescriptor.Option option1 = new AttributeDescriptor.Option("引用主表", "MASTER");
+        AttributeDescriptor.Option option2 = new AttributeDescriptor.Option("引用子表", "DETAIL");
+        AttributeDescriptor.Option option3 = new AttributeDescriptor.Option("引用相关表", "LOOKUP");
         refTypeAttr.setOptions(Arrays.asList(option1, option2, option3));
 
-        FieldTypeAttributeDescriptor isMultipleLookupRefAttr = new FieldTypeAttributeDescriptor();
+        AttributeDescriptor isMultipleLookupRefAttr = new AttributeDescriptor();
         isMultipleLookupRefAttr.setName("是否一对多引用");
         refTypeAttr.setCode("isMultiRef");
         refTypeAttr.setDataType(DataType.BOOLEAN);

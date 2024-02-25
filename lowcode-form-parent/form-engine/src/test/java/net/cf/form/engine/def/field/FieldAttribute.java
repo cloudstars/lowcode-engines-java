@@ -1,14 +1,13 @@
 package net.cf.form.engine.def.field;
 
-import net.cf.form.engine.def.fieldtype.FieldTypeAttributeDescriptor;
-import net.cf.form.engine.object.XFieldAttribute;
+import net.cf.form.engine.def.fieldtype.AttributeDescriptor;
 
 /**
  * 字段的个性化属性
  *
  * @author clouds
  */
-public class FieldAttributeTestImpl implements XFieldAttribute {
+public class FieldAttribute {
 
     /**
      * 个性化属性归属的字段
@@ -18,7 +17,7 @@ public class FieldAttributeTestImpl implements XFieldAttribute {
     /**
      * 个性化属性的属性描述器
      */
-    private final FieldTypeAttributeDescriptor attributeDescriptor;
+    private final AttributeDescriptor descriptor;
 
     private String name;
 
@@ -26,21 +25,34 @@ public class FieldAttributeTestImpl implements XFieldAttribute {
 
     private Object value;
 
-    public FieldAttributeTestImpl(FieldTestImpl field, FieldTypeAttributeDescriptor attributeDescriptor) {
+    public FieldAttribute(FieldTestImpl field, AttributeDescriptor descriptor) {
         this.owner = field;
-        this.attributeDescriptor = attributeDescriptor;
+        this.descriptor = descriptor;
     }
 
-    @Override
+    /**
+     * 获取个性化属性归属的字段
+     *
+     * @return
+     */
     public FieldTestImpl getOwner() {
         return this.owner;
     }
 
-    public FieldTypeAttributeDescriptor getAttributeDescriptor() {
-        return attributeDescriptor;
+    /**
+     * 获取个性化属性的描述器
+     *
+     * @return
+     */
+    public AttributeDescriptor getDescriptor() {
+        return descriptor;
     }
 
-    @Override
+    /**
+     * 获取配置的名称
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
@@ -49,7 +61,11 @@ public class FieldAttributeTestImpl implements XFieldAttribute {
         this.name = name;
     }
 
-    @Override
+    /**
+     * 获取配置的编号
+     *
+     * @return
+     */
     public String getCode() {
         return code;
     }
@@ -58,7 +74,11 @@ public class FieldAttributeTestImpl implements XFieldAttribute {
         this.code = code;
     }
 
-    @Override
+    /**
+     * 获取个性化属性的值
+     *
+     * @return
+     */
     public Object getValue() {
         return value;
     }

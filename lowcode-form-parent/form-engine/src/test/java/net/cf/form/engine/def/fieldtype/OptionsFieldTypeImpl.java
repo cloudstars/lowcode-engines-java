@@ -26,21 +26,21 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public List<FieldTypeAttributeDescriptor> getAttributeDescriptors() {
-        List<FieldTypeAttributeDescriptor> descriptors = new ArrayList<>();
+    public List<AttributeDescriptor> getAttributeDescriptors() {
+        List<AttributeDescriptor> descriptors = new ArrayList<>();
         {
-            FieldTypeAttributeDescriptor typeDescr = new FieldTypeAttributeDescriptor();
+            AttributeDescriptor typeDescr = new AttributeDescriptor();
             typeDescr.setName("数据源类型");
             typeDescr.setCode("sourceType");
             typeDescr.setDataType(DataType.STRING);
-            DescriptorOption option1 = new DescriptorOption("静态数据", "Static");
-            DescriptorOption option2 = new DescriptorOption("数据字典", "Dictionary");
+            AttributeDescriptor.Option option1 = new AttributeDescriptor.Option("静态数据", "Static");
+            AttributeDescriptor.Option option2 = new AttributeDescriptor.Option("数据字典", "Dictionary");
             typeDescr.setOptions(Arrays.asList(option1, option2));
             descriptors.add(typeDescr);
         }
         {
             // 当数据源类型为静态数据时，需要填写字典编号dictKey
-            FieldTypeAttributeDescriptor optionsDescr = new FieldTypeAttributeDescriptor();
+            AttributeDescriptor optionsDescr = new AttributeDescriptor();
             optionsDescr.setName("选项列表");
             optionsDescr.setCode("options");
             optionsDescr.setCollection(true);
@@ -49,7 +49,7 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
         }
         {
             // 当数据源类型为数据字典时，需要填写字典编号dictKey
-            FieldTypeAttributeDescriptor dictKeyDescr = new FieldTypeAttributeDescriptor();
+            AttributeDescriptor dictKeyDescr = new AttributeDescriptor();
             dictKeyDescr.setName("字典编号");
             dictKeyDescr.setCode("dictKey");
             dictKeyDescr.setDataType(DataType.STRING);
@@ -57,7 +57,7 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
         }
         {
             // 是否冗余属性
-            FieldTypeAttributeDescriptor redundantDescr = new FieldTypeAttributeDescriptor();
+            AttributeDescriptor redundantDescr = new AttributeDescriptor();
             redundantDescr.setName("是否冗余标签");
             redundantDescr.setCode("redundant");
             redundantDescr.setDataType(DataType.BOOLEAN);
@@ -65,7 +65,7 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
         }
         {
             // 是否冗余属性
-            FieldTypeAttributeDescriptor redundantDescr = new FieldTypeAttributeDescriptor();
+            AttributeDescriptor redundantDescr = new AttributeDescriptor();
             redundantDescr.setName("是否冗余标签");
             redundantDescr.setCode("redundant");
             redundantDescr.setDataType(DataType.BOOLEAN);
@@ -74,7 +74,7 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
         {
             // 当冗余标签时，需填写标题名称（有默认值）、标题代码（有默认值）、值名称（有默认值）、值代码（有默认值）
             {
-                FieldTypeAttributeDescriptor labelNameDescr = new FieldTypeAttributeDescriptor();
+                AttributeDescriptor labelNameDescr = new AttributeDescriptor();
                 labelNameDescr.setName("Label名称");
                 labelNameDescr.setCode("labelName");
                 labelNameDescr.setDataType(DataType.STRING);
@@ -82,7 +82,7 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
                 descriptors.add(labelNameDescr);
             }
             {
-                FieldTypeAttributeDescriptor labelValueDescr = new FieldTypeAttributeDescriptor();
+                AttributeDescriptor labelValueDescr = new AttributeDescriptor();
                 labelValueDescr.setName("Label值");
                 labelValueDescr.setCode("labelValue");
                 labelValueDescr.setDataType(DataType.STRING);
@@ -90,7 +90,7 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
                 descriptors.add(labelValueDescr);
             }
             {
-                FieldTypeAttributeDescriptor valueNameDescr = new FieldTypeAttributeDescriptor();
+                AttributeDescriptor valueNameDescr = new AttributeDescriptor();
                 valueNameDescr.setName("值名称");
                 valueNameDescr.setCode("valueName");
                 valueNameDescr.setDataType(DataType.STRING);
@@ -98,7 +98,7 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
                 descriptors.add(valueNameDescr);
             }
             {
-                FieldTypeAttributeDescriptor valueValueDescr = new FieldTypeAttributeDescriptor();
+                AttributeDescriptor valueValueDescr = new AttributeDescriptor();
                 valueValueDescr.setName("Label名称");
                 valueValueDescr.setCode("valueValue");
                 valueValueDescr.setDataType(DataType.STRING);

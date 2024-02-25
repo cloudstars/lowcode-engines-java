@@ -34,14 +34,14 @@ public class DateFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public List<FieldTypeAttributeDescriptor> getAttributeDescriptors() {
-        FieldTypeAttributeDescriptor attribute = new FieldTypeAttributeDescriptor();
+    public List<AttributeDescriptor> getAttributeDescriptors() {
+        AttributeDescriptor attribute = new AttributeDescriptor();
         attribute.setName("日期格式");
         attribute.setCode("dateFormat");
         attribute.setDataType(DataType.STRING);
-        DescriptorOption option1 = new DescriptorOption("格式：yyyy-MM-dd hh:mm:ss", "DateTime");
-        DescriptorOption option2 = new DescriptorOption("格式：yyyy-MM-dd", "Date");
-        DescriptorOption option3 = new DescriptorOption("格式：hh:mm:ss", "Time");
+        AttributeDescriptor.Option option1 = new AttributeDescriptor.Option("格式：yyyy-MM-dd hh:mm:ss", "DateTime");
+        AttributeDescriptor.Option option2 = new AttributeDescriptor.Option("格式：yyyy-MM-dd", "Date");
+        AttributeDescriptor.Option option3 = new AttributeDescriptor.Option("格式：hh:mm:ss", "Time");
         attribute.setOptions(Arrays.asList(option1, option2, option3));
         return Arrays.asList(attribute);
     }

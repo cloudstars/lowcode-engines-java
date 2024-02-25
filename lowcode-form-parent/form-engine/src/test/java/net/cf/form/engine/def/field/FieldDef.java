@@ -1,6 +1,6 @@
 package net.cf.form.engine.def.field;
 
-import net.cf.form.engine.def.fieldtype.FieldTypeAttributeDescriptor;
+import net.cf.form.engine.def.fieldtype.AttributeDescriptor;
 import net.cf.form.engine.object.DataType;
 
 import java.util.HashMap;
@@ -72,8 +72,11 @@ public class FieldDef {
     /**
      * 字段的个性化属性
      */
-    private List<FieldAttributeTestImpl> attributes;
+    //private List<FieldAttributeTestImpl> attributes;
 
+    /**
+     * 字段的个性化属性的值映射
+     */
     private final Map<String, Object> attrValueMap = new HashMap<>();
 
     public FieldDef(String type) {
@@ -164,17 +167,17 @@ public class FieldDef {
         this.properties = properties;
     }
 
-    public List<FieldAttributeTestImpl> getAttributes() {
+    /*public List<FieldAttributeTestImpl> getAttributes() {
         return attributes;
-    }
+    }*/
 
-    public void setAttributes(List<FieldAttributeTestImpl> attributes) {
-        this.attributes = attributes;
-        for (FieldAttributeTestImpl attribute : attributes) {
+    public void setAttributes(List<FieldAttribute> attributes) {
+        //this.attributes = attributes;
+        for (FieldAttribute attribute : attributes) {
             String attrCode = attribute.getCode();
             Object attrValue = attribute.getValue();
             if (attrValue == null) {
-                FieldTypeAttributeDescriptor attributeDescriptor = attribute.getAttributeDescriptor();
+                AttributeDescriptor attributeDescriptor = attribute.getDescriptor();
                 if (attributeDescriptor != null) {
                     attrValue = attributeDescriptor.getDefaultValue();
                 }
@@ -183,7 +186,12 @@ public class FieldDef {
         }
     }
 
-    public Map<String, Object> getAttrValueMap() {
+    /**
+     * 获取字段的个性化属性值映射
+     *
+     * @return
+     */
+    public Map<String, Object> getAttributeValueMap() {
         return attrValueMap;
     }
 }

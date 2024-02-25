@@ -69,7 +69,7 @@ public class RecordEngineImpl implements RecordEngine {
     public String createOne(XObject object, Object data) {
         assert (object != null && data != null);
 
-        ObjectUtils.Reference<Method> primaryFieldGetMethodRef = ObjectUtils.createRef(null);
+        ObjectUtils.Ref<Method> primaryFieldGetMethodRef = ObjectUtils.createRef(null);
         SqlInsertStatement insertSql = this.buildInsertSql(object, data, primaryFieldGetMethodRef);
         FormRepository repository = this.repositoryProvider.getByObject(object);
         repository.insert(insertSql);
@@ -92,7 +92,7 @@ public class RecordEngineImpl implements RecordEngine {
      * @param primaryFieldGetMethodRef
      * @return
      */
-    private SqlInsertStatement buildInsertSql(XObject object, Object data, ObjectUtils.Reference<Method> primaryFieldGetMethodRef) {
+    private SqlInsertStatement buildInsertSql(XObject object, Object data, ObjectUtils.Ref<Method> primaryFieldGetMethodRef) {
         InsertSqlStatementBuilder builder = new InsertSqlStatementBuilder();
         builder.tableSource(new SqlExprTableSource(object.getTableName()));
         Map<String, Method> getMethods = ObjectUtils.getDeclaredGetMethodMap(data);

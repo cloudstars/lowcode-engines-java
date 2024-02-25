@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class FieldTypeAttributeDescriptor {
+public class AttributeDescriptor {
 
     private String name;
 
@@ -21,7 +21,7 @@ public class FieldTypeAttributeDescriptor {
 
     private Object defaultValue;
 
-    private List<DescriptorOption> options;
+    private List<Option> options;
 
     public String getName() {
         return name;
@@ -63,12 +63,21 @@ public class FieldTypeAttributeDescriptor {
         this.defaultValue = defaultValue;
     }
 
-    public List<DescriptorOption> getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(List<DescriptorOption> options) {
+    public void setOptions(List<Option> options) {
         this.options = options;
     }
 
+    static class Option {
+        String label;
+        String value;
+
+        public Option(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
+    }
 }
