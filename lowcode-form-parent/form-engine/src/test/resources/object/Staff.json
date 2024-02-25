@@ -1,0 +1,166 @@
+{
+  "name": "员工",
+  "code": "Staff",
+  "primaryFieldCode": "staffId",
+  "fields": [
+    {
+      "type": "Text",
+      "name": "员工编号",
+      "code": "staffKey",
+      "columnName": "STA_KEY",
+      "dataType": "String",
+      "dataLength": 20
+    },
+    {
+      "type": "Text",
+      "name": "员工名称",
+      "code": "staffName",
+      "columnName": "STA_NAME",
+      "dataType": "String",
+      "dataLength": 32
+    },
+    {
+      "type": "Date",
+      "name": "入职日期",
+      "code": "entryDate",
+      "columnName": "ENTRY_DATE",
+      "dataType": "Date",
+      "dataFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Date",
+      "name": "离职日期",
+      "code": "departDate",
+      "columnName": "DEPART_DATE",
+      "dataType": "Date",
+      "dataFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Text",
+      "name": "个人简介",
+      "code": "desc",
+      "columnName": "DESC",
+      "dataType": "String",
+      "dataLength": 1024
+    },
+    {
+      "type": "Options",
+      "name": "状态",
+      "code": "status",
+      "columnName": "STATUS",
+      "dataType": "String",
+      "sourceType": "Static",
+      "options": [
+        {
+          "label": "试用",
+          "value": "SY"
+        },
+        {
+          "label": "已转正",
+          "value": "ZZ"
+        },
+        {
+          "label": "临时",
+          "value": "LS"
+        },
+        {
+          "label": "已离职",
+          "value": "LZ"
+        }
+      ]
+    },
+    {
+      "type": "User",
+      "name": "创建人",
+      "code": "creator",
+      "columnName": "CREATOR",
+      "dataType": "Object",
+      "defaultValue": {
+        "name": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "name": "名称",
+          "code": "name",
+          "columnName": "NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "name": "编号",
+          "code": "key",
+          "columnName": "KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "name": "更新时间",
+      "code": "createdAt",
+      "columnName": "CREATED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "User",
+      "name": "更新人",
+      "code": "modifier",
+      "columnName": "MODIFIER",
+      "dataType": "Object",
+      "defaultValue": {
+        "name": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "name": "名称",
+          "code": "name",
+          "columnName": "NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "name": "编号",
+          "code": "key",
+          "columnName": "KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "name": "更新时间",
+      "code": "modifiedAt",
+      "columnName": "MODIFIED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Text",
+      "name": "拥有者",
+      "code": "ownerKey",
+      "columName": "OWNER_KEY",
+      "dataType": "String",
+      "dataLength": 20
+    },
+    {
+      "type": "Number",
+      "name": "版本号",
+      "code": "revision",
+      "columnName": "REVISION",
+      "dataType": "Number",
+      "dataPrecision": 0
+    },
+    {
+      "type": "Boolean",
+      "name": "是否已删除",
+      "code": "deleted",
+      "columnName": "DELETED",
+      "dataType": "Boolean"
+    }
+  ]
+}

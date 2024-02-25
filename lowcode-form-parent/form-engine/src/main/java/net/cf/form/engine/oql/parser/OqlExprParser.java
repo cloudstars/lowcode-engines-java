@@ -49,7 +49,7 @@ public class OqlExprParser extends SqlExprParser {
     }
 
     /**
-     * 解析对象源
+     * 解析模型源
      *
      * @return
      */

@@ -25,7 +25,7 @@ public class OqlUtils {
     }
 
     /**
-     * 将一个OQL对象转为字符串
+     * 将一个OQL模型转为字符串
      *
      * @param object
      * @return

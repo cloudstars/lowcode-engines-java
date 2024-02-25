@@ -10,7 +10,7 @@ public interface XObjectResolver {
     /**
      * 解析XObject
      *
-     * @param objectName 业务对象的名称
+     * @param objectName 业务模型的名称
      * @return
      */
     XObject resolveObject(String objectName);

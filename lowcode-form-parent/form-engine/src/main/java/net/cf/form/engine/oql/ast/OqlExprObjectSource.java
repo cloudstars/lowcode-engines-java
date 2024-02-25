@@ -7,7 +7,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 
 /**
- * 表达式形式的对象源
+ * 表达式形式的模型源
  *
  * @author clouds
  */

@@ -1,0 +1,19 @@
+package net.cf.form.engine.def.fieldtype;
+
+/**
+ * 机构字段类型
+ *
+ * @author clouds
+ */
+public class OrgFieldTypeImpl extends AbstractFieldTypeImpl {
+
+    @Override
+    public String getName() {
+        return "用户";
+    }
+
+    @Override
+    public String getCode() {
+        return "User";
+    }
+}

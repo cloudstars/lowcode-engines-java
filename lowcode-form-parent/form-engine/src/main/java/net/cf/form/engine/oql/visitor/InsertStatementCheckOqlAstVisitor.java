@@ -22,10 +22,10 @@ public class InsertStatementCheckOqlAstVisitor implements OqlAstVisitor {
         String objectName = ((SqlIdentifierExpr) objectSource.getExpr()).getName();
         XObject object = objectSource.getResolvedObject();
         if (object == null) {
-            throw new FastOqlException("对象" + objectName + "不存在！");
+            throw new FastOqlException("模型" + objectName + "不存在！");
         }
 
-        // TODO 把解析出来的对象存放起来
+        // TODO 把解析出来的模型存放起来
 
         // 检查字段名称是否存在
         List<SqlExpr> fieldExprs = x.getFields();
@@ -34,7 +34,7 @@ public class InsertStatementCheckOqlAstVisitor implements OqlAstVisitor {
                 String fieldName = ((SqlIdentifierExpr) fieldExpr).getName();
                 XField field = object.getField(fieldName);
                 if (field == null) {
-                    throw new FastOqlException("对象" + objectName + "的字段" + fieldName + "不存在！");
+                    throw new FastOqlException("模型" + objectName + "的字段" + fieldName + "不存在！");
                 }
                 // TODO 把解析出来的XField字段存放起来
             }
@@ -45,7 +45,7 @@ public class InsertStatementCheckOqlAstVisitor implements OqlAstVisitor {
         int fieldSize = fieldExprs.size();
         for (SqlInsertStatement.ValuesClause values : valuesList) {
             if (values.getValues().size() != fieldSize) {
-                throw new FastOqlException("对象" + objectName + "插入的值的数量与字段的数量不匹配！");
+                throw new FastOqlException("模型" + objectName + "插入的值的数量与字段的数量不匹配！");
             }
         }
 

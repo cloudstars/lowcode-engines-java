@@ -1,4 +1,4 @@
-package net.cf.form.engine.def;
+package net.cf.form.engine.def.field;
 
 /**
  * 默认值配置

@@ -1,7 +1,7 @@
 package net.cf.form.engine.record;
 
 import net.cf.form.engine.RecordEngine;
-import net.cf.form.engine.object.TravelApply;
+import net.cf.form.engine.record.bean.TravelApply;
 
 import javax.annotation.Resource;
 

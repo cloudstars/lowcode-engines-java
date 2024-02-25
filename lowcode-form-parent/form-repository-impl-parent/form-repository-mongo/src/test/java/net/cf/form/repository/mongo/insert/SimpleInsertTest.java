@@ -3,7 +3,7 @@ package net.cf.form.repository.mongo.insert;
 import net.cf.form.repository.FormRepository;
 import net.cf.form.repository.mongo.MongoFormRepositoryImpl;
 import net.cf.form.repository.mongo.MongoRepositoryTestApplication;
-import net.cf.form.repository.testcases.statement.InitDataLoader;
+import net.cf.form.repository.testcases.dataset.DataSetOperator;
 import net.cf.form.repository.testcases.statement.insert.AbstractSimpleInsertTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +22,10 @@ public class SimpleInsertTest extends AbstractSimpleInsertTestCase {
     private MongoFormRepositoryImpl repository;
 
     @Resource
-    private InitDataLoader initDataLoader;
+    private DataSetOperator dataSetOperator;
 
-    public SimpleInsertTest(FormRepository repository, InitDataLoader initDataLoader) {
-        super(repository, initDataLoader);
+    public SimpleInsertTest(FormRepository repository, DataSetOperator dataSetOperator) {
+        super(repository, dataSetOperator);
     }
 
     @Test

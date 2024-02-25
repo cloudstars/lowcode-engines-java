@@ -1,4 +1,4 @@
-package net.cf.form.engine.object;
+package net.cf.form.engine.record.bean;
 
 /**
  * 出差申请单

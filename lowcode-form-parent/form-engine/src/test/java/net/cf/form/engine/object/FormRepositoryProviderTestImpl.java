@@ -1,6 +1,7 @@
 package net.cf.form.engine.object;
 
 import net.cf.form.engine.FormRepositoryProvider;
+import net.cf.form.engine.def.XObjectTestImpl;
 import net.cf.form.repository.FormRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

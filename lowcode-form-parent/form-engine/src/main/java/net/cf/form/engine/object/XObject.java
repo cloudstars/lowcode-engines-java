@@ -6,33 +6,31 @@ import java.util.Map;
 /**
  * @author clouds
  *
- * 动态对象接口
+ * 动态模型接口
  */
-public interface XObject{
+public interface XObject {
 
     /**
-     * 获取对象的编号
+     * 获取模型的编号
      *
      * @return
      */
     String getCode();
 
     /**
-     * 获取对象的名称
+     * 获取模型的名称
      *
      * @return
      */
     String getName();
 
     /**
-     * 是否多租户对象
+     * 是否多租户模型
      *
-     * @return
-
-    boolean isMultiTenant(); */
+     * @return boolean isMultiTenant(); */
 
     /**
-     * 获取对象的字段列表
+     * 获取模型的字段列表
      *
      * @return
      */
@@ -62,28 +60,15 @@ public interface XObject{
 
     /**
      * 校验函数
+     *
      * @return
      */
     void validate(Map<String, Object> dataMap);
 
     /**
-     * 获取持久化表的名称
+     * 获取表的名称
      *
      * @return
      */
     String getTableName();
-
-    /**
-     * 获取子对象（一对多）
-     *
-     * @return
-     */
-    List<XObject> getDetailObjects();
-
-    /**
-     * 获取父对象（一对一）
-     *
-     * @return
-     */
-    XObject getParentObject();
 }

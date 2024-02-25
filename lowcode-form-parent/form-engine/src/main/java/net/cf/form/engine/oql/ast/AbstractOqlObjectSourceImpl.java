@@ -5,7 +5,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 
 
 /**
- * OQL 对象数据源抽象实现类
+ * OQL 模型数据源抽象实现类
  *
  * @author clouds
  */

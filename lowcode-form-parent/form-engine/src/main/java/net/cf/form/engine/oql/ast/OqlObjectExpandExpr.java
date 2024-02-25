@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 对象展开表达式（用于相关表、主表、子表的C/R/U操作）
+ * 模型展开表达式（用于相关表、主表、子表的C/R/U操作）
  *
  * @author clouds
  */

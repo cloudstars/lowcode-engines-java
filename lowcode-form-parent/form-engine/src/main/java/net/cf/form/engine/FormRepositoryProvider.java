@@ -11,7 +11,7 @@ import net.cf.form.repository.FormRepository;
 public interface FormRepositoryProvider<O extends XObject> {
 
     /**
-     * 根据对象获取对象存储层的驱动
+     * 根据模型获取模型存储层的驱动
      *
      * @param object
      */

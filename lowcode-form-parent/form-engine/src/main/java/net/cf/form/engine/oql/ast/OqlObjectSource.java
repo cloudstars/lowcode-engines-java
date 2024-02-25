@@ -3,7 +3,7 @@ package net.cf.form.engine.oql.ast;
 import net.cf.form.repository.sql.ast.SqlObject;
 
 /**
- * OQL 对象源
+ * OQL 模型源
  *
  * @author clouds
  */

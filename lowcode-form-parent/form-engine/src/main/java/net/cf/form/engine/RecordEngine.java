@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 对象记录服务接口
+ * 模型记录服务接口
  *
  * @author clouds
  */
@@ -73,7 +73,7 @@ public interface RecordEngine {
     /**
      * 创建一条记录
      *
-     * @param object 对象
+     * @param object 模型
      * @param data 数据
      * @return 记录ID
      */
@@ -82,7 +82,7 @@ public interface RecordEngine {
     /**
      * 创建一条记录
      *
-     * @param object 对象
+     * @param object 模型
      * @param dataMap 数据
      * @return 记录ID
      */

@@ -5,20 +5,20 @@ package net.cf.form.engine.object;
  *
  * @author clouds
  */
-public interface XRefField extends XField {
+public interface XObjectRefField extends XField {
 
     /**
-     * 获取关联对象的名称
+     * 获取关联模型的名称
      *
      * @return
      */
-    String getRefObjectCode();
+    XObject getRefObject();
 
     /**
      * 是否一对多
      *
      * @return
      */
-    boolean isOne2Many();
+    boolean isMultiRef();
 
 }

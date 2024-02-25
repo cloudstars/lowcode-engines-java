@@ -76,7 +76,7 @@ public class RecordEngineImpl implements RecordEngine {
 
         try {
             Object recordId = primaryFieldGetMethodRef.getRef().invoke(data);
-            logger.info("记录创建成功，对象编号：{}，记录ID：{}", object.getCode(), recordId);
+            logger.info("记录创建成功，模型编号：{}，记录ID：{}", object.getCode(), recordId);
 
             return recordId != null ? recordId.toString() : null;
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class RecordEngineImpl implements RecordEngine {
     }
 
     /**
-     * 根据对象来构建 SQL 语句
+     * 根据模型来构建 SQL 语句
      *
      * @param object
      * @param data
@@ -129,7 +129,7 @@ public class RecordEngineImpl implements RecordEngine {
         repository.insert(insertSql);
 
         Object recordId = dataMap.get(object.getPrimaryField().getCode());
-        logger.info("记录创建成功，对象编号：{}，记录ID：{}", object.getCode(), recordId);
+        logger.info("记录创建成功，模型编号：{}，记录ID：{}", object.getCode(), recordId);
 
         return recordId.toString();
     }

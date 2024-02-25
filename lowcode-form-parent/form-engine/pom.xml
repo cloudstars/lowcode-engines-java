@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>lowcode-form-engine</artifactId>
-    <description>表单业务对象引擎</description>
+    <description>表单业务模型引擎</description>
 
     <dependencies>
         <!-- 编译时依赖 -->

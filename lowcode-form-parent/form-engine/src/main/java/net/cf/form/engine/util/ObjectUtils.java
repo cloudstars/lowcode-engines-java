@@ -17,7 +17,7 @@ public final class ObjectUtils {
     }
 
     /**
-     * 获取对象中的可以调用的get/is方法
+     * 获取模型中的可以调用的get/is方法
      *
      * @param object
      * @return
@@ -59,7 +59,7 @@ public final class ObjectUtils {
     }
 
     /**
-     * 创建一个对象的引用
+     * 创建一个模型的引用
      *
      * @param ref
      * @return
@@ -69,7 +69,7 @@ public final class ObjectUtils {
     }
 
     /**
-     * 获取一个对象的属性值
+     * 获取一个模型的属性值
      *
      * @param object
      * @param propertyName

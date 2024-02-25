@@ -2,7 +2,8 @@ package net.cf.form.engine.object;
 
 import com.alibaba.fastjson.JSONObject;
 import net.cf.commons.test.util.FileUtils;
-import net.cf.form.engine.def.FormDefinition;
+import net.cf.form.engine.def.ObjectDefinition;
+import net.cf.form.engine.def.XObjectTestImpl;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,25 +14,25 @@ import java.util.Map;
 public class XObjectTestResolver implements XObjectResolver {
 
     /**
-     * 对象映射表
+     * 模型映射表
      */
     private final Map<String, XObject> objectMap = new HashMap<>();
 
     /**
-     * 从类路径下加载测试对象
+     * 从类路径下加载测试模型
      */
     @PostConstruct
     protected void loadObjects() {
         Map<String, String> objectsJson = FileUtils.loadTextsFromClasspath("object/*.json");
         for (Map.Entry<String, String> entry : objectsJson.entrySet()) {
-            FormDefinition objectDef = JSONObject.parseObject(entry.getValue(), FormDefinition.class);
+            ObjectDefinition objectDef = JSONObject.parseObject(entry.getValue(), ObjectDefinition.class);
             XObject object = new XObjectTestImpl(objectDef);
             objectMap.put(object.getCode(), object);
         }
     }
 
     /**
-     * 根据对象名称解析对象
+     * 根据模型名称解析模型
      *
      * @param objectName
      * @return

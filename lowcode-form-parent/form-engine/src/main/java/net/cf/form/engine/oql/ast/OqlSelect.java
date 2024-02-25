@@ -24,7 +24,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     private List<SqlSelectItem> selectItems = new ArrayList<>();
 
     /**
-     * 查询的对象
+     * 查询的模型
      */
     private OqlObjectSource from;
 
