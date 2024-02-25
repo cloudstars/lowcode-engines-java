@@ -2,6 +2,7 @@ package net.cf.form.engine.def.fieldtype;
 
 import net.cf.form.engine.def.field.FieldPropertyTestImpl;
 import net.cf.form.engine.def.field.FieldTestImpl;
+import net.cf.form.engine.def.field.ObjectRefFieldTestImpl;
 import net.cf.form.engine.object.DataType;
 import net.cf.form.engine.object.XField;
 import net.cf.form.engine.object.XFieldProperty;
@@ -9,6 +10,7 @@ import net.cf.form.engine.object.XObjectRefField;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -90,10 +92,10 @@ public class ObjectRefFieldTypeImpl extends AbstractFieldTypeImpl {
 
     @Override
     public <T extends XField> List<XFieldProperty> getProperties(T field) {
-        assert (field instanceof XObjectRefField);
+        assert (field instanceof ObjectRefFieldTestImpl);
 
-        XObjectRefField refField = (XObjectRefField) field;
-        List<String> redundantFieldCodes = (List<String>) refField.getAttributeValues().get("redundantFieldCodes");
+        ObjectRefFieldTestImpl refField = (ObjectRefFieldTestImpl) field;
+        List<String> redundantFieldCodes = (List<String>) refField.getAttrValues().get("redundantFieldCodes");
         // 当有冗余字段时，需要返回冗余字段的子属性
         if (redundantFieldCodes != null && redundantFieldCodes.size() > 0) {
             List<XFieldProperty> properties = new ArrayList<>();
@@ -109,6 +111,6 @@ public class ObjectRefFieldTypeImpl extends AbstractFieldTypeImpl {
             return properties;
         }
 
-        return super.getProperties(field);
+        return Collections.emptyList();
     }
 }

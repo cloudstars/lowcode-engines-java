@@ -16,4 +16,5 @@ public class FileFieldTypeImpl extends AbstractFieldTypeImpl {
     public String getCode() {
         return "File";
     }
+    
 }

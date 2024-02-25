@@ -136,7 +136,7 @@ public interface XField {
      *
      * @return
      */
-    default Map<String, Object> getAttributeValues() {
+    default Map<String, Object> getAttrValues() {
         return Collections.emptyMap();
     }
 

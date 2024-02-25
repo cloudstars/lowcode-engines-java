@@ -5,7 +5,7 @@ package net.cf.form.engine.def.fieldtype;
  *
  * @author clouds
  */
-public class UserFieldTypeImpl extends AbstractFieldTypeImpl {
+public class UserFieldTypeImpl extends AbstractNameCodeSelectableFieldTypeImpl {
 
     @Override
     public String getName() {
@@ -16,4 +16,5 @@ public class UserFieldTypeImpl extends AbstractFieldTypeImpl {
     public String getCode() {
         return "User";
     }
+
 }

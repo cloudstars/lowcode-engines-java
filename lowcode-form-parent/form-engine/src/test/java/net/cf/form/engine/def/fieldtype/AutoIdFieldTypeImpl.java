@@ -14,7 +14,7 @@ public class AutoIdFieldTypeImpl extends AbstractFieldTypeImpl {
 
     @Override
     public String getCode() {
-        return "AutoId";
+        return FieldTypeCodeConstants.AUTO_ID;
     }
 
 }

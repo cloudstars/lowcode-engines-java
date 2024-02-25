@@ -25,6 +25,16 @@ public class FormulaTestUtils {
      * 计算一个公式的值
      *
      * @param formula
+     * @return
+     */
+    public static Object eval(final String formula) {
+        return eval(formula, new HashMap<>());
+    }
+
+    /**
+     * 计算一个公式的值
+     *
+     * @param formula
      * @param paramMap
      * @return
      */
@@ -47,11 +57,4 @@ public class FormulaTestUtils {
         return expr.getValue(context);
     }
 
-    public static void main(String[] args) {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("a", 1);
-        paramMap.put("b", 2);
-        Object result = FormulaTestUtils.eval("1 + #a + #b", paramMap);
-        System.out.println(result);
-    }
 }

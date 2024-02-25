@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author clouds
  */
-public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
+public class OptionsFieldTypeImpl extends AbstractSelectableFieldTypeImpl {
 
     @Override
     public String getName() {
@@ -26,8 +26,24 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
+    public <T extends XField> DataType getDataType(T field) {
+        Map<String, Object> attrValueMap = field.getAttrValues();
+        Object redundant = attrValueMap.get("redundant");
+        if (redundant == null || redundant == Boolean.FALSE) {
+            Object dataType = attrValueMap.get("dataType");
+            if (dataType != null) {
+                return DataType.valueOf(dataType.toString());
+            } else {
+                return DataType.STRING;
+            }
+        } else {
+            return DataType.OBJECT;
+        }
+    }
+
+    @Override
     public List<AttributeDescriptor> getAttributeDescriptors() {
-        List<AttributeDescriptor> descriptors = new ArrayList<>();
+        List<AttributeDescriptor> descriptors = super.getAttributeDescriptors();
         {
             AttributeDescriptor typeDescr = new AttributeDescriptor();
             typeDescr.setName("数据源类型");
@@ -54,6 +70,16 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
             dictKeyDescr.setCode("dictKey");
             dictKeyDescr.setDataType(DataType.STRING);
             descriptors.add(dictKeyDescr);
+        }
+        {
+            AttributeDescriptor dataTypeDescr = new AttributeDescriptor();
+            dataTypeDescr.setName("数据类型");
+            dataTypeDescr.setCode("dataType");
+            dataTypeDescr.setDataType(DataType.STRING);
+            AttributeDescriptor.Option option0 = new AttributeDescriptor.Option("文本", "Text");
+            AttributeDescriptor.Option option1 = new AttributeDescriptor.Option("数字", "Number");
+            dataTypeDescr.setOptions(Arrays.asList(option0, option1));
+            descriptors.add(dataTypeDescr);
         }
         {
             // 是否冗余属性
@@ -113,14 +139,9 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
     @Override
     public <T extends XField> List<XFieldProperty> getProperties(T field) {
         FieldTestImpl fieldImpl = (FieldTestImpl) field;
-        /*List<FieldAttributeTestImpl> attributes = fieldImpl.getAttributes();
-        Map<String, FieldAttributeTestImpl> attributesMap = new HashMap<>();
-        attributes.forEach((attribute) -> {
-            attributesMap.put(attribute.getCode(), attribute);
-        });*/
 
         // 没有冗余时直接返回空列表
-        Map<String, Object> attrValueMap = field.getAttributeValues();
+        Map<String, Object> attrValueMap = field.getAttrValues();
         Object redundant = attrValueMap.get("redundant");
         if (redundant == null || redundant == Boolean.FALSE) {
             return Collections.emptyList();
@@ -129,19 +150,8 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
         List<XFieldProperty> properties = new ArrayList<>();
         {
             FieldPropertyTestImpl labelProperty = new FieldPropertyTestImpl(fieldImpl);
-            /* 以下几块代码暂时注释的原因是默认值是在构建FieldAttribute的时候生成，不是在消费的时候使用，这一策略稳定后可删除注释 */
-            /*FieldAttributeTestImpl labelNameAttr = attrValueMap.get("labelName");
-            Object labelName = labelNameAttr.getValue();
-            if (labelName == null) {
-                labelName = labelNameAttr.getAttributeDescriptor().getDefaultValue().toString();
-            }*/
             Object labelName = attrValueMap.get("labelName");
             labelProperty.setName(labelName.toString());
-            /*FieldAttributeTestImpl labelValueAttr = attributesMap.get("labelValue");
-            Object labelValue = labelValueAttr.getValue();
-            if (labelValue == null) {
-                labelValue = labelValueAttr.getAttributeDescriptor().getDefaultValue();
-            }*/
             Object labelValue = attrValueMap.get("labelValue");
             labelProperty.setCode(labelValue.toString());
             labelProperty.setDataType(DataType.STRING);
@@ -149,18 +159,8 @@ public class OptionsFieldTypeImpl extends AbstractFieldTypeImpl {
         }
         {
             FieldPropertyTestImpl valueProperty = new FieldPropertyTestImpl(fieldImpl);
-            /*FieldAttributeTestImpl valueNameAttr = attributesMap.get("valueName");
-            Object valueName = valueNameAttr.getValue();
-            if (valueName == null) {
-                valueName = valueNameAttr.getAttributeDescriptor().getDefaultValue();
-            }*/
             Object valueName = attrValueMap.get("valueName");
             valueProperty.setName(valueName.toString());
-            /*FieldAttributeTestImpl valueValueAttr = attributesMap.get("valueValue");
-            Object valueValue = valueValueAttr.getValue();
-            if (valueValue == null) {
-                valueValue = valueValueAttr.getAttributeDescriptor().getDefaultValue();
-            }*/
             Object valueValue = attrValueMap.get("valueValue");
             valueProperty.setCode(valueValue.toString());
             // 值的类型等于字段属性中设置的类型
