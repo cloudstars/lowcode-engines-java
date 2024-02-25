@@ -34,7 +34,7 @@ public final class JsonDataSetLoader {
         JSONArray tablesJson = JSONArray.parseArray(content);
         for (int i = 0, s = tablesJson.size(); i < s; i++) {
             JSONObject tableJson = tablesJson.getJSONObject(i);
-            String tableName = tableJson.getString("tableName");
+            String tableName = tableJson.getString("name");
 
             JSONArray columnsJson = tableJson.getJSONArray("columns");
             if (columnsJson == null || columnsJson.size() == 0) {

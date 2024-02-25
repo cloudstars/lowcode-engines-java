@@ -1,7 +1,8 @@
 {
-  "name": "Leave",
-  "title": "请假申请",
+  "name": "请假申请",
+  "code": "Leave",
   "primaryFieldCode": "applyId",
+  "tableName": "LEAVE",
   "fields": [
     {
       "type": "Sequence",

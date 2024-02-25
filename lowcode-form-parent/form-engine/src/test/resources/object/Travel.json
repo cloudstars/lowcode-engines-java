@@ -2,6 +2,7 @@
   "name": "出差申请",
   "code": "Travel",
   "primaryFieldCode": "applyId",
+  "tableName": "TRAVEL",
   "fields": [
     {
       "type": "Sequence",

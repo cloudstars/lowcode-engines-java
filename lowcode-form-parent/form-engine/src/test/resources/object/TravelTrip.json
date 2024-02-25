@@ -2,6 +2,7 @@
   "name": "出差行程",
   "code": "TravelTrip",
   "primaryFieldCode": "tripId",
+  "tableName": "TRAVEL_TRIP",
   "fields": [
     {
       "type": "AutoId",

@@ -2,6 +2,7 @@
   "name": "员工",
   "code": "Staff",
   "primaryFieldCode": "staffId",
+  "tableName": "STAFF",
   "fields": [
     {
       "type": "Text",

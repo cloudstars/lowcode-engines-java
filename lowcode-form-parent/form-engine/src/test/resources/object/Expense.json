@@ -1,7 +1,8 @@
 {
-  "name": "报销申请",
+  "name": "报销",
   "code": "Expense",
   "primaryFieldCode": "applyId",
+  "tableName": "EXPENSE",
   "fields": [
     {
       "type": "Sequence",

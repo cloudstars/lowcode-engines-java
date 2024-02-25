@@ -2,6 +2,7 @@
   "name": "兴趣爱好",
   "code": "Hobby",
   "primaryFieldCode": "recordId",
+  "tableName": "HOBBY",
   "fields": [
     {
       "type": "AutoId",
