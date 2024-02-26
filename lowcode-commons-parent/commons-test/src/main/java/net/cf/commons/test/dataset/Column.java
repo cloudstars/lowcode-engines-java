@@ -3,31 +3,29 @@
 // (powered by FernFlower decompiler)
 //
 
-package net.cf.form.repository.testcases.dataset;
-
-import net.cf.form.repository.sql.ast.SqlDataType;
+package net.cf.commons.test.dataset;
 
 public class Column {
     private final String columnName;
-    private final SqlDataType dataType;
+    private final DataType dataType;
     private final String defaultValue;
     private final boolean nullable;
     private final boolean auto;
 
-    public Column(String columnName, SqlDataType dataType) {
+    public Column(String columnName, DataType dataType) {
         this(columnName, dataType, false);
     }
 
-    public Column(String columnName, SqlDataType dataType, boolean nullable) {
+    public Column(String columnName, DataType dataType, boolean nullable) {
         this(columnName, dataType, nullable, null);
     }
 
 
-    public Column(String columnName, SqlDataType dataType, boolean nullable, String defaultValue) {
+    public Column(String columnName, DataType dataType, boolean nullable, String defaultValue) {
         this(columnName, dataType, nullable, defaultValue, false);
     }
 
-    public Column(String columnName, SqlDataType dataType, boolean nullable, String defaultValue, boolean auto) {
+    public Column(String columnName, DataType dataType, boolean nullable, String defaultValue, boolean auto) {
         this.columnName = columnName;
         this.dataType = dataType;
         this.nullable = nullable;
@@ -44,7 +42,7 @@ public class Column {
     }
 
 
-    public SqlDataType getDataType() {
+    public DataType getDataType() {
         return dataType;
     }
 

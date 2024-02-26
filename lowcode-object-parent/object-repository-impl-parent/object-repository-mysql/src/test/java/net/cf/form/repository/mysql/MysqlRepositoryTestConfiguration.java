@@ -1,6 +1,7 @@
 package net.cf.form.repository.mysql;
 
-import net.cf.form.repository.testcases.dataset.IDataSetOperator;
+import net.cf.commons.test.dataset.IDataSetOperator;
+import net.cf.commons.test.dataset.MysqlDataSetOperator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;

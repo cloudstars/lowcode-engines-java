@@ -1,7 +1,5 @@
-package net.cf.form.repository.mysql;
+package net.cf.commons.test.dataset;
 
-import net.cf.form.repository.sql.ast.SqlDataType;
-import net.cf.form.repository.testcases.dataset.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
@@ -37,21 +35,21 @@ public class MysqlDataSetOperator implements IDataSetOperator {
                     Column column = columns[i];
                     String columnName = column.getColumnName();
                     Object value = table.getValue(i, columnName);
-                    SqlDataType dataType = column.getDataType();
+                    DataType dataType = column.getDataType();
                     int parameterIndex = i + 1;
-                    if (dataType == SqlDataType.STRING) {
+                    if (dataType == DataType.STRING) {
                         ps.setString(parameterIndex, (String) value);
-                    } else if (dataType == SqlDataType.BOOLEAN) {
+                    } else if (dataType == DataType.BOOLEAN) {
                         ps.setBoolean(parameterIndex, (Boolean) value);
-                    } else if (dataType == SqlDataType.INTEGER) {
+                    } else if (dataType == DataType.INTEGER) {
                         ps.setInt(parameterIndex, (Integer) value);
-                    } else if (dataType == SqlDataType.DECIMAL) {
+                    } else if (dataType == DataType.DECIMAL) {
                         ps.setBigDecimal(parameterIndex, (BigDecimal) value);
-                    } else if (dataType == SqlDataType.TIMESTAMP) {
+                    } else if (dataType == DataType.TIMESTAMP) {
                         ps.setTimestamp(parameterIndex, (Timestamp) value);
-                    } else if (dataType == SqlDataType.DATE) {
+                    } else if (dataType == DataType.DATE) {
                         ps.setDate(parameterIndex, (Date) value);
-                    } else if (dataType == SqlDataType.TIME) {
+                    } else if (dataType == DataType.TIME) {
                         ps.setTime(parameterIndex, (Time) value);
                     } else {
                         ps.setString(parameterIndex, (String) value);

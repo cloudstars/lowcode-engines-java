@@ -1,9 +1,8 @@
-package net.cf.form.repository.testcases.dataset;
+package net.cf.commons.test.dataset;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import net.cf.commons.test.util.FileUtils;
-import net.cf.form.repository.sql.ast.SqlDataType;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -46,7 +45,7 @@ public final class JsonDataSetLoader {
                 JSONObject columnJson = columnsJson.getJSONObject(i);
                 String columnName = columnJson.getString("name");
                 String dataType = columnJson.getString("dataType");
-                Column column = new Column(columnName, SqlDataType.valueOf(dataType));
+                Column column = new Column(columnName, DataType.valueOf(dataType));
                 columns[j] = column;
             }
 
@@ -68,20 +67,20 @@ public final class JsonDataSetLoader {
                         value = valuesJson.getString(columnName);
                     }
 
-                    SqlDataType dataType = column.getDataType();
-                    if (dataType == SqlDataType.STRING) {
+                    DataType dataType = column.getDataType();
+                    if (dataType == DataType.STRING) {
                         values.put(columnName, value);
-                    } else if (dataType == SqlDataType.BOOLEAN) {
+                    } else if (dataType == DataType.BOOLEAN) {
                         values.put(columnName, Boolean.parseBoolean(value));
-                    } else if (dataType == SqlDataType.INTEGER) {
+                    } else if (dataType == DataType.INTEGER) {
                         values.put(columnName, Integer.parseInt(value));
-                    } else if (dataType == SqlDataType.DECIMAL) {
+                    } else if (dataType == DataType.DECIMAL) {
                         values.put(columnName, new BigDecimal(value));
-                    } else if (dataType == SqlDataType.TIMESTAMP) {
+                    } else if (dataType == DataType.TIMESTAMP) {
                         values.put(columnName, new Timestamp(Long.parseLong(value)));
-                    } else if (dataType == SqlDataType.DATE) {
+                    } else if (dataType == DataType.DATE) {
                         values.put(columnName, new Date(Long.parseLong(value)));
-                    } else if (dataType == SqlDataType.TIME) {
+                    } else if (dataType == DataType.TIME) {
                         values.put(columnName, new Time(Long.parseLong(value)));
                     } else {
                         values.put(columnName, value);
