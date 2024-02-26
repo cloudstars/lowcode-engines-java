@@ -23,10 +23,12 @@ public class SelectColumnsNoWhereStmtTest extends AbstractOqlTest {
         String oql = this.oqlMap.get("SelectTravelList");
         assert (oql != null);
 
+        // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
         OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(oql);
         assert (stmt != null);
         assert (oql.equals(stmt.toString()));
 
+        // 断言解析出来的OQL的一些关键信息是符合预期的
         OqlObjectSource objectSource = stmt.getSelect().getFrom();
         assert (objectSource instanceof OqlExprObjectSource);
         SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
