@@ -565,7 +565,7 @@ public interface SqlAstVisitor {
      * @param x
      * @return 是否允许访问当前节点的子节点
      */
-    default boolean visit(SqlSubqueryTableSource x) {
+    default boolean visit(SqlSubQueryTableSource x) {
         return true;
     }
 
@@ -574,7 +574,7 @@ public interface SqlAstVisitor {
      *
      * @param x
      */
-    default void endVisit(SqlSubqueryTableSource x) {
+    default void endVisit(SqlSubQueryTableSource x) {
     }
 
     /**

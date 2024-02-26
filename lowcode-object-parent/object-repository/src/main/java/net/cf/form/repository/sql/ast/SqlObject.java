@@ -10,14 +10,14 @@ import java.util.List;
  *
  * @author clouds
  */
-public interface SqlObject {
+public interface SqlObject<V extends SqlAstVisitor> {
 
     /**
      * 接受一个访问器的访问
      *
      * @param visitor
      */
-    void accept(SqlAstVisitor visitor);
+    void accept(V visitor);
 
     /**
      * 获取父节点

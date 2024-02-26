@@ -10,7 +10,7 @@ import java.util.*;
  *
  * @author clouds
  */
-public abstract class AbstractSqlObjectImpl implements SqlObject {
+public abstract class AbstractSqlObjectImpl<V extends SqlAstVisitor> implements SqlObject<V> {
 
     /**
      * 父节点
@@ -41,7 +41,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
     }
 
     @Override
-    public final void accept(SqlAstVisitor visitor) {
+    public void accept(V visitor) {
         if (visitor == null) {
             throw new IllegalArgumentException("visitor is null.");
         } else {
@@ -56,7 +56,7 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
      *
      * @param visitor
      */
-    protected abstract void accept0(SqlAstVisitor visitor);
+    protected abstract void accept0(V visitor);
 
     /**
      * 让儿子节点接受一个visitor
@@ -125,7 +125,11 @@ public abstract class AbstractSqlObjectImpl implements SqlObject {
 
     @Override
     public void output(Appendable appendable) {
-        this.accept(SqlVisitorUtils.createAstOutputVisitor(appendable));
+        this.accept(this.createAstOutputVisitor(appendable));
+    }
+
+    protected V createAstOutputVisitor(Appendable appendable) {
+        return (V) SqlVisitorUtils.createAstOutputVisitor(appendable);
     }
 
     @Override
