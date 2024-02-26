@@ -88,19 +88,19 @@ public class StringUtils {
                     return true;
                 }
 
-                if (ch != 'e' && ch != 'E') {
-                    if (allowSigns || ch != 'd' && ch != 'D' && ch != 'f' && ch != 'F') {
-                        if (ch != 'l' && ch != 'L') {
-                            return ch == '.';
-                        } else {
-                            return foundDigit && !hasExp;
-                        }
-                    } else {
-                        return foundDigit;
-                    }
+                if (ch == 'e' || ch == 'E') {
+                    return false;
                 }
 
-                return false;
+                if (!allowSigns && (ch == 'd' || ch == 'D' || ch == 'f' || ch == 'F')) {
+                    return foundDigit;
+                }
+
+                if (ch != 'l' && ch != 'L') {
+                    return ch == '.';
+                } else {
+                    return foundDigit && !hasExp;
+                }
             } else {
                 return !allowSigns && foundDigit;
             }
