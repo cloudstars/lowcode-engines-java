@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.cloudstars</groupId>
+        <artifactId>lowcode-object-repository-impl-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lowcode-object-repository-mysql</artifactId>
+    <description>低代码模型引擎MySQL存储层实现</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-object-repository</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- 测试时依赖 -->
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-object-repository-testcases</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
