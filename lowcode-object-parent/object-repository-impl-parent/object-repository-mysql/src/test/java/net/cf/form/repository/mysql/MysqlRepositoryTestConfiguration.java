@@ -1,6 +1,6 @@
 package net.cf.form.repository.mysql;
 
-import net.cf.form.repository.testcases.dataset.DataSetOperator;
+import net.cf.form.repository.testcases.dataset.IDataSetOperator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,7 +18,7 @@ public class MysqlRepositoryTestConfiguration {
     }
 
     @Bean
-    public DataSetOperator initDataLoader(JdbcTemplate jdbcTemplate) {
+    public IDataSetOperator initDataLoader(JdbcTemplate jdbcTemplate) {
         return new MysqlDataSetOperator(jdbcTemplate);
     }
 

@@ -5,7 +5,7 @@ package net.cf.form.repository.testcases.dataset;
  *
  * @author clouds
  */
-public interface DataSetOperator {
+public interface IDataSetOperator {
 
     /**
      * 装载数据集

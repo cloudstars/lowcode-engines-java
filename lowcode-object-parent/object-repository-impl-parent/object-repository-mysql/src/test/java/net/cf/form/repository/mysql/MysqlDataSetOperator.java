@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-public class MysqlDataSetOperator implements DataSetOperator {
+public class MysqlDataSetOperator implements IDataSetOperator {
 
     private JdbcTemplate jdbcTemplate;
 

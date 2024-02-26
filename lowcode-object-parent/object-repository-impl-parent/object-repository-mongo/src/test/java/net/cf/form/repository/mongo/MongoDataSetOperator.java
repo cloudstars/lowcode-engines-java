@@ -1,10 +1,10 @@
 package net.cf.form.repository.mongo;
 
-import net.cf.form.repository.testcases.dataset.DataSetOperator;
+import net.cf.form.repository.testcases.dataset.IDataSetOperator;
 import net.cf.form.repository.testcases.dataset.IDataSet;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-public class MongoDataSetOperator implements DataSetOperator {
+public class MongoDataSetOperator implements IDataSetOperator {
 
     private MongoTemplate mongoTemplate;
 

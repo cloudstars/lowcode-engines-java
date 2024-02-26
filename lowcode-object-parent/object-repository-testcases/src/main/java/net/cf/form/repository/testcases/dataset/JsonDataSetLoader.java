@@ -51,8 +51,6 @@ public final class JsonDataSetLoader {
             }
 
             DefaultTableMetaData tableMetaData = new DefaultTableMetaData(tableName, columns);
-            dataSet.addTableMetaData(tableMetaData);
-
             DefaultTable table = new DefaultTable(tableMetaData);
             JSONArray valuesListJson = tableJson.getJSONArray("valuesList");
             int vls = valuesListJson.size();
@@ -91,7 +89,7 @@ public final class JsonDataSetLoader {
                     table.addValues(values);
                 }
             }
-            dataSet.orderedTableNameMap.add(tableName, table);
+            dataSet.addTable(table);
         }
 
         return dataSet;
