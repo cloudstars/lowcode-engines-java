@@ -1,10 +1,10 @@
 package net.cf.form.engine.def.fieldtype;
 
+import net.cf.form.engine.def.ObjectTestImpl;
 import net.cf.form.engine.def.field.FieldPropertyTestImpl;
 import net.cf.form.engine.def.field.FieldTestImpl;
 import net.cf.form.engine.def.field.ObjectRefFieldTestImpl;
 import net.cf.form.engine.object.DataType;
-import net.cf.form.engine.object.XField;
 import net.cf.form.engine.object.XFieldProperty;
 import net.cf.form.engine.object.XObjectRefField;
 
@@ -76,13 +76,13 @@ public class ObjectRefFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public <T extends XField> boolean isCollection(T field) {
+    public boolean isCollection(FieldTestImpl field) {
         XObjectRefField refField = (XObjectRefField) field;
         return refField.isMultiRef();
     }
 
     @Override
-    public <T extends XField> DataType getDataType(T field) {
+    public DataType getDataType(FieldTestImpl field) {
         assert (field instanceof XObjectRefField);
 
         XObjectRefField refField = (XObjectRefField) field;
@@ -91,10 +91,11 @@ public class ObjectRefFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public <T extends XField> List<XFieldProperty> getProperties(T field) {
+    public List<XFieldProperty> getProperties(FieldTestImpl field) {
         assert (field instanceof ObjectRefFieldTestImpl);
 
         ObjectRefFieldTestImpl refField = (ObjectRefFieldTestImpl) field;
+        ObjectTestImpl refObject = refField.getOwner();
         List<String> redundantFieldCodes = (List<String>) refField.getAttrValues().get("redundantFieldCodes");
         // 当有冗余字段时，需要返回冗余字段的子属性
         if (redundantFieldCodes != null && redundantFieldCodes.size() > 0) {

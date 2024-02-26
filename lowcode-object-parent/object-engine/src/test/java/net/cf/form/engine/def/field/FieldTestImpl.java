@@ -1,5 +1,6 @@
 package net.cf.form.engine.def.field;
 
+import net.cf.form.engine.def.ObjectTestImpl;
 import net.cf.form.engine.object.DataType;
 import net.cf.form.engine.object.XField;
 
@@ -8,10 +9,22 @@ import java.util.Map;
 
 public class FieldTestImpl implements XField {
 
-    private FieldDef fieldDef;
+    private final ObjectTestImpl owner;
 
-    public FieldTestImpl(FieldDef fieldDef) {
+    private final FieldDef fieldDef;
+
+    public FieldTestImpl(ObjectTestImpl owner, FieldDef fieldDef) {
+        this.owner = owner;
         this.fieldDef = fieldDef;
+    }
+
+    @Override
+    public ObjectTestImpl getOwner() {
+        return owner;
+    }
+
+    public FieldDef getFieldDef() {
+        return fieldDef;
     }
 
     @Override
@@ -51,18 +64,18 @@ public class FieldTestImpl implements XField {
 
     @Override
     public Object getDefaultValue(Map<String, Object> dataMap) {
-        DefaultValue defaultValue = this.fieldDef.getDefaultValue();
-        if (defaultValue == null) {
+        DefaultValueConfig defaultValueConfig = this.fieldDef.getDefaultValueConfig();
+        if (defaultValueConfig == null) {
             // 没有配置设置值，返回null
             return null;
         }
 
         // 根据默认值的类型时是常量和表达式来执行不同的逻辑
-        DefaultValueType defaultValueType = defaultValue.getType();
+        DefaultValueType defaultValueType = defaultValueConfig.getType();
         if (DefaultValueType.LITERAL == defaultValueType) {
-            return defaultValue.getValue();
+            return defaultValueConfig.getValue();
         } else if (DefaultValueType.FORMULA == defaultValueType) {
-            return FormulaTestUtils.eval(defaultValue.getValue(), dataMap);
+            return FormulaTestUtils.eval(defaultValueConfig.getValue(), dataMap);
         } else {
             return null;
         }

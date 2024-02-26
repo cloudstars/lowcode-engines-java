@@ -12,6 +12,13 @@ import java.util.Map;
 public interface XField {
 
     /**
+     * 获取字段所属的模型
+     *
+     * @return
+     */
+    XObject getOwner();
+
+    /**
      * 获取字段的名称
      *
      * @return

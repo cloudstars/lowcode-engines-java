@@ -1,8 +1,8 @@
 package net.cf.form.engine.def.fieldtype;
 
+import net.cf.form.engine.def.field.FieldTestImpl;
 import net.cf.form.engine.def.field.FormulaTestUtils;
 import net.cf.form.engine.object.DataType;
-import net.cf.form.engine.object.XField;
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ public class SequenceFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public Object getDefaultValue(XField field) {
+    public Object getDefaultValue(FieldTestImpl field) {
         String expression = (String) field.getAttrValues().get("expression");
         Map<String, Object> paramMap = new HashMap<>();
         // 这里模拟返回一个流水号

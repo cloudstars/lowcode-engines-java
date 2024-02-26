@@ -7,14 +7,14 @@ import net.cf.form.engine.exception.DataValidationException;
  *
  * @author clouds
  */
-public interface XDataValidator {
+public interface XDataValidator<F extends XField> {
 
     /**
      * 校验数据
      *
      * @param value 当前字段的数据
-     * @param field 记录信息
+     * @param field 字段信息
      * @throws DataValidationException
      */
-    void validate(Object value, XField field) throws DataValidationException;
+    void validate(Object value, F field) throws DataValidationException;
 }

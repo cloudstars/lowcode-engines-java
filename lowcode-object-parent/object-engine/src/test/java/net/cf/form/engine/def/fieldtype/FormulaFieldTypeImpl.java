@@ -1,10 +1,13 @@
 package net.cf.form.engine.def.fieldtype;
 
+import net.cf.form.engine.def.field.FieldTestImpl;
 import net.cf.form.engine.def.field.FormulaTestUtils;
 import net.cf.form.engine.object.DataType;
-import net.cf.form.engine.object.XField;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 公式字段类型
@@ -51,7 +54,7 @@ public class FormulaFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public <T extends XField> DataType getDataType(T field) {
+    public DataType getDataType(FieldTestImpl field) {
         Map<String, Object> attrValueMap = field.getAttrValues();
         Object dataType = attrValueMap.get("dataType");
         if (dataType != null) {
@@ -62,7 +65,7 @@ public class FormulaFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public Object getDefaultValue(XField field) {
+    public Object getDefaultValue(FieldTestImpl field) {
         Object expression = field.getAttrValues().get("expression");
         assert (expression != null && expression instanceof String);
         // 这里模拟计算一个公式的值

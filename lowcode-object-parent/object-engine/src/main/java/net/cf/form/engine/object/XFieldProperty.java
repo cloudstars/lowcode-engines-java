@@ -11,9 +11,8 @@ public interface XFieldProperty {
      * 获取子属性归属的字段
      *
      * @return
-     * @param <T>
      */
-    <T extends XField> T getOwner();
+    XField getOwner();
 
     /**
      * 获取子属性的名称

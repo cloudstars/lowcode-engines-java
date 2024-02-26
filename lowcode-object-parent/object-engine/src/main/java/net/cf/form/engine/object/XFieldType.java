@@ -7,8 +7,9 @@ import java.util.List;
  * 字段类型接口
  *
  * @author clouds
+ * @param <F> 字段类型的实现
  */
-public interface XFieldType {
+public interface XFieldType<F extends XField> {
 
     /**
      * 字段类型的名称
@@ -29,7 +30,7 @@ public interface XFieldType {
      *
      * @return
      */
-    default <T extends XField> boolean isCollection(T field) {
+    default boolean isCollection(F field) {
         return false;
     }
 
@@ -38,7 +39,7 @@ public interface XFieldType {
      *
      * @return
      */
-    default <T extends XField> DataType getDataType(T field) {
+    default DataType getDataType(F field) {
         return DataType.STRING;
     }
 
@@ -48,7 +49,7 @@ public interface XFieldType {
      * @param field
      * @return
      */
-    default <T extends XField> Object getDefaultValue(T field) {
+    default Object getDefaultValue(F field) {
         return null;
     }
 
@@ -58,7 +59,7 @@ public interface XFieldType {
      * @param field
      * @return
      */
-    default <T extends XField> List<Object> getDefaultValues(T field) {
+    default List<Object> getDefaultValues(F field) {
         return Collections.emptyList();
     }
 
@@ -67,9 +68,8 @@ public interface XFieldType {
      *
      * @param field
      * @return
-     * @param <T>
      */
-    default <T extends XField> List<XFieldProperty> getProperties(T field) {
+    default List<XFieldProperty> getProperties(F field) {
         return Collections.emptyList();
     }
 
@@ -78,9 +78,8 @@ public interface XFieldType {
      *
      * @param field
      * @return
-     * @param <T>
      */
-    default <T extends XField> List<XDataValidator> getValidators(T field) {
+    default List<XDataValidator> getValidators(F field) {
         return Collections.emptyList();
     }
 }

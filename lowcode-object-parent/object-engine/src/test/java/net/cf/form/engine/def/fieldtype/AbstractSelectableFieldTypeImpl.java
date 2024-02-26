@@ -1,7 +1,7 @@
 package net.cf.form.engine.def.fieldtype;
 
+import net.cf.form.engine.def.field.FieldTestImpl;
 import net.cf.form.engine.object.DataType;
-import net.cf.form.engine.object.XField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
 public abstract class AbstractSelectableFieldTypeImpl extends AbstractFieldTypeImpl {
 
     @Override
-    public <T extends XField> boolean isCollection(T field) {
+    public boolean isCollection(FieldTestImpl field) {
         Map<String, Object> attrValueMap = field.getAttrValues();
         Object multiple = attrValueMap.get("multiple");
         if (multiple == null || multiple == Boolean.FALSE) {

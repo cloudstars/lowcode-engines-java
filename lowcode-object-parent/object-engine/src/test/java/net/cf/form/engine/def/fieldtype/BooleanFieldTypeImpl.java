@@ -1,7 +1,7 @@
 package net.cf.form.engine.def.fieldtype;
 
+import net.cf.form.engine.def.field.FieldTestImpl;
 import net.cf.form.engine.object.DataType;
-import net.cf.form.engine.object.XField;
 
 /**
  * 布尔类字段类型
@@ -21,7 +21,7 @@ public class BooleanFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public <T extends XField> DataType getDataType(T field) {
+    public DataType getDataType(FieldTestImpl field) {
         return DataType.BOOLEAN;
     }
 }

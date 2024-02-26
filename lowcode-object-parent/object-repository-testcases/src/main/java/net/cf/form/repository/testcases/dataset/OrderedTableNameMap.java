@@ -22,7 +22,7 @@ public class OrderedTableNameMap {
     }
 
     public String[] getTableNames() {
-        return (String[])((String[])this.tableNames.toArray(new String[0]));
+        return (String[]) ((String[]) this.tableNames.toArray(new String[0]));
     }
 
     public boolean containsTable(String tableName) {
@@ -53,7 +53,7 @@ public class OrderedTableNameMap {
         if (this.lastTableNameOverride != null) {
             return this.lastTableNameOverride;
         } else if (this.tableNames.size() > 0) {
-            String lastTable = (String)this.tableNames.get(this.tableNames.size() - 1);
+            String lastTable = (String) this.tableNames.get(this.tableNames.size() - 1);
             return lastTable;
         } else {
             return null;
@@ -95,8 +95,8 @@ public class OrderedTableNameMap {
         List orderedValues = new ArrayList(this.tableNames.size());
         Iterator iterator = this.tableNames.iterator();
 
-        while(iterator.hasNext()) {
-            String tableName = (String)iterator.next();
+        while (iterator.hasNext()) {
+            String tableName = (String) iterator.next();
             Object object = this.get(tableName);
             orderedValues.add(object);
         }
@@ -104,7 +104,7 @@ public class OrderedTableNameMap {
         return orderedValues;
     }
 
-    public void update(String tableName, ITable object) {
+    public void update(final String tableName, ITable object) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("update(tableName={}, object={}) - start", tableName, object);
         }
@@ -112,8 +112,8 @@ public class OrderedTableNameMap {
         if (!this.containsTable(tableName)) {
             throw new IllegalArgumentException("The table name '" + tableName + "' does not exist in the map");
         } else {
-            tableName = this.getTableName(tableName);
-            this.tableMap.put(tableName, object);
+            String tTableName = this.getTableName(tableName);
+            this.tableMap.put(tTableName, object);
         }
     }
 

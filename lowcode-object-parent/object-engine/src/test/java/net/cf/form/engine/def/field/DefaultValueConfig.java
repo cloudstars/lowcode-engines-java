@@ -5,7 +5,7 @@ package net.cf.form.engine.def.field;
  *
  * @author clouds
  */
-public class DefaultValue {
+public class DefaultValueConfig {
 
     /**
      * 默认值类型

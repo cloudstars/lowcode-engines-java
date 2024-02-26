@@ -3,7 +3,6 @@ package net.cf.form.repository.sql.parser;
 import net.cf.form.repository.sql.FastSqlException;
 import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.*;
@@ -12,7 +11,6 @@ import net.cf.form.repository.sql.ast.statement.SqlJoinTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;

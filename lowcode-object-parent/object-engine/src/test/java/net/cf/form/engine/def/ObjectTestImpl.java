@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class XObjectTestImpl implements XObject {
+public class ObjectTestImpl implements XObject<FieldTestImpl> {
 
     /**
      * 模型定义
@@ -25,11 +25,11 @@ public class XObjectTestImpl implements XObject {
      */
     private final List<FieldTestImpl> fields = new ArrayList<>();
 
-    public XObjectTestImpl(ObjectDefinition objectDef) {
+    public ObjectTestImpl(ObjectDefinition objectDef) {
         this.objectDef = objectDef;
         List<FieldDef> fieldDefs = objectDef.getFields();
         for (FieldDef fieldDef : fieldDefs) {
-            FieldTestImpl field = new FieldTestImpl(fieldDef);
+            FieldTestImpl field = new FieldTestImpl(this, fieldDef);
             fields.add(field);
         }
     }

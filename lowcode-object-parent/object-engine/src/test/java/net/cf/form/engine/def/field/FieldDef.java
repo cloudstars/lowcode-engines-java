@@ -57,7 +57,7 @@ public class FieldDef {
     /**
      * 默认值配置
      */
-    private DefaultValue defaultValue;
+    private DefaultValueConfig defaultValueConfig;
 
     /**
      * 日期格式
@@ -151,12 +151,12 @@ public class FieldDef {
         this.dateFormat = dateFormat;
     }
 
-    public DefaultValue getDefaultValue() {
-        return defaultValue;
+    public DefaultValueConfig getDefaultValueConfig() {
+        return defaultValueConfig;
     }
 
-    public void setDefaultValue(DefaultValue defaultValue) {
-        this.defaultValue = defaultValue;
+    public void setDefaultValueConfig(DefaultValueConfig defaultValueConfig) {
+        this.defaultValueConfig = defaultValueConfig;
     }
 
     public List<FieldPropertyTestImpl> getProperties() {

@@ -1,7 +1,7 @@
 package net.cf.form.engine.def.fieldtype;
 
+import net.cf.form.engine.def.field.FieldTestImpl;
 import net.cf.form.engine.object.DataType;
-import net.cf.form.engine.object.XField;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +24,7 @@ public class DateFieldTypeImpl extends AbstractFieldTypeImpl {
     }
 
     @Override
-    public <T extends XField> DataType getDataType(T field) {
+    public DataType getDataType(FieldTestImpl field) {
         Boolean saveAsText = (Boolean) field.getAttrValues().getOrDefault("saveAsText", false);
         if (saveAsText) {
             return DataType.STRING;

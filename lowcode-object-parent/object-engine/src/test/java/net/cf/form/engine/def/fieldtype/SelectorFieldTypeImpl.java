@@ -3,7 +3,6 @@ package net.cf.form.engine.def.fieldtype;
 import net.cf.form.engine.def.field.FieldPropertyTestImpl;
 import net.cf.form.engine.def.field.FieldTestImpl;
 import net.cf.form.engine.object.DataType;
-import net.cf.form.engine.object.XField;
 import net.cf.form.engine.object.XFieldProperty;
 
 import java.util.*;
@@ -26,7 +25,7 @@ public class SelectorFieldTypeImpl extends AbstractSelectableFieldTypeImpl {
     }
 
     @Override
-    public <T extends XField> DataType getDataType(T field) {
+    public DataType getDataType(FieldTestImpl field) {
         Map<String, Object> attrValueMap = field.getAttrValues();
         Object redundant = attrValueMap.get("redundant");
         if (redundant == null || redundant == Boolean.FALSE) {
@@ -137,9 +136,7 @@ public class SelectorFieldTypeImpl extends AbstractSelectableFieldTypeImpl {
     }
 
     @Override
-    public <T extends XField> List<XFieldProperty> getProperties(T field) {
-        FieldTestImpl fieldImpl = (FieldTestImpl) field;
-
+    public List<XFieldProperty> getProperties(FieldTestImpl field) {
         // 没有冗余时直接返回空列表
         Map<String, Object> attrValueMap = field.getAttrValues();
         Object redundant = attrValueMap.get("redundant");
@@ -149,7 +146,7 @@ public class SelectorFieldTypeImpl extends AbstractSelectableFieldTypeImpl {
 
         List<XFieldProperty> properties = new ArrayList<>();
         {
-            FieldPropertyTestImpl labelProperty = new FieldPropertyTestImpl(fieldImpl);
+            FieldPropertyTestImpl labelProperty = new FieldPropertyTestImpl(field);
             Object labelName = attrValueMap.get("labelName");
             labelProperty.setName(labelName.toString());
             Object labelValue = attrValueMap.get("labelValue");
@@ -158,13 +155,13 @@ public class SelectorFieldTypeImpl extends AbstractSelectableFieldTypeImpl {
             properties.add(labelProperty);
         }
         {
-            FieldPropertyTestImpl valueProperty = new FieldPropertyTestImpl(fieldImpl);
+            FieldPropertyTestImpl valueProperty = new FieldPropertyTestImpl(field);
             Object valueName = attrValueMap.get("valueName");
             valueProperty.setName(valueName.toString());
             Object valueValue = attrValueMap.get("valueValue");
             valueProperty.setCode(valueValue.toString());
             // 值的类型等于字段属性中设置的类型
-            valueProperty.setDataType(fieldImpl.getDataType());
+            valueProperty.setDataType(field.getDataType());
             properties.add(valueProperty);
         }
 
