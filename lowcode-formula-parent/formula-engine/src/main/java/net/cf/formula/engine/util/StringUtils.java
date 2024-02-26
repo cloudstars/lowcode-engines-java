@@ -31,7 +31,10 @@ public class StringUtils {
             } else {
                 while (i < chars.length) {
                     ch = chars[i];
-                    if ((ch < '0' || ch > '9') && (ch < 'a' || ch > 'f') && (ch < 'A' || ch > 'F')) {
+                    boolean isNotNumber = ch < '0' || ch > '9';
+                    boolean isNotLcaseChar = ch < 'a' || ch > 'f';
+                    boolean isNotUcaseChar = ch < 'A' || ch > 'F';
+                    if (isNotNumber && isNotLcaseChar && isNotUcaseChar) {
                         return false;
                     }
 
@@ -83,7 +86,9 @@ public class StringUtils {
                 ch = chars[i];
                 if (ch >= '0' && ch <= '9') {
                     return true;
-                } else if (ch != 'e' && ch != 'E') {
+                }
+
+                if (ch != 'e' && ch != 'E') {
                     if (allowSigns || ch != 'd' && ch != 'D' && ch != 'f' && ch != 'F') {
                         if (ch != 'l' && ch != 'L') {
                             return ch == '.';
@@ -93,9 +98,9 @@ public class StringUtils {
                     } else {
                         return foundDigit;
                     }
-                } else {
-                    return false;
                 }
+
+                return false;
             } else {
                 return !allowSigns && foundDigit;
             }

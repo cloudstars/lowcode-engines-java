@@ -4,18 +4,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.cloudstars</groupId>
-        <artifactId>lowcode-object-parent</artifactId>
+        <artifactId>lowcode-form-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-object-engine</artifactId>
+    <artifactId>lowcode-form-engine</artifactId>
     <description>模型业务模型引擎</description>
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-repository</artifactId>
+            <artifactId>lowcode-form-repository</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -23,17 +23,17 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-repository-mysql</artifactId>
+            <artifactId>lowcode-form-repository-mysql</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-repository-mongo</artifactId>
+            <artifactId>lowcode-form-repository-mongo</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-repository-cfdata</artifactId>
+            <artifactId>lowcode-form-repository-cfdata</artifactId>
             <scope>provided</scope>
         </dependency>
 

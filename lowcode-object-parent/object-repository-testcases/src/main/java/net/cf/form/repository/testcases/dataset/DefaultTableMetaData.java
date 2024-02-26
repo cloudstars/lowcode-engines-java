@@ -40,7 +40,7 @@ public class DefaultTableMetaData implements ITableMetaData {
     private Map<String, Integer> createColumnIndexesMap(Column[] columns) {
         Map<String, Integer> colsToIndexes = new HashMap(columns.length);
 
-        for(int i = 0; i < columns.length; ++i) {
+        for (int i = 0; i < columns.length; ++i) {
             colsToIndexes.put(columns[i].getColumnName().toUpperCase(), i);
         }
 
