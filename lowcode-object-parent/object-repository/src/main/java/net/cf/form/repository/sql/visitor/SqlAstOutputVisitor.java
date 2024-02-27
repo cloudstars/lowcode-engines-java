@@ -603,8 +603,8 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             this.visit((SqlJoinTableSource) x);
         } else if (clazz == SqlExprTableSource.class) {
             this.visit((SqlExprTableSource) x);
-        } else if (clazz == SqlSubqueryTableSource.class) {
-            this.visit((SqlSubqueryTableSource) x);
+        } else if (clazz == SqlSubQueryTableSource.class) {
+            this.visit((SqlSubQueryTableSource) x);
         } else {
             x.accept(this);
         }

@@ -1,8 +1,8 @@
 package net.cf.form.repository.testcases.statement;
 
 import net.cf.form.repository.ObjectRepository;
-import net.cf.form.repository.testcases.dataset.DataSetOperator;
-import net.cf.form.repository.testcases.dataset.IDataSet;
+import net.cf.commons.test.dataset.IDataSetOperator;
+import net.cf.commons.test.dataset.IDataSet;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -21,14 +21,14 @@ public abstract class AbstractTestCase {
     /**
      * 数据集操作器
      */
-    protected final DataSetOperator dataSetOperator;
+    protected final IDataSetOperator dataSetOperator;
 
     protected AbstractTestCase(ObjectRepository repository) {
         this.repository = repository;
         this.dataSetOperator = null;
     }
 
-    public AbstractTestCase(ObjectRepository repository, DataSetOperator dataSetOperator) {
+    public AbstractTestCase(ObjectRepository repository, IDataSetOperator dataSetOperator) {
         this.repository = repository;
         this.dataSetOperator = dataSetOperator;
     }

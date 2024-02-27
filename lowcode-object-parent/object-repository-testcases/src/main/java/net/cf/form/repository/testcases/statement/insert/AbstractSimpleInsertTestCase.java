@@ -2,7 +2,7 @@ package net.cf.form.repository.testcases.statement.insert;
 
 import net.cf.form.repository.ObjectRepository;
 import net.cf.form.repository.testcases.statement.AbstractTestCase;
-import net.cf.form.repository.testcases.dataset.DataSetOperator;
+import net.cf.commons.test.dataset.IDataSetOperator;
 
 /**
  * 简单插入语句的测试
@@ -11,7 +11,7 @@ import net.cf.form.repository.testcases.dataset.DataSetOperator;
  */
 public abstract class AbstractSimpleInsertTestCase extends AbstractTestCase {
 
-    protected AbstractSimpleInsertTestCase(ObjectRepository repository, DataSetOperator dataSetOperator) {
+    protected AbstractSimpleInsertTestCase(ObjectRepository repository, IDataSetOperator dataSetOperator) {
         super(repository, dataSetOperator);
     }
 
