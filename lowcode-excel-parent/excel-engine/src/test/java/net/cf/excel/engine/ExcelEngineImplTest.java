@@ -1,11 +1,16 @@
 package net.cf.excel.engine;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import net.cf.commons.test.util.DataCompareUtils;
+import net.cf.commons.test.util.FileUtils;
 import net.cf.excel.engine.commons.CollectionGroup;
 import net.cf.excel.engine.commons.TextField;
 import net.cf.excel.engine.config.ExcelParseConfig;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
@@ -13,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ExcelEngineImplTest {
 
@@ -22,7 +26,7 @@ public class ExcelEngineImplTest {
     public void testParseExcel_TextField() {
         ExcelEngine engine = new ExcelEngineImpl();
         Workbook workbook = null;
-        try (FileInputStream fis = new FileInputStream("src/test/resources/TextField测试.xlsx")) {
+        try (FileInputStream fis = new FileInputStream("src/test/resources/excel解析测试/TextField测试.xlsx")) {
             workbook = createWorkbook(fis, "TextField测试.xlsx");
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,19 +39,20 @@ public class ExcelEngineImplTest {
         config.setTitleStartRow(0);
         config.setTitleEndRow(0);
 
-        List<Map<String, Object>> dataList = engine.parseExcel(workbook, config);
-        System.out.println(dataList);
+        JSONArray sourceDataList = JSON.parseArray(JSON.toJSONString(engine.parseExcel(workbook, config)));
+        JSONArray targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel解析测试/解析后数据/TextField测试.json"));
+        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
     }
 
     // 主子关系字段解析
     @Test
     public void testParseExcel_CollectionGroup1() {
         ExcelEngine engine = new ExcelEngineImpl();
-        Workbook workbook = null;
-        try (FileInputStream fis = new FileInputStream("src/test/resources/CollectionGroup测试1.xlsx")) {
+        Workbook workbook;
+        try (FileInputStream fis = new FileInputStream("src/test/resources/excel解析测试/CollectionGroup测试1.xlsx")) {
             workbook = createWorkbook(fis, "CollectionGroup测试1.xlsx");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         ExcelParseConfig config = new ExcelParseConfig();
         List<ParseField> parseFields = new ArrayList<>();
@@ -64,17 +69,19 @@ public class ExcelEngineImplTest {
         config.setTitleStartRow(0);
         config.setTitleEndRow(1);
 
-        List<Map<String, Object>> dataList1 = engine.parseExcel(workbook, config);
+        JSONArray sourceDataList = JSON.parseArray(JSON.toJSONString(engine.parseExcel(workbook, config)));
+        JSONArray targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
+        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
 
-        try (FileInputStream fis = new FileInputStream("src/test/resources/CollectionGroup测试2.xlsx")) {
+        try (FileInputStream fis = new FileInputStream("src/test/resources/excel解析测试/CollectionGroup测试2.xlsx")) {
             workbook = createWorkbook(fis, "CollectionGroup测试2.xlsx");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
-        List<Map<String, Object>> dataList2 = engine.parseExcel(workbook, config);
-
-        System.out.println(dataList2);
+        sourceDataList = JSON.parseArray(JSON.toJSONString(engine.parseExcel(workbook, config)));
+        targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
+        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
     }
 
 
