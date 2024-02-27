@@ -1,0 +1,16 @@
+{
+ "id": "MrpCuH4rcTvo",
+ "type": "start",
+ "title": "开始",
+ "ignoreError": false,
+ "children": [
+  {
+   "id": "w1OalYWKhJcS",
+   "type": "return",
+   "title": "返回",
+   "dataType": "",
+   "targetName": "{{input.a}}",
+   "children": []
+  }
+ ]
+}
