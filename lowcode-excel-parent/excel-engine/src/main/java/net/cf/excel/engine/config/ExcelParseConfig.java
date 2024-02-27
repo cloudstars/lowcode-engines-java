@@ -18,6 +18,8 @@ public class ExcelParseConfig {
 
     private int titleStartRow;
 
+    private int titleEndRow;
+
     public List<ParseField> getParseFields() {
         return parseFields;
     }
@@ -32,5 +34,13 @@ public class ExcelParseConfig {
 
     public void setTitleStartRow(int titleStartRow) {
         this.titleStartRow = titleStartRow;
+    }
+
+    public int getTitleEndRow() {
+        return titleEndRow;
+    }
+
+    public void setTitleEndRow(int titleEndRow) {
+        this.titleEndRow = titleEndRow;
     }
 }
