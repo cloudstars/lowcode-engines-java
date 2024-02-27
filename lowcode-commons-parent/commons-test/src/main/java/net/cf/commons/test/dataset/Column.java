@@ -41,7 +41,6 @@ public class Column {
         return this.columnName;
     }
 
-
     public DataType getDataType() {
         return dataType;
     }

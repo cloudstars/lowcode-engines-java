@@ -1,9 +1,7 @@
 package net.cf.api.engine.data.mapping;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
-import net.cf.api.commons.definition.ApiParamSchema;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -37,10 +35,9 @@ public class DataMappingService {
      * @param input 输入
      * @return 输出
      */
-    public Object convert(ApiParamSchema jsonSchema, Object input) {
+    public Object convert(JSONObject jsonSchema, Object input) {
         // 需要优化遍历schema的逻辑，基于对象去做遍历，而非map
-        JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(jsonSchema));
-        Map<String, String> paramTypeMap = getParamTypes(jsonObject);
+        Map<String, String> paramTypeMap = getParamTypes(jsonSchema);
         return typeMapping(paramTypeMap, input);
     }
 

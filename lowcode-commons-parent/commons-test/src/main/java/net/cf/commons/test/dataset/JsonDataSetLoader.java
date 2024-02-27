@@ -24,16 +24,16 @@ public final class JsonDataSetLoader {
     /**
      * 从类路径加载JSON数据集
      *
-     * @param filePath 文件所在的完整路径，如：abc/x.json
+     * @param tableFilePaths 文件所在的完整路径，如：abc/x.json, eft/y.json
      * @return
      */
-    public static DefaultDataSet loadFromClassPath(String filePath) {
+    public static DefaultDataSet loadFromClassPath(String[] tableFilePaths) {
         DefaultDataSet dataSet = new DefaultDataSet();
-        String content = FileUtils.loadTextFromClasspath(filePath);
-        JSONArray tablesJson = JSONArray.parseArray(content);
-        for (int i = 0, s = tablesJson.size(); i < s; i++) {
-            JSONObject tableJson = tablesJson.getJSONObject(i);
-            String tableName = tableJson.getString("name");
+        for (int i = 0, l = tableFilePaths.length; i < l; i++) {
+            String filePath = tableFilePaths[i];
+            String content = FileUtils.loadTextFromClasspath(filePath);
+            JSONObject tableJson = JSONObject.parseObject(content);
+            String tableName = tableJson.getString("code");
 
             JSONArray columnsJson = tableJson.getJSONArray("columns");
             if (columnsJson == null || columnsJson.size() == 0) {
@@ -42,10 +42,13 @@ public final class JsonDataSetLoader {
             int cs = columnsJson.size();
             Column[] columns = new Column[cs];
             for (int j = 0; j < cs; j++) {
-                JSONObject columnJson = columnsJson.getJSONObject(i);
-                String columnName = columnJson.getString("name");
+                JSONObject columnJson = columnsJson.getJSONObject(j);
+                String columnName = columnJson.getString("code");
                 String dataType = columnJson.getString("dataType");
-                Column column = new Column(columnName, DataType.valueOf(dataType));
+                if (dataType != null) {
+                    dataType = DataType.STRING.name();
+                }
+                Column column = new Column(columnName, DataType.valueOf(dataType.toUpperCase()));
                 columns[j] = column;
             }
 
@@ -55,10 +58,10 @@ public final class JsonDataSetLoader {
             int vls = valuesListJson.size();
             for (int k = 0; k < vls; k++) {
                 // 依次读取每一条数据，并根据数据类型作转换
-                JSONObject valuesJson = columnsJson.getJSONObject(i);
+                JSONObject valuesJson = valuesListJson.getJSONObject(k);
                 Map<String, Object> values = new HashMap<>();
-                for (int j = 0; j < cs; j++) {
-                    Column column = columns[j];
+                for (int t = 0; t < cs; t++) {
+                    Column column = columns[t];
                     String columnName = column.getColumnName();
                     String value;
                     if (!valuesJson.containsKey(columnName)) {
@@ -85,8 +88,8 @@ public final class JsonDataSetLoader {
                     } else {
                         values.put(columnName, value);
                     }
-                    table.addValues(values);
                 }
+                table.addValues(values);
             }
             dataSet.addTable(table);
         }
