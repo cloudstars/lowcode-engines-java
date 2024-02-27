@@ -11,25 +11,21 @@ public class DefaultDataSet implements IDataSet {
 
     protected OrderedTableNameMap orderedTableNameMap;
 
-    //private final List<ITableMetaData> tableMetaDataList = new ArrayList<>();
-
     private boolean caseSensitiveTableNames = false;
 
     public DefaultDataSet() {
+        this.initialize();
     }
 
     public DefaultDataSet(boolean caseSensitiveTableNames) {
         this.caseSensitiveTableNames = caseSensitiveTableNames;
+        this.initialize();
     }
 
     public void addTable(DefaultTable defaultTable) {
         String tableName = defaultTable.getTableMetaData().getTableName();
         this.orderedTableNameMap.add(tableName, defaultTable);
     }
-
-    /*public void addTableMetaData(ITableMetaData tableMetaData) {
-        this.tableMetaDataList.add(tableMetaData);
-    }*/
 
     public boolean isCaseSensitiveTableNames() {
         return this.caseSensitiveTableNames;
