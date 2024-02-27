@@ -1,0 +1,14 @@
+{
+  "city": "chicago",
+  "number": 20,
+  "gov": {
+    "adrress": "chicago",
+    "personnum": 10
+  },
+  "user": [
+    {
+      "name": "Alex",
+      "age": 20
+    }
+  ]
+}
