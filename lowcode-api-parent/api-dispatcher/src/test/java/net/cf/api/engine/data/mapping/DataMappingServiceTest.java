@@ -1,6 +1,8 @@
 package net.cf.api.engine.data.mapping;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import net.cf.api.commons.definition.ApiParamSchema;
 import net.cf.commons.test.util.FileUtils;
 import net.cf.commons.test.util.JsonUtils;
 import org.junit.Assert;
@@ -35,8 +37,9 @@ public class DataMappingServiceTest {
     @Test
     public void convertTest() {
         String schema = FileUtils.loadTextFromClasspath("data/mapping/schema/convertTestJsonSchema.json");
-        Map<String, Object> input = JsonUtils.loadMapFromClasspath("data/mapping/input/convertTestJsonInput.json");
-        Object convert = dataMappingService.convert(JSON.parseObject(schema), input);
+        Map<String, Object> map = JsonUtils.loadMapFromClasspath("data/mapping/input/convertTestJsonInput.json");
+        JSONObject input = new JSONObject(map);
+        Object convert = dataMappingService.convert(input.toJavaObject(ApiParamSchema.class), input);
         Assert.assertNotNull(convert);
     }
 }
