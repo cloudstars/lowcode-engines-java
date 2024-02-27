@@ -13,8 +13,8 @@ import net.cf.api.commons.enums.ApiTypeEnum;
 public class ApiDefinition {
     private String key;
     private String name;
-    private JSONObject input;
-    private JSONObject output;
+    private ApiParamSchema input;
+    private ApiParamSchema output;
     private ApiTypeEnum type;
     private Boolean enabled;
     private ApiPublicizedEnum publicized;
@@ -39,19 +39,19 @@ public class ApiDefinition {
         this.name = name;
     }
 
-    public JSONObject getInput() {
+    public ApiParamSchema getInput() {
         return input;
     }
 
-    public void setInput(JSONObject input) {
+    public void setInput(ApiParamSchema input) {
         this.input = input;
     }
 
-    public JSONObject getOutput() {
+    public ApiParamSchema getOutput() {
         return output;
     }
 
-    public void setOutput(JSONObject output) {
+    public void setOutput(ApiParamSchema output) {
         this.output = output;
     }
 

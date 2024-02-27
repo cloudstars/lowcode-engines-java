@@ -1,8 +1,8 @@
 package net.cf.api.engine.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import net.cf.api.commons.definition.ApiDefinition;
+import net.cf.api.commons.definition.ApiParamSchema;
 import net.cf.api.commons.enums.ApiTypeEnum;
 import net.cf.api.engine.ApiDefinitionLoader;
 import net.cf.api.engine.ApiExecuteDispatcher;
@@ -74,7 +74,7 @@ public class ApiExecuteDispatcherImpl implements ApiExecuteDispatcher {
         //  基于jsonSchema绑定参数
         return input;
     }
-    private void checkReqParams(JSONObject input, Object reqParams) {
+    private void checkReqParams(ApiParamSchema input, Object reqParams) {
         if (Objects.isNull(input) || Objects.isNull(reqParams)) {
             return;
         }

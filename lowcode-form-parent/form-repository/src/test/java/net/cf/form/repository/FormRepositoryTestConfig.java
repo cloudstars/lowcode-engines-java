@@ -1,7 +1,0 @@
-package net.cf.form.repository;
-
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class FormRepositoryTestConfig {
-}

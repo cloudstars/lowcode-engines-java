@@ -49,10 +49,9 @@
 
     <modules>
         <module>lowcode-commons-parent</module>
-        <module>lowcode-form-parent</module>
+        <module>lowcode-object-parent</module>
         <module>lowcode-excel-parent</module>
         <module>lowcode-bpm-parent</module>
-        <module>lowcode-file-parent</module>
         <module>lowcode-api-parent</module>
         <module>lowcode-api-proxy-parent</module>
         <module>lowcode-api-flow-parent</module>
@@ -181,6 +180,12 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.13.2</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.dbunit</groupId>
+                <artifactId>dbunit</artifactId>
+                <version>2.7.3</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

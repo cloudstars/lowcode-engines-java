@@ -1,0 +1,67 @@
+[
+  {
+    "name": "TRAVEL",
+    "description": "出差表",
+    "columns": [
+      {
+        "name": "APPLY_ID",
+        "description": "申请单ID",
+        "dataType": "String"
+      },
+      {
+        "name": "APPLY_NAME",
+        "description": "申请单名称",
+        "dataType": "String"
+      },
+      {
+        "name": "START_DATE",
+        "description": "开始日期",
+        "dataType": "Date"
+      },
+      {
+        "name": "END_DATE",
+        "description": "结束日期",
+        "dataType": "Date"
+      },
+      {
+        "name": "REASON",
+        "description": "出差事由",
+        "dataType": "String"
+      }
+    ],
+    "valuesList": [
+      {
+        "APPLY_ID": "1",
+        "APPLY_NAME": "XXX",
+        "START_DATE": "1111-11-11",
+        "END_DATE": "1111-11-11",
+        "REASON": "XXX"
+      },
+      {
+        "APPLY_ID": "2",
+        "APPLY_NAME": "YYY",
+        "START_DATE": "1111-11-11",
+        "END_DATE": "1111-11-11",
+        "REASON": "YYY"
+      }
+    ]
+  },
+  {
+    "tableName": "",
+    "description": "出差行程表",
+    "columns": [
+      {
+        "name": "",
+        "description": ""
+      },
+      {
+        "name": "",
+        "description": ""
+      }
+    ],
+    "values": [
+      {
+      }
+    ]
+  }
+]

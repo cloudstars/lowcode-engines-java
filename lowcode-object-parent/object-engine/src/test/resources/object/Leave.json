@@ -1,0 +1,164 @@
+{
+  "name": "请假申请",
+  "code": "Leave",
+  "primaryFieldCode": "applyId",
+  "tableName": "LEAVE",
+  "fields": [
+    {
+      "type": "Sequence",
+      "name": "申请单ID",
+      "code": "applyId",
+      "columnName": "APPLY_ID",
+      "dataType": "String",
+      "dataLength": 36
+    },
+    {
+      "type": "Text",
+      "name": "申请单名称",
+      "code": "applyName",
+      "columnName": "APPLY_NAME",
+      "dataType": "String",
+      "dataLength": 64
+    },
+    {
+      "type": "Options",
+      "name": "假期类型",
+      "code": "leaveType",
+      "columnName": "LEAVE_TYPE",
+      "dataType": "String",
+      "dataLength": 8,
+      "sourceType": "Static",
+      "options": [
+        {
+          "label": "年假",
+          "value": "NJ"
+        },
+        {
+          "label": "事假",
+          "value": "SJ"
+        },
+        {
+          "label": "病假",
+          "value": "BJ"
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "name": "开始日期",
+      "code": "startDate",
+      "columnName": "START_DATE",
+      "dataType": "Date",
+      "dataFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Date",
+      "name": "结束日期",
+      "code": "endDate",
+      "columnName": "END_DATE",
+      "dataType": "Date",
+      "dataFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Text",
+      "name": "请假事由",
+      "code": "reason",
+      "columnName": "REASON",
+      "dataType": "String",
+      "dataLength": 1024
+    },
+    {
+      "type": "User",
+      "name": "创建人",
+      "code": "creator",
+      "columnName": "CREATOR",
+      "dataType": "Object",
+      "defaultValue": {
+        "name": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "name": "名称",
+          "code": "name",
+          "columnName": "NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "name": "编号",
+          "code": "key",
+          "columnName": "KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "name": "更新时间",
+      "code": "createdAt",
+      "columnName": "CREATED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "User",
+      "name": "更新人",
+      "code": "modifier",
+      "columnName": "MODIFIER",
+      "dataType": "Object",
+      "defaultValue": {
+        "name": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "name": "名称",
+          "code": "name",
+          "columnName": "NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "name": "编号",
+          "code": "key",
+          "columnName": "KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "name": "更新时间",
+      "code": "modifiedAt",
+      "columnName": "MODIFIED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Text",
+      "name": "拥有者",
+      "code": "ownerKey",
+      "columName": "OWNER_KEY",
+      "dataType": "String",
+      "dataLength": 20
+    },
+    {
+      "type": "Number",
+      "name": "版本号",
+      "code": "revision",
+      "columnName": "REVISION",
+      "dataType": "Number",
+      "dataPrecision": 0
+    },
+    {
+      "type": "Boolean",
+      "name": "是否已删除",
+      "code": "deleted",
+      "columnName": "DELETED",
+      "dataType": "Boolean"
+    }
+  ]
+}

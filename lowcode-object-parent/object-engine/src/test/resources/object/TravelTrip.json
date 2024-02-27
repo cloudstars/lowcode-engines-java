@@ -1,0 +1,119 @@
+{
+  "name": "出差行程",
+  "code": "TravelTrip",
+  "primaryFieldCode": "tripId",
+  "tableName": "TRAVEL_TRIP",
+  "fields": [
+    {
+      "type": "AutoId",
+      "name": "行程ID",
+      "code": "tripId",
+      "columnName": "TRIP_ID",
+      "dataType": "String",
+      "dataLength": 36
+    },
+    {
+      "type": "ObjectRef",
+      "name": "单请单ID",
+      "code": "applyId",
+      "columnName": "APPLY_ID",
+      "dataType": "String",
+      "dataLength": "36",
+      "refType": "LOOKUP",
+      "isMultiRef": false
+    },
+    {
+      "type": "File",
+      "name": "附件",
+      "code": "attach",
+      "columnName": "ATTACH",
+      "dataType": "Object",
+      "properties": [
+        {
+          "name": "名称",
+          "code": "name",
+          "columnName": "NAME",
+          "dataType": "String",
+          "dataLength": 128
+        },
+        {
+          "name": "编号",
+          "code": "key",
+          "columnName": "KEY",
+          "dataType": "String",
+          "dataLength": 36
+        }
+      ]
+    },
+    {
+      "type": "User",
+      "name": "创建人",
+      "code": "creator",
+      "columnName": "CREATOR",
+      "dataType": "Object",
+      "defaultValue": {
+        "name": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "name": "名称",
+          "code": "name",
+          "columnName": "NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "name": "编号",
+          "code": "key",
+          "columnName": "KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "name": "更新时间",
+      "code": "createdAt",
+      "columnName": "CREATED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "User",
+      "name": "更新人",
+      "code": "modifier",
+      "columnName": "MODIFIER",
+      "dataType": "Object",
+      "defaultValue": {
+        "name": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "name": "名称",
+          "code": "name",
+          "columnName": "NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "name": "编号",
+          "code": "key",
+          "columnName": "KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "name": "更新时间",
+      "code": "modifiedAt",
+      "columnName": "MODIFIED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    }
+  ]
+}
