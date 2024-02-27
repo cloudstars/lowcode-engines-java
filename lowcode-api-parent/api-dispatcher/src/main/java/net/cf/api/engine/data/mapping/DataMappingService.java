@@ -36,6 +36,7 @@ public class DataMappingService {
      * @return 输出
      */
     public Object convert(JSONObject jsonSchema, Object input) {
+        // 需要优化遍历schema的逻辑，基于对象去做遍历，而非map
         Map<String, String> paramTypeMap = getParamTypes(jsonSchema);
         return typeMapping(paramTypeMap, input);
     }

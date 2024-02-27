@@ -1,0 +1,91 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/object1646817236.json",
+  "title": "Root",
+  "type": "object",
+  "required": [
+    "city",
+    "number",
+    "gov",
+    "user"
+  ],
+  "properties": {
+    "city": {
+      "$id": "#root/city",
+      "title": "City",
+      "type": "string",
+      "default": "",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "number": {
+      "$id": "#root/number",
+      "title": "Number",
+      "type": "integer",
+      "minLength": 1,
+      "maxLength": 6,
+      "default": 0
+    },
+    "gov": {
+      "$id": "#root/gov",
+      "title": "Gov",
+      "type": "object",
+      "required": [
+        "adrress",
+        "personnum"
+      ],
+      "properties": {
+        "adrress": {
+          "$id": "#root/gov/adrress",
+          "title": "Adrress",
+          "type": "string",
+          "default": "",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "personnum": {
+          "$id": "#root/gov/personnum",
+          "title": "Personnum",
+          "type": "integer",
+          "minLength": 1,
+          "maxLength": 8,
+          "default": 0
+        }
+      }
+    },
+    "user": {
+      "$id": "#root/user",
+      "title": "User",
+      "type": "array",
+      "default": [],
+      "items": {
+        "$id": "#root/user/items",
+        "title": "Items",
+        "type": "object",
+        "required": [
+          "name",
+          "age"
+        ],
+        "properties": {
+          "name": {
+            "$id": "#root/user/items/name",
+            "title": "Name",
+            "type": "string",
+            "default": "",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "age": {
+            "$id": "#root/user/items/age",
+            "title": "Age",
+            "type": "integer",
+            "minLength": 1,
+            "maxLength": 4,
+            "default": 0
+          }
+        }
+      }
+    }
+  }
+}

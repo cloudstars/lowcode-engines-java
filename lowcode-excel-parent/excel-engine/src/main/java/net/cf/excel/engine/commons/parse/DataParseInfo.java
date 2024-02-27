@@ -24,12 +24,12 @@ public class DataParseInfo {
     /**
      * sheet表标题信息集合
      */
-    private List<ExcelTitleInfo> titleInfos;
+    private List<ExcelTitleInfo> titleInfoList;
 
     /**
      * sheet表字段集合
      */
-    private List<ExcelSheetField> sheetFields;
+    private List<ExcelSheetField> sheetFieldList;
 
     /**
      * 数据起始行
@@ -41,11 +41,11 @@ public class DataParseInfo {
      */
     private int dataEndRow;
 
-    public DataParseInfo(Sheet sheet, FormulaEvaluator formulaEvaluator, List<ExcelTitleInfo> titleInfos, List<ExcelSheetField> sheetFields, int dataStartRow, int dataEndRow) {
+    public DataParseInfo(Sheet sheet, FormulaEvaluator formulaEvaluator, List<ExcelTitleInfo> titleInfoList, List<ExcelSheetField> sheetFieldList, int dataStartRow, int dataEndRow) {
         this.sheet = sheet;
         this.formulaEvaluator = formulaEvaluator;
-        this.titleInfos = titleInfos;
-        this.sheetFields = sheetFields;
+        this.titleInfoList = titleInfoList;
+        this.sheetFieldList = sheetFieldList;
         this.dataStartRow = dataStartRow;
         this.dataEndRow = dataEndRow;
     }
@@ -66,20 +66,20 @@ public class DataParseInfo {
         this.formulaEvaluator = formulaEvaluator;
     }
 
-    public List<ExcelTitleInfo> getTitleInfos() {
-        return titleInfos;
+    public List<ExcelTitleInfo> getTitleInfoList() {
+        return titleInfoList;
     }
 
-    public void setTitleInfos(List<ExcelTitleInfo> titleInfos) {
-        this.titleInfos = titleInfos;
+    public void setTitleInfoList(List<ExcelTitleInfo> titleInfoList) {
+        this.titleInfoList = titleInfoList;
     }
 
-    public List<ExcelSheetField> getSheetFields() {
-        return sheetFields;
+    public List<ExcelSheetField> getSheetFieldList() {
+        return sheetFieldList;
     }
 
-    public void setSheetFields(List<ExcelSheetField> sheetFields) {
-        this.sheetFields = sheetFields;
+    public void setSheetFieldList(List<ExcelSheetField> sheetFieldList) {
+        this.sheetFieldList = sheetFieldList;
     }
 
     public int getDataStartRow() {

@@ -1,7 +1,7 @@
 package net.cf.excel.engine.commons.parse;
 
 import net.cf.excel.engine.DataFormatter;
-import net.cf.excel.engine.GroupParseField;
+import net.cf.excel.engine.ParseFieldGroup;
 import net.cf.excel.engine.SingleParseField;
 
 import java.util.List;
@@ -16,9 +16,9 @@ public class ExcelSheetField {
 
     private String name;
 
-    private boolean hasSubField;
-
     private DataFormatter dataFormatter;
+
+    private boolean hasSubField;
 
     private List<ExcelSheetField> subFields;
 
@@ -33,12 +33,12 @@ public class ExcelSheetField {
         this.parentField = parentField;
     }
 
-    public ExcelSheetField(GroupParseField groupParseField, List<ExcelSheetField> subFields) {
-        this.code = groupParseField.getCode();
-        this.name = groupParseField.getName();
+    public ExcelSheetField(ParseFieldGroup parseFieldGroup, List<ExcelSheetField> subFields) {
+        this.code = parseFieldGroup.getCode();
+        this.name = parseFieldGroup.getName();
         this.hasSubField = true;
         this.subFields = subFields;
-        this.dataFormatter = groupParseField.getDataFormatter();
+        this.dataFormatter = parseFieldGroup.getDataFormatter();
         this.parentField = null;
     }
 
@@ -97,6 +97,9 @@ public class ExcelSheetField {
     public String getUniqueName() {
         if (isMainField()) {
             return name;
-        } else return parentField.getUniqueName() + "." + name;
+        } else {
+            return parentField.getUniqueName() + "." + name;
+        }
+
     }
 }
