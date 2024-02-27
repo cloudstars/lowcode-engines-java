@@ -22,7 +22,7 @@ public class ExcelTitleInfo {
     private int firstColumn;
 
     /**
-     * 是否合并单元格
+     * 是否行合并单元格
      */
     private boolean rowMerge;
 
@@ -31,9 +31,11 @@ public class ExcelTitleInfo {
      */
     private boolean columnMerge;
 
-    public ExcelTitleInfo(String title, String parentTitle, int firstColumn, boolean rowMerge, boolean columnMerge) {
-        this.title = title;
+    private boolean isCollection;
+
+    public ExcelTitleInfo(String parentTitle, String title, int firstColumn, boolean rowMerge, boolean columnMerge) {
         this.parentTitle = parentTitle;
+        this.title = title;
         this.firstColumn = firstColumn;
         this.rowMerge = rowMerge;
         this.columnMerge = columnMerge;
@@ -79,9 +81,28 @@ public class ExcelTitleInfo {
         this.columnMerge = columnMerge;
     }
 
+    public boolean isCollection() {
+        return isCollection;
+    }
+
+    public void setCollection(boolean collection) {
+        isCollection = collection;
+    }
+
     public String getUniqueTitle() {
         if (parentTitle == null || parentTitle.isEmpty()) {
             return title;
-        }else return parentTitle + "." + title;
+        } else {
+            return parentTitle + "." + title;
+        }
+    }
+
+    /**
+     * 是否为子表头
+     *
+     * @return
+     */
+    public boolean isSubTitle() {
+        return parentTitle != null && !parentTitle.isEmpty();
     }
 }
