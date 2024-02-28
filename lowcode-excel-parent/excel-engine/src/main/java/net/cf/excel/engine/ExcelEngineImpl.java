@@ -1,6 +1,7 @@
 package net.cf.excel.engine;
 
 import net.cf.excel.engine.commons.ExcelMergeInfo;
+import net.cf.excel.engine.commons.ExcelOpException;
 import net.cf.excel.engine.commons.parse.DataParseInfo;
 import net.cf.excel.engine.commons.parse.ExcelSheetField;
 import net.cf.excel.engine.commons.parse.ExcelTitleInfo;
@@ -87,10 +88,10 @@ public class ExcelEngineImpl implements ExcelEngine {
     private void validateSheet(Sheet sheet, int titleEndRow, int dataEndRow) {
         int num = sheet.getRow(titleEndRow).getPhysicalNumberOfCells();
         if (num > MAX_COL) {
-            throw new RuntimeException();
+            throw new ExcelOpException("excel文件数据列数:" + num + ",超过最大列数限制:" + MAX_COL);
         }
         if (dataEndRow - titleEndRow > MAX_ROW) {
-            throw new RuntimeException();
+            throw new ExcelOpException("excel文件数据行数:" + (dataEndRow - titleEndRow) + ",超过最大行数限制:" + MAX_ROW);
         }
     }
 
@@ -134,7 +135,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                 } else {
                     //二级表头的情况
                     if (!isValidTitleGroup(titleMergeMap, sheet, titleStartRow, titleEndRow, colIndex)) {
-                        throw new RuntimeException();
+                        throw new ExcelOpException("不是一个合法的表头");
                     }
                     String parentTitle = getCellTitle(sheet, titleStartRow, colIndex);
                     //表头组作为list存储的key时,添加到titleInfoList中
