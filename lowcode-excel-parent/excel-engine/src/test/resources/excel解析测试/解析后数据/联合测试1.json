@@ -1,0 +1,32 @@
+[
+  {
+    "gender": "男",
+    "peopleName": "小明",
+    "age": 24,
+    "attendance": [
+      {
+        "signInTime": "2/1/24 8:00",
+        "signOutTime": "2/1/24 19:00"
+      },
+      {
+        "signInTime": "2/2/24 8:30",
+        "signOutTime": "2/2/24 19:30"
+      },
+      {
+        "signInTime": "2/3/24 8:20",
+        "signOutTime": "2/3/24 19:20"
+      }
+    ]
+  },
+  {
+    "gender": "女",
+    "peopleName": "小红",
+    "age": 25,
+    "attendance": [
+      {
+        "signInTime": "2/1/24 8:40",
+        "signOutTime": "2/1/24 19:40"
+      }
+    ]
+  }
+]

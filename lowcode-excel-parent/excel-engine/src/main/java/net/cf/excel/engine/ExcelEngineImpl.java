@@ -107,7 +107,7 @@ public class ExcelEngineImpl implements ExcelEngine {
         //key为合并单元格开始的列，值为表头中以该列为起始列的所有合并单元格
         Map<Integer, List<ExcelMergeInfo>> titleMergeMap = getTitleMergeMap(sheet, titleStartRow, titleEndRow);
 
-        int colIndex = 0;
+        int colIndex = sheet.getRow(titleStartRow).getFirstCellNum();
         int colEndIndex = sheet.getRow(titleStartRow).getLastCellNum();
 
         //得到所有sheetField名称,用来判断当前列是否需要被解析
@@ -246,6 +246,9 @@ public class ExcelEngineImpl implements ExcelEngine {
     }
 
     private ExcelMergeInfo getColumnMergeInfo(List<ExcelMergeInfo> excelMergeInfoList) {
+        if (excelMergeInfoList == null || excelMergeInfoList.isEmpty()) {
+            return null;
+        }
         for (ExcelMergeInfo excelMergeInfo : excelMergeInfoList) {
             if (excelMergeInfo.isColumnMerge()) {
                 return excelMergeInfo;
