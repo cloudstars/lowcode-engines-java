@@ -6,12 +6,17 @@ import net.cf.excel.engine.SingleParseField;
 /**
  * @Author: 胡凌云
  * @CreateTime: 2024-02-23 09:06
- * @Description: Text测试实现类
+ * @Description: TextField
  */
 public class TextField implements SingleParseField {
     private String code;
 
     private String name;
+
+    public TextField(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
 
     @Override
     public String getCode() {
