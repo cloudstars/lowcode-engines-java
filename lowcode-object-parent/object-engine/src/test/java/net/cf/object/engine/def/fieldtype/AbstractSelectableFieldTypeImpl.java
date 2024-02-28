@@ -12,18 +12,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public abstract class AbstractSelectableFieldTypeImpl extends AbstractFieldTypeImpl {
-
-    @Override
-    public boolean isCollection(FieldTestImpl field) {
-        Map<String, Object> attrValueMap = field.getAttrValues();
-        Object multiple = attrValueMap.get("multiple");
-        if (multiple == null || multiple == Boolean.FALSE) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+public abstract class AbstractSelectableFieldTypeImpl implements XFieldType {
 
     @Override
     public List<AttributeDescriptor> getAttributeDescriptors() {
@@ -37,4 +26,16 @@ public abstract class AbstractSelectableFieldTypeImpl extends AbstractFieldTypeI
         }
         return descriptors;
     }
+
+    @Override
+    public boolean isCollection(FieldTestImpl field) {
+        Map<String, Object> attrValueMap = field.getAttrValues();
+        Object multiple = attrValueMap.get("multiple");
+        if (multiple == null || multiple == Boolean.FALSE) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

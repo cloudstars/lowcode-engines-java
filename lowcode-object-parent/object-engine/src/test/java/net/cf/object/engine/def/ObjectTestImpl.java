@@ -35,12 +35,12 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return objectDef.getName();
     }
 
     @Override
-    public String getName() {
+    public String getCode() {
         return objectDef.getCode();
     }
 

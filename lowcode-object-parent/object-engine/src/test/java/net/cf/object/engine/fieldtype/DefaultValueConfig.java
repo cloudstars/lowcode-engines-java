@@ -1,4 +1,4 @@
-package net.cf.object.engine.def.field;
+package net.cf.object.engine.fieldtype;
 
 /**
  * 默认值配置

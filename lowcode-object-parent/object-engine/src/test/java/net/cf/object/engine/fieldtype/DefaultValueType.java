@@ -1,4 +1,4 @@
-package net.cf.object.engine.def.field;
+package net.cf.object.engine.fieldtype;
 
 /**
  * 默认值类型
@@ -13,5 +13,9 @@ public enum DefaultValueType {
     /**
      * 公式
      */
-    FORMULA;
+    FORMULA,
+    /**
+     * API
+     */
+    API;
 }

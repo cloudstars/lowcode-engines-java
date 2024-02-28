@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 public class DataSetAutoConfiguration {
 
     /**
-     * 如果检测到数所源，并且没有定义JdbcTemplate那么自动定义一个
+     * 如果检测到数据源，并且没有定义JdbcTemplate那么自动定义一个
      *
      * @param dataSource
      * @return

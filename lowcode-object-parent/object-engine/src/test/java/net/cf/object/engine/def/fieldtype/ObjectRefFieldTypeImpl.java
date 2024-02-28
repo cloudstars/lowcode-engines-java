@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class ObjectRefFieldTypeImpl extends AbstractFieldTypeImpl {
+public class ObjectRefFieldTypeImpl  implements XFieldType {
 
     @Override
     public String getName() {

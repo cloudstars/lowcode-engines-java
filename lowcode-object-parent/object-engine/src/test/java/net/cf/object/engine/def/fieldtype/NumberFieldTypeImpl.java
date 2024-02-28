@@ -5,7 +5,7 @@ package net.cf.object.engine.def.fieldtype;
  *
  * @author clouds
  */
-public class NumberFieldTypeImpl extends AbstractFieldTypeImpl {
+public class NumberFieldTypeImpl  implements XFieldType {
 
     @Override
     public String getName() {

@@ -2,13 +2,13 @@ package net.cf.commons.test.util;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.List;
 import java.util.Map;
 
-@RunWith(JUnit4ClassRunner.class)
+@RunWith(JUnit4.class)
 public class JsonUtilsTest {
 
     @Test

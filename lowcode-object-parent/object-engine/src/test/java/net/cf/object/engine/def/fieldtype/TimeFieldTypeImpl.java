@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class TimeFieldTypeImpl extends AbstractFieldTypeImpl {
+public class TimeFieldTypeImpl  implements XFieldType {
 
     @Override
     public String getName() {

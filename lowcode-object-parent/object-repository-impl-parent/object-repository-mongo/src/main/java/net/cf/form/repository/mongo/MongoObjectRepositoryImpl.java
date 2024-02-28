@@ -6,17 +6,17 @@ import net.cf.form.repository.mongo.data.insert.InsertSqlAstVisitor;
 import net.cf.form.repository.sql.ast.statement.*;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-@Repository
 public class MongoObjectRepositoryImpl implements ObjectRepository {
 
-    @Resource
-    private MongoTemplate template;
+    private final MongoTemplate template;
+
+    public MongoObjectRepositoryImpl(MongoTemplate template) {
+        this.template = template;
+    }
 
     @Override
     public int insert(SqlInsertStatement statement) {

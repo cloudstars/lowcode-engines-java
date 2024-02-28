@@ -1,0 +1,27 @@
+{
+  "name": "出差表",
+  "code": "Travel",
+  "columns": [
+    {
+      "name": "申请单号",
+      "code": "APPLY_ID",
+      "dataType": "String"
+    },
+    {
+      "name": "申请单名称",
+      "code": "APPLY_NAME",
+      "dataType": "String"
+    }
+  ],
+  "valuesList": [
+    {
+      "APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+      "APPLY_NAME": "测试申请单1"
+    },
+    {
+      "APPLY_ID": "434743DSS-FEL2232-323KLFJFDS-323FDSD",
+      "APPLY_NAME": "测试申请单2"
+    }
+  ]
+  ]
+}

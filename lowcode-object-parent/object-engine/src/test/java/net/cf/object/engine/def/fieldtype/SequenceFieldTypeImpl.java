@@ -11,7 +11,7 @@ import java.util.*;
  *
  * @author clouds
  */
-public class SequenceFieldTypeImpl extends AbstractFieldTypeImpl {
+public class SequenceFieldTypeImpl  implements XFieldType {
 
     @Override
     public String getName() {

@@ -5,18 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.cloudstars</groupId>
-        <artifactId>lowcode-form-parent</artifactId>
+        <artifactId>lowcode-object-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-form-repository-testcases</artifactId>
+    <artifactId>lowcode-object-repository-testcases</artifactId>
     <description>低代码模型存储层驱动测试集</description>
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-repository</artifactId>
+            <artifactId>lowcode-object-repository</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>

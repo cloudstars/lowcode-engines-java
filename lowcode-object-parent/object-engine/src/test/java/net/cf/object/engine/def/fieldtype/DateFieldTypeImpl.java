@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class DateFieldTypeImpl extends AbstractFieldTypeImpl {
+public class DateFieldTypeImpl  implements XFieldType {
 
     @Override
     public String getName() {

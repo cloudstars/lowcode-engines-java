@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class FormulaFieldTypeImpl extends AbstractFieldTypeImpl {
+public class FormulaFieldTypeImpl  implements XFieldType {
 
     @Override
     public String getName() {

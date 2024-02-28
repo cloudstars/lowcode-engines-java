@@ -72,6 +72,11 @@ public class SqlSelect extends AbstractSqlObjectImpl {
         this.addChildren(selectItems);
     }
 
+    public void addSelectItem(SqlSelectItem selectItem) {
+        this.selectItems.add(selectItem);
+        this.addChild(selectItem);
+    }
+
     public SqlTableSource getFrom() {
         return from;
     }

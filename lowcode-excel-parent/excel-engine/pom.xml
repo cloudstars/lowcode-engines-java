@@ -15,7 +15,7 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-engine</artifactId>
+            <artifactId>lowcode-object-engine</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
