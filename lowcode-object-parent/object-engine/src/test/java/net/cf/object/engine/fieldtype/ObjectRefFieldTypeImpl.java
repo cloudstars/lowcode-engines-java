@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class ObjectRefFieldTypeImpl implements XDevFieldType {
+public class ObjectRefFieldTypeImpl implements XFieldType {
 
     @Override
     public String getName() {

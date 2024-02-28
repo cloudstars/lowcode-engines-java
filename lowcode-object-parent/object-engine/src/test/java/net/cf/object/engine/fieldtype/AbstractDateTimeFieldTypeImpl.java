@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class AbstractDateTimeFieldTypeImpl implements XDevFieldType {
+public abstract class AbstractDateTimeFieldTypeImpl implements XFieldType {
 
     @Override
     public List<FieldAttribute> getAttributes(FieldSchema fieldSchema) {

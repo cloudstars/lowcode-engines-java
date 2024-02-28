@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class SequenceFieldTypeImpl implements XDevFieldType {
+public class SequenceFieldTypeImpl implements XFieldType {
 
     @Override
     public String getName() {

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class AbstractSelectableFieldTypeImpl implements XDevFieldType {
+public abstract class AbstractSelectableFieldTypeImpl implements XFieldType {
 
     @Override
     public List<AttributeDescriptor> getAttributeDescriptors() {

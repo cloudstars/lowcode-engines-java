@@ -5,7 +5,7 @@ package net.cf.object.engine.fieldtype;
  *
  * @author clouds
  */
-public class AutoIdFieldTypeImpl implements XDevFieldType {
+public class AutoIdFieldTypeImpl implements XFieldType {
 
     @Override
     public String getName() {

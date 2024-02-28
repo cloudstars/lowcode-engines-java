@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class FormulaFieldTypeImpl implements XDevFieldType {
+public class FormulaFieldTypeImpl implements XFieldType {
 
     @Override
     public String getName() {

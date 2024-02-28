@@ -1,7 +1,6 @@
 package net.cf.object.engine.fieldtype;
 
 import net.cf.object.engine.object.DataType;
-import net.cf.object.engine.object.XFieldType;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,10 +15,24 @@ import java.util.List;
  *
  * @author clouds
  */
-public interface XDevFieldType extends XFieldType {
+public interface XFieldType {
 
     /**
-     * 获取字段类型的个性化属性描述列表
+     * 字段类型的名称
+     *
+     * @return
+     */
+    String getName();
+
+    /**
+     * 字段类型的代码
+     *
+     * @return
+     */
+    String getCode();
+
+    /**
+     * 获取字段类型的个性化属性描述列表，从表设计的视角看，就是一些和后端有关的属性
      *
      * @return
      */

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class AbstractNameCodeSelectableFieldTypeImpl implements XDevFieldType {
+public abstract class AbstractNameCodeSelectableFieldTypeImpl implements XFieldType {
 
     @Override
     public DataType getDataType(FieldSchema fieldSchema) {

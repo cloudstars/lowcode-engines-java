@@ -7,7 +7,7 @@ import net.cf.object.engine.object.DataType;
  *
  * @author clouds
  */
-public class BooleanFieldTypeImpl implements XDevFieldType {
+public class BooleanFieldTypeImpl implements XFieldType {
 
     @Override
     public String getName() {
