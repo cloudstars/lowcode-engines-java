@@ -95,8 +95,6 @@ public class MySQLObjectRepositoryImpl implements ObjectRepository {
         return null;
     }
 
-
-
     @Override
     public List<Map<String, Object>> selectList(SqlSelectStatement statement) {
         return null;

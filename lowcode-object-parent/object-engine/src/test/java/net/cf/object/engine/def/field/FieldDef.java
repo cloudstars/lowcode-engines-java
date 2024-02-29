@@ -1,7 +1,6 @@
 package net.cf.object.engine.def.field;
 
-import net.cf.object.engine.fieldtype.DefaultValueConfig;
-import net.cf.object.engine.def.fieldtype.AttributeDescriptor;
+import com.alibaba.fastjson.annotation.JSONCreator;
 import net.cf.object.engine.object.DataType;
 
 import java.util.HashMap;
@@ -21,9 +20,9 @@ public class FieldDef {
     private final String type;
 
     /**
-     * 编号
+     * 是否自动生成的ID
      */
-    private String key;
+    private boolean isAuto;
 
     /**
      * 名称
@@ -56,9 +55,9 @@ public class FieldDef {
     private Integer dataPrecision;
 
     /**
-     * 默认值配置
+     * 默认值
      */
-    private DefaultValueConfig defaultValueConfig;
+    private Object defaultValue;
 
     /**
      * 日期格式
@@ -75,6 +74,7 @@ public class FieldDef {
      */
     private final Map<String, Object> attrValueMap = new HashMap<>();
 
+    @JSONCreator
     public FieldDef(String type) {
         this.type = type;
     }
@@ -83,12 +83,12 @@ public class FieldDef {
         return type;
     }
 
-    public String getKey() {
-        return key;
+    public boolean isAuto() {
+        return isAuto;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setAuto(boolean auto) {
+        isAuto = auto;
     }
 
     public String getName() {
@@ -147,12 +147,12 @@ public class FieldDef {
         this.dateFormat = dateFormat;
     }
 
-    public DefaultValueConfig getDefaultValueConfig() {
-        return defaultValueConfig;
+    public Object getDefaultValue() {
+        return defaultValue;
     }
 
-    public void setDefaultValueConfig(DefaultValueConfig defaultValueConfig) {
-        this.defaultValueConfig = defaultValueConfig;
+    public void setDefaultValue(Object defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     public List<FieldPropertyTestImpl> getProperties() {
@@ -167,12 +167,6 @@ public class FieldDef {
         for (FieldAttribute attribute : attributes) {
             String attrCode = attribute.getCode();
             Object attrValue = attribute.getValue();
-            if (attrValue == null) {
-                AttributeDescriptor attributeDescriptor = attribute.getDescriptor();
-                if (attributeDescriptor != null) {
-                    attrValue = attributeDescriptor.getDefaultValue();
-                }
-            }
             this.attrValueMap.put(attrCode, attrValue);
         }
     }
@@ -182,7 +176,7 @@ public class FieldDef {
      *
      * @return
      */
-    public Map<String, Object> getAttributeValueMap() {
+    public Map<String, Object> getAttrValueMap() {
         return attrValueMap;
     }
 }

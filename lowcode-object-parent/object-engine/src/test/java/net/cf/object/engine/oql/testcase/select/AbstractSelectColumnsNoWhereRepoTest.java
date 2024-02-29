@@ -23,6 +23,6 @@ public abstract class AbstractSelectColumnsNoWhereRepoTest extends AbstractOqlRe
         XObjectTestUtils.resolveObject(oqlStmt);
         SqlSelectStatement sqlStmt = SqlStatementUtils.fromOqlSelect(oqlStmt);
         List<Map<String, Object>> dataList = this.repository.selectList(sqlStmt);
-        assert (dataList.size() == 2);
+        assert (dataList != null && dataList.size() == 2);
     }
 }

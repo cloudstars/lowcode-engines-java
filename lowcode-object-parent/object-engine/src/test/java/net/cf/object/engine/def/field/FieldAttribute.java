@@ -1,7 +1,5 @@
 package net.cf.object.engine.def.field;
 
-import net.cf.object.engine.def.fieldtype.AttributeDescriptor;
-
 /**
  * 字段的个性化属性
  *
@@ -9,44 +7,11 @@ import net.cf.object.engine.def.fieldtype.AttributeDescriptor;
  */
 public class FieldAttribute {
 
-    /**
-     * 个性化属性归属的字段
-     */
-    private final FieldTestImpl owner;
-
-    /**
-     * 个性化属性的属性描述器
-     */
-    private final AttributeDescriptor descriptor;
-
     private String name;
 
     private String code;
 
     private Object value;
-
-    public FieldAttribute(FieldTestImpl field, AttributeDescriptor descriptor) {
-        this.owner = field;
-        this.descriptor = descriptor;
-    }
-
-    /**
-     * 获取个性化属性归属的字段
-     *
-     * @return
-     */
-    public FieldTestImpl getOwner() {
-        return this.owner;
-    }
-
-    /**
-     * 获取个性化属性的描述器
-     *
-     * @return
-     */
-    public AttributeDescriptor getDescriptor() {
-        return descriptor;
-    }
 
     /**
      * 获取配置的名称

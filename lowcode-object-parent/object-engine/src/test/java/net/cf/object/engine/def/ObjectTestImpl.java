@@ -5,6 +5,7 @@ import net.cf.object.engine.def.field.FieldTestImpl;
 import net.cf.object.engine.object.XObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,17 +21,26 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
      */
     private final ObjectDefinition objectDef;
 
+    private FieldTestImpl primaryField = null;
+
     /**
      * 模型字段
      */
     private final List<FieldTestImpl> fields = new ArrayList<>();
+
+    private final Map<String, FieldTestImpl> fieldMap = new HashMap<>();
 
     public ObjectTestImpl(ObjectDefinition objectDef) {
         this.objectDef = objectDef;
         List<FieldDef> fieldDefs = objectDef.getFields();
         for (FieldDef fieldDef : fieldDefs) {
             FieldTestImpl field = new FieldTestImpl(this, fieldDef);
-            fields.add(field);
+            this.fields.add(field);
+            this.fieldMap.put(field.getCode(), field);
+
+            if (fieldDef.getCode().equals(objectDef.getPrimaryFieldCode())) {
+                this.primaryField = field;
+            }
         }
     }
 
@@ -56,12 +66,12 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
 
     @Override
     public FieldTestImpl getField(String fieldCode) {
-        return null;
+        return this.fieldMap.get(fieldCode);
     }
 
     @Override
     public FieldTestImpl getPrimaryField() {
-        return null;
+        return this.primaryField;
     }
 
     @Override

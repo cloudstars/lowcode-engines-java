@@ -125,7 +125,7 @@ public interface XField {
      *
      * @return
      */
-    default Object getDefaultValue(Map<String, Object> dataMap) {
+    default Object getDefaultValue() {
         return null;
     }
 
@@ -143,7 +143,7 @@ public interface XField {
      *
      * @return
      */
-    default Map<String, Object> getAttrValues() {
+    default Map<String, Object> getAttributeValues() {
         return Collections.emptyMap();
     }
 
