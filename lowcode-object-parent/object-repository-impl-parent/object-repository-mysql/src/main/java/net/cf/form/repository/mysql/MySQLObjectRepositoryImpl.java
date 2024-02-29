@@ -1,6 +1,7 @@
 package net.cf.form.repository.mysql;
 
 import net.cf.form.repository.ObjectRepository;
+import net.cf.form.repository.mysql.data.SqlStatementUtils;
 import net.cf.form.repository.mysql.data.insert.InsertSqlAstVisitor;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
@@ -97,7 +98,8 @@ public class MySQLObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public List<Map<String, Object>> selectList(SqlSelectStatement statement) {
-        return null;
+        String sql = SqlStatementUtils.toSql(statement);
+        return jdbcTemplate.queryForList(sql, new HashMap<>());
     }
 
     @Override

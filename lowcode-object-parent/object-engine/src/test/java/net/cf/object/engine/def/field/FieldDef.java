@@ -35,6 +35,11 @@ public class FieldDef {
     private String code;
 
     /**
+     * 列名
+     */
+    private String columnName;
+
+    /**
      * 是否集合
      */
     private boolean isCollection;
@@ -105,6 +110,14 @@ public class FieldDef {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getColumnName() {
+        return columnName != null ? columnName : this.code;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
     public boolean isCollection() {

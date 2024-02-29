@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class ObjectDefinition {
+public class ObjectDef {
 
     /**
      * 名称
@@ -22,6 +22,11 @@ public class ObjectDefinition {
      * 代码
      */
     private String code;
+
+    /**
+     * 是否自动生成的
+     */
+    private boolean auto;
 
     /**
      * 表名称
@@ -57,6 +62,14 @@ public class ObjectDefinition {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public boolean isAuto() {
+        return auto;
+    }
+
+    public void setAuto(boolean auto) {
+        this.auto = auto;
     }
 
     public String getTableName() {

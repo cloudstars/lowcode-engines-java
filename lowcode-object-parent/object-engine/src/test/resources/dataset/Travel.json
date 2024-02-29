@@ -1,6 +1,6 @@
 {
   "name": "出差表",
-  "code": "Travel",
+  "code": "TRAVEL",
   "columns": [
     {
       "name": "申请单号",
@@ -22,6 +22,5 @@
       "APPLY_ID": "434743DSS-FEL2232-323KLFJFDS-323FDSD",
       "APPLY_NAME": "测试申请单2"
     }
-  ]
   ]
 }

@@ -19,18 +19,24 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
     /**
      * 模型定义
      */
-    private final ObjectDefinition objectDef;
+    private final ObjectDef objectDef;
 
+    /**
+     * 主键字段
+     */
     private FieldTestImpl primaryField = null;
 
     /**
-     * 模型字段
+     * 模型字段列表
      */
     private final List<FieldTestImpl> fields = new ArrayList<>();
 
+    /**
+     * 模型字段映射表，方便通过字段编号查找
+     */
     private final Map<String, FieldTestImpl> fieldMap = new HashMap<>();
 
-    public ObjectTestImpl(ObjectDefinition objectDef) {
+    public ObjectTestImpl(ObjectDef objectDef) {
         this.objectDef = objectDef;
         List<FieldDef> fieldDefs = objectDef.getFields();
         for (FieldDef fieldDef : fieldDefs) {
@@ -56,7 +62,7 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
 
     @Override
     public boolean isAutoPrimaryField() {
-        return false;
+        return this.objectDef.isAuto();
     }
 
     @Override
@@ -83,6 +89,6 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
 
     @Override
     public String getTableName() {
-        return this.getCode();
+        return this.objectDef.getTableName();
     }
 }

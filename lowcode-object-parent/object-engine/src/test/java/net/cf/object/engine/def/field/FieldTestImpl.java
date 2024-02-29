@@ -39,7 +39,7 @@ public class FieldTestImpl implements XField {
 
     @Override
     public String getColumnName() {
-        return fieldDef.getName();
+        return fieldDef.getColumnName();
     }
 
     @Override
