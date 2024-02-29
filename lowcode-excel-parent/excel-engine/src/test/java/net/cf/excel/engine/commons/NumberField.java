@@ -1,7 +1,7 @@
 package net.cf.excel.engine.commons;
 
 import net.cf.excel.engine.DataFormatter;
-import net.cf.excel.engine.SingleParseField;
+import net.cf.excel.engine.SingleExcelField;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * @CreateTime: 2024-02-28 09:00
  * @Description: 整数Field实现类
  */
-public class NumberField implements SingleParseField {
+public class NumberField implements SingleExcelField {
     String code;
 
     String name;
@@ -40,8 +40,8 @@ public class NumberField implements SingleParseField {
     public DataFormatter<BigDecimal> getDataFormatter() {
         return new DataFormatter<BigDecimal>() {
             @Override
-            public void format() {
-
+            public String format(Object data) {
+                return String.valueOf(data);
             }
 
             @Override
