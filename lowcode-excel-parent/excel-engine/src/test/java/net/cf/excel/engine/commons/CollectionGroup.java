@@ -56,7 +56,7 @@ public class CollectionGroup implements ExcelFieldGroup {
     }
 
     @Override
-    public List<SingleExcelField> getSubField() {
+    public List<SingleExcelField> getSubFields() {
         return subFields;
     }
 

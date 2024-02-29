@@ -1,5 +1,7 @@
 package net.cf.excel.engine;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import net.cf.excel.engine.commons.ExcelMergeInfo;
 import net.cf.excel.engine.commons.ExcelOpException;
 import net.cf.excel.engine.commons.build.SheetBuildInfo;
@@ -64,6 +66,66 @@ public class ExcelEngineImpl implements ExcelEngine {
     }
 
     @Override
+    public JSONArray parseExcelFields(Workbook workbook, ExcelParseConfig config) {
+        JSONArray excelFields = new JSONArray();
+
+        Sheet sheet = workbook.getSheetAt(0);
+        int titleStartRow = config.getTitleStartRow();
+        int titleEndRow = config.getTitleEndRow();
+        Map<Integer, List<ExcelMergeInfo>> titleMergeMap = getTitleMergeMap(sheet, titleStartRow, titleEndRow);
+
+        int colIndex = sheet.getRow(titleStartRow).getFirstCellNum();
+        int colEndIndex = sheet.getRow(titleStartRow).getLastCellNum();
+
+        if (titleStartRow == titleEndRow) {
+            while (colIndex < colEndIndex) {
+                JSONObject excelField = new JSONObject();
+                //只有一级表头
+                String name = getCellTitle(sheet, titleStartRow, colIndex);
+                excelField.put("name", name);
+                excelFields.add(excelField);
+                colIndex++;
+            }
+        } else {
+            while (colIndex < colEndIndex) {
+                JSONObject excelField = new JSONObject();
+                //只有一级表头:列合并单元格完全顶住上下表头区域
+                if (titleMergeMap.containsKey(colIndex) && titleMergeMap.get(colIndex).size() == 1
+                        && titleMergeMap.get(colIndex).get(0).getRowStartIndex() == titleStartRow
+                        && titleMergeMap.get(colIndex).get(0).getRowEndIndex() == titleEndRow) {
+                    String name = getCellTitle(sheet, titleStartRow, colIndex);
+                    excelField.put("name", name);
+                    excelFields.add(excelField);
+                    colIndex++;
+                } else {
+                    //二级表头的情况
+                    if (!isValidTitleGroup(titleMergeMap, sheet, titleStartRow, titleEndRow, colIndex)) {
+                        throw new ExcelOpException("不是一个合法的表头");
+                    }
+                    String parentName = getCellTitle(sheet, titleStartRow, colIndex);
+                    excelField.put("name", parentName);
+                    JSONArray subFields = new JSONArray();
+                    excelField.put("subFields", subFields);
+
+                    ExcelMergeInfo columnMergeInfo = getColumnMergeInfo(titleMergeMap.get(colIndex));
+                    int lastColumn = columnMergeInfo == null ? colIndex : columnMergeInfo.getColumnEndIndex();
+                    int detailColIndex = colIndex;
+                    while (detailColIndex <= lastColumn) {
+                        JSONObject subField = new JSONObject();
+                        String subFieldName = getCellTitle(sheet, titleEndRow, detailColIndex);
+                        subField.put("name", subFieldName);
+                        subFields.add(subField);
+                        detailColIndex++;
+                    }
+                    excelFields.add(excelField);
+                    colIndex = lastColumn + 1;
+                }
+            }
+        }
+        return excelFields;
+    }
+
+    @Override
     public Workbook buildExcel(List<Map<String, Object>> data, ExcelBuildConfig config) {
         //初始化
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -71,10 +133,10 @@ public class ExcelEngineImpl implements ExcelEngine {
         XSSFCellStyle style = setCellStyle(workbook);
         int titleStartRow = config.getTitleStartRow();
 
-        //构建表头,返回数据结束列
+        //生成表头,返回数据结束列
         int titleEndCol = buildSheetTitle(new SheetBuildInfo(sheet, 0, titleStartRow, style, config.getParseFields()));
 
-        //构建数据
+        //生成数据
         int dataStartRow = config.getParseFields().stream().anyMatch(parseField -> parseField instanceof ExcelFieldGroup) ?
                 titleStartRow + 2 : titleStartRow + 1;
         buildSheetData(new SheetBuildInfo(sheet, 0, dataStartRow, style, config.getParseFields()), data);
@@ -92,14 +154,14 @@ public class ExcelEngineImpl implements ExcelEngine {
                 if (((ExcelFieldGroup) excelField).isCollection()) {
                     List<ExcelSheetField> subFields = new ArrayList<>();
                     ExcelSheetField groupSheetField = new ExcelSheetField((ExcelFieldGroup) excelField, subFields);
-                    for (SingleExcelField singleParseField : ((ExcelFieldGroup) excelField).getSubField()) {
+                    for (SingleExcelField singleParseField : ((ExcelFieldGroup) excelField).getSubFields()) {
                         subFields.add(new ExcelSheetField(singleParseField, groupSheetField));
                     }
                     excelSheetFields.addAll(subFields);
                     excelSheetFields.add(groupSheetField);
                 } else {
                     // 对仅展示型Group下的Field进行打平处理,不build该Group对应的ExcelSheetField
-                    for (SingleExcelField singleParseField : ((ExcelFieldGroup) excelField).getSubField()) {
+                    for (SingleExcelField singleParseField : ((ExcelFieldGroup) excelField).getSubFields()) {
                         ExcelSheetField excelSheetField = new ExcelSheetField(singleParseField, null);
                         excelSheetFields.add(excelSheetField);
                     }
@@ -453,7 +515,7 @@ public class ExcelEngineImpl implements ExcelEngine {
     }
 
     /**
-     * 构建表头
+     * 生成表头
      *
      * @param buildInfo
      * @return
@@ -472,8 +534,8 @@ public class ExcelEngineImpl implements ExcelEngine {
             if (excelField instanceof ExcelFieldGroup) {
                 // 如果当前列是表头组,对表头组进行单元格列合并
                 CellRangeAddress cellMergeRegion = new CellRangeAddress(titleStartRow, titleStartRow, columnIndex,
-                        columnIndex + ((ExcelFieldGroup) excelField).getSubField().size() - 1);
-                if (((ExcelFieldGroup) excelField).getSubField().size() > 1) {
+                        columnIndex + ((ExcelFieldGroup) excelField).getSubFields().size() - 1);
+                if (((ExcelFieldGroup) excelField).getSubFields().size() > 1) {
                     // 表头组下的表头个数大于1才需要合并
                     sheet.addMergedRegion(cellMergeRegion);
                 }
@@ -481,7 +543,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                 // 处理下级表头
                 int subTitleRow = titleStartRow + 1;
                 XSSFRow subRow = sheet.getRow(subTitleRow) == null ? sheet.createRow(subTitleRow) : sheet.getRow(subTitleRow);
-                for (SingleExcelField singleParseField : ((ExcelFieldGroup) excelField).getSubField()) {
+                for (SingleExcelField singleParseField : ((ExcelFieldGroup) excelField).getSubFields()) {
                     buildSheetCell(singleParseField.getName(), columnIndex, subRow, cellStyle);
                     columnIndex++;
                 }
@@ -499,7 +561,7 @@ public class ExcelEngineImpl implements ExcelEngine {
     }
 
     /**
-     * 构建数据
+     * 生成数据
      *
      * @param buildInfo
      * @return
@@ -522,7 +584,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                         //处理聚合数据
                         columnIndex = buildCollectedData(buildInfo, rowData, field, rowIndex, sheet, columnIndex);
                     } else {
-                        for (SingleExcelField singleParseField : ((ExcelFieldGroup) field).getSubField()) {
+                        for (SingleExcelField singleParseField : ((ExcelFieldGroup) field).getSubFields()) {
                             columnIndex = buildSingleData(buildInfo, sheet, rowIndex, rowData, columnIndex, endRow, row, singleParseField);
                         }
 
@@ -580,7 +642,7 @@ public class ExcelEngineImpl implements ExcelEngine {
             for (Map<String, Object> subRowData : value) {
                 XSSFRow subRow = sheet.getRow(subRowIndex) == null ? sheet.createRow(subRowIndex) : sheet.getRow(subRowIndex);
                 int subColumnIndex = columnIndex;
-                for (SingleExcelField singleParseField : ((ExcelFieldGroup) field).getSubField()) {
+                for (SingleExcelField singleParseField : ((ExcelFieldGroup) field).getSubFields()) {
                     String subValue = (String) singleParseField.getDataFormatter().format(subRowData.get(singleParseField.getCode()));
                     buildSheetCell(subValue, subColumnIndex, subRow, buildInfo.getCellStyle());
                     subColumnIndex++;
@@ -588,7 +650,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                 subRowIndex++;
             }
         }
-        columnIndex += ((ExcelFieldGroup) field).getSubField().size();
+        columnIndex += ((ExcelFieldGroup) field).getSubFields().size();
         return columnIndex;
     }
 
