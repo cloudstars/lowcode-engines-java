@@ -6,6 +6,6 @@ package net.cf.excel.engine;
  * @Description: excel解析用单个field 对外接口
  */
 
-public interface SingleParseField extends ParseField {
+public interface SingleExcelField extends ExcelField {
 
 }

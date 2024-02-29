@@ -1,6 +1,6 @@
 package net.cf.excel.engine.config;
 
-import net.cf.excel.engine.ParseField;
+import net.cf.excel.engine.ExcelField;
 
 import java.util.List;
 
@@ -14,18 +14,18 @@ public class ExcelParseConfig {
     /**
      * EXCEL的列配置
      */
-    private List<ParseField> parseFields;
+    private List<ExcelField> excelFields;
 
     private int titleStartRow;
 
     private int titleEndRow;
 
-    public List<ParseField> getParseFields() {
-        return parseFields;
+    public List<ExcelField> getParseFields() {
+        return excelFields;
     }
 
-    public void setParseFields(List<ParseField> parseFields) {
-        this.parseFields = parseFields;
+    public void setParseFields(List<ExcelField> excelFields) {
+        this.excelFields = excelFields;
     }
 
     public int getTitleStartRow() {

@@ -1,8 +1,8 @@
 package net.cf.excel.engine.commons;
 
 import net.cf.excel.engine.DataFormatter;
-import net.cf.excel.engine.ParseFieldGroup;
-import net.cf.excel.engine.SingleParseField;
+import net.cf.excel.engine.ExcelFieldGroup;
+import net.cf.excel.engine.SingleExcelField;
 
 import java.util.List;
 
@@ -11,14 +11,14 @@ import java.util.List;
  * @CreateTime: 2024-02-28 08:45
  * @Description: 仅展示group实现类
  */
-public class ShowGroup implements ParseFieldGroup {
+public class ShowGroup implements ExcelFieldGroup {
     private String code;
 
     private String name;
 
-    private List<SingleParseField> subFields;
+    private List<SingleExcelField> subFields;
 
-    public ShowGroup(String code, String name, List<SingleParseField> subFields) {
+    public ShowGroup(String code, String name, List<SingleExcelField> subFields) {
         this.code = code;
         this.name = name;
         this.subFields = subFields;
@@ -45,7 +45,7 @@ public class ShowGroup implements ParseFieldGroup {
     }
 
     @Override
-    public List<SingleParseField> getSubField() {
+    public List<SingleExcelField> getSubFields() {
         return subFields;
     }
 

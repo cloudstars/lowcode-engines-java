@@ -9,7 +9,7 @@ public interface DataFormatter<T> {
     /**
      * 数据格式化 生成Excel用
      */
-    void format();
+    Object format(Object data);
 
     /**
      * 数据反格式化 解析Excel用

@@ -21,7 +21,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExcelEngineImplTest {
+/**
+ * @Author: 胡凌云
+ * @CreateTime: 2024-02-28 17:25
+ * @Description: excel解析测试
+ */
+public class ExcelParseTest {
 
     // 单个字段解析
     @Test
@@ -34,11 +39,11 @@ public class ExcelEngineImplTest {
             throw new RuntimeException(e);
         }
         ExcelParseConfig config = new ExcelParseConfig();
-        List<ParseField> parseFields = new ArrayList<>();
+        List<ExcelField> excelFields = new ArrayList<>();
 
-        parseFields.add(new TextField("peopleName", "姓名"));
-        parseFields.add(new TextField("gender", "性别"));
-        config.setParseFields(parseFields);
+        excelFields.add(new TextField("peopleName", "姓名"));
+        excelFields.add(new TextField("gender", "性别"));
+        config.setParseFields(excelFields);
         config.setTitleStartRow(0);
         config.setTitleEndRow(0);
 
@@ -58,18 +63,17 @@ public class ExcelEngineImplTest {
             throw new RuntimeException(e);
         }
         ExcelParseConfig config = new ExcelParseConfig();
-        List<ParseField> parseFields = new ArrayList<>();
+        List<ExcelField> excelFields = new ArrayList<>();
 
-        parseFields.add(new TextField("peopleName", "姓名"));
-        parseFields.add(new TextField("gender", "性别"));
-
-        List<SingleParseField> subFields = new ArrayList<>();
+        excelFields.add(new TextField("peopleName", "姓名"));
+        excelFields.add(new TextField("gender", "性别"));
+        List<SingleExcelField> subFields = new ArrayList<>();
         subFields.add(new TextField("signInTime", "签到时间"));
         subFields.add(new TextField("signOutTime", "签退时间"));
-        ParseFieldGroup parseFieldGroup = new CollectionGroup("attendance", "考勤记录", subFields);
-        parseFields.add(parseFieldGroup);
+        ExcelFieldGroup parseFieldGroup = new CollectionGroup("attendance", "考勤记录", subFields);
+        excelFields.add(parseFieldGroup);
 
-        config.setParseFields(parseFields);
+        config.setParseFields(excelFields);
         config.setTitleStartRow(0);
         config.setTitleEndRow(1);
 
@@ -99,17 +103,16 @@ public class ExcelEngineImplTest {
             throw new RuntimeException(e);
         }
         ExcelParseConfig config = new ExcelParseConfig();
-        List<ParseField> parseFields = new ArrayList<>();
+        List<ExcelField> excelFields = new ArrayList<>();
 
-        parseFields.add(new TextField("peopleName", "姓名"));
-        List<SingleParseField> subFields = new ArrayList<>();
+        excelFields.add(new TextField("peopleName", "姓名"));
+        List<SingleExcelField> subFields = new ArrayList<>();
         subFields.add(new TextField("gender", "性别"));
         subFields.add(new NumberField("age", "年龄"));
+        ExcelFieldGroup parseFieldGroup = new ShowGroup("message", "个人信息", subFields);
+        excelFields.add(parseFieldGroup);
 
-        ParseFieldGroup parseFieldGroup = new ShowGroup("message", "个人信息", subFields);
-        parseFields.add(parseFieldGroup);
-
-        config.setParseFields(parseFields);
+        config.setParseFields(excelFields);
         config.setTitleStartRow(0);
         config.setTitleEndRow(1);
 
@@ -129,23 +132,23 @@ public class ExcelEngineImplTest {
             throw new RuntimeException(e);
         }
         ExcelParseConfig config = new ExcelParseConfig();
-        List<ParseField> parseFields = new ArrayList<>();
+        List<ExcelField> excelFields = new ArrayList<>();
 
-        parseFields.add(new TextField("peopleName", "姓名"));
-        List<SingleParseField> subFields = new ArrayList<>();
+        excelFields.add(new TextField("peopleName", "姓名"));
+        List<SingleExcelField> subFields = new ArrayList<>();
         subFields.add(new TextField("gender", "性别"));
         subFields.add(new NumberField("age", "年龄"));
 
-        ParseFieldGroup showGroup = new ShowGroup("message", "个人信息", subFields);
-        parseFields.add(showGroup);
+        ExcelFieldGroup showGroup = new ShowGroup("message", "个人信息", subFields);
+        excelFields.add(showGroup);
 
         subFields = new ArrayList<>();
         subFields.add(new TextField("signInTime", "签到时间"));
         subFields.add(new TextField("signOutTime", "签退时间"));
-        ParseFieldGroup collectionGroup = new CollectionGroup("attendance", "考勤记录", subFields);
-        parseFields.add(collectionGroup);
+        ExcelFieldGroup collectionGroup = new CollectionGroup("attendance", "考勤记录", subFields);
+        excelFields.add(collectionGroup);
 
-        config.setParseFields(parseFields);
+        config.setParseFields(excelFields);
         config.setTitleStartRow(0);
         config.setTitleEndRow(1);
 
