@@ -2,8 +2,8 @@ package net.cf.commons.test.util;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
 import java.sql.Time;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@RunWith(JUnit4ClassRunner.class)
+@RunWith(JUnit4.class)
 public class DataCompareUtilsTest {
 
     @Test

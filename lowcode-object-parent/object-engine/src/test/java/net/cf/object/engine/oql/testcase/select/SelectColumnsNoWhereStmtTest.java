@@ -1,26 +1,27 @@
-package net.cf.object.engine.ast.statement.select;
+package net.cf.object.engine.oql.testcase.select;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.object.engine.ast.statement.AbstractOqlTest;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
+import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.util.OqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class SelectColumnsNoWhereStmtTest extends AbstractOqlTest {
+public class SelectColumnsNoWhereStmtTest extends AbstractOqlTest implements ISelectColumnsNoWhereTest {
 
     public SelectColumnsNoWhereStmtTest() {
-        super("oql/select/SelectColumnsNoWhere.json");
+        super(OQL_FILE_PATH);
     }
 
     @Test
+    @Override
     public void testSelectTravelList() {
-        String oql = this.oqlMap.get("SelectTravelList");
+        String oql = this.oqlMap.get(OQL_SELECT_TRAVEL_LIST);
         assert (oql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的

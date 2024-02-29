@@ -5,21 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.cloudstars</groupId>
-        <artifactId>lowcode-form-repository-impl-parent</artifactId>
+        <artifactId>lowcode-object-repository-impl-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-form-repository-cfdata-server</artifactId>
+    <artifactId>lowcode-object-repository-cfdata-server</artifactId>
     <description>低代码模型引擎cfdata协议服务端实现，部署在低代码平台外部</description>
 
     <dependencies>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-repository</artifactId>
+            <artifactId>lowcode-object-repository</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-form-repository-testcases</artifactId>
+            <artifactId>lowcode-object-repository-testcases</artifactId>
         </dependency>
     </dependencies>
 

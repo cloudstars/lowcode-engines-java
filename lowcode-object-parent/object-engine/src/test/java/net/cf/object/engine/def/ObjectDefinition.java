@@ -2,7 +2,6 @@ package net.cf.object.engine.def;
 
 import net.cf.object.engine.def.field.FieldDef;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public class ObjectDefinition {
     /**
      * 字段列表
      */
-    private final List<FieldDef> fields = new ArrayList<>();
+    private List<FieldDef> fields;
 
     /**
      * 字段映射表
@@ -80,9 +79,17 @@ public class ObjectDefinition {
         return fields;
     }
 
-    public void addField(FieldDef field) {
-        this.fields.add(field);
-        this.fieldMap.put(field.getName(), field);
+    public void setFields(List<FieldDef> fields) {
+        this.fields = fields;
+        if (this.fieldMap.size() > 0) {
+            this.fieldMap.clear();
+        }
+        for (FieldDef field : fields) {
+            this.fieldMap.put(field.getCode(), field);
+        }
     }
 
+    public Map<String, FieldDef> getFieldMap() {
+        return fieldMap;
+    }
 }

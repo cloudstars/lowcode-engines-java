@@ -1,7 +1,7 @@
 package net.cf.object.engine.def.field;
 
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@RunWith(JUnit4ClassRunner.class)
+@RunWith(JUnit4.class)
 public class FormulaTestUtils {
 
     private static final ExpressionParser EXPR_PARSER = new SpelExpressionParser();

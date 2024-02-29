@@ -1,13 +1,13 @@
 package net.cf.commons.test.util;
 
 import org.junit.Test;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.Date;
 import java.util.List;
 
-@RunWith(JUnit4ClassRunner.class)
+@RunWith(JUnit4.class)
 public class ObjectUtilsTest {
 
     @Test

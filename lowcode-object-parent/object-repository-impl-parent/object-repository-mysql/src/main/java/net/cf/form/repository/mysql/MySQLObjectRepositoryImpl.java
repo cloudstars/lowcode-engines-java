@@ -8,22 +8,20 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
 public class MySQLObjectRepositoryImpl implements ObjectRepository {
 
     private final Logger logger = LoggerFactory.getLogger(MySQLObjectRepositoryImpl.class);
 
-    @Resource
-    private JdbcTemplate template;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public MySQLObjectRepositoryImpl() {
+    public MySQLObjectRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -32,7 +30,7 @@ public class MySQLObjectRepositoryImpl implements ObjectRepository {
         InsertSqlAstVisitor visitor = new InsertSqlAstVisitor(builder);
         statement.accept(visitor);
         String sql = builder.toString();
-        int effectedRows = this.template.update(sql);
+        int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
         if (effectedRows < 1) {
             // throw new SQLEXCEPTION("数据插入失败！");
         }
@@ -48,7 +46,7 @@ public class MySQLObjectRepositoryImpl implements ObjectRepository {
         statement.accept(visitor);
         String sql = builder.toString();
         // TODO 判断是否存在自增主键
-        int effectedRows = this.template.update(sql, paramMap);
+        int effectedRows = this.jdbcTemplate.update(sql, paramMap);
         return effectedRows;
     }
 

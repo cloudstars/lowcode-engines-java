@@ -1,5 +1,6 @@
 package net.cf.object.engine.def.field;
 
+import net.cf.object.engine.fieldtype.DefaultValueConfig;
 import net.cf.object.engine.def.fieldtype.AttributeDescriptor;
 import net.cf.object.engine.object.DataType;
 
@@ -68,11 +69,6 @@ public class FieldDef {
      * 字段的数据子属性
      */
     private List<FieldPropertyTestImpl> properties;
-
-    /**
-     * 字段的个性化属性
-     */
-    //private List<FieldAttributeTestImpl> attributes;
 
     /**
      * 字段的个性化属性的值映射
@@ -167,12 +163,7 @@ public class FieldDef {
         this.properties = properties;
     }
 
-    /*public List<FieldAttributeTestImpl> getAttributes() {
-        return attributes;
-    }*/
-
     public void setAttributes(List<FieldAttribute> attributes) {
-        //this.attributes = attributes;
         for (FieldAttribute attribute : attributes) {
             String attrCode = attribute.getCode();
             Object attrValue = attribute.getValue();

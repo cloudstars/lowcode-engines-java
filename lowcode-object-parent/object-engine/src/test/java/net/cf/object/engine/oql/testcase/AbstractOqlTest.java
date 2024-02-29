@@ -1,4 +1,4 @@
-package net.cf.object.engine.ast.statement;
+package net.cf.object.engine.oql.testcase;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

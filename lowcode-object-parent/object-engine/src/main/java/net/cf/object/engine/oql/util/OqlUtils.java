@@ -88,6 +88,4 @@ public class OqlUtils {
         return (OqlSelectStatement) statements.get(0);
     }
 
-
-
 }

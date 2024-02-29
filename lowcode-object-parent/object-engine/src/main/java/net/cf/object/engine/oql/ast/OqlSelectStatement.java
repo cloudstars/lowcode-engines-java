@@ -16,7 +16,6 @@ public class OqlSelectStatement extends AbstractOqlStatementImpl {
     public OqlSelectStatement() {
     }
 
-
     public OqlSelectStatement(OqlSelect select) {
         this.setSelect(select);
     }

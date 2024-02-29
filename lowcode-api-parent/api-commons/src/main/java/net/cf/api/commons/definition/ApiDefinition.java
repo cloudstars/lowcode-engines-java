@@ -1,6 +1,5 @@
 package net.cf.api.commons.definition;
 
-import com.alibaba.fastjson.JSONObject;
 import net.cf.api.commons.enums.ApiPublicizedEnum;
 import net.cf.api.commons.enums.ApiTypeEnum;
 

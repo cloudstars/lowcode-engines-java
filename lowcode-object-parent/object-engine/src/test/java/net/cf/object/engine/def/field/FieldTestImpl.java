@@ -1,6 +1,8 @@
 package net.cf.object.engine.def.field;
 
 import net.cf.object.engine.def.ObjectTestImpl;
+import net.cf.object.engine.fieldtype.DefaultValueConfig;
+import net.cf.object.engine.fieldtype.DefaultValueType;
 import net.cf.object.engine.object.DataType;
 import net.cf.object.engine.object.XField;
 
@@ -28,12 +30,12 @@ public class FieldTestImpl implements XField {
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return fieldDef.getName();
     }
 
     @Override
-    public String getName() {
+    public String getCode() {
         return fieldDef.getCode();
     }
 
