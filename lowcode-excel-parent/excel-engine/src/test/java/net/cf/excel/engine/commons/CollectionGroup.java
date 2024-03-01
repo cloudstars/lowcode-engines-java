@@ -1,8 +1,8 @@
 package net.cf.excel.engine.commons;
 
 import net.cf.excel.engine.DataFormatter;
-import net.cf.excel.engine.ExcelFieldGroup;
-import net.cf.excel.engine.SingleExcelField;
+import net.cf.excel.engine.ExcelTitleGroup;
+import net.cf.excel.engine.SingleExcelTitle;
 
 import java.util.List;
 import java.util.Map;
@@ -12,14 +12,14 @@ import java.util.Map;
  * @CreateTime: 2024-02-27 19:06
  * @Description: 主子表字段
  */
-public class CollectionGroup implements ExcelFieldGroup {
+public class CollectionGroup implements ExcelTitleGroup {
     private String code;
 
     private String name;
 
-    private List<SingleExcelField> subFields;
+    private List<SingleExcelTitle> subFields;
 
-    public CollectionGroup(String code, String name, List<SingleExcelField> subFields) {
+    public CollectionGroup(String code, String name, List<SingleExcelTitle> subFields) {
         this.code = code;
         this.name = name;
         this.subFields = subFields;
@@ -44,19 +44,19 @@ public class CollectionGroup implements ExcelFieldGroup {
     public DataFormatter<List> getDataFormatter() {
         return new DataFormatter<List>() {
             @Override
-            public List<Map<String, Object>> format(Object data) {
-                return (List<Map<String, Object>>) data;
+            public List<Map<String, Object>> format(Object value, Map<String, Object> dataMap) {
+                return (List<Map<String, Object>>) value;
             }
 
             @Override
-            public List unFormat(Object data) {
-                return (List) data;
+            public List unFormat(Object value, Map<String, Object> dataMap) {
+                return (List) value;
             }
         };
     }
 
     @Override
-    public List<SingleExcelField> getSubFields() {
+    public List<SingleExcelTitle> getSubTitles() {
         return subFields;
     }
 

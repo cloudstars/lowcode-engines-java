@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import net.cf.commons.test.util.DataCompareUtils;
 import net.cf.commons.test.util.FileUtils;
-import net.cf.excel.engine.config.ExcelParseConfig;
+import net.cf.excel.engine.bean.ExcelTitleBean;
+import net.cf.excel.engine.bean.ExcelTitleParseConfig;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @Author: 胡凌云
@@ -30,15 +32,14 @@ public class ExcelFieldsParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelParseConfig();
+        ExcelTitleParseConfig config = new ExcelTitleParseConfig();
 
         config.setTitleStartRow(0);
         config.setTitleEndRow(1);
 
-        JSONArray sourceDataList = engine.parseExcelFields(workbook, config);
-        System.out.println(sourceDataList);
+        List<ExcelTitleBean> sourceDataList = engine.parseExcelTitles(workbook, config);
         JSONArray targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel表头解析测试/解析后数据/联合测试1.json"));
-        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
+        Assertions.assertTrue(DataCompareUtils.equalsList(sourceDataList, targetDataList));
     }
 
     private Workbook createWorkbook(InputStream in, String excelFileName) throws IOException {

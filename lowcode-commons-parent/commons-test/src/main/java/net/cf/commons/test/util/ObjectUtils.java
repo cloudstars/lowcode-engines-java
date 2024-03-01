@@ -101,7 +101,7 @@ public final class ObjectUtils {
         for (int i = 0; i < sl; i++) {
             Object source = sourceList.get(i);
             Object target = targetList.get(i);
-            if (ObjectUtils.equalsObject(source, target, comparator)) {
+            if (!ObjectUtils.equalsObject(source, target, comparator)) {
                 return false;
             }
         }

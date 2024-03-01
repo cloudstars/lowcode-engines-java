@@ -1,6 +1,6 @@
 package net.cf.excel.engine.commons.build;
 
-import net.cf.excel.engine.ExcelField;
+import net.cf.excel.engine.ExcelTitle;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
@@ -20,14 +20,14 @@ public class SheetBuildInfo {
 
     private XSSFCellStyle cellStyle;
 
-    private List<ExcelField> excelFields;
+    private List<ExcelTitle> excelTitles;
 
-    public SheetBuildInfo(XSSFSheet sheet, int startColumn, int startRow, XSSFCellStyle cellStyle, List<ExcelField> excelFields) {
+    public SheetBuildInfo(XSSFSheet sheet, int startColumn, int startRow, XSSFCellStyle cellStyle, List<ExcelTitle> excelTitles) {
         this.sheet = sheet;
         this.startColumn = startColumn;
         this.startRow = startRow;
         this.cellStyle = cellStyle;
-        this.excelFields = excelFields;
+        this.excelTitles = excelTitles;
     }
 
     public XSSFSheet getSheet() {
@@ -62,11 +62,11 @@ public class SheetBuildInfo {
         this.cellStyle = cellStyle;
     }
 
-    public List<ExcelField> getParseFields() {
-        return excelFields;
+    public List<ExcelTitle> getParseFields() {
+        return excelTitles;
     }
 
-    public void setParseFields(List<ExcelField> excelFields) {
-        this.excelFields = excelFields;
+    public void setParseFields(List<ExcelTitle> excelTitles) {
+        this.excelTitles = excelTitles;
     }
 }
