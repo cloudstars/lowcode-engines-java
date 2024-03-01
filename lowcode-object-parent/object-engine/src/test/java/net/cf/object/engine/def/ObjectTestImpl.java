@@ -5,6 +5,7 @@ import net.cf.object.engine.def.field.FieldTestImpl;
 import net.cf.object.engine.object.XObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,19 +19,34 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
     /**
      * 模型定义
      */
-    private final ObjectDefinition objectDef;
+    private final ObjectDef objectDef;
 
     /**
-     * 模型字段
+     * 主键字段
+     */
+    private FieldTestImpl primaryField = null;
+
+    /**
+     * 模型字段列表
      */
     private final List<FieldTestImpl> fields = new ArrayList<>();
 
-    public ObjectTestImpl(ObjectDefinition objectDef) {
+    /**
+     * 模型字段映射表，方便通过字段编号查找
+     */
+    private final Map<String, FieldTestImpl> fieldMap = new HashMap<>();
+
+    public ObjectTestImpl(ObjectDef objectDef) {
         this.objectDef = objectDef;
         List<FieldDef> fieldDefs = objectDef.getFields();
         for (FieldDef fieldDef : fieldDefs) {
             FieldTestImpl field = new FieldTestImpl(this, fieldDef);
-            fields.add(field);
+            this.fields.add(field);
+            this.fieldMap.put(field.getCode(), field);
+
+            if (fieldDef.getCode().equals(objectDef.getPrimaryFieldCode())) {
+                this.primaryField = field;
+            }
         }
     }
 
@@ -46,7 +62,7 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
 
     @Override
     public boolean isAutoPrimaryField() {
-        return false;
+        return this.objectDef.isAuto();
     }
 
     @Override
@@ -56,12 +72,12 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
 
     @Override
     public FieldTestImpl getField(String fieldCode) {
-        return null;
+        return this.fieldMap.get(fieldCode);
     }
 
     @Override
     public FieldTestImpl getPrimaryField() {
-        return null;
+        return this.primaryField;
     }
 
     @Override
@@ -73,6 +89,6 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
 
     @Override
     public String getTableName() {
-        return this.getCode();
+        return this.objectDef.getTableName();
     }
 }

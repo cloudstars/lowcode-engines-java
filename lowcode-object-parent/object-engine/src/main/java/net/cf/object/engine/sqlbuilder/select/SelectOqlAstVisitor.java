@@ -4,6 +4,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
@@ -36,6 +37,10 @@ public final class SelectOqlAstVisitor extends OqlAstVisitorAdaptor {
                 SqlSelectItem sqlSelectItem = oqlSelectItem.cloneMe();
                 SqlExpr expr = oqlSelectItem.getExpr();
                 if (expr instanceof SqlIdentifierExpr) {
+                    SqlIdentifierExpr identExpr = (SqlIdentifierExpr) expr;
+                    String fieldCode = identExpr.getName();
+                    XField field = object.getField(fieldCode);
+                    sqlSelectItem.setExpr(new SqlIdentifierExpr(field.getColumnName()));
                     String alias = oqlSelectItem.getAlias();
                     if (!StringUtils.hasLength(alias)) {
                         // 如果没有显式指定alias，那么查询的返回结果字段名为字段名

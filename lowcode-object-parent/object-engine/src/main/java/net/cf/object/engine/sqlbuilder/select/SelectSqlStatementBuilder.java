@@ -26,7 +26,7 @@ public class SelectSqlStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
      * @return
      */
     public SelectSqlStatementBuilder appendSelectItem(SqlSelectItem selectItem) {
-        select.addSelectItem(selectItem);
+        this.select.addSelectItem(selectItem);
         return this;
     }
 
@@ -36,7 +36,7 @@ public class SelectSqlStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
      * @param tableSource
      */
     public void setTableSource(SqlTableSource tableSource) {
-        select.setFrom(tableSource);
+        this.select.setFrom(tableSource);
     }
 
     @Override

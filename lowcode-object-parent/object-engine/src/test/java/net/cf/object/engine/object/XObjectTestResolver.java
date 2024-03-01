@@ -1,11 +1,9 @@
 package net.cf.object.engine.object;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import net.cf.commons.test.util.FileUtils;
-import net.cf.object.engine.def.ObjectDefinition;
+import net.cf.object.engine.def.ObjectDef;
 import net.cf.object.engine.def.ObjectTestImpl;
-import net.cf.object.engine.def.field.FieldDef;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,14 +29,7 @@ public class XObjectTestResolver {
          */
         Map<String, String> objectsJson = FileUtils.loadTextsFromClasspath("object/*.json");
         for (Map.Entry<String, String> entry : objectsJson.entrySet()) {
-            JSONObject objectJson = JSONObject.parseObject(entry.getValue());
-            JSONArray fieldsJsonArr = objectJson.getJSONArray("fields");
-            assert (fieldsJsonArr.size() > 0);
-            ObjectDefinition objectDef = JSONObject.parseObject(entry.getValue(), ObjectDefinition.class);
-            for (int i = 0, s = fieldsJsonArr.size(); i < s; i++) {
-                FieldDef fieldDef = JSONObject.parseObject(fieldsJsonArr.getString(i), FieldDef.class);
-                objectDef.getFields().add(fieldDef);
-            }
+            ObjectDef objectDef = JSONObject.parseObject(entry.getValue(), ObjectDef.class);
             ObjectTestImpl object = new ObjectTestImpl(objectDef);
             objectMap.put(object.getCode(), object);
         }

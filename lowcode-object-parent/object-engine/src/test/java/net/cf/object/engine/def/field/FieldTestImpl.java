@@ -1,8 +1,6 @@
 package net.cf.object.engine.def.field;
 
 import net.cf.object.engine.def.ObjectTestImpl;
-import net.cf.object.engine.fieldtype.DefaultValueConfig;
-import net.cf.object.engine.fieldtype.DefaultValueType;
 import net.cf.object.engine.object.DataType;
 import net.cf.object.engine.object.XField;
 
@@ -41,7 +39,7 @@ public class FieldTestImpl implements XField {
 
     @Override
     public String getColumnName() {
-        return fieldDef.getName();
+        return fieldDef.getColumnName();
     }
 
     @Override
@@ -65,22 +63,8 @@ public class FieldTestImpl implements XField {
     }
 
     @Override
-    public Object getDefaultValue(Map<String, Object> dataMap) {
-        DefaultValueConfig defaultValueConfig = this.fieldDef.getDefaultValueConfig();
-        if (defaultValueConfig == null) {
-            // 没有配置设置值，返回null
-            return null;
-        }
-
-        // 根据默认值的类型时是常量和表达式来执行不同的逻辑
-        DefaultValueType defaultValueType = defaultValueConfig.getType();
-        if (DefaultValueType.LITERAL == defaultValueType) {
-            return defaultValueConfig.getValue();
-        } else if (DefaultValueType.FORMULA == defaultValueType) {
-            return FormulaTestUtils.eval(defaultValueConfig.getValue(), dataMap);
-        } else {
-            return null;
-        }
+    public Object getDefaultValue() {
+        return this.fieldDef.getDefaultValue();
     }
 
     @Override
@@ -89,7 +73,7 @@ public class FieldTestImpl implements XField {
     }
 
     @Override
-    public Map<String, Object> getAttrValues() {
-        return this.fieldDef.getAttributeValueMap();
+    public Map<String, Object> getAttributeValues() {
+        return this.fieldDef.getAttrValueMap();
     }
 }

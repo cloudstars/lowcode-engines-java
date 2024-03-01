@@ -5,9 +5,9 @@ import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.sqlbuilder.select.SelectOqlAstVisitor;
 import net.cf.object.engine.sqlbuilder.select.SelectSqlStatementBuilder;
 
-public final class SqlStatementUtils {
+public final class OqlStatementUtils {
 
-    private SqlStatementUtils() {
+    private OqlStatementUtils() {
     }
 
     /**
@@ -16,7 +16,7 @@ public final class SqlStatementUtils {
      * @param stmt
      * @return
      */
-    public static SqlSelectStatement fromOqlSelect(OqlSelectStatement stmt) {
+    public static SqlSelectStatement toSqlSelect(OqlSelectStatement stmt) {
         SelectSqlStatementBuilder builder = new SelectSqlStatementBuilder();
         SelectOqlAstVisitor visitor = new SelectOqlAstVisitor(builder);
         stmt.accept(visitor);
