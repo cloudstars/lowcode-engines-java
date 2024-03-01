@@ -24,7 +24,7 @@ public class DataParseInfo {
     /**
      * sheet表标题信息集合
      */
-    private List<ExcelTitleInfo> titleInfoList;
+    private List<SheetTitleInfo> titleInfoList;
 
     /**
      * sheet表字段集合
@@ -41,7 +41,7 @@ public class DataParseInfo {
      */
     private int dataEndRow;
 
-    public DataParseInfo(Sheet sheet, FormulaEvaluator formulaEvaluator, List<ExcelTitleInfo> titleInfoList, List<ExcelSheetField> sheetFieldList, int dataStartRow, int dataEndRow) {
+    public DataParseInfo(Sheet sheet, FormulaEvaluator formulaEvaluator, List<SheetTitleInfo> titleInfoList, List<ExcelSheetField> sheetFieldList, int dataStartRow, int dataEndRow) {
         this.sheet = sheet;
         this.formulaEvaluator = formulaEvaluator;
         this.titleInfoList = titleInfoList;
@@ -66,11 +66,11 @@ public class DataParseInfo {
         this.formulaEvaluator = formulaEvaluator;
     }
 
-    public List<ExcelTitleInfo> getTitleInfoList() {
+    public List<SheetTitleInfo> getTitleInfoList() {
         return titleInfoList;
     }
 
-    public void setTitleInfoList(List<ExcelTitleInfo> titleInfoList) {
+    public void setTitleInfoList(List<SheetTitleInfo> titleInfoList) {
         this.titleInfoList = titleInfoList;
     }
 

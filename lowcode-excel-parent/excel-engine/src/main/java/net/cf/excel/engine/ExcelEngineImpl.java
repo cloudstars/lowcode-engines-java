@@ -9,7 +9,7 @@ import net.cf.excel.engine.commons.ExcelOpException;
 import net.cf.excel.engine.commons.build.SheetBuildInfo;
 import net.cf.excel.engine.commons.parse.DataParseInfo;
 import net.cf.excel.engine.commons.parse.ExcelSheetField;
-import net.cf.excel.engine.commons.parse.ExcelTitleInfo;
+import net.cf.excel.engine.commons.parse.SheetTitleInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.*;
@@ -53,7 +53,7 @@ public class ExcelEngineImpl implements ExcelEngine {
         Sheet sheet = workbook.getSheetAt(0);
 
         // 解析表头信息
-        List<ExcelTitleInfo> titleInfos = parseSheetTitleInfo(sheet, titleStartRow, titleEndRow, excelSheetFields);
+        List<SheetTitleInfo> titleInfos = parseSheetTitleInfo(sheet, titleStartRow, titleEndRow, excelSheetFields);
 
         //数据处理
         int dataStartRow = titleEndRow + 1;
@@ -190,8 +190,8 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param excelSheetFields
      * @return
      */
-    private List<ExcelTitleInfo> parseSheetTitleInfo(Sheet sheet, int titleStartRow, int titleEndRow, List<ExcelSheetField> excelSheetFields) {
-        List<ExcelTitleInfo> titleInfoList = new ArrayList<>();
+    private List<SheetTitleInfo> parseSheetTitleInfo(Sheet sheet, int titleStartRow, int titleEndRow, List<ExcelSheetField> excelSheetFields) {
+        List<SheetTitleInfo> titleInfoList = new ArrayList<>();
         //key为合并单元格开始的列，值为表头中以该列为起始列的所有合并单元格
         Map<Integer, List<ExcelMergeInfo>> titleMergeMap = getTitleMergeMap(sheet, titleStartRow, titleEndRow);
 
@@ -205,7 +205,7 @@ public class ExcelEngineImpl implements ExcelEngine {
             while (colIndex < colEndIndex) {
                 //只有一级表头
                 String title = getCellTitle(sheet, titleStartRow, colIndex);
-                ExcelTitleInfo titleInfo = new ExcelTitleInfo(null, title, colIndex, false, false);
+                SheetTitleInfo titleInfo = new SheetTitleInfo(null, title, colIndex, false, false);
                 addExcelTitleInfo(titleInfo, sheetFieldNames, titleInfoList);
                 colIndex++;
             }
@@ -216,7 +216,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                         && titleMergeMap.get(colIndex).get(0).getRowStartIndex() == titleStartRow
                         && titleMergeMap.get(colIndex).get(0).getRowEndIndex() == titleEndRow) {
                     String title = getCellTitle(sheet, titleStartRow, colIndex);
-                    ExcelTitleInfo titleInfo = new ExcelTitleInfo(null, title, colIndex, true, false);
+                    SheetTitleInfo titleInfo = new SheetTitleInfo(null, title, colIndex, true, false);
                     addExcelTitleInfo(titleInfo, sheetFieldNames, titleInfoList);
                     colIndex++;
                 } else {
@@ -229,7 +229,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                     boolean isCollection = false;
                     if (sheetFieldNames.contains(parentTitle)) {
                         isCollection = true;
-                        ExcelTitleInfo titleInfo = new ExcelTitleInfo(null, parentTitle, colIndex, false, true);
+                        SheetTitleInfo titleInfo = new SheetTitleInfo(null, parentTitle, colIndex, false, true);
                         addExcelTitleInfo(titleInfo, sheetFieldNames, titleInfoList);
                     }
 
@@ -238,8 +238,8 @@ public class ExcelEngineImpl implements ExcelEngine {
                     int detailColIndex = colIndex;
                     while (detailColIndex <= lastColumn) {
                         String title = getCellTitle(sheet, titleEndRow, detailColIndex);
-                        ExcelTitleInfo titleInfo = isCollection ? new ExcelTitleInfo(parentTitle, title, detailColIndex, false, false)
-                                : new ExcelTitleInfo(null, title, detailColIndex, false, false);
+                        SheetTitleInfo titleInfo = isCollection ? new SheetTitleInfo(parentTitle, title, detailColIndex, false, false)
+                                : new SheetTitleInfo(null, title, detailColIndex, false, false);
                         addExcelTitleInfo(titleInfo, sheetFieldNames, titleInfoList);
                         detailColIndex++;
                     }
@@ -250,9 +250,9 @@ public class ExcelEngineImpl implements ExcelEngine {
         return titleInfoList;
     }
 
-    private void addExcelTitleInfo(ExcelTitleInfo excelTitleInfo, List<String> sheetFieldNames, List<ExcelTitleInfo> titleInfoList) {
-        if (sheetFieldNames.contains(excelTitleInfo.getUniqueTitle())) {
-            titleInfoList.add(excelTitleInfo);
+    private void addExcelTitleInfo(SheetTitleInfo sheetTitleInfo, List<String> sheetFieldNames, List<SheetTitleInfo> titleInfoList) {
+        if (sheetFieldNames.contains(sheetTitleInfo.getUniqueTitle())) {
+            titleInfoList.add(sheetTitleInfo);
         }
     }
 
@@ -353,12 +353,12 @@ public class ExcelEngineImpl implements ExcelEngine {
         Map<String, ExcelSheetField> fieldMap = dataParseInfo.getSheetFieldList().stream()
                 .collect(Collectors.toMap(ExcelSheetField::getUniqueName, sheetField -> sheetField));
         // 获取主表头信息
-        List<ExcelTitleInfo> masterTitleInfoList = dataParseInfo.getTitleInfoList().stream()
-                .filter(excelTitleInfo -> !excelTitleInfo.isSubTitle()).collect(Collectors.toList());
+        List<SheetTitleInfo> masterTitleInfoList = dataParseInfo.getTitleInfoList().stream()
+                .filter(sheetTitleInfo -> !sheetTitleInfo.isSubTitle()).collect(Collectors.toList());
         // 获取二级表头信息(主表头标题与二级表头的映射关系)
-        Map<String, List<ExcelTitleInfo>> subTitleInfoMap = dataParseInfo.getTitleInfoList().stream()
-                .filter(ExcelTitleInfo::isSubTitle)
-                .collect(Collectors.groupingBy(ExcelTitleInfo::getParentTitle));
+        Map<String, List<SheetTitleInfo>> subTitleInfoMap = dataParseInfo.getTitleInfoList().stream()
+                .filter(SheetTitleInfo::isSubTitle)
+                .collect(Collectors.groupingBy(SheetTitleInfo::getParentTitle));
 
         // 数据行遍历器
         int dataRowIndex = dataParseInfo.getDataStartRow();
@@ -378,12 +378,12 @@ public class ExcelEngineImpl implements ExcelEngine {
             }
 
             Map<String, Object> record = new HashMap<>(rowData.size());
-            for (ExcelTitleInfo titleInfo : masterTitleInfoList) {
+            for (SheetTitleInfo titleInfo : masterTitleInfoList) {
                 if (fieldMap.containsKey(titleInfo.getUniqueTitle())) {
                     ExcelSheetField sheetField = fieldMap.get(titleInfo.getUniqueTitle());
                     // 如果需要进行数据聚合
                     if (fieldMap.get(titleInfo.getUniqueTitle()).isHasSubField()) {
-                        List<ExcelTitleInfo> subTitleInfo = subTitleInfoMap.getOrDefault(titleInfo.getUniqueTitle(), new ArrayList<>());
+                        List<SheetTitleInfo> subTitleInfo = subTitleInfoMap.getOrDefault(titleInfo.getUniqueTitle(), new ArrayList<>());
                         List<Map<String, Object>> subDataList = collectSubData(subTitleInfo, rowData, fieldMap);
                         record.put(sheetField.getCode(), sheetField.getDataFormatter().unFormat(subDataList, record));
                     } else {
@@ -420,7 +420,7 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @return
      */
     private List<Map<Integer, String>> getRowData(FormulaEvaluator formulaEvaluator, Sheet sheet, int rowStartIndex,
-                                                  int rowEndIndex, List<ExcelTitleInfo> titleInfoList) {
+                                                  int rowEndIndex, List<SheetTitleInfo> titleInfoList) {
         List<Map<Integer, String>> rowRecords = new ArrayList<>();
         int rowIndex = rowStartIndex;
         while (rowIndex <= rowEndIndex) {
@@ -470,7 +470,7 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param fieldMap
      * @return
      */
-    private List<Map<String, Object>> collectSubData(List<ExcelTitleInfo> subTitleInfoList,
+    private List<Map<String, Object>> collectSubData(List<SheetTitleInfo> subTitleInfoList,
                                                      List<Map<Integer, String>> rowValues,
                                                      Map<String, ExcelSheetField> fieldMap) {
         // 聚合数据列记录 key为聚合字段的code, value为聚合数据
