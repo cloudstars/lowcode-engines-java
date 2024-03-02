@@ -2,8 +2,8 @@ package net.cf.excel.engine;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import net.cf.commons.test.util.DataCompareUtils;
-import net.cf.commons.test.util.FileUtils;
+import net.cf.commons.test.util.DataCompareTestUtils;
+import net.cf.commons.test.util.FileTestUtils;
 import net.cf.excel.engine.commons.CollectionGroup;
 import net.cf.excel.engine.commons.NumberField;
 import net.cf.excel.engine.commons.ShowGroup;
@@ -48,8 +48,8 @@ public class ExcelParseTest {
         config.setTitleEndRow(0);
 
         JSONArray sourceDataList = JSON.parseArray(JSON.toJSONString(engine.parseExcel(workbook, config)));
-        JSONArray targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel解析测试/解析后数据/TextField测试.json"));
-        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
+        JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/TextField测试.json"));
+        Assertions.assertTrue(DataCompareTestUtils.equalsJsonArray(sourceDataList, targetDataList));
     }
 
     // 主子关系字段解析
@@ -78,8 +78,8 @@ public class ExcelParseTest {
         config.setTitleEndRow(1);
 
         JSONArray sourceDataList = JSON.parseArray(JSON.toJSONString(engine.parseExcel(workbook, config)));
-        JSONArray targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
-        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
+        JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
+        Assertions.assertTrue(DataCompareTestUtils.equalsJsonArray(sourceDataList, targetDataList));
 
         try (FileInputStream fis = new FileInputStream("src/test/resources/excel解析测试/CollectionGroup测试2.xlsx")) {
             workbook = createWorkbook(fis, "CollectionGroup测试2.xlsx");
@@ -88,8 +88,8 @@ public class ExcelParseTest {
         }
 
         sourceDataList = JSON.parseArray(JSON.toJSONString(engine.parseExcel(workbook, config)));
-        targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
-        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
+        targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
+        Assertions.assertTrue(DataCompareTestUtils.equalsJsonArray(sourceDataList, targetDataList));
     }
 
     // 展示型表头字段解析
@@ -117,8 +117,8 @@ public class ExcelParseTest {
         config.setTitleEndRow(1);
 
         JSONArray sourceDataList = JSON.parseArray(JSON.toJSONString(engine.parseExcel(workbook, config)));
-        JSONArray targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel解析测试/解析后数据/ShowGroup测试.json"));
-        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
+        JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/ShowGroup测试.json"));
+        Assertions.assertTrue(DataCompareTestUtils.equalsJsonArray(sourceDataList, targetDataList));
     }
 
     // 联合解析测试1
@@ -153,8 +153,8 @@ public class ExcelParseTest {
         config.setTitleEndRow(1);
 
         JSONArray sourceDataList = JSON.parseArray(JSON.toJSONString(engine.parseExcel(workbook, config)));
-        JSONArray targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel解析测试/解析后数据/联合测试1.json"));
-        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
+        JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/联合测试1.json"));
+        Assertions.assertTrue(DataCompareTestUtils.equalsJsonArray(sourceDataList, targetDataList));
     }
 
 

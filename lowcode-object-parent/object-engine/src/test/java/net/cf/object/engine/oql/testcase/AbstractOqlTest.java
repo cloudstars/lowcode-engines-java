@@ -2,7 +2,7 @@ package net.cf.object.engine.oql.testcase;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import net.cf.commons.test.util.FileUtils;
+import net.cf.commons.test.util.FileTestUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public abstract class AbstractOqlTest {
      * @param oqlFilePath
      */
     protected final void initSqlMap(String oqlFilePath) {
-        String oqlInfos = FileUtils.loadTextFromClasspath(oqlFilePath);
+        String oqlInfos = FileTestUtils.loadTextFromClasspath(oqlFilePath);
         JSONObject oqlInfosJson = JSONObject.parseObject(oqlInfos);
         JSONArray oqls = oqlInfosJson.getJSONArray("oqls");
         for (int i = 0, l = oqls.size(); i < l; i++) {

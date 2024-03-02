@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import net.cf.api.flow.engine.action.StartAction;
 import net.cf.api.flow.engine.constant.ContextConstant;
 import net.cf.api.flow.engine.entity.ExecuteContext;
-import net.cf.commons.test.util.FileUtils;
+import net.cf.commons.test.util.FileTestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class ApiFlowExecutorTest {
     
     @Test
     public void testExecute() {
-        String configStr = FileUtils.loadTextFromClasspath("schema/SimpleApiFlowConfig.json");
+        String configStr = FileTestUtils.loadTextFromClasspath("schema/SimpleApiFlowConfig.json");
         ApiFlowExecutor apiFlowExecutor = new ApiFlowExecutorImpl(new StartAction(JSON.parseObject(configStr)));
 
         // 输入

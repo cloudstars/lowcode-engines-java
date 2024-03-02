@@ -14,13 +14,13 @@ public class FileUtilsTest {
 
     @Test
     public void testLoadTextFromClassPath() {
-        String content = FileUtils.loadTextFromClasspath("files/file1.txt");
+        String content = FileTestUtils.loadTextFromClasspath("files/file1.txt");
         Assert.assertTrue("{\"abc\":  \"xyz\"}".equals(content));
     }
 
     @Test
     public void testLoadTextsFromClassPath() {
-        Map<String, String> contents = FileUtils.loadTextsFromClasspath("json/*.json");
+        Map<String, String> contents = FileTestUtils.loadTextsFromClasspath("json/*.json");
         Assert.assertTrue(contents != null && contents.size() == 2);
         String mapFileContent = contents.get("map.json");
         Assert.assertTrue(mapFileContent != null);
@@ -33,7 +33,7 @@ public class FileUtilsTest {
     @Test
     public void testLoadTextFromLocalPath() {
         // 程序运行时默认的路径是项目根目录，所以可以读取到pom.xml
-        String content = FileUtils.loadTextFromLocalPath("./pom.xml");
+        String content = FileTestUtils.loadTextFromLocalPath("./pom.xml");
         Assert.assertTrue(content != null && content.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
     }
 

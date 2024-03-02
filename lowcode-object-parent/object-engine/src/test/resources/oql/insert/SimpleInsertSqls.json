@@ -1,9 +1,0 @@
-{
-  "name": "test-insert-complex-sqls",
-  "desc": "测试复杂的的SQL插入语句",
-  "sqls": [{
-    "name": "insert-a-from-b",
-    "desc": "从B表查询数据插入A表",
-    "sql": "insert into A(a1, a2, a3) select b1, b2, b3 from B where 1 = 1"
-  }]
-}

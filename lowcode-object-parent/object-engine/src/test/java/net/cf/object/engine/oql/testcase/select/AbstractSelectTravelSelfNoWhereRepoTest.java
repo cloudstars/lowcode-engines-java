@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractSelectColumnsNoWhereRepoTest extends AbstractOqlRepoTest implements ISelectColumnsNoWhereTest {
+public abstract class AbstractSelectTravelSelfNoWhereRepoTest extends AbstractOqlRepoTest implements SelectTravelSelfNoWhereTest {
 
     @Resource
     private MysqlDataSetOperator dataSetOperator;
@@ -34,7 +34,7 @@ public abstract class AbstractSelectColumnsNoWhereRepoTest extends AbstractOqlRe
         this.dataSetOperator.tearDown(this.dataSet);
     }
 
-    protected AbstractSelectColumnsNoWhereRepoTest() {
+    protected AbstractSelectTravelSelfNoWhereRepoTest() {
         super(OQL_FILE_PATH);
     }
 

@@ -1,7 +1,7 @@
 package net.cf.object.engine.object;
 
 import com.alibaba.fastjson.JSONObject;
-import net.cf.commons.test.util.FileUtils;
+import net.cf.commons.test.util.FileTestUtils;
 import net.cf.object.engine.def.ObjectDef;
 import net.cf.object.engine.def.ObjectTestImpl;
 
@@ -27,7 +27,7 @@ public class XObjectTestResolver {
         /**
          * 从类路径下加载测试模型
          */
-        Map<String, String> objectsJson = FileUtils.loadTextsFromClasspath("object/*.json");
+        Map<String, String> objectsJson = FileTestUtils.loadTextsFromClasspath("object/*.json");
         for (Map.Entry<String, String> entry : objectsJson.entrySet()) {
             ObjectDef objectDef = JSONObject.parseObject(entry.getValue(), ObjectDef.class);
             ObjectTestImpl object = new ObjectTestImpl(objectDef);

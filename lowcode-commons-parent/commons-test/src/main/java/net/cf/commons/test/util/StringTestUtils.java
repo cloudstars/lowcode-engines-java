@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author clouds
  */
-public final class StringUtils {
+public final class StringTestUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(StringUtils.class);
+    private final static Logger logger = LoggerFactory.getLogger(StringTestUtils.class);
 
-    private StringUtils() {}
+    private StringTestUtils() {}
 
     /**
      * 判断两个字符串在忽略空白字符时是否相等

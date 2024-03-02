@@ -2,7 +2,7 @@ package net.cf.commons.test.dataset;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import net.cf.commons.test.util.FileUtils;
+import net.cf.commons.test.util.FileTestUtils;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -31,7 +31,7 @@ public final class JsonDataSetLoader {
         DefaultDataSet dataSet = new DefaultDataSet();
         for (int i = 0, l = tableFilePaths.length; i < l; i++) {
             String filePath = tableFilePaths[i];
-            String content = FileUtils.loadTextFromClasspath(filePath);
+            String content = FileTestUtils.loadTextFromClasspath(filePath);
             JSONObject tableJson = JSONObject.parseObject(content);
             String tableName = tableJson.getString("code");
 

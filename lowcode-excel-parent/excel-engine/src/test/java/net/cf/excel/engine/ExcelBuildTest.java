@@ -2,7 +2,7 @@ package net.cf.excel.engine;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import net.cf.commons.test.util.FileUtils;
+import net.cf.commons.test.util.FileTestUtils;
 import net.cf.excel.engine.commons.CollectionGroup;
 import net.cf.excel.engine.commons.NumberField;
 import net.cf.excel.engine.commons.ShowGroup;
@@ -28,7 +28,7 @@ public class ExcelBuildTest {
     public void testBuildExcel_TextField() {
         ExcelEngine engine = new ExcelEngineImpl();
 
-        JSONArray jsonArray = JSON.parseArray(FileUtils.loadTextFromClasspath("excel生成测试/原始数据/TextField测试.json"));
+        JSONArray jsonArray = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel生成测试/原始数据/TextField测试.json"));
         List<Map<String, Object>> sourceDataList = new ArrayList<>();
         for (Object jsonObject : jsonArray) {
             sourceDataList.add((Map<String, Object>) jsonObject);
@@ -47,7 +47,7 @@ public class ExcelBuildTest {
     @Test
     public void testBuildExcel_CollectionGroup1() {
         ExcelEngine engine = new ExcelEngineImpl();
-        JSONArray jsonArray = JSON.parseArray(FileUtils.loadTextFromClasspath("excel生成测试/原始数据/CollectionGroup测试.json"));
+        JSONArray jsonArray = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel生成测试/原始数据/CollectionGroup测试.json"));
         List<Map<String, Object>> sourceDataList = new ArrayList<>();
         for (Object jsonObject : jsonArray) {
             sourceDataList.add((Map<String, Object>) jsonObject);
@@ -73,7 +73,7 @@ public class ExcelBuildTest {
     @Test
     public void testBuildExcel_ShowGroup1() {
         ExcelEngine engine = new ExcelEngineImpl();
-        JSONArray jsonArray = JSON.parseArray(FileUtils.loadTextFromClasspath("excel生成测试/原始数据/ShowGroup测试.json"));
+        JSONArray jsonArray = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel生成测试/原始数据/ShowGroup测试.json"));
         List<Map<String, Object>> sourceDataList = new ArrayList<>();
         for (Object jsonObject : jsonArray) {
             sourceDataList.add((Map<String, Object>) jsonObject);
@@ -98,7 +98,7 @@ public class ExcelBuildTest {
     @Test
     public void testBuildExcel_1() {
         ExcelEngine engine = new ExcelEngineImpl();
-        JSONArray jsonArray = JSON.parseArray(FileUtils.loadTextFromClasspath("excel生成测试/原始数据/联合测试1.json"));
+        JSONArray jsonArray = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel生成测试/原始数据/联合测试1.json"));
         List<Map<String, Object>> sourceDataList = new ArrayList<>();
         for (Object jsonObject : jsonArray) {
             sourceDataList.add((Map<String, Object>) jsonObject);

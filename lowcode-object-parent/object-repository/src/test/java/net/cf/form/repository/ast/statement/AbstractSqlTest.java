@@ -2,7 +2,7 @@ package net.cf.form.repository.ast.statement;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import net.cf.commons.test.util.FileUtils;
+import net.cf.commons.test.util.FileTestUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public abstract class AbstractSqlTest {
      * @param sqlFilePath
      */
     protected final void initSqlMap(String sqlFilePath) {
-        String sqlInfos = FileUtils.loadTextFromClasspath(sqlFilePath);
+        String sqlInfos = FileTestUtils.loadTextFromClasspath(sqlFilePath);
         JSONObject sqlInfosJson = JSONObject.parseObject(sqlInfos);
         JSONArray sqls = sqlInfosJson.getJSONArray("sqls");
         for (int i = 0, l = sqls.size(); i < l; i++) {

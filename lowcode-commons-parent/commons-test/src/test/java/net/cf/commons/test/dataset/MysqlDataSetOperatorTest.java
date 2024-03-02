@@ -2,8 +2,8 @@ package net.cf.commons.test.dataset;
 
 import com.alibaba.fastjson.JSONArray;
 import net.cf.commons.test.CommonsTestApplication;
-import net.cf.commons.test.util.DataCompareUtils;
-import net.cf.commons.test.util.JsonUtils;
+import net.cf.commons.test.util.DataCompareTestUtils;
+import net.cf.commons.test.util.JsonTestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,9 +35,9 @@ public class MysqlDataSetOperatorTest {
 
         // 查询DB的数据与预期的数据对比
         List<Map<String, Object>> dataList = this.namedParameterJdbcTemplate.queryForList("select * from A", new HashMap<>());
-        Map<String, Object> loadedData = JsonUtils.loadMapFromClasspath(filePath);
+        Map<String, Object> loadedData = JsonTestUtils.loadMapFromClasspath(filePath);
         JSONArray loadedDataValues = (JSONArray) loadedData.get("valuesList");
-        assert (DataCompareUtils.equalsList(dataList, loadedDataValues));
+        assert (DataCompareTestUtils.equalsList(dataList, loadedDataValues));
     }
 
 }

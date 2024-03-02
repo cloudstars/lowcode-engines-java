@@ -2,8 +2,8 @@ package net.cf.excel.engine;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import net.cf.commons.test.util.DataCompareUtils;
-import net.cf.commons.test.util.FileUtils;
+import net.cf.commons.test.util.DataCompareTestUtils;
+import net.cf.commons.test.util.FileTestUtils;
 import net.cf.excel.engine.config.ExcelParseConfig;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -37,8 +37,8 @@ public class ExcelFieldsParseTest {
 
         JSONArray sourceDataList = engine.parseExcelFields(workbook, config);
         System.out.println(sourceDataList);
-        JSONArray targetDataList = JSON.parseArray(FileUtils.loadTextFromClasspath("excel表头解析测试/解析后数据/联合测试1.json"));
-        Assertions.assertTrue(DataCompareUtils.equalsJsonArray(sourceDataList, targetDataList));
+        JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel表头解析测试/解析后数据/联合测试1.json"));
+        Assertions.assertTrue(DataCompareTestUtils.equalsJsonArray(sourceDataList, targetDataList));
     }
 
     private Workbook createWorkbook(InputStream in, String excelFileName) throws IOException {

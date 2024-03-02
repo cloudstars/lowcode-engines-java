@@ -13,7 +13,7 @@ public class JsonUtilsTest {
 
     @Test
     public void testLoadMap() {
-        Map<String, Object> dataMap = JsonUtils.loadMapFromClasspath("json/map.json");
+        Map<String, Object> dataMap = JsonTestUtils.loadMapFromClasspath("json/map.json");
         Assert.assertTrue(dataMap != null && dataMap.size() == 2);
         Assert.assertTrue("xyz".equals(dataMap.get("abc")));
         Assert.assertTrue("wlz".equals(dataMap.get("efg")));
@@ -21,7 +21,7 @@ public class JsonUtilsTest {
 
     @Test
     public void testLoadList() {
-        List<Map<String, Object>> dataMapList = JsonUtils.loadListFromClasspath("json/list.json");
+        List<Map<String, Object>> dataMapList = JsonTestUtils.loadListFromClasspath("json/list.json");
         Assert.assertTrue(dataMapList != null && dataMapList.size() == 3);
         Assert.assertTrue("123".equals(dataMapList.get(2).get("f4")));
     }

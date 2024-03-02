@@ -1,13 +1,15 @@
 package net.cf.object.engine.oql.visitor;
 
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
-import net.cf.object.engine.oql.ast.OqlExprObjectSource;
-import net.cf.object.engine.oql.ast.OqlSelect;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
+import net.cf.object.engine.oql.ast.OqlExprObjectSource;
+import net.cf.object.engine.oql.ast.OqlInsertInto;
+import net.cf.object.engine.oql.ast.OqlSelect;
 
 import java.util.List;
 import java.util.Map;
@@ -102,5 +104,29 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         return false;
     }
 
+    @Override
+    public boolean visit(OqlInsertInto x) {
+        this.print(this.uppercase ? "INSERT INTO " : "insert into ");
+        OqlExprObjectSource objectSource = x.getObjectSource();
+        SqlExpr objectSourceExpr = objectSource.getExpr();
+        if (objectSourceExpr instanceof SqlIdentifierExpr) {
+            String tableName = ((SqlIdentifierExpr) objectSourceExpr).getName();
+            this.print(tableName);
+        } else {
+            this.print("UnKnown ObjectSourceExpr: ");
+            this.print(objectSourceExpr.getClass().getSimpleName());
+        }
 
+        // 打印字段列表
+        this.parenthesizedPrintAndAccept(x.getFields(), ",");
+
+        // 打印值列表
+        if (!x.getValuesList().isEmpty()) {
+            this.println();
+            this.print(this.uppercase ? "VALUES " : "values ");
+            this.printAndAccept(x.getValuesList(), ", ");
+        }
+
+        return false;
+    }
 }

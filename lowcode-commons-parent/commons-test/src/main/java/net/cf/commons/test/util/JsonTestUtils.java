@@ -10,9 +10,9 @@ import java.util.*;
  *
  * @author clouds
  */
-public final class JsonUtils {
+public final class JsonTestUtils {
 
-    private JsonUtils() {
+    private JsonTestUtils() {
     }
 
     /**
@@ -22,7 +22,7 @@ public final class JsonUtils {
      * @return
      */
     public static Map<String, Object> loadMapFromClasspath(String filePath) {
-        String content = FileUtils.loadTextFromClasspath(filePath);
+        String content = FileTestUtils.loadTextFromClasspath(filePath);
         return JSONObject.parseObject(content, HashMap.class);
     }
 
@@ -33,7 +33,7 @@ public final class JsonUtils {
      * @return
      */
     public static List<Map<String, Object>> loadListFromClasspath(String filePath) {
-        String content = FileUtils.loadTextFromClasspath(filePath);
+        String content = FileTestUtils.loadTextFromClasspath(filePath);
         JSONArray jsonArray = JSONArray.parseArray(content);
         List<Map<String, Object>> list = new ArrayList<>();
         for (int i = 0, l = jsonArray.size(); i < l; i++) {
@@ -53,7 +53,7 @@ public final class JsonUtils {
     public static List<Map<String, Object>> toMapList(JSONArray arrayValue) {
         List<Map<String, Object>> dataMapList = new ArrayList<>();
         for (int i = 0; i < arrayValue.size(); i++) {
-            Map<String, Object> dataMap = JsonUtils.toMap(arrayValue.getJSONObject(i));
+            Map<String, Object> dataMap = JsonTestUtils.toMap(arrayValue.getJSONObject(i));
             dataMapList.add(dataMap);
         }
 
@@ -72,7 +72,7 @@ public final class JsonUtils {
             Object value = jsonData.get(key);
             if (value instanceof JSONArray) {
                 JSONArray arrayValue = (JSONArray) value;
-                value = JsonUtils.toMapList(arrayValue);
+                value = JsonTestUtils.toMapList(arrayValue);
             } else if (value instanceof JSONObject) {
                 value = value.toString();
             }

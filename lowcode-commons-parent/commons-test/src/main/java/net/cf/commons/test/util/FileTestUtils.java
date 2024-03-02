@@ -21,11 +21,11 @@ import java.util.Map;
  *
  * @author clouds
  */
-public final class FileUtils {
+public final class FileTestUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+    private final static Logger logger = LoggerFactory.getLogger(FileTestUtils.class);
 
-    private FileUtils() {}
+    private FileTestUtils() {}
 
     /**
      * 从类路径下加载JSON对象

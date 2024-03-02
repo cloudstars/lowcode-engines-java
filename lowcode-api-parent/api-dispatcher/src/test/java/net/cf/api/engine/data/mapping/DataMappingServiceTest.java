@@ -2,8 +2,8 @@ package net.cf.api.engine.data.mapping;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import net.cf.commons.test.util.FileUtils;
-import net.cf.commons.test.util.JsonUtils;
+import net.cf.commons.test.util.FileTestUtils;
+import net.cf.commons.test.util.JsonTestUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,15 +28,15 @@ public class DataMappingServiceTest {
 
     @Test
     public void getParamTypesTest() {
-        String schema = FileUtils.loadTextFromClasspath("data/mapping/schema/getParamTypesTestJsonSchema.json");
+        String schema = FileTestUtils.loadTextFromClasspath("data/mapping/schema/getParamTypesTestJsonSchema.json");
         Map<String, String> paramTypes = dataMappingService.getParamTypes(JSON.parseObject(schema));
         Assert.assertNotNull(paramTypes);
     }
 
     @Test
     public void convertTest() {
-        String schema = FileUtils.loadTextFromClasspath("data/mapping/schema/convertTestJsonSchema.json");
-        Map<String, Object> map = JsonUtils.loadMapFromClasspath("data/mapping/input/convertTestJsonInput.json");
+        String schema = FileTestUtils.loadTextFromClasspath("data/mapping/schema/convertTestJsonSchema.json");
+        Map<String, Object> map = JsonTestUtils.loadMapFromClasspath("data/mapping/input/convertTestJsonInput.json");
         JSONObject input = new JSONObject(map);
         Object convert = dataMappingService.convert(JSON.parseObject(schema), input);
         Assert.assertNotNull(convert);

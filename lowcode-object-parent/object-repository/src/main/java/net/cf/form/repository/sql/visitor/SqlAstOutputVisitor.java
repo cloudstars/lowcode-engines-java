@@ -230,10 +230,16 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
 
-    protected void printAndAccept(List<? extends SqlObject> nodes, String seperator) {
+    /**
+     * 以一个分隔符分开打开一个列表
+     *
+     * @param nodes
+     * @param separator
+     */
+    protected void printAndAccept(List<? extends SqlObject> nodes, String separator) {
         for (int i = 0, l = nodes.size(); i < l; ++i) {
             if (i != 0) {
-                this.print(seperator);
+                this.print(separator);
             }
             nodes.get(i).accept(this);
         }
@@ -248,6 +254,11 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         return false;
     }
 
+    /**
+     * 打印一个表达式
+     *
+     * @param x
+     */
     protected final void printExpr(SqlExpr x) {
         this.printExpr(x, this.parameterized);
     }
@@ -502,7 +513,6 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
         return false;
     }
-
 
     public void printInsertColumns(List<SqlExpr> columns) {
         int size = columns.size();

@@ -1,5 +1,6 @@
 package net.cf.object.engine.oql.testcase.select;
 
+import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
@@ -12,9 +13,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class SelectColumnsNoWhereStmtTest extends AbstractOqlTest implements ISelectColumnsNoWhereTest {
+public class SelectTravelSelfNoWhereStmtTest extends AbstractOqlTest implements SelectTravelSelfNoWhereTest {
 
-    public SelectColumnsNoWhereStmtTest() {
+    public SelectTravelSelfNoWhereStmtTest() {
         super(OQL_FILE_PATH);
     }
 
@@ -26,8 +27,7 @@ public class SelectColumnsNoWhereStmtTest extends AbstractOqlTest implements ISe
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
         OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(oql);
-        assert (stmt != null);
-        assert (oql.equals(stmt.toString()));
+        assert (stmt != null && StringTestUtils.equalsIgnoreWhiteSpace(stmt.toString(), oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
         OqlObjectSource objectSource = stmt.getSelect().getFrom();
