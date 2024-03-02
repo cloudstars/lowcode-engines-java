@@ -5,6 +5,7 @@
   "oqls": [{
     "name": "查询出差列表",
     "code": "SelectTravelList",
-    "oql": "select applyId from Travel"
+    "oql": "select applyId from Travel",
+    "sql": "select APPLY_ID from TRAVEL"
   }]
 }

@@ -5,7 +5,6 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
 
 public class XObjectTestUtils {
 
@@ -13,15 +12,18 @@ public class XObjectTestUtils {
     }
 
     /**
-     * 根据语句解析模型
+     * 根据模型源解析模型
      *
-     * @param stmt
+     * @param objectSource
      * @return
      */
-    public static void resolveObject(OqlSelectStatement stmt) {
-        OqlObjectSource objectSource = stmt.getSelect().getFrom();
+    public static void resolveObject(OqlObjectSource objectSource) {
         if (objectSource instanceof OqlExprObjectSource) {
             OqlExprObjectSource exprObjectSource = (OqlExprObjectSource) objectSource;
+            if (exprObjectSource.getResolvedObject() != null) {
+                return;
+            }
+
             SqlExpr objectExpr = exprObjectSource.getExpr();
             if (objectExpr instanceof SqlIdentifierExpr) {
                 String objectCode = ((SqlIdentifierExpr) objectExpr).getName();

@@ -14,7 +14,7 @@ import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
  */
 public class InsertSqlStatementBuilder extends AbstractSqlStatementBuilder<OqlInsertStatement, SqlInsertStatement> {
 
-    private SqlInsertInto insertInto = new SqlInsertInto();
+    private final SqlInsertInto insertInto = new SqlInsertInto();
 
     private SqlInsertStatement.ValuesClause lastInsertValues = null;
 

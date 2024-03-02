@@ -6,7 +6,8 @@
     {
       "name": "插入出差记录",
       "code": "InsertTravel",
-      "oql": "insert into Travel (applyId) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD')"
+      "oql": "insert into Travel(applyId, applyName) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称')",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称')"
     }
   ]
 }

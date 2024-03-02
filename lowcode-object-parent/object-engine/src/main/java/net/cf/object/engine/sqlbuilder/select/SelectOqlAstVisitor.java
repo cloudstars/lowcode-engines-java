@@ -10,7 +10,6 @@ import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlSelect;
 import net.cf.object.engine.oql.visitor.OqlAstVisitorAdaptor;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -41,12 +40,13 @@ public final class SelectOqlAstVisitor extends OqlAstVisitorAdaptor {
                     String fieldCode = identExpr.getName();
                     XField field = object.getField(fieldCode);
                     sqlSelectItem.setExpr(new SqlIdentifierExpr(field.getColumnName()));
-                    String alias = oqlSelectItem.getAlias();
+                    sqlSelectItem.setAlias(oqlSelectItem.getAlias());
+                    /* 考虑数据返回后再对数据作命名处理
                     if (!StringUtils.hasLength(alias)) {
                         // 如果没有显式指定alias，那么查询的返回结果字段名为字段名
                         alias = object.getField(((SqlIdentifierExpr) expr).getName()).getCode();
                         sqlSelectItem.setAlias(alias);
-                    }
+                    }*/
                     this.builder.appendSelectItem(sqlSelectItem);
                 }
             }

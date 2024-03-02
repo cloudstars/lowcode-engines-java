@@ -1,5 +1,6 @@
 package net.cf.object.engine.sqlbuilder.insert;
 
+import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.visitor.OqlAstVisitorAdaptor;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
@@ -16,6 +17,8 @@ public final class InsertOqlAstVisitor extends OqlAstVisitorAdaptor {
 
     private final InsertSqlStatementBuilder builder;
 
+    private XObject resolvedObject;
+
     /**
      * 是否在访问 values 部分
      */
@@ -28,18 +31,22 @@ public final class InsertOqlAstVisitor extends OqlAstVisitorAdaptor {
     @Override
     public boolean visit(OqlExprObjectSource x) {
         SqlExprTableSource tableSource = new SqlExprTableSource();
-        tableSource.setExpr(new SqlIdentifierExpr(tableSource.getName().getName()));
-        tableSource.setAlias(x.getAlias());
+        XObject object = x.getResolvedObject();
+        tableSource.setExpr(new SqlIdentifierExpr(object.getTableName()));
         this.builder.tableSource(tableSource);
+        this.resolvedObject = object;
 
-        return true;
+        return false;
     }
 
     @Override
     public boolean visit(SqlIdentifierExpr identifierExpr) {
         SqlIdentifierExpr sqlIdentifierExpr = new SqlIdentifierExpr(identifierExpr.getName());
         if (!isInValues) { // 说明在 values 前面出现
-            this.builder.appendColumn(sqlIdentifierExpr);
+            SqlIdentifierExpr cloneExpr = sqlIdentifierExpr.cloneMe();
+            String fieldName = identifierExpr.getName();
+            cloneExpr.setName(this.resolvedObject.getField(fieldName).getColumnName());
+            this.builder.appendColumn(cloneExpr);
         } else {
             this.builder.appendInsertValuesItem(sqlIdentifierExpr);
         }

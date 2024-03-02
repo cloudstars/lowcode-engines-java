@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.mysql;
+package net.cf.object.engine.oql.mysql.select;
 
 import net.cf.object.engine.ObjectEngineTestApplication;
 import net.cf.object.engine.oql.testcase.select.AbstractSelectTravelSelfNoWhereRepoTest;

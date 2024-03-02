@@ -40,9 +40,9 @@ public abstract class AbstractSelectTravelSelfNoWhereRepoTest extends AbstractOq
 
     @Override
     public void testSelectTravelList() {
-        String oql = this.oqlMap.get(OQL_SELECT_TRAVEL_LIST);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(oql);
-        XObjectTestUtils.resolveObject(oqlStmt);
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST);
+        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(oqlInfo.oql);
+        XObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
         SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
         List<Map<String, Object>> dataList = this.repository.selectList(sqlStmt);
         assert (dataList != null && dataList.size() == 2);
