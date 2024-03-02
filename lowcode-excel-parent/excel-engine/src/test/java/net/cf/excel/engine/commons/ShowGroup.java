@@ -1,8 +1,8 @@
 package net.cf.excel.engine.commons;
 
 import net.cf.excel.engine.DataFormatter;
-import net.cf.excel.engine.ExcelFieldGroup;
-import net.cf.excel.engine.SingleExcelField;
+import net.cf.excel.engine.ExcelTitleGroup;
+import net.cf.excel.engine.SingleExcelTitle;
 
 import java.util.List;
 
@@ -11,14 +11,14 @@ import java.util.List;
  * @CreateTime: 2024-02-28 08:45
  * @Description: 仅展示group实现类
  */
-public class ShowGroup implements ExcelFieldGroup {
+public class ShowGroup implements ExcelTitleGroup {
     private String code;
 
     private String name;
 
-    private List<SingleExcelField> subFields;
+    private List<SingleExcelTitle> subFields;
 
-    public ShowGroup(String code, String name, List<SingleExcelField> subFields) {
+    public ShowGroup(String code, String name, List<SingleExcelTitle> subFields) {
         this.code = code;
         this.name = name;
         this.subFields = subFields;
@@ -45,7 +45,7 @@ public class ShowGroup implements ExcelFieldGroup {
     }
 
     @Override
-    public List<SingleExcelField> getSubFields() {
+    public List<SingleExcelTitle> getSubTitles() {
         return subFields;
     }
 

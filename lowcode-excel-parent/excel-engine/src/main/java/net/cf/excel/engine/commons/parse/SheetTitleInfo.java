@@ -5,7 +5,7 @@ package net.cf.excel.engine.commons.parse;
  * @CreateTime: 2024-02-21 16:49
  * @Description: excel表头信息
  */
-public class ExcelTitleInfo {
+public class SheetTitleInfo {
     /**
      * 字段名称
      */
@@ -33,7 +33,7 @@ public class ExcelTitleInfo {
 
     private boolean isCollection;
 
-    public ExcelTitleInfo(String parentTitle, String title, int firstColumn, boolean rowMerge, boolean columnMerge) {
+    public SheetTitleInfo(String parentTitle, String title, int firstColumn, boolean rowMerge, boolean columnMerge) {
         this.parentTitle = parentTitle;
         this.title = title;
         this.firstColumn = firstColumn;

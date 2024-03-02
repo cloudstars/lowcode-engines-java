@@ -1,6 +1,6 @@
-package net.cf.excel.engine.config;
+package net.cf.excel.engine.bean;
 
-import net.cf.excel.engine.ExcelField;
+import net.cf.excel.engine.ExcelTitle;
 
 import java.util.List;
 
@@ -10,18 +10,18 @@ import java.util.List;
  * @Description: Excel生成配置
  */
 public class ExcelBuildConfig {
-    private List<ExcelField> excelFields;
+    private List<ExcelTitle> excelTitles;
 
     private String sheetName;
 
     private int titleStartRow;
 
-    public List<ExcelField> getParseFields() {
-        return excelFields;
+    public List<ExcelTitle> getExcelTitles() {
+        return excelTitles;
     }
 
-    public void setParseFields(List<ExcelField> excelFields) {
-        this.excelFields = excelFields;
+    public void setExcelTitles(List<ExcelTitle> excelTitles) {
+        this.excelTitles = excelTitles;
     }
 
     public String getSheetName() {

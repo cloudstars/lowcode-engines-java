@@ -1,8 +1,9 @@
 package net.cf.excel.engine;
 
-import com.alibaba.fastjson.JSONArray;
-import net.cf.excel.engine.config.ExcelBuildConfig;
-import net.cf.excel.engine.config.ExcelParseConfig;
+import net.cf.excel.engine.bean.ExcelBuildConfig;
+import net.cf.excel.engine.bean.ExcelParseConfig;
+import net.cf.excel.engine.bean.ExcelTitleBean;
+import net.cf.excel.engine.bean.ExcelTitleParseConfig;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public interface ExcelEngine {
      * @param config
      * @return
      */
-    JSONArray parseExcelFields(Workbook workbook, ExcelParseConfig config);
+    List<ExcelTitleBean> parseExcelTitles(Workbook workbook, ExcelTitleParseConfig config);
 
     /**
      * @param data
