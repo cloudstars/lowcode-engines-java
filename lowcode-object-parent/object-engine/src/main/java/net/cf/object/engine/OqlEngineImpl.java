@@ -6,8 +6,8 @@ import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.visitor.InsertStatementCheckOqlAstVisitor;
-import net.cf.object.engine.sqlbuilder.insert.InsertOqlAstVisitor;
-import net.cf.object.engine.sqlbuilder.insert.InsertSqlStatementBuilder;
+import net.cf.object.engine.sqlbuilder.insert.OqlInsertAstVisitor;
+import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
 import net.cf.form.repository.ObjectRepository;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import org.slf4j.Logger;
@@ -46,8 +46,8 @@ public class OqlEngineImpl implements OqlEngine {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int create(OqlInsertStatement statement) {
-        InsertSqlStatementBuilder builder = new InsertSqlStatementBuilder();
-        InsertOqlAstVisitor visitor = new InsertOqlAstVisitor(builder);
+        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
+        OqlInsertAstVisitor visitor = new OqlInsertAstVisitor(builder);
         statement.accept(visitor);
         SqlInsertStatement sqlStatement = builder.build();
 

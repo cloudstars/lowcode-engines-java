@@ -95,6 +95,10 @@ public class SqlTestUtils {
         for (int i = 0, l = sqlNodes.size(); i < l; i++) {
             String currSqlNodeClzName = sqlNodes.get(i).getClass().getSimpleName();
             String currDruidSqlNodeClzName = druidSqlNodes.get(i).getClass().getSimpleName();
+            if ("SqlDecimalExpr".equals(currSqlNodeClzName) && "SQLNumberExpr".equals(currDruidSqlNodeClzName)) {
+                // 属于特殊情况
+                continue;
+            }
             if (!currSqlNodeClzName.equalsIgnoreCase(currDruidSqlNodeClzName)) {
                 return false;
             }

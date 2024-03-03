@@ -9,6 +9,7 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.form.repository.sql.ast.statement.SqlStatement;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.parser.SqlStatementParser;
+import net.cf.form.repository.sql.util.SqlStatementUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,11 +37,7 @@ public class SelectJoinTablesTest extends AbstractSqlTest {
         String sql = this.sqlMap.get("SELECT_IMPLICIT_CROSS_JOIN");
         assert (sql != null);
 
-        SqlStatementParser sqlParser = new SqlStatementParser(sql);
-        List<SqlStatement> stmts = sqlParser.parseStatementList();
-        Assert.assertTrue(stmts != null && stmts.size() == 1);
-        Assert.assertTrue(stmts.get(0) instanceof SqlSelectStatement);
-        SqlSelectStatement stmt0 = (SqlSelectStatement) stmts.get(0);
+        SqlSelectStatement stmt0 = SqlStatementUtils.parseSingleSelectStatement(sql);
         SqlTableSource tableSource = stmt0.getSelect().getFrom();
         Assert.assertTrue(tableSource instanceof SqlJoinTableSource);
         Assert.assertTrue(((SqlJoinTableSource) tableSource).getJoinType() == SqlJoinTableSource.JoinType.COMMA);
@@ -49,7 +46,7 @@ public class SelectJoinTablesTest extends AbstractSqlTest {
         // 与 Druid 的 AST 作对比
         SQLStatementParser druidSqlParser = new SQLStatementParser(sql);
         List<SQLStatement> druidStmts = druidSqlParser.parseStatementList();
-        Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
+        Assert.assertTrue(SqlTestUtils.equals(stmt0, druidStmts.get(0)));
     }
 
     /**
@@ -60,11 +57,7 @@ public class SelectJoinTablesTest extends AbstractSqlTest {
         String sql = this.sqlMap.get("SELECT_EXPLICIT_CROSS_JOIN");
         assert (sql != null);
 
-        SqlStatementParser sqlParser = new SqlStatementParser(sql);
-        List<SqlStatement> stmts = sqlParser.parseStatementList();
-        Assert.assertTrue(stmts != null && stmts.size() == 1);
-        Assert.assertTrue(stmts.get(0) instanceof SqlSelectStatement);
-        SqlSelectStatement stmt0 = (SqlSelectStatement) stmts.get(0);
+        SqlSelectStatement stmt0 = SqlStatementUtils.parseSingleSelectStatement(sql);
         SqlTableSource tableSource = stmt0.getSelect().getFrom();
         Assert.assertTrue(tableSource instanceof SqlJoinTableSource);
         Assert.assertTrue(((SqlJoinTableSource) tableSource).getJoinType() == SqlJoinTableSource.JoinType.CROSS_JOIN);
@@ -73,7 +66,7 @@ public class SelectJoinTablesTest extends AbstractSqlTest {
         // 与 Druid 的 AST 作对比
         SQLStatementParser druidSqlParser = new SQLStatementParser(sql);
         List<SQLStatement> druidStmts = druidSqlParser.parseStatementList();
-        Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
+        Assert.assertTrue(SqlTestUtils.equals(stmt0, druidStmts.get(0)));
     }
 
     /**

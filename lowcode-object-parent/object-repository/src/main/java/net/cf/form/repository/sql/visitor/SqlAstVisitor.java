@@ -3,19 +3,23 @@ package net.cf.form.repository.sql.visitor;
 import net.cf.form.repository.sql.ast.SqlCommentHint;
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.expr.op.SqlCaseExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.*;
 
 /**
- * 语法树访问器
+ * SQL语法树访问器
  *
  * @author clouds
  */
 public interface SqlAstVisitor {
+
+
+    /**********************************************************************
+     *                基础类节点                                            *
+     **********************************************************************/
+
 
     /**
      * 访问一个SqlObject前
@@ -51,6 +55,12 @@ public interface SqlAstVisitor {
      */
     default void endVisit(SqlCommentHint x) {
     }
+
+
+    /**********************************************************************
+     *                字面量类表达式节点                                      *
+     **********************************************************************/
+
 
     /**
      * 开始访问 SqlStringExpr 节点
@@ -104,24 +114,6 @@ public interface SqlAstVisitor {
      * @param x
      */
     default void endVisit(SqlIntegerExpr x) {
-    }
-
-    /**
-     * 开始访问 SqlNumberExpr 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlNumberExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlNumberExpr
-     *
-     * @param x
-     */
-    default void endVisit(SqlNumberExpr x) {
     }
 
     /**
@@ -216,24 +208,6 @@ public interface SqlAstVisitor {
     }
 
     /**
-     * 开始访问 SqlListExpr 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlListExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlListExpr
-     *
-     * @param x
-     */
-    default void endVisit(SqlListExpr x) {
-    }
-
-    /**
      * 开始访问 SqlJsonObjectExpr 节点
      *
      * @param x
@@ -269,58 +243,46 @@ public interface SqlAstVisitor {
     default void endVisit(SqlJsonArrayExpr x) {
     }
 
+
+    /**********************************************************************
+     *                操作类表达式节点                                       *
+     **********************************************************************/
+
+
     /**
-     * 开始访问 SqlIdentifierExpr 节点
+     * 开始访问 SqlBinaryOpExprGroup 节点
      *
      * @param x
      * @return 是否允许访问当前节点的子节点
      */
-    default boolean visit(SqlIdentifierExpr x) {
+    default boolean visit(SqlBinaryOpExprGroup x) {
         return true;
     }
 
     /**
-     * 结束访问 SqlIdentifierExpr
+     * 结束访问 SqlBinaryOpExprGroup
      *
      * @param x
      */
-    default void endVisit(SqlIdentifierExpr x) {
+    default void endVisit(SqlBinaryOpExprGroup x) {
     }
 
     /**
-     * 开始访问 SqlPropertyExpr 节点
+     * 开始访问 SqlBinaryOpExpr 节点
      *
      * @param x
      * @return 是否允许访问当前节点的子节点
      */
-    default boolean visit(SqlPropertyExpr x) {
+    default boolean visit(SqlBinaryOpExpr x) {
         return true;
     }
 
     /**
-     * 结束访问 SqlPropertyExpr
+     * 结束访问 SqlBinaryOpExpr
      *
      * @param x
      */
-    default void endVisit(SqlPropertyExpr x) {
-    }
-
-    /**
-     * 开始访问 SqlVariantRefExpr 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlVariantRefExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlVariantRefExpr
-     *
-     * @param x
-     */
-    default void endVisit(SqlVariantRefExpr x) {
+    default void endVisit(SqlBinaryOpExpr x) {
     }
 
     /**
@@ -361,24 +323,6 @@ public interface SqlAstVisitor {
     }
 
     /**
-     * 开始访问 SqlBinaryOpExpr 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlBinaryOpExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlBinaryOpExpr
-     *
-     * @param x
-     */
-    default void endVisit(SqlBinaryOpExpr x) {
-    }
-
-    /**
      * 开始访问 SqlLikeOpExpr 节点
      *
      * @param x
@@ -414,23 +358,99 @@ public interface SqlAstVisitor {
     default void endVisit(SqlInListExpr x) {
     }
 
-
     /**
-     * 开始访问 SqlBinaryOpExprGroup 节点
+     * 开始访问 SqlListExpr 节点
      *
      * @param x
      * @return 是否允许访问当前节点的子节点
      */
-    default boolean visit(SqlBinaryOpExprGroup x) {
+    default boolean visit(SqlListExpr x) {
         return true;
     }
 
     /**
-     * 结束访问 SqlBinaryOpExprGroup
+     * 结束访问 SqlListExpr
      *
      * @param x
      */
-    default void endVisit(SqlBinaryOpExprGroup x) {
+    default void endVisit(SqlListExpr x) {
+    }
+
+    /**
+     * 开始访问 SqlExistsExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlExistsExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlExistsExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlExistsExpr x) {
+    }
+
+
+    /**********************************************************************
+     *                标识符类表达式节点                                         *
+     **********************************************************************/
+
+    /**
+     * 开始访问 SqlPropertyExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlPropertyExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlPropertyExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlPropertyExpr x) {
+    }
+
+    /**
+     * 开始访问 SqlIdentifierExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlIdentifierExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlIdentifierExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlIdentifierExpr x) {
+    }
+
+    /**
+     * 开始访问 SqlVariantRefExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlVariantRefExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlVariantRefExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlVariantRefExpr x) {
     }
 
     /**
@@ -452,60 +472,6 @@ public interface SqlAstVisitor {
     }
 
     /**
-     * 开始访问 SqlSelect 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlSelectStatement x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlSelect
-     *
-     * @param x
-     */
-    default void endVisit(SqlSelectStatement x) {
-    }
-
-    /**
-     * 开始访问 SqlSelect 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlSelect x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlSelect
-     *
-     * @param x
-     */
-    default void endVisit(SqlSelect x) {
-    }
-
-    /**
-     * 开始访问 SqlSelectItem 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlSelectItem x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlSelectItem
-     *
-     * @param x
-     */
-    default void endVisit(SqlSelectItem x) {
-    }
-
-    /**
      * 开始访问 SqlAllColumnExpr 节点
      *
      * @param x
@@ -522,6 +488,12 @@ public interface SqlAstVisitor {
      */
     default void endVisit(SqlAllColumnExpr x) {
     }
+
+
+    /**********************************************************************
+     *                表源类节点                                            *
+     **********************************************************************/
+
 
     /**
      * 开始访问 SqlExprTableSource 节点
@@ -575,6 +547,65 @@ public interface SqlAstVisitor {
      * @param x
      */
     default void endVisit(SqlSubQueryTableSource x) {
+    }
+
+
+    /**********************************************************************
+     *                语句类节点                                            *
+     **********************************************************************/
+
+    /**
+     * 开始访问 SqlSelect 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlSelectStatement x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlSelect
+     *
+     * @param x
+     */
+    default void endVisit(SqlSelectStatement x) {
+    }
+
+    /**
+     * 开始访问 SqlSelect 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlSelect x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlSelect
+     *
+     * @param x
+     */
+    default void endVisit(SqlSelect x) {
+    }
+
+    /**
+     * 开始访问 SqlSelectItem 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlSelectItem x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlSelectItem
+     *
+     * @param x
+     */
+    default void endVisit(SqlSelectItem x) {
     }
 
     /**
@@ -647,24 +678,6 @@ public interface SqlAstVisitor {
      * @param x
      */
     default void endVisit(SqlLimit x) {
-    }
-
-    /**
-     * 开始访问 SqlExistsExpr 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlExistsExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlExistsExpr
-     *
-     * @param x
-     */
-    default void endVisit(SqlExistsExpr x) {
     }
 
     /**

@@ -356,7 +356,7 @@ public class SqlExprParser extends AbstractSqlParser {
                 break;
             case LITERAL_NUMBER:
                 String numberValue = this.lexer.stringVal();
-                expr = new SqlNumberExpr(numberValue.toCharArray());
+                expr = new SqlDecimalExpr(numberValue.toCharArray());
                 this.lexer.nextToken();
                 break;
             case TRUE:

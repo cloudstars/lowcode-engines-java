@@ -5,7 +5,7 @@ import net.cf.commons.test.dataset.JsonDataSetLoader;
 import net.cf.commons.test.dataset.MysqlDataSetOperator;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
-import net.cf.object.engine.object.XObjectTestUtils;
+import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
@@ -49,16 +49,16 @@ public abstract class AbstractInsertTravelSelfRepoTest extends AbstractOqlRepoTe
     public void testInsertTravel() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL);
         OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(oqlInfo.oql);
-        XObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
+        ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
         SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(oqlStmt);
-        int recordId = this.repository.insert(sqlStmt);
-        assert (recordId == 1);
+        int effectedRows = this.repository.insert(sqlStmt);
+        assert (effectedRows == 1);
 
         {
             // 重新查出来作断言
             String selectOql = "select * from Travel";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(selectOql);
-            XObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
+            ObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
             SqlSelectStatement selectSqlStmt = OqlStatementUtils.toSqlSelect(selectOqlStmt);
             List<Map<String, Object>> dataList = this.repository.selectList(selectSqlStmt);
             assert (dataList != null && dataList.size() == 3);

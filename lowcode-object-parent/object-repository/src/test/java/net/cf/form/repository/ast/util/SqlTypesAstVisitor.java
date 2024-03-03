@@ -44,7 +44,7 @@ public class SqlTypesAstVisitor implements SqlAstVisitor {
     }
 
     @Override
-    public boolean visit(SqlNumberExpr x) {
+    public boolean visit(SqlDecimalExpr x) {
         this.nodes.add(x);
         return true;
     }

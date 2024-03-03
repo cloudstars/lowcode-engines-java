@@ -1,0 +1,13 @@
+{
+  "name": "测试更新出差本表，不含子表的案例",
+  "code": "UpdateTravelSelf",
+  "desc": "测试点：简单的更新，不含子表",
+  "oqls": [
+    {
+      "name": "根据记录ID更新出差记录",
+      "code": "UpdateTravelById",
+      "oql": "update Travel set applyName = '测试申请单1（变更）' where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "update TRAVEL set APPLY_NAME = '测试申请单1（变更）' where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    }
+  ]
+}

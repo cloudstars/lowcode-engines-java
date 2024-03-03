@@ -1,7 +1,5 @@
 package net.cf.object.engine.oql.visitor;
 
-import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import net.cf.object.engine.oql.ast.*;
 
@@ -11,42 +9,6 @@ import net.cf.object.engine.oql.ast.*;
  * @author clouds
  */
 public interface OqlAstVisitor extends SqlAstVisitor {
-
-    /**
-     * 是否允许访问 OqlJsonArrayExpr 的儿子节点
-     *
-     * @param x
-     * @return
-     */
-    default boolean visit(SqlJsonArrayExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 OqlJsonArrayExpr 的儿子节点
-     *
-     * @param x
-     */
-    default void endVisit(SqlJsonArrayExpr x) {
-    }
-
-    /**
-     * 是否允许访问 OqlJsonObjectExpr 的儿子节点
-     *
-     * @param x
-     * @return
-     */
-    default boolean visit(SqlJsonObjectExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 OqlJsonObjectExpr
-     *
-     * @param x
-     */
-    default void endVisit(SqlJsonObjectExpr x) {
-    }
 
     /**
      * 是否允许访问 OqlObjectExpandExpr 的儿子节点
@@ -120,6 +82,17 @@ public interface OqlAstVisitor extends SqlAstVisitor {
      */
     default void endVisit(OqlExprObjectSource x) {
     }
+
+    /**
+     * 是否允许访问 OqlInsertStatement 的儿子节点
+     *
+     * @param x
+     * @return
+     */
+    default boolean visit(OqlInsertStatement x) {
+        return true;
+    }
+
 
     /**
      * 结束访问 OqlInsertStatement

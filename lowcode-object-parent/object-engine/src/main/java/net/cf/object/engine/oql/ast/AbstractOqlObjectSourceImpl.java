@@ -13,7 +13,6 @@ public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl 
 
     protected String alias;
 
-
     public AbstractOqlObjectSourceImpl() {
     }
 
@@ -36,7 +35,7 @@ public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl 
     }
 
     @Override
-    public OqlObjectSource cloneMe() {
+    public OqlExprObjectSource cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 }

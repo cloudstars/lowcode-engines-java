@@ -1,18 +1,11 @@
 package net.cf.object.engine.oql.visitor;
 
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
-import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
-import net.cf.object.engine.oql.ast.OqlExprObjectSource;
-import net.cf.object.engine.oql.ast.OqlInsertInto;
-import net.cf.object.engine.oql.ast.OqlSelect;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.oql.ast.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 输出访问器
@@ -21,82 +14,20 @@ import java.util.Map;
  */
 public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVisitor {
 
+    private XObject resolvedObject;
 
     public OqlAstOutputVisitor(Appendable appender) {
         super(appender);
     }
 
     @Override
-    public boolean visit(SqlJsonObjectExpr x) {
-        this.print('{');
-        int i = 0;
-        for (Map.Entry<String, SqlExpr> entry : x.getItems().entrySet()) {
-            if (i++ > 0) {
-                print(", ");
-            }
-            this.printJsonChar(entry.getKey());
-            this.print(":");
-            SqlExpr value = entry.getValue();
-            if (value instanceof SqlCharExpr) {
-                this.printJsonChar(((SqlCharExpr) value).getText());
-            } else {
-                this.printExpr(value);
-            }
-        }
-        this.print('}');
-
-        return false;
-    }
-
-
-    private void printJsonChar(String text) {
-        this.print("\"");
-        this.print(text);
-        this.print("\"");
-    }
-
-    @Override
-    public boolean visit(SqlJsonArrayExpr x) {
-        this.print('[');
-        List<SqlExpr> items = x.getItems();
-        if (!items.isEmpty()) {
-            int i = 0;
-            for (SqlExpr item : x.getItems()) {
-                if (i++ > 0) {
-                    this.print(",");
-                }
-                this.printExpr(item);
-            }
-        }
-        this.print(']');
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlSelect x) {
-        this.print("select ");
-        int i = 0;
-        for (SqlSelectItem selectItem : x.getSelectItems()) {
-            if (i++ > 0) {
-                this.print(",");
-            }
-            this.visit(selectItem);
-        }
-
-        this.print(" from ");
-        this.visit((OqlExprObjectSource) x.getFrom());
-        if (x.getWhere() != null) {
-            this.print(" where ");
-            this.printExpr(x.getWhere());
-        }
-
-        return false;
+    public boolean visit(OqlObjectExpandExpr x) {
+        return OqlAstVisitor.super.visit(x);
     }
 
     @Override
     public boolean visit(OqlExprObjectSource x) {
-        this.printExpr(x.getExpr());
+        x.getExpr().accept(this);
         if (x.getAlias() != null) {
             this.print(" as " + x.getAlias());
         }
@@ -105,27 +36,99 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
     }
 
     @Override
-    public boolean visit(OqlInsertInto x) {
-        this.print(this.uppercase ? "INSERT INTO " : "insert into ");
-        OqlExprObjectSource objectSource = x.getObjectSource();
-        SqlExpr objectSourceExpr = objectSource.getExpr();
-        if (objectSourceExpr instanceof SqlIdentifierExpr) {
-            String tableName = ((SqlIdentifierExpr) objectSourceExpr).getName();
-            this.print(tableName);
-        } else {
-            this.print("UnKnown ObjectSourceExpr: ");
-            this.print(objectSourceExpr.getClass().getSimpleName());
+    public boolean visit(OqlSelect x) {
+        this.print(this.uppercase ? "SELECT " : "select ");
+
+        DistinctOption distinctOption = x.getDistinctOption();
+        if (distinctOption != null) {
+            if (DistinctOption.ALL == distinctOption) {
+                this.print(this.uppercase ? "ALL " : "all ");
+            } else if (DistinctOption.DISTINCT == distinctOption) {
+                this.print(this.uppercase ? "DISTINCT " : "distinct ");
+            } else if (DistinctOption.UNIQUE == distinctOption) {
+                this.print(this.uppercase ? "UNIQUE " : "unique ");
+            }
         }
 
-        // 打印字段列表
-        this.parenthesizedPrintAndAccept(x.getFields(), ",");
+        // 输出查询的列
+        List<SqlSelectItem> selectItems = x.getSelectItems();
+        this.printAndAcceptList(selectItems, ", ");
 
-        // 打印值列表
-        if (!x.getValuesList().isEmpty()) {
+        // 输出查询的模型
+        OqlObjectSource from = x.getFrom();
+        if (from != null) {
+            this.println();
+            this.print(this.uppercase ? "FROM " : "from ");
+            from.accept(this);
+        }
+
+        // 输出where条件
+        this.printWhere(x.getWhere());
+
+        // 输出groupBy子句
+        SqlSelectGroupByClause groupBy = x.getGroupBy();
+        if (groupBy != null) {
+            this.println();
+            groupBy.accept(this);
+        }
+
+        // 输出orderBy
+        SqlOrderBy orderBy = x.getOrderBy();
+        if (orderBy != null) {
+            this.println();
+            orderBy.accept(this);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean visit(OqlInsertStatement x) {
+        this.print(this.uppercase ? "INSERT INTO " : "insert into ");
+
+        // 输出数据源
+        x.getObjectSource().accept(this);
+
+        // 输出插入的列
+        this.printParenthesesAndAcceptList(x.getFields(), ", ");
+
+        // 输出插入的列列表
+        List<SqlInsertStatement.ValuesClause> valuesClauses = x.getValuesList();
+        if (!valuesClauses.isEmpty()) {
             this.println();
             this.print(this.uppercase ? "VALUES " : "values ");
-            this.printAndAccept(x.getValuesList(), ", ");
+            this.printAndAcceptList(valuesClauses, ", ");
         }
+
+        return false;
+    }
+
+    @Override
+    public boolean visit(OqlUpdateStatement x) {
+        this.print(this.uppercase ? "UPDATE " : "update ");
+
+        // 输出数据源
+        x.getObjectSource().accept(this);
+
+        // 输出set子句
+        this.print(this.uppercase ? " SET " : " set ");
+        this.printAndAcceptList(x.getSetItems(), ", ");
+
+        // 输出where条件
+        this.printWhere(x.getWhere());
+
+        return false;
+    }
+
+    @Override
+    public boolean visit(OqlDeleteStatement x) {
+        this.print(this.uppercase ? "DELETE FROM " : "delete from ");
+
+        // 输出表源
+        x.getFrom().accept(this);
+
+        // 输出where条件
+        this.printWhere(x.getWhere());
 
         return false;
     }

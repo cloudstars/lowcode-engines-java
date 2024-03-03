@@ -1,8 +1,7 @@
 package net.cf.form.repository.mysql;
 
 import net.cf.form.repository.ObjectRepository;
-import net.cf.form.repository.mysql.data.SqlStatementUtils;
-import net.cf.form.repository.mysql.data.insert.InsertSqlAstVisitor;
+import net.cf.form.repository.mysql.util.SqlUtils;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
@@ -27,27 +26,18 @@ public class MySQLObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public int insert(SqlInsertStatement statement) {
-        StringBuilder builder = new StringBuilder();
-        InsertSqlAstVisitor visitor = new InsertSqlAstVisitor(builder);
-        statement.accept(visitor);
-        String sql = builder.toString();
+        String sql = SqlUtils.toSqlText(statement);
         int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
-        if (effectedRows < 1) {
-            // throw new SQLEXCEPTION("数据插入失败！");
-        }
-
         logger.info("数据插入成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
 
     @Override
     public int insert(SqlInsertStatement statement, Map<String, Object> paramMap) {
-        StringBuilder builder = new StringBuilder();
-        InsertSqlAstVisitor visitor = new InsertSqlAstVisitor(builder);
-        statement.accept(visitor);
-        String sql = builder.toString();
+        String sql = SqlUtils.toSqlText(statement);
         // TODO 判断是否存在自增主键
         int effectedRows = this.jdbcTemplate.update(sql, paramMap);
+        logger.info("数据插入成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
 
@@ -58,7 +48,10 @@ public class MySQLObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public int update(SqlUpdateStatement statement) {
-        return 0;
+        String sql = SqlUtils.toSqlText(statement);
+        int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
+        logger.info("数据更新成功，影响行数：{}", effectedRows);
+        return effectedRows;
     }
 
     @Override
@@ -73,7 +66,10 @@ public class MySQLObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public int delete(SqlDeleteStatement statement) {
-        return 0;
+        String sql = SqlUtils.toSqlText(statement);
+        int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
+        logger.info("数据更新成功，影响行数：{}", effectedRows);
+        return effectedRows;
     }
 
     @Override
@@ -88,22 +84,25 @@ public class MySQLObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public Map<String, Object> selectOne(SqlSelectStatement statement) {
-        return null;
+        String sql = SqlUtils.toSqlText(statement);
+        return jdbcTemplate.queryForMap(sql, new HashMap<>());
     }
 
     @Override
     public Map<String, Object> selectOne(SqlSelectStatement statement, Map<String, Object> paramMap) {
-        return null;
+        String sql = SqlUtils.toSqlText(statement);
+        return jdbcTemplate.queryForMap(sql, paramMap);
     }
 
     @Override
     public List<Map<String, Object>> selectList(SqlSelectStatement statement) {
-        String sql = SqlStatementUtils.toSql(statement);
+        String sql = SqlUtils.toSqlText(statement);
         return jdbcTemplate.queryForList(sql, new HashMap<>());
     }
 
     @Override
     public List<Map<String, Object>> selectList(SqlSelectStatement statement, Map<String, Object> paramMap) {
-        return null;
+        String sql = SqlUtils.toSqlText(statement);
+        return jdbcTemplate.queryForList(sql, paramMap);
     }
 }

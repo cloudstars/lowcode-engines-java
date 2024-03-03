@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlStatement {
 
-    protected OqlObjectSource objectSource;
+    protected OqlExprObjectSource objectSource;
 
     protected final List<SqlUpdateSetItem> setItems = new ArrayList<>();
 
@@ -22,11 +22,11 @@ public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlS
     public OqlUpdateStatement() {
     }
 
-    public OqlObjectSource getObjectSource() {
+    public OqlExprObjectSource getObjectSource() {
         return objectSource;
     }
 
-    public void setObjectSource(OqlObjectSource objectSource) {
+    public void setObjectSource(OqlExprObjectSource objectSource) {
         this.objectSource = objectSource;
         this.addChild(objectSource);
     }

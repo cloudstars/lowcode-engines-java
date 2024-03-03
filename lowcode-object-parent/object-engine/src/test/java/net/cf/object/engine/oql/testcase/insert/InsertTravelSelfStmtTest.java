@@ -4,7 +4,7 @@ import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
-import net.cf.object.engine.object.XObjectTestUtils;
+import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
@@ -40,7 +40,7 @@ public class InsertTravelSelfStmtTest extends AbstractOqlTest implements InsertT
         assert (osExpr instanceof SqlIdentifierExpr && "Travel".equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        XObjectTestUtils.resolveObject(objectSource);
+        ObjectTestUtils.resolveObject(objectSource);
         SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }

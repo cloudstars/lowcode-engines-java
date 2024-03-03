@@ -1,9 +1,8 @@
 package net.cf.form.repository.mysql.insert;
 
-import net.cf.form.repository.ObjectRepository;
+import net.cf.commons.test.dataset.IDataSetOperator;
 import net.cf.form.repository.mysql.MySQLObjectRepositoryImpl;
 import net.cf.form.repository.mysql.MysqlRepositoryTestApplication;
-import net.cf.commons.test.dataset.IDataSetOperator;
 import net.cf.form.repository.testcases.statement.insert.AbstractSimpleInsertTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,19 +23,19 @@ public class SimpleInsertTest extends AbstractSimpleInsertTestCase {
     @Resource
     private IDataSetOperator dataSetOperator;
 
-    public SimpleInsertTest(ObjectRepository repository, IDataSetOperator dataSetOperator) {
-        super(repository, dataSetOperator);
+    public SimpleInsertTest() {
+        super(null, null);
     }
 
     @Test
     @Override
-    protected void test1() {
+    public void test1() {
         super.test1();
     }
 
     @Test
     @Override
-    protected void test2() {
+    public void test2() {
         super.test2();
     }
 }

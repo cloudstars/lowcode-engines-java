@@ -141,7 +141,7 @@ public final class SqlExprUtils {
             if ((o instanceof Byte) || (o instanceof Short) || (o instanceof Integer) || (o instanceof Long) || o instanceof BigInteger) {
                 return new SqlIntegerExpr((Number) o);
             } else {
-                return new SqlNumberExpr((Number) o);
+                return new SqlDecimalExpr((Number) o);
             }
         } else {
             throw new SqlParseException("not support class : " + o.getClass());

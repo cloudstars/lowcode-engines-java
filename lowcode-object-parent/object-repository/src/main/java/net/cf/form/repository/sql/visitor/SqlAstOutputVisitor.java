@@ -1,62 +1,78 @@
 package net.cf.form.repository.sql.visitor;
 
 import net.cf.form.repository.sql.ast.SqlCommentHint;
+import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.expr.op.SqlCaseExpr;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.parser.Token;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
- * 输出访问器
+ * SQL语句输出访问器
  *
  * @author clouds
  */
 public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements ParameterizedVisitor, PrintableVisitor {
 
-    public static Boolean defaultPrintStatementAfterSemi;
-
-    protected Boolean printStatementAfterSemi;
-
+    /**
+     * 输出目标
+     */
     protected final Appendable appender;
 
-    protected int replaceCount;
-
-    protected transient int lines;
-
-    protected int indentCount;
-
-    protected List<Object> parameters;
-
+    /**
+     * 是否大写输出
+     */
     protected boolean uppercase = true;
 
+    /**
+     * 是否参数化
+     */
     protected boolean parameterized;
 
+    /**
+     * 参数列表
+     */
+    protected List<Object> parameters;
+
+    /**
+     * 参数替换的数量
+     */
+    protected int replaceCount;
+
+    /**
+     * 标识符的引用符号
+     */
     protected char quote = '`';
 
+    /**
+     * 是否打印标识符的引用符号
+     */
     protected boolean printNameQuote;
+
+    /**
+     * 输出总行数
+     */
+    protected transient int lines;
+
+    /**
+     * 缩进的次数
+     */
+    protected int indentCount;
 
 
     public SqlAstOutputVisitor(Appendable appender) {
-        this.printStatementAfterSemi = SqlAstOutputVisitor.defaultPrintStatementAfterSemi;
         this.features |= VisitorFeature.OUTPUT_PRETTY_FORMAT.mask;
         this.appender = appender;
     }
 
     public SqlAstOutputVisitor(Appendable appender, boolean parameterized) {
-        this.printStatementAfterSemi = SqlAstOutputVisitor.defaultPrintStatementAfterSemi;
         this.features |= VisitorFeature.OUTPUT_PRETTY_FORMAT.mask;
         this.appender = appender;
         this.config(VisitorFeature.OUTPUT_PARAMETERIZED, parameterized);
@@ -78,95 +94,51 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
     @Override
-    public boolean isUpperCase() {
+    public void config(VisitorFeature feature, boolean state) {
+        super.config(feature, state);
+        if (feature == VisitorFeature.OUTPUT_U_CASE) {
+            this.uppercase = state;
+        } else if (feature == VisitorFeature.OUTPUT_PARAMETERIZED) {
+            this.parameterized = state;
+        } else if (feature == VisitorFeature.OUTPUT_NAME_QUOTE) {
+            this.printNameQuote = state;
+        }
+    }
+
+
+    /**
+     * 配置迭代器的特性
+     *
+     * @param features
+     */
+    public void setFeatures(int features) {
+        super.setFeatures(features);
+        this.uppercase = this.isEnabled(VisitorFeature.OUTPUT_U_CASE);
+        this.parameterized = this.isEnabled(VisitorFeature.OUTPUT_PARAMETERIZED);
+        this.printNameQuote = this.isEnabled(VisitorFeature.OUTPUT_NAME_QUOTE);
+    }
+
+    /**
+     * 是否是格式化后的格式
+     *
+     * @return
+     */
+    public boolean isPrettyFormat() {
+        return this.isEnabled(VisitorFeature.OUTPUT_PRETTY_FORMAT);
+    }
+
+    public char getNameQuote() {
+        return this.quote;
+    }
+
+    public void setNameQuote(char quote) {
+        this.quote = quote;
+    }
+
+
+    @Override
+    public boolean isUppercase() {
         return this.uppercase;
-    }
-
-
-    public void print(char value) {
-        if (this.appender != null) {
-            try {
-                this.appender.append(value);
-            } catch (IOException e) {
-                throw new RuntimeException("print error", e);
-            }
-        }
-    }
-
-    public void print(int value) {
-        if (this.appender != null) {
-            if (this.appender instanceof StringBuffer) {
-                ((StringBuffer) this.appender).append(value);
-            } else if (this.appender instanceof StringBuilder) {
-                ((StringBuilder) this.appender).append(value);
-            } else {
-                this.print(Integer.toString(value));
-            }
-        }
-    }
-
-    public void print(long value) {
-        if (this.appender != null) {
-            if (this.appender instanceof StringBuilder) {
-                ((StringBuilder) this.appender).append(value);
-            } else if (this.appender instanceof StringBuffer) {
-                ((StringBuffer) this.appender).append(value);
-            } else {
-                this.print(Long.toString(value));
-            }
-
-        }
-    }
-
-    public void print(float value) {
-        if (this.appender != null) {
-            if (this.appender instanceof StringBuilder) {
-                ((StringBuilder) this.appender).append(value);
-            } else if (this.appender instanceof StringBuffer) {
-                ((StringBuffer) this.appender).append(value);
-            } else {
-                this.print(Float.toString(value));
-            }
-
-        }
-    }
-
-    public void print(double value) {
-        if (this.appender != null) {
-            if (this.appender instanceof StringBuilder) {
-                ((StringBuilder) this.appender).append(value);
-            } else if (this.appender instanceof StringBuffer) {
-                ((StringBuffer) this.appender).append(value);
-            } else {
-                this.print(Double.toString(value));
-            }
-
-        }
-    }
-
-    public void print(Date date) {
-        if (this.appender != null) {
-            SimpleDateFormat dateFormat;
-            if (date instanceof java.sql.Date) {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                this.print("DATE ");
-            } else {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                this.print("TIMESTAMP ");
-            }
-
-            this.print("'" + dateFormat.format(date) + "'");
-        }
-    }
-
-    public void println() {
-        if (!this.isPrettyFormat()) {
-            this.print(' ');
-        } else {
-            this.print('\n');
-            ++this.lines;
-            this.printIndent();
-        }
     }
 
     @Override
@@ -180,36 +152,33 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         }
     }
 
-    protected void printName(String text) {
-        if (this.appender != null && text.length() != 0) {
+    @Override
+    public void print(char value) {
+        if (this.appender != null) {
             try {
-                if (this.printNameQuote) {
-                    char c0 = text.charAt(0);
-                    if (c0 == this.quote) {
-                        this.appender.append(text);
-                    } else if (c0 == '"' && text.charAt(text.length() - 1) == '"') {
-                        this.appender.append(this.quote);
-                        this.appender.append(text.substring(1, text.length() - 1));
-                        this.appender.append(this.quote);
-                    } else if (c0 == '`' && text.charAt(text.length() - 1) == '`') {
-                        this.appender.append(this.quote);
-                        this.appender.append(text.substring(1, text.length() - 1));
-                        this.appender.append(this.quote);
-                    } else {
-                        this.appender.append(this.quote);
-                        this.appender.append(text);
-                        this.appender.append(this.quote);
-                    }
-                } else {
-                    this.appender.append(text);
-                }
-
-            } catch (IOException var3) {
-                throw new RuntimeException("println error", var3);
+                this.appender.append(value);
+            } catch (IOException e) {
+                throw new RuntimeException("print error", e);
             }
         }
     }
 
+    /**
+     * 打印一个换行符
+     */
+    public void println() {
+        if (!this.isPrettyFormat()) {
+            this.print(' ');
+        } else {
+            this.print('\n');
+            ++this.lines;
+            this.printIndent();
+        }
+    }
+
+    /**
+     * 打印缩进符
+     */
     protected void printIndent() {
         if (this.appender != null) {
             try {
@@ -222,28 +191,30 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         }
     }
 
-
-    protected void parenthesizedPrintAndAccept(List<? extends SqlObject> nodes, String separator) {
-        this.print('(');
-        this.printAndAccept(nodes, separator);
-        this.print(')');
-    }
-
-
     /**
-     * 以一个分隔符分开打开一个列表
+     * 打印字符串
      *
-     * @param nodes
-     * @param separator
+     * @param text
      */
-    protected void printAndAccept(List<? extends SqlObject> nodes, String separator) {
-        for (int i = 0, l = nodes.size(); i < l; ++i) {
-            if (i != 0) {
-                this.print(separator);
+    protected void printChars(final String text) {
+        String tText = text;
+        if (tText == null) {
+            this.print(this.uppercase ? "NULL" : "null");
+        } else {
+            this.print('\'');
+            int index = tText.indexOf("'");
+            if (index >= 0) {
+                tText = tText.replaceAll("'", "''");
             }
-            nodes.get(i).accept(this);
+
+            this.print(tText);
+            this.print('\'');
         }
     }
+
+    /**********************************************************************
+     *                基础类节点                                            *
+     **********************************************************************/
 
     @Override
     public boolean visit(SqlCommentHint x) {
@@ -254,135 +225,43 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         return false;
     }
 
-    /**
-     * 打印一个表达式
-     *
-     * @param x
-     */
-    protected final void printExpr(SqlExpr x) {
-        this.printExpr(x, this.parameterized);
-    }
-
-
-    protected final void printExpr(SqlExpr x, boolean parameterized) {
-        Class<?> clazz = x.getClass();
-        if (clazz == SqlIdentifierExpr.class) {
-            this.visit((SqlIdentifierExpr) x);
-        } else if (clazz == SqlPropertyExpr.class) {
-            this.visit((SqlPropertyExpr) x);
-        } else if (clazz == SqlAllColumnExpr.class) {
-            this.print('*');
-        } else if (clazz == SqlAggregateExpr.class) {
-            this.visit((SqlAggregateExpr) x);
-        } else if (clazz == SqlBinaryOpExpr.class) {
-            this.visit((SqlBinaryOpExpr) x);
-        } else if (clazz == SqlNullExpr.class) {
-            this.visit((SqlNullExpr) x);
-        } else if (clazz == SqlDateExpr.class) {
-            this.visit((SqlDateExpr) x);
-        } else if (clazz == SqlTimeExpr.class) {
-            this.visit((SqlTimeExpr) x);
-        } else if (clazz == SqlCharExpr.class) {
-            this.visit((SqlCharExpr) x, parameterized);
-        } else if (clazz == SqlIntegerExpr.class) {
-            this.printInteger((SqlIntegerExpr) x, parameterized);
-        } else if (clazz == SqlNumberExpr.class) {
-            this.visit((SqlNumberExpr) x);
-        } else if (clazz == SqlMethodInvokeExpr.class) {
-            this.visit((SqlMethodInvokeExpr) x);
-        } else if (clazz == SqlVariantRefExpr.class) {
-            this.visit((SqlVariantRefExpr) x);
-        } else if (clazz == SqlBinaryOpExprGroup.class) {
-            this.visit((SqlBinaryOpExprGroup) x);
-        } else if (clazz == SqlCaseExpr.class) {
-            this.visit((SqlCaseExpr) x);
-        } else if (clazz == SqlListExpr.class) {
-            this.visit((SqlListExpr) x);
-        } else {
-            x.accept(this);
-        }
-    }
+    /**********************************************************************
+     *                字面量类表达式节点                                      *
+     **********************************************************************/
 
     @Override
     public boolean visit(SqlCharExpr x) {
         this.printChars(x.getText());
-
         return false;
     }
-
-
-    public boolean visit(SqlCharExpr x, boolean parameterized) {
-        if (parameterized) {
-            this.print('?');
-            /*
-            this.incrementReplaceCunt();
-            if (this.parameters != null) {
-                ExportParameterVisitorUtils.exportParameter(this.parameters, x);
-            }
-            */
-
-            return false;
-        } else {
-            this.printChars(x.getText());
-            return false;
-        }
-    }
-
-
-    protected void printChars(final String text) {
-        String tText = text;
-        if (tText == null) {
-            this.print(this.uppercase ? "NULL" : "null");
-        } else {
-            this.print('\'');
-            int index = tText.indexOf(39);
-            if (index >= 0) {
-                tText = tText.replaceAll("'", "''");
-            }
-
-            this.print(tText);
-            this.print('\'');
-        }
-    }
-
 
     @Override
     public boolean visit(SqlBooleanExpr x) {
-        this.print(x.getValue() ? "true" : "false");
+        if (this.uppercase) {
+            this.print(x.getValue() ? "TRUE" : "FALSE");
+        } else {
+            this.print(x.getValue() ? "true" : "false");
+        }
 
         return false;
     }
-
 
     @Override
     public boolean visit(SqlIntegerExpr x) {
-        boolean parameterized = this.parameterized;
-        this.printInteger(x, parameterized);
+        this.print(x.getValue().toString());
         return false;
     }
 
-    protected void printInteger(SqlIntegerExpr x, boolean parameterized) {
-        Number number = x.getNumber();
-        if (parameterized) {
-            this.print('?');
-            /*this.incrementReplaceCunt();
-            if (this.parameters != null) {
-                ExportParameterVisitorUtils.exportParameter(this.parameters, x);
-            }*/
-        } else {
-            if (!(number instanceof BigDecimal) && !(number instanceof BigInteger)) {
-                this.print(number.longValue());
-            } else {
-                this.print(number.toString());
-            }
-
-        }
+    @Override
+    public boolean visit(SqlDecimalExpr x) {
+        this.print(x.getNumber().toString());
+        return false;
     }
 
     @Override
-    public boolean visit(SqlNumberExpr x) {
-        this.print(x.getNumber().toString());
-
+    public boolean visit(SqlTimestampExpr x) {
+        this.print(this.uppercase ? "DATETIME " : "datetime ");
+        this.printChars(x.getText());
         return false;
     }
 
@@ -401,60 +280,61 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
     @Override
-    public boolean visit(SqlTimestampExpr x) {
-        this.print(this.uppercase ? "DATETIME " : "datetime ");
-        this.printChars(x.getText());
-        return false;
-    }
-
-    @Override
     public boolean visit(SqlNullExpr x) {
-        this.print("null");
-
+        this.print(this.uppercase ? "NULL" : "null");
         return false;
     }
 
     @Override
-    public boolean visit(SqlIdentifierExpr x) {
-        this.print(x.getName());
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(SqlPropertyExpr x) {
-        SqlName owner = x.getOwner();
-        if (owner != null) {
-            if (owner instanceof SqlIdentifierExpr) {
-                visit((SqlIdentifierExpr) owner);
-            } else if (owner instanceof SqlPropertyExpr) {
-                visit((SqlPropertyExpr) owner);
+    public boolean visit(SqlJsonObjectExpr x) {
+        this.print("{");
+        Map<String, SqlExpr> items = x.getItems();
+        for (Map.Entry<String, SqlExpr> entry : items.entrySet()) {
+            this.print("\"" + entry.getKey() + "\": ");
+            SqlExpr value = entry.getValue();
+            if (value instanceof SqlCharExpr) {
+                this.print("\"" + ((SqlCharExpr) value).getValue() + "\": ");
+            } else {
+                entry.getValue().accept(this);
             }
-            this.print('.');
         }
-        this.print(x.getName());
-
+        this.print("}");
         return false;
     }
 
     @Override
-    public boolean visit(SqlVariantRefExpr x) {
-        this.print(x.getName());
-
+    public boolean visit(SqlJsonArrayExpr x) {
+        this.print("[");
+        List<SqlExpr> items = x.getItems();
+        for (int i = 0, l = items.size(); i < l; i++) {
+            if (i != 0) {
+                this.print(", ");
+            }
+            SqlExpr item = items.get(i);
+            if (item instanceof SqlCharExpr) {
+                this.print("\"" + ((SqlCharExpr) item).getValue() + "\": ");
+            } else {
+                item.accept(this);
+            }
+        }
+        this.print("]");
         return false;
     }
 
+    /**********************************************************************
+     *                标识符类表达式节点                                         *
+     **********************************************************************/
     @Override
     public boolean visit(SqlBinaryOpExpr x) {
         if (x.isParenthesized()) {
             this.print("(");
         }
 
-        this.printExpr(x.getLeft());
+        x.getLeft().accept(this);
         this.print(' ');
         this.print(x.getOperator().name);
         this.print(' ');
-        this.printExpr(x.getRight());
+        x.getRight().accept(this);
 
         if (x.isParenthesized()) {
             this.print(")");
@@ -464,89 +344,88 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
     @Override
+    public boolean visit(SqlPropertyExpr x) {
+        SqlName owner = x.getOwner();
+        if (owner != null) {
+            owner.accept(this);
+            this.print('.');
+        }
+        this.print(x.getName());
+
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlIdentifierExpr x) {
+        this.print(x.getName());
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlVariantRefExpr x) {
+        this.print(x.getName());
+        return false;
+    }
+
+    @Override
     public boolean visit(SqlMethodInvokeExpr x) {
-        String function = x.getMethodName();
-        if (function != null) {
-            this.print(function);
-        }
-
-        List<SqlExpr> arguments = x.getArguments();
-        this.parenthesizedPrintAndAccept(arguments, ", ");
-
-        return false;
+        return super.visit(x);
     }
-
-
-    /**
-     * 加小括号输出表达式
-     *
-     * @param x
-     * @param function
-     */
-    protected void outputByParenthesized(SqlObject x, SqlObjectPrinterFunction function) {
-        print("(");
-        function.print(x);
-        print(")");
-    }
-
 
     @Override
-    public boolean visit(SqlInsertStatement x) {
-        this.print(this.uppercase ? "INSERT INTO " : "insert into ");
+    public boolean visit(SqlAllColumnExpr x) {
+        this.print(Token.STAR.name);
+        return false;
+    }
 
-        x.getTableSource().accept(this);
-        //String columnsString = x.getColumnsString();
-        //if (columnsString != null) {
-        //    this.print0(columnsString);
-        //} else {
-        this.printInsertColumns(x.getColumns());
-        //}
-
-        if (!x.getValuesList().isEmpty()) {
-            this.println();
-            this.print(this.uppercase ? "VALUES " : "values ");
-            this.printAndAccept(x.getValuesList(), ", ");
-        } /*else if (x.getQuery() != null) {
-            this.println();
-            x.getQuery().accept(this);
-        }*/
+    /**********************************************************************
+     *                表源类节点                                            *
+     **********************************************************************/
+    @Override
+    public boolean visit(SqlExprTableSource x) {
+        x.getExpr().accept(this);
+        String alias = x.getAlias();
+        if (alias != null) {
+            this.print(this.uppercase ? " AS " : " as ");
+            this.print(alias);
+        }
 
         return false;
     }
 
-    public void printInsertColumns(List<SqlExpr> columns) {
-        int size = columns.size();
-        if (size > 0) {
-            this.print(' ');
-            this.print('(');
+    @Override
+    public boolean visit(SqlJoinTableSource x) {
+        SqlTableSource leftTableSource = x.getLeft();
+        leftTableSource.accept(this);
 
-            for (int i = 0; i < size; ++i) {
-                if (i != 0) {
-                    this.print(", ");
-                }
-
-                SqlExpr column = columns.get(i);
-                if (column instanceof SqlIdentifierExpr) {
-                    this.visit((SqlIdentifierExpr) column);
-                } else {
-                    this.printExpr(column, this.parameterized);
-                }
+        SqlJoinTableSource.JoinType joinType = x.getJoinType();
+        if (joinType != null) {
+            if (joinType != SqlJoinTableSource.JoinType.COMMA) {
+                this.print(' ');
             }
-
-            this.print(')');
+            this.print(joinType.name);
+            this.print(' ');
         }
-    }
 
+        SqlTableSource rightTableSource = x.getRight();
+        rightTableSource.accept(this);
 
-    @Override
-    public boolean visit(SqlInsertStatement.ValuesClause x) {
-        this.print('(');
-        this.printAndAccept(x.getValues(), ", ");
-        this.print(')');
+        if (x.getCondition() != null) {
+            this.print(this.uppercase ? " ON " : " on ");
+            x.getCondition().accept(this);
+        }
 
         return false;
     }
 
+    @Override
+    public boolean visit(SqlSubQueryTableSource x) {
+        return super.visit(x);
+    }
+
+    /**********************************************************************
+     *                语句类节点                                            *
+     **********************************************************************/
 
     @Override
     public boolean visit(SqlSelect x) {
@@ -563,26 +442,29 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             }
         }
 
-        this.printSelectList(x.getSelectItems());
+        // 输出查询的列
+        List<SqlSelectItem> selectItems = x.getSelectItems();
+        this.printAndAcceptList(selectItems, ", ");
 
+        // 输出查询的表
         SqlTableSource from = x.getFrom();
         if (from != null) {
             this.println();
             this.print(this.uppercase ? "FROM " : "from ");
-            this.printTableSource(from);
+            from.accept(this);
         }
 
-        SqlExpr where = x.getWhere();
-        if (where != null) {
-            this.printWhere(where);
-        }
+        // 输出where条件
+        this.printWhere(x.getWhere());
 
+        // 输出groupBy子句
         SqlSelectGroupByClause groupBy = x.getGroupBy();
         if (groupBy != null) {
             this.println();
-            this.visit(groupBy);
+            groupBy.accept(this);
         }
 
+        // 输出orderBy
         SqlOrderBy orderBy = x.getOrderBy();
         if (orderBy != null) {
             this.println();
@@ -592,43 +474,9 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         return false;
     }
 
-    protected void printSelectList(List<SqlSelectItem> selectList) {
-        for (int i = 0, l = selectList.size(); i < l; i++) {
-            SqlSelectItem selectItem = selectList.get(i);
-            if (i != 0) {
-                this.print(", ");
-            }
-
-            if (selectItem.getClass() == SqlSelectItem.class) {
-                this.visit(selectItem);
-            } else {
-                selectItem.accept(this);
-            }
-        }
-    }
-
-    protected void printTableSource(SqlTableSource x) {
-        Class<?> clazz = x.getClass();
-        if (clazz == SqlJoinTableSource.class) {
-            this.visit((SqlJoinTableSource) x);
-        } else if (clazz == SqlExprTableSource.class) {
-            this.visit((SqlExprTableSource) x);
-        } else if (clazz == SqlSubQueryTableSource.class) {
-            this.visit((SqlSubQueryTableSource) x);
-        } else {
-            x.accept(this);
-        }
-    }
-
-    protected void printWhere(SqlExpr where) {
-        this.println();
-        this.print(this.uppercase ? "WHERE " : "where ");
-        this.printExpr(where, this.parameterized);
-    }
-
     @Override
     public boolean visit(SqlSelectItem x) {
-        this.printExpr(x.getExpr());
+        x.getExpr().accept(this);
         if (x.getAlias() != null) {
             this.print(" as " + x.getAlias());
         }
@@ -637,106 +485,133 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
     @Override
-    public boolean visit(SqlAllColumnExpr x) {
-        this.print(Token.STAR.name);
+    public boolean visit(SqlSelectGroupByClause x) {
+        return super.visit(x);
+    }
+
+    @Override
+    public boolean visit(SqlOrderBy x) {
+        return super.visit(x);
+    }
+
+    @Override
+    public boolean visit(SqlSelectOrderByItem x) {
+        return super.visit(x);
+    }
+
+    @Override
+    public boolean visit(SqlLimit x) {
+        return super.visit(x);
+    }
+
+    @Override
+    public boolean visit(SqlInsertStatement x) {
+        this.print(this.uppercase ? "INSERT INTO " : "insert into ");
+
+        // 输出表源
+        x.getTableSource().accept(this);
+
+        // 输出插入的列
+        this.printParenthesesAndAcceptList(x.getColumns(), ", ");
+
+        // 输出插入的列列表
+        List<SqlInsertStatement.ValuesClause> valuesClauses = x.getValuesList();
+        if (!valuesClauses.isEmpty()) {
+            this.println();
+            this.print(this.uppercase ? "VALUES " : "values ");
+            this.printAndAcceptList(valuesClauses, ", ");
+        }
 
         return false;
     }
 
     @Override
-    public boolean visit(SqlExprTableSource x) {
-        this.printTableSourceExpr(x.getExpr());
-
-        String alias = x.getAlias();
-        if (alias != null) {
-            this.print(this.uppercase ? " AS " : " as ");
-            this.print(alias);
-        }
-
+    public boolean visit(SqlInsertStatement.ValuesClause x) {
+        this.printParenthesesAndAcceptList(x.getValues(), ", ");
         return false;
     }
-
 
     @Override
-    public boolean visit(SqlJoinTableSource x) {
-        SqlTableSource leftTableSource = x.getLeft();
-        this.printTableSource(leftTableSource);
+    public boolean visit(SqlUpdateStatement x) {
+        this.print(this.uppercase ? "UPDATE " : "update ");
 
-        SqlJoinTableSource.JoinType joinType = x.getJoinType();
-        if (joinType != null) {
-            if (joinType != SqlJoinTableSource.JoinType.COMMA) {
-                this.print(' ');
-            }
-            this.print(joinType.name);
-            this.print(' ');
-        }
+        // 输出表源
+        x.getTableSource().accept(this);
 
-        SqlTableSource rightTableSource = x.getRight();
-        this.printTableSource(rightTableSource);
+        // 输出set子句
+        this.print(this.uppercase ? " SET " : " set ");
+        this.printAndAcceptList(x.getSetItems(), ", ");
 
-        if (x.getCondition() != null) {
-            this.print(this.uppercase ? " ON " : " on ");
-            this.printExpr(x.getCondition());
-        }
+        // 输出where条件
+        this.printWhere(x.getWhere());
 
         return false;
     }
 
+    @Override
+    public boolean visit(SqlUpdateSetItem x) {
+        x.getColumn().accept(this);
+        this.print(" = ");
+        x.getValue().accept(this);
+        return false;
+    }
 
-    protected void printTableSourceExpr(SqlExpr expr) {
-        if (expr instanceof SqlIdentifierExpr) {
-            SqlIdentifierExpr identifierExpr = (SqlIdentifierExpr) expr;
-            String destTableName = identifierExpr.getName();
-            this.printName(destTableName);
-        } else if (expr instanceof SqlPropertyExpr) {
-            SqlPropertyExpr propertyExpr = (SqlPropertyExpr) expr;
-            SqlExpr owner = propertyExpr.getOwner();
-            if (owner instanceof SqlIdentifierExpr) {
-                SqlIdentifierExpr identOwner = (SqlIdentifierExpr) owner;
-                String ownerName = identOwner.getName();
-                this.printName(ownerName);
-            } else {
-                this.printExpr(owner);
+    @Override
+    public boolean visit(SqlDeleteStatement x) {
+        this.print(this.uppercase ? "DELETE FROM " : "delete from ");
+
+        // 输出表源
+        x.getFrom().accept(this);
+
+        // 输出where条件
+        this.printWhere(x.getWhere());
+
+        return false;
+    }
+
+    /**********************************************************************
+     *                        辅助函数                                      *
+     **********************************************************************/
+
+    /**
+     * 打印小括号括号来的，并以某个分隔符分开的列表
+     *
+     * @param nodes
+     * @param separator
+     */
+    protected void printParenthesesAndAcceptList(List<? extends SqlObject> nodes, String separator) {
+        this.print('(');
+        this.printAndAcceptList(nodes, separator);
+        this.print(')');
+    }
+
+
+    /**
+     * 打印以某个分隔符分开的列表
+     *
+     * @param nodes
+     * @param separator
+     */
+    protected void printAndAcceptList(List<? extends SqlObject> nodes, String separator) {
+        int l = nodes.size();
+        for (int i = 0; i < l; i++) {
+            if (i != 0) {
+                this.print(separator);
             }
-
-            this.print('.');
-            this.printName(propertyExpr.getName());
-        } else if (expr instanceof SqlMethodInvokeExpr) {
-            this.visit((SqlMethodInvokeExpr) expr);
-        } else {
-            expr.accept(this);
+            nodes.get(i).accept(this);
         }
     }
 
-
-    public void config(VisitorFeature feature, boolean state) {
-        super.config(feature, state);
-        if (feature == VisitorFeature.OUTPUT_U_CASE) {
-            this.uppercase = state;
-        } else if (feature == VisitorFeature.OUTPUT_PARAMETERIZED) {
-            this.parameterized = state;
-        } else if (feature == VisitorFeature.OUTPUT_NAME_QUOTE) {
-            this.printNameQuote = state;
+    /**
+     * 输出where条件
+     *
+     * @param where
+     */
+    protected void printWhere(SqlExpr where) {
+        if (where != null) {
+            this.println();
+            this.print(this.uppercase ? "WHERE " : "where ");
+            where.accept(this);
         }
     }
-
-    public void setFeatures(int features) {
-        super.setFeatures(features);
-        this.uppercase = this.isEnabled(VisitorFeature.OUTPUT_U_CASE);
-        this.parameterized = this.isEnabled(VisitorFeature.OUTPUT_PARAMETERIZED);
-        this.printNameQuote = this.isEnabled(VisitorFeature.OUTPUT_NAME_QUOTE);
-    }
-
-    public boolean isPrettyFormat() {
-        return this.isEnabled(VisitorFeature.OUTPUT_PRETTY_FORMAT);
-    }
-
-    public char getNameQuote() {
-        return this.quote;
-    }
-
-    public void setNameQuote(char quote) {
-        this.quote = quote;
-    }
-
 }

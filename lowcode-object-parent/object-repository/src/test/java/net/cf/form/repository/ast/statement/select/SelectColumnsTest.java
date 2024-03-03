@@ -9,8 +9,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
-import net.cf.form.repository.sql.ast.statement.SqlStatement;
-import net.cf.form.repository.sql.parser.SqlStatementParser;
+import net.cf.form.repository.sql.util.SqlStatementUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,11 +32,7 @@ public class SelectColumnsTest extends AbstractSqlTest {
         String sql = this.sqlMap.get("SELECT_ALL_COLUMNS");
         assert (sql != null);
 
-        SqlStatementParser sqlParser = new SqlStatementParser(sql);
-        List<SqlStatement> stmts = sqlParser.parseStatementList();
-        Assert.assertTrue(stmts != null && stmts.size() == 1);
-        Assert.assertTrue(stmts.get(0) instanceof SqlSelectStatement);
-        SqlSelectStatement stmt0 = (SqlSelectStatement) stmts.get(0);
+        SqlSelectStatement stmt0 = SqlStatementUtils.parseSingleSelectStatement(sql);
         SqlSelectItem selectItem = stmt0.getSelect().getSelectItems().get(0);
         Assert.assertTrue(selectItem.getExpr() instanceof SqlAllColumnExpr);
         Assert.assertTrue(SqlTestUtils.equalsIgnoreWhiteSpace(stmt0.toString(), sql));
@@ -45,7 +40,7 @@ public class SelectColumnsTest extends AbstractSqlTest {
         // 与 Druid 的 AST 作对比
         SQLStatementParser druidSqlParser = new SQLStatementParser(sql);
         List<SQLStatement> druidStmts = druidSqlParser.parseStatementList();
-        Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
+        Assert.assertTrue(SqlTestUtils.equals(stmt0, druidStmts.get(0)));
     }
 
     /**
@@ -56,20 +51,16 @@ public class SelectColumnsTest extends AbstractSqlTest {
         String sql = this.sqlMap.get("SELECT_ONE_COLUMN");
         assert (sql != null);
 
-        SqlStatementParser sqlParser = new SqlStatementParser(sql);
-        List<SqlStatement> stmts = sqlParser.parseStatementList();
-        Assert.assertTrue(stmts != null && stmts.size() == 1);
-        Assert.assertTrue(stmts.get(0) instanceof SqlSelectStatement);
-        SqlSelectStatement stmt0 = (SqlSelectStatement) stmts.get(0);
-        Assert.assertTrue(stmt0.getSelect().getSelectItems().size() == 1);
-        SqlSelectItem selectItem = stmt0.getSelect().getSelectItems().get(0);
-        Assert.assertTrue(selectItem.getExpr() instanceof SqlIdentifierExpr);
+        SqlSelectStatement stmt0 = SqlStatementUtils.parseSingleSelectStatement(sql);
+        List<SqlSelectItem> selectItems = stmt0.getSelect().getSelectItems();
+        Assert.assertTrue(selectItems.size() == 1);
+        Assert.assertTrue(selectItems.get(0).getExpr() instanceof SqlIdentifierExpr);
         Assert.assertTrue(SqlTestUtils.equalsIgnoreWhiteSpace(stmt0.toString(), sql));
 
         // 与 Druid 的 AST 作对比
         SQLStatementParser druidSqlParser = new SQLStatementParser(sql);
         List<SQLStatement> druidStmts = druidSqlParser.parseStatementList();
-        Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
+        Assert.assertTrue(SqlTestUtils.equals(stmt0, druidStmts.get(0)));
     }
 
 
@@ -81,24 +72,17 @@ public class SelectColumnsTest extends AbstractSqlTest {
         String sql = this.sqlMap.get("SELECT_MULTIPLE_COLUMNS");
         assert (sql != null);
 
-        SqlStatementParser sqlParser = new SqlStatementParser(sql);
-        List<SqlStatement> stmts = sqlParser.parseStatementList();
-        Assert.assertTrue(stmts != null && stmts.size() == 1);
-        Assert.assertTrue(stmts.get(0) instanceof SqlSelectStatement);
-        SqlSelectStatement stmt0 = (SqlSelectStatement) stmts.get(0);
-        Assert.assertTrue(stmt0.getSelect().getSelectItems().size() == 3);
-        SqlSelectItem selectItem0 = stmt0.getSelect().getSelectItems().get(0);
-        Assert.assertTrue(selectItem0.getExpr() instanceof SqlIdentifierExpr);
-        SqlSelectItem selectItem1 = stmt0.getSelect().getSelectItems().get(1);
-        Assert.assertTrue(selectItem1.getExpr() instanceof SqlIdentifierExpr);
-        SqlSelectItem selectItem2 = stmt0.getSelect().getSelectItems().get(2);
-        Assert.assertTrue(selectItem2.getExpr() instanceof SqlIntegerExpr);
-        System.out.println(stmt0.toString());
+        SqlSelectStatement stmt0 = SqlStatementUtils.parseSingleSelectStatement(sql);
+        List<SqlSelectItem> selectItems = stmt0.getSelect().getSelectItems();
+        Assert.assertTrue(selectItems.size() == 3);
+        Assert.assertTrue(selectItems.get(0).getExpr() instanceof SqlIdentifierExpr);
+        Assert.assertTrue(selectItems.get(1).getExpr() instanceof SqlIdentifierExpr);
+        Assert.assertTrue(selectItems.get(2).getExpr() instanceof SqlIntegerExpr);
         Assert.assertTrue(SqlTestUtils.equalsIgnoreWhiteSpace(stmt0.toString(), sql));
 
         // 与 Druid 的 AST 作对比
         SQLStatementParser druidSqlParser = new SQLStatementParser(sql);
         List<SQLStatement> druidStmts = druidSqlParser.parseStatementList();
-        Assert.assertTrue(SqlTestUtils.equals(stmts, druidStmts));
+        Assert.assertTrue(SqlTestUtils.equals(stmt0, druidStmts.get(0)));
     }
 }

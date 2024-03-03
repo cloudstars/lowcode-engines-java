@@ -1,5 +1,6 @@
 package net.cf.object.engine.oql.ast;
 
+import net.cf.form.repository.sql.ast.statement.DistinctOption;
 import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.form.repository.sql.ast.SqlLimit;
@@ -17,6 +18,16 @@ import java.util.List;
  * @author clouds
  */
 public class OqlSelect extends AbstractOqlObjectImpl {
+
+    /**
+     * 是否有括号
+     */
+    protected boolean parenthesized;
+
+    /**
+     * distinct选项
+     */
+    protected DistinctOption distinctOption;
 
     /**
      * 查询的列表
@@ -49,6 +60,22 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     public void setSelectItems(List<SqlSelectItem> selectItems) {
         this.selectItems = selectItems;
         this.addChildren(selectItems);
+    }
+
+    public boolean isParenthesized() {
+        return this.parenthesized;
+    }
+
+    public void setParenthesized(boolean parenthesized) {
+        this.parenthesized = parenthesized;
+    }
+
+    public DistinctOption getDistinctOption() {
+        return distinctOption;
+    }
+
+    public void setDistinctOption(DistinctOption distinctOption) {
+        this.distinctOption = distinctOption;
     }
 
     public OqlObjectSource getFrom() {

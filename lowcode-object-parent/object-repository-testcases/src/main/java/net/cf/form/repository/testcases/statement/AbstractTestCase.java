@@ -1,10 +1,10 @@
 package net.cf.form.repository.testcases.statement;
 
-import net.cf.form.repository.ObjectRepository;
-import net.cf.commons.test.dataset.IDataSetOperator;
 import net.cf.commons.test.dataset.IDataSet;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import net.cf.commons.test.dataset.IDataSetOperator;
+import net.cf.form.repository.ObjectRepository;
+import org.junit.After;
+import org.junit.Before;
 
 /**
  * 抽象的测试类，所有的测试类继承它
@@ -42,8 +42,8 @@ public abstract class AbstractTestCase {
         return null;
     }
 
-    @BeforeClass
-    protected void setUp() {
+    @Before
+    public void setUp() {
         if (this.dataSetOperator != null) {
             IDataSet dataSet = this.getDataSet();
             if (dataSet != null) {
@@ -52,8 +52,8 @@ public abstract class AbstractTestCase {
         }
     }
 
-    @AfterClass
-    protected void tearDown() {
+    @After
+    public void tearDown() {
         if (this.dataSetOperator != null) {
             IDataSet dataSet = this.getDataSet();
             if (dataSet != null) {

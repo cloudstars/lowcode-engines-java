@@ -11,7 +11,7 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
 
     protected SqlTableSource tableSource;
 
-    protected final List<SqlUpdateSetItem> items = new ArrayList<>();
+    protected final List<SqlUpdateSetItem> setItems = new ArrayList<>();
 
     protected SqlExpr where;
 
@@ -27,8 +27,8 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
         this.addChild(tableSource);
     }
 
-    public List<SqlUpdateSetItem> getItems() {
-        return items;
+    public List<SqlUpdateSetItem> getSetItems() {
+        return setItems;
     }
 
     public void addSetItems(List<SqlUpdateSetItem> setItems) {
@@ -38,7 +38,7 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
     }
 
     public void addSetItem(SqlUpdateSetItem setItem) {
-        this.items.add(setItem);
+        this.setItems.add(setItem);
         this.addChild(setItem);
     }
 
@@ -58,7 +58,7 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChild(visitor, this.tableSource);
-            this.nullSafeAcceptChild(visitor, this.items);
+            this.nullSafeAcceptChild(visitor, this.setItems);
             this.nullSafeAcceptChild(visitor, this.where);
         }
 
@@ -72,7 +72,7 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
             children.add(this.tableSource);
         }
 
-        children.addAll(this.items);
+        children.addAll(this.setItems);
         if (this.where != null) {
             children.add(this.where);
         }
@@ -84,7 +84,7 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
     public SqlUpdateStatement cloneMe() {
         SqlUpdateStatement statement = new SqlUpdateStatement();
         statement.setTableSource(this.tableSource.cloneMe());
-        for (SqlUpdateSetItem setItem : this.items) {
+        for (SqlUpdateSetItem setItem : this.setItems) {
             statement.addSetItem(setItem);
         }
         if (this.where != null) {

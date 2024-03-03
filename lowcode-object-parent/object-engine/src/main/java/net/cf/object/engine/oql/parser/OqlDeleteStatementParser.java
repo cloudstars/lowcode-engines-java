@@ -19,7 +19,7 @@ public class OqlDeleteStatementParser extends OqlExprParser {
         this.accept(Token.FROM);
 
         OqlDeleteStatement statement = new OqlDeleteStatement();
-        statement.setObjectSource(this.parseObjectSource());
+        statement.setFrom(this.parseObjectSource());
         if (this.lexer.token() == Token.WHERE) {
             this.lexer.nextToken();
             statement.setWhere(this.expr());

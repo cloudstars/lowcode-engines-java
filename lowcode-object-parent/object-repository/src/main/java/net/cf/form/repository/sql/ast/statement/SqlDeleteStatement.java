@@ -9,20 +9,20 @@ import java.util.List;
 
 public class SqlDeleteStatement extends AbstractSqlStatementImpl implements SqlStatement {
 
-    protected SqlTableSource tableSource;
+    protected SqlTableSource from;
 
     protected SqlExpr where;
 
     public SqlDeleteStatement() {
     }
 
-    public SqlTableSource getTableSource() {
-        return tableSource;
+    public SqlTableSource getFrom() {
+        return from;
     }
 
-    public void setTableSource(SqlTableSource tableSource) {
-        this.tableSource = tableSource;
-        this.addChild(tableSource);
+    public void setFrom(SqlTableSource from) {
+        this.from = from;
+        this.addChild(from);
     }
 
     public SqlExpr getWhere() {
@@ -41,7 +41,7 @@ public class SqlDeleteStatement extends AbstractSqlStatementImpl implements SqlS
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, this.tableSource);
+            this.nullSafeAcceptChild(visitor, this.from);
             this.nullSafeAcceptChild(visitor, this.where);
         }
 
@@ -51,7 +51,7 @@ public class SqlDeleteStatement extends AbstractSqlStatementImpl implements SqlS
     @Override
     public List<SqlObject> getChildren() {
         List<SqlObject> children = new ArrayList();
-        children.add(this.tableSource);
+        children.add(this.from);
         if (this.where != null) {
             children.add(this.where);
         }
@@ -62,7 +62,7 @@ public class SqlDeleteStatement extends AbstractSqlStatementImpl implements SqlS
     @Override
     public SqlDeleteStatement cloneMe() {
         SqlDeleteStatement statement = new SqlDeleteStatement();
-        statement.setTableSource(this.tableSource.cloneMe());
+        statement.setFrom(this.from.cloneMe());
         if (this.where != null) {
             statement.setWhere(this.where.cloneMe());
         }

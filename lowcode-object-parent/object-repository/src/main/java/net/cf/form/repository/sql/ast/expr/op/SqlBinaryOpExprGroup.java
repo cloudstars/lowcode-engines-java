@@ -8,7 +8,6 @@ import net.cf.form.repository.sql.util.SqlUtils;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -47,9 +46,9 @@ public class SqlBinaryOpExprGroup extends AbstractSqlExprImpl implements SqlRepl
     public SqlExpr cloneMe() {
         SqlBinaryOpExprGroup x = new SqlBinaryOpExprGroup(this.operator);
         for (SqlExpr item : this.items) {
-            SqlExpr item2 = item.cloneMe();
-            item2.setParent(this);
-            x.items.add(item2);
+            SqlExpr itemX = item.cloneMe();
+            itemX.setParent(this);
+            x.items.add(itemX);
         }
 
         return x;
@@ -57,6 +56,10 @@ public class SqlBinaryOpExprGroup extends AbstractSqlExprImpl implements SqlRepl
 
     @Override
     public List<? extends SqlObject> getChildren() {
+        return this.items;
+    }
+
+    public List<SqlExpr> getItems() {
         return this.items;
     }
 
@@ -75,26 +78,18 @@ public class SqlBinaryOpExprGroup extends AbstractSqlExprImpl implements SqlRepl
         } else if (item instanceof SqlBinaryOpExprGroup) {
             SqlBinaryOpExprGroup group = (SqlBinaryOpExprGroup) item;
             if (group.operator == this.operator) {
-                Iterator var4 = group.getItems().iterator();
-
-                while (var4.hasNext()) {
-                    SqlExpr sqlExpr = (SqlExpr) var4.next();
-                    this.add(sqlExpr);
+                List<SqlExpr> groupItems = group.getItems();
+                for (SqlExpr groupItem : groupItems) {
+                    this.add(groupItem);
                 }
-
                 return;
             }
         }
 
+        this.items.add(index, item);
         if (item != null) {
             item.setParent(this);
         }
-
-        this.items.add(index, item);
-    }
-
-    public List<SqlExpr> getItems() {
-        return this.items;
     }
 
     public SqlBinaryOperator getOperator() {
@@ -105,15 +100,14 @@ public class SqlBinaryOpExprGroup extends AbstractSqlExprImpl implements SqlRepl
     public boolean replace(SqlExpr expr, SqlExpr target) {
         boolean replaced = false;
         for (int i = 0; i < this.items.size(); ++i) {
-            if (this.items.get(i) == expr) {
+            if (this.items.get(i) == expr) {// TODO 这里没有实现equals，所以==比较有问题
                 if (target == null) {
                     this.items.remove(i);
                 } else if (target instanceof SqlBinaryOpExpr && ((SqlBinaryOpExpr) target).getOperator() == this.operator) {
                     this.items.remove(i);
                     List<SqlExpr> list = SqlBinaryOpExpr.split(target, this.operator);
-
                     for (int j = 0; j < list.size(); ++j) {
-                        SqlExpr o = (SqlExpr) list.get(j);
+                        SqlExpr o = list.get(j);
                         o.setParent(this);
                         this.items.add(i + j, o);
                     }

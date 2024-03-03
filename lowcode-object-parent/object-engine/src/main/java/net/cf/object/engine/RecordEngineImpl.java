@@ -1,20 +1,19 @@
 package net.cf.object.engine;
 
 
-import net.cf.object.engine.object.XField;
-import net.cf.object.engine.object.XFieldProperty;
-import net.cf.object.engine.object.XObject;
-import net.cf.object.engine.sqlbuilder.insert.InsertSqlStatementBuilder;
-import net.cf.object.engine.util.ObjectUtils;
 import net.cf.form.repository.ObjectRepository;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.parser.SqlParseException;
 import net.cf.form.repository.sql.util.SqlExprUtils;
+import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XFieldProperty;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
+import net.cf.object.engine.util.ObjectBeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -69,7 +68,7 @@ public class RecordEngineImpl implements RecordEngine {
     public String createOne(XObject object, Object data) {
         assert (object != null && data != null);
 
-        ObjectUtils.Ref<Method> primaryFieldGetMethodRef = ObjectUtils.createRef(null);
+        ObjectBeanUtils.Ref<Method> primaryFieldGetMethodRef = ObjectBeanUtils.createRef(null);
         SqlInsertStatement insertSql = this.buildInsertSql(object, data, primaryFieldGetMethodRef);
         ObjectRepository repository = this.repositoryProvider.getByObject(object);
         repository.insert(insertSql);
@@ -92,10 +91,10 @@ public class RecordEngineImpl implements RecordEngine {
      * @param primaryFieldGetMethodRef
      * @return
      */
-    private SqlInsertStatement buildInsertSql(XObject object, Object data, ObjectUtils.Ref<Method> primaryFieldGetMethodRef) {
-        InsertSqlStatementBuilder builder = new InsertSqlStatementBuilder();
+    private SqlInsertStatement buildInsertSql(XObject object, Object data, ObjectBeanUtils.Ref<Method> primaryFieldGetMethodRef) {
+        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
         builder.tableSource(new SqlExprTableSource(object.getTableName()));
-        Map<String, Method> getMethods = ObjectUtils.getDeclaredGetMethodMap(data);
+        Map<String, Method> getMethods = ObjectBeanUtils.getDeclaredGetMethodMap(data);
         for (Map.Entry<String, Method> entry : getMethods.entrySet()) {
             String fieldName = entry.getKey();
             Method method = entry.getValue();
@@ -108,7 +107,7 @@ public class RecordEngineImpl implements RecordEngine {
 
             if (value != null) {
                 builder.appendColumn(new SqlIdentifierExpr(fieldName));
-                builder.appendInsertValuesItem(SqlExprUtils.toSqlExpr(value.toString()));
+                // TODO builder.appendInsertValuesItem(SqlExprUtils.toSqlExpr(value.toString()));
             }
 
             if (fieldName.equals(object.getPrimaryField().getCode())) {
@@ -143,7 +142,7 @@ public class RecordEngineImpl implements RecordEngine {
      * @return
      */
     private SqlInsertStatement buildInsertSql(XObject object, Map<String, Object> dataMap) {
-        InsertSqlStatementBuilder builder = new InsertSqlStatementBuilder();
+        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
         builder.tableSource(new SqlExprTableSource(object.getTableName()));
         for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
             String fieldCode = entry.getKey();
@@ -158,12 +157,12 @@ public class RecordEngineImpl implements RecordEngine {
             if (properties != null && properties.size() > 0) {
                 for (XFieldProperty property : properties) {
                     builder.appendColumn(new SqlIdentifierExpr(property.getColumnName()));
-                    Object propertyValue = ObjectUtils.getPropertyValue(fieldValue, property.getCode());
-                    builder.appendInsertValuesItem(this.toSqlExpr(propertyValue));
+                    Object propertyValue = ObjectBeanUtils.getPropertyValue(fieldValue, property.getCode());
+                    // TODO builder.appendInsertValuesItem(this.toSqlExpr(propertyValue));
                 }
             } else {
                 builder.appendColumn(new SqlIdentifierExpr(field.getColumnName()));
-                builder.appendInsertValuesItem(this.toSqlExpr(fieldValue));
+                // TODO builder.appendInsertValuesItem(this.toSqlExpr(fieldValue));
             }
         }
 
@@ -201,12 +200,12 @@ public class RecordEngineImpl implements RecordEngine {
      * @return
      */
     private SqlInsertStatement buildBatchInsertSql(XObject object, List<Map<String, Object>> dataMaps) {
-        InsertSqlStatementBuilder builder = new InsertSqlStatementBuilder();
+        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
         builder.tableSource(new SqlExprTableSource(object.getTableName()));
         for (Map.Entry<String, Object> entry : dataMaps.get(0).entrySet()) {
             String fieldName = entry.getKey();
             builder.appendColumn(new SqlIdentifierExpr(fieldName));
-            builder.appendInsertValuesItem(new SqlVariantRefExpr("#{" + fieldName + "}"));
+            // TODO builder.appendInsertValuesItem(new SqlVariantRefExpr("#{" + fieldName + "}"));
         }
 
         return builder.build();

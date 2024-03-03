@@ -1,7 +1,7 @@
 package net.cf.form.repository.sql.visitor;
 
 /**
- * AST访问适配器
+ * SQL AST访问适配器
  *
  * @author clouds
  */

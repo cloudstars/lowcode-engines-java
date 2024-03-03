@@ -15,8 +15,14 @@ import java.util.List;
  */
 public class SqlSelect extends AbstractSqlObjectImpl {
 
+    /**
+     * 是否有小手号
+     */
     protected boolean parenthesized;
 
+    /**
+     * distinct选项
+     */
     protected DistinctOption distinctOption;
 
     /**

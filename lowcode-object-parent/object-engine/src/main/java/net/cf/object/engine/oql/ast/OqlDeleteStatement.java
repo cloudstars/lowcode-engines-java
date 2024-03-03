@@ -9,20 +9,20 @@ import java.util.List;
 
 public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlStatement {
 
-    protected OqlObjectSource objectSource;
+    protected OqlExprObjectSource from;
 
     protected SqlExpr where;
 
     public OqlDeleteStatement() {
     }
 
-    public OqlObjectSource getObjectSource() {
-        return objectSource;
+    public OqlExprObjectSource getFrom() {
+        return from;
     }
 
-    public void setObjectSource(OqlObjectSource objectSource) {
-        this.objectSource = objectSource;
-        this.addChild(objectSource);
+    public void setFrom(OqlExprObjectSource from) {
+        this.from = from;
+        this.addChild(from);
     }
 
     public SqlExpr getWhere() {
@@ -37,7 +37,7 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
     @Override
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, this.objectSource);
+            this.nullSafeAcceptChild(visitor, this.from);
             this.nullSafeAcceptChild(visitor, this.where);
         }
 
@@ -48,7 +48,7 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
     @Override
     public List<SqlObject> getChildren() {
         List<SqlObject> children = new ArrayList<>();
-        children.add(this.objectSource);
+        children.add(this.from);
         if (this.where != null) {
             children.add(this.where);
         }
@@ -59,7 +59,7 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
     @Override
     public OqlDeleteStatement cloneMe() {
         OqlDeleteStatement statement = new OqlDeleteStatement();
-        statement.setObjectSource(this.objectSource.cloneMe());
+        statement.setFrom(this.from.cloneMe());
         if (this.where != null) {
             statement.setWhere(this.where.cloneMe());
         }

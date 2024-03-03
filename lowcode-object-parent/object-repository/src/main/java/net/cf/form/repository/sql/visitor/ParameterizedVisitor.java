@@ -2,6 +2,11 @@ package net.cf.form.repository.sql.visitor;
 
 import java.util.List;
 
+/**
+ * 参数化AST迭代器
+ *
+ * @author clouds
+ */
 public interface ParameterizedVisitor extends PrintableVisitor {
 
     int getReplaceCount();

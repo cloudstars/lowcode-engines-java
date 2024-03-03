@@ -26,9 +26,12 @@ public class NullExprTest {
         SQLExprParser p = new SQLExprParser(NULL);
         SQLExpr e = p.primary();
         Assert.assertTrue(e instanceof SQLNullExpr);
+        Assert.assertTrue(NULL.equalsIgnoreCase(e.toString()));
 
         SqlExprParser parser = new SqlExprParser(NULL);
         SqlExpr expr = parser.primary();
         Assert.assertTrue(expr instanceof SqlNullExpr);
+        Assert.assertTrue(NULL.equalsIgnoreCase(expr.toString()));
+
     }
 }

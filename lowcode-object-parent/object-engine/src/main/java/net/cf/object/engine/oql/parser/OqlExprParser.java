@@ -2,7 +2,6 @@ package net.cf.object.engine.oql.parser;
 
 import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
-import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.parser.Lexer;
@@ -53,9 +52,9 @@ public class OqlExprParser extends SqlExprParser {
      *
      * @return
      */
-    protected OqlObjectSource parseObjectSource() {
+    protected OqlExprObjectSource parseObjectSource() {
         String objectName = this.lexer.stringVal();
-        OqlObjectSource objectSource = new OqlExprObjectSource(objectName);
+        OqlExprObjectSource objectSource = new OqlExprObjectSource(objectName);
         this.lexer.nextToken();
         if (this.lexer.token() == Token.AS) {
             this.lexer.nextToken();

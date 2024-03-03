@@ -17,7 +17,7 @@ public class SqlDeleteStatementParser extends SqlExprParser {
         this.accept(Token.FROM);
 
         SqlDeleteStatement statement = new SqlDeleteStatement();
-        statement.setTableSource(this.parseTableSource());
+        statement.setFrom(this.parseTableSource());
         if (this.lexer.token == Token.WHERE) {
             this.lexer.nextToken();
             statement.setWhere(this.expr());

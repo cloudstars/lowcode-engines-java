@@ -4,62 +4,79 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.math.BigDecimal;
 
+/**
+ * 小数表达式
+ *
+ * @author clouds
+ */
 public class SqlDecimalExpr extends AbstractSqlNumericLiteralExpr implements SqlValuableExpr {
-    //public static final SqlDataType DATA_TYPE = new SqlDataTypeImpl("DECIMAL");
 
-    //private BigDecimal value;
-
-    private String literal;
+    private char[] chars;
 
     public SqlDecimalExpr() {
     }
 
-    public SqlDecimalExpr(BigDecimal value) {
-        this.setNumber(value);
+    public SqlDecimalExpr(Number number) {
+        super(number);
     }
 
-    public SqlDecimalExpr(String value) {
-        this.number = new BigDecimal(value);
-        this.literal = value;
+    public SqlDecimalExpr(char[] chars) {
+        this.chars = chars;
     }
 
+    /**
+     * 获取字面量
+     *
+     * @return
+     */
     public String getLiteral() {
-        return this.literal;
+        return this.chars == null ? null : new String(this.chars);
     }
 
     @Override
-    public SqlDecimalExpr cloneMe() {
-        return new SqlDecimalExpr((BigDecimal) this.number);
+    public Number getValue() {
+        return this.getNumber();
     }
 
-    public BigDecimal getValue() {
-        return (BigDecimal) this.number;
+    @Override
+    public Number getNumber() {
+        if (this.chars != null && this.number == null) {
+            boolean exp = false;
+
+            for (int i = 0; i < this.chars.length; ++i) {
+                char ch = this.chars[i];
+                if (ch == 'e' || ch == 'E') {
+                    exp = true;
+                }
+            }
+
+            if (exp) {
+                this.number = Double.parseDouble(new String(this.chars));
+            } else {
+                this.number = new BigDecimal(this.chars);
+            }
+        }
+
+        return this.number;
     }
 
-    public void setValue(BigDecimal value) {
-        this.number = value;
+    @Override
+    public void setNumber(Number number) {
+        super.setNumber(number);
+        this.chars = null;
     }
 
+    @Override
     protected void accept0(SqlAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }
 
     @Override
-    public BigDecimal getNumber() {
-        return (BigDecimal) this.number;
+    public SqlDecimalExpr cloneMe() {
+        SqlDecimalExpr x = new SqlDecimalExpr();
+        x.number = this.number;
+        return x;
     }
-
-    @Override
-    public void setNumber(Number number) {
-        if (number == null) {
-            this.setValue(null);
-        } else {
-            this.setValue((BigDecimal) number);
-        }
-    }
-
-
-
 
 }

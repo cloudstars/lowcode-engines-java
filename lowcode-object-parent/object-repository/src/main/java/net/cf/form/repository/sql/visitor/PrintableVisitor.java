@@ -1,7 +1,7 @@
 package net.cf.form.repository.sql.visitor;
 
 /**
- * 可打印的遍历器
+ * 可打印的迭代器
  *
  * @author clouds
  */
@@ -12,7 +12,14 @@ public interface PrintableVisitor extends SqlAstVisitor {
      *
      * @return
      */
-    boolean isUpperCase();
+    boolean isUppercase();
+
+    /**
+     * 打印一个字符串
+     *
+     * @param text
+     */
+    void print(String text);
 
     /**
      * 打印单个字符
@@ -21,10 +28,4 @@ public interface PrintableVisitor extends SqlAstVisitor {
      */
     void print(char value);
 
-    /**
-     * 打印一个字符串
-     *
-     * @param text
-     */
-    void print(String text);
 }

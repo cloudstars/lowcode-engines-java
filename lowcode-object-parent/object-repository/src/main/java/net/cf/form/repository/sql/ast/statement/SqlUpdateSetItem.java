@@ -7,25 +7,25 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 public class SqlUpdateSetItem extends AbstractSqlObjectImpl implements SqlReplaceable {
 
-    private SqlExpr field;
+    private SqlExpr column;
 
     private SqlExpr value;
 
     public SqlUpdateSetItem() {
     }
 
-    public SqlUpdateSetItem(SqlExpr field, SqlExpr value) {
-        this.field = field;
+    public SqlUpdateSetItem(SqlExpr column, SqlExpr value) {
+        this.column = column;
         this.value = value;
     }
 
-    public SqlExpr getField() {
-        return field;
+    public SqlExpr getColumn() {
+        return column;
     }
 
-    public void setField(SqlExpr field) {
-        this.field = field;
-        this.addChild(field);
+    public void setColumn(SqlExpr column) {
+        this.column = column;
+        this.addChild(column);
     }
 
     public SqlExpr getValue() {
@@ -40,8 +40,8 @@ public class SqlUpdateSetItem extends AbstractSqlObjectImpl implements SqlReplac
     @Override
     public SqlUpdateSetItem cloneMe() {
         SqlUpdateSetItem x = new SqlUpdateSetItem();
-        if (this.field != null) {
-            x.setField(this.field.cloneMe());
+        if (this.column != null) {
+            x.setColumn(this.column.cloneMe());
         }
 
         if (this.value != null) {
@@ -54,7 +54,7 @@ public class SqlUpdateSetItem extends AbstractSqlObjectImpl implements SqlReplac
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, this.field);
+            this.nullSafeAcceptChild(visitor, this.column);
             this.nullSafeAcceptChild(visitor, this.value);
         }
 
@@ -63,8 +63,8 @@ public class SqlUpdateSetItem extends AbstractSqlObjectImpl implements SqlReplac
 
     @Override
     public boolean replace(SqlExpr source, SqlExpr target) {
-        if (source == this.field) {
-            this.setField(target);
+        if (source == this.column) {
+            this.setColumn(target);
             return true;
         } else if (source == this.value) {
             this.setValue(target);

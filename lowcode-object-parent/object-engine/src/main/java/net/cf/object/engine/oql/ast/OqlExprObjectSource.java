@@ -1,5 +1,6 @@
 package net.cf.object.engine.oql.ast;
 
+import net.cf.form.repository.sql.util.SqlUtils;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
@@ -88,5 +89,11 @@ public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements 
         } else {
             return false;
         }
+    }
+
+
+    @Override
+    public boolean containsAlias(String alias) {
+        return SqlUtils.nameEquals(this.alias, alias);
     }
 }

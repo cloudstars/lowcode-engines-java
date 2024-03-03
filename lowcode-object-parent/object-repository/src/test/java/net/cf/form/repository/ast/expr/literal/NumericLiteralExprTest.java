@@ -6,7 +6,7 @@ import com.alibaba.druid.sql.ast.expr.SQLNumberExpr;
 import com.alibaba.druid.sql.parser.SQLExprParser;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlNumberExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlDecimalExpr;
 import net.cf.form.repository.sql.parser.SqlExprParser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -74,8 +74,8 @@ public class NumericLiteralExprTest {
 
         SqlExprParser parser = new SqlExprParser(NUMBER1);
         SqlExpr expr = parser.primary();
-        Assert.assertTrue(expr instanceof SqlNumberExpr);
-        Assert.assertTrue(123.456f == ((SqlNumberExpr) expr).getValue().floatValue());
+        Assert.assertTrue(expr instanceof SqlDecimalExpr);
+        Assert.assertTrue(123.456f == ((SqlDecimalExpr) expr).getValue().floatValue());
     }
 
     @Test
@@ -87,8 +87,8 @@ public class NumericLiteralExprTest {
 
         SqlExprParser parser = new SqlExprParser(NUMBER2);
         SqlExpr expr = parser.primary();
-        Assert.assertTrue(expr instanceof SqlNumberExpr);
-        Assert.assertTrue(-123.456f == ((SqlNumberExpr) expr).getValue().floatValue());
+        Assert.assertTrue(expr instanceof SqlDecimalExpr);
+        Assert.assertTrue(-123.456f == ((SqlDecimalExpr) expr).getValue().floatValue());
     }
 
     @Test
@@ -100,8 +100,8 @@ public class NumericLiteralExprTest {
 
         SqlExprParser parser = new SqlExprParser(NUMBER3);
         SqlExpr expr = parser.primary();
-        Assert.assertTrue(expr instanceof SqlNumberExpr);
-        Assert.assertTrue(0.123f == ((SqlNumberExpr) expr).getValue().floatValue());
+        Assert.assertTrue(expr instanceof SqlDecimalExpr);
+        Assert.assertTrue(0.123f == ((SqlDecimalExpr) expr).getValue().floatValue());
     }
 
     @Test
@@ -113,8 +113,8 @@ public class NumericLiteralExprTest {
 
         SqlExprParser parser = new SqlExprParser(NUMBER4);
         SqlExpr expr = parser.primary();
-        Assert.assertTrue(expr instanceof SqlNumberExpr);
-        Assert.assertTrue(0.123d == ((SqlNumberExpr) expr).getNumber().doubleValue());
+        Assert.assertTrue(expr instanceof SqlDecimalExpr);
+        Assert.assertTrue(0.123d == ((SqlDecimalExpr) expr).getNumber().doubleValue());
     }
 
     @Test
@@ -127,8 +127,8 @@ public class NumericLiteralExprTest {
 
         SqlExprParser parser = new SqlExprParser(NUMBER5);
         SqlExpr expr = parser.primary();
-        Assert.assertTrue(expr instanceof SqlNumberExpr);
-        Assert.assertTrue(1.f == ((SqlNumberExpr) expr).getValue().floatValue());
+        Assert.assertTrue(expr instanceof SqlDecimalExpr);
+        Assert.assertTrue(1.f == ((SqlDecimalExpr) expr).getValue().floatValue());
     }
 
 }
