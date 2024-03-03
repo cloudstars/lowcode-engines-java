@@ -360,7 +360,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                 .filter(SheetTitleInfo::isSubTitle)
                 .collect(Collectors.groupingBy(SheetTitleInfo::getParentTitle));
 
-        // 数据行遍历器
+        // 数据行迭代器
         int dataRowIndex = dataParseInfo.getDataStartRow();
         while (dataRowIndex <= dataParseInfo.getDataEndRow()) {
             int dataRowEndIndex = dataRowIndex;

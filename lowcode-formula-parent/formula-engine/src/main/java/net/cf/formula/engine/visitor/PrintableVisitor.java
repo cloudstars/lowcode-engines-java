@@ -1,7 +1,7 @@
 package net.cf.formula.engine.visitor;
 
 /**
- * 可打印的遍历器
+ * 可打印的迭代器
  *
  * @author clouds
  */
