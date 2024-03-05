@@ -1,5 +1,7 @@
-package net.cf.commons.test.dataset;
+package net.cf.form.repository.mongo;
 
+import net.cf.commons.test.dataset.IDataSet;
+import net.cf.commons.test.dataset.IDataSetOperator;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 public class MongoDataSetOperator implements IDataSetOperator {
