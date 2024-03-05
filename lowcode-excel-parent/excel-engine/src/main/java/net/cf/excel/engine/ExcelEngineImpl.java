@@ -584,32 +584,35 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @return
      */
     private void buildSheetData(SheetBuildInfo buildInfo, List<Map<String, Object>> data) {
-        XSSFSheet sheet = buildInfo.getSheet();
         int rowIndex = buildInfo.getStartRow();
         List<ExcelTitle> fields = buildInfo.getParseFields();
 
         for (Map<String, Object> rowData : data) {
             int columnIndex = buildInfo.getStartColumn();
             int endRow = calculateDataEndRow(fields, rowData, rowIndex);
-            XSSFRow row = sheet.getRow(rowIndex) == null ? sheet.createRow(rowIndex) : sheet.getRow(rowIndex);
             for (ExcelTitle field : fields) {
                 //处理非聚合数据
                 if (!(field instanceof ExcelTitleGroup)) {
-                    columnIndex = buildSingleData(buildInfo, sheet, rowIndex, rowData, columnIndex, endRow, row, field);
+                    columnIndex = buildSingleData(buildInfo, rowIndex, rowData, columnIndex, endRow, field);
                 } else {
-                    if (((ExcelTitleGroup) field).isCollection()) {
-                        //处理聚合数据
-                        columnIndex = buildCollectedData(buildInfo, rowData, field, rowIndex, sheet, columnIndex);
-                    } else {
-                        for (SingleExcelTitle singleParseField : ((ExcelTitleGroup) field).getSubTitles()) {
-                            columnIndex = buildSingleData(buildInfo, sheet, rowIndex, rowData, columnIndex, endRow, row, singleParseField);
-                        }
-
-                    }
+                    columnIndex = buildDataWithGroup(buildInfo, rowData, field, columnIndex, rowIndex, endRow);
                 }
             }
             rowIndex = endRow + 1;
         }
+    }
+
+    private int buildDataWithGroup(SheetBuildInfo buildInfo, Map<String, Object> rowData, ExcelTitle field, int columnIndex, int rowIndex, int endRow) {
+        if (((ExcelTitleGroup) field).isCollection()) {
+            //处理聚合数据
+            columnIndex = buildCollectedData(buildInfo, rowData, field, rowIndex, columnIndex);
+        } else {
+            for (SingleExcelTitle singleParseField : ((ExcelTitleGroup) field).getSubTitles()) {
+                columnIndex = buildSingleData(buildInfo, rowIndex, rowData, columnIndex, endRow, singleParseField);
+            }
+
+        }
+        return columnIndex;
     }
 
     /**
@@ -652,7 +655,8 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param columnIndex
      * @return
      */
-    private int buildCollectedData(SheetBuildInfo buildInfo, Map<String, Object> rowData, ExcelTitle field, int rowIndex, XSSFSheet sheet, int columnIndex) {
+    private int buildCollectedData(SheetBuildInfo buildInfo, Map<String, Object> rowData, ExcelTitle field, int rowIndex, int columnIndex) {
+        XSSFSheet sheet = buildInfo.getSheet();
         List<Map<String, Object>> value = (List) field.getDataFormatter().format(rowData.get(field.getCode()), rowData);
         if (!CollectionUtils.isEmpty(value)) {
             int subRowIndex = rowIndex;
@@ -667,8 +671,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                 subRowIndex++;
             }
         }
-        columnIndex += ((ExcelTitleGroup) field).getSubTitles().size();
-        return columnIndex;
+        return columnIndex + ((ExcelTitleGroup) field).getSubTitles().size();
     }
 
 
@@ -685,7 +688,9 @@ public class ExcelEngineImpl implements ExcelEngine {
      * @param field
      * @return
      */
-    private int buildSingleData(SheetBuildInfo buildInfo, XSSFSheet sheet, int rowIndex, Map<String, Object> rowData, int columnIndex, int endRow, XSSFRow row, ExcelTitle field) {
+    private int buildSingleData(SheetBuildInfo buildInfo, int rowIndex, Map<String, Object> rowData, int columnIndex, int endRow, ExcelTitle field) {
+        XSSFSheet sheet = buildInfo.getSheet();
+        XSSFRow row = sheet.getRow(rowIndex) == null ? sheet.createRow(rowIndex) : sheet.getRow(rowIndex);
         String value = (String) field.getDataFormatter().format(rowData.get(field.getCode()), rowData);
         buildSheetCell(value, columnIndex, row, buildInfo.getCellStyle());
 
@@ -693,8 +698,8 @@ public class ExcelEngineImpl implements ExcelEngine {
             CellRangeAddress cellRangeAddress = new CellRangeAddress(rowIndex, endRow, columnIndex, columnIndex);
             sheet.addMergedRegion(cellRangeAddress);
         }
-        columnIndex++;
-        return columnIndex;
+
+        return columnIndex + 1;
     }
 
     /**
