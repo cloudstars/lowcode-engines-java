@@ -58,6 +58,37 @@ public class ExcelParseTest {
     public void testParseExcel_CollectionGroup1() {
         ExcelEngine engine = new ExcelEngineImpl();
         Workbook workbook;
+
+        try (FileInputStream fis = new FileInputStream("src/test/resources/excel解析测试/CollectionGroup测试2.xlsx")) {
+            workbook = createWorkbook(fis, "CollectionGroup测试2.xlsx");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        ExcelParseConfig config = new ExcelParseConfig();
+        List<ExcelTitle> excelTitles = new ArrayList<>();
+
+        excelTitles.add(new TextTitle("peopleName", "姓名"));
+        excelTitles.add(new TextTitle("gender", "性别"));
+        List<SingleExcelTitle> subFields = new ArrayList<>();
+        subFields.add(new TextTitle("signInTime", "签到时间"));
+        subFields.add(new TextTitle("signOutTime", "签退时间"));
+        ExcelTitleGroup parseFieldGroup = new CollectionGroup("attendance", "考勤记录", subFields);
+        excelTitles.add(parseFieldGroup);
+
+        config.setExcelTitles(excelTitles);
+        config.setTitleStartRow(0);
+        config.setTitleEndRow(1);
+
+        List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
+        JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
+        Assertions.assertTrue(DataCompareTestUtils.equalsJsonArray(JSON.parseArray(JSON.toJSONString(sourceDataList)), targetDataList));
+    }
+
+    @Test
+    public void testParseExcel_CollectionGroup2() {
+        ExcelEngine engine = new ExcelEngineImpl();
+        Workbook workbook;
         try (FileInputStream fis = new FileInputStream("src/test/resources/excel解析测试/CollectionGroup测试1.xlsx")) {
             workbook = createWorkbook(fis, "CollectionGroup测试1.xlsx");
         } catch (IOException e) {
@@ -81,16 +112,6 @@ public class ExcelParseTest {
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
         JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
         Assertions.assertTrue(DataCompareTestUtils.equalsList(sourceDataList, targetDataList));
-
-        try (FileInputStream fis = new FileInputStream("src/test/resources/excel解析测试/CollectionGroup测试2.xlsx")) {
-            workbook = createWorkbook(fis, "CollectionGroup测试2.xlsx");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        sourceDataList = engine.parseExcel(workbook, config);
-        targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
-        Assertions.assertTrue(DataCompareTestUtils.equalsJsonArray(JSON.parseArray(JSON.toJSONString(sourceDataList)), targetDataList));
     }
 
     // 展示型表头字段解析

@@ -5,7 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +35,8 @@ public final class DataCompareTestUtils {
                 isEqual = DataCompareTestUtils.equalsJsonArray((JSONArray) s, (JSONArray) t);
             } else if (s instanceof Map && t instanceof Map) {
                 isEqual = DataCompareTestUtils.equalsMap((Map<String, Object>) s, (Map<String, Object>) t);
+            } else if (s instanceof List && t instanceof List) {
+                isEqual = DataCompareTestUtils.equalsList((List<Object>) s, (List<Object>) t);
             } else if (s instanceof JSONObject && t instanceof JSONArray) {
                 isEqual = false;
             } else if (s instanceof JSONArray && t instanceof JSONObject) {

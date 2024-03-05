@@ -18,6 +18,8 @@ public class ExcelSheetField {
 
     private DataFormatter dataFormatter;
 
+    private Boolean required;
+
     private boolean hasSubField;
 
     private List<ExcelSheetField> subFields;
@@ -27,6 +29,7 @@ public class ExcelSheetField {
     public ExcelSheetField(SingleExcelTitle singleParseField, ExcelSheetField parentField) {
         this.code = singleParseField.getCode();
         this.name = singleParseField.getName();
+        this.required = singleParseField.isRequired();
         this.hasSubField = false;
         this.subFields = null;
         this.dataFormatter = singleParseField.getDataFormatter();
@@ -36,6 +39,7 @@ public class ExcelSheetField {
     public ExcelSheetField(ExcelTitleGroup parseFieldGroup, List<ExcelSheetField> subFields) {
         this.code = parseFieldGroup.getCode();
         this.name = parseFieldGroup.getName();
+        this.required = parseFieldGroup.isRequired();
         this.hasSubField = true;
         this.subFields = subFields;
         this.dataFormatter = parseFieldGroup.getDataFormatter();
@@ -72,6 +76,14 @@ public class ExcelSheetField {
 
     public void setDataFormatter(DataFormatter dataFormatter) {
         this.dataFormatter = dataFormatter;
+    }
+
+    public Boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(Boolean required) {
+        this.required = required;
     }
 
     public List<ExcelSheetField> getSubFields() {

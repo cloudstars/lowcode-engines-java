@@ -16,4 +16,8 @@ public interface ExcelTitle {
 
     DataFormatter getDataFormatter();
 
+    // 导入用
+    default Boolean isRequired() {
+        return false;
+    }
 }

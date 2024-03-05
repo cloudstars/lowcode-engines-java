@@ -15,9 +15,18 @@ public class TextTitle implements SingleExcelTitle {
 
     private String name;
 
+    private Boolean required;
+
     public TextTitle(String code, String name) {
         this.code = code;
         this.name = name;
+        this.required = null;
+    }
+
+    public TextTitle(String code, String name, Boolean required) {
+        this.code = code;
+        this.name = name;
+        this.required = required;
     }
 
     @Override
@@ -28,6 +37,11 @@ public class TextTitle implements SingleExcelTitle {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Boolean isRequired() {
+        return required;
     }
 
     @Override

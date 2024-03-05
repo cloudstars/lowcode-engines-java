@@ -385,9 +385,11 @@ public class ExcelEngineImpl implements ExcelEngine {
                     if (fieldMap.get(titleInfo.getUniqueTitle()).isHasSubField()) {
                         List<SheetTitleInfo> subTitleInfo = subTitleInfoMap.getOrDefault(titleInfo.getUniqueTitle(), new ArrayList<>());
                         List<Map<String, Object>> subDataList = collectSubData(subTitleInfo, rowData, fieldMap);
+                        verifyRequired(sheetField, subDataList);
                         record.put(sheetField.getCode(), sheetField.getDataFormatter().unFormat(subDataList, record));
                     } else {
                         Object cellValue = rowData.get(0).get(titleInfo.getFirstColumn());
+                        verifyRequired(sheetField, cellValue);
                         record.put(sheetField.getCode(), sheetField.getDataFormatter().unFormat(cellValue, record));
                     }
                 }
@@ -496,6 +498,7 @@ public class ExcelEngineImpl implements ExcelEngine {
                 if (fieldMap.containsKey(subTitleInfo.getUniqueTitle())) {
                     String cellValue = subRowValue.get(subTitleInfo.getFirstColumn());
                     ExcelSheetField field = fieldMap.get(subTitleInfo.getUniqueTitle());
+                    verifyRequired(field, cellValue);
                     subRecord.put(field.getCode(), field.getDataFormatter().unFormat(cellValue, subRecord));
                 }
             });
@@ -504,6 +507,20 @@ public class ExcelEngineImpl implements ExcelEngine {
         return subRecords;
     }
 
+    private void verifyRequired(ExcelSheetField field, Object value) {
+        if (value instanceof String) {
+            if (Boolean.TRUE.equals(field.isRequired()) && StringUtils.isBlank((String) value)) {
+                throw new ExcelOpException("字段[" + field.getName() + "]不能为空");
+            }
+        } else if (value instanceof List) {
+            if (Boolean.TRUE.equals(field.isRequired()) && CollectionUtils.isEmpty((List) value)) {
+                throw new ExcelOpException("字段[" + field.getName() + "]不能为空");
+            }
+        }
+    }
+
+
+    //-----------------------------------------生成excel函数------------------------------------//
 
     private XSSFCellStyle setCellStyle(XSSFWorkbook workbook) {
         XSSFCellStyle cellStyle = workbook.createCellStyle();

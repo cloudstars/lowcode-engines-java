@@ -39,8 +39,8 @@ public class ExcelBuildTest {
 
         ExcelBuildConfig config = new ExcelBuildConfig();
         List<ExcelTitle> excelTitles = new ArrayList<>();
-        excelTitles.add(new TextTitle("peopleName", "姓名"));
-        excelTitles.add(new TextTitle("gender", "性别"));
+        excelTitles.add(new TextTitle("peopleName", "姓名", false));
+        excelTitles.add(new TextTitle("gender", "性别", false));
         config.setExcelTitles(excelTitles);
         config.setTitleStartRow(0);
         Workbook sourceWorkbook = engine.buildExcel(sourceDataList, config);
