@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 /**
  * @Author: 胡凌云
  * @CreateTime: 2024-03-05 19:04
- * @Description: ExcelTitleLoader实现类
+ * @Description: ExcelOpConfigLoader实现类
  */
-public class ExcelTitleLoaderImpl implements ExcelOpConfigLoader {
+public class ExcelOpConfigLoaderImpl implements ExcelOpConfigLoader {
 
     @Override
     public ExcelParseConfig loadExcelParseConfig(JSONObject jsonObject) {
