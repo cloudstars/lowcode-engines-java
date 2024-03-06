@@ -62,11 +62,11 @@ public class SheetBuildInfo {
         this.cellStyle = cellStyle;
     }
 
-    public List<ExcelTitle> getParseFields() {
+    public List<ExcelTitle> getExcelTitles() {
         return excelTitles;
     }
 
-    public void setParseFields(List<ExcelTitle> excelTitles) {
+    public void setExcelTitles(List<ExcelTitle> excelTitles) {
         this.excelTitles = excelTitles;
     }
 }

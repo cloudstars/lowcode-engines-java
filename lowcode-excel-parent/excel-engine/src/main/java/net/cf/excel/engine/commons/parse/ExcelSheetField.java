@@ -26,23 +26,23 @@ public class ExcelSheetField {
 
     private ExcelSheetField parentField;
 
-    public ExcelSheetField(SingleExcelTitle singleParseField, ExcelSheetField parentField) {
-        this.code = singleParseField.getCode();
-        this.name = singleParseField.getName();
-        this.required = singleParseField.isRequired();
+    public ExcelSheetField(SingleExcelTitle singleExcelTitle, ExcelSheetField parentField) {
+        this.code = singleExcelTitle.getCode();
+        this.name = singleExcelTitle.getName();
+        this.required = singleExcelTitle.isRequired();
         this.hasSubField = false;
         this.subFields = null;
-        this.dataFormatter = singleParseField.getDataFormatter();
+        this.dataFormatter = singleExcelTitle.getDataFormatter();
         this.parentField = parentField;
     }
 
-    public ExcelSheetField(ExcelTitleGroup parseFieldGroup, List<ExcelSheetField> subFields) {
-        this.code = parseFieldGroup.getCode();
-        this.name = parseFieldGroup.getName();
-        this.required = parseFieldGroup.isRequired();
+    public ExcelSheetField(ExcelTitleGroup excelTitleGroup, List<ExcelSheetField> subFields) {
+        this.code = excelTitleGroup.getCode();
+        this.name = excelTitleGroup.getName();
+        this.required = excelTitleGroup.isRequired();
         this.hasSubField = true;
         this.subFields = subFields;
-        this.dataFormatter = parseFieldGroup.getDataFormatter();
+        this.dataFormatter = excelTitleGroup.getDataFormatter();
         this.parentField = null;
     }
 
