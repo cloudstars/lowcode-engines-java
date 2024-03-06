@@ -6,10 +6,7 @@ import net.cf.commons.test.util.DataCompareTestUtils;
 import net.cf.commons.test.util.FileTestUtils;
 import net.cf.excel.engine.bean.ExcelBuildConfig;
 import net.cf.excel.engine.bean.ExcelParseConfig;
-import net.cf.excel.engine.commons.CollectionGroup;
-import net.cf.excel.engine.commons.NumberTitle;
-import net.cf.excel.engine.commons.ShowGroup;
-import net.cf.excel.engine.commons.TextTitle;
+import net.cf.excel.engine.commons.*;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -39,8 +36,8 @@ public class ExcelBuildTest {
 
         ExcelBuildConfig config = new ExcelBuildConfig();
         List<ExcelTitle> excelTitles = new ArrayList<>();
-        excelTitles.add(new TextTitle("peopleName", "姓名", false));
-        excelTitles.add(new TextTitle("gender", "性别", false));
+        excelTitles.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
+        excelTitles.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
         config.setExcelTitles(excelTitles);
         config.setTitleStartRow(0);
         Workbook sourceWorkbook = engine.buildExcel(sourceDataList, config);
@@ -62,12 +59,12 @@ public class ExcelBuildTest {
         ExcelBuildConfig config = new ExcelBuildConfig();
         List<ExcelTitle> excelTitles = new ArrayList<>();
 
-        excelTitles.add(new TextTitle("peopleName", "姓名"));
-        excelTitles.add(new TextTitle("gender", "性别"));
+        excelTitles.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
+        excelTitles.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
         List<SingleExcelTitle> subFields = new ArrayList<>();
-        subFields.add(new TextTitle("signInTime", "签到时间"));
-        subFields.add(new TextTitle("signOutTime", "签退时间"));
-        ExcelTitleGroup parseFieldGroup = new CollectionGroup("attendance", "考勤记录", subFields);
+        subFields.add(new SingleExcelTitleImpl("signInTime", "签到时间", new TextDataFormatter()));
+        subFields.add(new SingleExcelTitleImpl("signOutTime", "签退时间", new TextDataFormatter()));
+        ExcelTitleGroup parseFieldGroup = new ExcelTitleGroupImpl("attendance", "考勤记录", true, new CollectionGroupDataFormatter(), subFields);
         excelTitles.add(parseFieldGroup);
         config.setTitleStartRow(0);
 
@@ -91,11 +88,11 @@ public class ExcelBuildTest {
         ExcelBuildConfig config = new ExcelBuildConfig();
         List<ExcelTitle> excelTitles = new ArrayList<>();
 
-        excelTitles.add(new TextTitle("peopleName", "姓名"));
+        excelTitles.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
         List<SingleExcelTitle> subFields = new ArrayList<>();
-        subFields.add(new TextTitle("gender", "性别"));
-        subFields.add(new NumberTitle("age", "年龄"));
-        ExcelTitleGroup parseFieldGroup = new ShowGroup("message", "个人信息", subFields);
+        subFields.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
+        subFields.add(new SingleExcelTitleImpl("age", "年龄", new NumberDataFormatter()));
+        ExcelTitleGroup parseFieldGroup = new ExcelTitleGroupImpl("message", "个人信息", false, null, subFields);
         excelTitles.add(parseFieldGroup);
         config.setTitleStartRow(0);
 
@@ -119,18 +116,18 @@ public class ExcelBuildTest {
         ExcelBuildConfig config = new ExcelBuildConfig();
         List<ExcelTitle> excelTitles = new ArrayList<>();
 
-        excelTitles.add(new TextTitle("peopleName", "姓名"));
+        excelTitles.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
         List<SingleExcelTitle> subFields = new ArrayList<>();
-        subFields.add(new TextTitle("gender", "性别"));
-        subFields.add(new NumberTitle("age", "年龄"));
+        subFields.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
+        subFields.add(new SingleExcelTitleImpl("age", "年龄", new NumberDataFormatter()));
 
-        ExcelTitleGroup showGroup = new ShowGroup("message", "个人信息", subFields);
+        ExcelTitleGroup showGroup = new ExcelTitleGroupImpl("message", "个人信息", false, null, subFields);
         excelTitles.add(showGroup);
 
         subFields = new ArrayList<>();
-        subFields.add(new TextTitle("signInTime", "签到时间"));
-        subFields.add(new TextTitle("signOutTime", "签退时间"));
-        ExcelTitleGroup collectionGroup = new CollectionGroup("attendance", "考勤记录", subFields);
+        subFields.add(new SingleExcelTitleImpl("signInTime", "签到时间", new TextDataFormatter()));
+        subFields.add(new SingleExcelTitleImpl("signOutTime", "签退时间", new TextDataFormatter()));
+        ExcelTitleGroup collectionGroup = new ExcelTitleGroupImpl("attendance", "考勤记录", true, new CollectionGroupDataFormatter(), subFields);
         excelTitles.add(collectionGroup);
         config.setTitleStartRow(0);
 

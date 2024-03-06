@@ -9,6 +9,16 @@ import java.util.Map;
  */
 public interface DataFormatter<T> {
     /**
+     * 获取dataFormatter的标识
+     */
+    String getDataFormatterCode();
+
+    /**
+     * 获取dataFormatter的名称
+     */
+    String getDataFormatterName();
+
+    /**
      * 数据格式化 生成Excel用
      */
     Object format(Object value, Map<String, Object> dataMap);

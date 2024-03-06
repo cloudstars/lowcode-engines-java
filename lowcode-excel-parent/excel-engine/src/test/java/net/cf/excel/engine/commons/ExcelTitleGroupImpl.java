@@ -8,19 +8,25 @@ import java.util.List;
 
 /**
  * @Author: 胡凌云
- * @CreateTime: 2024-02-28 08:45
- * @Description: 仅展示group实现类
+ * @CreateTime: 2024-02-27 19:06
+ * @Description: 主子表字段
  */
-public class ShowGroup implements ExcelTitleGroup {
+public class ExcelTitleGroupImpl implements ExcelTitleGroup {
     private String code;
 
     private String name;
 
+    private boolean collection;
+
+    private DataFormatter dataFormatter;
+
     private List<SingleExcelTitle> subFields;
 
-    public ShowGroup(String code, String name, List<SingleExcelTitle> subFields) {
+    public ExcelTitleGroupImpl(String code, String name, boolean collection, DataFormatter dataFormatter, List<SingleExcelTitle> subFields) {
         this.code = code;
         this.name = name;
+        this.collection = collection;
+        this.dataFormatter = dataFormatter;
         this.subFields = subFields;
     }
 
@@ -35,13 +41,8 @@ public class ShowGroup implements ExcelTitleGroup {
     }
 
     @Override
-    public DataType getDataType() {
-        return null;
-    }
-
-    @Override
-    public DataFormatter getDataFormatter() {
-        return null;
+    public DataFormatter<List> getDataFormatter() {
+        return dataFormatter;
     }
 
     @Override
@@ -51,6 +52,6 @@ public class ShowGroup implements ExcelTitleGroup {
 
     @Override
     public boolean isCollection() {
-        return false;
+        return collection;
     }
 }
