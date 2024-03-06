@@ -1,7 +1,6 @@
 package net.cf.excel.engine;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import net.cf.commons.test.util.DataCompareTestUtils;
 import net.cf.commons.test.util.FileTestUtils;
 import net.cf.excel.engine.bean.ExcelTitleBean;
@@ -38,7 +37,8 @@ public class ExcelFieldsParseTest {
         config.setTitleEndRow(1);
 
         List<ExcelTitleBean> sourceDataList = engine.parseExcelTitles(workbook, config);
-        JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel表头解析测试/解析后数据/联合测试1.json"));
+        List<ExcelTitleBean> targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel表头解析测试/解析后数据/联合测试1.json"))
+                .toJavaList(ExcelTitleBean.class);
         Assertions.assertTrue(DataCompareTestUtils.equalsList(sourceDataList, targetDataList));
     }
 
