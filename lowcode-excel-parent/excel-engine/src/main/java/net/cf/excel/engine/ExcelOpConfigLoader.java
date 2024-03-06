@@ -1,6 +1,7 @@
 package net.cf.excel.engine;
 
 import com.alibaba.fastjson.JSONObject;
+import net.cf.excel.engine.bean.ExcelBuildConfig;
 import net.cf.excel.engine.bean.ExcelParseConfig;
 
 /**
@@ -10,4 +11,6 @@ import net.cf.excel.engine.bean.ExcelParseConfig;
  */
 public interface ExcelOpConfigLoader {
     ExcelParseConfig loadExcelParseConfig(JSONObject jsonObject);
+
+    ExcelBuildConfig loadExcelBuildConfig(JSONObject jsonObject);
 }

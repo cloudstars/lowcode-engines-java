@@ -2,6 +2,7 @@ package net.cf.excel.engine;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import net.cf.excel.engine.bean.ExcelBuildConfig;
 import net.cf.excel.engine.bean.ExcelParseConfig;
 import net.cf.excel.engine.commons.ExcelOpException;
 import net.cf.excel.engine.commons.ExcelTitleGroupImpl;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
  * @Description: ExcelOpConfigLoader实现类
  */
 public class ExcelOpConfigLoaderImpl implements ExcelOpConfigLoader {
-
     @Override
     public ExcelParseConfig loadExcelParseConfig(JSONObject jsonObject) {
         Reflections reflections = new Reflections("net.cf.excel.engine.commons");
@@ -52,6 +52,38 @@ public class ExcelOpConfigLoaderImpl implements ExcelOpConfigLoader {
         }
 
         return excelParseConfig;
+    }
+
+    @Override
+    public ExcelBuildConfig loadExcelBuildConfig(JSONObject jsonObject) {
+        Reflections reflections = new Reflections("net.cf.excel.engine.commons");
+        Set<Class<? extends DataFormatter>> classes = reflections.getSubTypesOf(DataFormatter.class);
+        List<DataFormatter> dataFormatters = new ArrayList<>();
+
+        for (Class<? extends DataFormatter> clazz : classes) {
+            try {
+                DataFormatter dataFormatter = clazz.newInstance();
+                dataFormatters.add(dataFormatter);
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Map<String, DataFormatter> dataFormatterMap =
+                dataFormatters.stream().collect(Collectors.toMap(DataFormatter::getDataFormatterCode, dataFormatter -> dataFormatter));
+
+        List<ExcelTitle> titles = new ArrayList<>();
+        ExcelBuildConfig excelBuildConfig = new ExcelBuildConfig();
+        try {
+            doParse(jsonObject.getJSONArray("excelTitles"), dataFormatterMap, titles);
+            excelBuildConfig.setExcelTitles(titles);
+            excelBuildConfig.setTitleStartRow(jsonObject.getInteger("titleStartRow"));
+            excelBuildConfig.setSheetName(jsonObject.getString("sheetName"));
+        } catch (Exception e) {
+            throw new ExcelOpException("配置文件格式错误!");
+        }
+
+        return excelBuildConfig;
     }
 
     private void doParse(JSONArray jsonArray, Map<String, DataFormatter> dataFormatterMap, List titles) {

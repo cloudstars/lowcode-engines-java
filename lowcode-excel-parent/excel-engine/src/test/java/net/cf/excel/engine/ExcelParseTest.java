@@ -34,7 +34,7 @@ public class ExcelParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+        ExcelParseConfig config = new ExcelOpConfigLoaderImpl().loadExcelParseConfig(
                 JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/textTitle.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
@@ -54,7 +54,7 @@ public class ExcelParseTest {
             throw new RuntimeException(e);
         }
 
-        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+        ExcelParseConfig config = new ExcelOpConfigLoaderImpl().loadExcelParseConfig(
                 JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/collectionGroup.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
@@ -71,7 +71,7 @@ public class ExcelParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+        ExcelParseConfig config = new ExcelOpConfigLoaderImpl().loadExcelParseConfig(
                 JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/collectionGroup.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
@@ -89,7 +89,7 @@ public class ExcelParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+        ExcelParseConfig config = new ExcelOpConfigLoaderImpl().loadExcelParseConfig(
                 JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/showGroup.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
@@ -107,7 +107,7 @@ public class ExcelParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+        ExcelParseConfig config = new ExcelOpConfigLoaderImpl().loadExcelParseConfig(
                 JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/联合测试.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
