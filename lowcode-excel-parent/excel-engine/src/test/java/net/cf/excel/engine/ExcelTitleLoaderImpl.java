@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @CreateTime: 2024-03-05 19:04
  * @Description: ExcelTitleLoader实现类
  */
-public class ExcelTitleLoaderImpl implements ExcelTitleLoader {
+public class ExcelTitleLoaderImpl implements ExcelOpConfigLoader {
 
     @Override
     public ExcelParseConfig loadExcelParseConfig(JSONObject jsonObject) {

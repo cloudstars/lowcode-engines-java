@@ -6,8 +6,8 @@ import net.cf.excel.engine.bean.ExcelParseConfig;
 /**
  * @Author: 胡凌云
  * @CreateTime: 2024-03-05 19:02
- * @Description: ExcelTitleLoader接口
+ * @Description: ExcelOpConfigLoader接口
  */
-public interface ExcelTitleLoader {
+public interface ExcelOpConfigLoader {
     ExcelParseConfig loadExcelParseConfig(JSONObject jsonObject);
 }
