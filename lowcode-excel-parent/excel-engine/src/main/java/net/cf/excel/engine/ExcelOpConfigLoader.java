@@ -10,7 +10,19 @@ import net.cf.excel.engine.bean.ExcelParseConfig;
  * @Description: ExcelOpConfigLoader接口
  */
 public interface ExcelOpConfigLoader {
+    /**
+     * 根据配置文件解析出ExcelParseConfig
+     *
+     * @param jsonObject
+     * @return
+     */
     ExcelParseConfig loadExcelParseConfig(JSONObject jsonObject);
 
+    /**
+     * 根据配置文件解析出ExcelBuildConfig
+     *
+     * @param jsonObject
+     * @return
+     */
     ExcelBuildConfig loadExcelBuildConfig(JSONObject jsonObject);
 }
