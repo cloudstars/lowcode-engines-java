@@ -386,11 +386,13 @@ public class ExcelEngineImpl implements ExcelEngine {
                         List<SheetTitleInfo> subTitleInfo = subTitleInfoMap.getOrDefault(titleInfo.getUniqueTitle(), new ArrayList<>());
                         List<Map<String, Object>> subDataList = collectSubData(subTitleInfo, rowData, fieldMap);
                         verifyRequired(sheetField, subDataList);
-                        record.put(sheetField.getCode(), sheetField.getDataFormatter().unFormat(subDataList, record));
+                        record.put(sheetField.getCode(), sheetField.getDataFormatter() == null ?
+                                subDataList : sheetField.getDataFormatter().unFormat(subDataList, record));
                     } else {
                         Object cellValue = rowData.get(0).get(titleInfo.getFirstColumn());
                         verifyRequired(sheetField, cellValue);
-                        record.put(sheetField.getCode(), sheetField.getDataFormatter().unFormat(cellValue, record));
+                        record.put(sheetField.getCode(), sheetField.getDataFormatter() == null ?
+                                cellValue : sheetField.getDataFormatter().unFormat(cellValue, record));
                     }
                 }
             }
@@ -499,7 +501,8 @@ public class ExcelEngineImpl implements ExcelEngine {
                     String cellValue = subRowValue.get(subTitleInfo.getFirstColumn());
                     ExcelSheetField field = fieldMap.get(subTitleInfo.getUniqueTitle());
                     verifyRequired(field, cellValue);
-                    subRecord.put(field.getCode(), field.getDataFormatter().unFormat(cellValue, subRecord));
+                    subRecord.put(field.getCode(), field.getDataFormatter() == null ? cellValue :
+                            field.getDataFormatter().unFormat(cellValue, subRecord));
                 }
             });
             subRecords.add(subRecord);
@@ -603,16 +606,17 @@ public class ExcelEngineImpl implements ExcelEngine {
     }
 
     private int buildDataWithGroup(SheetBuildInfo buildInfo, Map<String, Object> rowData, ExcelTitle field, int columnIndex, int rowIndex, int endRow) {
+        int colIndex = columnIndex;
         if (((ExcelTitleGroup) field).isCollection()) {
             //处理聚合数据
-            columnIndex = buildCollectedData(buildInfo, rowData, field, rowIndex, columnIndex);
+            colIndex = buildCollectedData(buildInfo, rowData, field, rowIndex, columnIndex);
         } else {
             for (SingleExcelTitle singleParseField : ((ExcelTitleGroup) field).getSubTitles()) {
-                columnIndex = buildSingleData(buildInfo, rowIndex, rowData, columnIndex, endRow, singleParseField);
+                colIndex = buildSingleData(buildInfo, rowIndex, rowData, colIndex, endRow, singleParseField);
             }
 
         }
-        return columnIndex;
+        return colIndex;
     }
 
     /**
@@ -627,7 +631,8 @@ public class ExcelEngineImpl implements ExcelEngine {
         int maxSize = 1;
         for (ExcelTitle field : fields) {
             if (field instanceof ExcelTitleGroup && ((ExcelTitleGroup) field).isCollection()) {
-                List value = (List) field.getDataFormatter().format(rowData.get(field.getCode()), rowData);
+                List value = (List) (field.getDataFormatter() == null ? rowData.get(field.getCode()) :
+                        field.getDataFormatter().format(rowData.get(field.getCode()), rowData));
                 if (!CollectionUtils.isEmpty(value)) {
                     //取聚合数据数据条数的最大值
                     maxSize = Math.max(maxSize, value.size());
@@ -657,14 +662,16 @@ public class ExcelEngineImpl implements ExcelEngine {
      */
     private int buildCollectedData(SheetBuildInfo buildInfo, Map<String, Object> rowData, ExcelTitle field, int rowIndex, int columnIndex) {
         XSSFSheet sheet = buildInfo.getSheet();
-        List<Map<String, Object>> value = (List) field.getDataFormatter().format(rowData.get(field.getCode()), rowData);
+        List<Map<String, Object>> value = (List) (field.getDataFormatter() == null ? rowData.get(field.getCode()) :
+                field.getDataFormatter().format(rowData.get(field.getCode()), rowData));
         if (!CollectionUtils.isEmpty(value)) {
             int subRowIndex = rowIndex;
             for (Map<String, Object> subRowData : value) {
                 XSSFRow subRow = sheet.getRow(subRowIndex) == null ? sheet.createRow(subRowIndex) : sheet.getRow(subRowIndex);
                 int subColumnIndex = columnIndex;
                 for (SingleExcelTitle singleParseField : ((ExcelTitleGroup) field).getSubTitles()) {
-                    String subValue = (String) singleParseField.getDataFormatter().format(subRowData.get(singleParseField.getCode()), subRowData);
+                    String subValue = (String) (singleParseField.getDataFormatter() == null ? subRowData.get(singleParseField.getCode()) :
+                            singleParseField.getDataFormatter().format(subRowData.get(singleParseField.getCode()), subRowData));
                     buildSheetCell(subValue, subColumnIndex, subRow, buildInfo.getCellStyle());
                     subColumnIndex++;
                 }
@@ -691,7 +698,8 @@ public class ExcelEngineImpl implements ExcelEngine {
     private int buildSingleData(SheetBuildInfo buildInfo, int rowIndex, Map<String, Object> rowData, int columnIndex, int endRow, ExcelTitle field) {
         XSSFSheet sheet = buildInfo.getSheet();
         XSSFRow row = sheet.getRow(rowIndex) == null ? sheet.createRow(rowIndex) : sheet.getRow(rowIndex);
-        String value = (String) field.getDataFormatter().format(rowData.get(field.getCode()), rowData);
+        String value = (String) (field.getDataFormatter() == null ? rowData.get(field.getCode()) :
+                field.getDataFormatter().format(rowData.get(field.getCode()), rowData));
         buildSheetCell(value, columnIndex, row, buildInfo.getCellStyle());
 
         if (rowIndex != endRow) {

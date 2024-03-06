@@ -1,0 +1,54 @@
+{
+  "excelTitles": [
+    {
+      "code": "peopleName",
+      "dataFormatter": {
+        "dataFormatterCode": "text",
+        "dataFormatterName": "文本"
+      },
+      "name": "姓名",
+      "required": false
+    },
+    {
+      "code": "gender",
+      "dataFormatter": {
+        "dataFormatterCode": "text",
+        "dataFormatterName": "文本"
+      },
+      "name": "性别",
+      "required": false
+    },
+    {
+      "code": "attendance",
+      "collection": true,
+      "dataFormatter": {
+        "dataFormatterCode": "detail",
+        "dataFormatterName": "主子表"
+      },
+      "name": "考勤记录",
+      "required": false,
+      "subTitles": [
+        {
+          "code": "signInTime",
+          "dataFormatter": {
+            "dataFormatterCode": "text",
+            "dataFormatterName": "文本"
+          },
+          "name": "签到时间",
+          "required": false
+        },
+        {
+          "code": "signOutTime",
+          "dataFormatter": {
+            "dataFormatterCode": "text",
+            "dataFormatterName": "文本"
+          },
+          "name": "签退时间",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "titleStartRow": 0,
+  "titleEndRow": 1
+}

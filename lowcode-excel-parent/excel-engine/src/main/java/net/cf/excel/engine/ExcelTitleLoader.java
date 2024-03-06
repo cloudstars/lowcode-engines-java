@@ -1,8 +1,7 @@
 package net.cf.excel.engine;
 
-import com.alibaba.fastjson.JSONArray;
-
-import java.util.List;
+import com.alibaba.fastjson.JSONObject;
+import net.cf.excel.engine.bean.ExcelParseConfig;
 
 /**
  * @Author: 胡凌云
@@ -10,5 +9,5 @@ import java.util.List;
  * @Description: ExcelTitleLoader接口
  */
 public interface ExcelTitleLoader {
-    List<ExcelTitle> loadTitles(JSONArray jsonArray);
+    ExcelParseConfig loadExcelParseConfig(JSONObject jsonObject);
 }

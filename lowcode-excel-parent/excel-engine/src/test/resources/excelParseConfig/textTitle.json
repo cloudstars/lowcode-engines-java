@@ -1,0 +1,24 @@
+{
+  "excelTitles": [
+    {
+      "code": "peopleName",
+      "dataFormatter": {
+        "dataFormatterCode": "text",
+        "dataFormatterName": "文本"
+      },
+      "name": "姓名",
+      "required": false
+    },
+    {
+      "code": "gender",
+      "dataFormatter": {
+        "dataFormatterCode": "text",
+        "dataFormatterName": "文本"
+      },
+      "name": "性别",
+      "required": false
+    }
+  ],
+  "titleStartRow": 0,
+  "titleEndRow": 0
+}

@@ -2,6 +2,8 @@ package net.cf.excel.engine;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import net.cf.excel.engine.bean.ExcelParseConfig;
+import net.cf.excel.engine.commons.ExcelOpException;
 import net.cf.excel.engine.commons.ExcelTitleGroupImpl;
 import net.cf.excel.engine.commons.SingleExcelTitleImpl;
 import org.apache.commons.collections4.CollectionUtils;
@@ -19,8 +21,9 @@ import java.util.stream.Collectors;
  * @Description: ExcelTitleLoader实现类
  */
 public class ExcelTitleLoaderImpl implements ExcelTitleLoader {
+
     @Override
-    public List<ExcelTitle> loadTitles(JSONArray jsonArray) {
+    public ExcelParseConfig loadExcelParseConfig(JSONObject jsonObject) {
         Reflections reflections = new Reflections("net.cf.excel.engine.commons");
         Set<Class<? extends DataFormatter>> classes = reflections.getSubTypesOf(DataFormatter.class);
         List<DataFormatter> dataFormatters = new ArrayList<>();
@@ -38,21 +41,30 @@ public class ExcelTitleLoaderImpl implements ExcelTitleLoader {
                 dataFormatters.stream().collect(Collectors.toMap(DataFormatter::getDataFormatterCode, dataFormatter -> dataFormatter));
 
         List<ExcelTitle> titles = new ArrayList<>();
-        doParse(jsonArray, dataFormatterMap, titles);
+        ExcelParseConfig excelParseConfig = new ExcelParseConfig();
+        try {
+            doParse(jsonObject.getJSONArray("excelTitles"), dataFormatterMap, titles);
+            excelParseConfig.setExcelTitles(titles);
+            excelParseConfig.setTitleStartRow(jsonObject.getInteger("titleStartRow"));
+            excelParseConfig.setTitleEndRow(jsonObject.getInteger("titleEndRow"));
+        } catch (Exception e) {
+            throw new ExcelOpException("配置文件格式错误!");
+        }
 
-        return titles;
+        return excelParseConfig;
     }
 
     private void doParse(JSONArray jsonArray, Map<String, DataFormatter> dataFormatterMap, List titles) {
         jsonArray.forEach(jsonObject -> {
-            JSONArray subTitles = (JSONArray) ((JSONObject) jsonObject).get("subTitles");
-            String code = (String) ((JSONObject) jsonObject).get("code");
-            String name = (String) ((JSONObject) jsonObject).get("name");
-            String dataFormatterCode = (String) ((JSONObject) jsonObject).get("dataFormatterCode");
+            JSONArray subTitles = ((JSONObject) jsonObject).getJSONArray("subTitles");
+            String code = ((JSONObject) jsonObject).getString("code");
+            String name = ((JSONObject) jsonObject).getString("name");
+            JSONObject dataFormatter = ((JSONObject) jsonObject).getJSONObject("dataFormatter");
+            String dataFormatterCode = dataFormatter == null ? null : dataFormatter.getString("dataFormatterCode");
             if (CollectionUtils.isNotEmpty(subTitles)) {
-                boolean isCollection = (boolean) ((JSONObject) jsonObject).get("isCollection");
+                boolean collection = ((JSONObject) jsonObject).getBoolean("collection");
                 List<SingleExcelTitle> subTitlesList = new ArrayList<>();
-                titles.add(new ExcelTitleGroupImpl(code, name, isCollection, dataFormatterMap.get(dataFormatterCode), subTitlesList));
+                titles.add(new ExcelTitleGroupImpl(code, name, collection, dataFormatterMap.get(dataFormatterCode), subTitlesList));
                 doParse(subTitles, dataFormatterMap, subTitlesList);
             } else {
                 titles.add(new SingleExcelTitleImpl(code, name, dataFormatterMap.get(dataFormatterCode)));

@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import net.cf.commons.test.util.DataCompareTestUtils;
 import net.cf.commons.test.util.FileTestUtils;
 import net.cf.excel.engine.bean.ExcelParseConfig;
-import net.cf.excel.engine.commons.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,14 +34,8 @@ public class ExcelParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelParseConfig();
-        List<ExcelTitle> excelFields = new ArrayList<>();
-
-        excelFields.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
-        excelFields.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
-        config.setExcelTitles(excelFields);
-        config.setTitleStartRow(0);
-        config.setTitleEndRow(0);
+        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+                JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/textTitle.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
         JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/TextField测试.json"));
@@ -62,20 +54,8 @@ public class ExcelParseTest {
             throw new RuntimeException(e);
         }
 
-        ExcelParseConfig config = new ExcelParseConfig();
-        List<ExcelTitle> excelTitles = new ArrayList<>();
-
-        excelTitles.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
-        excelTitles.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
-        List<SingleExcelTitle> subFields = new ArrayList<>();
-        subFields.add(new SingleExcelTitleImpl("signInTime", "签到时间", new TextDataFormatter()));
-        subFields.add(new SingleExcelTitleImpl("signOutTime", "签退时间", new TextDataFormatter()));
-        ExcelTitleGroup parseFieldGroup = new ExcelTitleGroupImpl("attendance", "考勤记录", true, new CollectionGroupDataFormatter(), subFields);
-        excelTitles.add(parseFieldGroup);
-
-        config.setExcelTitles(excelTitles);
-        config.setTitleStartRow(0);
-        config.setTitleEndRow(1);
+        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+                JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/collectionGroup.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
         JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
@@ -91,20 +71,8 @@ public class ExcelParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelParseConfig();
-        List<ExcelTitle> excelTitles = new ArrayList<>();
-
-        excelTitles.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
-        excelTitles.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
-        List<SingleExcelTitle> subFields = new ArrayList<>();
-        subFields.add(new SingleExcelTitleImpl("signInTime", "签到时间", new TextDataFormatter()));
-        subFields.add(new SingleExcelTitleImpl("signOutTime", "签退时间", new TextDataFormatter()));
-        ExcelTitleGroup parseFieldGroup = new ExcelTitleGroupImpl("attendance", "考勤记录", true, new CollectionGroupDataFormatter(), subFields);
-        excelTitles.add(parseFieldGroup);
-
-        config.setExcelTitles(excelTitles);
-        config.setTitleStartRow(0);
-        config.setTitleEndRow(1);
+        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+                JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/collectionGroup.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
         JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/CollectionGroup测试.json"));
@@ -121,19 +89,8 @@ public class ExcelParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelParseConfig();
-        List<ExcelTitle> excelTitles = new ArrayList<>();
-
-        excelTitles.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
-        List<SingleExcelTitle> subFields = new ArrayList<>();
-        subFields.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
-        subFields.add(new SingleExcelTitleImpl("age", "年龄", new NumberDataFormatter()));
-        ExcelTitleGroup parseFieldGroup = new ExcelTitleGroupImpl("message", "个人信息", false, null, subFields);
-        excelTitles.add(parseFieldGroup);
-
-        config.setExcelTitles(excelTitles);
-        config.setTitleStartRow(0);
-        config.setTitleEndRow(1);
+        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+                JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/showGroup.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
         JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/ShowGroup测试.json"));
@@ -150,26 +107,8 @@ public class ExcelParseTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ExcelParseConfig config = new ExcelParseConfig();
-        List<ExcelTitle> excelTitles = new ArrayList<>();
-
-        excelTitles.add(new SingleExcelTitleImpl("peopleName", "姓名", new TextDataFormatter()));
-        List<SingleExcelTitle> subFields = new ArrayList<>();
-        subFields.add(new SingleExcelTitleImpl("gender", "性别", new TextDataFormatter()));
-        subFields.add(new SingleExcelTitleImpl("age", "年龄", new NumberDataFormatter()));
-
-        ExcelTitleGroup showGroup = new ExcelTitleGroupImpl("message", "个人信息", false, null, subFields);
-        excelTitles.add(showGroup);
-
-        subFields = new ArrayList<>();
-        subFields.add(new SingleExcelTitleImpl("signInTime", "签到时间", new TextDataFormatter()));
-        subFields.add(new SingleExcelTitleImpl("signOutTime", "签退时间", new TextDataFormatter()));
-        ExcelTitleGroup collectionGroup = new ExcelTitleGroupImpl("attendance", "考勤记录", true, new CollectionGroupDataFormatter(), subFields);
-        excelTitles.add(collectionGroup);
-
-        config.setExcelTitles(excelTitles);
-        config.setTitleStartRow(0);
-        config.setTitleEndRow(1);
+        ExcelParseConfig config = new ExcelTitleLoaderImpl().loadExcelParseConfig(
+                JSON.parseObject(FileTestUtils.loadTextFromClasspath("excelParseConfig/联合测试.json")));
 
         List<Map<String, Object>> sourceDataList = engine.parseExcel(workbook, config);
         JSONArray targetDataList = JSON.parseArray(FileTestUtils.loadTextFromClasspath("excel解析测试/解析后数据/联合测试1.json"));
