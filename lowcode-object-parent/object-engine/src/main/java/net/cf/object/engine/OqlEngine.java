@@ -19,6 +19,14 @@ public interface OqlEngine {
      * 查询记录，限制返回一条
      *
      * @param statement
+     * @return
+     */
+    Map<String, Object> queryOne(OqlSelectStatement statement);
+
+    /**
+     * 查询记录，限制返回一条
+     *
+     * @param statement
      * @param dataMap
      * @return
      */
@@ -63,6 +71,14 @@ public interface OqlEngine {
      * 更新记录
      *
      * @param statement
+     * @return
+     */
+    void modify(OqlUpdateStatement statement);
+
+    /**
+     * 更新记录
+     *
+     * @param statement
      * @param dataMap
      * @return
      */
@@ -81,6 +97,13 @@ public interface OqlEngine {
      * 移除记录
      *
      * @param statement
+     */
+    void remove(OqlDeleteStatement statement);
+
+    /**
+     * 移除记录
+     *
+     * @param statement
      * @param dataMap
      */
     void remove(OqlDeleteStatement statement, Map<String, Object> dataMap);
@@ -91,6 +114,6 @@ public interface OqlEngine {
      * @param statement
      * @param dataMaps
      */
-    void batchRemove(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps);
+    void removeList(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps);
 
 }

@@ -16,22 +16,22 @@ import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
 import net.cf.object.engine.util.ObjectBeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-@Service
 public class RecordEngineImpl implements RecordEngine {
 
     private final Logger logger = LoggerFactory.getLogger(RecordEngineImpl.class);
 
-    @Resource
-    private ObjectRepositoryProvider repositoryProvider;
+    private final ObjectRepository repository;
+
+    private RecordEngineImpl(ObjectRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Map<String, Object> queryOne(XObject object, String recordId) {
@@ -70,8 +70,7 @@ public class RecordEngineImpl implements RecordEngine {
 
         ObjectBeanUtils.Ref<Method> primaryFieldGetMethodRef = ObjectBeanUtils.createRef(null);
         SqlInsertStatement insertSql = this.buildInsertSql(object, data, primaryFieldGetMethodRef);
-        ObjectRepository repository = this.repositoryProvider.getByObject(object);
-        repository.insert(insertSql);
+        this.repository.insert(insertSql);
 
         try {
             Object recordId = primaryFieldGetMethodRef.getRef().invoke(data);
@@ -124,8 +123,7 @@ public class RecordEngineImpl implements RecordEngine {
         assert (object != null && dataMap != null);
 
         SqlInsertStatement insertSql = this.buildInsertSql(object, dataMap);
-        ObjectRepository repository = this.repositoryProvider.getByObject(object);
-        repository.insert(insertSql);
+        this.repository.insert(insertSql);
 
         Object recordId = dataMap.get(object.getPrimaryField().getCode());
         logger.info("记录创建成功，模型编号：{}，记录ID：{}", object.getCode(), recordId);
@@ -186,8 +184,7 @@ public class RecordEngineImpl implements RecordEngine {
         assert (object != null && dataMaps != null && dataMaps.size() > 0);
 
         SqlInsertStatement insertSql = this.buildBatchInsertSql(object, dataMaps);
-        ObjectRepository repository = this.repositoryProvider.getByObject(object);
-        repository.batchInsert(insertSql, dataMaps);
+        this.repository.batchInsert(insertSql, dataMaps);
 
         return null;
     }

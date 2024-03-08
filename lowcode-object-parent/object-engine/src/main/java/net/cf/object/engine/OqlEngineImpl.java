@@ -1,6 +1,7 @@
 package net.cf.object.engine;
 
-import net.cf.object.engine.object.XObject;
+import net.cf.form.repository.ObjectRepository;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
@@ -8,15 +9,11 @@ import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.visitor.InsertStatementCheckOqlAstVisitor;
 import net.cf.object.engine.sqlbuilder.insert.OqlInsertAstVisitor;
 import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
-import net.cf.form.repository.ObjectRepository;
-import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -25,13 +22,20 @@ import java.util.Map;
  *
  * @author clouds
  */
-@Service
 public class OqlEngineImpl implements OqlEngine {
 
     private static Logger logger = LoggerFactory.getLogger(OqlEngineImpl.class);
 
-    @Resource
-    private ObjectRepositoryProvider driverResolver;
+    private final ObjectRepository repository;
+
+    public OqlEngineImpl(ObjectRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public Map<String, Object> queryOne(OqlSelectStatement statement) {
+        return null;
+    }
 
     @Override
     public Map<String, Object> queryOne(OqlSelectStatement statement, Map<String, Object> dataMap) {
@@ -51,27 +55,14 @@ public class OqlEngineImpl implements OqlEngine {
         statement.accept(visitor);
         SqlInsertStatement sqlStatement = builder.build();
 
-        ObjectRepository repository = this.resolveRepository(statement);
-        int effectedRows = repository.insert(sqlStatement);
+        int effectedRows = this.repository.insert(sqlStatement);
         return effectedRows;
-    }
-
-    /**
-     * 根据模型决定使用哪个存储
-     *
-     * @param statement
-     * @return
-     */
-    private ObjectRepository resolveRepository(OqlInsertStatement statement) {
-        XObject object = statement.getObjectSource().getResolvedObject();
-        ObjectRepository repository = this.driverResolver.getByObject(object);
-        return repository;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String create(OqlInsertStatement statement, Map<String, Object> dataMap) {
-        // 语法检查s
+        // 语法检查
         InsertStatementCheckOqlAstVisitor checkVisitor = new InsertStatementCheckOqlAstVisitor();
         statement.accept(checkVisitor);
 
@@ -89,6 +80,11 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
+    public void modify(OqlUpdateStatement statement) {
+
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void modify(OqlUpdateStatement statement, Map<String, Object> dataMap) {
 
@@ -101,6 +97,11 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
+    public void remove(OqlDeleteStatement statement) {
+
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void remove(OqlDeleteStatement statement, Map<String, Object> dataMap) {
 
@@ -108,7 +109,7 @@ public class OqlEngineImpl implements OqlEngine {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void batchRemove(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps) {
+    public void removeList(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps) {
 
     }
 
