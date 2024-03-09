@@ -3,8 +3,8 @@ package net.cf.object.engine.oql.testcase.delete;
 import net.cf.commons.test.dataset.IDataSet;
 import net.cf.commons.test.dataset.JsonDataSetLoader;
 import net.cf.commons.test.dataset.MysqlDataSetOperator;
-import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
+import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
@@ -24,6 +24,9 @@ import java.util.Map;
  * @author clouds
  */
 public abstract class AbstractDeleteTravelSelfRepoTest extends AbstractOqlRepoTest implements DeleteTravelSelfTest {
+
+    @Resource
+    private OqlEngine engine;
 
     @Resource
     private MysqlDataSetOperator dataSetOperator;
@@ -52,9 +55,7 @@ public abstract class AbstractDeleteTravelSelfRepoTest extends AbstractOqlRepoTe
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_DELETE_TRAVEL_BY_ID);
             OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(oqlInfo.oql);
             ObjectTestUtils.resolveObject(oqlStmt.getFrom());
-            SqlDeleteStatement sqlStmt = OqlStatementUtils.toSqlDelete(oqlStmt);
-            int effectedRows = this.repository.delete(sqlStmt);
-            assert (effectedRows == 1);
+            this.engine.remove(oqlStmt);
         }
 
         {

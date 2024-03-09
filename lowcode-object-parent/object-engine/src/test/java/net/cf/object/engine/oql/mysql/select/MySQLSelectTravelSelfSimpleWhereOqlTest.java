@@ -16,4 +16,5 @@ public class MySQLSelectTravelSelfSimpleWhereOqlTest extends AbstractSelectTrave
     public void testSelectTravelList() {
         super.testSelectTravelList();
     }
+
 }

@@ -4,7 +4,7 @@ import net.cf.commons.test.dataset.IDataSet;
 import net.cf.commons.test.dataset.JsonDataSetLoader;
 import net.cf.commons.test.dataset.MysqlDataSetOperator;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
-import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
+import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
@@ -24,6 +24,9 @@ import java.util.Map;
  * @author clouds
  */
 public abstract class AbstractUpdateTravelSelfRepoTest extends AbstractOqlRepoTest implements UpdateTravelSelfTest {
+
+    @Resource
+    private OqlEngine engine;
 
     @Resource
     private MysqlDataSetOperator dataSetOperator;
@@ -52,9 +55,7 @@ public abstract class AbstractUpdateTravelSelfRepoTest extends AbstractOqlRepoTe
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_BY_ID);
             OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(oqlInfo.oql);
             ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
-            SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(oqlStmt);
-            int effectedRows = this.repository.update(sqlStmt);
-            assert (effectedRows == 1);
+            this.engine.modify(oqlStmt);
         }
 
         {

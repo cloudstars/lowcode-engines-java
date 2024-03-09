@@ -3,12 +3,11 @@ package net.cf.object.engine.oql.testcase.select;
 import net.cf.commons.test.dataset.IDataSet;
 import net.cf.commons.test.dataset.JsonDataSetLoader;
 import net.cf.commons.test.dataset.MysqlDataSetOperator;
-import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
+import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.oql.util.OqlUtils;
-import net.cf.object.engine.sqlbuilder.OqlStatementUtils;
 import org.junit.After;
 import org.junit.Before;
 
@@ -17,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractSelectTravelSelfSimpleWhereRepoTest extends AbstractOqlRepoTest implements SelectTravelSelfSimpleWhereTest {
+
+    @Resource
+    private OqlEngine engine;
 
     @Resource
     private MysqlDataSetOperator dataSetOperator;
@@ -43,8 +45,7 @@ public abstract class AbstractSelectTravelSelfSimpleWhereRepoTest extends Abstra
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(oqlInfo.oql);
         ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
-        List<Map<String, Object>> dataList = this.repository.selectList(sqlStmt);
+        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
         assert (dataList != null && dataList.size() == 2);
     }
 }

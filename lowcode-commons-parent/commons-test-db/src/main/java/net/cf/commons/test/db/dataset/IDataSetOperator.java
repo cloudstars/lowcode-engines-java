@@ -1,4 +1,4 @@
-package net.cf.commons.test.dataset;
+package net.cf.commons.test.db.dataset;
 
 /**
  * 数据集操作器

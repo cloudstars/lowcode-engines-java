@@ -3,8 +3,8 @@ package net.cf.object.engine.oql.testcase.insert;
 import net.cf.commons.test.dataset.IDataSet;
 import net.cf.commons.test.dataset.JsonDataSetLoader;
 import net.cf.commons.test.dataset.MysqlDataSetOperator;
-import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
+import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
@@ -24,6 +24,9 @@ import java.util.Map;
  * @author clouds
  */
 public abstract class AbstractInsertTravelSelfRepoTest extends AbstractOqlRepoTest implements InsertTravelSelfTest {
+
+    @Resource
+    private OqlEngine engine;
 
     @Resource
     private MysqlDataSetOperator dataSetOperator;
@@ -50,8 +53,7 @@ public abstract class AbstractInsertTravelSelfRepoTest extends AbstractOqlRepoTe
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL);
         OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(oqlInfo.oql);
         ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
-        SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(oqlStmt);
-        int effectedRows = this.repository.insert(sqlStmt);
+        int effectedRows = this.engine.create(oqlStmt);
         assert (effectedRows == 1);
 
         {

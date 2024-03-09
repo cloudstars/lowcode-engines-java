@@ -17,6 +17,7 @@
 
     <modules>
         <module>commons-test</module>
+        <module>commons-test-db</module>
     </modules>
 
     <dependencies>

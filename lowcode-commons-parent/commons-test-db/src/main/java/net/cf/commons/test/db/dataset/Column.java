@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package net.cf.commons.test.dataset;
+package net.cf.commons.test.db.dataset;
 
 public class Column {
     private final String columnName;

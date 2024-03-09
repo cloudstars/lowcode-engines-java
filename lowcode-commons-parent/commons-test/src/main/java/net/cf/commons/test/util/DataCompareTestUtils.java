@@ -175,7 +175,7 @@ public final class DataCompareTestUtils {
      * @param targetList
      * @return
      */
-    public static boolean isAssignableFromList(List<Object> sourceList, List<Object> targetList) {
+    public static <S extends Object, T extends Object> boolean isAssignableFromList(List<S> sourceList, List<T> targetList) {
         return ObjectTestUtils.compareObjectNullSafe(sourceList, targetList, (s, v) -> {
             List<String> fieldNames = ObjectTestUtils.getDeclaredFieldNames(s);
             return DataCompareTestUtils.isAssignableFromListWithProperties(s, v, fieldNames);
@@ -220,7 +220,7 @@ public final class DataCompareTestUtils {
             }
 
             boolean isEqual;
-            if (s instanceof JSONObject && s instanceof JSONObject) {
+            if (s instanceof JSONObject && t instanceof JSONObject) {
                 isEqual = DataCompareTestUtils.isAssignableFromJsonObjectWithProperties((JSONObject) s, (JSONObject) t, properties);
             } else if (s instanceof JSONArray && t instanceof JSONArray) {
                 isEqual = DataCompareTestUtils.isAssignableFromJsonArrayWithProperties((JSONArray) s, (JSONArray) t, properties);

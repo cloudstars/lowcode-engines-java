@@ -1,4 +1,4 @@
-package net.cf.commons.test.dataset;
+package net.cf.commons.test.db.dataset;
 
 public interface ITableMetaData {
     String getTableName();

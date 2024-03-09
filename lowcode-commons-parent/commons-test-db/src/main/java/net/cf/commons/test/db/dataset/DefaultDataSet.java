@@ -1,4 +1,4 @@
-package net.cf.commons.test.dataset;
+package net.cf.commons.test.db.dataset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -72,7 +73,33 @@ public final class ObjectTestUtils {
                 boolean isTGV = ObjectTestUtils.isGeneralValue(tpv);
                 if (isSGV && isTGV) {
                     // 两个都是原子类型时，直接equals比较
-                    if (!ObjectTestUtils.compareObjectNullSafe(spv, tpv, (sf, tf) -> sf.equals(tf))) {
+                    if (!ObjectTestUtils.compareObjectNullSafe(spv, tpv, (sf, tf) -> {
+                        Date date = null;
+                        String dateStr = null;
+                        if (sf instanceof Date && tf instanceof String) {
+                            date = (Date) sf;
+                            dateStr = (String) tf;
+                        } else if (sf instanceof String && tf instanceof Date) {
+                            date = (Date) tf;
+                            dateStr = (String) sf;
+                        }
+
+                        if (date != null && dateStr != null) {
+                            int dateStrLen = dateStr.length();
+                            String dateFormatStr = null;
+                            if (dateStrLen == 10) {
+                                dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd")).format((Date) sf);
+                            } else if (dateStrLen == 8) {
+                                dateFormatStr = (new SimpleDateFormat("hh:mm:ss")).format((Date) sf);
+                            } else if (dateStrLen == 19) {
+                                dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format((Date) sf);
+                            }
+
+                            return dateStr.equals(dateFormatStr);
+                        } else {
+                            return sf.equals(tf);
+                        }
+                    })) {
                         return false;
                     }
                 } else if (!isSGV && !isTGV) {

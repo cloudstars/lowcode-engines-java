@@ -33,7 +33,15 @@ public interface OqlEngine {
     Map<String, Object> queryOne(OqlSelectStatement statement, Map<String, Object> dataMap);
 
     /**
-     * 查询记录，不限制条件
+     * 查询记录列表
+     *
+     * @param statement
+     * @return
+     */
+    List<Map<String, Object>> queryList(OqlSelectStatement statement);
+
+    /**
+     * 查询记录列表
      *
      * @param statement
      * @param dataMap

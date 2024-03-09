@@ -1,14 +1,16 @@
 package net.cf.object.engine;
 
 import net.cf.form.repository.ObjectRepository;
+import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
+import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.visitor.InsertStatementCheckOqlAstVisitor;
-import net.cf.object.engine.sqlbuilder.insert.OqlInsertAstVisitor;
-import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
+import net.cf.object.engine.sqlbuilder.OqlStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -43,19 +45,21 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
+    public List<Map<String, Object>> queryList(OqlSelectStatement stmt) {
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt);
+        return this.repository.selectList(sqlStmt);
+    }
+
+    @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement statement, Map<String, Object> dataMap) {
         return null;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public int create(OqlInsertStatement statement) {
-        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
-        OqlInsertAstVisitor visitor = new OqlInsertAstVisitor(builder);
-        statement.accept(visitor);
-        SqlInsertStatement sqlStatement = builder.build();
-
-        int effectedRows = this.repository.insert(sqlStatement);
+    public int create(OqlInsertStatement stmt) {
+        SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt);
+        int effectedRows = this.repository.insert(sqlStmt);
         return effectedRows;
     }
 
@@ -80,8 +84,9 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
-    public void modify(OqlUpdateStatement statement) {
-
+    public void modify(OqlUpdateStatement stmt) {
+        SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(stmt);
+        this.repository.update(sqlStmt);
     }
 
     @Override
@@ -97,8 +102,9 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
-    public void remove(OqlDeleteStatement statement) {
-
+    public void remove(OqlDeleteStatement stmt) {
+        SqlDeleteStatement sqlStmt = OqlStatementUtils.toSqlDelete(stmt);
+        this.repository.delete(sqlStmt);
     }
 
     @Override
