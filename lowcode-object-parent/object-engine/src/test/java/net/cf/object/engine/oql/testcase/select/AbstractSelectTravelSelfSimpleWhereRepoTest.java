@@ -1,8 +1,8 @@
 package net.cf.object.engine.oql.testcase.select;
 
-import net.cf.commons.test.dataset.IDataSet;
-import net.cf.commons.test.dataset.JsonDataSetLoader;
-import net.cf.commons.test.dataset.MysqlDataSetOperator;
+import net.cf.commons.test.db.dataset.IDataSet;
+import net.cf.commons.test.db.dataset.JsonDataSetLoader;
+import net.cf.commons.test.db.dataset.MysqlDataSetOperator;
 import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;

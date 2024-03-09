@@ -1,8 +1,8 @@
 package net.cf.form.repository.testcases.statement.insert;
 
+import net.cf.commons.test.db.dataset.IDataSetOperator;
 import net.cf.form.repository.ObjectRepository;
 import net.cf.form.repository.testcases.statement.AbstractTestCase;
-import net.cf.commons.test.dataset.IDataSetOperator;
 
 /**
  * 简单插入语句的测试

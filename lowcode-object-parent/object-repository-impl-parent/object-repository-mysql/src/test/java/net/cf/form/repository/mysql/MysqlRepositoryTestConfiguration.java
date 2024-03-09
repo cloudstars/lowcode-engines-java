@@ -1,7 +1,7 @@
 package net.cf.form.repository.mysql;
 
-import net.cf.commons.test.dataset.IDataSetOperator;
-import net.cf.commons.test.dataset.MysqlDataSetOperator;
+import net.cf.commons.test.db.dataset.IDataSetOperator;
+import net.cf.commons.test.db.dataset.MysqlDataSetOperator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

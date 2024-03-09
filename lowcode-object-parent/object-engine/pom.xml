@@ -40,7 +40,7 @@
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-test</artifactId>
+            <artifactId>lowcode-commons-test-db</artifactId>
         </dependency>
     </dependencies>
 

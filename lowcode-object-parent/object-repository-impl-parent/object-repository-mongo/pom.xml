@@ -29,15 +29,15 @@
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-test</artifactId>
+            <artifactId>lowcode-commons-test-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-test-db</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-object-repository-testcases</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
         </dependency>
     </dependencies>
 

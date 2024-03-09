@@ -1,6 +1,6 @@
 package net.cf.form.repository.mysql.insert;
 
-import net.cf.commons.test.dataset.IDataSetOperator;
+import net.cf.commons.test.db.dataset.IDataSetOperator;
 import net.cf.form.repository.mysql.MySQLObjectRepositoryImpl;
 import net.cf.form.repository.mysql.MysqlRepositoryTestApplication;
 import net.cf.form.repository.testcases.statement.insert.AbstractSimpleInsertTestCase;

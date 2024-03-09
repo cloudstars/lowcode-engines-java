@@ -1,7 +1,7 @@
 package net.cf.form.repository.testcases.statement;
 
-import net.cf.commons.test.dataset.IDataSet;
-import net.cf.commons.test.dataset.IDataSetOperator;
+import net.cf.commons.test.db.dataset.IDataSet;
+import net.cf.commons.test.db.dataset.IDataSetOperator;
 import net.cf.form.repository.ObjectRepository;
 import org.junit.After;
 import org.junit.Before;
