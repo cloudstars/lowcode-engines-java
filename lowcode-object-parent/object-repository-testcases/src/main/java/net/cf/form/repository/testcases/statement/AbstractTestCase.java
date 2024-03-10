@@ -6,6 +6,8 @@ import net.cf.form.repository.ObjectRepository;
 import org.junit.After;
 import org.junit.Before;
 
+import javax.annotation.Resource;
+
 /**
  * 抽象的测试类，所有的测试类继承它
  *
@@ -16,21 +18,16 @@ public abstract class AbstractTestCase {
     /**
      * 模型存储接口
      */
-    protected final ObjectRepository repository;
+    @Resource
+    protected ObjectRepository repository;
 
     /**
      * 数据集操作器
      */
-    protected final IDataSetOperator dataSetOperator;
+    @Resource
+    protected IDataSetOperator dataSetOperator;
 
-    protected AbstractTestCase(ObjectRepository repository) {
-        this.repository = repository;
-        this.dataSetOperator = null;
-    }
-
-    public AbstractTestCase(ObjectRepository repository, IDataSetOperator dataSetOperator) {
-        this.repository = repository;
-        this.dataSetOperator = dataSetOperator;
+    protected AbstractTestCase() {
     }
 
     /**

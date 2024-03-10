@@ -5,11 +5,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MysqlDataSetOperator implements IDataSetOperator {
+public class MySqlDataSetOperator implements IDataSetOperator {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    public MysqlDataSetOperator(NamedParameterJdbcTemplate jdbcTemplate) {
+    public MySqlDataSetOperator(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

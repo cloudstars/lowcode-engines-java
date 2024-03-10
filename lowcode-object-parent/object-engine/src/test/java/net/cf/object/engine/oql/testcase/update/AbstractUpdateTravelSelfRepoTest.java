@@ -2,7 +2,7 @@ package net.cf.object.engine.oql.testcase.update;
 
 import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
-import net.cf.commons.test.db.dataset.MysqlDataSetOperator;
+import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.ObjectTestUtils;
@@ -29,7 +29,7 @@ public abstract class AbstractUpdateTravelSelfRepoTest extends AbstractOqlRepoTe
     private OqlEngine engine;
 
     @Resource
-    private MysqlDataSetOperator dataSetOperator;
+    private MySqlDataSetOperator dataSetOperator;
 
     private IDataSet dataSet;
 

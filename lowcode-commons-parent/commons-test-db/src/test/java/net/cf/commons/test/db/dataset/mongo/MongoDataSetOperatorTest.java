@@ -1,8 +1,10 @@
-package net.cf.commons.test.db.dataset;
+package net.cf.commons.test.db.dataset.mongo;
 
 import com.alibaba.fastjson.JSONArray;
 import com.mongodb.client.MongoCollection;
-import net.cf.commons.test.db.CommonsTestDbApplication;
+import net.cf.commons.test.db.dataset.IDataSet;
+import net.cf.commons.test.db.dataset.JsonDataSetLoader;
+import net.cf.commons.test.db.dataset.MongoDataSetOperator;
 import net.cf.commons.test.util.JsonTestUtils;
 import org.bson.Document;
 import org.junit.Test;
@@ -17,7 +19,7 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("mongo")
-@SpringBootTest(classes = CommonsTestDbApplication.class)
+@SpringBootTest(classes = CommonsTestMongoApplication.class)
 public class MongoDataSetOperatorTest {
 
     @Resource

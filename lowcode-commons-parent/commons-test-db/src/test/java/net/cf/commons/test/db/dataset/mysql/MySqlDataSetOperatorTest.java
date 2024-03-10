@@ -1,7 +1,9 @@
-package net.cf.commons.test.db.dataset;
+package net.cf.commons.test.db.dataset.mysql;
 
 import com.alibaba.fastjson.JSONArray;
-import net.cf.commons.test.db.CommonsTestDbApplication;
+import net.cf.commons.test.db.dataset.IDataSet;
+import net.cf.commons.test.db.dataset.JsonDataSetLoader;
+import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.commons.test.util.DataCompareTestUtils;
 import net.cf.commons.test.util.JsonTestUtils;
 import org.junit.Test;
@@ -18,11 +20,11 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("mysql")
-@SpringBootTest(classes = CommonsTestDbApplication.class)
-public class MysqlDataSetOperatorTest {
+@SpringBootTest(classes = CommonsTestMySqlApplication.class)
+public class MySqlDataSetOperatorTest {
 
     @Resource
-    private MysqlDataSetOperator dataSetOperator;
+    private MySqlDataSetOperator dataSetOperator;
 
     @Resource
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;

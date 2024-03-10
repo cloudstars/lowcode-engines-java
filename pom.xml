@@ -50,12 +50,12 @@
     <modules>
         <module>lowcode-commons-parent</module>
         <module>lowcode-object-parent</module>
-        <module>lowcode-excel-parent</module>
+        <!--<module>lowcode-excel-parent</module>
         <module>lowcode-bpm-parent</module>
         <module>lowcode-api-parent</module>
         <module>lowcode-api-proxy-parent</module>
         <module>lowcode-api-flow-parent</module>
-        <module>lowcode-formula-parent</module>
+        <module>lowcode-formula-parent</module>-->
     </modules>
 
     <dependencyManagement>

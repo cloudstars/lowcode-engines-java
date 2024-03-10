@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ObjectEngineTestApplication.class)
-public class MySQLDeleteTravelSelfOqlTest extends AbstractDeleteTravelSelfRepoTest {
+public class MySqlDeleteTravelSelfOqlTest extends AbstractDeleteTravelSelfRepoTest {
 
     @Test
     @Override

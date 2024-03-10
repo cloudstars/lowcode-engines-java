@@ -1,9 +1,9 @@
 package net.cf.object.engine;
 
 import net.cf.commons.test.db.dataset.MongoDataSetOperator;
-import net.cf.commons.test.db.dataset.MysqlDataSetOperator;
+import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.form.repository.mongo.MongoObjectRepositoryImpl;
-import net.cf.form.repository.mysql.MySQLObjectRepositoryImpl;
+import net.cf.form.repository.mysql.MySqlObjectRepositoryImpl;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -26,17 +26,17 @@ public class ObjectEngineTestConfiguration {
     }
 
     @Bean
-    public MySQLObjectRepositoryImpl mySQLObjectRepository(NamedParameterJdbcTemplate jdbcTemplate) {
-        return new MySQLObjectRepositoryImpl(jdbcTemplate);
+    public MySqlObjectRepositoryImpl mySQLObjectRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new MySqlObjectRepositoryImpl(jdbcTemplate);
     }
 
     @Bean
-    public MysqlDataSetOperator mysqlDataSetOperator(NamedParameterJdbcTemplate jdbcTemplate) {
-        return new MysqlDataSetOperator(jdbcTemplate);
+    public MySqlDataSetOperator mysqlDataSetOperator(NamedParameterJdbcTemplate jdbcTemplate) {
+        return new MySqlDataSetOperator(jdbcTemplate);
     }
 
     @Bean
-    public OqlEngine oqlEngine(MySQLObjectRepositoryImpl repository) {
+    public OqlEngine oqlEngine(MySqlObjectRepositoryImpl repository) {
         return new OqlEngineImpl(repository);
     }
 

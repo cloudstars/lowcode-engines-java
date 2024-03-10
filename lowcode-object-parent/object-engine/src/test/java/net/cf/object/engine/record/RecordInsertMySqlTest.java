@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 @SpringBootTest
 @ActiveProfiles("mysql")
 @RunWith(SpringRunner.class)
-public class RecordInsertMysqlTest {
+public class RecordInsertMySqlTest {
 
     @Resource
     private RecordEngine recordEngine;

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  net.cf.object.engine.mysql.ObjectEngineMysqlAutoConfiguration
+  net.cf.object.engine.mysql.ObjectEngineMySqlAutoConfiguration

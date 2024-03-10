@@ -14,13 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MySQLObjectRepositoryImpl implements ObjectRepository {
+public class MySqlObjectRepositoryImpl implements ObjectRepository {
 
-    private final Logger logger = LoggerFactory.getLogger(MySQLObjectRepositoryImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(MySqlObjectRepositoryImpl.class);
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public MySQLObjectRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+    public MySqlObjectRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

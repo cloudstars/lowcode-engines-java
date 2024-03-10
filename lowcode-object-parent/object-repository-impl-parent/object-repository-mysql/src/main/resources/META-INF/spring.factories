@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    net.cf.form.repository.mysql.MySQLObjectRepositoryAutoConfiguration
+    net.cf.form.repository.mysql.MySqlObjectRepositoryAutoConfiguration

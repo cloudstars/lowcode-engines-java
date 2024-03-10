@@ -1,7 +1,7 @@
 package net.cf.object.engine.mysql;
 
 import net.cf.form.repository.ObjectRepository;
-import net.cf.form.repository.mysql.MySQLObjectRepositoryImpl;
+import net.cf.form.repository.mysql.MySqlObjectRepositoryImpl;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
@@ -11,12 +11,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
 @AutoConfigureAfter(JdbcTemplateAutoConfiguration.class)
-public class ObjectEngineMysqlAutoConfiguration {
+public class ObjectEngineMySqlAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
     public ObjectRepository objectRepository(NamedParameterJdbcTemplate jdbcTemplate) {
-        return new MySQLObjectRepositoryImpl(jdbcTemplate);
+        return new MySqlObjectRepositoryImpl(jdbcTemplate);
     }
 
 }

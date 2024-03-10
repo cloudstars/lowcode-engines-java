@@ -1,17 +1,15 @@
-package net.cf.commons.test.db;
+package net.cf.form.repository.mysql;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * 测试启动类
- *
- * @author clouds
  */
 @SpringBootApplication
-public class CommonsTestDbApplication {
+public class MySqlRepositoryTestApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CommonsTestDbApplication.class, args);
+        SpringApplication.run(MySqlRepositoryTestApplication.class, args);
     }
 }

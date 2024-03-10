@@ -2,7 +2,7 @@ package net.cf.object.engine.oql.testcase.select;
 
 import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
-import net.cf.commons.test.db.dataset.MysqlDataSetOperator;
+import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
@@ -21,7 +21,7 @@ public abstract class AbstractSelectTravelSelfSimpleWhereRepoTest extends Abstra
     private OqlEngine engine;
 
     @Resource
-    private MysqlDataSetOperator dataSetOperator;
+    private MySqlDataSetOperator dataSetOperator;
 
     private IDataSet dataSet;
 
