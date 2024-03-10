@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author clouds 
  */
-public final class SqlExistsExpr extends AbstractCanNotExpr {
+public final class SqlExistsExpr extends AbstractNotableExpr {
 
     /**
      * 子查询

@@ -1,0 +1,13 @@
+{
+  "name": "测试带子属性的查询出差申请本表的案例",
+  "code": "SelectTravelSelfPropertiesWhere",
+  "desc": "测试点：测试子属性查询，不测试复杂查询条件（分组、聚合、子查询），包含指定列、常量列，不含子表字段、相关表中的字段",
+  "oqls": [
+    {
+      "name": "根据创建人姓名查询出差列表",
+      "code": "SelectTravelListByCreatorName",
+      "oql": "select applyId from Travel where creator.name like '%张三%'",
+      "sql": "select APPLY_ID from TRAVEL where CREATOR_NAME like '%张三%'"
+    }
+  ]
+}

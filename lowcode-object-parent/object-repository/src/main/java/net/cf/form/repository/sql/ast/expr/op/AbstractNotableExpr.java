@@ -7,7 +7,7 @@ import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
  *
  * @author clouds
  */
-public abstract class AbstractCanNotExpr extends AbstractSqlExprImpl {
+public abstract class AbstractNotableExpr extends AbstractSqlExprImpl {
 
     /**
      * 是否有not关键字

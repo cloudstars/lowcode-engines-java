@@ -8,7 +8,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlLikeOpExpr extends AbstractCanNotExpr {
+public class SqlLikeOpExpr extends AbstractNotableExpr {
 
     /**
      * 转义字符
@@ -60,6 +60,7 @@ public class SqlLikeOpExpr extends AbstractCanNotExpr {
     @Override
     public SqlLikeOpExpr cloneMe() {
         SqlLikeOpExpr x = new SqlLikeOpExpr();
+        x.setNot(this.isNot());
         x.binaryOpExpr = this.binaryOpExpr.cloneMe();
         x.setEscape(this.escape);
         return x;

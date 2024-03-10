@@ -1,9 +1,5 @@
 package net.cf.object.engine.object;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 /**
  * 模型的字段
  *
@@ -134,8 +130,19 @@ public interface XField {
      *
      * @return
      */
-    default <T extends XFieldProperty> List<T> getProperties() {
+    /*default <T extends XFieldProperty> List<T> getProperties() {
         return Collections.emptyList();
+    }*/
+
+    /**
+     * 获取属性的名称获取子属性
+     *
+     * @param propertyName
+     * @return
+     * @param <T>
+     */
+    default <T extends XFieldProperty> T getProperty(String propertyName) {
+        return null;
     }
 
     /**
@@ -143,8 +150,8 @@ public interface XField {
      *
      * @return
      */
-    default Map<String, Object> getAttributeValues() {
+    /*default Map<String, Object> getAttributeValues() {
         return Collections.emptyMap();
-    }
+    }*/
 
 }

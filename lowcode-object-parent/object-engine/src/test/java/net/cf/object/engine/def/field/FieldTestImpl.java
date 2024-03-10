@@ -4,6 +4,8 @@ import net.cf.object.engine.def.ObjectTestImpl;
 import net.cf.object.engine.object.DataType;
 import net.cf.object.engine.object.XField;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +15,27 @@ public class FieldTestImpl implements XField {
 
     private final FieldDef fieldDef;
 
+    /**
+     * 模型字段属性列表
+     */
+    private final List<FieldPropertyTestImpl> properties = new ArrayList<>();
+
+    /**
+     * 模型字段属性映射表，方便通过属性编号查找
+     */
+    private final Map<String, FieldPropertyTestImpl> propertyMap = new HashMap<>();
+
     public FieldTestImpl(ObjectTestImpl owner, FieldDef fieldDef) {
         this.owner = owner;
         this.fieldDef = fieldDef;
+        List<FieldPropertyDef> propertyDefs = fieldDef.getProperties();
+        if (propertyDefs != null) {
+            for (FieldPropertyDef propertyDef : propertyDefs) {
+                FieldPropertyTestImpl fieldProperty = new FieldPropertyTestImpl(this, propertyDef);
+                this.properties.add(fieldProperty);
+                this.propertyMap.put(fieldProperty.getCode(), fieldProperty);
+            }
+        }
     }
 
     @Override
@@ -68,12 +88,17 @@ public class FieldTestImpl implements XField {
     }
 
     @Override
-    public List<FieldPropertyTestImpl> getProperties() {
-        return this.fieldDef.getProperties();
+    public FieldPropertyTestImpl getProperty(String propertyCode) {
+        return this.propertyMap.get(propertyCode);
     }
 
-    @Override
+    /*@Override
+    public List<FieldPropertyTestImpl> getProperties() {
+        return this.fieldDef.getProperties();
+    }*/
+
+    /*@Override
     public Map<String, Object> getAttributeValues() {
         return this.fieldDef.getAttrValueMap();
-    }
+    }*/
 }

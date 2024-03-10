@@ -3,9 +3,7 @@ package net.cf.object.engine.def.field;
 import com.alibaba.fastjson.annotation.JSONCreator;
 import net.cf.object.engine.object.DataType;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 模型字段定义
@@ -70,14 +68,19 @@ public class FieldDef {
     private String dateFormat;
 
     /**
-     * 字段的数据子属性
+     * 字段的子属性列表
      */
-    private List<FieldPropertyTestImpl> properties;
+    private List<FieldPropertyDef> properties;
+
+    /**
+     * 字段的子属定义映射
+     */
+    // private Map<String, FieldPropertyDef> propertyMap;
 
     /**
      * 字段的个性化属性的值映射
      */
-    private final Map<String, Object> attrValueMap = new HashMap<>();
+    //private final Map<String, Object> attrValueMap = new HashMap<>();
 
     @JSONCreator
     public FieldDef(String type) {
@@ -168,28 +171,40 @@ public class FieldDef {
         this.defaultValue = defaultValue;
     }
 
-    public List<FieldPropertyTestImpl> getProperties() {
+    public List<FieldPropertyDef> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<FieldPropertyTestImpl> properties) {
+    public void setProperties(List<FieldPropertyDef> properties) {
         this.properties = properties;
     }
 
-    public void setAttributes(List<FieldAttribute> attributes) {
+    /*public void setProperties(List<FieldPropertyDef> properties) {
+        this.properties = properties;
+        if (properties == null) {
+            this.propertyMap = null;
+        } else {
+            this.propertyMap = new HashMap<>();
+            for (FieldPropertyDef property : properties) {
+                this.propertyMap.put(property.getCode(), property);
+            }
+        }
+    }*/
+
+    /*public void setAttributes(List<FieldAttribute> attributes) {
         for (FieldAttribute attribute : attributes) {
             String attrCode = attribute.getCode();
             Object attrValue = attribute.getValue();
             this.attrValueMap.put(attrCode, attrValue);
         }
-    }
+    }*/
 
     /**
      * 获取字段的个性化属性值映射
      *
      * @return
      */
-    public Map<String, Object> getAttrValueMap() {
+    /*public Map<String, Object> getAttrValueMap() {
         return attrValueMap;
-    }
+    }*/
 }

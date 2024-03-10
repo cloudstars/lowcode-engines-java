@@ -3,13 +3,16 @@ package net.cf.object.engine.oql.visitor;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
+import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.visitor.VisitorFeature;
 import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XFieldProperty;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
@@ -81,6 +84,8 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
             return this.buildSqlExpr((SqlIdentifierExpr) x);
         } else if (clazz == SqlPropertyExpr.class) {
             return this.buildSqlExpr((SqlPropertyExpr) x);
+        } else if (clazz == SqlLikeOpExpr.class) {
+            return this.buildSqlExpr((SqlLikeOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.buildSqlExpr((SqlBinaryOpExpr) x);
         } else if (clazz == SqlBinaryOpExprGroup.class) {
@@ -106,8 +111,35 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
         return sqlX;
     }
 
-    private SqlPropertyExpr buildSqlExpr(final SqlPropertyExpr x) {
-        return null;
+    /**
+     * 子属性转换
+     *
+     * @param x
+     * @return
+     */
+    private SqlIdentifierExpr buildSqlExpr(final SqlPropertyExpr x) {
+        SqlName owner = x.getOwner();
+        String fieldName = owner.getName();
+        XField field = this.resolvedObject.getField(fieldName);
+        String propertyName = x.getName();
+        XFieldProperty fieldProperty = field.getProperty(propertyName);
+        SqlIdentifierExpr identifierExpr = new SqlIdentifierExpr();
+        identifierExpr.setName(fieldProperty.getColumnName());
+        return identifierExpr;
+    }
+
+
+    /**
+     * 构建like表达式
+     *
+     * @param x
+     * @return
+     */
+    private SqlLikeOpExpr buildSqlExpr(final SqlLikeOpExpr x) {
+        SqlLikeOpExpr sqlX = x.cloneMe();
+        sqlX.setLeft(this.buildSqlExpr(x.getLeft()));
+        sqlX.setRight(this.buildSqlExpr(x.getRight()));
+        return sqlX;
     }
 
     private SqlBinaryOpExpr buildSqlExpr(final SqlBinaryOpExpr x) {

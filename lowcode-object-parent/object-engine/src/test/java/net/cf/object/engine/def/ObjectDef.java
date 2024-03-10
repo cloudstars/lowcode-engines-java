@@ -2,9 +2,7 @@ package net.cf.object.engine.def;
 
 import net.cf.object.engine.def.field.FieldDef;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 模型定义
@@ -46,7 +44,7 @@ public class ObjectDef {
     /**
      * 字段映射表
      */
-    private final Map<String, FieldDef> fieldMap = new HashMap<>();
+    // private final Map<String, FieldDef> fieldMap = new HashMap<>();
 
     public String getName() {
         return name;
@@ -94,15 +92,15 @@ public class ObjectDef {
 
     public void setFields(List<FieldDef> fields) {
         this.fields = fields;
-        if (this.fieldMap.size() > 0) {
+        /*if (this.fieldMap.size() > 0) {
             this.fieldMap.clear();
         }
         for (FieldDef field : fields) {
             this.fieldMap.put(field.getCode(), field);
-        }
+        }*/
     }
 
-    public Map<String, FieldDef> getFieldMap() {
+    /*public Map<String, FieldDef> getFieldMap() {
         return fieldMap;
-    }
+    }*/
 }

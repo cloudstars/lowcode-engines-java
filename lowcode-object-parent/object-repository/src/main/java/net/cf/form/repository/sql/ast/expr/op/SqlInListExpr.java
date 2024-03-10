@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public final class SqlInListExpr extends AbstractCanNotExpr implements SqlReplaceable {
+public final class SqlInListExpr extends AbstractNotableExpr implements SqlReplaceable {
 
     /**
      * 左边的表达式

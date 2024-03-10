@@ -10,7 +10,6 @@ import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.parser.SqlParseException;
 import net.cf.form.repository.sql.util.SqlExprUtils;
 import net.cf.object.engine.object.XField;
-import net.cf.object.engine.object.XFieldProperty;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
 import net.cf.object.engine.util.ObjectBeanUtils;
@@ -151,7 +150,7 @@ public class RecordEngineImpl implements RecordEngine {
             }
 
             Object fieldValue = entry.getValue();
-            List<XFieldProperty> properties = field.getProperties();
+            /*List<XFieldProperty> properties = field.getProperties();
             if (properties != null && properties.size() > 0) {
                 for (XFieldProperty property : properties) {
                     builder.appendColumn(new SqlIdentifierExpr(property.getColumnName()));
@@ -161,7 +160,7 @@ public class RecordEngineImpl implements RecordEngine {
             } else {
                 builder.appendColumn(new SqlIdentifierExpr(field.getColumnName()));
                 // TODO builder.appendInsertValuesItem(this.toSqlExpr(fieldValue));
-            }
+            }*/
         }
 
         return builder.build();

@@ -2,6 +2,7 @@ package net.cf.object.engine.def.field;
 
 import net.cf.object.engine.object.DataType;
 import net.cf.object.engine.object.XFieldProperty;
+import net.cf.object.engine.util.ObjectConstants;
 
 /**
  * 字段的子属性
@@ -15,7 +16,9 @@ public class FieldPropertyTestImpl implements XFieldProperty {
      */
     private final FieldTestImpl owner;
 
-    private String name;
+    private final FieldPropertyDef propertyDef;
+
+    /*private String name;
 
     private String code;
 
@@ -25,10 +28,11 @@ public class FieldPropertyTestImpl implements XFieldProperty {
 
     private Integer dataLength;
 
-    private Integer dataPrecision;
+    private Integer dataPrecision;*/
 
-    public FieldPropertyTestImpl(FieldTestImpl field) {
+    public FieldPropertyTestImpl(FieldTestImpl field, FieldPropertyDef propertyDef) {
         this.owner = field;
+        this.propertyDef = propertyDef;
     }
 
     @Override
@@ -38,60 +42,37 @@ public class FieldPropertyTestImpl implements XFieldProperty {
 
     @Override
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return this.propertyDef.getName();
     }
 
     @Override
     public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+        return this.propertyDef.getCode();
     }
 
     @Override
     public DataType getDataType() {
-        return dataType;
-    }
-
-    public void setDataType(DataType dataType) {
-        this.dataType = dataType;
+        return this.propertyDef.getDataType();
     }
 
     @Override
     public String getColumnName() {
-        if (this.columnName != null) {
-            return this.columnName;
+        String columnName = this.propertyDef.getColumnName();
+        if (columnName == null) {
+            columnName = this.propertyDef.getCode();
         }
 
-        return this.owner.getCode() + "_" + this.code;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
+        return this.owner.getColumnName() + ObjectConstants.FIELD_SEPARATOR + columnName;
     }
 
     @Override
     public Integer getDataLength() {
-        return this.dataLength;
-    }
-
-    public void setDataLength(Integer dataLength) {
-        this.dataLength = dataLength;
+        return this.propertyDef.getDataLength();
     }
 
     @Override
     public Integer getDataPrecision() {
-        return this.dataPrecision;
-    }
-
-    public void setDataPrecision(Integer dataPrecision) {
-        this.dataPrecision = dataPrecision;
+        return this.propertyDef.getDataPrecision();
     }
 
 }

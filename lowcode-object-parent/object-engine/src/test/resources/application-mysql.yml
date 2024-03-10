@@ -7,7 +7,7 @@ spring:
   sql:
     init:
       mode: embedded
-      schema-locations: schema.sql
+      schema-locations: mysql-schema.sql
   h2:
     console:
       enabled: true
