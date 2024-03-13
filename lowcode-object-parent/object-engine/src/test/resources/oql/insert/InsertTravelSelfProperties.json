@@ -1,0 +1,13 @@
+{
+  "name": "测试插入出差本表，带子属性，不含子表的案例",
+  "code": "InsertTravelSelfProperties",
+  "desc": "测试点：简单的插入，不含子表",
+  "oqls": [
+    {
+      "name": "插入出差记录，含出差人",
+      "code": "InsertTravelWithCreator",
+      "oql": "insert into Travel(applyId, applyName, creator) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', '{\"name\": \"张三\", \"code\": \"zhangsan\"}')",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME, CREATOR_NAME, CREATOR_KEY) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', '张三', 'zhangsan')"
+    }
+  ]
+}

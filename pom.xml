@@ -164,6 +164,11 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>com.github.fakemongo</groupId>
+                <artifactId>fango</artifactId>
+                <version>2</version>
+            </dependency>
+            <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>1.2.16</version>

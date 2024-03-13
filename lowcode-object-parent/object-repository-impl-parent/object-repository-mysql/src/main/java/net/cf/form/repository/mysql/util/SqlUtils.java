@@ -1,7 +1,7 @@
 package net.cf.form.repository.mysql.util;
 
+import net.cf.form.repository.mysql.visitor.MySqlAstOutputVisitor;
 import net.cf.form.repository.sql.ast.statement.SqlStatement;
-import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
 
 /**
  * SQL工具类
@@ -21,7 +21,7 @@ public final class SqlUtils {
      */
     public static String toSqlText(SqlStatement stmt) {
         StringBuilder builder = new StringBuilder();
-        SqlAstOutputVisitor visitor = new SqlAstOutputVisitor(builder);
+        MySqlAstOutputVisitor visitor = new MySqlAstOutputVisitor(builder);
         stmt.accept(visitor);
         return builder.toString();
     }

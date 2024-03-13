@@ -9,11 +9,36 @@ public interface SelectTravelSelfSimpleWhereTest {
 
     String OQL_FILE_PATH = "oql/select/SelectTravelSimpleWhere.json";
 
+    String OQL_SELECT_TRAVEL_ONE = "SelectTravelOne";
+
+    String OQL_SELECT_TRAVEL_ONE_VARS = "SelectTravelOneVars";
+
     String OQL_SELECT_TRAVEL_LIST = "SelectTravelList";
+
+    String OQL_SELECT_TRAVEL_LIST_VARS = "SelectTravelListVars";
+
+    /**
+     * 测试查询出差记录
+     *
+     */
+    void testSelectTravelOne();
+
+    /**
+     * 测试查询出差记录（带变量）
+     *
+     */
+    void testSelectTravelOneVars();
 
     /**
      * 测试查询出差列表
      *
      */
     void testSelectTravelList();
+
+    /**
+     * 测试查询出差列表（带变量）
+     *
+     */
+    void testSelectTravelListVars();
+
 }

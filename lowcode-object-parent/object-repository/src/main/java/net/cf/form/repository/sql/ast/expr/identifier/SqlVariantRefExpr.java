@@ -36,7 +36,7 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
 
     public SqlVariantRefExpr(String name, SqlObject parent) {
         if ((name.startsWith("#{") && name.endsWith("}")) || (name.startsWith("${") && name.endsWith("}"))) {
-            this.varName = name.substring(2, name.length() -1);
+            this.setVarNameByName(name);
         }
         this.name = name;
         this.parent = parent;
@@ -55,6 +55,7 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
      */
     public void setName(String name) {
         this.name = name;
+        this.setVarNameByName(name);
     }
 
     /**
@@ -64,6 +65,15 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
      */
     public String getVarName() {
         return varName;
+    }
+
+    public void setVarName(String varName) {
+        this.varName = varName;
+        this.name = "#{" + varName + "}";
+    }
+
+    private void setVarNameByName(String name) {
+        this.varName = name.substring(2, name.length() -1);
     }
 
     public int getIndex() {

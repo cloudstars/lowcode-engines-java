@@ -8,6 +8,12 @@
       "code": "DeleteTravelById",
       "oql": "delete from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
       "sql": "delete from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "name": "根据记录ID删除出差记录（带变量）",
+      "code": "DeleteTravelByIdVars",
+      "oql": "delete from Travel where applyId = #{applyId}",
+      "sql": "delete from TRAVEL where APPLY_ID = #{APPLY_ID}"
     }
   ]
 }

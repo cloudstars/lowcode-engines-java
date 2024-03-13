@@ -55,7 +55,7 @@ public interface OqlEngine {
      * @param statement
      * @return 影响行数
      */
-    int create(OqlInsertStatement statement);
+    String create(OqlInsertStatement statement);
 
     /**
      * 创建记录

@@ -1,10 +1,7 @@
 package net.cf.object.engine.oql.visitor;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
 import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
@@ -84,6 +81,8 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
             return this.buildSqlExpr((SqlIdentifierExpr) x);
         } else if (clazz == SqlPropertyExpr.class) {
             return this.buildSqlExpr((SqlPropertyExpr) x);
+        } else if (clazz == SqlVariantRefExpr.class) {
+            return this.buildSqlExpr((SqlVariantRefExpr) x);
         } else if (clazz == SqlLikeOpExpr.class) {
             return this.buildSqlExpr((SqlLikeOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
@@ -104,9 +103,12 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
      * @return
      */
     private SqlIdentifierExpr buildSqlExpr(final SqlIdentifierExpr x) {
-        SqlIdentifierExpr sqlX = x.cloneMe();
         String fieldName = x.getName();
         XField field = this.resolvedObject.getField(fieldName);
+        // 将当前解析出来的列表、表名结果记录下来
+        x.setResolvedColumn(field.getColumnName());
+        x.setResolvedOwnerTable(field.getOwner().getTableName());
+        SqlIdentifierExpr sqlX = x.cloneMe();
         sqlX.setName(field.getColumnName());
         return sqlX;
     }
@@ -127,6 +129,22 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
         identifierExpr.setName(fieldProperty.getColumnName());
         return identifierExpr;
     }
+
+    /**
+     * 变量引用的转换
+     *
+     * @param x
+     * @return
+     */
+    private SqlVariantRefExpr buildSqlExpr(final SqlVariantRefExpr x) {
+        SqlVariantRefExpr sqlX = x.cloneMe();
+        String fieldName = x.getVarName();
+        XField field = this.resolvedObject.getField(fieldName);
+        String columnName = field.getColumnName();
+        sqlX.setVarName(columnName);
+        return sqlX;
+    }
+
 
 
     /**

@@ -8,6 +8,12 @@
       "code": "UpdateTravelById",
       "oql": "update Travel set applyName = '测试申请单1（变更）' where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
       "sql": "update TRAVEL set APPLY_NAME = '测试申请单1（变更）' where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "name": "根据记录ID更新出差记录（带变量）",
+      "code": "UpdateTravelByIdVars",
+      "oql": "update Travel set applyName = '测试申请单1（变更）' where applyId = #{applyId}",
+      "sql": "update TRAVEL set APPLY_NAME = '测试申请单1（变更）' where APPLY_ID = #{APPLY_ID}"
     }
   ]
 }

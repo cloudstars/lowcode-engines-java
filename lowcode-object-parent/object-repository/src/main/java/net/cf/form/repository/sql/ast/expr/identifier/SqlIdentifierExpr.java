@@ -1,6 +1,5 @@
 package net.cf.form.repository.sql.ast.expr.identifier;
 
-import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
@@ -17,14 +16,14 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
     protected String name;
 
     /**
-     * 对应数据表中的列
+     * 对应数据表列
      */
-    private SqlObject resolvedColumn;
+    private String resolvedColumn;
 
     /**
-     * 归属的节点，如当前节点出现在SqlPropertyExpr中时，xx.name，name的name就是xx
+     * 归属的数据库表
      */
-    private SqlObject resolvedOwnerObject;
+    private String resolvedOwnerTable;
 
     public SqlIdentifierExpr() {
     }
@@ -46,22 +45,6 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
         return this.name == null ? null : this.name.toLowerCase();
     }
 
-    public SqlObject getResolvedColumn() {
-        return resolvedColumn;
-    }
-
-    public void setResolvedColumn(SqlObject resolvedColumn) {
-        this.resolvedColumn = resolvedColumn;
-    }
-
-    public SqlObject getResolvedOwnerObject() {
-        return resolvedOwnerObject;
-    }
-
-    public void setResolvedOwnerObject(SqlObject resolvedOwnerObject) {
-        this.resolvedOwnerObject = resolvedOwnerObject;
-    }
-
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         visitor.visit(this);
@@ -79,4 +62,19 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
         return this.name;
     }
 
+    public String getResolvedColumn() {
+        return resolvedColumn;
+    }
+
+    public void setResolvedColumn(String resolvedColumn) {
+        this.resolvedColumn = resolvedColumn;
+    }
+
+    public String getResolvedOwnerTable() {
+        return resolvedOwnerTable;
+    }
+
+    public void setResolvedOwnerTable(String resolvedOwnerTable) {
+        this.resolvedOwnerTable = resolvedOwnerTable;
+    }
 }

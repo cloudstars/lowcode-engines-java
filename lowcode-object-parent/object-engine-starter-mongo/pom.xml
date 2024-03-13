@@ -9,7 +9,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-object-engine-starter-mong</artifactId>
+    <artifactId>lowcode-object-engine-starter-mongo</artifactId>
     <description>低代码模型引擎MongoDB版starter</description>
 
     <dependencies>

@@ -5,17 +5,25 @@ package net.cf.object.engine.oql.testcase.insert;
  *
  * @author clouds
  */
-public interface InsertTravelSelfTest {
+public interface InsertTravelSelfSimpleTest {
 
-    String OQL_FILE_PATH = "oql/insert/InsertTravelSelf.json";
+    String OQL_FILE_PATH = "oql/insert/InsertTravelSelfSimple.json";
 
     String OQL_INSERT_TRAVEL = "InsertTravel";
+
+    String OQL_INSERT_TRAVEL_VARS = "InsertTravelVars";
 
     /**
      * 测试插入出差记录
      *
      */
     void testInsertTravel();
+
+    /**
+     * 测试插入出差记录（带变量）
+     *
+     */
+    void testInsertTravelVars();
 
 }
 

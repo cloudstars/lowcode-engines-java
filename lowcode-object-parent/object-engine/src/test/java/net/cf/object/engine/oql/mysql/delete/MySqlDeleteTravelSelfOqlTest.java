@@ -19,4 +19,9 @@ public class MySqlDeleteTravelSelfOqlTest extends AbstractDeleteTravelSelfRepoTe
         super.testDeleteTravelById();
     }
 
+    @Test
+    @Override
+    public void testDeleteTravelByIdVars() {
+        super.testDeleteTravelByIdVars();
+    }
 }

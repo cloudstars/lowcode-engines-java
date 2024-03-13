@@ -56,7 +56,10 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public int update(SqlUpdateStatement statement, Map<String, Object> paramMap) {
-        return 0;
+        String sql = SqlUtils.toSqlText(statement);
+        int effectedRows = this.jdbcTemplate.update(sql, paramMap);
+        logger.info("数据更新成功，影响行数：{}", effectedRows);
+        return effectedRows;
     }
 
     @Override
@@ -68,13 +71,16 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     public int delete(SqlDeleteStatement statement) {
         String sql = SqlUtils.toSqlText(statement);
         int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
-        logger.info("数据更新成功，影响行数：{}", effectedRows);
+        logger.info("数据删除成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
 
     @Override
     public int delete(SqlDeleteStatement statement, Map<String, Object> paramMap) {
-        return 0;
+        String sql = SqlUtils.toSqlText(statement);
+        int effectedRows = this.jdbcTemplate.update(sql, paramMap);
+        logger.info("数据删除成功，影响行数：{}", effectedRows);
+        return effectedRows;
     }
 
     @Override

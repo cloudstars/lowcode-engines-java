@@ -1,13 +1,13 @@
-package net.cf.object.engine.oql.testcase.update;
+package net.cf.object.engine.oql.testcase.insert;
 
 import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
+import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
-import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.OqlStatementUtils;
@@ -17,20 +17,20 @@ import org.junit.runners.JUnit4;
 
 
 @RunWith(JUnit4.class)
-public class UpdateTravelSelfStmtTest extends AbstractOqlTest implements UpdateTravelSelfTest {
+public class InsertTravelSelfSimpleStmtTest extends AbstractOqlTest implements InsertTravelSelfSimpleTest {
 
-    public UpdateTravelSelfStmtTest() {
+    public InsertTravelSelfSimpleStmtTest() {
         super(OQL_FILE_PATH);
     }
 
     @Test
     @Override
-    public void testUpdateTravelById() {
-        OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_BY_ID);
+    public void testInsertTravel() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL);
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(oqlInfo.oql);
+        OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
@@ -41,18 +41,18 @@ public class UpdateTravelSelfStmtTest extends AbstractOqlTest implements UpdateT
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
         ObjectTestUtils.resolveObject(objectSource);
-        SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(oqlStmt);
+        SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
     @Test
     @Override
-    public void testUpdateTravelByIdVars() {
-        OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_BY_ID_VARS);
+    public void testInsertTravelVars() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_VARS);
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(oqlInfo.oql);
+        OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
@@ -63,7 +63,8 @@ public class UpdateTravelSelfStmtTest extends AbstractOqlTest implements UpdateT
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
         ObjectTestUtils.resolveObject(objectSource);
-        SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(oqlStmt);
+        SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
+
 }

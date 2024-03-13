@@ -19,4 +19,9 @@ public class MySqlUpdateTravelSelfOqlTest extends AbstractUpdateTravelSelfRepoTe
         super.testUpdateTravelById();
     }
 
+    @Test
+    @Override
+    public void testUpdateTravelByIdVars() {
+        super.testUpdateTravelByIdVars();
+    }
 }
