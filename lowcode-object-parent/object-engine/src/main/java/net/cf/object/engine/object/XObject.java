@@ -25,11 +25,6 @@ public interface XObject<F extends XField> {
     String getName();
 
     /**
-     * 是否多租户模型
-     *
-     * @return boolean isMultiTenant(); */
-
-    /**
      * 获取模型的字段列表
      *
      * @return
@@ -50,13 +45,6 @@ public interface XObject<F extends XField> {
      * @return
      */
     F getPrimaryField();
-
-    /**
-     * 是否由驱动生成的主键
-     *
-     * @return
-     */
-    boolean isAutoPrimaryField();
 
     /**
      * 校验函数

@@ -10,7 +10,7 @@ public class Column {
     private final DataType dataType;
     private final String defaultValue;
     private final boolean nullable;
-    private final boolean auto;
+    private boolean auto;
 
     public Column(String columnName, DataType dataType) {
         this(columnName, dataType, false);
@@ -55,6 +55,10 @@ public class Column {
 
     public boolean isAuto() {
         return auto;
+    }
+
+    public void setAuto(boolean auto) {
+        this.auto = auto;
     }
 
     public String toString() {

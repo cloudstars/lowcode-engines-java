@@ -72,16 +72,6 @@ public class FieldDef {
      */
     private List<FieldPropertyDef> properties;
 
-    /**
-     * 字段的子属定义映射
-     */
-    // private Map<String, FieldPropertyDef> propertyMap;
-
-    /**
-     * 字段的个性化属性的值映射
-     */
-    //private final Map<String, Object> attrValueMap = new HashMap<>();
-
     @JSONCreator
     public FieldDef(String type) {
         this.type = type;
@@ -179,32 +169,4 @@ public class FieldDef {
         this.properties = properties;
     }
 
-    /*public void setProperties(List<FieldPropertyDef> properties) {
-        this.properties = properties;
-        if (properties == null) {
-            this.propertyMap = null;
-        } else {
-            this.propertyMap = new HashMap<>();
-            for (FieldPropertyDef property : properties) {
-                this.propertyMap.put(property.getCode(), property);
-            }
-        }
-    }*/
-
-    /*public void setAttributes(List<FieldAttribute> attributes) {
-        for (FieldAttribute attribute : attributes) {
-            String attrCode = attribute.getCode();
-            Object attrValue = attribute.getValue();
-            this.attrValueMap.put(attrCode, attrValue);
-        }
-    }*/
-
-    /**
-     * 获取字段的个性化属性值映射
-     *
-     * @return
-     */
-    /*public Map<String, Object> getAttrValueMap() {
-        return attrValueMap;
-    }*/
 }

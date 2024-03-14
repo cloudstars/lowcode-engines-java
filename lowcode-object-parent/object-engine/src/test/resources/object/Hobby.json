@@ -9,8 +9,8 @@
       "name": "记录ID",
       "code": "recordId",
       "columnName": "RECORD_ID",
-      "dataType": "String",
-      "dataLength": 36
+      "dataType": "Number",
+      "auto": true
     },
     {
       "type": "Text",
@@ -23,8 +23,8 @@
     {
       "type": "Text",
       "name": "描述",
-      "code": "desc",
-      "columnName": "DESC",
+      "code": "descr",
+      "columnName": "DESCR",
       "dataType": "String",
       "dataLength": 1024
     },

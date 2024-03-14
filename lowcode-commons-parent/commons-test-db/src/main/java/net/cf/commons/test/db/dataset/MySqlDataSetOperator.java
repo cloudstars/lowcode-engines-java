@@ -30,17 +30,23 @@ public class MySqlDataSetOperator implements IDataSetOperator {
         Column[] columns = tableMetaData.getColumns();
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("insert into ").append(tableMetaData.getTableName()).append(" (");
-        for (int i = 0, l = columns.length; i < l; i++) {
+        for (int i = 0, j = 0, l = columns.length; i < l; i++) {
             Column column = columns[i];
-            if (i > 0) {
+            if (column.isAuto()) {
+                continue;
+            }
+            if (j++ > 0) {
                 sqlBuilder.append(", ");
             }
             sqlBuilder.append(column.getColumnName());
         }
         sqlBuilder.append(") values (");
-        for (int i = 0, l = columns.length; i < l; i++) {
+        for (int i = 0, j = 0, l = columns.length; i < l; i++) {
             Column column = columns[i];
-            if (i > 0) {
+            if (column.isAuto()) {
+                continue;
+            }
+            if (j++ > 0) {
                 sqlBuilder.append(", ");
             }
             sqlBuilder.append(":" + column.getColumnName());
@@ -63,6 +69,9 @@ public class MySqlDataSetOperator implements IDataSetOperator {
             Map<String, Object> batchValue = new HashMap<>();
             for (int j = 0; j < cl; j++) {
                 Column column = columns[j];
+                if (column.isAuto()) {
+                    continue;
+                }
                 String columnName = column.getColumnName();
                 Object value = table.getValue(i, columnName);
                 batchValue.put(columnName, value);

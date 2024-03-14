@@ -76,6 +76,7 @@ public abstract class AbstractUpdateTravelSelfRepoTest extends AbstractOqlRepoTe
             OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(oqlInfo.oql);
             ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
             Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("applyName", "测试申请单1（变更）");
             dataMap.put("applyId", "434743DSS-FEL3232-323KLFJFDS-323FDSD");
             this.engine.modify(oqlStmt, dataMap);
         }

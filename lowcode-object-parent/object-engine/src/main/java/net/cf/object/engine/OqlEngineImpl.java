@@ -67,8 +67,10 @@ public class OqlEngineImpl implements OqlEngine {
      * @return
      */
     private Map<String, Object> convertParamMap(OqlObjectSource objectSource, Map<String, Object> paramMap) {
-        if (paramMap == null || paramMap.isEmpty()) {
+        if (paramMap == null) {
             return Collections.emptyMap();
+        } else if (paramMap.size() == 0) {
+            return paramMap;
         }
 
         if (objectSource instanceof OqlExprObjectSource) {
@@ -119,11 +121,14 @@ public class OqlEngineImpl implements OqlEngine {
             targetMap = new HashMap<>();
             for (SqlSelectItem selectItem : selectItems) {
                 SqlExpr expr = selectItem.getExpr();
+                String targetKey = null;
+                Object targetValue = null;
                 if (expr instanceof SqlIdentifierExpr) {
                     String columnName = ((SqlIdentifierExpr) expr).getResolvedColumn();
                     String fieldName = ((SqlIdentifierExpr) expr).getName();
                     if (resultMap.containsKey(columnName)) {
-                        targetMap.put(fieldName, resultMap.get(columnName));
+                        targetKey = fieldName;
+                        targetValue = resultMap.get(columnName);
                     } else {
                         logger.warn("未找到字段{}对应的列{}的数据！", fieldName, columnName);
                     }
@@ -132,8 +137,11 @@ public class OqlEngineImpl implements OqlEngine {
                 }
 
                 String alias = selectItem.getAlias();
-                if (alias != null) {
-
+                if (targetKey != null) {
+                    if (alias != null) {
+                        targetKey = alias;
+                    }
+                    targetMap.put(targetKey, targetValue);
                 }
             }
         } else {
@@ -163,14 +171,22 @@ public class OqlEngineImpl implements OqlEngine {
 
 
         // 根据object的定义校验数据
+        // TODO
 
         SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt);
-        int effectedRows = this.repository.insert(sqlStmt);
+        Map<String, Object> cDataMap = this.convertParamMap(stmt.getObjectSource(), dataMap);
+        int effectedRows = this.repository.insert(sqlStmt, cDataMap);
         if (effectedRows == 0) {
             logger.warn("未成功创建记录，OQL：", stmt);
         }
 
-        return "TODO";
+        Object recordId = null;
+        XField primaryField = stmt.getObjectSource().getResolvedObject().getPrimaryField();
+        if (primaryField != null) {
+            recordId = dataMap.get(primaryField.getColumnName());
+        }
+
+        return recordId != null ? recordId.toString() : null;
     }
 
 

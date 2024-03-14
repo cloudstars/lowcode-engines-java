@@ -8,7 +8,10 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +38,18 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     @Override
     public int insert(SqlInsertStatement statement, Map<String, Object> paramMap) {
         String sql = SqlUtils.toSqlText(statement);
-        // TODO 判断是否存在自增主键
-        int effectedRows = this.jdbcTemplate.update(sql, paramMap);
+        String autoPrimaryKey = statement.getAutoGenColumn();
+        int effectedRows;
+        if (autoPrimaryKey != null && autoPrimaryKey.length() > 0) {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            MapSqlParameterSource parameterSource = new MapSqlParameterSource(paramMap);
+            effectedRows = this.jdbcTemplate.update(sql, parameterSource, keyHolder);
+            long autoId = keyHolder.getKey().longValue();
+            paramMap.put(autoPrimaryKey, autoId);
+        } else {
+            effectedRows = this.jdbcTemplate.update(sql, paramMap);
+        }
+
         logger.info("数据插入成功，影响行数：{}", effectedRows);
         return effectedRows;
     }

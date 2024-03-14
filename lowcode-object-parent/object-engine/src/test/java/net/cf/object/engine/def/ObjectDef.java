@@ -22,11 +22,6 @@ public class ObjectDef {
     private String code;
 
     /**
-     * 是否自动生成的
-     */
-    private boolean auto;
-
-    /**
      * 表名称
      */
     private String tableName;
@@ -60,14 +55,6 @@ public class ObjectDef {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public boolean isAuto() {
-        return auto;
-    }
-
-    public void setAuto(boolean auto) {
-        this.auto = auto;
     }
 
     public String getTableName() {

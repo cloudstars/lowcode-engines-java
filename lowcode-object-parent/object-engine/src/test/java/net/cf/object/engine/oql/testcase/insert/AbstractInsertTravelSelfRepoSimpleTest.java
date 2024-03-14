@@ -88,8 +88,7 @@ public abstract class AbstractInsertTravelSelfRepoSimpleTest extends AbstractOql
             String selectOql = "select * from Travel";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(selectOql);
             ObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
-            SqlSelectStatement selectSqlStmt = OqlStatementUtils.toSqlSelect(selectOqlStmt);
-            List<Map<String, Object>> dataList = this.repository.selectList(selectSqlStmt);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
         }
     }

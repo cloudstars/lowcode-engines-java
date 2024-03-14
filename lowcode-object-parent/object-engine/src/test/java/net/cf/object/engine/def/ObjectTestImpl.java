@@ -61,11 +61,6 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
     }
 
     @Override
-    public boolean isAutoPrimaryField() {
-        return this.objectDef.isAuto();
-    }
-
-    @Override
     public List<FieldTestImpl> getFields() {
         return this.fields;
     }

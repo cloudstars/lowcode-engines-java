@@ -12,6 +12,11 @@ public class SqlInsertInto extends AbstractSqlStatementImpl implements SqlReplac
 
     protected SqlExprTableSource tableSource;
 
+    /**
+     * 自动生成的主键
+     */
+    protected String autoGenColumn;
+
     protected final List<SqlExpr> columns = new ArrayList();
 
     protected final List<SqlInsertStatement.ValuesClause> valuesList = new ArrayList();
@@ -51,6 +56,15 @@ public class SqlInsertInto extends AbstractSqlStatementImpl implements SqlReplac
         this.columns.add(index, column);
         this.addChild(column);
     }
+
+    public String getAutoGenColumn() {
+        return autoGenColumn;
+    }
+
+    public void setAutoGenColumn(String autoGenColumn) {
+        this.autoGenColumn = autoGenColumn;
+    }
+
 
     public List<SqlInsertStatement.ValuesClause> getValuesList() {
         return valuesList;

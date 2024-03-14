@@ -21,6 +21,17 @@ public class SqlInsertStatementBuilder extends AbstractSqlStatementBuilder<OqlIn
     public SqlInsertStatementBuilder() {
     }
 
+    /**
+     * 设置自动生成的主键
+     *
+     * @param autoGenColumn
+     * @return
+     */
+    public SqlInsertStatementBuilder setAutoGenColumn(String autoGenColumn) {
+        this.insertInto.setAutoGenColumn(autoGenColumn);
+        return this;
+    }
+
     public SqlInsertStatementBuilder tableSource(SqlExprTableSource tableSource) {
         insertInto.setTableSource(tableSource);
         return this;

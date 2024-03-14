@@ -58,6 +58,7 @@ public final class OqlUpdateAstVisitor extends OqlAstVisitorAdaptor {
         for (SqlUpdateSetItem setItem : setItems) {
             SqlUpdateSetItem sqlSetItem = setItem.cloneMe();
             sqlSetItem.setColumn(this.buildSqlExpr(setItem.getColumn()));
+            sqlSetItem.setValue(this.buildSqlExpr(setItem.getValue()));
             this.builder.appendSetItem(sqlSetItem);
         }
     }
