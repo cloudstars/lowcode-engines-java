@@ -78,7 +78,12 @@ public class OqlEngineImpl implements OqlEngine {
             Map<String, Object> targetParamMap = new HashMap<>();
             paramMap.forEach((k, v) -> {
                 XField field = object.getField(k);
-                targetParamMap.put(field.getColumnName(), v);
+                if (field != null) {
+                    // 可能存在 in (#{ids}) 这种不在field中的变量
+                    targetParamMap.put(field.getColumnName(), v);
+                } else {
+                    targetParamMap.put(k, v);
+                }
             });
             return targetParamMap;
         } else {
@@ -153,22 +158,21 @@ public class OqlEngineImpl implements OqlEngine {
 
 
     @Override
-    public String create(OqlInsertStatement stmt) {
+    public int create(OqlInsertStatement stmt) {
         SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt);
         int effectedRows = this.repository.insert(sqlStmt);
         if (effectedRows == 0) {
             logger.warn("未成功创建记录，OQL：", stmt);
         }
 
-        return "TODO";
+        return effectedRows;
     }
 
     @Override
-    public String create(OqlInsertStatement stmt, Map<String, Object> dataMap) {
+    public int create(OqlInsertStatement stmt, Map<String, Object> dataMap) {
         // 语法检查
         InsertStatementCheckOqlAstVisitor checkVisitor = new InsertStatementCheckOqlAstVisitor();
         stmt.accept(checkVisitor);
-
 
         // 根据object的定义校验数据
         // TODO
@@ -180,55 +184,65 @@ public class OqlEngineImpl implements OqlEngine {
             logger.warn("未成功创建记录，OQL：", stmt);
         }
 
-        Object recordId = null;
         XField primaryField = stmt.getObjectSource().getResolvedObject().getPrimaryField();
         if (primaryField != null) {
-            recordId = dataMap.get(primaryField.getColumnName());
+            String pfcn = primaryField.getColumnName();
+            Object recordId = dataMap.get(pfcn);
+            if (recordId == null) {
+                logger.warn("没有生成记录ID");
+            } else {
+                dataMap.remove(pfcn);
+                dataMap.put(primaryField.getCode(), recordId);
+            }
         }
 
-        return recordId != null ? recordId.toString() : null;
+        return effectedRows;
     }
 
 
     @Override
-    public List<String> createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps) {
-        return null;
+    public int[] createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps) {
+        return new int[0];
     }
 
     @Override
-    public void modify(OqlUpdateStatement stmt) {
+    public int modify(OqlUpdateStatement stmt) {
         SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(stmt);
         this.repository.update(sqlStmt);
+        return 0;
     }
 
     @Override
-    public void modify(OqlUpdateStatement stmt, Map<String, Object> dataMap) {
+    public int modify(OqlUpdateStatement stmt, Map<String, Object> dataMap) {
         SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(stmt);
         Map<String, Object> cDataMap = this.convertParamMap(stmt.getObjectSource(), dataMap);
         this.repository.update(sqlStmt, cDataMap);
+        return 0;
     }
 
     @Override
-    public void modifyList(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps) {
-
+    public int[] modifyList(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps) {
+        return new int[0];
     }
 
     @Override
-    public void remove(OqlDeleteStatement stmt) {
+    public int remove(OqlDeleteStatement stmt) {
         SqlDeleteStatement sqlStmt = OqlStatementUtils.toSqlDelete(stmt);
         this.repository.delete(sqlStmt);
+        return 0;
     }
 
     @Override
-    public void remove(OqlDeleteStatement stmt, Map<String, Object> dataMap) {
+    public int remove(OqlDeleteStatement stmt, Map<String, Object> dataMap) {
         SqlDeleteStatement sqlStmt = OqlStatementUtils.toSqlDelete(stmt);
         Map<String, Object> cDataMap = this.convertParamMap(stmt.getFrom(), dataMap);
         this.repository.delete(sqlStmt, cDataMap);
+        return 0;
     }
 
     @Override
-    public void removeList(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps) {
-
+    public int[] removeList(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps) {
+        return new int[0];
     }
 
 }

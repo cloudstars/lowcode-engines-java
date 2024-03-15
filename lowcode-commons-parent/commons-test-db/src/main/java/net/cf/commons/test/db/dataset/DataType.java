@@ -13,6 +13,5 @@ public enum DataType {
     DATE,
     TIME,
     BOOLEAN,
-    OBJECT,
-    AUTO_ID;
+    OBJECT;
 }

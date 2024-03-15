@@ -55,7 +55,7 @@ public interface OqlEngine {
      * @param statement
      * @return 影响行数
      */
-    String create(OqlInsertStatement statement);
+    int create(OqlInsertStatement statement);
 
     /**
      * 创建记录
@@ -64,64 +64,67 @@ public interface OqlEngine {
      * @param dataMap
      * @return
      */
-    String create(OqlInsertStatement statement, Map<String, Object> dataMap);
+    int create(OqlInsertStatement statement, Map<String, Object> dataMap);
 
     /**
      * 批量创建记录
      *
      * @param statement
      * @param dataMaps
-     * @return
+     * @return 影响行数
      */
-    List<String> createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps);
+    int[] createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps);
 
     /**
      * 更新记录
      *
      * @param statement
-     * @return
+     * @return 影响行数
      */
-    void modify(OqlUpdateStatement statement);
+    int modify(OqlUpdateStatement statement);
 
     /**
      * 更新记录
      *
      * @param statement
      * @param dataMap
-     * @return
+     * @return 影响行数
      */
-    void modify(OqlUpdateStatement statement, Map<String, Object> dataMap);
+    int modify(OqlUpdateStatement statement, Map<String, Object> dataMap);
 
     /**
      * 批量更新记录
      *
      * @param statement
      * @param dataMaps
-     * @return
+     * @return 影响行数
      */
-    void modifyList(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps);
+    int[] modifyList(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps);
 
     /**
      * 移除记录
      *
      * @param statement
+     * @return 影响行数
      */
-    void remove(OqlDeleteStatement statement);
+    int remove(OqlDeleteStatement statement);
 
     /**
      * 移除记录
      *
      * @param statement
      * @param dataMap
+     * @return 影响行数
      */
-    void remove(OqlDeleteStatement statement, Map<String, Object> dataMap);
+    int remove(OqlDeleteStatement statement, Map<String, Object> dataMap);
 
     /**
      * 批量移除记录
      *
      * @param statement
      * @param dataMaps
+     * @return 影响行数
      */
-    void removeList(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps);
+    int[] removeList(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps);
 
 }

@@ -1,0 +1,34 @@
+{
+  "name": " 员工表",
+  "code": "STAFF",
+  "columns": [
+    {
+      "name": "员工ID",
+      "code": "STA_ID",
+      "dataType": "Integer",
+      "autoGen": true
+    },
+    {
+      "name": "员工姓名",
+      "code": "STA_NAME",
+      "dataType": "String"
+    },
+    {
+      "name": "举趣爱好",
+      "code": "HOBBIES",
+      "dataType": "String"
+    }
+  ],
+  "valuesList": [
+    {
+      "NAME": "抽烟",
+      "DESCR": "喜欢叼个大烟",
+      "CREATOR_KEY": "zhangsan"
+    },
+    {
+      "NAME": "喝酒",
+      "DESCR": "喜欢喝老酒一",
+      "CREATOR_KEY": "lisi"
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 {
   "name": "测试插入兴趣爱好简单案例",
   "code": "InsertHobby",
-  "desc": "测试点：返回自动生成的ID",
+  "desc": "测试点：无",
   "oqls": [
     {
       "name": "插入兴趣爱好",
       "code": "InsertHobby",
-      "oql": "insert into Hobby(name, descr) values ('抽烟', '喜欢抽烟')",
-      "sql": "insert into HOBBY(NAME, DESCR) values ('抽烟', '喜欢抽烟')"
+      "oql": "insert into Hobby(code, name, descr) values ('DJ', '打架', '喜欢打架')",
+      "sql": "insert into HOBBY(CODE, NAME, DESCR) values ('DJ', '打架', '喜欢打架')"
     }
   ]
 }

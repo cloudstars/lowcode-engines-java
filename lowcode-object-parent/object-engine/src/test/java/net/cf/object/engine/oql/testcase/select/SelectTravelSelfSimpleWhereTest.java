@@ -17,6 +17,10 @@ public interface SelectTravelSelfSimpleWhereTest {
 
     String OQL_SELECT_TRAVEL_LIST_VARS = "SelectTravelListVars";
 
+    String OQL_SELECT_TRAVEL_IN_LIST = "SelectTravelInList";
+
+    String OQL_SELECT_TRAVEL_IN_LIST_VARS = "SelectTravelInListVars";
+
     /**
      * 测试查询出差记录
      *
@@ -40,5 +44,17 @@ public interface SelectTravelSelfSimpleWhereTest {
      *
      */
     void testSelectTravelListVars();
+
+    /**
+     * 测试查询出差In列表
+     *
+     */
+    void testSelectTravelInList();
+
+    /**
+     * 测试查询出差In列表（带变量）
+     *
+     */
+    void testSelectTravelInListVars();
 
 }

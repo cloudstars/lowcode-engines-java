@@ -55,8 +55,9 @@ public abstract class AbstractInsertTravelSelfRepoSimpleTest extends AbstractOql
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(oqlInfo.oql);
             ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
-            String recordId = this.engine.create(oqlStmt);
-            assert (recordId != null);
+            int effectedRows = this.engine.create(oqlStmt);
+            assert (effectedRows == 1);
+
         }
 
         {
@@ -79,13 +80,15 @@ public abstract class AbstractInsertTravelSelfRepoSimpleTest extends AbstractOql
             Map<String, Object> dataMap = new HashMap<>();
             dataMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
             dataMap.put("applyName", "测试申请单的名称");
-            String recordId = this.engine.create(oqlStmt, dataMap);
+            int effectedRows = this.engine.create(oqlStmt, dataMap);
+            assert (effectedRows == 1);
+            Object recordId = dataMap.get("recordId");
             assert (recordId != null);
         }
 
         {
             // 重新查出来作断言
-            String selectOql = "select * from Travel";
+            String selectOql = "select applyId, applyName from Travel";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(selectOql);
             ObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
             List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);

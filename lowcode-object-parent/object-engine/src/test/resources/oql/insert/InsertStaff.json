@@ -1,0 +1,13 @@
+{
+  "name": "测试插入员工简单案例",
+  "code": "InsertStaff",
+  "desc": "测试点：自动生成的主键字段",
+  "oqls": [
+    {
+      "name": "插入员工",
+      "code": "InsertStaff",
+      "oql": "insert into Staff(staffCode, staffName, hobbies) values ('001', '员工1', [\"cg\", \"tw\"])",
+      "sql": "insert into STAFF(STA_CODE, STA_NAME, HOBBIES) values ('001', '员工1', [\"cg\", \"tw\"])"
+    }
+  ]
+}

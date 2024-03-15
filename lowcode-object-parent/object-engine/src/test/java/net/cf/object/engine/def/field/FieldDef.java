@@ -20,7 +20,7 @@ public class FieldDef {
     /**
      * 是否自动生成的ID
      */
-    private boolean isAuto;
+    private boolean autoGen;
 
     /**
      * 名称
@@ -81,12 +81,12 @@ public class FieldDef {
         return type;
     }
 
-    public boolean isAuto() {
-        return isAuto;
+    public boolean isAutoGen() {
+        return autoGen;
     }
 
-    public void setAuto(boolean auto) {
-        isAuto = auto;
+    public void setAutoGen(boolean autoGen) {
+        this.autoGen = autoGen;
     }
 
     public String getName() {

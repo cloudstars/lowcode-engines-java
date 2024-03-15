@@ -1,16 +1,15 @@
 {
   "name": "兴趣爱好",
   "code": "Hobby",
-  "primaryFieldCode": "recordId",
+  "primaryFieldCode": "code",
   "tableName": "HOBBY",
   "fields": [
     {
-      "type": "AutoId",
-      "name": "记录ID",
-      "code": "recordId",
-      "columnName": "RECORD_ID",
-      "dataType": "Number",
-      "auto": true
+      "type": "Text",
+      "name": "爱好代码",
+      "code": "code",
+      "columnName": "CODE",
+      "dataType": "String"
     },
     {
       "type": "Text",

@@ -26,6 +26,18 @@
       "code": "SelectTravelListVars",
       "oql": "select applyId, applyName from Travel where applyId = #{applyId}",
       "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID = #{APPLY_ID}"
+    },
+    {
+      "name": "查询出差列表-IN",
+      "code": "SelectTravelInList",
+      "oql": "select applyId, applyName from Travel where applyId in ('434743DSS-FEL3232-323KLFJFDS-323FDSD', '534743DSS-FEL2232-323KLFJFDS-323FDSD')",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID in ('434743DSS-FEL3232-323KLFJFDS-323FDSD', '534743DSS-FEL2232-323KLFJFDS-323FDSD')"
+    },
+    {
+      "name": "查询出差列表-IN（带变量）",
+      "code": "SelectTravelInListVars",
+      "oql": "select applyId, applyName from Travel where applyId in (#{applyIds})",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID in (#{applyIds})"
     }
   ]
 }

@@ -7,6 +7,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.parser.Token;
 
@@ -312,7 +313,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             }
             SqlExpr item = items.get(i);
             if (item instanceof SqlCharExpr) {
-                this.print("\"" + ((SqlCharExpr) item).getValue() + "\": ");
+                this.print("\"" + ((SqlCharExpr) item).getValue() + "\"");
             } else {
                 item.accept(this);
             }
@@ -340,6 +341,14 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             this.print(")");
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlInListExpr x) {
+        x.getLeft().accept(this);
+        this.print(this.uppercase ? " IN " : " in ");
+        this.printParenthesesAndAcceptList(x.getTargetList(), ", ");
         return false;
     }
 

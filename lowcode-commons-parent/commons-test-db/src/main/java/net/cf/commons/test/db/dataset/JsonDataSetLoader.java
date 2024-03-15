@@ -49,8 +49,8 @@ public final class JsonDataSetLoader {
                     dataType = DataType.STRING.name();
                 }
                 Column column = new Column(columnName, DataType.valueOf(dataType.toUpperCase()));
-                if (columnJson.containsKey("auto")) {
-                    column.setAuto(columnJson.getBoolean("auto"));
+                if (columnJson.containsKey("autoGen")) {
+                    column.setAuto(columnJson.getBoolean("autoGen"));
                 }
                 columns[j] = column;
             }

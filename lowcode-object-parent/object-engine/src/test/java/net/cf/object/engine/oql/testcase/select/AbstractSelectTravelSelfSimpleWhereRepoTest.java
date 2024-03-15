@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,8 @@ public abstract class AbstractSelectTravelSelfSimpleWhereRepoTest
         extends AbstractOqlRepoTest
         implements SelectTravelSelfSimpleWhereTest {
 
-    private static final String RECORD_ID = "434743DSS-FEL3232-323KLFJFDS-323FDSD";
+    private static final String RECORD_ID1 = "434743DSS-FEL3232-323KLFJFDS-323FDSD";
+    private static final String RECORD_ID2 = "534743DSS-FEL2232-323KLFJFDS-323FDSD";
 
     @Resource
     private OqlEngine engine;
@@ -60,7 +62,7 @@ public abstract class AbstractSelectTravelSelfSimpleWhereRepoTest
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(oqlInfo.oql);
         ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("applyId", RECORD_ID);
+        paramMap.put("applyId", RECORD_ID1);
         Map<String, Object> data = this.engine.queryOne(oqlStmt, paramMap);
         assert (data != null && "434743DSS-FEL3232-323KLFJFDS-323FDSD".equals(data.get("applyId")));
     }
@@ -83,8 +85,31 @@ public abstract class AbstractSelectTravelSelfSimpleWhereRepoTest
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(oqlInfo.oql);
         ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("applyId", RECORD_ID);
+        paramMap.put("applyId", RECORD_ID1);
         List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt, paramMap);
         assert (dataList != null && dataList.size() == 1);
+    }
+
+    @Override
+    public void testSelectTravelInList() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_IN_LIST);
+        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(oqlInfo.oql);
+        ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
+        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
+        assert (dataList != null && dataList.size() == 2);
+        for (Map<String, Object> data : dataList) {
+            assert (data.containsKey("applyId") && data.containsKey("applyName"));
+        }
+    }
+
+    @Override
+    public void testSelectTravelInListVars() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_IN_LIST_VARS);
+        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(oqlInfo.oql);
+        ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("applyIds", Arrays.asList(RECORD_ID1, RECORD_ID2));
+        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt, paramMap);
+        assert (dataList != null && dataList.size() == 2);
     }
 }

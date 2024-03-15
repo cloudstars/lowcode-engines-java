@@ -40,6 +40,14 @@ public class ObjectRefFieldTypeImpl implements XFieldType {
         }
 
         {
+            AttributeDescriptor refObjectDescr = new AttributeDescriptor();
+            refObjectDescr.setName("引用的模型");
+            refObjectDescr.setCode("refObjectKey");
+            refObjectDescr.setDataType(DataType.NUMBER);
+            descriptors.add(refObjectDescr);
+        }
+
+        {
             AttributeDescriptor isMultiLookupRefDescr = new AttributeDescriptor();
             isMultiLookupRefDescr.setName("是否一对多引用");
             isMultiLookupRefDescr.setCode("isMultiRef");

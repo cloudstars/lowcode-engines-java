@@ -36,4 +36,16 @@ public class MySqlSelectTravelSelfSimpleWhereOqlTest extends AbstractSelectTrave
     public void testSelectTravelListVars() {
         super.testSelectTravelListVars();
     }
+
+    @Test
+    @Override
+    public void testSelectTravelInList() {
+        super.testSelectTravelInList();
+    }
+
+    @Test
+    @Override
+    public void testSelectTravelInListVars() {
+        super.testSelectTravelInListVars();
+    }
 }

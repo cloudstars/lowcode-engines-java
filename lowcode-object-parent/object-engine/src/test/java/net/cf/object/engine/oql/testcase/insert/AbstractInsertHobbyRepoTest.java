@@ -48,25 +48,25 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
 
     @Override
     public void testInsertHobby() {
-        String recordId;
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_HOBBY);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(oqlInfo.oql);
             ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
-            Map<String, Object> dataMap = new HashMap<>();
-            recordId = this.engine.create(oqlStmt, dataMap);
-            assert (recordId != null);
+            int effectedRows = this.engine.create(oqlStmt);
+            assert (effectedRows == 1);
         }
 
         {
             // 重新查出来作断言
-            String selectOql = "select recordId, name, descr from Hobby where recordId = #{recordId}";
+            String selectOql = "select code, name, descr from Hobby where code = #{code}";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(selectOql);
             ObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
             Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("recordId", recordId);
+            paramMap.put("code", "DJ");
             Map<String, Object> data = this.engine.queryOne(selectOqlStmt, paramMap);
-            assert (data != null && data.get("recordId").equals(recordId));
+            assert (data != null);
+            Object dbRecordId = data.get("code");
+            assert (dbRecordId != null && "DJ".equals(dbRecordId.toString()));
         }
     }
 

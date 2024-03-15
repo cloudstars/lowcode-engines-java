@@ -45,7 +45,7 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
             MapSqlParameterSource parameterSource = new MapSqlParameterSource(paramMap);
             effectedRows = this.jdbcTemplate.update(sql, parameterSource, keyHolder);
             long autoId = keyHolder.getKey().longValue();
-            paramMap.put(autoPrimaryKey, autoId);
+            paramMap.put(autoPrimaryKey, String.valueOf(autoId));
         } else {
             effectedRows = this.jdbcTemplate.update(sql, paramMap);
         }
@@ -121,7 +121,7 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public List<Map<String, Object>> selectList(SqlSelectStatement statement, Map<String, Object> paramMap) {
-        String sql = SqlUtils.toSqlText(statement);
+        String sql = SqlUtils.toSqlText(statement, paramMap);
         return jdbcTemplate.queryForList(sql, paramMap);
     }
 }

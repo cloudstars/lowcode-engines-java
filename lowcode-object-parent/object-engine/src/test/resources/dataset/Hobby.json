@@ -3,10 +3,9 @@
   "code": "HOBBY",
   "columns": [
     {
-      "name": "记录ID",
-      "code": "RECORD_ID",
-      "dataType": "int",
-      "auto": true
+      "name": "爱好代码",
+      "code": "CODE",
+      "dataType": "String"
     },
     {
       "name": "名称",
@@ -26,11 +25,13 @@
   ],
   "valuesList": [
     {
+      "CODE": "CY",
       "NAME": "抽烟",
       "DESCR": "喜欢叼个大烟",
       "CREATOR_KEY": "zhangsan"
     },
     {
+      "CODE": "HJ",
       "NAME": "喝酒",
       "DESCR": "喜欢喝老酒一",
       "CREATOR_KEY": "lisi"

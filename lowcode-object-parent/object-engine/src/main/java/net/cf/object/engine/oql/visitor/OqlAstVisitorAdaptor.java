@@ -4,6 +4,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
+import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
@@ -13,6 +14,8 @@ import net.cf.object.engine.object.XFieldProperty;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
+
+import java.util.List;
 
 /**
  * AST访问适配器
@@ -85,6 +88,8 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
             return this.buildSqlExpr((SqlVariantRefExpr) x);
         } else if (clazz == SqlLikeOpExpr.class) {
             return this.buildSqlExpr((SqlLikeOpExpr) x);
+        } else if (clazz == SqlInListExpr.class) {
+            return this.buildSqlExpr((SqlInListExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.buildSqlExpr((SqlBinaryOpExpr) x);
         } else if (clazz == SqlBinaryOpExprGroup.class) {
@@ -140,8 +145,11 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
         SqlVariantRefExpr sqlX = x.cloneMe();
         String fieldName = x.getVarName();
         XField field = this.resolvedObject.getField(fieldName);
-        String columnName = field.getColumnName();
-        sqlX.setVarName(columnName);
+        if (field != null) {
+            // 可能存在in (#{ids}) 这种标识符不存在于字段中
+            String columnName = field.getColumnName();
+            sqlX.setVarName(columnName);
+        }
         return sqlX;
     }
 
@@ -157,6 +165,22 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
         SqlLikeOpExpr sqlX = x.cloneMe();
         sqlX.setLeft(this.buildSqlExpr(x.getLeft()));
         sqlX.setRight(this.buildSqlExpr(x.getRight()));
+        return sqlX;
+    }
+
+    /**
+     * 构建in表达式
+     *
+     * @param x
+     * @return
+     */
+    private SqlInListExpr buildSqlExpr(final SqlInListExpr x) {
+        SqlInListExpr sqlX = new SqlInListExpr();
+        sqlX.setLeft(this.buildSqlExpr(x.getLeft()));
+        List<SqlExpr> targetList = x.getTargetList();
+        for (SqlExpr targetItem : targetList) {
+            sqlX.addTarget(this.buildSqlExpr(targetItem));
+        }
         return sqlX;
     }
 

@@ -5,10 +5,19 @@
   "tableName": "STAFF",
   "fields": [
     {
+      "type": "AutoId",
+      "name": "员工ID",
+      "code": "staffId",
+      "columnName": "STA_ID",
+      "dataType": "String",
+      "dataLength": 36,
+      "autoGen": true
+    },
+    {
       "type": "Text",
       "name": "员工编号",
-      "code": "staffKey",
-      "columnName": "STA_KEY",
+      "code": "staffCode",
+      "columnName": "STA_CODE",
       "dataType": "String",
       "dataLength": 20
     },
@@ -69,6 +78,17 @@
           "value": "LZ"
         }
       ]
+    },
+    {
+      "type": "ObjectRef",
+      "name": "兴趣爱友",
+      "code": "hobbies",
+      "columnName": "HOBBIES",
+      "isCollection": true,
+      "dataType": "Number",
+      "refType": "LOOKUP",
+      "refObjectKey": "Hobby",
+      "isMultiRef": true
     },
     {
       "type": "User",

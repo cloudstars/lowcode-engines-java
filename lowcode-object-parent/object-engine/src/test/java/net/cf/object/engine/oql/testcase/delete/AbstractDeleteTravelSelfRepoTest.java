@@ -3,14 +3,12 @@ package net.cf.object.engine.oql.testcase.delete;
 import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
 import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
-import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.ObjectTestUtils;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.oql.util.OqlUtils;
-import net.cf.object.engine.sqlbuilder.OqlStatementUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,8 +63,7 @@ public abstract class AbstractDeleteTravelSelfRepoTest extends AbstractOqlRepoTe
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(selectOql);
             ObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
-            SqlSelectStatement selectSqlStmt = OqlStatementUtils.toSqlSelect(selectOqlStmt);
-            List<Map<String, Object>> dataList = this.repository.selectList(selectSqlStmt);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
         }
     }
