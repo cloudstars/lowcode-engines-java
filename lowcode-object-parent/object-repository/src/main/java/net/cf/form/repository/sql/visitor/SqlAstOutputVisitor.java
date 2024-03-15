@@ -8,6 +8,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.parser.Token;
 
@@ -341,6 +342,14 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             this.print(")");
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlLikeOpExpr x) {
+        x.getLeft().accept(this);
+        this.print(this.uppercase ? " LIKE " : " like ");
+        x.getRight().accept(this);
         return false;
     }
 
