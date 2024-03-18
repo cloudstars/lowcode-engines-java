@@ -35,16 +35,18 @@ public abstract class AbstractOqlTest {
         for (int i = 0, l = oqlArray.size(); i < l; i++) {
             JSONObject oqlJson = oqlArray.getJSONObject(i);
             OqlInfo oqlInfo = new OqlInfo();
-            oqlInfo.code = oqlJson.getString("code");
+            oqlInfo.name = oqlJson.getString("name");
             oqlInfo.oql = oqlJson.getString("oql");
+            oqlInfo.realOql = oqlJson.getString("realOql");
             oqlInfo.sql = oqlJson.getString("sql");
-            this.oqlInfos.put(oqlInfo.code, oqlInfo);
+            this.oqlInfos.put(oqlInfo.name, oqlInfo);
         }
     }
 
     protected final class OqlInfo {
-        public String code;
+        public String name;
         public String oql;
+        public String realOql;
         public String sql;
     }
 

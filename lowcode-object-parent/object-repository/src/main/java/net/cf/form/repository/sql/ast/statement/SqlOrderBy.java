@@ -45,7 +45,7 @@ public final class SqlOrderBy extends AbstractSqlObjectImpl implements SqlReplac
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, this.items);
+            this.nullSafeAcceptChildren(visitor, this.items);
         }
 
         visitor.endVisit(this);

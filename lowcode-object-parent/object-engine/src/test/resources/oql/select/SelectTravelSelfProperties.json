@@ -1,0 +1,38 @@
+{
+  "desc": "测试查询出差申请本子属性的案例",
+  "name": "SelectTravelSelfProperties",
+  "desc": "测试点：测试含子属性字段的查询",
+  "oqls": [
+    {
+      "desc": "根据创建人列表（仅父属性），返回的值作为一个整体",
+      "name": "SelectTravelCreatorListById",
+      "oql": "select creator from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "realOql": "select creator(name, key) from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "select CREATOR_NAME, CREATOR_KEY from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "查询创建人列表（子属性展开），返回的值作为一个整体",
+      "name": "SelectTravelExpandCreatorListById",
+      "oql": "select creator(name, key) from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "select CREATOR_NAME, CREATOR_KEY from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "查询创建人列表（子属性单独），返回的值作为单独的两列",
+      "name": "SelectTravelSingleCreatorListById",
+      "oql": "select creator.name, creator.key from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "select CREATOR_NAME, CREATOR_KEY from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据创建人（子属性单独 ）查询出差列表",
+      "name": "SelectTravelListBySingleCreator",
+      "oql": "select applyId, applyName from Travel where creator.name = '张三' and creator.key = 'zhangsan'",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where CREATOR_NAME = '张三' and CREATOR_KEY = 'zhangsan'"
+    },
+    {
+      "desc": "根据创建人（子属性单独 ）查询出差列表（带变量）",
+      "name": "SelectTravelListBySingleCreatorVars",
+      "oql": "select applyId, applyName from Travel where creator.name = #{creator.name} and creator.key = #{creator.key}",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where CREATOR_NAME = #{creator.name} and CREATOR_KEY = #{creator.key}"
+    }
+  ]
+}

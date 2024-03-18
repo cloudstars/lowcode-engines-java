@@ -1,11 +1,11 @@
 {
-  "name": "测试插入兴趣爱好简单案例",
-  "code": "InsertHobby",
+  "desc": "测试插入兴趣爱好简单案例",
+  "name": "InsertHobby",
   "desc": "测试点：无",
   "oqls": [
     {
-      "name": "插入兴趣爱好",
-      "code": "InsertHobby",
+      "desc": "插入兴趣爱好",
+      "name": "InsertHobby",
       "oql": "insert into Hobby(code, name, descr) values ('DJ', '打架', '喜欢打架')",
       "sql": "insert into HOBBY(CODE, NAME, DESCR) values ('DJ', '打架', '喜欢打架')"
     }

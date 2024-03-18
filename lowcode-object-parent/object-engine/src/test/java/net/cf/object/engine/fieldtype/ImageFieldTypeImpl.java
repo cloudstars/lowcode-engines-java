@@ -8,12 +8,12 @@ package net.cf.object.engine.fieldtype;
 public class ImageFieldTypeImpl extends AbstractSelectableFieldTypeImpl {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "图片";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "Image";
     }
 }

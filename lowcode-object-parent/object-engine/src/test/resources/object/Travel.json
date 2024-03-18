@@ -1,70 +1,189 @@
 {
-  "name": "出差申请",
-  "code": "Travel",
-  "primaryFieldCode": "applyId",
+  "desc": "出差申请",
+  "name": "Travel",
   "tableName": "TRAVEL",
+  "primaryFieldName": "applyId",
   "fields": [
     {
       "type": "Sequence",
-      "name": "申请单ID",
-      "code": "applyId",
+      "desc": "申请单ID",
+      "name": "applyId",
       "columnName": "APPLY_ID",
       "dataType": "String",
       "dataLength": 36
     },
     {
       "type": "Text",
-      "name": "申请单名称",
-      "code": "applyName",
+      "desc": "申请单名称",
+      "name": "applyName",
       "columnName": "APPLY_NAME",
       "dataType": "String",
       "dataLength": 64
     },
     {
       "type": "Date",
-      "name": "开始日期",
-      "code": "startDate",
+      "desc": "开始日期",
+      "name": "startDate",
       "columnName": "START_DATE",
       "dataType": "Date",
       "dataFormat": "yyyy-MM-dd"
     },
     {
       "type": "Date",
-      "name": "结束日期",
-      "code": "endDate",
+      "desc": "结束日期",
+      "name": "endDate",
       "columnName": "END_DATE",
       "dataType": "Date",
       "dataFormat": "yyyy-MM-dd"
     },
     {
       "type": "Text",
-      "name": "出差事由",
-      "code": "reason",
+      "desc": "出差事由",
+      "name": "reason",
       "columnName": "REASON",
       "dataType": "String",
       "dataLength": 512
     },
     {
+      "type": "DetailObject",
+      "desc": "出差行程",
+      "name": "trips",
+      "tableName": "TRAVEL_TRIP",
+      "primaryFieldName": "tripId",
+      "masterFieldName": "applyId",
+      "fields": [
+        {
+          "type": "AutoId",
+          "desc": "行程ID",
+          "name": "tripId",
+          "columnName": "TRIP_ID",
+          "dataType": "String",
+          "dataLength": 36
+        },
+        {
+          "type": "Text",
+          "desc": "单请单ID",
+          "name": "applyId",
+          "columnName": "APPLY_ID",
+          "dataType": "String",
+          "dataLength": "36"
+        },
+        {
+          "type": "File",
+          "desc": "附件",
+          "name": "attach",
+          "columnName": "ATTACH",
+          "dataType": "Object",
+          "properties": [
+            {
+              "desc": "名称",
+              "name": "name",
+              "columnName": "NAME",
+              "dataType": "String",
+              "dataLength": 128
+            },
+            {
+              "desc": "编号",
+              "name": "key",
+              "columnName": "KEY",
+              "dataType": "String",
+              "dataLength": 36
+            }
+          ]
+        },
+        {
+          "type": "User",
+          "desc": "创建人",
+          "name": "creator",
+          "columnName": "CREATOR",
+          "dataType": "Object",
+          "defaultValue": {
+            "desc": "系统管理员",
+            "key": "admin"
+          },
+          "properties": [
+            {
+              "desc": "名称",
+              "name": "name",
+              "columnName": "NAME",
+              "dataType": "String",
+              "dataLength": 32
+            },
+            {
+              "desc": "编号",
+              "name": "key",
+              "columnName": "KEY",
+              "dataType": "String",
+              "dataLength": 20
+            }
+          ]
+        },
+        {
+          "type": "Date",
+          "desc": "更新时间",
+          "name": "createdAt",
+          "columnName": "CREATED_AT",
+          "dataType": "Date",
+          "dateFormat": "yyyy-MM-dd"
+        },
+        {
+          "type": "User",
+          "desc": "更新人",
+          "name": "modifier",
+          "columnName": "MODIFIER",
+          "dataType": "Object",
+          "defaultValue": {
+            "desc": "系统管理员",
+            "key": "admin"
+          },
+          "properties": [
+            {
+              "desc": "名称",
+              "name": "name",
+              "columnName": "NAME",
+              "dataType": "String",
+              "dataLength": 32
+            },
+            {
+              "desc": "编号",
+              "name": "key",
+              "columnName": "KEY",
+              "dataType": "String",
+              "dataLength": 20
+            }
+          ]
+        },
+        {
+          "type": "Date",
+          "desc": "更新时间",
+          "name": "modifiedAt",
+          "columnName": "MODIFIED_AT",
+          "dataType": "Date",
+          "dateFormat": "yyyy-MM-dd"
+        }
+      ]
+    },
+    {
       "type": "User",
-      "name": "创建人",
-      "code": "creator",
+      "desc": "创建人",
+      "name": "creator",
       "columnName": "CREATOR",
       "dataType": "Object",
       "defaultValue": {
-        "name": "系统管理员",
+        "desc": "系统管理员",
         "key": "admin"
       },
       "properties": [
         {
-          "name": "名称",
-          "code": "name",
+          "desc": "名称",
+          "name": "name",
           "columnName": "NAME",
           "dataType": "String",
           "dataLength": 32
         },
         {
-          "name": "编号",
-          "code": "key",
+          "desc": "编号",
+          "name": "key",
           "columnName": "KEY",
           "dataType": "String",
           "dataLength": 20
@@ -73,33 +192,33 @@
     },
     {
       "type": "Date",
-      "name": "更新时间",
-      "code": "createdAt",
+      "desc": "更新时间",
+      "name": "createdAt",
       "columnName": "CREATED_AT",
       "dataType": "Date",
       "dateFormat": "yyyy-MM-dd"
     },
     {
       "type": "User",
-      "name": "更新人",
-      "code": "modifier",
+      "desc": "更新人",
+      "name": "modifier",
       "columnName": "MODIFIER",
       "dataType": "Object",
       "defaultValue": {
-        "name": "系统管理员",
+        "desc": "系统管理员",
         "key": "admin"
       },
       "properties": [
         {
-          "name": "名称",
-          "code": "name",
+          "desc": "名称",
+          "name": "name",
           "columnName": "NAME",
           "dataType": "String",
           "dataLength": 32
         },
         {
-          "name": "编号",
-          "code": "key",
+          "desc": "编号",
+          "name": "key",
           "columnName": "KEY",
           "dataType": "String",
           "dataLength": 20
@@ -108,32 +227,32 @@
     },
     {
       "type": "Date",
-      "name": "更新时间",
-      "code": "modifiedAt",
+      "desc": "更新时间",
+      "name": "modifiedAt",
       "columnName": "MODIFIED_AT",
       "dataType": "Date",
       "dateFormat": "yyyy-MM-dd"
     },
     {
       "type": "Text",
-      "name": "拥有者",
-      "code": "ownerKey",
+      "desc": "拥有者",
+      "name": "ownerKey",
       "columName": "OWNER_KEY",
       "dataType": "String",
       "dataLength": 20
     },
     {
       "type": "Number",
-      "name": "版本号",
-      "code": "revision",
+      "desc": "版本号",
+      "name": "revision",
       "columnName": "REVISION",
       "dataType": "Number",
       "dataPrecision": 0
     },
     {
       "type": "Boolean",
-      "name": "是否已删除",
-      "code": "deleted",
+      "desc": "是否已删除",
+      "name": "deleted",
       "columnName": "DELETED",
       "dataType": "Boolean"
     }

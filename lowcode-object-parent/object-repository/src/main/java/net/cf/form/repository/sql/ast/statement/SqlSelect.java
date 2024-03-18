@@ -130,7 +130,7 @@ public class SqlSelect extends AbstractSqlObjectImpl {
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.selectItems != null) {
-                this.nullSafeAcceptChild(visitor, this.selectItems);
+                this.nullSafeAcceptChildren(visitor, this.selectItems);
             }
 
             if (this.from != null) {

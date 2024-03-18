@@ -1,0 +1,7 @@
+{
+  "desc": "测试contains的查询员工表的案例",
+  "name": "SelectContainsWhere",
+  "desc": "测试点：contains",
+  "oqls": [
+  ]
+}

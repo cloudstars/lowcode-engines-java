@@ -12,34 +12,37 @@ import java.util.List;
 public class ObjectDef {
 
     /**
+     * 描述
+     */
+    private String desc;
+
+    /**
      * 名称
      */
     private String name;
 
     /**
-     * 代码
-     */
-    private String code;
-
-    /**
-     * 表名称
+     * 表的名称
      */
     private String tableName;
 
     /**
-     * 主键字段编号
+     * 主键字段名称
      */
-    private String primaryFieldCode;
+    private String primaryFieldName;
 
     /**
      * 字段列表
      */
     private List<FieldDef> fields;
 
-    /**
-     * 字段映射表
-     */
-    // private final Map<String, FieldDef> fieldMap = new HashMap<>();
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public String getName() {
         return name;
@@ -49,28 +52,20 @@ public class ObjectDef {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getTableName() {
-        return tableName != null ? this.tableName : this.code;
+        return tableName != null ? this.tableName : this.name;
     }
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
 
-    public String getPrimaryFieldCode() {
-        return primaryFieldCode;
+    public String getPrimaryFieldName() {
+        return primaryFieldName;
     }
 
-    public void setPrimaryFieldCode(String primaryFieldCode) {
-        this.primaryFieldCode = primaryFieldCode;
+    public void setPrimaryFieldName(String primaryFieldName) {
+        this.primaryFieldName = primaryFieldName;
     }
 
     public List<FieldDef> getFields() {
@@ -79,15 +74,5 @@ public class ObjectDef {
 
     public void setFields(List<FieldDef> fields) {
         this.fields = fields;
-        /*if (this.fieldMap.size() > 0) {
-            this.fieldMap.clear();
-        }
-        for (FieldDef field : fields) {
-            this.fieldMap.put(field.getCode(), field);
-        }*/
     }
-
-    /*public Map<String, FieldDef> getFieldMap() {
-        return fieldMap;
-    }*/
 }

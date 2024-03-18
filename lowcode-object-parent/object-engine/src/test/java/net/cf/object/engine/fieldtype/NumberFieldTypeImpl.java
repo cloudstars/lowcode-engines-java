@@ -8,12 +8,12 @@ package net.cf.object.engine.fieldtype;
 public class NumberFieldTypeImpl implements XFieldType {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "数字";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "Number";
     }
 

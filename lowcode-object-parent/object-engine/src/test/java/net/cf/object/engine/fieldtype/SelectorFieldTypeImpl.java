@@ -15,12 +15,12 @@ import java.util.List;
 public class SelectorFieldTypeImpl extends AbstractSelectableFieldTypeImpl {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "选择";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "Options";
     }
 
@@ -42,7 +42,7 @@ public class SelectorFieldTypeImpl extends AbstractSelectableFieldTypeImpl {
             AttributeDescriptor optionsDescr = new AttributeDescriptor();
             optionsDescr.setName("选项列表");
             optionsDescr.setCode("options");
-            optionsDescr.setCollection(true);
+            optionsDescr.setArray(true);
             optionsDescr.setDataType(DataType.STRING);
             descriptors.add(optionsDescr);
         }

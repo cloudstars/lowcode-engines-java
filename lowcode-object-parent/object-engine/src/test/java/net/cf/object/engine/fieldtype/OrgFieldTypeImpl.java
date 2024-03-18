@@ -8,12 +8,12 @@ package net.cf.object.engine.fieldtype;
 public class OrgFieldTypeImpl extends AbstractNameCodeSelectableFieldTypeImpl {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "用户";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "User";
     }
 

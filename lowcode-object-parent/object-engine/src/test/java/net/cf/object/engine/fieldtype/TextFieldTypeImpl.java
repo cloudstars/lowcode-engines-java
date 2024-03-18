@@ -8,12 +8,12 @@ package net.cf.object.engine.fieldtype;
 public class TextFieldTypeImpl implements XFieldType {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "文本";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "Text";
     }
 }

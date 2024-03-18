@@ -7,6 +7,8 @@ package net.cf.object.engine.oql.testcase.insert;
  */
 public interface InsertHobbyTest {
 
+    String OBJECT_NAME = "Hobby";
+
     String OQL_FILE_PATH = "oql/insert/InsertHobby.json";
 
     String OQL_INSERT_HOBBY = "InsertHobby";

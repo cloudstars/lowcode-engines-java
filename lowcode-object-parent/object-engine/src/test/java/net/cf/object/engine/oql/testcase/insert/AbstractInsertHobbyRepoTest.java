@@ -4,7 +4,9 @@ import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
 import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.object.engine.OqlEngine;
+import net.cf.object.engine.object.ObjectTestResolver;
 import net.cf.object.engine.object.ObjectTestUtils;
+import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
@@ -50,7 +52,8 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
     public void testInsertHobby() {
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_HOBBY);
-            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(oqlInfo.oql);
+            XObject object = ObjectTestResolver.resolveObject(OBJECT_NAME);
+            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(object, oqlInfo.oql);
             ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
             int effectedRows = this.engine.create(oqlStmt);
             assert (effectedRows == 1);
@@ -59,7 +62,8 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
         {
             // 重新查出来作断言
             String selectOql = "select code, name, descr from Hobby where code = #{code}";
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(selectOql);
+            XObject object = ObjectTestResolver.resolveObject(OBJECT_NAME);
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(object, selectOql);
             ObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("code", "DJ");

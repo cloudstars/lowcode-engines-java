@@ -31,7 +31,7 @@ public class ObjectTestResolver {
         for (Map.Entry<String, String> entry : objectsJson.entrySet()) {
             ObjectDef objectDef = JSONObject.parseObject(entry.getValue(), ObjectDef.class);
             ObjectTestImpl object = new ObjectTestImpl(objectDef);
-            objectMap.put(object.getCode(), object);
+            objectMap.put(object.getName(), object);
         }
     }
 

@@ -1,13 +1,13 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.form.repository.sql.ast.statement.DistinctOption;
-import net.cf.object.engine.oql.AbstractOqlObjectImpl;
-import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.statement.DistinctOption;
 import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
 import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.object.engine.oql.AbstractOqlObjectImpl;
+import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +126,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.selectItems != null) {
-                this.nullSafeAcceptChild(visitor, this.selectItems);
+                this.nullSafeAcceptChildren(visitor, this.selectItems);
             }
 
             if (this.from != null) {

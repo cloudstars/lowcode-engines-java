@@ -42,7 +42,7 @@ public class SqlJsonObjectExpr extends AbstractSqlExprImpl {
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.items != null) {
-                this.nullSafeAcceptChild(visitor, this.getChildren());
+                this.nullSafeAcceptChildren(visitor, this.getChildren());
             }
         }
 

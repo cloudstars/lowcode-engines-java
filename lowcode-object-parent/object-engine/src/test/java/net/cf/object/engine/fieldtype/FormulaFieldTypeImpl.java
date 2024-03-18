@@ -14,12 +14,12 @@ import java.util.List;
 public class FormulaFieldTypeImpl implements XFieldType {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "序号";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "Sequence";
     }
 
@@ -65,8 +65,8 @@ public class FormulaFieldTypeImpl implements XFieldType {
         List<FieldAttribute> attributes = new ArrayList<>();
         {
             FieldAttribute exprAttr = new FieldAttribute();
-            exprAttr.setName("表达式");
-            exprAttr.setCode("expression");
+            exprAttr.setDesc("表达式");
+            exprAttr.setName("expression");
             exprAttr.setValue(fieldSchema.getExpression());
             attributes.add(exprAttr);
         }

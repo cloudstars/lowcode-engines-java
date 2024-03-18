@@ -1,5 +1,8 @@
 package net.cf.object.engine.object;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 模型的字段
  *
@@ -22,27 +25,11 @@ public interface XField {
     String getName();
 
     /**
-     * 获取字段的编号
-     *
-     * @return
-     */
-    String getCode();
-
-    /**
      * 获取字段的列名
      *
      * @return
      */
     String getColumnName();
-
-    /**
-     * 是否主键字段
-     *
-     * @return
-     */
-    /*default boolean isPrimary() {
-        return false;
-    }*/
 
     /**
      * 是否自动生成的字段
@@ -54,11 +41,11 @@ public interface XField {
     }
 
     /**
-     * 是否是集合
+     * 是否是数组
      *
      * @return
      */
-    default boolean isCollection() {
+    default boolean isArray() {
         return false;
     }
 
@@ -130,9 +117,9 @@ public interface XField {
      *
      * @return
      */
-    /*default <T extends XFieldProperty> List<T> getProperties() {
+    default <T extends XProperty> List<T> getProperties() {
         return Collections.emptyList();
-    }*/
+    }
 
     /**
      * 获取属性的名称获取子属性
@@ -141,17 +128,8 @@ public interface XField {
      * @return
      * @param <T>
      */
-    default <T extends XFieldProperty> T getProperty(String propertyName) {
+    default <T extends XProperty> T getProperty(String propertyName) {
         return null;
     }
-
-    /**
-     * 获取字段的个性化属性值
-     *
-     * @return
-     */
-    /*default Map<String, Object> getAttributeValues() {
-        return Collections.emptyMap();
-    }*/
 
 }

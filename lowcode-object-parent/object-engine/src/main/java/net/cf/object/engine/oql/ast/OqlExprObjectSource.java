@@ -1,11 +1,11 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.form.repository.sql.util.SqlUtils;
-import net.cf.object.engine.object.XObject;
-import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.util.SqlUtils;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 /**
  * 表达式形式的模型源

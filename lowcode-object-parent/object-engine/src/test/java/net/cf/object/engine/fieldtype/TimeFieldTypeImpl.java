@@ -13,12 +13,12 @@ import java.util.List;
 public class TimeFieldTypeImpl extends AbstractDateTimeFieldTypeImpl {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "时间";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "Time";
     }
 

@@ -1,9 +1,10 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.object.engine.oql.visitor.OqlAstVisitor;
-import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
+import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.visitor.SqlAstVisitor;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.oql.AbstractOqlObjectImpl;
+import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,29 +14,29 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlObjectExpandExpr extends AbstractSqlExprImpl {
+public class OqlObjectExpandExpr extends AbstractOqlObjectImpl {
 
-    protected String objectCode;
+    /**
+     * 模型名称
+     */
+    protected final XObject resolvedObject;
 
-    protected final List<SqlExpr> fields = new ArrayList();
+    /**
+     *  字段列表
+     */
+    protected final List<SqlExpr> fields;
 
-    public OqlObjectExpandExpr() {
+    public OqlObjectExpandExpr(XObject resolvedObject) {
+        this(resolvedObject, new ArrayList<>());
     }
 
-    public OqlObjectExpandExpr(String objectCode) {
+    public OqlObjectExpandExpr(XObject resolvedObject, List<SqlExpr> fields) {
+        this.resolvedObject = resolvedObject;
+        this.fields = fields;
     }
 
-    public OqlObjectExpandExpr(String objectCode, List<SqlExpr> fields) {
-        this.objectCode = objectCode;
-        this.fields.addAll(fields);
-    }
-
-    public String getObjectCode() {
-        return objectCode;
-    }
-
-    public void setObjectCode(String objectCode) {
-        this.objectCode = objectCode;
+    public XObject getResolvedObject() {
+        return resolvedObject;
     }
 
     public List<SqlExpr> getFields() {
@@ -50,7 +51,8 @@ public class OqlObjectExpandExpr extends AbstractSqlExprImpl {
         this.fields.add(field);
     }
 
-    public final void accept(OqlAstVisitor visitor) {
+    @Override
+    public final void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             for (SqlExpr field : this.fields) {
                 if (field != null) {
@@ -63,18 +65,13 @@ public class OqlObjectExpandExpr extends AbstractSqlExprImpl {
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
-        this.accept(visitor);
+    public OqlObjectExpandExpr cloneMe() {
+        return new OqlObjectExpandExpr(this.resolvedObject, this.fields);
     }
 
     @Override
-    public SqlExpr cloneMe() {
-        return null;
-    }
-
-    @Override
-    public List<SqlExpr> getChildren() {
-        return null;
+    public List<? extends SqlObject> getChildren() {
+        return this.fields;
     }
 }
 

@@ -1,5 +1,6 @@
 package net.cf.object.engine.oql.parser;
 
+import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.*;
 
 import java.util.ArrayList;
@@ -12,8 +13,11 @@ import java.util.List;
  */
 public class OqlStatementParser extends OqlExprParser {
 
-    public OqlStatementParser(String oql) {
+    private final XObject object;
+
+    public OqlStatementParser(XObject object, String oql) {
         super(oql);
+        this.object = object;
     }
 
     /**
@@ -67,7 +71,7 @@ public class OqlStatementParser extends OqlExprParser {
      * @return
      */
     private OqlSelectStatement parseSelectStatement() {
-        OqlSelectParser selectParser = new OqlSelectParser(this.lexer);
+        OqlSelectParser selectParser = new OqlSelectParser(object, this.lexer);
         OqlSelect select = selectParser.oqlSelect();
         return new OqlSelectStatement(select);
     }
@@ -78,7 +82,7 @@ public class OqlStatementParser extends OqlExprParser {
      * @return
      */
     private OqlInsertStatement parseInsertStatement() {
-        OqlInsertIntoParser insertParser = new OqlInsertIntoParser(this.lexer);
+        OqlInsertIntoParser insertParser = new OqlInsertIntoParser(object, this.lexer);
         OqlInsertInto insert = insertParser.insertInto();
         return new OqlInsertStatement(insert);
     }
@@ -89,7 +93,7 @@ public class OqlStatementParser extends OqlExprParser {
      * @return
      */
     private OqlUpdateStatement parseUpdateStatement() {
-        OqlUpdateStatementParser parser = new OqlUpdateStatementParser(this.lexer);
+        OqlUpdateStatementParser parser = new OqlUpdateStatementParser(object, this.lexer);
         return parser.statement();
     }
 
@@ -99,7 +103,7 @@ public class OqlStatementParser extends OqlExprParser {
      * @return
      */
     private OqlDeleteStatement parseDeleteStatement() {
-        OqlDeleteStatementParser parser = new OqlDeleteStatementParser(this.lexer);
+        OqlDeleteStatementParser parser = new OqlDeleteStatementParser(object, this.lexer);
         return parser.statement();
     }
 }

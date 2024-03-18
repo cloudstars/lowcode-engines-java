@@ -32,7 +32,7 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
     private final List<FieldTestImpl> fields = new ArrayList<>();
 
     /**
-     * 模型字段映射表，方便通过字段编号查找
+     * 模型字段映射表，方便通过字段名称查找
      */
     private final Map<String, FieldTestImpl> fieldMap = new HashMap<>();
 
@@ -42,9 +42,9 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
         for (FieldDef fieldDef : fieldDefs) {
             FieldTestImpl field = new FieldTestImpl(this, fieldDef);
             this.fields.add(field);
-            this.fieldMap.put(field.getCode(), field);
+            this.fieldMap.put(field.getName(), field);
 
-            if (fieldDef.getCode().equals(objectDef.getPrimaryFieldCode())) {
+            if (fieldDef.getName().equals(objectDef.getPrimaryFieldName())) {
                 this.primaryField = field;
             }
         }
@@ -53,11 +53,6 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
     @Override
     public String getName() {
         return objectDef.getName();
-    }
-
-    @Override
-    public String getCode() {
-        return objectDef.getCode();
     }
 
     @Override

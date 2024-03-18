@@ -3,7 +3,10 @@ package net.cf.form.repository.sql.ast;
 import net.cf.form.repository.sql.util.SqlVisitorUtils;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * SQL AST 节点实现类
@@ -64,10 +67,10 @@ public abstract class AbstractSqlObjectImpl<V extends SqlAstVisitor> implements 
      * @param visitor
      * @param children
      */
-    protected final void nullSafeAcceptChild(SqlAstVisitor visitor, List<? extends SqlObject> children) {
+    protected final void nullSafeAcceptChildren(SqlAstVisitor visitor, List<? extends SqlObject> children) {
         if (children != null) {
             for (int i = 0; i < children.size(); ++i) {
-                this.nullSafeAcceptChild(visitor, children.get(i));
+                this.nullSafeAcceptChildren(visitor, children.get(i));
             }
         }
     }
@@ -78,7 +81,7 @@ public abstract class AbstractSqlObjectImpl<V extends SqlAstVisitor> implements 
      * @param visitor
      * @param child
      */
-    protected final void nullSafeAcceptChild(SqlAstVisitor visitor, SqlObject child) {
+    protected final void nullSafeAcceptChildren(SqlAstVisitor visitor, SqlObject child) {
         if (child != null) {
             child.accept(visitor);
         }
@@ -110,9 +113,9 @@ public abstract class AbstractSqlObjectImpl<V extends SqlAstVisitor> implements 
      *
      * @param children
      */
-    protected <T extends SqlObject> void addChildren(Collection<T> children) {
+    protected void addChildren(Collection<? extends SqlObject> children) {
         if (children != null) {
-            for (T child : children) {
+            for (SqlObject child : children) {
                 this.addChild(child);
             }
         }

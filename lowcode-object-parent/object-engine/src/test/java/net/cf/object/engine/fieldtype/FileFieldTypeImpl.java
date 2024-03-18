@@ -8,12 +8,12 @@ package net.cf.object.engine.fieldtype;
 public class FileFieldTypeImpl extends AbstractNameCodeSelectableFieldTypeImpl {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "文件";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "File";
     }
 

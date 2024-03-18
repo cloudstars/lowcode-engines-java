@@ -1,11 +1,11 @@
 package net.cf.object.engine.oql.ast;
 
 
-import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +67,8 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements SqlReplac
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.objectSource.accept(visitor);
-            this.nullSafeAcceptChild(visitor, this.fields);
-            this.nullSafeAcceptChild(visitor, this.valuesList);
+            this.nullSafeAcceptChildren(visitor, this.fields);
+            this.nullSafeAcceptChildren(visitor, this.valuesList);
         }
 
         visitor.endVisit(this);

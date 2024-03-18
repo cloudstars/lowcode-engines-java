@@ -47,7 +47,7 @@ public final class SqlExprUtils {
         if (ta instanceof SqlBinaryOpExprGroup) {
             group = (SqlBinaryOpExprGroup) ta;
             if (group.getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
-                group.add(tb);
+                group.addItem(tb);
                 return group;
             }
 
@@ -70,7 +70,7 @@ public final class SqlExprUtils {
 
         if (ta instanceof SqlBinaryOpExpr && tb instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) tb).getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
             group = (SqlBinaryOpExprGroup) tb;
-            group.add(0, ta);
+            group.addItem(0, ta);
             return group;
         } else {
             return new SqlBinaryOpExpr(ta, SqlBinaryOperator.BOOLEAN_AND, tb);
@@ -90,7 +90,7 @@ public final class SqlExprUtils {
             if (a instanceof SqlBinaryOpExprGroup) {
                 SqlBinaryOpExprGroup group = (SqlBinaryOpExprGroup) a;
                 if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR) {
-                    group.add(b);
+                    group.addItem(b);
                     return group;
                 }
             }

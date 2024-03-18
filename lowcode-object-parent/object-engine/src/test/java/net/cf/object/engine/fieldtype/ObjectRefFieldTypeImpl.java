@@ -15,12 +15,12 @@ import java.util.List;
 public class ObjectRefFieldTypeImpl implements XFieldType {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "模型引用";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "ObjectRef";
     }
 
@@ -68,7 +68,7 @@ public class ObjectRefFieldTypeImpl implements XFieldType {
                 AttributeDescriptor redundantFieldsDescr = new AttributeDescriptor();
                 redundantFieldsDescr.setName("冗余字段");
                 redundantFieldsDescr.setCode("redundantFieldCodes");
-                redundantFieldsDescr.setCollection(true);
+                redundantFieldsDescr.setArray(true);
                 redundantFieldsDescr.setDataType(DataType.STRING);
                 descriptors.add(redundantFieldsDescr);
             }
@@ -78,7 +78,7 @@ public class ObjectRefFieldTypeImpl implements XFieldType {
     }
 
     @Override
-    public boolean isCollection(FieldSchema fieldSchema) {
+    public boolean isArray(FieldSchema fieldSchema) {
         //XObjectRefField refField = (XObjectRefField) field;
         //return refField.isMultiRef();
         // 判断是否一对多引用

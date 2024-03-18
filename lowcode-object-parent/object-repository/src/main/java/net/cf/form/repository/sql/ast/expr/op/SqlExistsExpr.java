@@ -47,7 +47,7 @@ public final class SqlExistsExpr extends AbstractNotableExpr {
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, this.subQuery);
+            this.nullSafeAcceptChildren(visitor, this.subQuery);
         }
 
         visitor.endVisit(this);

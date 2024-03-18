@@ -28,6 +28,42 @@ public interface OqlAstVisitor extends SqlAstVisitor {
     default void endVisit(OqlObjectExpandExpr x) {
     }
 
+    /**
+     * 是否允许访问 OqlFieldExpandExpr 的儿子节点
+     *
+     * @param x
+     * @return
+     */
+    default boolean visit(OqlFieldExpandExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 OqlFieldExpandExpr
+     *
+     * @param x
+     */
+    default void endVisit(OqlFieldExpandExpr x) {
+    }
+
+    /**
+     *
+     * 是否允许访问 OqlPropertyExpr 的儿子节点
+     *
+     * @param x
+     * @return
+     */
+    default boolean visit(OqlPropertyExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 OqlPropertyExpr
+     *
+     * @param x
+     */
+    default void endVisit(OqlPropertyExpr x) {
+    }
 
     /**
      * 是否允许访问 OqlSelect 的儿子节点

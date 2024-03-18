@@ -1,53 +1,53 @@
 {
-  "name": "兴趣爱好",
-  "code": "Hobby",
-  "primaryFieldCode": "code",
+  "desc": "兴趣爱好",
+  "name": "Hobby",
   "tableName": "HOBBY",
+  "primaryFieldName": "name",
   "fields": [
     {
       "type": "Text",
-      "name": "爱好代码",
-      "code": "code",
+      "desc": "爱好代码",
+      "name": "code",
       "columnName": "CODE",
       "dataType": "String"
     },
     {
       "type": "Text",
-      "name": "名称",
-      "code": "name",
+      "desc": "名称",
+      "name": "name",
       "columnName": "NAME",
       "dataType": "String",
       "dataLength": 32
     },
     {
       "type": "Text",
-      "name": "描述",
-      "code": "descr",
+      "desc": "描述",
+      "name": "descr",
       "columnName": "DESCR",
       "dataType": "String",
       "dataLength": 1024
     },
     {
       "type": "User",
-      "name": "创建人",
-      "code": "creator",
+      "desc": "创建人",
+      "name": "creator",
       "columnName": "CREATOR",
       "dataType": "Object",
       "defaultValue": {
-        "name": "系统管理员",
+        "desc": "系统管理员",
         "key": "admin"
       },
       "properties": [
         {
-          "name": "名称",
-          "code": "name",
+          "desc": "名称",
+          "name": "name",
           "columnName": "NAME",
           "dataType": "String",
           "dataLength": 32
         },
         {
-          "name": "编号",
-          "code": "key",
+          "desc": "编号",
+          "name": "key",
           "columnName": "KEY",
           "dataType": "String",
           "dataLength": 20
@@ -56,33 +56,33 @@
     },
     {
       "type": "Date",
-      "name": "更新时间",
-      "code": "createdAt",
+      "desc": "更新时间",
+      "name": "createdAt",
       "columnName": "CREATED_AT",
       "dataType": "Date",
       "dateFormat": "yyyy-MM-dd"
     },
     {
       "type": "User",
-      "name": "更新人",
-      "code": "modifier",
+      "desc": "更新人",
+      "name": "modifier",
       "columnName": "MODIFIER",
       "dataType": "Object",
       "defaultValue": {
-        "name": "系统管理员",
+        "desc": "系统管理员",
         "key": "admin"
       },
       "properties": [
         {
-          "name": "名称",
-          "code": "name",
+          "desc": "名称",
+          "name": "name",
           "columnName": "NAME",
           "dataType": "String",
           "dataLength": 32
         },
         {
-          "name": "编号",
-          "code": "key",
+          "desc": "编号",
+          "name": "key",
           "columnName": "KEY",
           "dataType": "String",
           "dataLength": 20
@@ -91,8 +91,8 @@
     },
     {
       "type": "Date",
-      "name": "更新时间",
-      "code": "modifiedAt",
+      "desc": "更新时间",
+      "name": "modifiedAt",
       "columnName": "MODIFIED_AT",
       "dataType": "Date",
       "dateFormat": "yyyy-MM-dd"

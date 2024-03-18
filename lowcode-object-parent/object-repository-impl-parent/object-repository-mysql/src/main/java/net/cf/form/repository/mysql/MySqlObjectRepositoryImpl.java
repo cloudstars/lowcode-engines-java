@@ -28,6 +28,30 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     }
 
     @Override
+    public Map<String, Object> selectOne(SqlSelectStatement statement) {
+        String sql = SqlUtils.toSqlText(statement);
+        return jdbcTemplate.queryForMap(sql, new HashMap<>());
+    }
+
+    @Override
+    public Map<String, Object> selectOne(SqlSelectStatement statement, Map<String, Object> paramMap) {
+        String sql = SqlUtils.toSqlText(statement);
+        return jdbcTemplate.queryForMap(sql, new AdvancedMapSqlParameterSource(paramMap));
+    }
+
+    @Override
+    public List<Map<String, Object>> selectList(SqlSelectStatement statement) {
+        String sql = SqlUtils.toSqlText(statement);
+        return jdbcTemplate.queryForList(sql, new HashMap<>());
+    }
+
+    @Override
+    public List<Map<String, Object>> selectList(SqlSelectStatement statement, Map<String, Object> paramMap) {
+        String sql = SqlUtils.toSqlText(statement);
+        return jdbcTemplate.queryForList(sql, new AdvancedMapSqlParameterSource(paramMap));
+    }
+
+    @Override
     public int insert(SqlInsertStatement statement) {
         String sql = SqlUtils.toSqlText(statement);
         int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
@@ -42,12 +66,12 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
         int effectedRows;
         if (autoPrimaryKey != null && autoPrimaryKey.length() > 0) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            MapSqlParameterSource parameterSource = new MapSqlParameterSource(paramMap);
+            MapSqlParameterSource parameterSource = new AdvancedMapSqlParameterSource(paramMap);
             effectedRows = this.jdbcTemplate.update(sql, parameterSource, keyHolder);
-            long autoId = keyHolder.getKey().longValue();
-            paramMap.put(autoPrimaryKey, String.valueOf(autoId));
+            String autoId = String.valueOf(keyHolder.getKey());
+            paramMap.put(autoPrimaryKey, autoId);
         } else {
-            effectedRows = this.jdbcTemplate.update(sql, paramMap);
+            effectedRows = this.jdbcTemplate.update(sql, new AdvancedMapSqlParameterSource(paramMap));
         }
 
         logger.info("数据插入成功，影响行数：{}", effectedRows);
@@ -70,7 +94,7 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     @Override
     public int update(SqlUpdateStatement statement, Map<String, Object> paramMap) {
         String sql = SqlUtils.toSqlText(statement);
-        int effectedRows = this.jdbcTemplate.update(sql, paramMap);
+        int effectedRows = this.jdbcTemplate.update(sql, new AdvancedMapSqlParameterSource(paramMap));
         logger.info("数据更新成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
@@ -101,27 +125,4 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
         return new int[0];
     }
 
-    @Override
-    public Map<String, Object> selectOne(SqlSelectStatement statement) {
-        String sql = SqlUtils.toSqlText(statement);
-        return jdbcTemplate.queryForMap(sql, new HashMap<>());
-    }
-
-    @Override
-    public Map<String, Object> selectOne(SqlSelectStatement statement, Map<String, Object> paramMap) {
-        String sql = SqlUtils.toSqlText(statement);
-        return jdbcTemplate.queryForMap(sql, paramMap);
-    }
-
-    @Override
-    public List<Map<String, Object>> selectList(SqlSelectStatement statement) {
-        String sql = SqlUtils.toSqlText(statement);
-        return jdbcTemplate.queryForList(sql, new HashMap<>());
-    }
-
-    @Override
-    public List<Map<String, Object>> selectList(SqlSelectStatement statement, Map<String, Object> paramMap) {
-        String sql = SqlUtils.toSqlText(statement, paramMap);
-        return jdbcTemplate.queryForList(sql, paramMap);
-    }
 }

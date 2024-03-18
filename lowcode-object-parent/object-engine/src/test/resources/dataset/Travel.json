@@ -1,25 +1,25 @@
 {
-  "name": "出差表",
-  "code": "TRAVEL",
+  "desc": "出差表",
+  "name": "TRAVEL",
   "columns": [
     {
-      "name": "申请单号",
-      "code": "APPLY_ID",
+      "desc": "申请单号",
+      "name": "APPLY_ID",
       "dataType": "String"
     },
     {
-      "name": "申请单名称",
-      "code": "APPLY_NAME",
+      "desc": "申请单名称",
+      "name": "APPLY_NAME",
       "dataType": "String"
     },
     {
-      "name": "创建人姓名",
-      "code": "CREATOR_NAME",
+      "desc": "创建人姓名",
+      "name": "CREATOR_NAME",
       "dataType": "String"
     },
     {
-      "name": "创建人编号",
-      "code": "CREATOR_KEY",
+      "desc": "创建人编号",
+      "name": "CREATOR_KEY",
       "dataType": "String"
     }
   ],

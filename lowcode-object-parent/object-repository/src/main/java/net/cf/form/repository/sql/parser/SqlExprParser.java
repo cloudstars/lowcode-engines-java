@@ -28,11 +28,6 @@ public class SqlExprParser extends AbstractSqlParser {
     public static final List<String> AGGREGATE_FUNCTIONS = Arrays.asList("AVG", "COUNT", "MAX", "MIN", "STDDEV", "SUM");
 
     /**
-     * 方法的名称（当前写死在代码中，要支持扩展的话，需要开放正定义能力）
-     */
-    public static final List<String> METHOD_NAMES = Arrays.asList("NOW", "DATE");
-
-    /**
      * 是否在解析一个数组
      */
     private boolean isParsingArray = false;
@@ -489,7 +484,7 @@ public class SqlExprParser extends AbstractSqlParser {
         this.accept(Token.LPAREN);
 
         if (expr instanceof SqlIdentifierExpr) {
-            SqlMethodInvokeExpr methodInvokeExpr = null;
+            SqlMethodInvokeExpr methodInvokeExpr;
             SqlIdentifierExpr idExpr = (SqlIdentifierExpr) expr;
             String methodName = idExpr.getName();
             String methodNameUppercase = methodName.toUpperCase();
@@ -504,7 +499,7 @@ public class SqlExprParser extends AbstractSqlParser {
                 if (distinct) {
                     ((SqlAggregateExpr) methodInvokeExpr).setOption(SqlAggregateOption.DISTINCT);
                 }
-            } else if (METHOD_NAMES.contains(methodNameUppercase)) {
+            } else {
                 methodInvokeExpr = new SqlMethodInvokeExpr(methodName);
             }
 

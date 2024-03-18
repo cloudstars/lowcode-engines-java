@@ -7,11 +7,24 @@ package net.cf.object.engine.fieldtype;
  */
 public class FieldAttribute {
 
+    private String desc;
+
     private String name;
 
-    private String code;
-
     private Object value;
+
+    /**
+     * 获取配置的名称
+     *
+     * @return
+     */
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     /**
      * 获取配置的名称
@@ -24,19 +37,6 @@ public class FieldAttribute {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * 获取配置的编号
-     *
-     * @return
-     */
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     /**

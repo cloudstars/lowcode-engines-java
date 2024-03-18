@@ -13,7 +13,7 @@ public class FieldProperty {
 
     private String code;
 
-    private boolean isCollection;
+    private boolean isArray;
 
     private DataType dataType;
 
@@ -37,12 +37,12 @@ public class FieldProperty {
         this.code = code;
     }
 
-    public boolean isCollection() {
-        return isCollection;
+    public boolean isArray() {
+        return isArray;
     }
 
-    public void setCollection(boolean collection) {
-        isCollection = collection;
+    public void setArray(boolean array) {
+        isArray = array;
     }
 
     public DataType getDataType() {

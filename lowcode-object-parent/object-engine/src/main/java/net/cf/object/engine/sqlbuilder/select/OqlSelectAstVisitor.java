@@ -1,13 +1,13 @@
 package net.cf.object.engine.sqlbuilder.select;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
 import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
-import net.cf.object.engine.oql.ast.OqlExprObjectSource;
-import net.cf.object.engine.oql.ast.OqlObjectSource;
-import net.cf.object.engine.oql.ast.OqlSelect;
+import net.cf.object.engine.object.XField;
+import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.visitor.OqlAstVisitorAdaptor;
 
 import java.util.List;
@@ -35,9 +35,22 @@ public final class OqlSelectAstVisitor extends OqlAstVisitorAdaptor {
         // 构建查询列的列表
         List<SqlSelectItem> selectItems = x.getSelectItems();
         for (SqlSelectItem selectItem : selectItems) {
-            SqlSelectItem sqlSelectItem = selectItem.cloneMe();
-            sqlSelectItem.setExpr(this.buildSqlExpr(selectItem.getExpr()));
-            this.builder.appendSelectItem(sqlSelectItem);
+            SqlExpr sqlExprX = this.buildSqlExpr(selectItem.getExpr());
+            if (sqlExprX instanceof OqlFieldExpandExpr) {
+                OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) sqlExprX;
+                XField field = fieldExpandExpr.getResolvedField();
+                List<SqlIdentifierExpr> properties = fieldExpandExpr.getProperties();
+                for (SqlIdentifierExpr property : properties) {
+                    SqlSelectItem sqlSelectItem = new SqlSelectItem();
+                    OqlPropertyExpr propertyExpr = new OqlPropertyExpr(field, property.getName());
+                    sqlSelectItem.setExpr(this.buildSqlExpr(propertyExpr));
+                    this.builder.appendSelectItem(sqlSelectItem);
+                }
+            } else {
+                SqlSelectItem sqlSelectItem = selectItem.cloneMe();
+                sqlSelectItem.setExpr(sqlExprX);
+                this.builder.appendSelectItem(sqlSelectItem);
+            }
         }
 
         // 输出查询的表

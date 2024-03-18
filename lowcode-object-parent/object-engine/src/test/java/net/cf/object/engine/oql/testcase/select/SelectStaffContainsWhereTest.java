@@ -7,6 +7,6 @@ package net.cf.object.engine.oql.testcase.select;
  */
 public interface SelectStaffContainsWhereTest {
 
-    String OQL_FILE_PATH = "oql/select/SelectStaffContainsWhere.json";
+    String OQL_FILE_PATH = "oql/select/SelectStaffSelfContains.json";
 
 }

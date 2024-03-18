@@ -10,12 +10,12 @@ import net.cf.object.engine.object.DataType;
 public class BooleanFieldTypeImpl implements XFieldType {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "布尔值";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return "Boolean";
     }
 

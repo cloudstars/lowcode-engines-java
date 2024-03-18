@@ -15,8 +15,8 @@ public abstract class AbstractDateTimeFieldTypeImpl implements XFieldType {
         List<FieldAttribute> attributes = new ArrayList<>();
         {
             FieldAttribute exprAttr = new FieldAttribute();
-            exprAttr.setName("格式");
-            exprAttr.setCode("format");
+            exprAttr.setDesc("格式");
+            exprAttr.setName("format");
             exprAttr.setValue(fieldSchema.getExpression());
             attributes.add(exprAttr);
         }

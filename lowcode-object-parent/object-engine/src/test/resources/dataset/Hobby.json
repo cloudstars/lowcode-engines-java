@@ -1,25 +1,25 @@
 {
-  "name": "兴趣爱好表",
-  "code": "HOBBY",
+  "desc": "兴趣爱好表",
+  "name": "HOBBY",
   "columns": [
     {
-      "name": "爱好代码",
-      "code": "CODE",
+      "desc": "代码",
+      "name": "CODE",
       "dataType": "String"
     },
     {
-      "name": "名称",
-      "code": "NAME",
+      "desc": "名称",
+      "name": "NAME",
       "dataType": "String"
     },
     {
-      "name": "描述",
-      "code": "DESCR",
+      "desc": "描述",
+      "name": "DESCR",
       "dataType": "String"
     },
     {
-      "name": "创建人编号",
-      "code": "CREATOR_KEY",
+      "desc": "创建人编号",
+      "name": "CREATOR_KEY",
       "dataType": "String"
     }
   ],

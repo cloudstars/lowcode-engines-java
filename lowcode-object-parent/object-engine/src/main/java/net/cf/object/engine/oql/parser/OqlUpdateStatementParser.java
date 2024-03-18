@@ -1,25 +1,29 @@
 package net.cf.object.engine.oql.parser;
 
-import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
 import net.cf.form.repository.sql.parser.Lexer;
 import net.cf.form.repository.sql.parser.Token;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 
 public class OqlUpdateStatementParser extends OqlExprParser {
 
-    public OqlUpdateStatementParser(Lexer lexer) {
+    private final XObject object;
+
+    public OqlUpdateStatementParser(XObject object, Lexer lexer) {
         super(lexer);
+        this.object = object;
     }
 
-    public OqlUpdateStatementParser(String oql) {
-        this(new Lexer(oql));
+    public OqlUpdateStatementParser(XObject object, String oql) {
+        this(object, new Lexer(oql));
     }
 
     public OqlUpdateStatement statement() {
         this.accept(Token.UPDATE);
 
         OqlUpdateStatement statement = new OqlUpdateStatement();
-        statement.setObjectSource(this.parseObjectSource());
+        statement.setObjectSource(this.parseExprObjectSource());
         this.parseSetItems(statement);
         if (this.lexer.token() == Token.WHERE) {
             this.lexer.nextToken();

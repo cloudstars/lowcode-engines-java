@@ -51,7 +51,7 @@ public class SqlLikeOpExpr extends AbstractNotableExpr {
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, binaryOpExpr);
+            this.nullSafeAcceptChildren(visitor, binaryOpExpr);
         }
 
         visitor.endVisit(this);

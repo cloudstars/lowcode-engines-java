@@ -268,7 +268,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
         if (tA instanceof SqlBinaryOpExprGroup) {
             group = (SqlBinaryOpExprGroup) tA;
             if (group.getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
-                group.add(tB);
+                group.addItem(tB);
                 return group;
             }
 
@@ -291,7 +291,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
 
         if (a instanceof SqlBinaryOpExpr && b instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) b).getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
             group = (SqlBinaryOpExprGroup) b;
-            group.add(0, a);
+            group.addItem(0, a);
             return group;
         } else {
             return new SqlBinaryOpExpr(a, SqlBinaryOperator.BOOLEAN_AND, b);
@@ -311,7 +311,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
             if (a instanceof SqlBinaryOpExprGroup) {
                 SqlBinaryOpExprGroup group = (SqlBinaryOpExprGroup) a;
                 if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR) {
-                    group.add(b);
+                    group.addItem(b);
                     return group;
                 }
             }

@@ -4,11 +4,9 @@ import net.cf.form.repository.ObjectRepository;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.*;
-import net.cf.object.engine.object.XField;
-import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.visitor.InsertStatementCheckOqlAstVisitor;
-import net.cf.object.engine.sqlbuilder.OqlStatementUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +37,7 @@ public class OqlEngineImpl implements OqlEngine {
     @Override
     public Map<String, Object> queryOne(OqlSelectStatement stmt, Map<String, Object> paramMap) {
         SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt);
-        Map<String, Object> cParamMap = this.convertParamMap(stmt.getSelect().getFrom(), paramMap);
-        Map<String, Object> resultMap = this.repository.selectOne(sqlStmt, cParamMap);
+        Map<String, Object> resultMap = this.repository.selectOne(sqlStmt, paramMap);
         return this.convertResultMap(stmt, resultMap);
     }
 
@@ -54,41 +51,8 @@ public class OqlEngineImpl implements OqlEngine {
     @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap) {
         SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt);
-        Map<String, Object> cParamMap = this.convertParamMap(stmt.getSelect().getFrom(), paramMap);
-        List<Map<String, Object>> resultMapList = this.repository.selectList(sqlStmt, cParamMap);
+        List<Map<String, Object>> resultMapList = this.repository.selectList(sqlStmt, paramMap);
         return this.convertResultMapList(stmt, resultMapList);
-    }
-
-    /**
-     * 转换参数映射
-     *
-     * @param objectSource
-     * @param paramMap
-     * @return
-     */
-    private Map<String, Object> convertParamMap(OqlObjectSource objectSource, Map<String, Object> paramMap) {
-        if (paramMap == null) {
-            return Collections.emptyMap();
-        } else if (paramMap.size() == 0) {
-            return paramMap;
-        }
-
-        if (objectSource instanceof OqlExprObjectSource) {
-            XObject object = ((OqlExprObjectSource) objectSource).getResolvedObject();
-            Map<String, Object> targetParamMap = new HashMap<>();
-            paramMap.forEach((k, v) -> {
-                XField field = object.getField(k);
-                if (field != null) {
-                    // 可能存在 in (#{ids}) 这种不在field中的变量
-                    targetParamMap.put(field.getColumnName(), v);
-                } else {
-                    targetParamMap.put(k, v);
-                }
-            });
-            return targetParamMap;
-        } else {
-            return paramMap;
-        }
     }
 
     /**
@@ -126,21 +90,11 @@ public class OqlEngineImpl implements OqlEngine {
             targetMap = new HashMap<>();
             for (SqlSelectItem selectItem : selectItems) {
                 SqlExpr expr = selectItem.getExpr();
-                String targetKey = null;
-                Object targetValue = null;
-                if (expr instanceof SqlIdentifierExpr) {
-                    String columnName = ((SqlIdentifierExpr) expr).getResolvedColumn();
-                    String fieldName = ((SqlIdentifierExpr) expr).getName();
-                    if (resultMap.containsKey(columnName)) {
-                        targetKey = fieldName;
-                        targetValue = resultMap.get(columnName);
-                    } else {
-                        logger.warn("未找到字段{}对应的列{}的数据！", fieldName, columnName);
-                    }
-                } else {
-                    throw new UnsupportedOperationException("暂不支持非标识符列！");
-                }
+                KeyValuePair keyValuePair = this.convertResultValue(expr, resultMap);
+                String targetKey = keyValuePair.key;
+                Object targetValue = keyValuePair.value;
 
+                // 判断是否设置了别名
                 String alias = selectItem.getAlias();
                 if (targetKey != null) {
                     if (alias != null) {
@@ -156,6 +110,81 @@ public class OqlEngineImpl implements OqlEngine {
         return targetMap;
     }
 
+    /**
+     * 根据当前表达式来转换结果的值
+     *
+     * @param expr
+     * @param resultMap
+     * @return
+     */
+    private KeyValuePair convertResultValue(SqlExpr expr, Map<String, Object> resultMap) {
+        KeyValuePair keyValuePair = new KeyValuePair();
+        if (expr instanceof SqlIdentifierExpr) {
+            SqlIdentifierExpr idExpr = (SqlIdentifierExpr) expr;
+            String columnName = idExpr.getResolvedColumn();
+            String fieldName = idExpr.getName();
+            if (resultMap.containsKey(columnName)) {
+                keyValuePair.key = fieldName;
+                keyValuePair.value = resultMap.get(columnName);
+            } else {
+                logger.warn("未找到字段{}对应的列{}的数据！", fieldName, columnName);
+            }
+        } else if (expr instanceof OqlPropertyExpr) {
+            OqlPropertyExpr propExpr = (OqlPropertyExpr) expr;
+            String columnName = propExpr.getResolvedColumn();
+            String fieldName = propExpr.getResolvedField().getName() + "." + propExpr.getProperty();
+            if (resultMap.containsKey(columnName)) {
+                keyValuePair.key = fieldName;
+                keyValuePair.value = resultMap.get(columnName);
+            } else {
+                logger.warn("未找到字段{}对应的列{}的数据！", fieldName, columnName);
+            }
+        } else if (expr instanceof OqlFieldExpandExpr) {
+            OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) expr;
+            keyValuePair.key = fieldExpandExpr.getResolvedField().getName();
+            boolean isArray = fieldExpandExpr.getResolvedField().isArray();
+            if (isArray) {
+                int valueSize = 0;
+                // 计算dataMapList的长度
+                for (SqlIdentifierExpr property : fieldExpandExpr.getProperties()) {
+                    Object propValue = resultMap.get(property.getResolvedColumn());
+                    assert (propValue instanceof List);
+                    int itemValueSize = ((List<?>) propValue).size();
+                    if (itemValueSize > valueSize) {
+                        valueSize = itemValueSize;
+                    }
+                }
+                List<Map<String, Object>> dataMapList = new ArrayList<>(valueSize);
+                int vi = 0;
+                while (vi >= valueSize) {
+                    Map<String, Object> dataMap = new HashMap<>();
+                    for (SqlIdentifierExpr property : fieldExpandExpr.getProperties()) {
+                        Object propValue = resultMap.get(property.getResolvedColumn());
+                        dataMap.put(property.getName(), ((List<?>) propValue).get(vi));
+                    }
+                    dataMapList.add(dataMap);
+                    vi++;
+                }
+                keyValuePair.value = dataMapList;
+            } else {
+                Map<String, Object> dataMap = new HashMap<>();
+                for (SqlIdentifierExpr property : fieldExpandExpr.getProperties()) {
+                    Object propValue = resultMap.get(property.getResolvedColumn());
+                    dataMap.put(property.getName(), propValue);
+                }
+                keyValuePair.value = dataMap;
+            }
+        } else {
+            throw new UnsupportedOperationException("暂不支持的结果转换类型：" + expr.getClass());
+        }
+
+        return keyValuePair;
+    }
+
+    private class KeyValuePair {
+        String key;
+        Object value;
+    }
 
     @Override
     public int create(OqlInsertStatement stmt) {
@@ -169,7 +198,7 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
-    public int create(OqlInsertStatement stmt, Map<String, Object> dataMap) {
+    public int create(OqlInsertStatement stmt, Map<String, Object> paramMap) {
         // 语法检查
         InsertStatementCheckOqlAstVisitor checkVisitor = new InsertStatementCheckOqlAstVisitor();
         stmt.accept(checkVisitor);
@@ -178,22 +207,11 @@ public class OqlEngineImpl implements OqlEngine {
         // TODO
 
         SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt);
-        Map<String, Object> cDataMap = this.convertParamMap(stmt.getObjectSource(), dataMap);
-        int effectedRows = this.repository.insert(sqlStmt, cDataMap);
+        int effectedRows = this.repository.insert(sqlStmt, paramMap);
         if (effectedRows == 0) {
-            logger.warn("未成功创建记录，OQL：", stmt);
-        }
-
-        XField primaryField = stmt.getObjectSource().getResolvedObject().getPrimaryField();
-        if (primaryField != null) {
-            String pfcn = primaryField.getColumnName();
-            Object recordId = dataMap.get(pfcn);
-            if (recordId == null) {
-                logger.warn("没有生成记录ID");
-            } else {
-                dataMap.remove(pfcn);
-                dataMap.put(primaryField.getCode(), recordId);
-            }
+            logger.warn("未成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
+        } else {
+            logger.warn("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
         }
 
         return effectedRows;
@@ -213,10 +231,9 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
-    public int modify(OqlUpdateStatement stmt, Map<String, Object> dataMap) {
+    public int modify(OqlUpdateStatement stmt, Map<String, Object> paramMap) {
         SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(stmt);
-        Map<String, Object> cDataMap = this.convertParamMap(stmt.getObjectSource(), dataMap);
-        this.repository.update(sqlStmt, cDataMap);
+        this.repository.update(sqlStmt, paramMap);
         return 0;
     }
 
@@ -233,10 +250,9 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
-    public int remove(OqlDeleteStatement stmt, Map<String, Object> dataMap) {
+    public int remove(OqlDeleteStatement stmt, Map<String, Object> paramMap) {
         SqlDeleteStatement sqlStmt = OqlStatementUtils.toSqlDelete(stmt);
-        Map<String, Object> cDataMap = this.convertParamMap(stmt.getFrom(), dataMap);
-        this.repository.delete(sqlStmt, cDataMap);
+        this.repository.delete(sqlStmt, paramMap);
         return 0;
     }
 

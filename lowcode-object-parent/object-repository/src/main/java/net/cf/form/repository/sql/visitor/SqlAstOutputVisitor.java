@@ -7,6 +7,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
 import net.cf.form.repository.sql.ast.statement.*;
@@ -291,13 +292,17 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     public boolean visit(SqlJsonObjectExpr x) {
         this.print("{");
         Map<String, SqlExpr> items = x.getItems();
+        int i = 0;
         for (Map.Entry<String, SqlExpr> entry : items.entrySet()) {
+            if (i++ > 0) {
+                this.print(", ");
+            }
             this.print("\"" + entry.getKey() + "\": ");
             SqlExpr value = entry.getValue();
             if (value instanceof SqlCharExpr) {
-                this.print("\"" + ((SqlCharExpr) value).getValue() + "\": ");
+                this.print("\"" + ((SqlCharExpr) value).getValue() + "\"");
             } else {
-                entry.getValue().accept(this);
+                value.accept(this);
             }
         }
         this.print("}");
@@ -326,6 +331,15 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     /**********************************************************************
      *                标识符类表达式节点                                         *
      **********************************************************************/
+
+    @Override
+    public boolean visit(SqlBinaryOpExprGroup x) {
+        String op = x.getOperator().name;
+        String separator = this.uppercase ? op.toUpperCase() : op.toUpperCase();
+        this.printParenthesesAndAcceptList(x.getChildren(), " " + separator + " ");
+        return false;
+    }
+
     @Override
     public boolean visit(SqlBinaryOpExpr x) {
         if (x.isParenthesized()) {
@@ -334,7 +348,8 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
         x.getLeft().accept(this);
         this.print(' ');
-        this.print(x.getOperator().name);
+        String op = x.getOperator().name;
+        this.print(this.uppercase ? op.toUpperCase() : op.toUpperCase());
         this.print(' ');
         x.getRight().accept(this);
 
@@ -387,7 +402,10 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     @Override
     public boolean visit(SqlMethodInvokeExpr x) {
-        return super.visit(x);
+        String methodName = x.getMethodName();
+        this.print(this.uppercase ? methodName.toUpperCase() : methodName.toLowerCase());
+        this.printParenthesesAndAcceptList(x.getArguments(), ", ");
+        return false;
     }
 
     @Override

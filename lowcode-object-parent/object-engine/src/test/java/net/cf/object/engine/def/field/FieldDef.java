@@ -18,9 +18,9 @@ public class FieldDef {
     private final String type;
 
     /**
-     * 是否自动生成的ID
+     * 名称
      */
-    private boolean autoGen;
+    private String desc;
 
     /**
      * 名称
@@ -28,19 +28,19 @@ public class FieldDef {
     private String name;
 
     /**
-     * 代码
-     */
-    private String code;
-
-    /**
-     * 列名
+     * 列的名称
      */
     private String columnName;
 
     /**
-     * 是否集合
+     * 是否自动生成
      */
-    private boolean isCollection;
+    private boolean autoGen;
+
+    /**
+     * 是否数组
+     */
+    private boolean isArray;
 
     /**
      * 数据类型
@@ -70,7 +70,7 @@ public class FieldDef {
     /**
      * 字段的子属性列表
      */
-    private List<FieldPropertyDef> properties;
+    private List<PropertyDef> properties;
 
     @JSONCreator
     public FieldDef(String type) {
@@ -89,6 +89,14 @@ public class FieldDef {
         this.autoGen = autoGen;
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public String getName() {
         return name;
     }
@@ -97,28 +105,20 @@ public class FieldDef {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getColumnName() {
-        return columnName != null ? columnName : this.code;
+        return columnName != null ? columnName : this.name;
     }
 
     public void setColumnName(String columnName) {
         this.columnName = columnName;
     }
 
-    public boolean isCollection() {
-        return isCollection;
+    public boolean isArray() {
+        return isArray;
     }
 
-    public void setCollection(boolean collection) {
-        isCollection = collection;
+    public void setArray(boolean array) {
+        isArray = array;
     }
 
     public DataType getDataType() {
@@ -161,11 +161,11 @@ public class FieldDef {
         this.defaultValue = defaultValue;
     }
 
-    public List<FieldPropertyDef> getProperties() {
+    public List<PropertyDef> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<FieldPropertyDef> properties) {
+    public void setProperties(List<PropertyDef> properties) {
         this.properties = properties;
     }
 

@@ -18,18 +18,18 @@ import java.util.List;
 public interface XFieldType {
 
     /**
+     * 字段类型的描述
+     *
+     * @return
+     */
+    String getDesc();
+
+    /**
      * 字段类型的名称
      *
      * @return
      */
     String getName();
-
-    /**
-     * 字段类型的代码
-     *
-     * @return
-     */
-    String getCode();
 
     /**
      * 获取字段类型的个性化属性描述列表，从表设计的视角看，就是一些和后端有关的属性
@@ -41,11 +41,11 @@ public interface XFieldType {
     }
 
     /**
-     * 根据字段Schema获取是否集合数据
+     * 根据字段Schema获取是否数组
      *
      * @return
      */
-    default boolean isCollection(FieldSchema fieldSchema) {
+    default boolean isArray(FieldSchema fieldSchema) {
         return false;
     }
 

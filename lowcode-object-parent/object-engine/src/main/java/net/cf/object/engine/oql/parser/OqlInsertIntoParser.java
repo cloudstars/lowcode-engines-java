@@ -1,18 +1,26 @@
 package net.cf.object.engine.oql.parser;
 
-import net.cf.object.engine.oql.ast.OqlInsertInto;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.parser.Lexer;
 import net.cf.form.repository.sql.parser.Token;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.oql.ast.OqlInsertInto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OqlInsertIntoParser extends OqlExprParser {
 
-    public OqlInsertIntoParser(Lexer lexer) {
+    private final XObject object;
+
+    public OqlInsertIntoParser(XObject object, Lexer lexer) {
         super(lexer);
+        this.object = object;
     }
 
-    public OqlInsertIntoParser(String oql) {
-        this(new Lexer(oql));
+    public OqlInsertIntoParser(XObject object, String oql) {
+        this(object, new Lexer(oql));
     }
 
     public OqlInsertInto insertInto() {
@@ -23,6 +31,19 @@ public class OqlInsertIntoParser extends OqlExprParser {
         insert.setObjectSource(this.parseExprObjectSource());
         this.parseIntoFields(insert);
         this.parserValuesList(insert);
+
+        List<SqlExpr> fields = insert.getFields();
+        List<SqlExpr> fieldsX = new ArrayList<>();
+        for (SqlExpr field : fields) {
+            SqlExpr fieldX = field;
+            SqlExpr realExpr = this.getRealExprByObject(field, object);
+            if (realExpr != field) {
+                fieldX = realExpr;
+            }
+            fieldsX.add(fieldX);
+        }
+        insert.getFields().clear();
+        insert.getFields().addAll(fieldsX);
 
         return insert;
     }
@@ -35,7 +56,8 @@ public class OqlInsertIntoParser extends OqlExprParser {
     private void parseIntoFields(OqlInsertInto insert) {
         this.accept(Token.LPAREN);
         this.parseCommaSeperatedList(() -> {
-            insert.addField(this.primary());
+            SqlExpr expr = this.primary();
+            insert.addField(expr);
         });
         this.accept(Token.RPAREN);
     }

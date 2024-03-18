@@ -1,9 +1,9 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
+import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +59,7 @@ public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlS
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.objectSource.accept(visitor);
-            this.nullSafeAcceptChild(visitor, this.setItems);
+            this.nullSafeAcceptChildren(visitor, this.setItems);
             this.where.accept(visitor);
         }
 

@@ -1,13 +1,13 @@
 package net.cf.object.engine.oql.visitor;
 
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlInsertInto;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 
 import java.util.List;
 

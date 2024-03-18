@@ -28,9 +28,9 @@ public class SqlInsertStatement extends SqlInsertInto implements SqlStatement {
 
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, this.tableSource);
-            this.nullSafeAcceptChild(visitor, this.columns);
-            this.nullSafeAcceptChild(visitor, this.valuesList);
+            this.nullSafeAcceptChildren(visitor, this.tableSource);
+            this.nullSafeAcceptChildren(visitor, this.columns);
+            this.nullSafeAcceptChildren(visitor, this.valuesList);
         }
 
         visitor.endVisit(this);

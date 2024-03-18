@@ -73,7 +73,7 @@ public class RecordEngineImpl implements RecordEngine {
 
         try {
             Object recordId = primaryFieldGetMethodRef.getRef().invoke(data);
-            logger.info("记录创建成功，模型编号：{}，记录ID：{}", object.getCode(), recordId);
+            logger.info("记录创建成功，模型名称：{}，记录ID：{}", object.getName(), recordId);
 
             return recordId != null ? recordId.toString() : null;
         } catch (Exception e) {
@@ -108,7 +108,7 @@ public class RecordEngineImpl implements RecordEngine {
                 // TODO builder.appendInsertValuesItem(SqlExprUtils.toSqlExpr(value.toString()));
             }
 
-            if (fieldName.equals(object.getPrimaryField().getCode())) {
+            if (fieldName.equals(object.getPrimaryField().getName())) {
                 primaryFieldGetMethodRef.setRef(method);
             }
         }
@@ -124,8 +124,8 @@ public class RecordEngineImpl implements RecordEngine {
         SqlInsertStatement insertSql = this.buildInsertSql(object, dataMap);
         this.repository.insert(insertSql);
 
-        Object recordId = dataMap.get(object.getPrimaryField().getCode());
-        logger.info("记录创建成功，模型编号：{}，记录ID：{}", object.getCode(), recordId);
+        Object recordId = dataMap.get(object.getPrimaryField().getName());
+        logger.info("记录创建成功，模型名称：{}，记录ID：{}", object.getName(), recordId);
 
         return recordId.toString();
     }

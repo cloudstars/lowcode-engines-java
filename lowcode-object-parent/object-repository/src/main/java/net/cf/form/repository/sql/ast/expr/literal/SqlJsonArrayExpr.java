@@ -32,7 +32,7 @@ public class SqlJsonArrayExpr extends AbstractSqlExprImpl {
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.items != null) {
-                this.nullSafeAcceptChild(visitor, this.items);
+                this.nullSafeAcceptChildren(visitor, this.items);
             }
         }
 

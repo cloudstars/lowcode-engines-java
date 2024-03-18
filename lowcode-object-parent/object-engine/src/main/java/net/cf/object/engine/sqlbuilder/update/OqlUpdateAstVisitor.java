@@ -2,8 +2,12 @@ package net.cf.object.engine.sqlbuilder.update;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
+import net.cf.form.repository.sql.util.SqlExprUtils;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.visitor.OqlAstVisitorAdaptor;
@@ -56,10 +60,31 @@ public final class OqlUpdateAstVisitor extends OqlAstVisitorAdaptor {
      */
     private void buildSetItems(final List<SqlUpdateSetItem> setItems) {
         for (SqlUpdateSetItem setItem : setItems) {
-            SqlUpdateSetItem sqlSetItem = setItem.cloneMe();
-            sqlSetItem.setColumn(this.buildSqlExpr(setItem.getColumn()));
-            sqlSetItem.setValue(this.buildSqlExpr(setItem.getValue()));
-            this.builder.appendSetItem(sqlSetItem);
+            SqlExpr column = setItem.getColumn();
+            SqlExpr value = setItem.getValue();
+            SqlExpr columnX = this.buildSqlExpr(column);
+            if (columnX instanceof SqlListExpr) {
+                // 如果有子属性的情况下，会返回List
+                List<SqlExpr> items = ((SqlListExpr) columnX).getItems();
+                for (SqlExpr item : items) {
+                    SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
+                    sqlSetItem.setColumn(item);
+                    if (value instanceof SqlJsonObjectExpr) {
+                        Object propValue = ((SqlJsonObjectExpr) value).getAttribute("TODO");
+                        sqlSetItem.setValue(SqlExprUtils.fromJavaObject(propValue));
+                    } else if (value instanceof SqlVariantRefExpr) {
+                        SqlVariantRefExpr propValue = (SqlVariantRefExpr) value.cloneMe();
+                        propValue.setVarName(((SqlVariantRefExpr) value).getVarName() + "");
+                        sqlSetItem.setValue(propValue);
+                    }
+                    this.builder.appendSetItem(sqlSetItem);
+                }
+            } else {
+                SqlUpdateSetItem sqlSetItem = setItem.cloneMe();
+                sqlSetItem.setColumn(columnX);
+                sqlSetItem.setValue(this.buildSqlExpr(setItem.getValue()));
+                this.builder.appendSetItem(sqlSetItem);
+            }
         }
     }
 }

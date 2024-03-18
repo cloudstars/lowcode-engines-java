@@ -33,7 +33,7 @@ public final class JsonDataSetLoader {
             String filePath = tableFilePaths[i];
             String content = FileTestUtils.loadTextFromClasspath(filePath);
             JSONObject tableJson = JSONObject.parseObject(content);
-            String tableName = tableJson.getString("code");
+            String tableName = tableJson.getString("name");
 
             JSONArray columnsJson = tableJson.getJSONArray("columns");
             if (columnsJson == null || columnsJson.size() == 0) {
@@ -43,7 +43,7 @@ public final class JsonDataSetLoader {
             Column[] columns = new Column[cs];
             for (int j = 0; j < cs; j++) {
                 JSONObject columnJson = columnsJson.getJSONObject(j);
-                String columnName = columnJson.getString("code");
+                String columnName = columnJson.getString("name");
                 String dataType = columnJson.getString("dataType");
                 if (dataType != null) {
                     dataType = DataType.STRING.name();

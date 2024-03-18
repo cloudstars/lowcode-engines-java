@@ -11,14 +11,7 @@ import java.util.Map;
 public interface XObject<F extends XField> {
 
     /**
-     * 获取模型的编号
-     *
-     * @return
-     */
-    String getCode();
-
-    /**
-     * 获取模型的名称
+     * 获取模型名称
      *
      * @return
      */

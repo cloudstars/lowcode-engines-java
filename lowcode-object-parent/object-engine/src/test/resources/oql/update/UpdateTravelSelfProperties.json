@@ -1,0 +1,43 @@
+{
+  "desc": "测试更新出差本表，带子属性，不含子表的案例",
+  "name": "UpdateTravelSelfProperties",
+  "desc": "测试点：简单的更新，不含子表",
+  "oqls": [
+    {
+      "desc": "根据记录ID更新出差记录，含出差人（仅父属性）",
+      "name": "UpdateTravelCreatorById",
+      "oql": "update Travel set creator = '{\"name\": \"王五\", \"code\": \"wangwu\"}' where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "update TRAVEL set CREATOR_NAME = '王五' and CREATOR_KEY = 'wangwu' where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据记录ID更新出差记录，含出差人（仅父属性）（带变量）",
+      "name": "UpdateTravelCreatorByIdVars",
+      "oql": "update Travel set creator = #{creator} where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "update TRAVEL set CREATOR_NAME = #{creator.name} and CREATOR_KEY = #{creator.key} where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据记录ID更新出差记录，含出差人（子属性展开）",
+      "name": "UpdateTravelExpandCreatorById",
+      "oql": "update Travel set creator(name, key) = '{\"name\": \"王五\", \"code\": \"wangwu\"}' where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "update TRAVEL set CREATOR_NAME = '王五' and CREATOR_KEY = 'wangwu' where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据记录ID更新出差记录，含出差人（子属性展开）（带变量）",
+      "name": "UpdateTravelExpandCreatorByIdVars",
+      "oql": "update Travel set creator(name, key) = #{creator} where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "update TRAVEL set CREATOR_NAME = #{creator.name} and CREATOR_KEY = #{creator.key} where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据记录ID更新出差记录，含出差人（子属性单独）",
+      "name": "UpdateTravelSingleCreatorById",
+      "oql": "update Travel set creator(name, key) = '{\"name\": \"王五\", \"code\": \"wangwu\"}' where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "update TRAVEL set CREATOR_NAME = '王五' and CREATOR_KEY = 'wangwu' where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据记录ID更新出差记录，含出差人（子属性单独）（带变量）",
+      "name": "UpdateTravelSingleCreatorByIdVars",
+      "oql": "update Travel set creator.name = #{creator.name} and creator.key = #{creator.key} where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "update TRAVEL set CREATOR_NAME = #{creator.name} and CREATOR_KEY = #{creator.key} where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    }
+  ]
+}

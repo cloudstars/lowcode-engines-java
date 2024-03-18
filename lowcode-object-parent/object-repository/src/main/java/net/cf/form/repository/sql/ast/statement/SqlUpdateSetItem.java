@@ -54,8 +54,8 @@ public class SqlUpdateSetItem extends AbstractSqlObjectImpl implements SqlReplac
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, this.column);
-            this.nullSafeAcceptChild(visitor, this.value);
+            this.nullSafeAcceptChildren(visitor, this.column);
+            this.nullSafeAcceptChildren(visitor, this.value);
         }
 
         visitor.endVisit(this);

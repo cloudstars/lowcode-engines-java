@@ -63,24 +63,28 @@ public class SqlBinaryOpExprGroup extends AbstractSqlExprImpl implements SqlRepl
         return this.items;
     }
 
-    public void add(SqlExpr item) {
-        this.add(this.items.size(), item);
+    public void addItem(SqlExpr item) {
+        this.addItem(this.items.size(), item);
     }
 
-    public void add(int index, SqlExpr item) {
+    public void addItem(int index, SqlExpr item) {
         if (item instanceof SqlBinaryOpExpr) {
+            // 待加入的表达式也是两元表达式
             SqlBinaryOpExpr binaryOpExpr = (SqlBinaryOpExpr) item;
+            // 待轵入的两元表达式的操作符与当前分组的操作符相同
             if (binaryOpExpr.getOperator() == this.operator) {
-                this.add(binaryOpExpr.getLeft());
-                this.add(binaryOpExpr.getRight());
+                this.addItem(binaryOpExpr.getLeft());
+                this.addItem(binaryOpExpr.getRight());
                 return;
             }
         } else if (item instanceof SqlBinaryOpExprGroup) {
+            // 待加入的表达式也是分组
             SqlBinaryOpExprGroup group = (SqlBinaryOpExprGroup) item;
             if (group.operator == this.operator) {
+                // 待加入的分组与当前分组的操作符相同
                 List<SqlExpr> groupItems = group.getItems();
                 for (SqlExpr groupItem : groupItems) {
-                    this.add(groupItem);
+                    this.addItem(groupItem);
                 }
                 return;
             }

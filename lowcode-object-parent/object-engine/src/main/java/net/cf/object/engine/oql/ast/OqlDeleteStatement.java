@@ -1,8 +1,8 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,8 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
     @Override
     protected void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChild(visitor, this.from);
-            this.nullSafeAcceptChild(visitor, this.where);
+            this.nullSafeAcceptChildren(visitor, this.from);
+            this.nullSafeAcceptChildren(visitor, this.where);
         }
 
         visitor.endVisit(this);

@@ -18,22 +18,22 @@ public class FieldTestImpl implements XField {
     /**
      * 模型字段属性列表
      */
-    private final List<FieldPropertyTestImpl> properties = new ArrayList<>();
+    private final List<PropertyTestImpl> properties = new ArrayList<>();
 
     /**
-     * 模型字段属性映射表，方便通过属性编号查找
+     * 模型字段属性映射表，方便通过属性名称查找
      */
-    private final Map<String, FieldPropertyTestImpl> propertyMap = new HashMap<>();
+    private final Map<String, PropertyTestImpl> propertyMap = new HashMap<>();
 
     public FieldTestImpl(ObjectTestImpl owner, FieldDef fieldDef) {
         this.owner = owner;
         this.fieldDef = fieldDef;
-        List<FieldPropertyDef> propertyDefs = fieldDef.getProperties();
+        List<PropertyDef> propertyDefs = fieldDef.getProperties();
         if (propertyDefs != null) {
-            for (FieldPropertyDef propertyDef : propertyDefs) {
-                FieldPropertyTestImpl fieldProperty = new FieldPropertyTestImpl(this, propertyDef);
+            for (PropertyDef propertyDef : propertyDefs) {
+                PropertyTestImpl fieldProperty = new PropertyTestImpl(this, propertyDef);
                 this.properties.add(fieldProperty);
-                this.propertyMap.put(fieldProperty.getCode(), fieldProperty);
+                this.propertyMap.put(fieldProperty.getName(), fieldProperty);
             }
         }
     }
@@ -53,19 +53,9 @@ public class FieldTestImpl implements XField {
     }
 
     @Override
-    public String getCode() {
-        return fieldDef.getCode();
-    }
-
-    @Override
     public String getColumnName() {
         return fieldDef.getColumnName();
     }
-
-    /*@Override
-    public boolean isPrimary() {
-        return XField.super.isPrimary();
-    }*/
 
     @Override
     public boolean isAutoGen() {
@@ -73,8 +63,8 @@ public class FieldTestImpl implements XField {
     }
 
     @Override
-    public boolean isCollection() {
-        return fieldDef.isCollection();
+    public boolean isArray() {
+        return fieldDef.isArray();
     }
 
     @Override
@@ -88,7 +78,12 @@ public class FieldTestImpl implements XField {
     }
 
     @Override
-    public FieldPropertyTestImpl getProperty(String propertyCode) {
+    public List<PropertyTestImpl> getProperties() {
+        return this.properties;
+    }
+
+    @Override
+    public PropertyTestImpl getProperty(String propertyCode) {
         return this.propertyMap.get(propertyCode);
     }
 }

@@ -8,12 +8,12 @@ package net.cf.object.engine.fieldtype;
 public class AutoIdFieldTypeImpl implements XFieldType {
 
     @Override
-    public String getName() {
+    public String getDesc() {
         return "自动ID";
     }
 
     @Override
-    public String getCode() {
+    public String getName() {
         return FieldTypeCodeConstants.AUTO_ID;
     }
 

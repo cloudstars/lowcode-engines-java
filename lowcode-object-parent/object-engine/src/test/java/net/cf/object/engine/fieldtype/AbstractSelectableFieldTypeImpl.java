@@ -26,7 +26,7 @@ public abstract class AbstractSelectableFieldTypeImpl implements XFieldType {
     }
 
     @Override
-    public boolean isCollection(FieldSchema fieldSchema) {
+    public boolean isArray(FieldSchema fieldSchema) {
         Object multiple = fieldSchema.isMultiple();
         if (multiple == null || multiple == Boolean.FALSE) {
             return false;

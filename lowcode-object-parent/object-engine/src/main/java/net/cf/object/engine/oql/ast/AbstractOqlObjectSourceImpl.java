@@ -1,7 +1,7 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 
 
 /**

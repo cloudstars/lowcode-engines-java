@@ -2,7 +2,6 @@ package net.cf.object.engine.oql.visitor;
 
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
-import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.*;
 
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
  */
 public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVisitor {
 
-    private XObject resolvedObject;
-
     public OqlAstOutputVisitor(Appendable appender) {
         super(appender);
     }
@@ -23,6 +20,23 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
     @Override
     public boolean visit(OqlObjectExpandExpr x) {
         return OqlAstVisitor.super.visit(x);
+    }
+
+    @Override
+    public boolean visit(OqlFieldExpandExpr x) {
+        String fieldName = x.getResolvedField().getName();
+        this.print(fieldName);
+        this.printParenthesesAndAcceptList(x.getProperties(), ", ");
+        return false;
+    }
+
+    @Override
+    public boolean visit(OqlPropertyExpr x) {
+        String fieldName = x.getResolvedField().getName();
+        this.print(fieldName);
+        this.print('.');
+        this.print(x.getProperty());
+        return false;
     }
 
     @Override
