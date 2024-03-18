@@ -227,16 +227,18 @@ public class SqlSelectParser extends SqlExprParser {
         if (!(offsetExpr instanceof SqlIntegerExpr)) {
             this.printError(Token.LITERAL_INT);
         }
-        limit.setRowCount(((SqlIntegerExpr) offsetExpr).getValue());
 
         if (this.lexer.token == Token.COMMA) {
+            limit.setOffset(offsetExpr);
             this.lexer.nextToken();
 
             SqlExpr rowCountExpr = this.primary();
             if (!(rowCountExpr instanceof SqlIntegerExpr)) {
                 this.printError(Token.LITERAL_INT);
             }
-            limit.setRowCount(((SqlIntegerExpr) rowCountExpr).getValue());
+            limit.setRowCount(rowCountExpr);
+        } else {
+            limit.setRowCount(offsetExpr);
         }
 
         return limit;

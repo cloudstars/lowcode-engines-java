@@ -2,6 +2,7 @@ package net.cf.form.repository.sql.ast.expr.identifier;
 
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**
  *聚合函数表达式
@@ -39,6 +40,18 @@ public class SqlAggregateExpr extends SqlMethodInvokeExpr implements SqlReplacea
     public void setWithinGroup(boolean withinGroup) {
         this.withinGroup = withinGroup;
     }
+
+    @Override
+    protected void accept0(SqlAstVisitor visitor) {
+        if (visitor.visit(this)) {
+            for (SqlExpr arg : this.arguments) {
+                if (arg != null) {
+                    arg.accept(visitor);
+                }
+            }
+        }
+
+        visitor.endVisit(this);    }
 
     @Override
     public SqlMethodInvokeExpr cloneMe() {

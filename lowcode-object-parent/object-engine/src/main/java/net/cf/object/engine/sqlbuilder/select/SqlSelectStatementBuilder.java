@@ -1,5 +1,6 @@
 package net.cf.object.engine.sqlbuilder.select;
 
+import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlSelect;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
@@ -47,6 +48,15 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
      */
     public void where(SqlExpr where) {
         this.select.setWhere(where);
+    }
+
+    /**
+     * 设置限制数量
+     *
+     * @param limit
+     */
+    public void limit(SqlLimit limit) {
+        this.select.setLimit(limit);
     }
 
     @Override

@@ -175,7 +175,8 @@ public class OqlEngineImpl implements OqlEngine {
                 keyValuePair.value = dataMap;
             }
         } else {
-            throw new UnsupportedOperationException("暂不支持的结果转换类型：" + expr.getClass());
+            keyValuePair.key = expr.toString();
+            keyValuePair.value = resultMap.get(keyValuePair.key);
         }
 
         return keyValuePair;

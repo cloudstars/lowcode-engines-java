@@ -1,5 +1,6 @@
 package net.cf.object.engine.oql.visitor;
 
+import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
 import net.cf.object.engine.oql.ast.*;
@@ -93,6 +94,11 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         if (orderBy != null) {
             this.println();
             orderBy.accept(this);
+        }
+
+        SqlLimit limit = x.getLimit();
+        if (limit != null) {
+            limit.accept(this);
         }
 
         return false;

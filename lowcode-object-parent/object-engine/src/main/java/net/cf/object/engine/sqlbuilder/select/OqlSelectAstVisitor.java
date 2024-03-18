@@ -1,5 +1,6 @@
 package net.cf.object.engine.sqlbuilder.select;
 
+import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
@@ -75,6 +76,11 @@ public final class OqlSelectAstVisitor extends OqlAstVisitorAdaptor {
             this.buildOrderBy(orderBy);
         }
 
+        SqlLimit limit = x.getLimit();
+        if (limit != null) {
+            this.builder.limit(limit);
+        }
+
         return false;
     }
 
@@ -85,6 +91,7 @@ public final class OqlSelectAstVisitor extends OqlAstVisitorAdaptor {
     private SqlOrderBy buildOrderBy(SqlOrderBy orderBy) {
         return null;
     }
+
 }
 
 

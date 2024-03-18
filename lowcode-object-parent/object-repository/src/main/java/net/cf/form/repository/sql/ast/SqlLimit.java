@@ -5,8 +5,10 @@ import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 public final class SqlLimit extends AbstractSqlObjectImpl implements SqlReplaceable {
-    private SqlExpr rowCount;
+
     private SqlExpr offset;
+
+    private SqlExpr rowCount;
 
     public SqlLimit() {
     }
@@ -24,22 +26,6 @@ public final class SqlLimit extends AbstractSqlObjectImpl implements SqlReplacea
         this.setRowCount(rowCount);
     }
 
-    public SqlExpr getRowCount() {
-        return this.rowCount;
-    }
-
-    public void setRowCount(SqlExpr rowCount) {
-        if (rowCount != null) {
-            rowCount.setParent(this);
-        }
-
-        this.rowCount = rowCount;
-    }
-
-    public void setRowCount(int rowCount) {
-        this.setRowCount(new SqlIntegerExpr(rowCount));
-    }
-
     public SqlExpr getOffset() {
         return this.offset;
     }
@@ -54,6 +40,22 @@ public final class SqlLimit extends AbstractSqlObjectImpl implements SqlReplacea
         }
 
         this.offset = offset;
+    }
+
+    public SqlExpr getRowCount() {
+        return this.rowCount;
+    }
+
+    public void setRowCount(int rowCount) {
+        this.setRowCount(new SqlIntegerExpr(rowCount));
+    }
+
+    public void setRowCount(SqlExpr rowCount) {
+        if (rowCount != null) {
+            rowCount.setParent(this);
+        }
+
+        this.rowCount = rowCount;
     }
 
     @Override

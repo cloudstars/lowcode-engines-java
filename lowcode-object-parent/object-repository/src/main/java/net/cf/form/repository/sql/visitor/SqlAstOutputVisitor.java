@@ -409,6 +409,14 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
     @Override
+    public boolean visit(SqlAggregateExpr x) {
+        String methodName = x.getMethodName();
+        this.print(this.uppercase ? methodName.toUpperCase() : methodName.toLowerCase());
+        this.printParenthesesAndAcceptList(x.getArguments(), ", ");
+        return false;
+    }
+
+    @Override
     public boolean visit(SqlAllColumnExpr x) {
         this.print(Token.STAR.name);
         return false;
@@ -507,6 +515,11 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             orderBy.accept(this);
         }
 
+        SqlLimit limit = x.getLimit();
+        if (limit != null) {
+            limit.accept(this);
+        }
+
         return false;
     }
 
@@ -537,7 +550,19 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     @Override
     public boolean visit(SqlLimit x) {
-        return super.visit(x);
+        this.print(this.uppercase ? " LIMIT " : " limit ");
+        SqlExpr offset = x.getOffset();
+        if (offset != null) {
+            offset.accept(this);
+            this.print(", ");
+        }
+
+        SqlExpr rowCount = x.getRowCount();
+        if (rowCount != null) {
+            rowCount.accept(this);
+        }
+
+        return false;
     }
 
     @Override
