@@ -23,12 +23,16 @@ import java.util.List;
  */
 public class OqlExprParser extends SqlExprParser {
 
-    public OqlExprParser(String oql) {
+    protected XObject object;
+
+    public OqlExprParser(XObject object, String oql) {
         super(oql);
+        this.object = object;
     }
 
-    public OqlExprParser(Lexer lexer) {
+    public OqlExprParser(XObject object, Lexer lexer) {
         super(lexer);
+        this.object = object;
     }
 
     protected OqlExprObjectSource parseExprObjectSource() {
@@ -78,6 +82,7 @@ public class OqlExprParser extends SqlExprParser {
                 List<XProperty> properties = field.getProperties();
                 if (properties != null && properties.size() > 0) {
                     OqlFieldExpandExpr fieldExpandExpr = new OqlFieldExpandExpr(field);
+                    fieldExpandExpr.setDefaultExpand(true);
                     for (XProperty property : properties) {
                         SqlIdentifierExpr propertyExpr = new SqlIdentifierExpr(property.getName());
                         propertyExpr.setResolvedColumn(property.getColumnName());

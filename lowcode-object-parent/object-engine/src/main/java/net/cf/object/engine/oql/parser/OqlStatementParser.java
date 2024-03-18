@@ -16,7 +16,7 @@ public class OqlStatementParser extends OqlExprParser {
     private final XObject object;
 
     public OqlStatementParser(XObject object, String oql) {
-        super(oql);
+        super(object, oql);
         this.object = object;
     }
 

@@ -7,14 +7,12 @@
       "desc": "插入出差记录，含出差人（仅父属性）",
       "name": "InsertTravelWithCreator",
       "oql": "insert into Travel(applyId, applyName, creator) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', {\"name\": \"张三\", \"key\": \"zhangsan\"})",
-      "realOql": "insert into Travel(applyId, applyName, creator(name, key)) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', {\"name\": \"张三\", \"key\": \"zhangsan\"})",
       "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME, CREATOR_NAME, CREATOR_KEY) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', '张三', 'zhangsan')"
     },
     {
       "desc": "插入出差记录，含出差人（仅父属性）（带变量）",
       "name": "InsertTravelWithCreatorVars",
       "oql": "insert into Travel(applyId, applyName, creator) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', #{creator})",
-      "realOql": "insert into Travel(applyId, applyName, creator(name, key)) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', #{creator})",
       "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME, CREATOR_NAME, CREATOR_KEY) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', #{creator.name}, #{creator.key})"
     },
     {

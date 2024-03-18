@@ -37,7 +37,6 @@ public abstract class AbstractOqlTest {
             OqlInfo oqlInfo = new OqlInfo();
             oqlInfo.name = oqlJson.getString("name");
             oqlInfo.oql = oqlJson.getString("oql");
-            oqlInfo.realOql = oqlJson.getString("realOql");
             oqlInfo.sql = oqlJson.getString("sql");
             this.oqlInfos.put(oqlInfo.name, oqlInfo);
         }
@@ -46,7 +45,6 @@ public abstract class AbstractOqlTest {
     protected final class OqlInfo {
         public String name;
         public String oql;
-        public String realOql;
         public String sql;
     }
 

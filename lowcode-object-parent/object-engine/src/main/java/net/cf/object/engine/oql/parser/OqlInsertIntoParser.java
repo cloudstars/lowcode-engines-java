@@ -15,7 +15,7 @@ public class OqlInsertIntoParser extends OqlExprParser {
     private final XObject object;
 
     public OqlInsertIntoParser(XObject object, Lexer lexer) {
-        super(lexer);
+        super(object, lexer);
         this.object = object;
     }
 
@@ -36,9 +36,9 @@ public class OqlInsertIntoParser extends OqlExprParser {
         List<SqlExpr> fieldsX = new ArrayList<>();
         for (SqlExpr field : fields) {
             SqlExpr fieldX = field;
-            SqlExpr realExpr = this.getRealExprByObject(field, object);
-            if (realExpr != field) {
-                fieldX = realExpr;
+            SqlExpr realFieldX = this.getRealExprByObject(field, object);
+            if (realFieldX != field) {
+                fieldX = realFieldX;
             }
             fieldsX.add(fieldX);
         }

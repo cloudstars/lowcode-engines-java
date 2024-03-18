@@ -7,7 +7,6 @@
       "desc": "根据创建人列表（仅父属性），返回的值作为一个整体",
       "name": "SelectTravelCreatorListById",
       "oql": "select creator from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
-      "realOql": "select creator(name, key) from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
       "sql": "select CREATOR_NAME, CREATOR_KEY from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
     },
     {

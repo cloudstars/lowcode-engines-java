@@ -34,7 +34,7 @@ public class SelectTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
         XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
-        assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.realOql));
+        assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
         OqlObjectSource objectSource = oqlStmt.getSelect().getFrom();

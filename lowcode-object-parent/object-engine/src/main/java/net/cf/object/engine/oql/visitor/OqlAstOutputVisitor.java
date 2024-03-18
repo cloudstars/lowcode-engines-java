@@ -26,7 +26,9 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
     public boolean visit(OqlFieldExpandExpr x) {
         String fieldName = x.getResolvedField().getName();
         this.print(fieldName);
-        this.printParenthesesAndAcceptList(x.getProperties(), ", ");
+        if (!x.isDefaultExpand()) {
+            this.printParenthesesAndAcceptList(x.getProperties(), ", ");
+        }
         return false;
     }
 

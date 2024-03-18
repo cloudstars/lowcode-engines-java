@@ -68,9 +68,8 @@ public final class OqlInsertAstVisitor extends OqlAstVisitorAdaptor {
     private void buildInsertColumns(OqlInsertStatement x) {
         List<SqlExpr> insertFields = x.getFields();
         for (SqlExpr insertField : insertFields) {
-            SqlExpr sqlExprX = this.buildSqlExpr(insertField);
-            if (sqlExprX instanceof OqlFieldExpandExpr) {
-                OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) sqlExprX;
+            if (insertField instanceof OqlFieldExpandExpr) {
+                OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) insertField;
                 XField field = fieldExpandExpr.getResolvedField();
                 List<SqlIdentifierExpr> properties = fieldExpandExpr.getProperties();
                 for (SqlIdentifierExpr property : properties) {
@@ -78,6 +77,7 @@ public final class OqlInsertAstVisitor extends OqlAstVisitorAdaptor {
                     this.builder.appendColumn(this.buildSqlExpr(propertyExpr));
                 }
             } else {
+                SqlExpr sqlExprX = this.buildSqlExpr(insertField);
                 this.builder.appendColumn(sqlExprX);
             }
         }
@@ -122,8 +122,8 @@ public final class OqlInsertAstVisitor extends OqlAstVisitorAdaptor {
                         SqlExpr itemValue = items.get(property.getName());
                         sqlValuesClause.addValue(itemValue);
                     }
-                } else if (insertField instanceof SqlVariantRefExpr) {
-                    SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) insertField;
+                } else if (insertValue instanceof SqlVariantRefExpr) {
+                    SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) insertValue;
                     String varName = variantRefExpr.getVarName();
                     for (SqlIdentifierExpr property : properties) {
                         SqlVariantRefExpr propVariableRefExpr = new SqlVariantRefExpr();
@@ -131,10 +131,10 @@ public final class OqlInsertAstVisitor extends OqlAstVisitorAdaptor {
                         sqlValuesClause.addValue(propVariableRefExpr);
                     }
                 } else {
-                    sqlValuesClause.addValue(this.buildSqlExpr(insertField));
+                    sqlValuesClause.addValue(this.buildSqlExpr(insertValue));
                 }
             } else {
-                sqlValuesClause.addValue(this.buildSqlExpr(insertField));
+                sqlValuesClause.addValue(this.buildSqlExpr(insertValue));
             }
         }
 

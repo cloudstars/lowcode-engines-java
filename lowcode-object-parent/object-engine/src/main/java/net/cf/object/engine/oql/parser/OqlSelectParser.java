@@ -30,7 +30,7 @@ public class OqlSelectParser extends SqlSelectParser {
     public OqlSelectParser(XObject object, Lexer lexer) {
         super(lexer);
         this.object = object;
-        this.exprParser = new OqlExprParser(lexer);
+        this.exprParser = new OqlExprParser(object, lexer);
     }
 
     /**
@@ -47,7 +47,7 @@ public class OqlSelectParser extends SqlSelectParser {
         for (SqlSelectItem selectItem : selectItems) {
             SqlSelectItem selectItemX = selectItem;
             SqlExpr expr = selectItem.getExpr();
-            SqlExpr realExpr = this.exprParser.getRealExprByObject(expr, object);
+            SqlExpr realExpr = this.exprParser.getRealExprByObject(expr, this.object);
             if (expr != realExpr) {
                 selectItemX = selectItem.cloneMe();
                 selectItemX.setExpr(realExpr);

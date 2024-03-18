@@ -25,9 +25,13 @@ public class OqlFieldExpandExpr extends AbstractOqlExprImpl {
      */
     protected final List<SqlIdentifierExpr> properties;
 
+    /**
+     * 是否默认全部展开，非field(xx, yy)的形式
+     */
+    protected boolean isDefaultExpand = false;
+
     public OqlFieldExpandExpr(XField resolvedField) {
         this(resolvedField, new ArrayList<>());
-
     }
 
     public OqlFieldExpandExpr(XField resolvedField, List<SqlIdentifierExpr> properties) {
@@ -38,7 +42,6 @@ public class OqlFieldExpandExpr extends AbstractOqlExprImpl {
     public XField getResolvedField() {
         return resolvedField;
     }
-
     public List<SqlIdentifierExpr> getProperties() {
         return properties;
     }
@@ -49,6 +52,14 @@ public class OqlFieldExpandExpr extends AbstractOqlExprImpl {
 
     public void addProperty(SqlIdentifierExpr field) {
         this.properties.add(field);
+    }
+
+    public boolean isDefaultExpand() {
+        return isDefaultExpand;
+    }
+
+    public void setDefaultExpand(boolean defaultExpand) {
+        isDefaultExpand = defaultExpand;
     }
 
     @Override

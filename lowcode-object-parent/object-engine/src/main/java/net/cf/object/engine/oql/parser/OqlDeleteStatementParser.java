@@ -10,7 +10,7 @@ public class OqlDeleteStatementParser extends OqlExprParser {
     private final XObject object;
 
     public OqlDeleteStatementParser(XObject object, Lexer lexer) {
-        super(lexer);
+        super(object, lexer);
         this.object = object;
     }
 
