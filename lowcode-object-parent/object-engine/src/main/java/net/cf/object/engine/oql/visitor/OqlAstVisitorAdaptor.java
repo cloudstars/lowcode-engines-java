@@ -141,6 +141,9 @@ public class OqlAstVisitorAdaptor implements OqlAstVisitor {
         x.setResolvedColumn(field.getColumnName());
         x.setResolvedOwnerTable(field.getOwner().getTableName());
         SqlIdentifierExpr sqlX = x.cloneMe();
+        if (field.isAutoGen()) {
+            sqlX.setAutoGen(true);
+        }
         sqlX.setName(field.getColumnName());
         sqlX.setResolvedColumn(field.getColumnName());
         sqlX.setResolvedOwnerTable(field.getOwner().getTableName());

@@ -25,6 +25,11 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
      */
     private String resolvedOwnerTable;
 
+    /**
+     * 是否自动生成的列
+     */
+    private boolean autoGen;
+
     public SqlIdentifierExpr() {
     }
 
@@ -76,5 +81,13 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
 
     public void setResolvedOwnerTable(String resolvedOwnerTable) {
         this.resolvedOwnerTable = resolvedOwnerTable;
+    }
+
+    public boolean isAutoGen() {
+        return autoGen;
+    }
+
+    public void setAutoGen(boolean autoGen) {
+        this.autoGen = autoGen;
     }
 }
