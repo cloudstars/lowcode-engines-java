@@ -55,10 +55,11 @@ public class MongoExprAstVisitor {
         if (sqlExpr instanceof SqlValuableExpr) {
             return visitValue((SqlValuableExpr)sqlExpr);
         }
-        return new RuntimeException("not support");
+        else if (sqlExpr instanceof SqlVariantRefExpr) {
+            return MongoDataConverter.convertVariable(sqlExpr, dataMap);
+        }
+        throw  new RuntimeException("not support");
     }
-
-
 
     private Object analyse(SqlExpr sqlExpr) {
         return analyse(sqlExpr, ContextInfo.DEFAULT);
@@ -110,7 +111,6 @@ public class MongoExprAstVisitor {
         if (mongoOperator.isCompare()) {
             Document document = new Document(mongoOperator.getExpr(), Arrays.asList(left, right));
             return new Document("$expr", document);
-
         }
         throw new RuntimeException("not support");
 

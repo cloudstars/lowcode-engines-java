@@ -10,6 +10,8 @@ public class MongoSelectItem {
 
     private String alias;
 
+    private boolean isAggr = false;
+
 
     public SqlExpr getSqlExpr() {
         return sqlExpr;
@@ -33,5 +35,13 @@ public class MongoSelectItem {
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public boolean isAggr() {
+        return isAggr;
+    }
+
+    public void setAggr(boolean aggr) {
+        isAggr = aggr;
     }
 }

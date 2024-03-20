@@ -1,6 +1,7 @@
 package net.cf.form.repository.mongo.data;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
@@ -15,11 +16,16 @@ public enum ExprTypeEnum {
     EXPRESSION,
     METHOD,
     PARAM,
-    COMMON;
+    COMMON,
+    AGGR
+    ;
 
 
 
     public static ExprTypeEnum match(SqlExpr sqlExpr) {
+        if (sqlExpr instanceof SqlAggregateExpr) {
+            return AGGR;
+        }
         if (sqlExpr instanceof SqlMethodInvokeExpr) {
             return METHOD;
         }
@@ -30,6 +36,15 @@ public enum ExprTypeEnum {
             return EXPRESSION;
         }
         return COMMON;
+    }
+
+
+    public boolean isMethod() {
+        return this == AGGR || this == METHOD;
+    }
+
+    public boolean shouldGetOriginExpression() {
+        return this.isMethod() || this ==  EXPRESSION;
     }
 
 }

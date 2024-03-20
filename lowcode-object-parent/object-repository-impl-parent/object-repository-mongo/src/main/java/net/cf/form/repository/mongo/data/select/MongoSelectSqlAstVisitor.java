@@ -30,8 +30,15 @@ public class MongoSelectSqlAstVisitor implements SqlAstVisitor {
         if (x.getWhere() != null) {
             builder.addWhere(x.getWhere());
         }
-
-
+        if (x.getLimit() != null) {
+            builder.addLimit(x.getLimit());
+        }
+        if (x.getOrderBy() != null) {
+            builder.addOrderBy(x.getOrderBy());
+        }
+        if (x.getGroupBy() != null) {
+            builder.addGroupBy(x.getGroupBy());
+        }
         return true;
     }
 
