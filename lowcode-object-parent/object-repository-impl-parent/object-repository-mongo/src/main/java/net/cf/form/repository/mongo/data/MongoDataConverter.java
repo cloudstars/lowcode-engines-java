@@ -42,9 +42,18 @@ public class MongoDataConverter {
 
     private static Object replaceVariable(String varKey, Map<String, Object> variables) {
         if (variables == null) {
-            return varKey;
+            return null;
         }
-        return variables.get(varKey);
+        if (!varKey.contains(".")) {
+            return variables.get(varKey);
+        }
+        String var = varKey.substring(0, varKey.indexOf("."));
+        String newVarKey = varKey.substring(varKey.indexOf(".") + 1);
+        if (variables.containsKey(var)) {
+            if (variables.get(var) instanceof Map) {
+                return replaceVariable(newVarKey, (Map<String, Object>) variables.get(var));
+            }
+        }
+        throw new RuntimeException("var error");
     }
-
 }

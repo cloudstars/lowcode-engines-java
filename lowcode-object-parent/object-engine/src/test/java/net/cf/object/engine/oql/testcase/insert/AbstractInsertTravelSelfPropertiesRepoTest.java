@@ -1,8 +1,8 @@
 package net.cf.object.engine.oql.testcase.insert;
 
 import net.cf.commons.test.db.dataset.IDataSet;
+import net.cf.commons.test.db.dataset.IDataSetOperator;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
-import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.object.TestObjectResolver;
 import net.cf.object.engine.object.TravelObject;
@@ -30,7 +30,7 @@ public abstract class AbstractInsertTravelSelfPropertiesRepoTest extends Abstrac
     private OqlEngine engine;
 
     @Resource
-    private MySqlDataSetOperator dataSetOperator;
+    private IDataSetOperator dataSetOperator;
 
     private IDataSet dataSet;
 
