@@ -1,6 +1,7 @@
 package net.cf.object.engine.oql.testcase.select;
 
 import net.cf.commons.test.db.dataset.IDataSet;
+import net.cf.commons.test.db.dataset.IDataSetOperator;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
 import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.object.engine.object.TestObjectResolver;
@@ -20,7 +21,7 @@ import java.util.Map;
 public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends AbstractOqlRepoTest implements SelectTravelSelfPropertiesTest {
 
     @Resource
-    private MySqlDataSetOperator dataSetOperator;
+    private IDataSetOperator dataSetOperator;
 
     private IDataSet dataSet;
 
