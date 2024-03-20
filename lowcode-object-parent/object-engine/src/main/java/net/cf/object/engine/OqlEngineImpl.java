@@ -2,8 +2,11 @@ package net.cf.object.engine;
 
 import net.cf.form.repository.ObjectRepository;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.*;
+import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.visitor.InsertStatementCheckOqlAstVisitor;
 import net.cf.object.engine.util.OqlStatementUtils;
@@ -76,20 +79,25 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     /**
-     * 转换查询结果
+     * 转换查询结果，将resultMap中的key（列名）转换为字段名
      *
      * @param stmt
      * @param resultMap
-     * @return
+     * @return 生成新的对象返回
      */
     private Map<String, Object> convertResultMap(OqlSelectStatement stmt, Map<String, Object> resultMap) {
         Map<String, Object> targetMap = null;
-        // 将resultMap中的key（列名）转换为字段名
         if (resultMap != null) {
-            List<SqlSelectItem> selectItems = stmt.getSelect().getSelectItems();
+            OqlSelect select = stmt.getSelect();
+            List<SqlSelectItem> selectItems = select.getSelectItems();
             targetMap = new HashMap<>();
             for (SqlSelectItem selectItem : selectItems) {
                 SqlExpr expr = selectItem.getExpr();
+                if (expr instanceof SqlAllColumnExpr) {
+                    this.convertAllResultValues(stmt, resultMap, targetMap);
+                    continue;
+                }
+
                 KeyValuePair keyValuePair = this.convertResultValue(expr, resultMap);
                 String targetKey = keyValuePair.key;
                 Object targetValue = keyValuePair.value;
@@ -182,7 +190,41 @@ public class OqlEngineImpl implements OqlEngine {
         return keyValuePair;
     }
 
+    /**
+     * 转换 "*" 表达式
+     *
+     * @param stmt
+     * @param resultMap
+     * @param targetMap
+     */
+    private void convertAllResultValues(OqlSelectStatement stmt, Map<String, Object> resultMap, Map<String, Object> targetMap) {
+        OqlObjectSource objectSource = stmt.getSelect().getFrom();
+        if (objectSource instanceof OqlExprObjectSource) {
+            XObject object = ((OqlExprObjectSource) objectSource).getResolvedObject();
+            List<XField> fields = object.getFields();
+            for (XField field : fields) {
+                String key = field.getName();
+                Object value = resultMap.get(field.getColumnName());
+                targetMap.put(key, value);
+            }
+        } else if (objectSource instanceof OqlSubQueryObjectSource) {
+            throw new UnsupportedOperationException("暂不支持的子查询的模型源");
+        } else {
+            String unsupportedObjectSourceType = objectSource.getClass().getName();
+            throw new UnsupportedOperationException("不支持的模型源：" + unsupportedObjectSourceType);
+        }
+    }
+
     private class KeyValuePair {
+
+        public KeyValuePair() {
+        }
+
+        public KeyValuePair(String key, Object value) {
+            this.key = key;
+            this.value = value;
+        }
+
         String key;
         Object value;
     }
@@ -220,8 +262,20 @@ public class OqlEngineImpl implements OqlEngine {
 
 
     @Override
-    public int[] createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps) {
-        return new int[0];
+    public int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> paramMaps) {
+        SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt);
+        int[] effectedRowsArray = this.repository.batchInsert(sqlStmt, paramMaps);
+        int effectedRows = 0;
+        for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
+            effectedRows += effectedRowsArray[i];
+        }
+        if (effectedRows == 0) {
+            logger.warn("未成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
+        } else {
+            logger.warn("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
+        }
+
+        return effectedRowsArray;
     }
 
     @Override
@@ -234,12 +288,12 @@ public class OqlEngineImpl implements OqlEngine {
     @Override
     public int modify(OqlUpdateStatement stmt, Map<String, Object> paramMap) {
         SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(stmt);
-        this.repository.update(sqlStmt, paramMap);
-        return 0;
+        int effectedRows = this.repository.update(sqlStmt, paramMap);
+        return effectedRows;
     }
 
     @Override
-    public int[] modifyList(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps) {
+    public int[] modifyList(OqlUpdateStatement statement, List<Map<String, Object>> paramMaps) {
         return new int[0];
     }
 
@@ -258,7 +312,7 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     @Override
-    public int[] removeList(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps) {
+    public int[] removeList(OqlDeleteStatement statement, List<Map<String, Object>> paramMaps) {
         return new int[0];
     }
 

@@ -4,14 +4,13 @@ import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
-import net.cf.object.engine.object.ObjectTestResolver;
-import net.cf.object.engine.object.ObjectTestUtils;
+import net.cf.object.engine.object.TestObjectResolver;
+import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
-import net.cf.object.engine.oql.testcase.Travel;
 import net.cf.object.engine.oql.util.OqlUtils;
 import net.cf.object.engine.util.OqlStatementUtils;
 import org.junit.Test;
@@ -27,12 +26,12 @@ public class SelectTravelSelfCountLimitStmtTest extends AbstractOqlTest implemen
 
     @Test
     @Override
-    public void testSelectCountTravel() {
-        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_COUNT_TRAVEL);
+    public void testSelectCountOneTravel() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_COUNT_ONE_TRAVEL);
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
@@ -40,10 +39,31 @@ public class SelectTravelSelfCountLimitStmtTest extends AbstractOqlTest implemen
         OqlObjectSource objectSource = oqlStmt.getSelect().getFrom();
         assert (objectSource instanceof OqlExprObjectSource);
         SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
-        assert (osExpr instanceof SqlIdentifierExpr && Travel.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
+        assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        ObjectTestUtils.resolveObject(objectSource);
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
+        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
+    }
+
+    @Test
+    @Override
+    public void testSelectCountStarTravel() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_COUNT_STAR_TRAVEL);
+        assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
+
+        // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
+        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
+        assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
+
+        // 断言解析出来的OQL的一些关键信息是符合预期的
+        OqlObjectSource objectSource = oqlStmt.getSelect().getFrom();
+        assert (objectSource instanceof OqlExprObjectSource);
+        SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
+        assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
+
+        // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
         SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
@@ -55,7 +75,7 @@ public class SelectTravelSelfCountLimitStmtTest extends AbstractOqlTest implemen
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
@@ -63,10 +83,9 @@ public class SelectTravelSelfCountLimitStmtTest extends AbstractOqlTest implemen
         OqlObjectSource objectSource = oqlStmt.getSelect().getFrom();
         assert (objectSource instanceof OqlExprObjectSource);
         SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
-        assert (osExpr instanceof SqlIdentifierExpr && Travel.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
+        assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        ObjectTestUtils.resolveObject(objectSource);
         SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
@@ -78,7 +97,7 @@ public class SelectTravelSelfCountLimitStmtTest extends AbstractOqlTest implemen
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
@@ -86,10 +105,9 @@ public class SelectTravelSelfCountLimitStmtTest extends AbstractOqlTest implemen
         OqlObjectSource objectSource = oqlStmt.getSelect().getFrom();
         assert (objectSource instanceof OqlExprObjectSource);
         SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
-        assert (osExpr instanceof SqlIdentifierExpr && Travel.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
+        assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        ObjectTestUtils.resolveObject(objectSource);
         SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }

@@ -1,6 +1,5 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 /**
@@ -9,10 +8,11 @@ import net.cf.object.engine.oql.visitor.OqlAstVisitor;
  *
  * @author clouds
  */
-public class OqlSubQueryObjectSource extends AbstractOqlObjectImpl {
+public class OqlSubQueryObjectSource extends AbstractOqlObjectSourceImpl {
 
     @Override
     protected void accept0(OqlAstVisitor visitor) {
 
     }
+
 }

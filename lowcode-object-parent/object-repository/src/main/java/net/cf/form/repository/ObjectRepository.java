@@ -59,7 +59,6 @@ public interface ObjectRepository {
      */
     int update(SqlUpdateStatement statement, Map<String, Object> paramMap);
 
-
     /**
      * 批量更新记录，并携带参数
      *

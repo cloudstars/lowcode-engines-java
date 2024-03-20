@@ -100,11 +100,13 @@ public final class OqlUpdateAstVisitor extends OqlAstVisitorAdaptor {
             SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) updateValue;
             String varName = variantRefExpr.getVarName();
             for (SqlIdentifierExpr property : properties) {
+                String propVarName = property.getName();
+                OqlPropertyExpr propertyExpr = new OqlPropertyExpr(field, propVarName);
+                SqlExpr updateItem = this.buildSqlExpr(propertyExpr);
                 SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
-                String propVarName = varName + "." + property.getName();
-                sqlSetItem.setColumn(new SqlIdentifierExpr(propVarName));
+                sqlSetItem.setColumn(updateItem);
                 SqlVariantRefExpr propVariableRefExpr = new SqlVariantRefExpr();
-                propVariableRefExpr.setVarName(propVarName);
+                propVariableRefExpr.setVarName(varName + "." + propVarName);
                 sqlSetItem.setValue(propVariableRefExpr);
                 this.builder.appendSetItem(sqlSetItem);
             }

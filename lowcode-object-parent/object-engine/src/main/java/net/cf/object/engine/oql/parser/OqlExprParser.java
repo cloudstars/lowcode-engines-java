@@ -38,6 +38,7 @@ public class OqlExprParser extends SqlExprParser {
     protected OqlExprObjectSource parseExprObjectSource() {
         String objectName = this.lexer.stringVal();
         OqlExprObjectSource objectSource = new OqlExprObjectSource(objectName);
+        objectSource.setResolvedObject(object);
         this.lexer.nextToken();
         if (this.lexer.token() == Token.AS) {
             this.lexer.nextToken();

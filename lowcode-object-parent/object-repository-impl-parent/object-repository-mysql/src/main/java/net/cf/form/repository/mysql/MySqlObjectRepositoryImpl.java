@@ -79,8 +79,21 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     }
 
     @Override
-    public int[] batchInsert(SqlInsertStatement statement, List<Map<String, Object>> paramMapList) {
-        return new int[0];
+    public int[] batchInsert(SqlInsertStatement statement, List<Map<String, Object>> paramMaps) {
+        String sql = SqlUtils.toSqlText(statement);
+        int size = paramMaps.size();
+        MapSqlParameterSource[] parameterSources = new AdvancedMapSqlParameterSource[size];
+        for (int i = 0; i < size; i++) {
+            parameterSources[i] = new AdvancedMapSqlParameterSource(paramMaps.get(i));
+        }
+        int[] effectedRowsArray = this.jdbcTemplate.batchUpdate(sql, parameterSources);
+        int effectedRows = 0;
+        for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
+            effectedRows += effectedRowsArray[i];
+        }
+        logger.info("数据插入成功，影响行数：{}", effectedRows);
+
+        return effectedRowsArray;
     }
 
     @Override

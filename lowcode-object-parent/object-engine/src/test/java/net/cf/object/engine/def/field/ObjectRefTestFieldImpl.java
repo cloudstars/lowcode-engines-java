@@ -1,6 +1,6 @@
 package net.cf.object.engine.def.field;
 
-import net.cf.object.engine.def.ObjectTestImpl;
+import net.cf.object.engine.def.TestObjectImpl;
 import net.cf.object.engine.object.XObjectRefField;
 
 /**
@@ -8,7 +8,7 @@ import net.cf.object.engine.object.XObjectRefField;
  *
  * @author clouds
  */
-public class ObjectRefFieldTestImpl extends FieldTestImpl implements XObjectRefField {
+public class ObjectRefTestFieldImpl extends TestFieldImpl implements XObjectRefField {
 
     /**
      * 模型引用的类型
@@ -18,21 +18,21 @@ public class ObjectRefFieldTestImpl extends FieldTestImpl implements XObjectRefF
     /**
      * 引用的模型
      */
-    private ObjectTestImpl refObject;
+    private TestObjectImpl refObject;
 
     /**
      * 是否允许引用多个相关表记录，当模型引用类型是相关表是有效
      */
     private boolean isMultiLookupRef;
 
-    public ObjectRefFieldTestImpl(FieldDef fieldDef, ObjectRefType objectRefType, ObjectTestImpl refObject) {
+    public ObjectRefTestFieldImpl(FieldDef fieldDef, ObjectRefType objectRefType, TestObjectImpl refObject) {
         super(refObject, fieldDef);
         this.objectRefType = objectRefType;
         this.refObject = refObject;
     }
 
     @Override
-    public ObjectTestImpl getRefObject() {
+    public TestObjectImpl getRefObject() {
         return this.refObject;
     }
 

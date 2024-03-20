@@ -4,10 +4,16 @@
   "desc": "测试点：count、limit用于分页的查询，不含子表字段、相关表中的字段",
   "oqls": [
     {
-      "desc": "Count查询出差记录数量",
-      "name": "SelectCountTravel",
+      "desc": "Count1查询出差记录数量",
+      "name": "SelectCountOneTravel",
       "oql": "select count(1) from Travel",
       "sql": "select count(1) from TRAVEL"
+    },
+    {
+      "desc": "Count*查询出差记录数量",
+      "name": "SelectCountStarTravel",
+      "oql": "select count(*) from Travel",
+      "sql": "select count(*) from TRAVEL"
     },
     {
       "desc": "Limit限制返回条数",

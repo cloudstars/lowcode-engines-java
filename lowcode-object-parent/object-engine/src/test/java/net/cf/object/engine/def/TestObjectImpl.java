@@ -1,7 +1,7 @@
 package net.cf.object.engine.def;
 
 import net.cf.object.engine.def.field.FieldDef;
-import net.cf.object.engine.def.field.FieldTestImpl;
+import net.cf.object.engine.def.field.TestFieldImpl;
 import net.cf.object.engine.object.XObject;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class ObjectTestImpl implements XObject<FieldTestImpl> {
+public class TestObjectImpl implements XObject<TestFieldImpl> {
 
     /**
      * 模型定义
@@ -24,23 +24,23 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
     /**
      * 主键字段
      */
-    private FieldTestImpl primaryField = null;
+    private TestFieldImpl primaryField = null;
 
     /**
      * 模型字段列表
      */
-    private final List<FieldTestImpl> fields = new ArrayList<>();
+    private final List<TestFieldImpl> fields = new ArrayList<>();
 
     /**
      * 模型字段映射表，方便通过字段名称查找
      */
-    private final Map<String, FieldTestImpl> fieldMap = new HashMap<>();
+    private final Map<String, TestFieldImpl> fieldMap = new HashMap<>();
 
-    public ObjectTestImpl(ObjectDef objectDef) {
+    public TestObjectImpl(ObjectDef objectDef) {
         this.objectDef = objectDef;
         List<FieldDef> fieldDefs = objectDef.getFields();
         for (FieldDef fieldDef : fieldDefs) {
-            FieldTestImpl field = new FieldTestImpl(this, fieldDef);
+            TestFieldImpl field = new TestFieldImpl(this, fieldDef);
             this.fields.add(field);
             this.fieldMap.put(field.getName(), field);
 
@@ -56,17 +56,17 @@ public class ObjectTestImpl implements XObject<FieldTestImpl> {
     }
 
     @Override
-    public List<FieldTestImpl> getFields() {
+    public List<TestFieldImpl> getFields() {
         return this.fields;
     }
 
     @Override
-    public FieldTestImpl getField(String fieldCode) {
+    public TestFieldImpl getField(String fieldCode) {
         return this.fieldMap.get(fieldCode);
     }
 
     @Override
-    public FieldTestImpl getPrimaryField() {
+    public TestFieldImpl getPrimaryField() {
         return this.primaryField;
     }
 

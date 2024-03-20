@@ -3,7 +3,7 @@ package net.cf.object.engine.object;
 import com.alibaba.fastjson.JSONObject;
 import net.cf.commons.test.util.FileTestUtils;
 import net.cf.object.engine.def.ObjectDef;
-import net.cf.object.engine.def.ObjectTestImpl;
+import net.cf.object.engine.def.TestObjectImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,14 +13,14 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class ObjectTestResolver {
+public class TestObjectResolver {
 
     /**
      * 模型映射表
      */
-    private final static Map<String, ObjectTestImpl> objectMap = new HashMap<>();
+    private final static Map<String, TestObjectImpl> objectMap = new HashMap<>();
 
-    private ObjectTestResolver() {
+    private TestObjectResolver() {
     }
 
     static  {
@@ -30,7 +30,7 @@ public class ObjectTestResolver {
         Map<String, String> objectsJson = FileTestUtils.loadTextsFromClasspath("object/*.json");
         for (Map.Entry<String, String> entry : objectsJson.entrySet()) {
             ObjectDef objectDef = JSONObject.parseObject(entry.getValue(), ObjectDef.class);
-            ObjectTestImpl object = new ObjectTestImpl(objectDef);
+            TestObjectImpl object = new TestObjectImpl(objectDef);
             objectMap.put(object.getName(), object);
         }
     }
@@ -41,8 +41,8 @@ public class ObjectTestResolver {
      * @param objectCode
      * @return
      */
-    public static ObjectTestImpl resolveObject(String objectCode) {
-        ObjectTestImpl object = objectMap.get(objectCode);
+    public static TestObjectImpl resolveObject(String objectCode) {
+        TestObjectImpl object = objectMap.get(objectCode);
         assert (object != null);
         return object;
     }

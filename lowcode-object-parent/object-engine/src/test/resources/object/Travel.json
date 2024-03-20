@@ -45,9 +45,11 @@
       "dataLength": 512
     },
     {
-      "type": "DetailObject",
+      "type": "ObjectRef",
+      "refType": "DETAIL",
       "desc": "出差行程",
       "name": "trips",
+      "columnName": "TRIPS",
       "tableName": "TRAVEL_TRIP",
       "primaryFieldName": "tripId",
       "masterFieldName": "applyId",
@@ -95,7 +97,6 @@
           "type": "User",
           "desc": "创建人",
           "name": "creator",
-          "columnName": "CREATOR",
           "dataType": "Object",
           "defaultValue": {
             "desc": "系统管理员",
@@ -105,14 +106,14 @@
             {
               "desc": "名称",
               "name": "name",
-              "columnName": "NAME",
+              "columnName": "CREATOR_NAME",
               "dataType": "String",
               "dataLength": 32
             },
             {
               "desc": "编号",
               "name": "key",
-              "columnName": "KEY",
+              "columnName": "CREATOR_KEY",
               "dataType": "String",
               "dataLength": 20
             }
@@ -130,7 +131,6 @@
           "type": "User",
           "desc": "更新人",
           "name": "modifier",
-          "columnName": "MODIFIER",
           "dataType": "Object",
           "defaultValue": {
             "desc": "系统管理员",
@@ -140,14 +140,14 @@
             {
               "desc": "名称",
               "name": "name",
-              "columnName": "NAME",
+              "columnName": "MODIFIER_NAME",
               "dataType": "String",
               "dataLength": 32
             },
             {
               "desc": "编号",
               "name": "key",
-              "columnName": "KEY",
+              "columnName": "MODIFIER_KEY",
               "dataType": "String",
               "dataLength": 20
             }
@@ -167,7 +167,6 @@
       "type": "User",
       "desc": "创建人",
       "name": "creator",
-      "columnName": "CREATOR",
       "dataType": "Object",
       "defaultValue": {
         "desc": "系统管理员",
@@ -177,14 +176,14 @@
         {
           "desc": "名称",
           "name": "name",
-          "columnName": "NAME",
+          "columnName": "CREATOR_NAME",
           "dataType": "String",
           "dataLength": 32
         },
         {
           "desc": "编号",
           "name": "key",
-          "columnName": "KEY",
+          "columnName": "CREATOR_KEY",
           "dataType": "String",
           "dataLength": 20
         }
@@ -202,7 +201,6 @@
       "type": "User",
       "desc": "更新人",
       "name": "modifier",
-      "columnName": "MODIFIER",
       "dataType": "Object",
       "defaultValue": {
         "desc": "系统管理员",
@@ -212,14 +210,14 @@
         {
           "desc": "名称",
           "name": "name",
-          "columnName": "NAME",
+          "columnName": "MODIFIER_NAME",
           "dataType": "String",
           "dataLength": 32
         },
         {
           "desc": "编号",
           "name": "key",
-          "columnName": "KEY",
+          "columnName": "MODIFIER_KEY",
           "dataType": "String",
           "dataLength": 20
         }

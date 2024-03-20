@@ -3,13 +3,11 @@ package net.cf.object.engine.oql.testcase.select;
 import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
 import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
-import net.cf.object.engine.OqlEngine;
-import net.cf.object.engine.object.ObjectTestResolver;
-import net.cf.object.engine.object.ObjectTestUtils;
+import net.cf.object.engine.object.TestObjectResolver;
+import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.oql.testcase.Travel;
 import net.cf.object.engine.oql.util.OqlUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -20,9 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends AbstractOqlRepoTest implements SelectTravelSelfPropertiesTest {
-
-    @Resource
-    private OqlEngine engine;
 
     @Resource
     private MySqlDataSetOperator dataSetOperator;
@@ -47,9 +42,8 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelCreatorListById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_CREATOR_LIST_BY_ID);
-        XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
-        ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
         List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
         assert (dataList != null && dataList.size() == 1);
         assert (dataList.get(0).containsKey("creator"));
@@ -62,9 +56,8 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelExpandCreatorListById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_EXPAND_CREATOR_LIST_BY_ID);
-        XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
-        ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
         List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
         assert (dataList != null && dataList.size() == 1);
         assert (dataList.get(0).containsKey("creator"));
@@ -77,9 +70,8 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelSingleCreatorListById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_SINGLE_CREATOR_LIST_BY_ID);
-        XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
-        ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
         List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
         assert (dataList != null && dataList.size() == 1);
         assert (dataList.get(0).containsKey("creator.name") && dataList.get(0).containsKey("creator.key") );
@@ -90,9 +82,8 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelListBySingleCreator() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST_BY_SINGLE_CREATOR);
-        XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
-        ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
         List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
         assert (dataList != null && dataList.size() == 1);
     }
@@ -100,9 +91,8 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelListBySingleCreatorVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST_BY_SINGLE_CREATOR_VARS);
-        XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(object, oqlInfo.oql);
-        ObjectTestUtils.resolveObject(oqlStmt.getSelect().getFrom());
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("creator.name", "张三");
         paramMap.put("creator.key", "zhangsan");

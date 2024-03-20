@@ -1,14 +1,19 @@
 package net.cf.object.engine.oql.visitor;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.*;
-import net.cf.form.repository.sql.ast.expr.op.*;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
+import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.visitor.VisitorFeature;
 import net.cf.object.engine.object.XField;
-import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlFieldExpandExpr;
 import net.cf.object.engine.oql.ast.OqlObjectSource;

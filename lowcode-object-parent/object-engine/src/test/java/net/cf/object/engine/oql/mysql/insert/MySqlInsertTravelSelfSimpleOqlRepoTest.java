@@ -24,4 +24,10 @@ public class MySqlInsertTravelSelfSimpleOqlRepoTest extends AbstractInsertTravel
     public void testInsertTravelVars() {
         super.testInsertTravelVars();
     }
+
+    @Test
+    @Override
+    public void testBatchInsertTravelVars() {
+        super.testBatchInsertTravelVars();
+    }
 }

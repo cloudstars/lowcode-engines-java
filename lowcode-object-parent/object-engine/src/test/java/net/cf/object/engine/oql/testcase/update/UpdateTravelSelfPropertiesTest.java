@@ -9,28 +9,28 @@ public interface UpdateTravelSelfPropertiesTest {
 
     String OQL_FILE_PATH = "oql/update/UpdateTravelSelfProperties.json";
 
-    String OQL_UPDATE_TRAVEL_CREATOR_BY_ID = "UpdateTravelCreatorById";
+    String OQL_UPDATE_TRAVEL_MODIFIER_BY_ID = "UpdateTravelModifierById";
 
-    String OQL_UPDATE_TRAVEL_CREATOR_BY_ID_VARS = "UpdateTravelCreatorByIdVars";
+    String OQL_UPDATE_TRAVEL_MODIFIER_BY_ID_VARS = "UpdateTravelModifierByIdVars";
 
-    String OQL_UPDATE_TRAVEL_EXPAND_CREATOR_BY_ID = "UpdateTravelExpandCreatorById";
+    String OQL_UPDATE_TRAVEL_EXPAND_MODIFIER_BY_ID = "UpdateTravelExpandModifierById";
 
-    String OQL_UPDATE_TRAVEL_EXPAND_CREATOR_BY_ID_VARS = "UpdateTravelExpandCreatorByIdVars";
+    String OQL_UPDATE_TRAVEL_EXPAND_MODIFIER_BY_ID_VARS = "UpdateTravelExpandModifierByIdVars";
 
-    String OQL_UPDATE_TRAVEL_SINGLE_CREATOR_BY_ID = "UpdateTravelSingleCreatorById";
+    String OQL_UPDATE_TRAVEL_SINGLE_MODIFIER_BY_ID = "UpdateTravelSingleModifierById";
 
-    String OQL_UPDATE_TRAVEL_SINGLE_CREATOR_BY_ID_VARS = "UpdateTravelSingleCreatorByIdVars";
+    String OQL_UPDATE_TRAVEL_SINGLE_MODIFIER_BY_ID_VARS = "UpdateTravelSingleModifierByIdVars";
 
-    void testUpdateTravelCreatorById();
+    void testUpdateTravelModifierById();
 
-    void testUpdateTravelCreatorByIdVars();
+    void testUpdateTravelModifierByIdVars();
 
-    void testUpdateTravelExpandCreatorById();
+    void testUpdateTravelExpandModifierById();
 
-    void testUpdateTravelExpandCreatorByIdVars();
+    void testUpdateTravelExpandModifierByIdVars();
 
-    void testUpdateTravelSingleCreatorById();
+    void testUpdateTravelSingleModifierById();
 
-    void testUpdateTravelSingleCreatorByIdVars();
+    void testUpdateTravelSingleModifierByIdVars();
 
 }

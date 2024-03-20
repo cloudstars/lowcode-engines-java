@@ -2,6 +2,7 @@ package net.cf.object.engine.sqlbuilder.select;
 
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
 import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
@@ -47,10 +48,16 @@ public final class OqlSelectAstVisitor extends OqlAstVisitorAdaptor {
                     sqlSelectItem.setExpr(this.buildSqlExpr(propertyExpr));
                     this.builder.appendSelectItem(sqlSelectItem);
                 }
+            } else if (sqlExprX instanceof SqlAllColumnExpr) {
+                List<XField> fields = this.resolvedObject.getFields();
+                for (XField field : fields) {
+                    SqlSelectItem sqlSelectItem = new SqlSelectItem();
+                    SqlIdentifierExpr identifierExpr = new SqlIdentifierExpr(field.getColumnName());
+                    sqlSelectItem.setExpr(identifierExpr);
+                    this.builder.appendSelectItem(sqlSelectItem);
+                }
             } else {
-                SqlSelectItem sqlSelectItem = selectItem.cloneMe();
-                sqlSelectItem.setExpr(sqlExprX);
-                this.builder.appendSelectItem(sqlSelectItem);
+                this.builder.appendSelectItem(new SqlSelectItem(sqlExprX));
             }
         }
 

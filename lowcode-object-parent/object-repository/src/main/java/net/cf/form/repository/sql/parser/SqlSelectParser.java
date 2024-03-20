@@ -2,7 +2,10 @@ package net.cf.form.repository.sql.parser;
 
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.*;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 

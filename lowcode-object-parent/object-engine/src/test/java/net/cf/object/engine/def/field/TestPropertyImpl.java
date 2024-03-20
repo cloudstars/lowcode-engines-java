@@ -9,34 +9,22 @@ import net.cf.object.engine.util.ObjectConstants;
  *
  * @author clouds
  */
-public class PropertyTestImpl implements XProperty {
+public class TestPropertyImpl implements XProperty {
 
     /**
      * 子属性归属的字段
      */
-    private final FieldTestImpl owner;
+    private final TestFieldImpl owner;
 
     private final PropertyDef propertyDef;
 
-    /*private String name;
-
-    private String code;
-
-    private String columnName;
-
-    private DataType dataType;
-
-    private Integer dataLength;
-
-    private Integer dataPrecision;*/
-
-    public PropertyTestImpl(FieldTestImpl field, PropertyDef propertyDef) {
+    public TestPropertyImpl(TestFieldImpl field, PropertyDef propertyDef) {
         this.owner = field;
         this.propertyDef = propertyDef;
     }
 
     @Override
-    public FieldTestImpl getOwner() {
+    public TestFieldImpl getOwner() {
         return this.owner;
     }
 
@@ -53,11 +41,16 @@ public class PropertyTestImpl implements XProperty {
     @Override
     public String getColumnName() {
         String columnName = this.propertyDef.getColumnName();
+        // 如果属性上配置了列名，则直接返回
         if (columnName == null) {
-            columnName = this.propertyDef.getName();
+            String fieldColumnName = this.owner.getColumnName();
+            if (fieldColumnName == null) {
+                fieldColumnName = this.owner.getName();
+            }
+            columnName = fieldColumnName + ObjectConstants.FIELD_SEPARATOR + this.propertyDef.getName();
         }
 
-        return this.owner.getColumnName() + ObjectConstants.FIELD_SEPARATOR + columnName;
+        return columnName;
     }
 
     @Override

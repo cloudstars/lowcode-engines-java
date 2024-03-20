@@ -15,8 +15,14 @@ public class MySqlSelectTravelSelfCountLimitOqlTest extends AbstractSelectTravel
 
     @Test
     @Override
-    public void testSelectCountTravel() {
-        super.testSelectCountTravel();
+    public void testSelectCountOneTravel() {
+        super.testSelectCountOneTravel();
+    }
+
+    @Test
+    @Override
+    public void testSelectCountStarTravel() {
+        super.testSelectCountStarTravel();
     }
 
     @Test

@@ -9,11 +9,14 @@ public interface SelectTravelSelfCountLimitTest {
 
     String OQL_FILE_PATH = "oql/select/SelectTravelSelfCountLimit.json";
 
-    String OQL_SELECT_COUNT_TRAVEL = "SelectCountTravel";
+    String OQL_SELECT_COUNT_ONE_TRAVEL = "SelectCountOneTravel";
+    String OQL_SELECT_COUNT_STAR_TRAVEL = "SelectCountStarTravel";
     String OQL_SELECT_TRAVEL_WITH_LIMIT = "SelectTravelWithLimit";
     String OQL_SELECT_TRAVEL_WITH_LIMIT_OFFSET = "SelectTravelWithLimitOffset";
 
-    void testSelectCountTravel();
+    void testSelectCountOneTravel();
+
+    void testSelectCountStarTravel();
 
     void testSelectTravelWithLimit();
 

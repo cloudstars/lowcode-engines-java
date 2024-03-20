@@ -3,21 +3,18 @@ package net.cf.object.engine.oql.testcase.insert;
 import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
 import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
-import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
-import net.cf.object.engine.OqlEngine;
-import net.cf.object.engine.object.ObjectTestResolver;
-import net.cf.object.engine.object.ObjectTestUtils;
+import net.cf.object.engine.object.TestObjectResolver;
+import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.oql.testcase.Travel;
 import net.cf.object.engine.oql.util.OqlUtils;
-import net.cf.object.engine.util.OqlStatementUtils;
 import org.junit.After;
 import org.junit.Before;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +25,6 @@ import java.util.Map;
  * @author clouds
  */
 public abstract class AbstractInsertTravelSelfSimpleRepoTest extends AbstractOqlRepoTest implements InsertTravelSelfSimpleTest {
-
-    @Resource
-    private OqlEngine engine;
 
     @Resource
     private MySqlDataSetOperator dataSetOperator;
@@ -56,21 +50,18 @@ public abstract class AbstractInsertTravelSelfSimpleRepoTest extends AbstractOql
     public void testInsertTravel() {
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL);
-            XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(object, oqlInfo.oql);
-            ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
             int effectedRows = this.engine.create(oqlStmt);
             assert (effectedRows == 1);
         }
 
         {
             // 重新查出来作断言
-            String selectOql = "select * from Travel";
-            XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+            String selectOql = "select applyId, applyName from Travel";
+            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(object, selectOql);
-            ObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
-            SqlSelectStatement selectSqlStmt = OqlStatementUtils.toSqlSelect(selectOqlStmt);
-            List<Map<String, Object>> dataList = this.repository.selectList(selectSqlStmt);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
         }
     }
@@ -79,24 +70,55 @@ public abstract class AbstractInsertTravelSelfSimpleRepoTest extends AbstractOql
     public void testInsertTravelVars() {
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL);
-            XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(object, oqlInfo.oql);
-            ObjectTestUtils.resolveObject(oqlStmt.getObjectSource());
-            Map<String, Object> dataMap = new HashMap<>();
-            dataMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
-            dataMap.put("applyName", "测试申请单的名称");
-            int effectedRows = this.engine.create(oqlStmt, dataMap);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
+            paramMap.put("applyName", "测试申请单的名称");
+            int effectedRows = this.engine.create(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }
 
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel";
-            XObject object = ObjectTestResolver.resolveObject(Travel.NAME);
+            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(object, selectOql);
-            ObjectTestUtils.resolveObject(selectOqlStmt.getSelect().getFrom());
             List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
         }
     }
+
+
+    /**
+     * 测试批量插入出差记录（带变量）
+     */
+    public void testBatchInsertTravelVars() {
+        {
+            OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_VARS);
+            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
+            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(object, oqlInfo.oql);
+            Map<String, Object> paramMap1 = new HashMap<>();
+            paramMap1.put("applyId", "634743DSS#FEL3232-323KLFJFDS-323FDSD");
+            paramMap1.put("applyName", "测试申请单的名称");
+            Map<String, Object> paramMap2 = new HashMap<>();
+            paramMap2.put("applyId", "734743DSS#FEL3232-323KLFJFDS-323FDSD");
+            paramMap2.put("applyName", "测试申请单的名称");
+            int[] effectedRowsArray = this.engine.createList(oqlStmt, Arrays.asList(paramMap1, paramMap2));
+            assert (effectedRowsArray.length == 2);
+            for (int i = 0; i < effectedRowsArray.length; i++) {
+                assert (effectedRowsArray[i] == 1);
+            }
+        }
+
+        {
+            // 重新查出来作断言
+            String selectOql = "select applyId, applyName from Travel";
+            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(object, selectOql);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            assert (dataList != null && dataList.size() == 4);
+        }
+    }
+
 }
