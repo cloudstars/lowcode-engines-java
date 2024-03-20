@@ -16,6 +16,7 @@ import java.util.List;
  *
  * @param <S> SQL 语句
  */
+@Deprecated
 public abstract class AbstractDocumentsBuilder<S extends SqlStatement> {
 
     protected AbstractDocumentsBuilder() {

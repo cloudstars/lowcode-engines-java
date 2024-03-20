@@ -1,0 +1,18 @@
+package net.cf.form.repository.mongo.data;
+
+import java.util.Map;
+
+public class MongoUtils {
+
+    /**
+     * 判断是否为变量形式
+     * @param paramMap
+     * @return
+     */
+    public static boolean isVariableEnable(Map<String, Object> paramMap) {
+        if (paramMap != null && paramMap.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+}
