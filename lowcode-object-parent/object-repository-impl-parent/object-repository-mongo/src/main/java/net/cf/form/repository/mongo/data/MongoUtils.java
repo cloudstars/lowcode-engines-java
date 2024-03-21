@@ -1,5 +1,7 @@
 package net.cf.form.repository.mongo.data;
 
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+
 import java.util.Map;
 
 public class MongoUtils {
@@ -14,5 +16,9 @@ public class MongoUtils {
             return true;
         }
         return false;
+    }
+
+    public static String getOriginExpr(SqlExpr sqlExpr) {
+        return sqlExpr.toString();
     }
 }

@@ -127,7 +127,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         for (MongoSelectItem selectItem : this.selectItems) {
             if (selectItem.getExprEnum().shouldGetOriginExpression()) {
                 if (selectItem.getAlias() == null) {
-                    String originExpr = ((SqlMethodInvokeExpr)selectItem.getSqlExpr()).toString();
+                    String originExpr = MongoUtils.getOriginExpr(selectItem.getSqlExpr());
                     selectItem.setAlias(originExpr);
                     selectItem.setAggr(isAggr(selectItem));
                 }
@@ -137,8 +137,12 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
 
+    /**
+     * todo 判断是否是聚合操作
+     * @param selectItem
+     * @return
+     */
     private boolean isAggr(MongoSelectItem selectItem) {
-
         if (selectItem.getExprEnum() == ExprTypeEnum.AGGR) {
             return true;
         }
@@ -188,7 +192,17 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             groupDocInfo.put("_id", null);
         } else {
             // todo
-            throw new RuntimeException("not support");
+            Document idDoc = new Document();
+            for (SqlExpr sqlExpr : this.groupBy.getItems()) {
+                String originExpr = MongoUtils.getOriginExpr(sqlExpr);
+                ExprTypeEnum exprTypeEnum = ExprTypeEnum.match(sqlExpr);
+                if (exprTypeEnum == ExprTypeEnum.PARAM || exprTypeEnum == ExprTypeEnum.COMMON) {
+                    idDoc.put(originExpr, "$" + originExpr);
+                } else {
+                    throw new RuntimeException("not support");
+                }
+            }
+            groupDocInfo.put("_id", idDoc);
         }
 
         for (MongoSelectItem selectItem : aggrItems) {
@@ -355,7 +369,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         // todo
         if (selectItem.getExprEnum() == ExprTypeEnum.PARAM) {
             SqlIdentifierExpr sqlIdentifierExpr = (SqlIdentifierExpr) selectItem.getSqlExpr();
-            fieldProject.put(sqlIdentifierExpr.getName(), sqlIdentifierExpr.getName());
+            fieldProject.put(sqlIdentifierExpr.getName(), "$_id."+sqlIdentifierExpr.getName());
         }
 
     }

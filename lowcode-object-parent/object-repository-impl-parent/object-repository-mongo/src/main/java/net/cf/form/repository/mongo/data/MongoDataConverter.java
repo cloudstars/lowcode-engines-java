@@ -44,9 +44,15 @@ public class MongoDataConverter {
         if (variables == null) {
             return null;
         }
+        // 如果直接能获取值，则返回
+        if (variables.containsKey(varKey)) {
+            return variables.get(varKey);
+        }
+        // 如果没有子路径，直接从变量中获取值，没有则返回空
         if (!varKey.contains(".")) {
             return variables.get(varKey);
         }
+        // 如果没有获取值，且含有 ".", 则进行路径解析
         String var = varKey.substring(0, varKey.indexOf("."));
         String newVarKey = varKey.substring(varKey.indexOf(".") + 1);
         if (variables.containsKey(var)) {
