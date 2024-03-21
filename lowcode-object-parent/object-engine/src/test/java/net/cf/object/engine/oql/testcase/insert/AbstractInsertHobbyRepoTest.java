@@ -1,6 +1,7 @@
 package net.cf.object.engine.oql.testcase.insert;
 
 import net.cf.commons.test.db.dataset.IDataSet;
+import net.cf.commons.test.db.dataset.IDataSetOperator;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
 import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.object.engine.object.TestObjectResolver;
@@ -24,7 +25,7 @@ import java.util.Map;
 public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest implements InsertHobbyTest {
 
     @Resource
-    private MySqlDataSetOperator dataSetOperator;
+    private IDataSetOperator dataSetOperator;
 
     private IDataSet dataSet;
 

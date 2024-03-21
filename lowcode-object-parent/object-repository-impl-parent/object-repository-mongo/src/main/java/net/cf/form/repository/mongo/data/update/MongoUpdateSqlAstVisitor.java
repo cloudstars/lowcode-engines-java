@@ -3,8 +3,8 @@ package net.cf.form.repository.mongo.data.update;
 import net.cf.form.repository.mongo.data.ExprTypeEnum;
 import net.cf.form.repository.mongo.data.MongoUpdateItem;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
-import net.cf.form.repository.sql.ast.statement.SqlSelect;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
+import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 public class MongoUpdateSqlAstVisitor implements SqlAstVisitor {
@@ -23,7 +23,7 @@ public class MongoUpdateSqlAstVisitor implements SqlAstVisitor {
     }
 
     @Override
-    public boolean visit(SqlSelect x) {
+    public boolean visit(SqlUpdateStatement x) {
         if (x.getWhere() != null) {
             builder.addWhere(x.getWhere());
         }
