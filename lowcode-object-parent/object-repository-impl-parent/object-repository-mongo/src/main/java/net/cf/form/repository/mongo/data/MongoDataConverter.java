@@ -30,6 +30,9 @@ public class MongoDataConverter {
 
     public static Object convertVariable(SqlExpr sqlExpr, Map<String, Object> varMap) {
         if (sqlExpr instanceof SqlVariantRefExpr) {
+            if (varMap == null || varMap.size() == 0) {
+                return null;
+            }
             SqlVariantRefExpr sqlVariantRefExpr = (SqlVariantRefExpr) sqlExpr;
             String var = sqlVariantRefExpr.getName();
             if ((var.startsWith("#{") || var.startsWith("${")) && var.endsWith("}")) {

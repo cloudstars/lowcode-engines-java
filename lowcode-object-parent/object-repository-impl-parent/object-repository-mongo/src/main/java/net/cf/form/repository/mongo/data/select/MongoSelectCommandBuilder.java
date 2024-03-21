@@ -328,7 +328,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         } else {
             mongoExprAstVisitor = new MongoExprAstVisitor(sqlExpr);
         }
-        Object value = mongoExprAstVisitor.visitForValue();
+        Object value = mongoExprAstVisitor.visit();
         return Integer.valueOf(String.valueOf(value));
     }
 

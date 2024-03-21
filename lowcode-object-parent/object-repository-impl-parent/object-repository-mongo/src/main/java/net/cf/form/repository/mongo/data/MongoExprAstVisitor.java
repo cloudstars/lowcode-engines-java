@@ -47,20 +47,6 @@ public class MongoExprAstVisitor {
     }
 
 
-    /**
-     *
-     * @return
-     */
-    public Object visitForValue() {
-        if (sqlExpr instanceof SqlValuableExpr) {
-            return visitValue((SqlValuableExpr)sqlExpr);
-        }
-        else if (sqlExpr instanceof SqlVariantRefExpr) {
-            return MongoDataConverter.convertVariable(sqlExpr, dataMap);
-        }
-        throw  new RuntimeException("not support");
-    }
-
     private Object analyse(SqlExpr sqlExpr) {
         return analyse(sqlExpr, ContextInfo.DEFAULT);
     }
@@ -70,14 +56,11 @@ public class MongoExprAstVisitor {
     private Object analyse(SqlExpr sqlExpr, ContextInfo contextInfo) {
         if (sqlExpr instanceof SqlBinaryOpExpr) {
             return visitBinary((SqlBinaryOpExpr) sqlExpr);
-        }
-        else if (sqlExpr instanceof SqlIdentifierExpr) {
+        } else if (sqlExpr instanceof SqlIdentifierExpr) {
             return visitIdentify((SqlIdentifierExpr) sqlExpr);
-        }
-        else if (sqlExpr instanceof SqlValuableExpr) {
+        } else if (sqlExpr instanceof SqlValuableExpr) {
             return visitValue((SqlValuableExpr)sqlExpr, contextInfo);
-        }
-        else if (sqlExpr instanceof SqlVariantRefExpr) {
+        } else if (sqlExpr instanceof SqlVariantRefExpr) {
             return MongoDataConverter.convertVariable(sqlExpr, dataMap);
         }
 
