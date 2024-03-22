@@ -3,7 +3,6 @@ package net.cf.object.engine.oql.testcase.select;
 import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.IDataSetOperator;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
-import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.object.engine.object.TestObjectResolver;
 import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.object.XObject;

@@ -1,6 +1,8 @@
 package net.cf.form.repository.mongo.data.delete;
 
-import net.cf.form.repository.mongo.data.*;
+import net.cf.form.repository.mongo.data.AbstractMongoCommandBuilder;
+import net.cf.form.repository.mongo.data.MongoUtils;
+import net.cf.form.repository.mongo.data.WhereBuilder;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import org.bson.Document;

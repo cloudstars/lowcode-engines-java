@@ -1,6 +1,5 @@
 package net.cf.object.engine.oql.mongo.select;
 
-import net.cf.object.engine.ObjectEngineTestApplication;
 import net.cf.object.engine.oql.mongo.ObjectEngineOqlMongoTestApplication;
 import net.cf.object.engine.oql.testcase.select.AbstractSelectTravelSelfSimpleRepoTest;
 import org.junit.Test;

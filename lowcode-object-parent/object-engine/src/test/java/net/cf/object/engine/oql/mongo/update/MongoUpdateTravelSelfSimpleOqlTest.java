@@ -1,6 +1,5 @@
 package net.cf.object.engine.oql.mongo.update;
 
-import net.cf.object.engine.ObjectEngineTestApplication;
 import net.cf.object.engine.oql.mongo.ObjectEngineOqlMongoTestApplication;
 import net.cf.object.engine.oql.testcase.update.AbstractUpdateTravelSelfSimpleRepoTest;
 import org.junit.Test;
