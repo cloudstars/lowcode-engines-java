@@ -17,14 +17,8 @@ public enum MongoOperator {
     IN("$in", SqlBinaryOperator.IN),
 
 
-
     AND("$and", SqlBinaryOperator.BOOLEAN_AND),
-    OR("$or", SqlBinaryOperator.BOOLEAN_OR)
-
-
-
-
-    ;
+    OR("$or", SqlBinaryOperator.BOOLEAN_OR);
     private String expr;
 
     private SqlBinaryOperator sqlBinaryOperator;
@@ -54,7 +48,7 @@ public enum MongoOperator {
 
 
     public boolean isLogical() {
-        return this ==  AND || this == OR ;
+        return this == AND || this == OR;
     }
 
     private static List<MongoOperator> CONDITION_OPERATORS = Arrays.asList(

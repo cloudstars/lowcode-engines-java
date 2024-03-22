@@ -2,7 +2,6 @@ package net.cf.form.repository.mongo.data.delete;
 
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
-import net.cf.form.repository.sql.ast.statement.SqlSelect;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 public class MongoDeleteSqlAstVisitor implements SqlAstVisitor {

@@ -1,12 +1,16 @@
 package net.cf.form.repository.mongo;
 
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import net.cf.form.repository.ObjectRepository;
 import net.cf.form.repository.mongo.data.DocumentAggregationOperation;
 import net.cf.form.repository.mongo.data.MongoDbDataConverter;
 import net.cf.form.repository.mongo.data.delete.MongoDeleteCommand;
 import net.cf.form.repository.mongo.data.delete.MongoDeleteCommandBuilder;
 import net.cf.form.repository.mongo.data.delete.MongoDeleteSqlAstVisitor;
-import net.cf.form.repository.mongo.data.insert.*;
+import net.cf.form.repository.mongo.data.insert.MongoInsertCommand;
+import net.cf.form.repository.mongo.data.insert.MongoInsertCommandBuilder;
+import net.cf.form.repository.mongo.data.insert.MongoInsertSqlAstVisitor;
 import net.cf.form.repository.mongo.data.select.MongoSelectCommand;
 import net.cf.form.repository.mongo.data.select.MongoSelectCommandBuilder;
 import net.cf.form.repository.mongo.data.select.MongoSelectSqlAstVisitor;
@@ -21,8 +25,6 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.AggregationUpdate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Query;
-import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.UpdateResult;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -75,7 +77,7 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
         statement.accept(visitor);
         MongoUpdateCommand command = builder.build();
         Query where = null;
-        if (command.getWhereDoc() != null ) {
+        if (command.getWhereDoc() != null) {
             where = new BasicQuery(command.getWhereDoc());
         } else {
             where = new BasicQuery(new Document());
@@ -95,7 +97,7 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
         statement.accept(visitor);
         MongoUpdateCommand command = builder.build();
         Query where = null;
-        if (command.getWhereDoc() != null ) {
+        if (command.getWhereDoc() != null) {
             where = new BasicQuery(command.getWhereDoc());
         } else {
             where = new BasicQuery(new Document());
@@ -182,7 +184,6 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
     private Map<String, Object> convert(Document document) {
         return MongoDbDataConverter.convertDoc(document);
     }
-
 
 
     @Override

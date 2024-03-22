@@ -3,7 +3,6 @@ package net.cf.form.repository.mongo.data.insert;
 import net.cf.form.repository.mongo.data.MongoInsertItem;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
@@ -65,7 +64,7 @@ public class MongoInsertSqlAstVisitor implements SqlAstVisitor {
             mongoInsertItem.setValueExpr(sqlExpr);
             mongoInsertItem.setColName(this.columnNames.get(columnIndex));
             mongoInsertItems.add(mongoInsertItem);
-            columnIndex ++;
+            columnIndex++;
         }
         builder.addInsertItems(mongoInsertItems);
 

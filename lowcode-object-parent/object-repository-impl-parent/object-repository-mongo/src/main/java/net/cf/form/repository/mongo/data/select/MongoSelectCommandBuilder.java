@@ -5,6 +5,7 @@ import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
 import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
 import net.cf.form.repository.sql.ast.statement.SqlSelectOrderByItem;
@@ -39,7 +40,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
     private SqlLimit limit;
 
-
+    private static final List<String> AGGR_METHODS = Arrays.asList("COUNT", "SUM", "MAX", "MIN", "AVG");
 
     private List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
@@ -106,11 +107,13 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         // 构建过滤条件
         buildWhere();
 
-        // 构建聚合信息
-        buildGroupBy();
 
         //
         buildAddField();
+
+        // 构建聚合信息
+        buildGroupBy();
+
 
         //
         buildOrderAndLimit();
@@ -121,24 +124,29 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
 
-
-
     private void analyse() {
         for (MongoSelectItem selectItem : this.selectItems) {
+            // 设置别名
             if (selectItem.getExprEnum().shouldGetOriginExpression()) {
                 if (selectItem.getAlias() == null) {
-                    String originExpr = MongoUtils.getOriginExpr(selectItem.getSqlExpr());
+                    String originExpr = MongoUtils.getOriginExprAlias(selectItem.getSqlExpr());
                     selectItem.setAlias(originExpr);
                     selectItem.setAggr(isAggr(selectItem));
                 }
+            }
+
+            // 缓存别名
+            if (selectItem.getAlias() != null) {
                 aliasMap.put(selectItem.getAlias(), selectItem);
             }
+
         }
     }
 
 
     /**
      * todo 判断是否是聚合操作
+     *
      * @param selectItem
      * @return
      */
@@ -168,7 +176,6 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
 
-
     private void buildGroupBy() {
         List<MongoSelectItem> groupByItems = new ArrayList<>();
         List<MongoSelectItem> aggrItems = new ArrayList<>();
@@ -194,13 +201,8 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             // todo
             Document idDoc = new Document();
             for (SqlExpr sqlExpr : this.groupBy.getItems()) {
-                String originExpr = MongoUtils.getOriginExpr(sqlExpr);
-                ExprTypeEnum exprTypeEnum = ExprTypeEnum.match(sqlExpr);
-                if (exprTypeEnum == ExprTypeEnum.PARAM || exprTypeEnum == ExprTypeEnum.COMMON) {
-                    idDoc.put(originExpr, "$" + originExpr);
-                } else {
-                    throw new RuntimeException("not support");
-                }
+                String originExpr = MongoUtils.getOriginExprAlias(sqlExpr);
+                idDoc.put(originExpr, "$" + originExpr);
             }
             groupDocInfo.put("_id", idDoc);
         }
@@ -211,7 +213,6 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         AggregationOperation groupOperation = new DocumentAggregationOperation(new Document("$group", groupDocInfo));
         this.aggregationOperations.add(groupOperation);
     }
-
 
 
     private void addGroupInfo(MongoSelectItem selectItem, Document groupDocInfo) {
@@ -236,7 +237,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         List<SqlExpr> arguments = sqlAggregateExpr.getArguments();
         SqlExpr sqlExpr = arguments.get(0);
         if (sqlExpr instanceof SqlIdentifierExpr) {
-            return "$"+((SqlIdentifierExpr)sqlExpr).getName();
+            return "$" + ((SqlIdentifierExpr) sqlExpr).getName();
         }
         throw new RuntimeException("not support");
     }
@@ -263,18 +264,23 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         return mongoMethod;
     }
 
-    private List<String> AGGR_METHODS = Arrays.asList("COUNT", "SUM", "MAX", "MIN", "AVG");
-
 
     private void buildAddField() {
         Document addFields = new Document();
 
+        for (MongoSelectItem selectItem : this.selectItems) {
+            SqlExpr sqlExpr = selectItem.getSqlExpr();
+            if (selectItem.getAlias() != null && sqlExpr instanceof SqlValuableExpr) {
+                MongoExprAstVisitor visitor = new MongoExprAstVisitor(sqlExpr);
+                // 添加常量数据,因为在语句中，所以必须使用mongo格式
+                addFields.put(selectItem.getAlias(), visitor.visit());
+            }
+        }
         if (addFields.size() > 0) {
             AggregationOperation aggregationOperation = new DocumentAggregationOperation(new Document("$addFields", addFields));
             this.aggregationOperations.add(aggregationOperation);
         }
     }
-
 
 
     private void buildOrderAndLimit() {
@@ -289,11 +295,11 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     private void buildOrderBy() {
         SqlOrderBy sqlOrderBy = this.orderBy;
         List<Sort.Order> orders = new ArrayList<>();
-        for (SqlSelectOrderByItem item :  sqlOrderBy.getItems()) {
+        for (SqlSelectOrderByItem item : sqlOrderBy.getItems()) {
             Sort.Order order = null;
             Sort.Direction direction = item.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC;
             if (item.getExpr() instanceof SqlIdentifierExpr) {
-                String param = ((SqlIdentifierExpr)item.getExpr()).getName();
+                String param = ((SqlIdentifierExpr) item.getExpr()).getName();
                 order = new Sort.Order(direction, param);
             } else {
                 throw new RuntimeException("not support");
@@ -333,9 +339,6 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
 
-
-
-
     private void buildReturn() {
         Document fieldProject = new Document();
         if (shouldGroupBy) {
@@ -363,13 +366,12 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
 
-
     private void addProjectFieldForAggregateId(MongoSelectItem selectItem, Document fieldProject) {
 
         // todo
         if (selectItem.getExprEnum() == ExprTypeEnum.PARAM) {
             SqlIdentifierExpr sqlIdentifierExpr = (SqlIdentifierExpr) selectItem.getSqlExpr();
-            fieldProject.put(sqlIdentifierExpr.getName(), "$_id."+sqlIdentifierExpr.getName());
+            fieldProject.put(sqlIdentifierExpr.getName(), "$_id." + sqlIdentifierExpr.getName());
         }
 
     }
@@ -399,5 +401,6 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             fieldProject.put(prefix + value, 1);
         }
     }
+
 
 }

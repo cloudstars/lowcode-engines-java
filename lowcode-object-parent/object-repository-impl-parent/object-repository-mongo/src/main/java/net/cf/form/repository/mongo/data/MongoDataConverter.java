@@ -2,32 +2,41 @@ package net.cf.form.repository.mongo.data;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
-import org.bson.Document;
 import org.bson.types.Decimal128;
 import org.bson.types.ObjectId;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Map;
 
 public class MongoDataConverter {
 
-
+    /**
+     * @param id
+     * @return
+     */
     public static ObjectId convertObjectId(Object id) {
         return new ObjectId(String.valueOf(id));
     }
 
-    public static Decimal128 convertDecimal(Object data) {
+    /**
+     * @param data
+     * @return
+     */
+    public static Object convert(Object data) {
         if (data instanceof BigDecimal) {
             return new Decimal128((BigDecimal) data);
         } else if (data instanceof Number) {
-            BigDecimal decimal = new BigDecimal(((Number)data).toString());
+            BigDecimal decimal = new BigDecimal(((Number) data).toString());
             return new Decimal128(decimal);
         }
-        throw new RuntimeException("not support");
+        return data;
     }
 
-
+    /**
+     * @param sqlExpr
+     * @param varMap
+     * @return
+     */
     public static Object convertVariable(SqlExpr sqlExpr, Map<String, Object> varMap) {
         if (sqlExpr instanceof SqlVariantRefExpr) {
             if (varMap == null || varMap.size() == 0) {

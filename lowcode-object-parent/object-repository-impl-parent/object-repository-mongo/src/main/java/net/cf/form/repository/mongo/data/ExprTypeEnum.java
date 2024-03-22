@@ -17,9 +17,7 @@ public enum ExprTypeEnum {
     METHOD,
     PARAM,
     COMMON,
-    AGGR
-    ;
-
+    AGGR;
 
 
     public static ExprTypeEnum match(SqlExpr sqlExpr) {
@@ -44,7 +42,7 @@ public enum ExprTypeEnum {
     }
 
     public boolean shouldGetOriginExpression() {
-        return this.isMethod() || this ==  EXPRESSION;
+        return this != PARAM;
     }
 
 }

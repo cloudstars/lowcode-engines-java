@@ -1,8 +1,9 @@
 package net.cf.form.repository.mongo.data.insert;
 
-import net.cf.form.repository.mongo.data.*;
-import net.cf.form.repository.mongo.data.delete.MongoDeleteCommandBuilder;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.mongo.data.AbstractMongoCommandBuilder;
+import net.cf.form.repository.mongo.data.MongoExprAstVisitor;
+import net.cf.form.repository.mongo.data.MongoInsertItem;
+import net.cf.form.repository.mongo.data.MongoUtils;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -40,20 +41,9 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
         }
     }
 
-
-
-
-    public MongoInsertCommandBuilder newDocument() {
-//        this.appendDocument(new Document());
-
-        return this;
-    }
-
-
     public void setCollectionName(String collectionName) {
         this.collectionName = collectionName;
     }
-
 
     public void addColName(String colName) {
         this.colNames.add(colName);
@@ -62,25 +52,6 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
     public void addInsertItems(List<MongoInsertItem> mongoInsertItems) {
         this.mongoInsertItems.add(mongoInsertItems);
     }
-
-
-//    private void appendDocument(Document document) {
-//        this.documents.add(document);
-//        this.lastDocument = document;
-//    }
-//
-//    public MongoInsertCommandBuilder appendDocumentKeyValue(String k, Object v) {
-//        if (this.lastDocument == null) {
-//            this.appendDocument(new Document());
-//        }
-//
-//        this.lastDocument.put(k, v);
-//
-//        return this;
-//    }
-//
-
-
 
 
     @Override

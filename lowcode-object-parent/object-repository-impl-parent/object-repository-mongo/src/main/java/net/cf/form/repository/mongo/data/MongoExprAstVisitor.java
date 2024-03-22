@@ -3,6 +3,7 @@ package net.cf.form.repository.mongo.data;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
+import net.cf.form.repository.sql.ast.expr.literal.AbstractSqlNumericLiteralExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlDecimalExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public class MongoExprAstVisitor {
 
-    private SqlExpr sqlExpr ;
+    private SqlExpr sqlExpr;
 
     private Map<String, Object> dataMap;
 
@@ -39,7 +40,6 @@ public class MongoExprAstVisitor {
     }
 
     /**
-     *
      * @return
      */
     public Object visit() {
@@ -47,10 +47,24 @@ public class MongoExprAstVisitor {
     }
 
 
-    private Object analyse(SqlExpr sqlExpr) {
-        return analyse(sqlExpr, ContextInfo.DEFAULT);
+    public Object visitCommonField() {
+        if (this.sqlExpr instanceof SqlIdentifierExpr) {
+            return this.analyse(this.sqlExpr);
+        }
+        throw new RuntimeException("not support");
     }
 
+    public Object visitValue() {
+        if (this.sqlExpr instanceof SqlValuableExpr || this.sqlExpr instanceof SqlVariantRefExpr) {
+            return this.analyse(this.sqlExpr);
+        }
+        throw new RuntimeException("not support");
+    }
+
+
+    private Object analyse(SqlExpr sqlExpr) {
+        return analyse(sqlExpr, ContextInfo.getDefaultContextInfo());
+    }
 
 
     private Object analyse(SqlExpr sqlExpr, ContextInfo contextInfo) {
@@ -59,14 +73,13 @@ public class MongoExprAstVisitor {
         } else if (sqlExpr instanceof SqlIdentifierExpr) {
             return visitIdentify((SqlIdentifierExpr) sqlExpr);
         } else if (sqlExpr instanceof SqlValuableExpr) {
-            return visitValue((SqlValuableExpr)sqlExpr, contextInfo);
+            return visitValue((SqlValuableExpr) sqlExpr, contextInfo);
         } else if (sqlExpr instanceof SqlVariantRefExpr) {
-            return MongoDataConverter.convertVariable(sqlExpr, dataMap);
+            return visitVariable((SqlVariantRefExpr) sqlExpr, contextInfo);
         }
 
         throw new RuntimeException("not support");
     }
-
 
 
     private Document visitBinary(SqlBinaryOpExpr sqlExpr) {
@@ -126,9 +139,8 @@ public class MongoExprAstVisitor {
     }
 
 
-
     private Object visitIdentify(SqlIdentifierExpr sqlExpr) {
-        return visitIdentify(sqlExpr, ContextInfo.DEFAULT);
+        return visitIdentify(sqlExpr, ContextInfo.getDefaultContextInfo());
     }
 
     private Object visitIdentify(SqlIdentifierExpr sqlExpr, MongoOperator mongoOperator) {
@@ -147,7 +159,7 @@ public class MongoExprAstVisitor {
     }
 
     private Object visitValue(SqlValuableExpr sqlExpr) {
-        return visitValue(sqlExpr, ContextInfo.DEFAULT);
+        return visitValue(sqlExpr, ContextInfo.getDefaultContextInfo());
     }
 
     private Object visitValue(SqlValuableExpr sqlExpr, ContextInfo contextInfo) {
@@ -160,11 +172,26 @@ public class MongoExprAstVisitor {
         }
 
         if (sqlExpr instanceof SqlDecimalExpr) {
-            return MongoDataConverter.convertDecimal(((SqlDecimalExpr)sqlExpr).getValue());
+            return MongoDataConverter.convert(((SqlDecimalExpr) sqlExpr).getValue());
+        } else if (sqlExpr instanceof AbstractSqlNumericLiteralExpr) {
+            return MongoDataConverter.convert(((AbstractSqlNumericLiteralExpr) sqlExpr).getNumber());
         } else {
             return sqlExpr.getValue();
         }
 
+    }
+
+    private Object visitVariable(SqlVariantRefExpr sqlExpr, ContextInfo contextInfo) {
+        Object value = MongoDataConverter.convertVariable(sqlExpr, dataMap);
+
+        if (contextInfo.autoGen) {
+            if (value instanceof String) {
+                return MongoDataConverter.convertObjectId(value);
+            } else {
+                throw new RuntimeException("not support");
+            }
+        }
+        return MongoDataConverter.convert(value);
     }
 
 
@@ -177,13 +204,17 @@ public class MongoExprAstVisitor {
 
         public boolean fieldTag = false;
 
-        public static ContextInfo DEFAULT =  new ContextInfo();
+        public ContextInfo() {
 
+        }
+
+        public static ContextInfo getDefaultContextInfo() {
+            return new ContextInfo();
+        }
     }
 
 
     /**
-     *
      * @param <S>
      * @param <T>
      */
@@ -200,12 +231,12 @@ public class MongoExprAstVisitor {
             return right;
         }
 
-        public Pair(S left , T right) {
+        public Pair(S left, T right) {
             this.left = left;
             this.right = right;
         }
 
-        public static <S, T> Pair<S, T> of (S left, T right) {
+        public static <S, T> Pair<S, T> of(S left, T right) {
             return new Pair<>(left, right);
         }
     }

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class WhereBuilder {
 
-    private SqlExpr sqlExpr ;
+    private SqlExpr sqlExpr;
 
     private Map<String, Object> paramMap = null;
 
@@ -34,7 +34,7 @@ public class WhereBuilder {
             visitor = new MongoExprAstVisitor(sqlExpr);
         }
 
-        Object object =  visitor.visit();
+        Object object = visitor.visit();
         if (!(object instanceof Document)) {
             throw new RuntimeException("error");
         }

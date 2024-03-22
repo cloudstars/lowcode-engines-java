@@ -4,13 +4,17 @@ import org.bson.Document;
 import org.bson.types.Decimal128;
 import org.bson.types.ObjectId;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MongoDbDataConverter {
 
 
     /**
      * mongo数据转为业务数据
+     *
      * @param mongoData
      * @return
      */
@@ -21,7 +25,7 @@ public class MongoDbDataConverter {
         if (mongoData instanceof Document) {
             return convertDoc((Document) mongoData);
         } else if (mongoData instanceof List) {
-            return convertList((List)mongoData);
+            return convertList((List) mongoData);
         } else {
             return convertData(mongoData);
         }
@@ -37,11 +41,11 @@ public class MongoDbDataConverter {
         return data;
     }
 
-    private static List<Object> convertList (List mongoData) {
+    private static List<Object> convertList(List mongoData) {
         List<Object> items = new ArrayList<>();
-        for (Object listItem : (List)mongoData) {
+        for (Object listItem : (List) mongoData) {
             if (listItem instanceof Document) {
-                items.add(convertDoc((Document)listItem));
+                items.add(convertDoc((Document) listItem));
             } else {
                 items.add(convertDbData(listItem));
             }
@@ -52,18 +56,13 @@ public class MongoDbDataConverter {
 
     private static Object convertData(Object data) {
         if (data instanceof Decimal128) {
-            return ((Decimal128)data).bigDecimalValue();
-        } else if (data instanceof Date) {
-            return ((Date)data).getTime();
+            return ((Decimal128) data).bigDecimalValue();
         } else if (data instanceof ObjectId) {
-            return ((ObjectId)data).toString();
+            return ((ObjectId) data).toString();
         } else {
             return data;
         }
     }
-
-
-
 
 
 }
