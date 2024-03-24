@@ -123,13 +123,13 @@ public class OqlStatementParser extends OqlExprParser {
 
         List<SqlUpdateSetItem> setItems = sqlUpdateStmt.getSetItems();
         for (SqlUpdateSetItem setItem : setItems) {
-            // 获取准备的字段类型
+            // 获取准确的字段类型
             SqlExpr column = setItem.getColumn();
             setItem.setColumn(this.parseSqlExpr(resolvedObject, column));
             setItem.setValue(setItem.getValue());
             oqlUpdateStmt.addSetItem(setItem);
         }
-        SqlExpr sqlWhere = oqlUpdateStmt.getWhere();
+        SqlExpr sqlWhere = sqlUpdateStmt.getWhere();
         SqlExpr oqlWhere = this.toValidOqlWhere(resolvedObject, sqlWhere);
         oqlUpdateStmt.setWhere(oqlWhere);
 
@@ -149,7 +149,7 @@ public class OqlStatementParser extends OqlExprParser {
         OqlExprObjectSource objectSource = this.parseExprObjectSource(tableSource);
         oqlDeleteStmt.setFrom(objectSource);
         XObject resolvedObject = objectSource.getResolvedObject();
-        SqlExpr sqlWhere = oqlDeleteStmt.getWhere();
+        SqlExpr sqlWhere = sqlDeleteStmt.getWhere();
         SqlExpr oqlWhere = this.toValidOqlWhere(resolvedObject, sqlWhere);
         oqlDeleteStmt.setWhere(oqlWhere);
         return oqlDeleteStmt;

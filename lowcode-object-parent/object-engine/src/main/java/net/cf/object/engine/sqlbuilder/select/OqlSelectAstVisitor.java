@@ -141,7 +141,7 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         parentSelectItemInfo.setColumnName(null);
 
         List<SelectItemInfo> subItemInfos;
-        if (objectExpandExpr.isDefaultExpanded()) {
+        if (objectExpandExpr.isDefaultExpanded() || objectExpandExpr.isStarExpanded()) {
             subItemInfos = this.buildSelectObjectAllFields(refObject);
         } else {
             List<SqlExpr> refFields = objectExpandExpr.getFields();

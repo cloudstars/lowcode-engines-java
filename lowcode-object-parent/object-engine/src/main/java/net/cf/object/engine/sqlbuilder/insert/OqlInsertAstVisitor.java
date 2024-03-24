@@ -2,7 +2,6 @@ package net.cf.object.engine.sqlbuilder.insert;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
@@ -12,6 +11,8 @@ import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.OqlFieldExpandExpr;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
+import net.cf.object.engine.oql.ast.OqlPropertyExpr;
+import net.cf.object.engine.oql.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
 
 import java.util.ArrayList;
@@ -64,27 +65,19 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
             if (insertField instanceof OqlFieldExpandExpr) {
                 OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) insertField;
                 XField field = fieldExpandExpr.getResolvedField();
-                String fieldName = field.getName();
-                List<SqlExpr> properties;
-                if (fieldExpandExpr.isDefaultExpanded()) {
-                    properties = new ArrayList<>();
-                    List<XProperty> fieldProperties = field.getProperties();
-                    for (XProperty fieldProperty : fieldProperties) {
-                        properties.add(new SqlIdentifierExpr(fieldProperty.getName()));
-                    }
+                List<? extends SqlExpr> properties;
+                if (fieldExpandExpr.isDefaultExpanded() || fieldExpandExpr.isStarExpanded()) {
+                    properties = OqlUtils.defaultExpandFieldProperties(field);
                 } else {
                     properties = fieldExpandExpr.getProperties();
                 }
 
                 for (SqlExpr property : properties) {
-                    if (property instanceof SqlIdentifierExpr) {
-                        SqlPropertyExpr propExpr = new SqlPropertyExpr(fieldName);
-                        propExpr.setName(((SqlIdentifierExpr) property).getName());
-                        SqlExpr sqlExpr = this.buildSqlExpr(this.selfObject, propExpr);
-                        this.builder.appendColumn(sqlExpr);
-                    }else {
+                    if (!(property instanceof OqlPropertyExpr)) {
                         throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
                     }
+                    SqlExpr exprX = this.buildSqlExpr(this.selfObject, property);
+                    this.builder.appendColumn(exprX);
                 }
             } else {
                 SqlExpr exprX = this.buildSqlExpr(this.selfObject, insertField);
