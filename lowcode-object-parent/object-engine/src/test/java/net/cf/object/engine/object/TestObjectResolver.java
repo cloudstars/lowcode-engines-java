@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import net.cf.commons.test.util.FileTestUtils;
 import net.cf.object.engine.def.ObjectDef;
 import net.cf.object.engine.def.TestObjectImpl;
+import net.cf.object.engine.oql.parser.XObjectResolver;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,37 +15,30 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class TestObjectResolver {
+public final class TestObjectResolver implements XObjectResolver {
 
     /**
      * 模型映射表
      */
-    private final static Map<String, TestObjectImpl> objectMap = new HashMap<>();
+    private final Map<String, TestObjectImpl> objectMap = new HashMap<>();
 
-    private TestObjectResolver() {
-    }
-
-    static  {
-        /**
-         * 从类路径下加载测试模型
-         */
+    @PostConstruct
+    public void loadObject() {
+        // 静态初始化，从类路径加载测试时用的模型
+        // 要按序初始化，因为在构建含相关表的模武时会依赖已经构建的模型
+        String[] orderedObjectNames = {"Hobby", "Staff", "Travel", "TravelTrip", "Expense", "Leave"};
         Map<String, String> objectsJson = FileTestUtils.loadTextsFromClasspath("object/*.json");
-        for (Map.Entry<String, String> entry : objectsJson.entrySet()) {
-            ObjectDef objectDef = JSONObject.parseObject(entry.getValue(), ObjectDef.class);
-            TestObjectImpl object = new TestObjectImpl(objectDef);
-            objectMap.put(object.getName(), object);
+        for (String objectName : orderedObjectNames) {
+            String objectDefJson = objectsJson.get(objectName + ".json");
+            ObjectDef objectDef = JSONObject.parseObject(objectDefJson, ObjectDef.class);
+            TestObjectImpl object = new TestObjectImpl(objectDef, this);
+            this.objectMap.put(object.getName(), object);
         }
     }
 
-    /**
-     * 根据模型名称解析模型
-     *
-     * @param objectCode
-     * @return
-     */
-    public static TestObjectImpl resolveObject(String objectCode) {
-        TestObjectImpl object = objectMap.get(objectCode);
-        assert (object != null);
-        return object;
+    @Override
+    public TestObjectImpl resolve(String objectName) {
+        return objectMap.get(objectName);
     }
+
 }

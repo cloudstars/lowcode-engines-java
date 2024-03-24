@@ -16,19 +16,19 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
     protected String name;
 
     /**
+     * 是否自动生成的列
+     */
+    private boolean autoGen;
+
+    /**
      * 对应数据表列
      */
-    private String resolvedColumn;
+    // private String resolvedColumn;
 
     /**
      * 归属的数据库表
      */
-    private String resolvedOwnerTable;
-
-    /**
-     * 是否自动生成的列
-     */
-    private boolean autoGen;
+    // private String resolvedOwnerTable;
 
     public SqlIdentifierExpr() {
     }
@@ -50,24 +50,15 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
         return this.name == null ? null : this.name.toLowerCase();
     }
 
-    @Override
-    protected void accept0(SqlAstVisitor visitor) {
-        visitor.visit(this);
-        visitor.endVisit(this);
+    public boolean isAutoGen() {
+        return autoGen;
     }
 
-    @Override
-    public SqlIdentifierExpr cloneMe() {
-        SqlIdentifierExpr x = new SqlIdentifierExpr(this.name);
-        return x;
+    public void setAutoGen(boolean autoGen) {
+        this.autoGen = autoGen;
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
-
-    public String getResolvedColumn() {
+    /*public String getResolvedColumn() {
         return resolvedColumn;
     }
 
@@ -81,13 +72,24 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
 
     public void setResolvedOwnerTable(String resolvedOwnerTable) {
         this.resolvedOwnerTable = resolvedOwnerTable;
+    }*/
+
+    @Override
+    protected void accept0(SqlAstVisitor visitor) {
+        visitor.visit(this);
+        visitor.endVisit(this);
     }
 
-    public boolean isAutoGen() {
-        return autoGen;
+    @Override
+    public SqlIdentifierExpr cloneMe() {
+        SqlIdentifierExpr x = new SqlIdentifierExpr(this.name);
+        x.setAutoGen(this.autoGen);
+        return x;
     }
 
-    public void setAutoGen(boolean autoGen) {
-        this.autoGen = autoGen;
+    @Override
+    public String toString() {
+        return this.name;
     }
+
 }

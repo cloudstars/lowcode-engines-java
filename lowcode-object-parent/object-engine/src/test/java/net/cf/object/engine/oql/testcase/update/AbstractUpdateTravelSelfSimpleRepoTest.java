@@ -1,8 +1,6 @@
 package net.cf.object.engine.oql.testcase.update;
 
-import net.cf.object.engine.object.TestObjectResolver;
 import net.cf.object.engine.object.TravelObject;
-import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
@@ -33,16 +31,14 @@ public abstract class AbstractUpdateTravelSelfSimpleRepoTest extends AbstractOql
         {
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_BY_ID);
-            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
-            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(object, oqlInfo.oql);
+            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
             this.engine.modify(oqlStmt);
         }
 
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
-            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(object, selectOql);
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 1);
             assert ("测试申请单1（变更）".equals(dataList.get(0).get("applyName")));
@@ -54,8 +50,7 @@ public abstract class AbstractUpdateTravelSelfSimpleRepoTest extends AbstractOql
         {
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_BY_ID);
-            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
-            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(object, oqlInfo.oql);
+            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> dataMap = new HashMap<>();
             dataMap.put("applyName", "测试申请单1（变更）");
             dataMap.put("applyId", TravelObject.RECORD1);
@@ -65,8 +60,7 @@ public abstract class AbstractUpdateTravelSelfSimpleRepoTest extends AbstractOql
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
-            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(object, selectOql);
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 1);
             assert ("测试申请单1（变更）".equals(dataList.get(0).get("applyName")));

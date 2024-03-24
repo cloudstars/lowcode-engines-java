@@ -3,7 +3,7 @@ package net.cf.object.engine.oql.ast;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.object.engine.object.XObject;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 /**
@@ -13,15 +13,12 @@ import net.cf.object.engine.oql.visitor.OqlAstVisitor;
  */
 public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements SqlReplaceable {
 
-    protected SqlExpr expr;
-
-    protected XObject resolvedObject;
+    /**
+     *  展开的对象
+     */
+    protected SqlName expr;
 
     public OqlExprObjectSource() {
-    }
-
-    public OqlExprObjectSource(SqlExpr expr) {
-        this(expr, null);
     }
 
     public OqlExprObjectSource(String objectName) {
@@ -32,29 +29,21 @@ public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements 
         super(new SqlIdentifierExpr(objectName), alias);
     }
 
-    public OqlExprObjectSource(SqlExpr expr, String alias) {
+    public OqlExprObjectSource(SqlName expr, String alias) {
         this.setExpr(expr);
         this.setAlias(alias);
     }
 
-    public SqlExpr getExpr() {
+    public SqlName getExpr() {
         return this.expr;
     }
 
-    public void setExpr(SqlExpr x) {
+    public void setExpr(SqlName x) {
         if (x != null) {
             x.setParent(this);
         }
 
         this.expr = x;
-    }
-
-    public XObject getResolvedObject() {
-        return resolvedObject;
-    }
-
-    public void setResolvedObject(XObject resolvedObject) {
-        this.resolvedObject = resolvedObject;
     }
 
     @Override
@@ -82,8 +71,8 @@ public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements 
 
     @Override
     public boolean replace(SqlExpr source, SqlExpr target) {
-        if (source == this.expr && target instanceof SqlIdentifierExpr) {
-            this.setExpr(target);
+        if (source == this.expr && target instanceof SqlName) {
+            this.setExpr((SqlName) target);
             return true;
         } else {
             return false;

@@ -32,7 +32,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     /**
      * 查询的列表
      */
-    private List<SqlSelectItem> selectItems = new ArrayList<>();
+    private final List<SqlSelectItem> selectItems = new ArrayList<>();
 
     /**
      * 查询的模型
@@ -49,16 +49,27 @@ public class OqlSelect extends AbstractOqlObjectImpl {
      */
     private SqlSelectGroupByClause groupBy;
 
+    /**
+     * Order By 子句
+     */
     private SqlOrderBy orderBy;
 
+    /**
+     * Limit 子句
+     */
     private SqlLimit limit;
 
     public List<SqlSelectItem> getSelectItems() {
         return selectItems;
     }
 
-    public void setSelectItems(List<SqlSelectItem> selectItems) {
-        this.selectItems = selectItems;
+    public void addSelectItem(SqlSelectItem selectItem) {
+        this.selectItems.add(selectItem);
+        this.addChild(selectItem);
+    }
+
+    public void addSelectItems(List<SqlSelectItem> selectItems) {
+        this.selectItems.addAll(selectItems);
         this.addChildren(selectItems);
     }
 
@@ -144,15 +155,13 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     @Override
     public OqlSelect cloneMe() {
         OqlSelect select = new OqlSelect();
-        List<SqlSelectItem> cloneItems = new ArrayList<>();
         for (SqlSelectItem selectItem : selectItems) {
-            cloneItems.add(selectItem.cloneMe());
+            select.addSelectItem(selectItem.cloneMe());
         }
-        select.setSelectItems(cloneItems);
         select.setFrom(this.from.cloneMe());
         select.setWhere(this.where.cloneMe());
 
-        return null;
+        return select;
     }
 
     /*@Override

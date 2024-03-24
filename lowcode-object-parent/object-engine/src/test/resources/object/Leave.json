@@ -139,7 +139,7 @@
       "type": "Text",
       "desc": "拥有者",
       "name": "ownerKey",
-      "columName": "OWNER_KEY",
+      "columnName": "OWNER_KEY",
       "dataType": "String",
       "dataLength": 20
     },

@@ -1,7 +1,6 @@
 {
   "desc": "测试插入兴趣爱好简单案例",
   "name": "InsertHobby",
-  "desc": "测试点：无",
   "oqls": [
     {
       "desc": "插入兴趣爱好",

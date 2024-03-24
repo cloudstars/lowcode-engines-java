@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlStatement {
 
-    protected SqlTableSource tableSource;
+    protected SqlExprTableSource tableSource;
 
     protected final List<SqlUpdateSetItem> setItems = new ArrayList<>();
 
@@ -18,11 +18,11 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
     public SqlUpdateStatement() {
     }
 
-    public SqlTableSource getTableSource() {
+    public SqlExprTableSource getTableSource() {
         return tableSource;
     }
 
-    public void setTableSource(SqlTableSource tableSource) {
+    public void setTableSource(SqlExprTableSource tableSource) {
         this.tableSource = tableSource;
         this.addChild(tableSource);
     }

@@ -8,14 +8,14 @@ package net.cf.object.engine.object;
 public interface XObjectRefField extends XField {
 
     /**
-     * 获取关联模型的名称
+     * 获取引用模型的名称
      *
      * @return
      */
-    XObject getRefObject();
+    String getRefObjectName();
 
     /**
-     * 是否一对多
+     * 是否一对多的引用关系
      *
      * @return
      */

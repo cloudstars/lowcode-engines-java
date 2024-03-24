@@ -36,7 +36,7 @@ public class SqlSelectParser extends SqlExprParser {
         this.accept(Token.SELECT);
 
         SqlSelect select = new SqlSelect();
-        select.setSelectItems(this.parseSelectItems());
+        select.addSelectItems(this.parseSelectItems());
         select.setFrom(this.parseFrom());
         if (this.lexer.token == Token.WHERE) {
             select.setWhere((this.parseWhere()));
@@ -144,7 +144,7 @@ public class SqlSelectParser extends SqlExprParser {
      */
     private SqlTableSource parseFrom() {
         accept(Token.FROM);
-        return parseTableSource();
+        return this.parseTableSource();
     }
 
     /**

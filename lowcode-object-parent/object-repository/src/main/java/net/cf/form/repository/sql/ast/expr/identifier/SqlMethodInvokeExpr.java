@@ -24,6 +24,15 @@ public class SqlMethodInvokeExpr extends AbstractSqlExprImpl {
      */
     protected final List<SqlExpr> arguments = new ArrayList();
 
+    /**
+     * 对应数据表列
+     */
+    private String resolvedColumn;
+
+    /**
+     * 归属的数据库表
+     */
+    private String resolvedOwnerTable;
 
     public SqlMethodInvokeExpr() {
     }
@@ -52,20 +61,27 @@ public class SqlMethodInvokeExpr extends AbstractSqlExprImpl {
         return this.arguments;
     }
 
-    public void setArgument(int i, SqlExpr arg) {
-        this.arguments.set(i, arg);
-        this.addChild(arg);
-    }
-
-    public void addArgument(int i, SqlExpr arg) {
-        this.arguments.add(i, arg);
-        this.addChild(arg);
-    }
-
     public void addArgument(SqlExpr arg) {
         this.arguments.add(arg);
         this.addChild(arg);
     }
+
+    public String getResolvedColumn() {
+        return resolvedColumn;
+    }
+
+    public void setResolvedColumn(String resolvedColumn) {
+        this.resolvedColumn = resolvedColumn;
+    }
+
+    public String getResolvedOwnerTable() {
+        return resolvedOwnerTable;
+    }
+
+    public void setResolvedOwnerTable(String resolvedOwnerTable) {
+        this.resolvedOwnerTable = resolvedOwnerTable;
+    }
+
 
     @Override
     protected void accept0(SqlAstVisitor visitor) {

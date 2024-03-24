@@ -1,14 +1,18 @@
 package net.cf.object.engine;
 
 import net.cf.form.repository.ObjectRepository;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.statement.*;
-import net.cf.object.engine.object.XField;
-import net.cf.object.engine.object.XObject;
-import net.cf.object.engine.oql.ast.*;
+import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
+import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
+import net.cf.object.engine.oql.ast.OqlDeleteStatement;
+import net.cf.object.engine.oql.ast.OqlInsertStatement;
+import net.cf.object.engine.oql.ast.OqlSelectStatement;
+import net.cf.object.engine.oql.ast.OqlUpdateStatement;
+import net.cf.object.engine.oql.parser.XObjectResolver;
 import net.cf.object.engine.oql.visitor.InsertStatementCheckOqlAstVisitor;
+import net.cf.object.engine.sqlbuilder.select.SelectItemInfo;
+import net.cf.object.engine.sqlbuilder.select.SqlSelectStatementBuilder;
 import net.cf.object.engine.util.OqlStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,207 +30,313 @@ public class OqlEngineImpl implements OqlEngine {
 
     private final ObjectRepository repository;
 
-    public OqlEngineImpl(ObjectRepository repository) {
+    private final XObjectResolver resolver;
+
+    public OqlEngineImpl(ObjectRepository repository, XObjectResolver resolver) {
         this.repository = repository;
+        this.resolver = resolver;
     }
 
     @Override
     public Map<String, Object> queryOne(OqlSelectStatement stmt) {
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt);
+        SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt, builder, resolver);
         Map<String, Object> resultMap = this.repository.selectOne(sqlStmt);
-        return this.convertResultMap(stmt, resultMap);
+        return this.convertResultMap(resultMap, builder.getSelectItemInfos());
     }
 
     @Override
     public Map<String, Object> queryOne(OqlSelectStatement stmt, Map<String, Object> paramMap) {
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt);
+        SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt, builder, resolver);
         Map<String, Object> resultMap = this.repository.selectOne(sqlStmt, paramMap);
-        return this.convertResultMap(stmt, resultMap);
+        return this.convertResultMap(resultMap, builder.getSelectItemInfos());
     }
 
     @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement stmt) {
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt);
+        SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt, builder, resolver);
         List<Map<String, Object>> resultMapList = this.repository.selectList(sqlStmt);
-        return this.convertResultMapList(stmt, resultMapList);
+        return this.convertResultMapList(resultMapList, builder.getSelectItemInfos());
     }
 
     @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap) {
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt);
+        SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt, builder, resolver);
         List<Map<String, Object>> resultMapList = this.repository.selectList(sqlStmt, paramMap);
-        return this.convertResultMapList(stmt, resultMapList);
+        return this.convertResultMapList(resultMapList, builder.getSelectItemInfos());
     }
 
-    /**
-     * 转换查询结果列表
-     *
-     * @param stmt
-     * @param resultMapList
-     * @return
-     */
-    private List<Map<String, Object>> convertResultMapList(OqlSelectStatement stmt, List<Map<String, Object>> resultMapList) {
-        if (resultMapList == null || resultMapList.isEmpty()) {
-            return Collections.emptyList();
-        }
 
+    /**
+     * 转换查询结果，将resultMap中的key（列名）转换为字段名
+     *
+     * @param resultMapList
+     * @param selectItemInfos
+     * @return 生成新的对象返回
+     */
+    private List<Map<String, Object>> convertResultMapList(List<Map<String, Object>> resultMapList, List<SelectItemInfo> selectItemInfos) {
         List<Map<String, Object>> targetMapList = new ArrayList<>();
         for (Map<String, Object> resultMap : resultMapList) {
-            targetMapList.add(this.convertResultMap(stmt, resultMap));
+            targetMapList.add(this.convertResultMap(resultMap, selectItemInfos));
         }
-
         return targetMapList;
     }
 
     /**
      * 转换查询结果，将resultMap中的key（列名）转换为字段名
      *
-     * @param stmt
      * @param resultMap
+     * @param selectItemInfos
      * @return 生成新的对象返回
      */
-    private Map<String, Object> convertResultMap(OqlSelectStatement stmt, Map<String, Object> resultMap) {
-        Map<String, Object> targetMap = null;
-        if (resultMap != null) {
-            OqlSelect select = stmt.getSelect();
-            List<SqlSelectItem> selectItems = select.getSelectItems();
-            targetMap = new HashMap<>();
-            for (SqlSelectItem selectItem : selectItems) {
-                SqlExpr expr = selectItem.getExpr();
-                if (expr instanceof SqlAllColumnExpr) {
-                    this.convertAllResultValues(stmt, resultMap, targetMap);
-                    continue;
+    private Map<String, Object> convertResultMap(Map<String, Object> resultMap, List<SelectItemInfo> selectItemInfos) {
+        Map<String, Object> targetMap = new HashMap<>();
+        for (SelectItemInfo selectItemInfo : selectItemInfos) {
+            String resultKey = selectItemInfo.getColumnName();
+            String targetKey = selectItemInfo.getFieldName();
+            boolean isArray = selectItemInfo.isArray();
+            Object targetValue;
+            List<SelectItemInfo> subItems = selectItemInfo.getSubItemInfos();
+            if (subItems != null && subItems.size() > 0) {// 相关模型展开或字段展开
+                if (isArray) { // 字段展开且是数组的情况
+                    targetValue = this.parseMapListFormResultMap(resultMap, selectItemInfos);
+                } else { // 模型或字段展开且是非数组的情况
+                    targetValue = this.parseMapFormResultMap(resultMap, selectItemInfos);
                 }
-
-                KeyValuePair keyValuePair = this.convertResultValue(expr, resultMap);
-                String targetKey = keyValuePair.key;
-                Object targetValue = keyValuePair.value;
-
-                // 判断是否设置了别名
-                String alias = selectItem.getAlias();
-                if (targetKey != null) {
-                    if (alias != null) {
-                        targetKey = alias;
-                    }
-                    targetMap.put(targetKey, targetValue);
+            } else { // 普通的相关模型字段、本表字段
+                Object resultValue = resultMap.get(resultKey);
+                if (isArray) {
+                    targetValue = this.parseObjectListResultValue(resultValue);
+                } else {
+                    targetValue = this.parseObjectResultValue(resultValue);
                 }
             }
-        } else {
-            logger.debug("未查询到记录，语句：{}。", stmt);
+
+            resultMap.put(targetKey, targetValue);
         }
 
         return targetMap;
     }
 
     /**
-     * 根据当前表达式来转换结果的值
+     * 转换查询结果，将resultMap中的key（列名）转换为字段名
      *
-     * @param expr
+     * @param select
      * @param resultMap
-     * @return
+     * @return 生成新的对象返回
      */
-    private KeyValuePair convertResultValue(SqlExpr expr, Map<String, Object> resultMap) {
-        KeyValuePair keyValuePair = new KeyValuePair();
-        if (expr instanceof SqlIdentifierExpr) {
-            SqlIdentifierExpr idExpr = (SqlIdentifierExpr) expr;
-            String columnName = idExpr.getResolvedColumn();
-            String fieldName = idExpr.getName();
-            if (resultMap.containsKey(columnName)) {
-                keyValuePair.key = fieldName;
-                keyValuePair.value = resultMap.get(columnName);
-            } else {
-                logger.warn("未找到字段{}对应的列{}的数据！", fieldName, columnName);
+    /*private Map<String, Object> convertResultMap(OqlSelect select, Map<String, Object> resultMap) {
+        assert (resultMap != null);
+
+        XObject selfObject = select.getFrom().getResolvedObject();
+        Map<String, Object> targetMap = new HashMap<>();
+        List<OqlSelectItem> selectItems = select.getSelectItems();
+        for (OqlSelectItem selectItem : selectItems) {
+            SqlExpr expr = selectItem.getExpr();
+            if (expr instanceof SqlAllColumnExpr) {
+                List<XField> fields = selfObject.getFields();
+                String resultKey;
+                String targetKey;
+                Object targetValue;
+                for (XField field : fields) {
+                    resultKey = field.getColumnName();
+                    targetKey = field.getName();
+                    if (field.isArray()) {
+                        targetValue = this.parseObjectListFromResultMap(resultMap, resultKey);
+                    } else {
+                        targetValue = this.parseObjectFromResultMap(resultMap, resultKey);
+                    }
+                    resultMap.put(targetKey, targetValue);
+                }
+                continue;
             }
-        } else if (expr instanceof OqlPropertyExpr) {
-            OqlPropertyExpr propExpr = (OqlPropertyExpr) expr;
-            String columnName = propExpr.getResolvedColumn();
-            String fieldName = propExpr.getResolvedField().getName() + "." + propExpr.getProperty();
-            if (resultMap.containsKey(columnName)) {
-                keyValuePair.key = fieldName;
-                keyValuePair.value = resultMap.get(columnName);
-            } else {
-                logger.warn("未找到字段{}对应的列{}的数据！", fieldName, columnName);
-            }
-        } else if (expr instanceof OqlFieldExpandExpr) {
-            OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) expr;
-            keyValuePair.key = fieldExpandExpr.getResolvedField().getName();
-            boolean isArray = fieldExpandExpr.getResolvedField().isArray();
-            if (isArray) {
-                int valueSize = 0;
-                // 计算dataMapList的长度
-                for (SqlIdentifierExpr property : fieldExpandExpr.getProperties()) {
-                    Object propValue = resultMap.get(property.getResolvedColumn());
-                    assert (propValue instanceof List);
-                    int itemValueSize = ((List<?>) propValue).size();
-                    if (itemValueSize > valueSize) {
-                        valueSize = itemValueSize;
+
+            String targetKey = selectItem.getResolvedFieldName();
+            Object targetValue = null;
+            XField resolvedField = selectItem.getResolvedField();
+            if (resolvedField != null) { // 字段类型
+                boolean isArray = resolvedField.isArray();
+                if (expr instanceof AbstractExpandableOqlExprImpl) {
+                    AbstractExpandableOqlExprImpl objectExpandExpr = (AbstractExpandableOqlExprImpl) expr;
+                    Map<String, String> resolvedKeyMap = objectExpandExpr.getResolvedKeyMap();
+                    if (isArray) {
+                        targetValue = this.parseMapListFormResultMap(resultMap, resolvedKeyMap);
+                    } else {
+                        targetValue = this.parseMapFormResultMap(resultMap, resolvedKeyMap);
+                    }
+                } else if (expr instanceof SqlName) {
+                    String resultKey = selectItem.getResolvedColumnName();
+                    if (isArray) {
+                        targetValue = this.parseObjectListFromResultMap(resultMap, resultKey);
+                    } else {
+                        targetValue = this.parseObjectFromResultMap(resultMap, resultKey);
                     }
                 }
-                List<Map<String, Object>> dataMapList = new ArrayList<>(valueSize);
-                int vi = 0;
-                while (vi >= valueSize) {
-                    Map<String, Object> dataMap = new HashMap<>();
-                    for (SqlIdentifierExpr property : fieldExpandExpr.getProperties()) {
-                        Object propValue = resultMap.get(property.getResolvedColumn());
-                        dataMap.put(property.getName(), ((List<?>) propValue).get(vi));
-                    }
-                    dataMapList.add(dataMap);
-                    vi++;
-                }
-                keyValuePair.value = dataMapList;
-            } else {
-                Map<String, Object> dataMap = new HashMap<>();
-                for (SqlIdentifierExpr property : fieldExpandExpr.getProperties()) {
-                    Object propValue = resultMap.get(property.getResolvedColumn());
-                    dataMap.put(property.getName(), propValue);
-                }
-                keyValuePair.value = dataMap;
+            } else { // 非字段类型，可能是聚合字段、方法调用字段、case-when字段等
+                String resultKey = selectItem.getResolvedColumnName();
+                targetValue = resultMap.get(resultKey);
             }
-        } else {
-            keyValuePair.key = expr.toString();
-            keyValuePair.value = resultMap.get(keyValuePair.key);
+
+            // 判断是否设置了别名
+            String alias = selectItem.getAlias();
+            if (alias != null) {
+                targetKey = alias;
+            }
+
+            targetMap.put(targetKey, targetValue);
         }
 
-        return keyValuePair;
+        return targetMap;
+    }*/
+
+    /**
+     * 从结果集中解析含多个key的List<Map>，用于字段（是数组）展开的情形
+     *
+     * @param resultMap
+     * @param selectItemInfos
+     * @return
+     */
+    private List<Map<String, Object>> parseMapListFormResultMap(Map<String, Object> resultMap, List<SelectItemInfo> selectItemInfos) {
+        // 计算结果List的长度（取决于最长的一个数据的长度），同时将非List的数据转为List
+        int valueSize = 0;
+        for (SelectItemInfo selectItemInfo : selectItemInfos) {
+            String resultKey = selectItemInfo.getColumnName();
+            Object resultValue = resultMap.get(resultKey);
+            List<?> listResultValue = null;
+            if (resultValue instanceof List) {
+                listResultValue = ((List<?>) resultValue);
+            } else if (resultValue instanceof String) {
+                String strV = (String) resultValue;
+                listResultValue = this.stringToList(strV);
+                resultMap.put(resultKey, listResultValue);
+            } else {
+                listResultValue = Arrays.asList(resultValue);
+                resultMap.put(resultKey, listResultValue);
+            }
+
+            int listResultValueSize = listResultValue.size();
+            if (listResultValueSize > valueSize) {
+                valueSize = listResultValueSize;
+            }
+        }
+
+        List<Map<String, Object>> targetMapList = new ArrayList<>();
+        for (int i = 0; i < valueSize; i++) {
+            Map<String, Object> targetMap = new HashMap<>();
+            for (SelectItemInfo selectItemInfo : selectItemInfos) {
+                String resultKey = selectItemInfo.getColumnName();
+                String targetKey = selectItemInfo.getFieldName();
+                boolean isArray = selectItemInfo.isArray();
+                Object targetValue = null;
+                List<?> listResultValue = (List<?>) resultMap.get(resultKey);
+                ;
+                if (listResultValue.size() > i) {
+                    Object resultValue = listResultValue.get(i);
+                    if (isArray) {
+                        targetValue = this.parseObjectListResultValue(resultValue);
+                    } else {
+                        targetValue = this.parseObjectResultValue(resultValue);
+                    }
+                }
+                targetMap.put(targetKey, targetValue);
+            }
+
+            targetMapList.add(targetMap);
+        }
+
+
+        return targetMapList;
     }
 
     /**
-     * 转换 "*" 表达式
+     * 从结果集中解析含多个key的Map，用于关联对象（一对一）展开，或者字段（非数组）展开的情形
      *
-     * @param stmt
      * @param resultMap
-     * @param targetMap
+     * @param selectItemInfos
+     * @return
      */
-    private void convertAllResultValues(OqlSelectStatement stmt, Map<String, Object> resultMap, Map<String, Object> targetMap) {
-        OqlObjectSource objectSource = stmt.getSelect().getFrom();
-        if (objectSource instanceof OqlExprObjectSource) {
-            XObject object = ((OqlExprObjectSource) objectSource).getResolvedObject();
-            List<XField> fields = object.getFields();
-            for (XField field : fields) {
-                String key = field.getName();
-                Object value = resultMap.get(field.getColumnName());
-                targetMap.put(key, value);
+    private Map<String, Object> parseMapFormResultMap(Map<String, Object> resultMap, List<SelectItemInfo> selectItemInfos) {
+        Map<String, Object> targetMap = new HashMap<>();
+        for (SelectItemInfo selectItemInfo : selectItemInfos) {
+            String resultKey = selectItemInfo.getColumnName();
+            String targetKey = selectItemInfo.getFieldName();
+            boolean isArray = selectItemInfo.isArray();
+            Object resultValue = resultMap.get(resultKey);
+            Object targetValue;
+            if (isArray) {
+                targetValue = this.parseObjectListResultValue(resultValue);
+            } else {
+                targetValue = this.parseObjectResultValue(resultValue);
             }
-        } else if (objectSource instanceof OqlSubQueryObjectSource) {
-            throw new UnsupportedOperationException("暂不支持的子查询的模型源");
+            targetMap.put(targetKey, targetValue);
+        }
+
+        return targetMap;
+    }
+
+    /**
+     * 从结果集中的值解析为一个List
+     *
+     * @param resultValue
+     * @return
+     */
+    private List<?> parseObjectListResultValue(Object resultValue) {
+        if (resultValue == null) {
+            return null;
+        }
+
+        List<?> resultListValue = null;
+        if (resultValue instanceof String) {
+            // 历史数据中可能存在非数组转数组的情况
+            resultListValue = this.stringToList((String) resultValue);
+        } else if (resultValue instanceof List) {
+            resultListValue = (List<?>) resultValue;
+        }
+
+        if (resultListValue != null) {
+            return resultListValue;
         } else {
-            String unsupportedObjectSourceType = objectSource.getClass().getName();
-            throw new UnsupportedOperationException("不支持的模型源：" + unsupportedObjectSourceType);
+            return Arrays.asList(resultValue);
         }
     }
 
-    private class KeyValuePair {
-
-        public KeyValuePair() {
+    /**
+     * 从结果集中的值解析为一个Object
+     *
+     * @param resultValue
+     * @return
+     */
+    private Object parseObjectResultValue(Object resultValue) {
+        if (resultValue != null) {
+            // 历史数据中可能存在数组转非数组的情况
+            if (resultValue instanceof List) {
+                resultValue = resultValue.toString();
+            }
         }
 
-        public KeyValuePair(String key, Object value) {
-            this.key = key;
-            this.value = value;
+        return resultValue;
+    }
+
+    /**
+     * 将 String 转为 List
+     *
+     * @param str
+     * @return
+     */
+    private List<String> stringToList(String str) {
+        if (str.startsWith("[") && str.endsWith("]")) {
+            str = str.substring(1, str.length() - 1);
         }
 
-        String key;
-        Object value;
+        String[] items = str.split(",");
+        for (int i = 0, l = items.length; i < l; i++) {
+            items[i] = items[i].trim();
+        }
+
+        return Arrays.asList(items);
     }
 
     @Override
@@ -246,8 +356,7 @@ public class OqlEngineImpl implements OqlEngine {
         InsertStatementCheckOqlAstVisitor checkVisitor = new InsertStatementCheckOqlAstVisitor();
         stmt.accept(checkVisitor);
 
-        // 根据object的定义校验数据
-        // TODO
+        // TODO根据object的定义校验数据
 
         SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt);
         int effectedRows = this.repository.insert(sqlStmt, paramMap);

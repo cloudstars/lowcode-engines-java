@@ -2,16 +2,19 @@ package net.cf.object.engine.sqlbuilder.insert;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XProperty;
+import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.OqlFieldExpandExpr;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
-import net.cf.object.engine.oql.ast.OqlPropertyExpr;
-import net.cf.object.engine.oql.visitor.OqlAstVisitorAdaptor;
+import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,29 +23,19 @@ import java.util.Map;
  *
  * @author clouds
  */
-public final class OqlInsertAstVisitor extends OqlAstVisitorAdaptor {
+public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
 
     private final SqlInsertStatementBuilder builder;
 
-    /**
-     * 调用OQL的参数
-     */
-    private final Map<String, Object> paramMap;
-
     public OqlInsertAstVisitor(SqlInsertStatementBuilder builder) {
-        this(builder, null);
-    }
-
-    public OqlInsertAstVisitor(SqlInsertStatementBuilder builder, Map<String, Object> paramMap) {
         this.builder = builder;
-        this.paramMap = paramMap;
     }
 
     @Override
     public boolean visit(OqlInsertStatement x) {
-        this.resolvedObject = x.getObjectSource().getResolvedObject();
+        this.selfObject = x.getObjectSource().getResolvedObject();
 
-        XField primaryField = this.resolvedObject.getPrimaryField();
+        XField primaryField = this.selfObject.getPrimaryField();
         if (primaryField != null && primaryField.isAutoGen()) {
             this.builder.setAutoGenName(primaryField.getName());
         }
@@ -71,14 +64,31 @@ public final class OqlInsertAstVisitor extends OqlAstVisitorAdaptor {
             if (insertField instanceof OqlFieldExpandExpr) {
                 OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) insertField;
                 XField field = fieldExpandExpr.getResolvedField();
-                List<SqlIdentifierExpr> properties = fieldExpandExpr.getProperties();
-                for (SqlIdentifierExpr property : properties) {
-                    OqlPropertyExpr propertyExpr = new OqlPropertyExpr(field, property.getName());
-                    this.builder.appendColumn(this.buildSqlExpr(propertyExpr));
+                String fieldName = field.getName();
+                List<SqlExpr> properties;
+                if (fieldExpandExpr.isDefaultExpanded()) {
+                    properties = new ArrayList<>();
+                    List<XProperty> fieldProperties = field.getProperties();
+                    for (XProperty fieldProperty : fieldProperties) {
+                        properties.add(new SqlIdentifierExpr(fieldProperty.getName()));
+                    }
+                } else {
+                    properties = fieldExpandExpr.getProperties();
+                }
+
+                for (SqlExpr property : properties) {
+                    if (property instanceof SqlIdentifierExpr) {
+                        SqlPropertyExpr propExpr = new SqlPropertyExpr(fieldName);
+                        propExpr.setName(((SqlIdentifierExpr) property).getName());
+                        SqlExpr sqlExpr = this.buildSqlExpr(this.selfObject, propExpr);
+                        this.builder.appendColumn(sqlExpr);
+                    }else {
+                        throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
+                    }
                 }
             } else {
-                SqlExpr sqlExprX = this.buildSqlExpr(insertField);
-                this.builder.appendColumn(sqlExprX);
+                SqlExpr exprX = this.buildSqlExpr(this.selfObject, insertField);
+                this.builder.appendColumn(exprX);
             }
         }
     }
@@ -114,27 +124,45 @@ public final class OqlInsertAstVisitor extends OqlAstVisitorAdaptor {
             SqlExpr insertValue = values.get(i);
             if (insertField instanceof OqlFieldExpandExpr) {
                 OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) insertField;
-                List<SqlIdentifierExpr> properties = fieldExpandExpr.getProperties();
+                List<SqlExpr> properties;
+                if (fieldExpandExpr.isDefaultExpanded()) {
+                    properties = new ArrayList<>();
+                    List<XProperty> fieldProps = fieldExpandExpr.getResolvedField().getProperties();
+                    for (XProperty fieldProp : fieldProps) {
+                        properties.add(new SqlIdentifierExpr(fieldProp.getName()));
+                    }
+                } else {
+                    properties = fieldExpandExpr.getProperties();
+                }
+
                 if (insertValue instanceof SqlJsonObjectExpr) {
                     SqlJsonObjectExpr jsonObjectExpr = (SqlJsonObjectExpr) insertValue;
                     Map<String, SqlExpr> items = jsonObjectExpr.getItems();
-                    for (SqlIdentifierExpr property : properties) {
-                        SqlExpr itemValue = items.get(property.getName());
-                        sqlValuesClause.addValue(itemValue);
+                    for (SqlExpr property : properties) {
+                        if (property instanceof SqlIdentifierExpr) {
+                            SqlExpr itemValue = items.get(((SqlIdentifierExpr) property).getName());
+                            sqlValuesClause.addValue(itemValue);
+                        } else {
+                            throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
+                        }
                     }
                 } else if (insertValue instanceof SqlVariantRefExpr) {
                     SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) insertValue;
                     String varName = variantRefExpr.getVarName();
-                    for (SqlIdentifierExpr property : properties) {
-                        SqlVariantRefExpr propVariableRefExpr = new SqlVariantRefExpr();
-                        propVariableRefExpr.setVarName(varName + "." + property.getName());
-                        sqlValuesClause.addValue(propVariableRefExpr);
+                    for (SqlExpr property : properties) {
+                        if (property instanceof SqlIdentifierExpr) {
+                            SqlVariantRefExpr propVariableRefExpr = new SqlVariantRefExpr();
+                            propVariableRefExpr.setVarName(varName + "." + ((SqlIdentifierExpr) property).getName());
+                            sqlValuesClause.addValue(propVariableRefExpr);
+                        } else {
+                            throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
+                        }
                     }
                 } else {
-                    sqlValuesClause.addValue(this.buildSqlExpr(insertValue));
+                    sqlValuesClause.addValue(this.buildSqlExpr(this.selfObject, insertValue));
                 }
             } else {
-                sqlValuesClause.addValue(this.buildSqlExpr(insertValue));
+                sqlValuesClause.addValue(this.buildSqlExpr(this.selfObject, insertValue));
             }
         }
 

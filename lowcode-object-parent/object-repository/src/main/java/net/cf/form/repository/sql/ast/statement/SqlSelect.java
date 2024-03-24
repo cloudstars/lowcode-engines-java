@@ -28,7 +28,7 @@ public class SqlSelect extends AbstractSqlObjectImpl {
     /**
      * 查询的列表
      */
-    private List<SqlSelectItem> selectItems = new ArrayList<>();
+    private final List<SqlSelectItem> selectItems = new ArrayList<>();
 
     /**
      * 查询的表
@@ -73,8 +73,11 @@ public class SqlSelect extends AbstractSqlObjectImpl {
         return selectItems;
     }
 
-    public void setSelectItems(List<SqlSelectItem> selectItems) {
-        this.selectItems = selectItems;
+    public void addSelectItems(List<SqlSelectItem> selectItems) {
+        if (selectItems == null) {
+            System.out.println("");
+        }
+        this.selectItems.addAll(selectItems);
         this.addChildren(selectItems);
     }
 
@@ -160,11 +163,9 @@ public class SqlSelect extends AbstractSqlObjectImpl {
     @Override
     public SqlSelect cloneMe() {
         SqlSelect select = new SqlSelect();
-        List<SqlSelectItem> cloneItems = new ArrayList<>();
         for (SqlSelectItem selectItem : selectItems) {
-            cloneItems.add(selectItem.cloneMe());
+            select.addSelectItem(selectItem.cloneMe());
         }
-        select.setSelectItems(cloneItems);
         if (this.from != null) {
             select.setFrom(this.from.cloneMe());
         }

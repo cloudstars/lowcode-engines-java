@@ -11,6 +11,42 @@ import net.cf.object.engine.oql.ast.*;
 public interface OqlAstVisitor extends SqlAstVisitor {
 
     /**
+     * 是否允许访问 OqlFieldExpr 的儿子节点
+     *
+     * @param x
+     * @return
+     */
+    default boolean visit(OqlFieldExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 OqlFieldExpr
+     *
+     * @param x
+     */
+    default void endVisit(OqlFieldExpr x) {
+    }
+
+    /**
+     * 是否允许访问 OqlPropertyExpr 的儿子节点
+     *
+     * @param x
+     * @return
+     */
+    default boolean visit(OqlPropertyExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 OqlPropertyExpr
+     *
+     * @param x
+     */
+    default void endVisit(OqlPropertyExpr x) {
+    }
+
+    /**
      * 是否允许访问 OqlObjectExpandExpr 的儿子节点
      *
      * @param x
@@ -44,25 +80,6 @@ public interface OqlAstVisitor extends SqlAstVisitor {
      * @param x
      */
     default void endVisit(OqlFieldExpandExpr x) {
-    }
-
-    /**
-     *
-     * 是否允许访问 OqlPropertyExpr 的儿子节点
-     *
-     * @param x
-     * @return
-     */
-    default boolean visit(OqlPropertyExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 OqlPropertyExpr
-     *
-     * @param x
-     */
-    default void endVisit(OqlPropertyExpr x) {
     }
 
     /**

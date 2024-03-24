@@ -11,19 +11,19 @@ import java.util.Map;
 
 public class TestFieldImpl implements XField {
 
-    private final TestObjectImpl owner;
+    protected final TestObjectImpl owner;
 
-    private final FieldDef fieldDef;
+    protected final FieldDef fieldDef;
 
     /**
      * 模型字段属性列表
      */
-    private final List<TestPropertyImpl> properties = new ArrayList<>();
+    protected final List<TestPropertyImpl> properties = new ArrayList<>();
 
     /**
      * 模型字段属性映射表，方便通过属性名称查找
      */
-    private final Map<String, TestPropertyImpl> propertyMap = new HashMap<>();
+    protected final Map<String, TestPropertyImpl> propertyMap = new HashMap<>();
 
     public TestFieldImpl(TestObjectImpl owner, FieldDef fieldDef) {
         this.owner = owner;

@@ -72,28 +72,28 @@ public final class ObjectBeanUtils {
      * 获取一个模型的属性值
      *
      * @param object
-     * @param propertyName
+     * @param propName
      * @return
      */
-    public static Object getPropertyValue(Object object, String propertyName) {
+    public static Object getPropertyValue(Object object, String propName) {
         if (object == null) {
             return null;
         }
 
         if (object instanceof Map) {
-            return ((Map) object).get(propertyName);
+            return ((Map) object).get(propName);
         }
 
         Class clazz = object.getClass();
         Method method;
-        if (propertyName.startsWith("is")) {
+        if (propName.startsWith("is")) {
             try {
-                method = clazz.getDeclaredMethod(propertyName);
+                method = clazz.getDeclaredMethod(propName);
             } catch (NoSuchMethodException e1) {
                 return null;
             }
         } else {
-            String cPropertyName = StringUtils.capitalize(propertyName);
+            String cPropertyName = StringUtils.capitalize(propName);
             try {
                 method = clazz.getDeclaredMethod("get" + cPropertyName);
             } catch (NoSuchMethodException e2) {

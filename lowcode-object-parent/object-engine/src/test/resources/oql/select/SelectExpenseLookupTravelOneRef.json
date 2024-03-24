@@ -1,0 +1,12 @@
+{
+  "desc": "测试报销申请关联出差申请，1对1",
+  "name": "SelectExpenseLookupTravel",
+  "oqls": [
+    {
+      "desc": "查询报销申请关联出差申请",
+      "name": "SelectTravelLookupTravel",
+      "oql": "select applyId, Travel(applyId, applyName), cash, remark from Expense",
+      "sql": "select APPLY_ID, TRAVEL.APPLY_ID, TRAVEL.APPLY_NAME, CASH, REMARK from EXPENSE left join TRAVEL on EXPENSE.TRV_ID = TRAVEL.APPLY_ID"
+    }
+  ]
+}

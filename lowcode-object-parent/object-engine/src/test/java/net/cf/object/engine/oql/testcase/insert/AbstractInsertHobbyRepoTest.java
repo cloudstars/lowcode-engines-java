@@ -1,18 +1,10 @@
 package net.cf.object.engine.oql.testcase.insert;
 
-import net.cf.commons.test.db.dataset.IDataSet;
-import net.cf.commons.test.db.dataset.JsonDataSetLoader;
-import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
-import net.cf.object.engine.object.TestObjectResolver;
-import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.oql.util.OqlUtils;
-import org.junit.After;
-import org.junit.Before;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,32 +15,20 @@ import java.util.Map;
  */
 public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest implements InsertHobbyTest {
 
-    @Resource
-    private MySqlDataSetOperator dataSetOperator;
-
-    private IDataSet dataSet;
-
-    @Before
-    public void setup() {
-        this.dataSet = JsonDataSetLoader.loadFromClassPath(new String[]{"dataset/Hobby.json"});
-        this.dataSetOperator.setUp(dataSet);
-    }
-
-    @After
-    public void tearDown() {
-        this.dataSetOperator.tearDown(this.dataSet);
-    }
-
     protected AbstractInsertHobbyRepoTest() {
         super(OQL_FILE_PATH);
+    }
+
+    @Override
+    protected String[] getDataSetFiles() {
+        return new String[]{"dataset/Hobby.json"};
     }
 
     @Override
     public void testInsertHobby() {
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_HOBBY);
-            XObject object = TestObjectResolver.resolveObject(OBJECT_NAME);
-            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(object, oqlInfo.oql);
+            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
             int effectedRows = this.engine.create(oqlStmt);
             assert (effectedRows == 1);
         }
@@ -56,8 +36,7 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
         {
             // 重新查出来作断言
             String selectOql = "select code, name, descr from Hobby where code = #{code}";
-            XObject object = TestObjectResolver.resolveObject(OBJECT_NAME);
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(object, selectOql);
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("code", "DJ");
             Map<String, Object> data = this.engine.queryOne(selectOqlStmt, paramMap);

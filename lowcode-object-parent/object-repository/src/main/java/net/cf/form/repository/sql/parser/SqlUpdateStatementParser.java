@@ -1,5 +1,8 @@
 package net.cf.form.repository.sql.parser;
 
+import net.cf.form.repository.sql.FastSqlException;
+import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
+import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 
@@ -17,7 +20,11 @@ public class SqlUpdateStatementParser extends SqlExprParser {
         this.accept(Token.UPDATE);
 
         SqlUpdateStatement statement = new SqlUpdateStatement();
-        statement.setTableSource(this.parseTableSource());
+        SqlTableSource tableSource = this.parseTableSource();
+        if (!(tableSource instanceof SqlExprTableSource)) {
+            throw new FastSqlException("Update SQL语句只允许操作标识符表名");
+        }
+        statement.setTableSource((SqlExprTableSource) tableSource);
         this.parseSetItems(statement);
         if (this.lexer.token == Token.WHERE) {
             this.lexer.nextToken();

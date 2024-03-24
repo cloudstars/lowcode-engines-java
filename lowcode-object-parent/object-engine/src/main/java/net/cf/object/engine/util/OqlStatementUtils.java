@@ -8,6 +8,7 @@ import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
+import net.cf.object.engine.oql.parser.XObjectResolver;
 import net.cf.object.engine.sqlbuilder.delete.OqlDeleteAstVisitor;
 import net.cf.object.engine.sqlbuilder.delete.SqlDeleteStatementBuilder;
 import net.cf.object.engine.sqlbuilder.insert.OqlInsertAstVisitor;
@@ -28,9 +29,21 @@ public final class OqlStatementUtils {
      * @param stmt
      * @return
      */
-    public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt) {
+    public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt, SqlSelectStatementBuilder builder, XObjectResolver resolver) {
+        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder, resolver);
+        stmt.accept(visitor);
+        return builder.build();
+    }
+
+    /**
+     * 将OQL查询转为SQL查询
+     *
+     * @param stmt
+     * @return
+     */
+    public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt, XObjectResolver resolver) {
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder);
+        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder, resolver);
         stmt.accept(visitor);
         return builder.build();
     }

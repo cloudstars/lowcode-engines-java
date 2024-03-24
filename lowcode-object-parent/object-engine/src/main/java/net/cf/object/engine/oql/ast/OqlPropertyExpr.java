@@ -1,73 +1,108 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.object.engine.object.XField;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
+import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
- * 模型字段属性表达式
+ * OQL字段属性表达式，如：object.field.property, field.property, field(property)中的property
  *
  * @author clouds
  */
-public class OqlPropertyExpr extends AbstractOqlExprImpl {
+public class OqlPropertyExpr extends AbstractOqlExprImpl implements SqlName {
 
     /**
-     * 字段实例
+     * 属性归属的字段（可能为空，如字段展开中的属性）
      */
-    protected final XField resolvedField;
+    private final OqlFieldExpr owner;
 
     /**
-     * 属性列表
+     * 属性的名称
      */
-    protected final String property;
+    private String name;
 
     /**
-     * 对应数据表列
+     * OQL解析时生成的字段属性
      */
-    private String resolvedColumn;
+    private XProperty resolvedProperty;
 
     /**
-     * 归属的数据库表
+     * 不带owner的构造函数，用于字段展开中的属性
      */
-    private String resolvedOwnerTable;
-
-    public OqlPropertyExpr(XField resolvedField, String property) {
-        this.resolvedField = resolvedField;
-        this.property = property;
+    public OqlPropertyExpr() {
+        this.owner = null;
     }
 
-    public XField getResolvedField() {
-        return resolvedField;
+    public OqlPropertyExpr(String owner) {
+        this(new OqlFieldExpr(null, owner));
     }
 
-    public String getProperty() {
-        return property;
+    public OqlPropertyExpr(OqlFieldExpr owner) {
+        this.owner = owner;
+        this.addChild(owner);
     }
 
-    public String getResolvedColumn() {
-        return resolvedColumn;
+    public OqlPropertyExpr(OqlFieldExpr owner, String name) {
+        this.owner = owner;
+        this.addChild(owner);
+        this.name = name;
     }
 
-    public void setResolvedColumn(String resolvedColumn) {
-        this.resolvedColumn = resolvedColumn;
+
+    public OqlFieldExpr getOwner() {
+        return owner;
     }
 
-    public String getResolvedOwnerTable() {
-        return resolvedOwnerTable;
+    @Override
+    public String getName() {
+        return this.name;
     }
 
-    public void setResolvedOwnerTable(String resolvedOwnerTable) {
-        this.resolvedOwnerTable = resolvedOwnerTable;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     protected void accept0(OqlAstVisitor visitor) {
-        visitor.visit(this);
+        if (visitor.visit(this)) {
+            if (this.owner != null) {
+                this.owner.accept(visitor);
+            }
+        }
+
         visitor.endVisit(this);
     }
 
     @Override
     public OqlPropertyExpr cloneMe() {
-        return new OqlPropertyExpr(this.resolvedField, this.property);
+        OqlFieldExpr ownerX = null;
+        if (this.owner != null) {
+            ownerX = this.owner.cloneMe();
+        }
+
+        OqlPropertyExpr x = new OqlPropertyExpr(ownerX);
+        x.setName(this.name);
+        x.setResolvedProperty(this.resolvedProperty);
+        return x;
     }
 
+    @Override
+    public List<SqlExpr> getChildren() {
+        return Collections.singletonList(this.owner);
+    }
+
+    public XProperty getResolvedProperty() {
+        return resolvedProperty;
+    }
+
+    public void setResolvedProperty(XProperty resolvedProperty) {
+        this.resolvedProperty = resolvedProperty;
+        if (this.owner != null) {
+            this.owner.setResolvedField(resolvedProperty.getOwner());
+        }
+    }
 }

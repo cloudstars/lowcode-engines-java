@@ -1,6 +1,9 @@
 package net.cf.form.repository.sql.parser;
 
+import net.cf.form.repository.sql.FastSqlException;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
+import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
+import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 
 public class SqlDeleteStatementParser extends SqlExprParser {
 
@@ -17,7 +20,11 @@ public class SqlDeleteStatementParser extends SqlExprParser {
         this.accept(Token.FROM);
 
         SqlDeleteStatement statement = new SqlDeleteStatement();
-        statement.setFrom(this.parseTableSource());
+        SqlTableSource tableSource = this.parseTableSource();
+        if (!(tableSource instanceof SqlExprTableSource)) {
+            throw new FastSqlException("Delete SQL语句只允许操作标识符表名");
+        }
+        statement.setFrom((SqlExprTableSource) tableSource);
         if (this.lexer.token == Token.WHERE) {
             this.lexer.nextToken();
             statement.setWhere(this.expr());

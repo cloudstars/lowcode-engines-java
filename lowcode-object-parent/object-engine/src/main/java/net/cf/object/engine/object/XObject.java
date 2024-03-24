@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * 动态模型接口
  */
-public interface XObject<F extends XField> {
+public interface XObject<F extends XField, R extends XObjectRefField> {
 
     /**
      * 获取模型名称
@@ -16,6 +16,13 @@ public interface XObject<F extends XField> {
      * @return
      */
     String getName();
+
+    /**
+     * 获取父模型的名称
+     *
+     * @return
+     */
+    String getMasterName();
 
     /**
      * 获取模型的字段列表
@@ -38,6 +45,14 @@ public interface XObject<F extends XField> {
      * @return
      */
     F getPrimaryField();
+
+    /**
+     * 根据关联模型的编号获取对应的字段
+     *
+     * @param refObjectName
+     * @return
+     */
+    R getObjectRefField(String refObjectName);
 
     /**
      * 校验函数

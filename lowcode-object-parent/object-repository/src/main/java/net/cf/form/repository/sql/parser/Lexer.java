@@ -120,6 +120,10 @@ public class Lexer {
      * 获取下一个 token
      */
     public final void nextToken() {
+        if (this.token == Token.EOF) {
+            throw new SqlParseException("end of file error.");
+        }
+
         this.startPos = this.pos;
         this.bufPos = 0;
         if (this.comments != null && this.comments.size() > 0) {

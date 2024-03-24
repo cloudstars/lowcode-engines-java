@@ -22,7 +22,7 @@ public enum Token {
     SLASH("/"),
     PERCENT("%"),
 
-    /* 变量引用、标识符、子属性 */
+    /* 变量引用、标识符、属性 */
     VARIANT_REF,
     IDENTIFIER,
     SEMI(";"),

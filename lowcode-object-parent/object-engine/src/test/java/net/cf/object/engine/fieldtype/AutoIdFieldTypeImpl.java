@@ -14,7 +14,7 @@ public class AutoIdFieldTypeImpl implements XFieldType {
 
     @Override
     public String getName() {
-        return FieldTypeCodeConstants.AUTO_ID;
+        return FieldTypeConstants.AUTO_ID;
     }
 
 }

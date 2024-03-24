@@ -421,15 +421,15 @@ public class FxExprParser {
         if (expr instanceof FxIdentifierExpr) {
             FxIdentifierExpr idExpr = (FxIdentifierExpr) expr;
             String methodName = idExpr.getName();
-            FxMethodInvokeExpr methodInvokeExpr = new FxMethodInvokeExpr(methodName);
+            FxMethodInvokeExpr invokeExpr = new FxMethodInvokeExpr(methodName);
             Token token = this.lexer.token;
             if (token != Token.RPAREN) {
-                this.exprList(methodInvokeExpr.getArguments(), methodInvokeExpr);
+                this.exprList(invokeExpr.getArguments(), invokeExpr);
             }
 
             this.accept(Token.RPAREN);
 
-            return methodInvokeExpr;
+            return invokeExpr;
         } else {
             return expr;
         }

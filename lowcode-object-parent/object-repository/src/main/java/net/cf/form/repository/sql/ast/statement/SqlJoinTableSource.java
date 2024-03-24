@@ -13,6 +13,7 @@ import java.util.List;
 public class SqlJoinTableSource extends AbstractSqlTableSourceImpl implements SqlReplaceable {
 
     protected SqlTableSource left;
+
     protected JoinType joinType;
 
     protected SqlTableSource right;

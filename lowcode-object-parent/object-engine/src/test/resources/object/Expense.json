@@ -6,34 +6,29 @@
   "fields": [
     {
       "type": "Sequence",
-      "desc": "申请单ID",
+      "desc": "报销单ID",
       "name": "applyId",
       "columnName": "APPLY_ID",
       "dataType": "String",
       "dataLength": 36
     },
     {
+      "type": "Text",
+      "desc": "报销单名称",
+      "name": "applyName",
+      "columnName": "APPLY_NAME",
+      "dataType": "String",
+      "dataLength": 64
+    },
+    {
       "type": "ObjectRef",
+      "refObjectName": "Travel",
+      "refType": "LOOKUP",
       "desc": "关联申请单",
-      "name": "refApply",
-      "columnName": "REF_APPLY",
-      "dataType": "Object",
-      "properties": [
-        {
-          "desc": "名称",
-          "name": "name",
-          "columnName": "NAME",
-          "dataType": "String",
-          "dataLength": 64
-        },
-        {
-          "desc": "编号",
-          "name": "id",
-          "columnName": "ID",
-          "dataType": "String",
-          "dataLength": 36
-        }
-      ]
+      "name": "travelId",
+      "columnName": "TRV_ID",
+      "dataType": "String",
+      "dataLength": 64
     },
     {
       "type": "Number",
@@ -47,14 +42,6 @@
     {
       "type": "Text",
       "desc": "报销说明",
-      "name": "remark",
-      "columnName": "REMARK",
-      "dataType": "String",
-      "dataLength": 512
-    },
-    {
-      "type": "Text",
-      "desc": "说明",
       "name": "remark",
       "columnName": "REMARK",
       "dataType": "String",
@@ -132,7 +119,7 @@
       "type": "Text",
       "desc": "拥有者",
       "name": "ownerKey",
-      "columName": "OWNER_KEY",
+      "columnName": "OWNER_KEY",
       "dataType": "String",
       "dataLength": 20
     },

@@ -1,6 +1,5 @@
 package net.cf.object.engine.oql.testcase.update;
 
-import net.cf.object.engine.object.TestObjectResolver;
 import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
@@ -38,8 +37,8 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
         {
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_MODIFIER_BY_ID_VARS);
-            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
-            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(object, oqlInfo.oql);
+            XObject object = this.resolver.resolve(TravelObject.NAME);
+            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", TravelObject.RECORD1);
             Map<String, Object> modifier = new HashMap<>();
@@ -53,8 +52,8 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName, modifier from Travel where applyId = #{applyId}";
-            XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(object, selectOql);
+            XObject object = this.resolver.resolve(TravelObject.NAME);
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", TravelObject.RECORD1);
             List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);

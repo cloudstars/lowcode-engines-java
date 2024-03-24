@@ -72,6 +72,13 @@ public class FieldDef {
      */
     private List<PropertyDef> properties;
 
+    private String refObjectName;
+
+    private ObjectRefType refType;
+
+    private boolean isMultiRef;
+
+
     @JSONCreator
     public FieldDef(String type) {
         this.type = type;
@@ -169,4 +176,27 @@ public class FieldDef {
         this.properties = properties;
     }
 
+    public String getRefObjectName() {
+        return refObjectName;
+    }
+
+    public void setRefObjectName(String refObjectName) {
+        this.refObjectName = refObjectName;
+    }
+
+    public ObjectRefType getRefType() {
+        return refType;
+    }
+
+    public void setRefType(ObjectRefType refType) {
+        this.refType = refType;
+    }
+
+    public boolean isMultiRef() {
+        return isMultiRef;
+    }
+
+    public void setMultiRef(boolean multiRef) {
+        isMultiRef = multiRef;
+    }
 }

@@ -22,6 +22,11 @@ public class ObjectDef {
     private String name;
 
     /**
+     * 父模型的名称
+     */
+    private String masterName;
+
+    /**
      * 表的名称
      */
     private String tableName;
@@ -50,6 +55,14 @@ public class ObjectDef {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
     }
 
     public String getTableName() {

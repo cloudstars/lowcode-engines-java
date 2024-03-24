@@ -1,0 +1,19 @@
+{
+  "desc": "请假表",
+  "name": "LEAVE",
+  "columns": [
+    {
+      "desc": "创建人编号",
+      "name": "CREATOR_KEY",
+      "dataType": "String"
+    }
+  ],
+  "valuesList": [
+    {
+      "CREATOR_KEY": "zhangsan"
+    },
+    {
+      "CREATOR_KEY": "lisi"
+    }
+  ]
+}

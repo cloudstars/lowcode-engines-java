@@ -5,7 +5,7 @@ package net.cf.object.engine.fieldtype;
  *
  * @author clouds
  */
-public interface FieldTypeCodeConstants {
+public interface FieldTypeConstants {
 
     /* 自动ID */
     String AUTO_ID = "AutoId";

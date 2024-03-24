@@ -21,6 +21,9 @@ public class SqlAggregateExpr extends SqlMethodInvokeExpr implements SqlReplacea
      */
     protected boolean withinGroup = false;
 
+    public SqlAggregateExpr() {
+    }
+
     public SqlAggregateExpr(String methodName) {
         super(methodName);
     }

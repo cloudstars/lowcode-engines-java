@@ -46,120 +46,32 @@
     },
     {
       "type": "ObjectRef",
+      "refObjectName": "TravelTrip",
       "refType": "DETAIL",
-      "desc": "出差行程",
+      "desc": "行程明细",
       "name": "trips",
-      "columnName": "TRIPS",
-      "tableName": "TRAVEL_TRIP",
-      "primaryFieldName": "tripId",
-      "masterFieldName": "applyId",
-      "fields": [
+      "isArray": true,
+      "dataType": "Object"
+    },
+    {
+      "type": "File",
+      "desc": "附件",
+      "name": "attach",
+      "dataType": "Object",
+      "properties": [
         {
-          "type": "AutoId",
-          "desc": "行程ID",
-          "name": "tripId",
-          "columnName": "TRIP_ID",
+          "desc": "名称",
+          "name": "name",
+          "columnName": "ATTACH_NAME",
+          "dataType": "String",
+          "dataLength": 128
+        },
+        {
+          "desc": "编号",
+          "name": "key",
+          "columnName": "ATTACH_KEY",
           "dataType": "String",
           "dataLength": 36
-        },
-        {
-          "type": "Text",
-          "desc": "单请单ID",
-          "name": "applyId",
-          "columnName": "APPLY_ID",
-          "dataType": "String",
-          "dataLength": "36"
-        },
-        {
-          "type": "File",
-          "desc": "附件",
-          "name": "attach",
-          "columnName": "ATTACH",
-          "dataType": "Object",
-          "properties": [
-            {
-              "desc": "名称",
-              "name": "name",
-              "columnName": "NAME",
-              "dataType": "String",
-              "dataLength": 128
-            },
-            {
-              "desc": "编号",
-              "name": "key",
-              "columnName": "KEY",
-              "dataType": "String",
-              "dataLength": 36
-            }
-          ]
-        },
-        {
-          "type": "User",
-          "desc": "创建人",
-          "name": "creator",
-          "dataType": "Object",
-          "defaultValue": {
-            "desc": "系统管理员",
-            "key": "admin"
-          },
-          "properties": [
-            {
-              "desc": "名称",
-              "name": "name",
-              "columnName": "CREATOR_NAME",
-              "dataType": "String",
-              "dataLength": 32
-            },
-            {
-              "desc": "编号",
-              "name": "key",
-              "columnName": "CREATOR_KEY",
-              "dataType": "String",
-              "dataLength": 20
-            }
-          ]
-        },
-        {
-          "type": "Date",
-          "desc": "更新时间",
-          "name": "createdAt",
-          "columnName": "CREATED_AT",
-          "dataType": "Date",
-          "dateFormat": "yyyy-MM-dd"
-        },
-        {
-          "type": "User",
-          "desc": "更新人",
-          "name": "modifier",
-          "dataType": "Object",
-          "defaultValue": {
-            "desc": "系统管理员",
-            "key": "admin"
-          },
-          "properties": [
-            {
-              "desc": "名称",
-              "name": "name",
-              "columnName": "MODIFIER_NAME",
-              "dataType": "String",
-              "dataLength": 32
-            },
-            {
-              "desc": "编号",
-              "name": "key",
-              "columnName": "MODIFIER_KEY",
-              "dataType": "String",
-              "dataLength": 20
-            }
-          ]
-        },
-        {
-          "type": "Date",
-          "desc": "更新时间",
-          "name": "modifiedAt",
-          "columnName": "MODIFIED_AT",
-          "dataType": "Date",
-          "dateFormat": "yyyy-MM-dd"
         }
       ]
     },
@@ -235,7 +147,7 @@
       "type": "Text",
       "desc": "拥有者",
       "name": "ownerKey",
-      "columName": "OWNER_KEY",
+      "columnName": "OWNER_KEY",
       "dataType": "String",
       "dataLength": 20
     },

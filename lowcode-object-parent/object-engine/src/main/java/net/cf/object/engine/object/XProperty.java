@@ -29,6 +29,15 @@ public interface XProperty {
     String getColumnName();
 
     /**
+     * 是否是数组
+     *
+     * @return
+     */
+    default boolean isArray() {
+        return false;
+    }
+
+    /**
      * 获取字段属性的数据类型
      *
      * @return

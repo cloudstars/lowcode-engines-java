@@ -484,7 +484,7 @@ public class SqlExprParser extends AbstractSqlParser {
         this.accept(Token.LPAREN);
 
         if (expr instanceof SqlIdentifierExpr) {
-            SqlMethodInvokeExpr methodInvokeExpr;
+            SqlMethodInvokeExpr invokeExpr;
             SqlIdentifierExpr idExpr = (SqlIdentifierExpr) expr;
             String methodName = idExpr.getName();
             String methodNameUppercase = methodName.toUpperCase();
@@ -495,22 +495,22 @@ public class SqlExprParser extends AbstractSqlParser {
                     distinct = true;
                 }
 
-                methodInvokeExpr = new SqlAggregateExpr(methodName);
+                invokeExpr = new SqlAggregateExpr(methodName);
                 if (distinct) {
-                    ((SqlAggregateExpr) methodInvokeExpr).setOption(SqlAggregateOption.DISTINCT);
+                    ((SqlAggregateExpr) invokeExpr).setOption(SqlAggregateOption.DISTINCT);
                 }
             } else {
-                methodInvokeExpr = new SqlMethodInvokeExpr(methodName);
+                invokeExpr = new SqlMethodInvokeExpr(methodName);
             }
 
             Token token = this.lexer.token;
             if (token != Token.RPAREN) {
-                this.exprList(methodInvokeExpr.getArguments(), methodInvokeExpr);
+                this.exprList(invokeExpr.getArguments(), invokeExpr);
             }
 
             this.accept(Token.RPAREN);
 
-            return methodInvokeExpr;
+            return invokeExpr;
         } else {
             return expr;
         }
@@ -523,17 +523,9 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param parent
      */
     public final void exprList(Collection<SqlExpr> exprCol, SqlObject parent) {
-        int countCommaCount = 0;
-        //if (this.lexer.token != Token.RPAREN && this.lexer.token != Token.EOF) {
         while (this.lexer.token != Token.RPAREN) {
-            SqlExpr expr = null;
-            if (this.lexer.token == Token.COMMA) {
-                // expr = new SqlUndefinedExpr();
-            } else {
-                expr = this.expr();
-            }
+            SqlExpr expr = this.expr();
 
-            //if (expr != null) {
             if (this.lexer.token == Token.AS) {
                 accept(Token.AS);
                 String alias = this.lexer.stringVal();
@@ -543,20 +535,12 @@ public class SqlExprParser extends AbstractSqlParser {
 
             expr.setParent(parent);
             exprCol.add(expr);
-            //}
 
             if (this.lexer.token != Token.COMMA) {
                 return;
             }
-            countCommaCount++;
 
             this.lexer.nextToken();
-        }
-        //}
-
-        // 逗号的数量 + 1 等于 元数的个数，不足时初充SqlUndefinedExpr，如：(1,)
-        if (countCommaCount > 0 && exprCol.size() < countCommaCount + 1) {
-            //exprCol.add(new SqlUndefinedExpr());
         }
     }
 
@@ -589,7 +573,7 @@ public class SqlExprParser extends AbstractSqlParser {
     protected SqlTableSource parseTableSource() {
         SqlTableSource tableSource = null;
         SqlJoinTableSource.JoinType joinType = null;
-        while (this.lexer.token != Token.WHERE) {
+        while (this.lexer.token != Token.WHERE && this.lexer.token != Token.EOF) {
             if (this.lexer.token == Token.LEFT) {
                 joinType = SqlJoinTableSource.JoinType.LEFT_OUTER_JOIN;
                 this.lexer.nextToken();
@@ -618,11 +602,7 @@ public class SqlExprParser extends AbstractSqlParser {
                 if (tableSource == null) {
                     tableSource = this.parseExprTableSource();
                 } else {
-                    SqlJoinTableSource joinTableSource = new SqlJoinTableSource();
-                    joinTableSource.setLeft(tableSource);
-                    joinTableSource.setJoinType(joinType);
-                    joinTableSource.setRight(this.parseExprTableSource());
-                    tableSource = joinTableSource;
+                    break;
                 }
             }
         }

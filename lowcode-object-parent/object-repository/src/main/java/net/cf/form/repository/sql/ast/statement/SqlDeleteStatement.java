@@ -9,18 +9,18 @@ import java.util.List;
 
 public class SqlDeleteStatement extends AbstractSqlStatementImpl implements SqlStatement {
 
-    protected SqlTableSource from;
+    protected SqlExprTableSource from;
 
     protected SqlExpr where;
 
     public SqlDeleteStatement() {
     }
 
-    public SqlTableSource getFrom() {
+    public SqlExprTableSource getFrom() {
         return from;
     }
 
-    public void setFrom(SqlTableSource from) {
+    public void setFrom(SqlExprTableSource from) {
         this.from = from;
         this.addChild(from);
     }

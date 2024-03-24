@@ -2,6 +2,7 @@ package net.cf.object.engine.oql.ast;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.util.SqlUtils;
+import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 
 
@@ -13,6 +14,11 @@ import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl implements OqlObjectSource {
 
     protected String alias;
+
+    /**
+     * 解析后的模型
+     */
+    protected XObject resolvedObject;
 
     public AbstractOqlObjectSourceImpl() {
     }
@@ -43,5 +49,14 @@ public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl 
     @Override
     public OqlExprObjectSource cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
+    }
+
+    @Override
+    public XObject getResolvedObject() {
+        return resolvedObject;
+    }
+
+    public void setResolvedObject(XObject resolvedObject) {
+        this.resolvedObject = resolvedObject;
     }
 }

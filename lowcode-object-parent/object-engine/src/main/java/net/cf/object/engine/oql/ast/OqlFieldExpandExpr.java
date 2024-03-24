@@ -1,7 +1,8 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.form.repository.sql.ast.SqlObject;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
@@ -13,53 +14,53 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlFieldExpandExpr extends AbstractOqlExprImpl {
+public class OqlFieldExpandExpr extends AbstractExpandableOqlExprImpl {
 
     /**
-     * 字段实例
+     *  展开的字段
      */
-    protected final XField resolvedField;
+    private final SqlName owner;
 
     /**
-     * 属性列表
+     *  字段中展开的属性列表（含常量、表达式等）
      */
-    protected final List<SqlIdentifierExpr> properties;
+    protected final List<SqlExpr> properties = new ArrayList<>();
 
     /**
-     * 是否默认全部展开，非field(xx, yy)的形式
+     * OQL解析时生成的字段
      */
-    protected boolean isDefaultExpand = false;
+    protected XField resolvedField;
 
-    public OqlFieldExpandExpr(XField resolvedField) {
-        this(resolvedField, new ArrayList<>());
+    public OqlFieldExpandExpr(String fieldName) {
+        this(new SqlIdentifierExpr(fieldName));
     }
 
-    public OqlFieldExpandExpr(XField resolvedField, List<SqlIdentifierExpr> properties) {
-        this.resolvedField = resolvedField;
-        this.properties = properties;
+    public OqlFieldExpandExpr(SqlName owner) {
+        this.owner = owner;
+    }
+
+    public SqlName getOwner() {
+        return owner;
+    }
+
+    public List<SqlExpr> getProperties() {
+        return properties;
+    }
+
+    public <T extends SqlExpr> void addProperties(List<T> properties) {
+        this.properties.addAll(properties);
+    }
+
+    public void addProperty(SqlExpr property) {
+        this.properties.add(property);
     }
 
     public XField getResolvedField() {
         return resolvedField;
     }
-    public List<SqlIdentifierExpr> getProperties() {
-        return properties;
-    }
 
-    public void setProperty(int i, SqlIdentifierExpr field) {
-        this.properties.add(i, field);
-    }
-
-    public void addProperty(SqlIdentifierExpr field) {
-        this.properties.add(field);
-    }
-
-    public boolean isDefaultExpand() {
-        return isDefaultExpand;
-    }
-
-    public void setDefaultExpand(boolean defaultExpand) {
-        isDefaultExpand = defaultExpand;
+    public void setResolvedField(XField resolvedField) {
+        this.resolvedField = resolvedField;
     }
 
     @Override
@@ -73,11 +74,15 @@ public class OqlFieldExpandExpr extends AbstractOqlExprImpl {
 
     @Override
     public OqlFieldExpandExpr cloneMe() {
-        return new OqlFieldExpandExpr(this.resolvedField, this.properties);
+        OqlFieldExpandExpr x = new OqlFieldExpandExpr(this.owner);
+        for (SqlExpr property : this.properties) {
+            x.addProperty(property);
+        }
+        x.isDefaultExpanded = this.isDefaultExpanded;
+        x.isStarExpanded = this.isStarExpanded;
+        x.resolvedField = this.resolvedField;
+
+        return x;
     }
 
-    @Override
-    public List<? extends SqlObject> getChildren() {
-        return this.properties;
-    }
 }

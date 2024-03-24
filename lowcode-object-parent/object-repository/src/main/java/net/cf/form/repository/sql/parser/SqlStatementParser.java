@@ -39,7 +39,7 @@ public class SqlStatementParser extends SqlExprParser {
     }
 
     public void parseStatementList(List<SqlStatement> statementList, int max, SqlObject parent) {
-        for (int i = 0; max == -1 || statementList.size() < max; ++i) {
+        while (max == -1 || statementList.size() < max) {
             Token token = this.lexer.token;
             while (token == Token.MULTI_LINE_COMMENT || token == Token.LINE_COMMENT) {
                 this.lexer.nextToken();

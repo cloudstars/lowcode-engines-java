@@ -4,21 +4,23 @@ import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
-import net.cf.object.engine.object.TestObjectResolver;
 import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
+import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
 import net.cf.object.engine.oql.util.OqlUtils;
 import net.cf.object.engine.util.OqlStatementUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 
-@RunWith(JUnit4.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ObjectEngineStatementTestApplication.class)
 public class UpdateTravelSelfSimpleStmtTest extends AbstractOqlTest implements UpdateTravelSelfSimpleTest {
 
     public UpdateTravelSelfSimpleStmtTest() {
@@ -32,8 +34,8 @@ public class UpdateTravelSelfSimpleStmtTest extends AbstractOqlTest implements U
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(object, oqlInfo.oql);
+        XObject object = this.resolver.resolve(TravelObject.NAME);
+        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
@@ -54,8 +56,8 @@ public class UpdateTravelSelfSimpleStmtTest extends AbstractOqlTest implements U
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        XObject object = TestObjectResolver.resolveObject(TravelObject.NAME);
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(object, oqlInfo.oql);
+        XObject object = this.resolver.resolve(TravelObject.NAME);
+        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的

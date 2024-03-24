@@ -11,12 +11,15 @@ public interface SelectTravelSelfCountLimitTest {
 
     String OQL_SELECT_COUNT_ONE_TRAVEL = "SelectCountOneTravel";
     String OQL_SELECT_COUNT_STAR_TRAVEL = "SelectCountStarTravel";
+    String OQL_SELECT_COUNT_FIELD_TRAVEL = "SelectCountFieldTravel";
     String OQL_SELECT_TRAVEL_WITH_LIMIT = "SelectTravelWithLimit";
     String OQL_SELECT_TRAVEL_WITH_LIMIT_OFFSET = "SelectTravelWithLimitOffset";
 
     void testSelectCountOneTravel();
 
     void testSelectCountStarTravel();
+
+    void testSelectCountFieldTravel();
 
     void testSelectTravelWithLimit();
 

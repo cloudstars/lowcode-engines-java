@@ -81,14 +81,14 @@
     },
     {
       "type": "ObjectRef",
+      "refObjectName": "Hobby",
+      "refType": "LOOKUP",
+      "isMultiRef": true,
       "desc": "兴趣爱友",
       "name": "hobbies",
       "columnName": "HOBBIES",
       "isArray": true,
-      "dataType": "Number",
-      "refType": "LOOKUP",
-      "refObjectKey": "Hobby",
-      "isMultiRef": true
+      "dataType": "Number"
     },
     {
       "type": "User",
@@ -162,7 +162,7 @@
       "type": "Text",
       "desc": "拥有者",
       "name": "ownerKey",
-      "columName": "OWNER_KEY",
+      "columnName": "OWNER_KEY",
       "dataType": "String",
       "dataLength": 20
     },

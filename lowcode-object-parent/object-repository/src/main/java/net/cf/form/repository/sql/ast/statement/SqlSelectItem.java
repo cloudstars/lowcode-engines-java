@@ -28,6 +28,7 @@ public class SqlSelectItem extends AbstractSqlExprImpl implements SqlReplaceable
     public SqlSelectItem(SqlExpr expr) {
         this(expr, null);
     }
+
     public SqlSelectItem(SqlExpr expr, String alias) {
         this.expr = expr;
         this.alias = alias;
@@ -53,8 +54,10 @@ public class SqlSelectItem extends AbstractSqlExprImpl implements SqlReplaceable
 
     @Override
     protected void accept0(SqlAstVisitor v) {
-        if (v.visit(this) && this.expr != null) {
-            this.expr.accept(v);
+        if (v.visit(this)) {
+            if (this.expr != null) {
+                this.expr.accept(v);
+            }
         }
 
         v.endVisit(this);

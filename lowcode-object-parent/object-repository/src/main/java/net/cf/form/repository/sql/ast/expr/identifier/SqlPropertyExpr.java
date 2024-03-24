@@ -1,6 +1,7 @@
 package net.cf.form.repository.sql.ast.expr.identifier;
 
 import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.util.Collections;
@@ -14,39 +15,47 @@ import java.util.List;
 public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
 
     /**
+     * 属性的归属
+     */
+    private final SqlName owner;
+
+    /**
      * 属性的名称
      */
     private String name;
 
     /**
-     * 属性的归属
+     * 归属的数据库表
      */
-    private SqlName owner;
+    //private String resolvedOwnerTable;
+
+    /**
+     * 对应数据表列
+     */
+    //private String resolvedColumn;
+
+    public SqlPropertyExpr(String owner) {
+        this(new SqlIdentifierExpr(owner));
+    }
+
+    public SqlPropertyExpr(SqlName owner) {
+        this.owner = owner;
+        this.addChild(owner);
+    }
 
     public SqlPropertyExpr(String owner, String name) {
         this(new SqlIdentifierExpr(owner), name);
     }
 
     public SqlPropertyExpr(SqlName owner, String name) {
-        this.setOwner(owner);
+        this.owner = owner;
+        this.addChild(owner);
         this.name = name;
     }
-
 
     public SqlName getOwner() {
         return owner;
     }
-
-    /**
-     * 设置属性的归属
-     *
-     * @param owner
-     */
-    public void setOwner(SqlName owner) {
-        this.owner = owner;
-        this.addChild(owner);
-    }
-
 
     @Override
     public String getName() {
@@ -57,10 +66,21 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
         this.name = name;
     }
 
-    @Override
-    public List getChildren() {
-        return Collections.singletonList(this.owner);
+    /*public String getResolvedOwnerTable() {
+        return resolvedOwnerTable;
     }
+
+    public void setResolvedOwnerTable(String resolvedOwnerTable) {
+        this.resolvedOwnerTable = resolvedOwnerTable;
+    }
+
+    public String getResolvedColumn() {
+        return resolvedColumn;
+    }
+
+    public void setResolvedColumn(String resolvedColumn) {
+        this.resolvedColumn = resolvedColumn;
+    }*/
 
     @Override
     protected void accept0(SqlAstVisitor visitor) {
@@ -82,6 +102,12 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
 
         SqlPropertyExpr x = new SqlPropertyExpr(ownerX, this.name);
         return x;
+    }
+
+
+    @Override
+    public List<SqlExpr> getChildren() {
+        return Collections.singletonList(this.owner);
     }
 
 }
