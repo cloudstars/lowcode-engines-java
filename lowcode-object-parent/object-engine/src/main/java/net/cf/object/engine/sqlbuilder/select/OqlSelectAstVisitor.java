@@ -248,8 +248,9 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         if (oqlExpr instanceof OqlFieldExpr) {
             OqlFieldExpr fieldExpr = (OqlFieldExpr) oqlExpr;
             XField resolvedField = fieldExpr.getResolvedField();
-            info.setFieldName(resolvedField.getName());
+            info.setFieldName(this.getFieldName(fieldExpr));
             info.setArray(resolvedField.isArray());
+            // TODO 生成列名可以优化，把前面生成SqlIdentifierExp、SqlPropertyExpr的结果保存下来
             if (object == selfObject) {
                 info.setColumnName(resolvedField.getColumnName());
             } else {
@@ -258,7 +259,7 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         } else if (oqlExpr instanceof OqlPropertyExpr) {
             OqlPropertyExpr propExpr = (OqlPropertyExpr) oqlExpr;
             XProperty property = propExpr.getResolvedProperty();
-            info.setFieldName(property.getName());
+            info.setFieldName(this.getPropertyName(propExpr));
             info.setArray(property.isArray());
             if (object == selfObject) {
                 info.setColumnName(property.getColumnName());
@@ -266,11 +267,41 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
                 info.setColumnName(object.getTableName() + "." + property.getColumnName());
             }
         } else {
-            info.setFieldName(oqlExpr.toString());
+            info.setFieldName(OqlUtils.expr2String(oqlExpr));
             info.setColumnName(sqlExpr.toString());
         }
 
         return info;
+    }
+
+    /**
+     * 获取字段的名称
+     *
+     * @param fieldExpr
+     * @return
+     */
+    private String getFieldName(OqlFieldExpr fieldExpr) {
+        SqlIdentifierExpr owner = fieldExpr.getOwner();
+        if (owner != null) {
+            return owner.getName() + "." + fieldExpr.getName();
+        } else {
+            return fieldExpr.getName();
+        }
+    }
+
+    /**
+     * 获取属性的名称
+     *
+     * @param propExpr
+     * @return
+     */
+    private String getPropertyName(OqlPropertyExpr propExpr) {
+        OqlFieldExpr owner = propExpr.getOwner();
+        if (owner != null) {
+            return owner.getName() + "." + propExpr.getName();
+        } else {
+            return propExpr.getName();
+        }
     }
 
 }

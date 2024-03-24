@@ -95,18 +95,18 @@ public class OqlEngineImpl implements OqlEngine {
     private Map<String, Object> convertResultMap(Map<String, Object> resultMap, List<SelectItemInfo> selectItemInfos) {
         Map<String, Object> targetMap = new HashMap<>();
         for (SelectItemInfo selectItemInfo : selectItemInfos) {
-            String resultKey = selectItemInfo.getColumnName();
             String targetKey = selectItemInfo.getFieldName();
             boolean isArray = selectItemInfo.isArray();
             Object targetValue;
             List<SelectItemInfo> subItems = selectItemInfo.getSubItemInfos();
             if (subItems != null && subItems.size() > 0) {// 相关模型展开或字段展开
                 if (isArray) { // 字段展开且是数组的情况
-                    targetValue = this.parseMapListFormResultMap(resultMap, selectItemInfos);
+                    targetValue = this.parseMapListFormResultMap(resultMap, subItems);
                 } else { // 模型或字段展开且是非数组的情况
-                    targetValue = this.parseMapFormResultMap(resultMap, selectItemInfos);
+                    targetValue = this.parseMapFormResultMap(resultMap, subItems);
                 }
             } else { // 普通的相关模型字段、本表字段
+                String resultKey = selectItemInfo.getColumnName();
                 Object resultValue = resultMap.get(resultKey);
                 if (isArray) {
                     targetValue = this.parseObjectListResultValue(resultValue);
@@ -115,7 +115,7 @@ public class OqlEngineImpl implements OqlEngine {
                 }
             }
 
-            resultMap.put(targetKey, targetValue);
+            targetMap.put(targetKey, targetValue);
         }
 
         return targetMap;

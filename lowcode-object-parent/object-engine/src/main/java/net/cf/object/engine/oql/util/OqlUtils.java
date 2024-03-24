@@ -31,6 +31,19 @@ public class OqlUtils {
     }
 
     /**
+     * 将AST表达式转为字符串
+     *
+     * @param expr
+     * @return
+     */
+    public static String expr2String(SqlExpr expr) {
+        StringBuilder builder = new StringBuilder();
+        OqlAstOutputVisitor visitor = new OqlAstOutputVisitor(builder);
+        expr.accept(visitor);
+        return builder.toString();
+    }
+
+    /**
      * 解析并返回唯一的一条插入 OQL 语句
      *
      * @param resolver
@@ -130,16 +143,10 @@ public class OqlUtils {
      */
     public static List<OqlPropertyExpr> defaultExpandFieldProperties(XField field) {
         List<OqlPropertyExpr> propExprs = new ArrayList<>();
-        String fieldName = field.getName();
-        OqlFieldExpr fieldExpr = new OqlFieldExpr();
-        fieldExpr.setName(fieldName);
-        fieldExpr.setResolvedField(field);
-
         List<XProperty> properties = field.getProperties();
         for (XProperty property : properties) {
             String propName = property.getName();
-            OqlPropertyExpr propExpr = new OqlPropertyExpr(fieldExpr);
-            propExpr.setName(propName);
+            OqlPropertyExpr propExpr = new OqlPropertyExpr(null, propName);
             propExpr.setResolvedProperty(property);
             propExprs.add(propExpr);
         }

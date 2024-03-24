@@ -36,7 +36,6 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelOneVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_ONE_VARS);
-        XObject object = this.resolver.resolve(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyId", TravelObject.RECORD1);
