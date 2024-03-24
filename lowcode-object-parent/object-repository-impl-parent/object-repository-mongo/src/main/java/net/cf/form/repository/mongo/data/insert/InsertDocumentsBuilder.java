@@ -6,6 +6,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class InsertDocumentsBuilder extends AbstractDocumentsBuilder<SqlInsertStatement> {
 
     private final List<Document> documents = new ArrayList<>();

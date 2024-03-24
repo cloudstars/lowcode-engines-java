@@ -13,6 +13,7 @@ import java.util.List;
  *
  * @author clouds
  */
+@Deprecated
 public class InsertSqlAstVisitor implements SqlAstVisitor {
 
     /**
