@@ -6,10 +6,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
-import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
-import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
-import net.cf.form.repository.sql.ast.statement.SqlSelectOrderByItem;
-import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
+import net.cf.form.repository.sql.ast.statement.*;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +28,8 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     private String collectionName;
 
     private List<MongoSelectItem> selectItems = new ArrayList<>();
+
+    private SqlJoinTableSource joinTableSource;
 
     private SqlExpr whereExpr;
 
@@ -67,6 +66,10 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
     public void addGroupBy(SqlSelectGroupByClause groupBy) {
         this.groupBy = groupBy;
+    }
+
+    public void addJoin(SqlJoinTableSource joinTableSource) {
+        this.joinTableSource = joinTableSource;
     }
 
     public MongoSelectCommandBuilder() {
@@ -131,8 +134,12 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
                 if (selectItem.getAlias() == null) {
                     String originExpr = MongoUtils.getOriginExprAlias(selectItem.getSqlExpr());
                     selectItem.setAlias(originExpr);
-                    selectItem.setAggr(isAggr(selectItem));
+
                 }
+            }
+            //
+            if (selectItem.getExprEnum() == ExprTypeEnum.AGGR) {
+                selectItem.setAggr(true);
             }
 
             // 缓存别名
@@ -143,27 +150,6 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         }
     }
 
-
-    /**
-     * todo 判断是否是聚合操作
-     *
-     * @param selectItem
-     * @return
-     */
-    private boolean isAggr(MongoSelectItem selectItem) {
-        if (selectItem.getExprEnum() == ExprTypeEnum.AGGR) {
-            return true;
-        }
-        SqlExpr sqlExpr = selectItem.getSqlExpr();
-        if (selectItem.getExprEnum() == ExprTypeEnum.METHOD) {
-            SqlMethodInvokeExpr sqlMethodInvokeExpr = (SqlMethodInvokeExpr) sqlExpr;
-            if (AGGR_METHODS.contains(sqlMethodInvokeExpr.getMethodName().toUpperCase())) {
-                return true;
-            }
-
-        }
-        return false;
-    }
 
     private void buildWhere() {
         Document document = new Document();
@@ -271,9 +257,9 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         for (MongoSelectItem selectItem : this.selectItems) {
             SqlExpr sqlExpr = selectItem.getSqlExpr();
             if (selectItem.getAlias() != null && sqlExpr instanceof SqlValuableExpr) {
-                MongoExprAstVisitor visitor = new MongoExprAstVisitor(sqlExpr);
+                MongoExprAstVisitor visitor = new MongoExprAstVisitor();
                 // 添加常量数据,因为在语句中，所以必须使用mongo格式
-                addFields.put(selectItem.getAlias(), visitor.visit());
+                addFields.put(selectItem.getAlias(), visitor.visit(sqlExpr));
             }
         }
         if (addFields.size() > 0) {
@@ -328,13 +314,8 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
 
     private int parseInt(SqlExpr sqlExpr) {
-        MongoExprAstVisitor mongoExprAstVisitor;
-        if (enableVariable) {
-            mongoExprAstVisitor = new MongoExprAstVisitor(sqlExpr, paramMap);
-        } else {
-            mongoExprAstVisitor = new MongoExprAstVisitor(sqlExpr);
-        }
-        Object value = mongoExprAstVisitor.visit();
+        MongoExprAstVisitor mongoExprAstVisitor = new MongoExprAstVisitor(paramMap);
+        Object value = mongoExprAstVisitor.visit(sqlExpr);
         return Integer.valueOf(String.valueOf(value));
     }
 
@@ -380,10 +361,10 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     private void addProjectField(MongoSelectItem mongoSelectItem, Document fieldProject) {
         SqlExpr sqlExpr = mongoSelectItem.getSqlExpr();
         ExprTypeEnum exprEnum = ExprTypeEnum.match(sqlExpr);
-        MongoExprAstVisitor mongoExprAstVisitor = new MongoExprAstVisitor(mongoSelectItem.getSqlExpr(), paramMap);
+        MongoExprAstVisitor mongoExprAstVisitor = new MongoExprAstVisitor(paramMap);
 
         if (exprEnum == ExprTypeEnum.PARAM) {
-            doAddFieldProject(fieldProject, "", null, String.valueOf(mongoExprAstVisitor.visit()));
+            doAddFieldProject(fieldProject, "", null, String.valueOf(mongoExprAstVisitor.visit(mongoSelectItem.getSqlExpr())));
         } else if (exprEnum == ExprTypeEnum.COMMON) {
             doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getAlias());
         } else if (exprEnum.isMethod()) {

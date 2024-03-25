@@ -76,13 +76,8 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
     private Document buildSingleInsertDoc(List<MongoInsertItem> insertItems) {
         Document document = new Document();
         for (MongoInsertItem insertItem : insertItems) {
-            MongoExprAstVisitor mongoExprAstVisitor;
-            if (enableVariable) {
-                mongoExprAstVisitor = new MongoExprAstVisitor(insertItem.getValueExpr(), paramMap);
-            } else {
-                mongoExprAstVisitor = new MongoExprAstVisitor(insertItem.getValueExpr());
-            }
-            Object value = mongoExprAstVisitor.visit();
+            MongoExprAstVisitor mongoExprAstVisitor = new MongoExprAstVisitor(paramMap);
+            Object value = mongoExprAstVisitor.visit(insertItem.getValueExpr());
             document.put(insertItem.getColName(), value);
         }
         return document;
