@@ -1,7 +1,9 @@
 package net.cf.object.engine.sqlbuilder.select;
 
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.object.engine.data.FieldMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,56 +13,42 @@ import java.util.List;
  */
 public class SelectItemInfo {
 
-    private String fieldName;
+    private FieldMapping fieldMapping;
 
-    private String columnName;
-
-    private boolean isArray;
-
-    private List<SqlSelectItem> selectItems;
-
-    private List<SelectItemInfo> subItemInfos;
+    private final List<SqlSelectItem> selectItems = new ArrayList<>();
 
     public SelectItemInfo() {
     }
 
-    public String getFieldName() {
-        return fieldName;
+    public FieldMapping getFieldMapping() {
+        return fieldMapping;
     }
 
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
-    public boolean isArray() {
-        return isArray;
-    }
-
-    public void setArray(boolean array) {
-        isArray = array;
+    public void setFieldMapping(FieldMapping fieldMapping) {
+        this.fieldMapping = fieldMapping;
     }
 
     public List<SqlSelectItem> getSelectItems() {
         return selectItems;
     }
 
-    public void setSelectItems(List<SqlSelectItem> selectItems) {
-        this.selectItems = selectItems;
+    public void addSelectItems(List<SqlSelectItem> selectItems) {
+        this.selectItems.addAll(selectItems);
     }
 
-    public List<SelectItemInfo> getSubItemInfos() {
-        return subItemInfos;
+    public void addSelectItem(SqlSelectItem selectItem) {
+        this.selectItems.add(selectItem);
     }
 
-    public void setSubItemInfos(List<SelectItemInfo> subItemInfos) {
-        this.subItemInfos = subItemInfos;
+    /**
+     * 添加子查询字段列表
+     *
+     * @param subItemInfos
+     */
+    public void addSubItemInfos(List<SelectItemInfo> subItemInfos) {
+        for (SelectItemInfo subItemInfo : subItemInfos) {
+            this.fieldMapping.addSubField(subItemInfo.getFieldMapping());
+            this.addSelectItems(subItemInfo.getSelectItems());
+        }
     }
 }

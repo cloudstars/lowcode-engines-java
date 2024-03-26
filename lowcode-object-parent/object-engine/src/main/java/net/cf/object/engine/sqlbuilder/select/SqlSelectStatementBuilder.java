@@ -6,15 +6,13 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.statement.*;
+import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.sqlbuilder.AbstractSqlStatementBuilder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * SQL查询语句构建器
@@ -26,47 +24,35 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
     private final SqlSelect select = new SqlSelect();
 
     /**
-     * 标识符集合（用于过滤一些重复的列）
-     */
-    private final Set<String> identifiers = new HashSet<>();
-
-    /**
      * 关联的模型集合（避免重复JOIN）
      */
     private final Set<String> refObjectNames = new HashSet<>();
 
     /**
-     * 查询字段的信息
+     * 字段映射列表（支持套嵌字段，即展开字段）
      */
-    private final List<SelectItemInfo> selectItemInfos = new ArrayList<>();
+    private final List<FieldMapping> fieldMappings = new ArrayList<>();
 
     public SqlSelectStatementBuilder() {
     }
 
+    public SqlSelectStatementBuilder appendSelectItemInfo(SelectItemInfo itemInfo) {
+        FieldMapping fieldMapping = itemInfo.getFieldMapping();
+        List<SqlSelectItem> selectItems = itemInfo.getSelectItems();
+        this.appendSelectItems(fieldMapping, selectItems);
+        return this;
+    }
+
     /**
-     * 添加查询项信息
+     * 添加多个字段
      *
-     * @param itemInfo
+     * @param mapping
+     * @param selectItems
      * @return
      */
-    public SqlSelectStatementBuilder appendSelectItemInfo(SelectItemInfo itemInfo) {
-        String fieldName = itemInfo.getFieldName();
-        if (!identifiers.contains(fieldName)) {//去重
-            identifiers.add(fieldName);
-            this.selectItemInfos.add(itemInfo);
-            List<SqlSelectItem> selectItems = itemInfo.getSelectItems();
-            if (selectItems != null) { // 字段未展开
-                this.select.addSelectItems(selectItems);
-            } else { // 字段展开
-                List<SelectItemInfo> subItemInfos = itemInfo.getSubItemInfos();
-                for (SelectItemInfo subItemInfo : subItemInfos) {
-                    List<SqlSelectItem> subSelectItems = subItemInfo.getSelectItems();
-                    if (subSelectItems != null) {
-                        this.select.addSelectItems(subSelectItems);
-                    }
-                }
-            }
-        }
+    private SqlSelectStatementBuilder appendSelectItems(FieldMapping mapping, List<SqlSelectItem> selectItems) {
+        this.fieldMappings.add(mapping);
+        this.select.addSelectItems(selectItems);
 
         return this;
     }
@@ -124,7 +110,6 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
         this.select.setFrom(joinTableSource);
     }
 
-
     /**
      * 设置查询表件
      *
@@ -167,12 +152,11 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
     }
 
     /**
-     * 获取查询字段的信息
+     * 获取字段映射列表
      *
      * @return
      */
-    public List<SelectItemInfo> getSelectItemInfos() {
-        return selectItemInfos;
+    public List<FieldMapping> getFieldMappings() {
+        return fieldMappings;
     }
-
 }

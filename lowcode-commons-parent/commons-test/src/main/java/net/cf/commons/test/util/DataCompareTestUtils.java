@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
  * @author clouds
  */
 public final class DataCompareTestUtils {
+
+    private final static Logger logger = LoggerFactory.getLogger(DataCompareTestUtils.class);
 
     private DataCompareTestUtils() {
     }
@@ -68,6 +72,7 @@ public final class DataCompareTestUtils {
                 Object source = entry.getValue();
                 Object target = t.get(entry.getKey());
                 if (!DataCompareTestUtils.equalsObject(source, target)) {
+                    logger.debug("属性：{}比较失败，源对象：{}，目标对象：{}", entry.getKey(), source, target);
                     return false;
                 }
             }
