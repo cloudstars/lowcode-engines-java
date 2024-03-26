@@ -257,9 +257,8 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         for (MongoSelectItem selectItem : this.selectItems) {
             SqlExpr sqlExpr = selectItem.getSqlExpr();
             if (selectItem.getAlias() != null && sqlExpr instanceof SqlValuableExpr) {
-                MongoExprAstVisitor visitor = new MongoExprAstVisitor();
                 // 添加常量数据,因为在语句中，所以必须使用mongo格式
-                addFields.put(selectItem.getAlias(), visitor.visit(sqlExpr));
+                addFields.put(selectItem.getAlias(), MongoExprAstVisitor.visit(sqlExpr, new GlobalContext(paramMap)));
             }
         }
         if (addFields.size() > 0) {
@@ -314,8 +313,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
 
     private int parseInt(SqlExpr sqlExpr) {
-        MongoExprAstVisitor mongoExprAstVisitor = new MongoExprAstVisitor(paramMap);
-        Object value = mongoExprAstVisitor.visit(sqlExpr);
+        Object value = MongoExprAstVisitor.visit(sqlExpr, new GlobalContext(paramMap));
         return Integer.valueOf(String.valueOf(value));
     }
 
@@ -361,10 +359,10 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     private void addProjectField(MongoSelectItem mongoSelectItem, Document fieldProject) {
         SqlExpr sqlExpr = mongoSelectItem.getSqlExpr();
         ExprTypeEnum exprEnum = ExprTypeEnum.match(sqlExpr);
-        MongoExprAstVisitor mongoExprAstVisitor = new MongoExprAstVisitor(paramMap);
 
         if (exprEnum == ExprTypeEnum.PARAM) {
-            doAddFieldProject(fieldProject, "", null, String.valueOf(mongoExprAstVisitor.visit(mongoSelectItem.getSqlExpr())));
+            Object value = MongoExprAstVisitor.visit(mongoSelectItem.getSqlExpr(), new GlobalContext(paramMap));
+            doAddFieldProject(fieldProject, "", null, String.valueOf(value));
         } else if (exprEnum == ExprTypeEnum.COMMON) {
             doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getAlias());
         } else if (exprEnum.isMethod()) {

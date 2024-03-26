@@ -29,11 +29,9 @@ public class JoinConditionBuilder {
 
 
     public Document buildExpr(JoinInfo joinInfo) {
-        VisitContextInfo visitContextInfo = new VisitContextInfo();
+        GlobalContext visitContextInfo = new GlobalContext(paramMap);
         visitContextInfo.setJoinInfo(joinInfo);
-        MongoExprAstVisitor visitor = new MongoExprAstVisitor(paramMap, visitContextInfo);
-
-        Object object = visitor.visit(sqlExpr);
+        Object object = MongoExprAstVisitor.visit(sqlExpr, visitContextInfo);
         if (!(object instanceof Document)) {
             throw new RuntimeException("error");
         }
@@ -49,8 +47,7 @@ public class JoinConditionBuilder {
         for (SqlPropertyExpr sqlPropertyExpr : sqlPropertyCollection) {
             if (sqlPropertyExpr.getOwner() instanceof SqlIdentifierExpr) {
                 String owner = ((SqlIdentifierExpr) sqlPropertyExpr.getOwner()).getName();
-                MongoExprAstVisitor mongoExprAstVisitor = new MongoExprAstVisitor();
-                String value = String.valueOf(mongoExprAstVisitor.visit(sqlPropertyExpr));
+                String value = String.valueOf(MongoExprAstVisitor.visit(sqlPropertyExpr, new GlobalContext(paramMap)));
                 if (!joinParamMapping.containsKey(owner)) {
                     joinParamMapping.put(owner, new ArrayList<>());
                 }

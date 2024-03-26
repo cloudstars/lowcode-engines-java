@@ -3,28 +3,28 @@ package net.cf.form.repository.mongo.data;
 /**
  * 处理expr解析时，内部的上下文信息
  */
-public class InnerContextInfo {
+public class InnerContext {
     // 是否关联了自增字段
     private boolean autoGen = false;
     // 是否为打tag字段
     private boolean fieldTag = false;
 
-    public InnerContextInfo() {
+    public InnerContext() {
 
     }
 
-    public static InnerContextInfo getDefaultContextInfo() {
-        return new InnerContextInfo();
+    public static InnerContext getDefaultContextInfo() {
+        return new InnerContext();
     }
 
-    public static InnerContextInfo getFieldTagContext() {
-        InnerContextInfo contextInfo = new InnerContextInfo();
+    public static InnerContext getFieldTagContext() {
+        InnerContext contextInfo = new InnerContext();
         contextInfo.fieldTag = true;
         return contextInfo;
     }
 
-    public static InnerContextInfo getAutoGenContext() {
-        InnerContextInfo contextInfo = new InnerContextInfo();
+    public static InnerContext getAutoGenContext() {
+        InnerContext contextInfo = new InnerContext();
         contextInfo.autoGen = true;
         return contextInfo;
     }

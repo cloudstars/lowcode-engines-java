@@ -66,10 +66,8 @@ public class MongoUpdateCommandBuilder extends AbstractMongoCommandBuilder<SqlUp
     private Document buildSetDoc() {
         Document document = new Document();
         for (MongoUpdateItem updateItem : this.updateItems) {
-            MongoExprAstVisitor fieldVisitor = new MongoExprAstVisitor();
-            MongoExprAstVisitor valueVisitor = new MongoExprAstVisitor(paramMap);
-            String field = String.valueOf(fieldVisitor.visit(updateItem.getFieldExpr()));
-            Object value = valueVisitor.visit(updateItem.getValueExpr());
+            String field = String.valueOf(MongoExprAstVisitor.visit(updateItem.getFieldExpr(), new GlobalContext(paramMap)));
+            Object value = MongoExprAstVisitor.visit(updateItem.getValueExpr(), new GlobalContext(paramMap));
             document.put(field, value);
         }
 

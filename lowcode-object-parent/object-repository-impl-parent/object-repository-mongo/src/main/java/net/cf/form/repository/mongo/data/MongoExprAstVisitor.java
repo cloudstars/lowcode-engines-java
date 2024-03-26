@@ -29,84 +29,75 @@ public class MongoExprAstVisitor {
 
     private static final Logger log = LoggerFactory.getLogger(MongoExprAstVisitor.class);
 
-    private Map<String, Object> dataMap;
-
-    private VisitContextInfo visitContextInfo;
-
-    private boolean enableVariable = false;
-
-
     public MongoExprAstVisitor() {
 
-    }
-
-    public MongoExprAstVisitor(Map<String, Object> dataMap) {
-        if (MongoUtils.isVariableEnable(dataMap)) {
-            this.enableVariable = true;
-            this.dataMap = dataMap;
-        }
-    }
-
-    public MongoExprAstVisitor(Map<String, Object> dataMap, VisitContextInfo visitContextInfo) {
-        this.visitContextInfo = visitContextInfo;
-        if (MongoUtils.isVariableEnable(dataMap)) {
-            this.enableVariable = true;
-            this.dataMap = dataMap;
-        }
     }
 
     /**
      * @return
      */
-    public Object visit(SqlExpr sqlExpr) {
-        return this.analyse(sqlExpr);
+    public static Object visit(SqlExpr sqlExpr) {
+        return visit(sqlExpr, GlobalContext.getDefault());
+    }
+
+    /**
+     * @return
+     */
+    public static Object visit(SqlExpr sqlExpr, Map<String, Object> dataMap) {
+        return visit(sqlExpr, new GlobalContext(dataMap));
+    }
+
+    /**
+     * @return
+     */
+    public static Object visit(SqlExpr sqlExpr, GlobalContext globalContext) {
+        return analyse(sqlExpr, globalContext, InnerContext.getDefaultContextInfo());
     }
 
 
-    private Object analyse(SqlExpr sqlExpr) {
-        return analyse(sqlExpr, InnerContextInfo.getDefaultContextInfo());
+    private static Object analyse(SqlExpr sqlExpr, GlobalContext globalContext) {
+        return analyse(sqlExpr, globalContext, InnerContext.getDefaultContextInfo());
     }
 
 
-    private Object analyse(SqlExpr sqlExpr, InnerContextInfo contextInfo) {
+    private static Object analyse(SqlExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
         if (sqlExpr instanceof SqlBinaryOpExpr) {
-            return visitBinary((SqlBinaryOpExpr) sqlExpr);
+            return visitBinary((SqlBinaryOpExpr) sqlExpr, globalContext, innerContext);
         } else if (sqlExpr instanceof SqlIdentifierExpr) {
-            return visitIdentify((SqlIdentifierExpr) sqlExpr, contextInfo);
+            return visitIdentify((SqlIdentifierExpr) sqlExpr, globalContext, innerContext);
         } else if (sqlExpr instanceof SqlValuableExpr) {
-            return visitValue((SqlValuableExpr) sqlExpr, contextInfo);
+            return visitValue((SqlValuableExpr) sqlExpr, globalContext, innerContext);
         } else if (sqlExpr instanceof SqlVariantRefExpr) {
-            return visitVariable((SqlVariantRefExpr) sqlExpr, contextInfo);
+            return visitVariable((SqlVariantRefExpr) sqlExpr, globalContext, innerContext);
         } else if (sqlExpr instanceof SqlInListExpr) {
-            return visitList((SqlInListExpr) sqlExpr, contextInfo);
+            return visitList((SqlInListExpr) sqlExpr, globalContext);
         } else if (sqlExpr instanceof SqlPropertyExpr) {
-            return visitProperty((SqlPropertyExpr) sqlExpr);
+            return visitProperty((SqlPropertyExpr) sqlExpr, globalContext, innerContext);
         }
-
         log.error("not support, ", sqlExpr);
         throw new RuntimeException("not support");
     }
 
 
-    private Document visitBinary(SqlBinaryOpExpr sqlExpr) {
+    private static Document visitBinary(SqlBinaryOpExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
         SqlBinaryOperator sqlBinaryOperator = sqlExpr.getOperator();
         MongoOperator mongoOperator = MongoOperator.match(sqlBinaryOperator);
 
         if (mongoOperator.isLogical()) {
             Document document = new Document(mongoOperator.getExpr(),
-                    Arrays.asList(analyse(sqlExpr.getLeft()), analyse(sqlExpr.getRight())));
+                    Arrays.asList(analyse(sqlExpr.getLeft(), globalContext),
+                            analyse(sqlExpr.getRight(), globalContext)));
             return document;
         } else if (mongoOperator.isCondition()) {
-
-            return visitRelational(mongoOperator, sqlExpr);
+            return visitRelational(mongoOperator, sqlExpr, globalContext);
         }
         throw new RuntimeException("not support");
     }
 
 
-    private Document visitRelational(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr) {
+    private static Document visitRelational(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, GlobalContext globalContext) {
 
-        Pair<Object, Object> pair = convertRelationalData(mongoOperator, sqlExpr);
+        Pair<Object, Object> pair = convertRelationalData(mongoOperator, sqlExpr, globalContext);
         Object left = pair.getLeft();
         Object right = pair.getRight();
 
@@ -119,56 +110,50 @@ public class MongoExprAstVisitor {
     }
 
 
-    private Pair<Object, Object> convertRelationalData(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr) {
+    private static Pair<Object, Object> convertRelationalData(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, GlobalContext globalContext) {
         ExprTypeEnum leftType = ExprTypeEnum.match(sqlExpr.getLeft());
         ExprTypeEnum rightType = ExprTypeEnum.match(sqlExpr.getRight());
         // 判断左右两边是否有字段,需要上下文传递
         if (leftType == ExprTypeEnum.PARAM && rightType != ExprTypeEnum.PARAM) {
             SqlIdentifierExpr leftExpr = (SqlIdentifierExpr) sqlExpr.getLeft();
-            Object left = visitIdentify(leftExpr, mongoOperator);
+            Object left = visitIdentify(leftExpr, mongoOperator, globalContext);
 
-            InnerContextInfo contextInfo = new InnerContextInfo();
+            InnerContext contextInfo = new InnerContext();
             contextInfo.setAutoGen(leftExpr.isAutoGen());
-            Object right = analyse(sqlExpr.getRight(), contextInfo);
+            Object right = analyse(sqlExpr.getRight(), globalContext, contextInfo);
             return Pair.of(left, right);
 
         } else if (rightType == ExprTypeEnum.PARAM && leftType != ExprTypeEnum.PARAM) {
             SqlIdentifierExpr rightExpr = (SqlIdentifierExpr) sqlExpr.getRight();
-            Object right = visitIdentify(rightExpr, mongoOperator);
+            Object right = visitIdentify(rightExpr, mongoOperator, globalContext);
 
-            InnerContextInfo contextInfo = new InnerContextInfo();
+            InnerContext contextInfo = new InnerContext();
             contextInfo.setAutoGen(rightExpr.isAutoGen());
-            Object left = analyse(sqlExpr.getLeft(), contextInfo);
+            Object left = analyse(sqlExpr.getLeft(), globalContext, contextInfo);
             return Pair.of(left, right);
         }
-        return Pair.of(analyse(sqlExpr.getLeft()), analyse(sqlExpr.getRight()));
+        return Pair.of(analyse(sqlExpr.getLeft(), globalContext), analyse(sqlExpr.getRight(), globalContext));
     }
 
 
-    private Object visitIdentify(SqlIdentifierExpr sqlExpr) {
-        // 默认添加$
-        return visitIdentify(sqlExpr, InnerContextInfo.getDefaultContextInfo());
-    }
-
-
-    private Object visitIdentify(SqlIdentifierExpr sqlExpr, MongoOperator mongoOperator) {
-        InnerContextInfo identifyContext = new InnerContextInfo();
+    private static Object visitIdentify(SqlIdentifierExpr sqlExpr, MongoOperator mongoOperator, GlobalContext globalContext) {
+        InnerContext identifyContext = new InnerContext();
         identifyContext.setFieldTag(mongoOperator.isFieldTag());
-        return visitIdentify(sqlExpr, identifyContext);
+        return visitIdentify(sqlExpr, globalContext, identifyContext);
     }
 
 
-    private Object visitIdentify(SqlIdentifierExpr sqlExpr, InnerContextInfo contextInfo) {
+    private static Object visitIdentify(SqlIdentifierExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
         String field = sqlExpr.getName();
-        if (contextInfo.isFieldTag()) {
+        if (innerContext != null && innerContext.isFieldTag()) {
             return "$" + field;
         }
         return field;
     }
 
 
-    private Object visitValue(SqlValuableExpr sqlExpr, InnerContextInfo contextInfo) {
-        if (contextInfo.isAutoGen()) {
+    private static Object visitValue(SqlValuableExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+        if (innerContext != null && innerContext.isAutoGen()) {
             if (sqlExpr instanceof SqlCharExpr) {
                 return MongoDataConverter.convertObjectId(sqlExpr.getValue());
             } else {
@@ -186,9 +171,9 @@ public class MongoExprAstVisitor {
 
     }
 
-    private Object visitVariable(SqlVariantRefExpr sqlExpr, InnerContextInfo contextInfo) {
-        Object value = MongoDataConverter.convertVariable(sqlExpr, dataMap);
-        return getVariable(value, contextInfo);
+    private static Object visitVariable(SqlVariantRefExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+        Object value = MongoDataConverter.convertVariable(sqlExpr, globalContext.getDataMap());
+        return getVariable(value, innerContext);
     }
 
     /**
@@ -198,7 +183,7 @@ public class MongoExprAstVisitor {
      * @param contextInfo
      * @return
      */
-    private Object getVariable(Object value, InnerContextInfo contextInfo) {
+    private static Object getVariable(Object value, InnerContext contextInfo) {
         // 如果变量塞列表
         if (value instanceof List) {
             List<Object> valList = new ArrayList<>();
@@ -220,52 +205,54 @@ public class MongoExprAstVisitor {
     }
 
 
-    private Object visitList(SqlInListExpr sqlExpr, InnerContextInfo contextInfo) {
+    private static Object visitList(SqlInListExpr sqlExpr, GlobalContext globalContext) {
         SqlExpr leftExpr = sqlExpr.getLeft();
-        InnerContextInfo idContextInfo = InnerContextInfo.getDefaultContextInfo();
+        InnerContext idContextInfo = InnerContext.getDefaultContextInfo();
         if (leftExpr instanceof SqlIdentifierExpr) {
             SqlIdentifierExpr sqlIdentifierExpr = (SqlIdentifierExpr) leftExpr;
             if (sqlIdentifierExpr.isAutoGen()) {
                 idContextInfo.setAutoGen(true);
             }
         }
-        InnerContextInfo fieldContextInfo = InnerContextInfo.getFieldTagContext();
-        Object left = analyse(leftExpr, fieldContextInfo);
+        InnerContext fieldContextInfo = InnerContext.getFieldTagContext();
+        Object left = analyse(leftExpr, globalContext, fieldContextInfo);
         List<SqlExpr> targetList = sqlExpr.getTargetList();
         List<Object> rightValues = new ArrayList<>();
         for (SqlExpr item : targetList) {
             if (item instanceof SqlVariantRefExpr) {
-                Object val = visitVariable((SqlVariantRefExpr) item, idContextInfo);
+                Object val = visitVariable((SqlVariantRefExpr) item, globalContext, idContextInfo);
                 if (val instanceof List) {
                     rightValues.addAll((List) val);
                 } else {
                     rightValues.add(val);
                 }
             } else {
-                rightValues.add(analyse(item, idContextInfo));
+                rightValues.add(analyse(item, globalContext, idContextInfo));
             }
         }
         Document document = new Document(MongoOperator.IN.getExpr(), Arrays.asList(left, rightValues));
         return new Document("$expr", document);
     }
 
-
-    private Object visitProperty(SqlPropertyExpr sqlPropertyExpr) {
+    // 目前property只会有两层
+    private static Object visitProperty(SqlPropertyExpr sqlPropertyExpr, GlobalContext globalContext, InnerContext contextInfo) {
         SqlName sqlName = sqlPropertyExpr.getOwner();
         StringBuilder propertyNameBuilder = new StringBuilder();
         if (sqlName instanceof SqlIdentifierExpr) {
-            propertyNameBuilder.append(visitIdentify((SqlIdentifierExpr) sqlName));
+            propertyNameBuilder.append(visitIdentify((SqlIdentifierExpr) sqlName, globalContext, contextInfo));
         } else {
             throw new RuntimeException("NOT SUPPORT");
         }
         propertyNameBuilder.append(".").append(sqlPropertyExpr.getName());
         String propertyName = propertyNameBuilder.toString();
-        if (this.visitContextInfo != null && this.visitContextInfo.getJoinInfo() != null) {
+        // join替换
+        if (globalContext != null && globalContext.getJoinInfo() != null) {
             // 替换
-            JoinInfo joinInfo = this.visitContextInfo.getJoinInfo();
+            JoinInfo joinInfo = globalContext.getJoinInfo();
             propertyName = joinInfo.getConditionReplaceMap().get(propertyName);
         }
         return propertyName;
     }
+
 
 }

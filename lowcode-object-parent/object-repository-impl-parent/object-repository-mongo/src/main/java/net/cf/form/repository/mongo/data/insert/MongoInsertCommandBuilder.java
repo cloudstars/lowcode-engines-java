@@ -1,9 +1,6 @@
 package net.cf.form.repository.mongo.data.insert;
 
-import net.cf.form.repository.mongo.data.AbstractMongoCommandBuilder;
-import net.cf.form.repository.mongo.data.MongoExprAstVisitor;
-import net.cf.form.repository.mongo.data.MongoInsertItem;
-import net.cf.form.repository.mongo.data.MongoUtils;
+import net.cf.form.repository.mongo.data.*;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -76,8 +73,7 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
     private Document buildSingleInsertDoc(List<MongoInsertItem> insertItems) {
         Document document = new Document();
         for (MongoInsertItem insertItem : insertItems) {
-            MongoExprAstVisitor mongoExprAstVisitor = new MongoExprAstVisitor(paramMap);
-            Object value = mongoExprAstVisitor.visit(insertItem.getValueExpr());
+            Object value = MongoExprAstVisitor.visit(insertItem.getValueExpr(), new GlobalContext(paramMap));
             document.put(insertItem.getColName(), value);
         }
         return document;
