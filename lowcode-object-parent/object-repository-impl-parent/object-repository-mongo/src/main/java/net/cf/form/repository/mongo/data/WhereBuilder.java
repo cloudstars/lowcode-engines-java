@@ -13,10 +13,6 @@ public class WhereBuilder {
 
     private boolean enableVariable = false;
 
-    public WhereBuilder(SqlExpr sqlExpr) {
-        this.sqlExpr = sqlExpr;
-    }
-
     public WhereBuilder(SqlExpr sqlExpr, Map<String, Object> paramMap) {
         this.sqlExpr = sqlExpr;
         if (MongoUtils.isVariableEnable(paramMap)) {
@@ -27,14 +23,7 @@ public class WhereBuilder {
 
 
     public Document build() {
-        MongoExprAstVisitor visitor;
-        if (enableVariable) {
-            visitor = new MongoExprAstVisitor(sqlExpr, paramMap);
-        } else {
-            visitor = new MongoExprAstVisitor(sqlExpr);
-        }
-
-        Object object = visitor.visit();
+        Object object = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap));
         if (!(object instanceof Document)) {
             throw new RuntimeException("error");
         }

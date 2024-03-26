@@ -32,4 +32,22 @@ public class MongoSelectTravelSelfSimpleOqlTest extends AbstractSelectTravelSelf
     public void testSelectTravelList() {
         super.testSelectTravelList();
     }
+
+    @Test
+    @Override
+    public void testSelectTravelListVars() {
+        super.testSelectTravelListVars();
+    }
+
+    @Test
+    @Override
+    public void testSelectTravelInList() {
+        super.testSelectTravelInList();
+    }
+
+    @Test
+    @Override
+    public void testSelectTravelInListVars() {
+        super.testSelectTravelInListVars();
+    }
 }

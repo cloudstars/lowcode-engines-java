@@ -1,9 +1,6 @@
 package net.cf.form.repository.mongo.data.insert;
 
-import net.cf.form.repository.mongo.data.AbstractMongoCommandBuilder;
-import net.cf.form.repository.mongo.data.MongoExprAstVisitor;
-import net.cf.form.repository.mongo.data.MongoInsertItem;
-import net.cf.form.repository.mongo.data.MongoUtils;
+import net.cf.form.repository.mongo.data.*;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -67,22 +64,19 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
 
 
     private void buildInsertDoc() {
+        GlobalContext globalContext = new GlobalContext(paramMap);
+        globalContext.setMongoMode(MongoMode.INSERT);
         for (List<MongoInsertItem> items : this.mongoInsertItems) {
-            this.documents.add(buildSingleInsertDoc(items));
+            this.documents.add(buildSingleInsertDoc(items, globalContext));
         }
     }
 
 
-    private Document buildSingleInsertDoc(List<MongoInsertItem> insertItems) {
+    private Document buildSingleInsertDoc(List<MongoInsertItem> insertItems, GlobalContext globalContext) {
         Document document = new Document();
         for (MongoInsertItem insertItem : insertItems) {
-            MongoExprAstVisitor mongoExprAstVisitor;
-            if (enableVariable) {
-                mongoExprAstVisitor = new MongoExprAstVisitor(insertItem.getValueExpr(), paramMap);
-            } else {
-                mongoExprAstVisitor = new MongoExprAstVisitor(insertItem.getValueExpr());
-            }
-            Object value = mongoExprAstVisitor.visit();
+
+            Object value = MongoExprVisitor.visit(insertItem.getValueExpr(), globalContext);
             document.put(insertItem.getColName(), value);
         }
         return document;
