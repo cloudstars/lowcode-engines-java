@@ -1,10 +1,7 @@
 package net.cf.form.repository.mongo.data;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.AbstractSqlNumericLiteralExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlDecimalExpr;
@@ -19,17 +16,16 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * todo 整个expr解析逻辑还需要调整
  */
-public class MongoExprAstVisitor {
+public class MongoExprVisitor {
 
-    private static final Logger log = LoggerFactory.getLogger(MongoExprAstVisitor.class);
+    private static final Logger log = LoggerFactory.getLogger(MongoExprVisitor.class);
 
-    public MongoExprAstVisitor() {
+    public MongoExprVisitor() {
 
     }
 
@@ -43,15 +39,12 @@ public class MongoExprAstVisitor {
     /**
      * @return
      */
-    public static Object visit(SqlExpr sqlExpr, Map<String, Object> dataMap) {
-        return visit(sqlExpr, new GlobalContext(dataMap));
-    }
-
-    /**
-     * @return
-     */
     public static Object visit(SqlExpr sqlExpr, GlobalContext globalContext) {
         return analyse(sqlExpr, globalContext, InnerContext.getDefaultContextInfo());
+    }
+
+    public static Object visit(SqlExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+        return analyse(sqlExpr, globalContext, innerContext);
     }
 
 
@@ -73,6 +66,8 @@ public class MongoExprAstVisitor {
             return visitList((SqlInListExpr) sqlExpr, globalContext);
         } else if (sqlExpr instanceof SqlPropertyExpr) {
             return visitProperty((SqlPropertyExpr) sqlExpr, globalContext, innerContext);
+        } else if (sqlExpr instanceof SqlMethodInvokeExpr) {
+            return MongoMethodExprVisitor.build((SqlMethodInvokeExpr) sqlExpr, globalContext);
         }
         log.error("not support, ", sqlExpr);
         throw new RuntimeException("not support");

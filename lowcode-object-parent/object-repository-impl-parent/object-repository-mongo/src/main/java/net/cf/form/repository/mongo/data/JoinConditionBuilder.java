@@ -13,25 +13,10 @@ import java.util.Map;
 
 public class JoinConditionBuilder {
 
-    private SqlBinaryOpExpr sqlExpr;
-
-    private Map<String, Object> paramMap = null;
-
-    private boolean enableVariable = false;
-
-    public JoinConditionBuilder(SqlBinaryOpExpr sqlExpr, Map<String, Object> paramMap) {
-        this.sqlExpr = sqlExpr;
-        if (MongoUtils.isVariableEnable(paramMap)) {
-            this.enableVariable = true;
-            this.paramMap = paramMap;
-        }
-    }
-
-
-    public Document buildExpr(JoinInfo joinInfo) {
-        GlobalContext visitContextInfo = new GlobalContext(paramMap);
+    public static Document buildExpr(SqlBinaryOpExpr sqlExpr, JoinInfo joinInfo) {
+        GlobalContext visitContextInfo = new GlobalContext();
         visitContextInfo.setJoinInfo(joinInfo);
-        Object object = MongoExprAstVisitor.visit(sqlExpr, visitContextInfo);
+        Object object = MongoExprVisitor.visit(sqlExpr, visitContextInfo);
         if (!(object instanceof Document)) {
             throw new RuntimeException("error");
         }
@@ -39,7 +24,7 @@ public class JoinConditionBuilder {
     }
 
 
-    public Map<String, List<String>> getJoinParam() {
+    public static Map<String, List<String>> getJoinParam(SqlBinaryOpExpr sqlExpr) {
         List<SqlPropertyExpr> sqlPropertyCollection = new ArrayList<>();
         analyseCondition(sqlExpr, sqlPropertyCollection);
 
@@ -47,7 +32,7 @@ public class JoinConditionBuilder {
         for (SqlPropertyExpr sqlPropertyExpr : sqlPropertyCollection) {
             if (sqlPropertyExpr.getOwner() instanceof SqlIdentifierExpr) {
                 String owner = ((SqlIdentifierExpr) sqlPropertyExpr.getOwner()).getName();
-                String value = String.valueOf(MongoExprAstVisitor.visit(sqlPropertyExpr, new GlobalContext(paramMap)));
+                String value = String.valueOf(MongoExprVisitor.visit(sqlPropertyExpr, GlobalContext.getDefault()));
                 if (!joinParamMapping.containsKey(owner)) {
                     joinParamMapping.put(owner, new ArrayList<>());
                 }
@@ -58,7 +43,7 @@ public class JoinConditionBuilder {
 
     }
 
-    public void analyseCondition(SqlExpr sqlExpr, List<SqlPropertyExpr> sqlPropertyCollection) {
+    private static void analyseCondition(SqlExpr sqlExpr, List<SqlPropertyExpr> sqlPropertyCollection) {
         if (sqlExpr instanceof SqlBinaryOpExpr) {
             SqlBinaryOpExpr sqlBinaryOpExpr = (SqlBinaryOpExpr) sqlExpr;
             analyseCondition(sqlBinaryOpExpr.getLeft(), sqlPropertyCollection);

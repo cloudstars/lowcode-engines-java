@@ -6,6 +6,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -110,9 +111,11 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         // 构建过滤条件
         buildWhere();
 
-
         //
         buildAddField();
+
+        //
+        buildLookup();
 
         // 构建聚合信息
         buildGroupBy();
@@ -258,13 +261,99 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             SqlExpr sqlExpr = selectItem.getSqlExpr();
             if (selectItem.getAlias() != null && sqlExpr instanceof SqlValuableExpr) {
                 // 添加常量数据,因为在语句中，所以必须使用mongo格式
-                addFields.put(selectItem.getAlias(), MongoExprAstVisitor.visit(sqlExpr, new GlobalContext(paramMap)));
+                addFields.put(selectItem.getAlias(), MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap)));
             }
         }
         if (addFields.size() > 0) {
             AggregationOperation aggregationOperation = new DocumentAggregationOperation(new Document("$addFields", addFields));
             this.aggregationOperations.add(aggregationOperation);
         }
+    }
+
+
+    private void buildLookup() {
+        if (this.joinTableSource == null) {
+            return;
+        }
+
+        List<Document> documents = buildLookup(this.joinTableSource);
+
+        for (Document document : documents) {
+            AggregationOperation aggregationOperation = new DocumentAggregationOperation(document);
+            this.aggregationOperations.add(aggregationOperation);
+        }
+    }
+
+
+    private List<Document> buildLookup(SqlJoinTableSource sqlJoinTableSource) {
+
+        if (!(sqlJoinTableSource.getLeft() instanceof SqlExprTableSource)) {
+            throw new RuntimeException("not support");
+        }
+        SqlExprTableSource leftTableSource = (SqlExprTableSource) sqlJoinTableSource.getLeft();
+        SqlTableSource rightTableSource = sqlJoinTableSource.getRight();
+        if (rightTableSource instanceof SqlJoinTableSource) {
+            // 先不支持嵌套
+            throw new RuntimeException("not support");
+        } else if (rightTableSource instanceof SqlExprTableSource) {
+            String mainTable = leftTableSource.getTableName();
+            String slaveTable = ((SqlExprTableSource) rightTableSource).getTableName();
+            SqlJoinTableSource.JoinType joinType = sqlJoinTableSource.getJoinType();
+            if (joinType == SqlJoinTableSource.JoinType.JOIN || joinType == SqlJoinTableSource.JoinType.LEFT_OUTER_JOIN) {
+                return buildSingleLeftJoinLookup(mainTable, slaveTable, sqlJoinTableSource);
+            } else {
+                throw new RuntimeException("not support");
+            }
+        } else {
+            throw new RuntimeException("not support");
+        }
+    }
+
+
+    private List<Document> buildSingleLeftJoinLookup(String mainTable, String slaveTable, SqlJoinTableSource joinTableSource) {
+
+        SqlExpr sqlExpr = joinTableSource.getCondition();
+        Map<String, List<String>> table2JoinParam = JoinConditionBuilder.getJoinParam((SqlBinaryOpExpr) sqlExpr);
+
+        JoinInfo joinInfo = new JoinInfo();
+
+        // let
+        Document letDoc = new Document();
+        for (String param : table2JoinParam.get(slaveTable)) {
+            String innerSlaveMasterKey = "jkey_" + param.replace(slaveTable + ".", slaveTable + "_").toLowerCase();
+            String innerSlaveParam = param.replace(slaveTable + ".", "");
+            letDoc.put(innerSlaveMasterKey, "$" + innerSlaveParam);
+            joinInfo.addConditionReplace(param, "$$" + innerSlaveMasterKey);
+        }
+
+        for (String param : table2JoinParam.get(mainTable)) {
+            String newParam = param.replace(mainTable + ".", "");
+            joinInfo.addConditionReplace(param, "$" + newParam);
+        }
+
+        // lookup pipeline
+        List<Document> refPipeline = new ArrayList<>();
+        Document pipelineMatch = new Document();
+        Document expr = new Document();
+        Document onExpr = JoinConditionBuilder.buildExpr((SqlBinaryOpExpr) sqlExpr, joinInfo);
+        pipelineMatch.append("$match", onExpr);
+        refPipeline.add(pipelineMatch);
+
+        Document refLookUp = new Document();
+        refLookUp.append("from", slaveTable)
+                .append("as", slaveTable)
+                .append("let", letDoc)
+                .append("pipeline", refPipeline);
+
+        Document lookupDoc = new Document(refLookUp);
+        List<Document> singleRef = new ArrayList<>();
+        singleRef.add(new Document("$lookup", lookupDoc));
+
+        Document unwindDoc = new Document();
+        unwindDoc.put("path", "$" + slaveTable);
+        unwindDoc.put("preserveNullAndEmptyArrays", true);
+        singleRef.add(new Document("$unwind", unwindDoc));
+        return singleRef;
     }
 
 
@@ -313,7 +402,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
 
     private int parseInt(SqlExpr sqlExpr) {
-        Object value = MongoExprAstVisitor.visit(sqlExpr, new GlobalContext(paramMap));
+        Object value = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap));
         return Integer.valueOf(String.valueOf(value));
     }
 
@@ -361,7 +450,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         ExprTypeEnum exprEnum = ExprTypeEnum.match(sqlExpr);
 
         if (exprEnum == ExprTypeEnum.PARAM) {
-            Object value = MongoExprAstVisitor.visit(mongoSelectItem.getSqlExpr(), new GlobalContext(paramMap));
+            Object value = MongoExprVisitor.visit(mongoSelectItem.getSqlExpr(), new GlobalContext(paramMap));
             doAddFieldProject(fieldProject, "", null, String.valueOf(value));
         } else if (exprEnum == ExprTypeEnum.COMMON) {
             doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getAlias());

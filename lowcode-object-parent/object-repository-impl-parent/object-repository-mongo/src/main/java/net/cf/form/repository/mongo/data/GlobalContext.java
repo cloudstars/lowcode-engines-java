@@ -11,7 +11,11 @@ public class GlobalContext {
 
     private boolean enableVariable = false;
 
+    // join内容
     private JoinInfo joinInfo;
+
+    // mongo操作
+    private MongoMode mongoMode = MongoMode.QUERY;
 
     public GlobalContext() {
     }
@@ -53,4 +57,11 @@ public class GlobalContext {
         this.joinInfo = joinInfo;
     }
 
+    public MongoMode getMongoMode() {
+        return mongoMode;
+    }
+
+    public void setMongoMode(MongoMode mongoMode) {
+        this.mongoMode = mongoMode;
+    }
 }

@@ -64,16 +64,19 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
 
 
     private void buildInsertDoc() {
+        GlobalContext globalContext = new GlobalContext(paramMap);
+        globalContext.setMongoMode(MongoMode.INSERT);
         for (List<MongoInsertItem> items : this.mongoInsertItems) {
-            this.documents.add(buildSingleInsertDoc(items));
+            this.documents.add(buildSingleInsertDoc(items, globalContext));
         }
     }
 
 
-    private Document buildSingleInsertDoc(List<MongoInsertItem> insertItems) {
+    private Document buildSingleInsertDoc(List<MongoInsertItem> insertItems, GlobalContext globalContext) {
         Document document = new Document();
         for (MongoInsertItem insertItem : insertItems) {
-            Object value = MongoExprAstVisitor.visit(insertItem.getValueExpr(), new GlobalContext(paramMap));
+
+            Object value = MongoExprVisitor.visit(insertItem.getValueExpr(), globalContext);
             document.put(insertItem.getColName(), value);
         }
         return document;
