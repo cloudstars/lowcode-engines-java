@@ -15,7 +15,7 @@ public enum MongoOperator {
     GREATER_THAN("$gt", SqlBinaryOperator.GREATER_THAN),
     GREATER_THAN_OR_EQUAL("$gte", SqlBinaryOperator.GREATER_THAN_OR_EQUAL),
     IN("$in", SqlBinaryOperator.IN),
-
+    LIKE("$regex", SqlBinaryOperator.LIKE),
 
     AND("$and", SqlBinaryOperator.BOOLEAN_AND),
     OR("$or", SqlBinaryOperator.BOOLEAN_OR);
