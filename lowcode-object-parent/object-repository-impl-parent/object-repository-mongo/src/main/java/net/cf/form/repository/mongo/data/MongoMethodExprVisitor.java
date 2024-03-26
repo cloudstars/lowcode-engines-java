@@ -91,7 +91,7 @@ public class MongoMethodExprVisitor {
                 Object val;
                 if (sqlExpr instanceof SqlIdentifierExpr) {
                     // 特殊处理下SqlIdentifierExpr
-                    InnerContext innerContext = InnerContext.getFieldTagContext();
+                    VisitContext innerContext = VisitContext.getFieldTagContext();
                     val = MongoExprVisitor.visit(sqlExpr, globalContext, innerContext);
                 } else {
                     val = MongoExprVisitor.visit(sqlExpr, globalContext);

@@ -40,20 +40,20 @@ public class MongoExprVisitor {
      * @return
      */
     public static Object visit(SqlExpr sqlExpr, GlobalContext globalContext) {
-        return analyse(sqlExpr, globalContext, InnerContext.getDefaultContextInfo());
+        return analyse(sqlExpr, globalContext, VisitContext.getDefaultContextInfo());
     }
 
-    public static Object visit(SqlExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+    public static Object visit(SqlExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         return analyse(sqlExpr, globalContext, innerContext);
     }
 
 
     private static Object analyse(SqlExpr sqlExpr, GlobalContext globalContext) {
-        return analyse(sqlExpr, globalContext, InnerContext.getDefaultContextInfo());
+        return analyse(sqlExpr, globalContext, VisitContext.getDefaultContextInfo());
     }
 
 
-    private static Object analyse(SqlExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+    private static Object analyse(SqlExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         if (sqlExpr instanceof SqlBinaryOpExpr) {
             return visitBinary((SqlBinaryOpExpr) sqlExpr, globalContext, innerContext);
         } else if (sqlExpr instanceof SqlIdentifierExpr) {
@@ -74,7 +74,7 @@ public class MongoExprVisitor {
     }
 
 
-    private static Document visitBinary(SqlBinaryOpExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+    private static Document visitBinary(SqlBinaryOpExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         SqlBinaryOperator sqlBinaryOperator = sqlExpr.getOperator();
         MongoOperator mongoOperator = MongoOperator.match(sqlBinaryOperator);
 
@@ -113,7 +113,7 @@ public class MongoExprVisitor {
             SqlIdentifierExpr leftExpr = (SqlIdentifierExpr) sqlExpr.getLeft();
             Object left = visitIdentify(leftExpr, mongoOperator, globalContext);
 
-            InnerContext contextInfo = new InnerContext();
+            VisitContext contextInfo = new VisitContext();
             contextInfo.setAutoGen(leftExpr.isAutoGen());
             Object right = analyse(sqlExpr.getRight(), globalContext, contextInfo);
             return Pair.of(left, right);
@@ -122,7 +122,7 @@ public class MongoExprVisitor {
             SqlIdentifierExpr rightExpr = (SqlIdentifierExpr) sqlExpr.getRight();
             Object right = visitIdentify(rightExpr, mongoOperator, globalContext);
 
-            InnerContext contextInfo = new InnerContext();
+            VisitContext contextInfo = new VisitContext();
             contextInfo.setAutoGen(rightExpr.isAutoGen());
             Object left = analyse(sqlExpr.getLeft(), globalContext, contextInfo);
             return Pair.of(left, right);
@@ -132,13 +132,13 @@ public class MongoExprVisitor {
 
 
     private static Object visitIdentify(SqlIdentifierExpr sqlExpr, MongoOperator mongoOperator, GlobalContext globalContext) {
-        InnerContext identifyContext = new InnerContext();
+        VisitContext identifyContext = new VisitContext();
         identifyContext.setFieldTag(mongoOperator.isFieldTag());
         return visitIdentify(sqlExpr, globalContext, identifyContext);
     }
 
 
-    private static Object visitIdentify(SqlIdentifierExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+    private static Object visitIdentify(SqlIdentifierExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         String field = sqlExpr.getName();
         if (innerContext != null && innerContext.isFieldTag()) {
             return "$" + field;
@@ -147,7 +147,7 @@ public class MongoExprVisitor {
     }
 
 
-    private static Object visitValue(SqlValuableExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+    private static Object visitValue(SqlValuableExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         if (innerContext != null && innerContext.isAutoGen()) {
             if (sqlExpr instanceof SqlCharExpr) {
                 return MongoDataConverter.convertObjectId(sqlExpr.getValue());
@@ -166,7 +166,7 @@ public class MongoExprVisitor {
 
     }
 
-    private static Object visitVariable(SqlVariantRefExpr sqlExpr, GlobalContext globalContext, InnerContext innerContext) {
+    private static Object visitVariable(SqlVariantRefExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         Object value = MongoDataConverter.convertVariable(sqlExpr, globalContext.getDataMap());
         return getVariable(value, innerContext);
     }
@@ -178,7 +178,7 @@ public class MongoExprVisitor {
      * @param contextInfo
      * @return
      */
-    private static Object getVariable(Object value, InnerContext contextInfo) {
+    private static Object getVariable(Object value, VisitContext contextInfo) {
         // 如果变量塞列表
         if (value instanceof List) {
             List<Object> valList = new ArrayList<>();
@@ -202,14 +202,14 @@ public class MongoExprVisitor {
 
     private static Object visitList(SqlInListExpr sqlExpr, GlobalContext globalContext) {
         SqlExpr leftExpr = sqlExpr.getLeft();
-        InnerContext idContextInfo = InnerContext.getDefaultContextInfo();
+        VisitContext idContextInfo = VisitContext.getDefaultContextInfo();
         if (leftExpr instanceof SqlIdentifierExpr) {
             SqlIdentifierExpr sqlIdentifierExpr = (SqlIdentifierExpr) leftExpr;
             if (sqlIdentifierExpr.isAutoGen()) {
                 idContextInfo.setAutoGen(true);
             }
         }
-        InnerContext fieldContextInfo = InnerContext.getFieldTagContext();
+        VisitContext fieldContextInfo = VisitContext.getFieldTagContext();
         Object left = analyse(leftExpr, globalContext, fieldContextInfo);
         List<SqlExpr> targetList = sqlExpr.getTargetList();
         List<Object> rightValues = new ArrayList<>();
@@ -230,7 +230,7 @@ public class MongoExprVisitor {
     }
 
     // 目前property只会有两层
-    private static Object visitProperty(SqlPropertyExpr sqlPropertyExpr, GlobalContext globalContext, InnerContext contextInfo) {
+    private static Object visitProperty(SqlPropertyExpr sqlPropertyExpr, GlobalContext globalContext, VisitContext contextInfo) {
         SqlName sqlName = sqlPropertyExpr.getOwner();
         StringBuilder propertyNameBuilder = new StringBuilder();
         if (sqlName instanceof SqlIdentifierExpr) {
