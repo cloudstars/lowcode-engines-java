@@ -12,7 +12,10 @@ import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.sqlbuilder.AbstractSqlStatementBuilder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * SQL查询语句构建器

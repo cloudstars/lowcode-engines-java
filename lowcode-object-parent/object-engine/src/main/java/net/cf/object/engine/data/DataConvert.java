@@ -15,10 +15,11 @@ public class DataConvert {
     /**
      * 从结果集中的值解析为一个Object
      *
-     * @param resultValue
+     * @param resultVal
      * @return
      */
-    public static Object convert(Object resultValue, ValueType valueType) {
+    public static Object convert(final Object resultVal, ValueType valueType) {
+        Object resultValue = resultVal;
         if (resultValue != null) {
             if (valueType.isArray()) {
                 resultValue = DataConvert.convertList(resultValue);
@@ -33,10 +34,11 @@ public class DataConvert {
     /**
      * 从结果集中的值解析为一个List
      *
-     * @param resultValue
+     * @param resultVal
      * @return
      */
-    public static Object convertList(Object resultValue) {
+    public static Object convertList(final Object resultVal) {
+        Object resultValue = resultVal;
         if (resultValue != null) {
             // 数据中可能存在用文本存数组的情况
             if (resultValue instanceof String) {
@@ -50,10 +52,11 @@ public class DataConvert {
     /**
      * 从结果集中的值解析为一个Object
      *
-     * @param resultValue
+     * @param resultVal
      * @return
      */
-    public static Object convertObject(Object resultValue) {
+    public static Object convertObject(final Object resultVal) {
+        Object resultValue = resultVal;
         if (resultValue != null) {
             // 数据中可能存在数组转非数组的情况
             if (resultValue instanceof List) {
@@ -67,10 +70,11 @@ public class DataConvert {
     /**
      * 将 String 转为 List
      *
-     * @param str
+     * @param s
      * @return
      */
-    private static Object stringToList(String str) {
+    private static Object stringToList(final String s) {
+        String str = s;
         if (str.startsWith("[") && str.endsWith("]")) {
             str = str.substring(1, str.length() - 1);
             String[] items = str.split(",");

@@ -1,7 +1,6 @@
 package net.cf.object.engine.oql.mongo.select;
 
 import net.cf.object.engine.oql.mongo.ObjectEngineOqlMongoTestApplication;
-import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
 import net.cf.object.engine.oql.testcase.select.AbstractSelectTravelSelfPropertiesRepoTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -117,49 +117,59 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
             SqlExpr insertValue = values.get(i);
             if (insertField instanceof OqlFieldExpandExpr) {
                 OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) insertField;
-                List<SqlExpr> properties;
-                if (fieldExpandExpr.isDefaultExpanded()) {
-                    properties = new ArrayList<>();
-                    List<XProperty> fieldProps = fieldExpandExpr.getResolvedField().getProperties();
-                    for (XProperty fieldProp : fieldProps) {
-                        properties.add(new SqlIdentifierExpr(fieldProp.getName()));
-                    }
-                } else {
-                    properties = fieldExpandExpr.getProperties();
-                }
-
-                if (insertValue instanceof SqlJsonObjectExpr) {
-                    SqlJsonObjectExpr jsonObjectExpr = (SqlJsonObjectExpr) insertValue;
-                    Map<String, SqlExpr> items = jsonObjectExpr.getItems();
-                    for (SqlExpr property : properties) {
-                        if (property instanceof SqlIdentifierExpr) {
-                            SqlExpr itemValue = items.get(((SqlIdentifierExpr) property).getName());
-                            sqlValuesClause.addValue(itemValue);
-                        } else {
-                            throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
-                        }
-                    }
-                } else if (insertValue instanceof SqlVariantRefExpr) {
-                    SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) insertValue;
-                    String varName = variantRefExpr.getVarName();
-                    for (SqlExpr property : properties) {
-                        if (property instanceof SqlIdentifierExpr) {
-                            SqlVariantRefExpr propVariableRefExpr = new SqlVariantRefExpr();
-                            propVariableRefExpr.setVarName(varName + "." + ((SqlIdentifierExpr) property).getName());
-                            sqlValuesClause.addValue(propVariableRefExpr);
-                        } else {
-                            throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
-                        }
-                    }
-                } else {
-                    sqlValuesClause.addValue(this.buildSqlExpr(this.selfObject, insertValue));
-                }
             } else {
                 sqlValuesClause.addValue(this.buildSqlExpr(this.selfObject, insertValue));
             }
         }
 
         return sqlValuesClause;
+    }
+
+    /**
+     * 处理字段展开
+     *
+     * @param fieldExpandExpr
+     * @param insertValue
+     * @param sqlValuesClause
+     */
+    private void processFieldExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr insertValue, SqlInsertStatement.ValuesClause sqlValuesClause) {
+        List<SqlExpr> properties;
+        if (fieldExpandExpr.isDefaultExpanded()) {
+            properties = new ArrayList<>();
+            List<XProperty> fieldProps = fieldExpandExpr.getResolvedField().getProperties();
+            for (XProperty fieldProp : fieldProps) {
+                properties.add(new SqlIdentifierExpr(fieldProp.getName()));
+            }
+        } else {
+            properties = fieldExpandExpr.getProperties();
+        }
+
+        if (insertValue instanceof SqlJsonObjectExpr) {
+            SqlJsonObjectExpr jsonObjectExpr = (SqlJsonObjectExpr) insertValue;
+            Map<String, SqlExpr> items = jsonObjectExpr.getItems();
+            for (SqlExpr property : properties) {
+                if (property instanceof SqlIdentifierExpr) {
+                    SqlExpr itemValue = items.get(((SqlIdentifierExpr) property).getName());
+                    sqlValuesClause.addValue(itemValue);
+                } else {
+                    throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
+                }
+            }
+        } else if (insertValue instanceof SqlVariantRefExpr) {
+            SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) insertValue;
+            String varName = variantRefExpr.getVarName();
+            for (SqlExpr property : properties) {
+                if (property instanceof SqlIdentifierExpr) {
+                    SqlVariantRefExpr propVariableRefExpr = new SqlVariantRefExpr();
+                    propVariableRefExpr.setVarName(varName + "." + ((SqlIdentifierExpr) property).getName());
+                    sqlValuesClause.addValue(propVariableRefExpr);
+                } else {
+                    throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
+                }
+            }
+        } else {
+            sqlValuesClause.addValue(this.buildSqlExpr(this.selfObject, insertValue));
+        }
     }
 
 }

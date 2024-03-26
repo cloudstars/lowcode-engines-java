@@ -74,9 +74,6 @@ public class SqlSelect extends AbstractSqlObjectImpl {
     }
 
     public void addSelectItems(List<SqlSelectItem> selectItems) {
-        if (selectItems == null) {
-            System.out.println("");
-        }
         this.selectItems.addAll(selectItems);
         this.addChildren(selectItems);
     }
