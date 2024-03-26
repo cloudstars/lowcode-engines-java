@@ -125,8 +125,8 @@ public interface XField {
      * 获取属性的名称获取子属性
      *
      * @param propName
-     * @return
      * @param <T>
+     * @return
      */
     default <T extends XProperty> T getProperty(String propName) {
         return null;
