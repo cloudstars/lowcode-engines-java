@@ -7,6 +7,11 @@ import java.util.List;
 
 public enum MongoOperator {
 
+    MULTIPLY("$multiply", SqlBinaryOperator.MULTIPLY),
+    DIVIDE("$divide", SqlBinaryOperator.DIVIDE),
+    MODULUS("$mod", SqlBinaryOperator.MODULUS),
+    ADD("$add", SqlBinaryOperator.ADD),
+    SUBTRACT("$subtract", SqlBinaryOperator.SUBTRACT),
 
     EQUAL("$eq", SqlBinaryOperator.EQUALITY),
     NOT_EQUAL("$ne", SqlBinaryOperator.NOT_EQUAL),
@@ -16,6 +21,11 @@ public enum MongoOperator {
     GREATER_THAN_OR_EQUAL("$gte", SqlBinaryOperator.GREATER_THAN_OR_EQUAL),
     IN("$in", SqlBinaryOperator.IN),
     LIKE("$regex", SqlBinaryOperator.LIKE),
+    CONTAINS("", SqlBinaryOperator.CONTAINS),
+    CONTAINS_ALL("", SqlBinaryOperator.CONTAINS_ALL),
+    CONTAINS_ANY("", SqlBinaryOperator.CONTAINS_ANY),
+    IS("", SqlBinaryOperator.IS),
+    IS_NOT("", SqlBinaryOperator.IS_NOT),
 
     AND("$and", SqlBinaryOperator.BOOLEAN_AND),
     OR("$or", SqlBinaryOperator.BOOLEAN_OR);
@@ -52,18 +62,8 @@ public enum MongoOperator {
     }
 
     private static List<MongoOperator> CONDITION_OPERATORS = Arrays.asList(
-            EQUAL,
-            NOT_EQUAL,
-            LESS_THAN,
-            LESS_THAN_OR_EQUAL,
-            GREATER_THAN,
-            GREATER_THAN_OR_EQUAL,
             IN
     );
-
-    public boolean isCondition() {
-        return CONDITION_OPERATORS.contains(this);
-    }
 
     private static List<MongoOperator> COMPARE_OPERATORS = Arrays.asList(
             EQUAL,
@@ -71,27 +71,43 @@ public enum MongoOperator {
             LESS_THAN,
             LESS_THAN_OR_EQUAL,
             GREATER_THAN,
-            GREATER_THAN_OR_EQUAL,
-            IN
+            GREATER_THAN_OR_EQUAL
+    );
+    private static List<MongoOperator> COMPUTE_OPERATORS = Arrays.asList(
+            MULTIPLY,
+            ADD,
+            DIVIDE,
+            MODULUS,
+            SUBTRACT
     );
 
+    public boolean isCondition() {
+        if (this.isCompare()) {
+            return true;
+        }
+        return CONDITION_OPERATORS.contains(this);
+    }
+
+    /**
+     * 是否是比较符号
+     *
+     * @return
+     */
     public boolean isCompare() {
         return COMPARE_OPERATORS.contains(this);
     }
 
+    /**
+     * 是否是计算符号
+     *
+     * @return
+     */
+    public boolean isCompute() {
+        return COMPUTE_OPERATORS.contains(this);
+    }
 
-    private static List<MongoOperator> FIELD_TAG_OPERATORS = Arrays.asList(
-            EQUAL,
-            NOT_EQUAL,
-            LESS_THAN,
-            LESS_THAN_OR_EQUAL,
-            GREATER_THAN,
-            GREATER_THAN_OR_EQUAL,
-            IN
-    );
-
-    public boolean isFieldTag() {
-        return FIELD_TAG_OPERATORS.contains(this);
+    public boolean isContains() {
+        return this == CONTAINS || this == CONTAINS_ALL || this == CONTAINS_ANY;
     }
 
 }

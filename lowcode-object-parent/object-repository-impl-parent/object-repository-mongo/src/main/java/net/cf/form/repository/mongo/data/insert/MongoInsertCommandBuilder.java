@@ -64,7 +64,7 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
 
 
     private void buildInsertDoc() {
-        GlobalContext globalContext = new GlobalContext(paramMap);
+        GlobalContext globalContext = new GlobalContext(paramMap, PositionEnum.VALUE);
         globalContext.setMongoMode(MongoMode.INSERT);
         for (List<MongoInsertItem> items : this.mongoInsertItems) {
             this.documents.add(buildSingleInsertDoc(items, globalContext));

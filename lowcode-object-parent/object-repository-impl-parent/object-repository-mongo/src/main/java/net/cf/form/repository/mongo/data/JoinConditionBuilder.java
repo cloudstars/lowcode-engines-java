@@ -14,9 +14,9 @@ import java.util.Map;
 public class JoinConditionBuilder {
 
     public static Document buildExpr(SqlBinaryOpExpr sqlExpr, JoinInfo joinInfo) {
-        GlobalContext visitContextInfo = new GlobalContext();
-        visitContextInfo.setJoinInfo(joinInfo);
-        Object object = MongoExprVisitor.visit(sqlExpr, visitContextInfo);
+        GlobalContext globalContext = new GlobalContext(PositionEnum.JOIN);
+        globalContext.setJoinInfo(joinInfo);
+        Object object = MongoExprVisitor.visit(sqlExpr, globalContext);
         if (!(object instanceof Document)) {
             throw new RuntimeException("error");
         }
@@ -32,7 +32,7 @@ public class JoinConditionBuilder {
         for (SqlPropertyExpr sqlPropertyExpr : sqlPropertyCollection) {
             if (sqlPropertyExpr.getOwner() instanceof SqlIdentifierExpr) {
                 String owner = ((SqlIdentifierExpr) sqlPropertyExpr.getOwner()).getName();
-                String value = String.valueOf(MongoExprVisitor.visit(sqlPropertyExpr, GlobalContext.getDefault()));
+                String value = String.valueOf(MongoExprVisitor.visit(sqlPropertyExpr, new GlobalContext(PositionEnum.JOIN)));
                 if (!joinParamMapping.containsKey(owner)) {
                     joinParamMapping.put(owner, new ArrayList<>());
                 }
