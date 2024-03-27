@@ -44,7 +44,7 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
         statement.accept(visitor);
         MongoInsertCommand mongoInsertCommand = mongoInsertCommandBuilder.build();
 
-        List<Document> documents = mongoInsertCommand.getDocuments();
+        List<Document> documents = mongoInsertCommand.getMergedDocuments();
         this.template.insert(documents, mongoInsertCommand.getCollectionName());
         return documents.size();
     }
@@ -60,15 +60,29 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
         statement.accept(visitor);
         MongoInsertCommand mongoInsertCommand = mongoInsertCommandBuilder.build();
 
-        List<Document> documents = mongoInsertCommand.getDocuments();
+        List<Document> documents = mongoInsertCommand.getMergedDocuments();
         this.template.insert(documents, mongoInsertCommand.getCollectionName());
         return documents.size();
     }
 
     @Override
     public int[] batchInsert(SqlInsertStatement statement, List<Map<String, Object>> paramMapList) {
-        return new int[0];
+        MongoInsertCommandBuilder mongoInsertCommandBuilder = new MongoInsertCommandBuilder(paramMapList);
+        MongoInsertSqlAstVisitor visitor = new MongoInsertSqlAstVisitor(mongoInsertCommandBuilder);
+        statement.accept(visitor);
+        MongoInsertCommand mongoInsertCommand = mongoInsertCommandBuilder.build();
+
+        List<Document> documents = mongoInsertCommand.getMergedDocuments();
+        this.template.insert(documents, mongoInsertCommand.getCollectionName());
+        int[] nums = new int[mongoInsertCommand.getDocuments().size()];
+        int index = 0;
+        for (List<Document> doc : mongoInsertCommand.getDocuments()) {
+            nums[index] = doc.size();
+            index++;
+        }
+        return nums;
     }
+
 
     @Override
     public int update(SqlUpdateStatement statement) {
