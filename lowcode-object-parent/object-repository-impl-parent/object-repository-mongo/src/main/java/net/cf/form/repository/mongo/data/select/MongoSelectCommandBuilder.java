@@ -319,22 +319,24 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
         // let
         Document letDoc = new Document();
-        for (String param : table2JoinParam.get(slaveTable)) {
-            String innerSlaveMasterKey = "jkey_" + param.replace(slaveTable + ".", slaveTable + "_").toLowerCase();
-            String innerSlaveParam = param.replace(slaveTable + ".", "");
-            letDoc.put(innerSlaveMasterKey, "$" + innerSlaveParam);
-            joinInfo.addConditionReplace(param, "$$" + innerSlaveMasterKey);
+        for (String param : table2JoinParam.get(mainTable)) {
+            // let处添加连接主表的连接字段信息
+            String innerMainMasterKey = "jkey_" + param.replace(mainTable + ".", mainTable + "_").toLowerCase();
+            String innerMainParam = param.replace(mainTable + ".", "");
+            letDoc.put(innerMainMasterKey, "$" + innerMainParam);
+            // 用于on变量替换
+            joinInfo.addConditionReplace(param, "$$" + innerMainMasterKey);
         }
 
-        for (String param : table2JoinParam.get(mainTable)) {
-            String newParam = param.replace(mainTable + ".", "");
+        for (String param : table2JoinParam.get(slaveTable)) {
+            String newParam = param.replace(slaveTable + ".", "");
+            // 用于on变量替换
             joinInfo.addConditionReplace(param, "$" + newParam);
         }
 
         // lookup pipeline
         List<Document> refPipeline = new ArrayList<>();
         Document pipelineMatch = new Document();
-        Document expr = new Document();
         Document onExpr = JoinConditionBuilder.buildExpr((SqlBinaryOpExpr) sqlExpr, joinInfo);
         pipelineMatch.append("$match", onExpr);
         refPipeline.add(pipelineMatch);
