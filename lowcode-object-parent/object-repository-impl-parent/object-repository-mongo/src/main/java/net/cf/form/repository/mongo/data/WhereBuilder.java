@@ -23,7 +23,7 @@ public class WhereBuilder {
 
 
     public Document build() {
-        Object object = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap));
+        Object object = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.WHERE));
         if (!(object instanceof Document)) {
             throw new RuntimeException("error");
         }

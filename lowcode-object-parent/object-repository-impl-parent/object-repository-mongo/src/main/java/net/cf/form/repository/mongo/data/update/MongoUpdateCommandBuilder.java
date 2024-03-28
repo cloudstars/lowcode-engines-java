@@ -64,12 +64,16 @@ public class MongoUpdateCommandBuilder extends AbstractMongoCommandBuilder<SqlUp
 
 
     private Document buildSetDoc() {
-        GlobalContext globalContext = new GlobalContext(paramMap);
-        globalContext.setMongoMode(MongoMode.UPDATE);
+        GlobalContext fieldContext = new GlobalContext(paramMap, PositionEnum.PARAM);
+        fieldContext.setMongoMode(MongoMode.UPDATE);
+
+        GlobalContext valueContext = new GlobalContext(paramMap, PositionEnum.VALUE);
+        valueContext.setMongoMode(MongoMode.UPDATE);
+
         Document document = new Document();
         for (MongoUpdateItem updateItem : this.updateItems) {
-            String field = String.valueOf(MongoExprVisitor.visit(updateItem.getFieldExpr(), globalContext));
-            Object value = MongoExprVisitor.visit(updateItem.getValueExpr(), globalContext);
+            String field = String.valueOf(MongoExprVisitor.visit(updateItem.getFieldExpr(), fieldContext));
+            Object value = MongoExprVisitor.visit(updateItem.getValueExpr(), valueContext);
             document.put(field, value);
         }
 

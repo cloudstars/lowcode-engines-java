@@ -34,20 +34,16 @@ public class MongoDataConverter {
 
     /**
      * @param sqlExpr
-     * @param varMap
+     * @param dataMap
      * @return
      */
-    public static Object convertVariable(SqlExpr sqlExpr, Map<String, Object> varMap) {
+    public static Object convertVariable(SqlExpr sqlExpr, Map<String, Object> dataMap) {
         if (sqlExpr instanceof SqlVariantRefExpr) {
-            if (varMap == null || varMap.size() == 0) {
+            if (dataMap == null || dataMap.size() == 0) {
                 return null;
             }
             SqlVariantRefExpr sqlVariantRefExpr = (SqlVariantRefExpr) sqlExpr;
-            String var = sqlVariantRefExpr.getName();
-            if ((var.startsWith("#{") || var.startsWith("${")) && var.endsWith("}")) {
-                String varName = sqlVariantRefExpr.getVarName();
-                return replaceVariable(varName, varMap);
-            }
+            return replaceVariable(sqlVariantRefExpr.getVarName(), dataMap);
         }
         throw new RuntimeException("not support");
     }

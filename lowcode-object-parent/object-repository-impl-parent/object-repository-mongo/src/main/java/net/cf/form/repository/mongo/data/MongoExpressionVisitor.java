@@ -28,14 +28,15 @@ public class MongoExpressionVisitor {
     public static Document visitBinary(SqlBinaryOpExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         SqlBinaryOperator sqlBinaryOperator = sqlExpr.getOperator();
         MongoOperator mongoOperator = MongoOperator.match(sqlBinaryOperator);
-
         if (mongoOperator.isLogical()) {
-            Document document = new Document(mongoOperator.getExpr(),
-                    Arrays.asList(MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext),
-                            MongoExprVisitor.visit(sqlExpr.getRight(), globalContext)));
-            return document;
+            // 逻辑
+            return visitLogical(mongoOperator, sqlExpr, globalContext);
         } else if (mongoOperator.isCondition()) {
+            // 关系
             return visitRelational(mongoOperator, sqlExpr, globalContext);
+        } else if (mongoOperator.isCompute()) {
+            // 运算
+            return visitCompute(mongoOperator, sqlExpr, globalContext);
         }
         throw new RuntimeException("not support");
     }
@@ -48,7 +49,7 @@ public class MongoExpressionVisitor {
      * @param globalContext
      * @return
      */
-    public static Object visitList(SqlInListExpr sqlExpr, GlobalContext globalContext) {
+    public static Object visitIn(SqlInListExpr sqlExpr, GlobalContext globalContext) {
         SqlExpr leftExpr = sqlExpr.getLeft();
         VisitContext idContextInfo = VisitContext.getDefaultContextInfo();
         if (leftExpr instanceof SqlIdentifierExpr) {
@@ -137,7 +138,11 @@ public class MongoExpressionVisitor {
         Object left = pair.getLeft();
         Object right = pair.getRight();
 
-        if (mongoOperator.isCompare()) {
+        if (mongoOperator == MongoOperator.IS || mongoOperator == MongoOperator.IS_NOT) {
+            return visitIsOp(mongoOperator, sqlExpr, left, right, globalContext);
+        } else if (mongoOperator.isContains()) {
+            return visitContains(mongoOperator, sqlExpr, left, right, globalContext);
+        } else if (mongoOperator.isCompare()) {
             Document document = new Document(mongoOperator.getExpr(), Arrays.asList(left, right));
             return new Document("$expr", document);
         }
@@ -158,7 +163,7 @@ public class MongoExpressionVisitor {
         // 判断左右两边是否有字段,需要上下文传递
         if (leftType == ExprTypeEnum.PARAM && rightType != ExprTypeEnum.PARAM) {
             SqlIdentifierExpr leftExpr = (SqlIdentifierExpr) sqlExpr.getLeft();
-            Object left = visitIdentify(leftExpr, mongoOperator, globalContext);
+            Object left = visitBinaryIdentify(leftExpr, mongoOperator, globalContext);
 
             VisitContext contextInfo = new VisitContext();
             contextInfo.setAutoGen(leftExpr.isAutoGen());
@@ -167,16 +172,137 @@ public class MongoExpressionVisitor {
 
         } else if (rightType == ExprTypeEnum.PARAM && leftType != ExprTypeEnum.PARAM) {
             SqlIdentifierExpr rightExpr = (SqlIdentifierExpr) sqlExpr.getRight();
-            Object right = visitIdentify(rightExpr, mongoOperator, globalContext);
+            Object right = visitBinaryIdentify(rightExpr, mongoOperator, globalContext);
 
             VisitContext contextInfo = new VisitContext();
             contextInfo.setAutoGen(rightExpr.isAutoGen());
             Object left = MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext, contextInfo);
             return Pair.of(left, right);
         }
+
+        // 如果两边都不是字段，暂时不支持往下检索
         return Pair.of(MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext), MongoExprVisitor.visit(sqlExpr.getRight(), globalContext));
     }
 
+
+    /**
+     * @param mongoOperator
+     * @param sqlExpr
+     * @param left
+     * @param right
+     * @param globalContext
+     * @return
+     */
+    private static Document visitIsOp(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
+        Document document = new Document();
+        String field = String.valueOf(left);
+        if (right != null) {
+            throw new RuntimeException("只支持is null 或 is not null");
+        }
+
+        if (mongoOperator == MongoOperator.IS) {
+            // is null
+            // 字段不存在或字段的值为null
+            List<Document> documents = new ArrayList<>();
+            Document existDoc = new Document(field, new Document("$exists", false));
+            Document nullDoc = new Document("$expr", new Document("$eq", Arrays.asList("$" + field, null)));
+            documents.add(existDoc);
+            documents.add(nullDoc);
+            document.put("$or", documents);
+            return document;
+        } else {
+            // is not null
+            // 字段存在且字段的值部位null
+            List<Document> documents = new ArrayList<>();
+            Document existDoc = new Document(field, new Document("$exists", true));
+            Document notNullDoc = new Document("$expr", new Document("$ne", Arrays.asList("$" + field, null)));
+            documents.add(existDoc);
+            documents.add(notNullDoc);
+            document.put("$and", documents);
+            return document;
+        }
+
+    }
+
+    /**
+     * @param mongoOperator
+     * @param sqlExpr
+     * @param left
+     * @param right
+     * @param globalContext
+     * @return
+     */
+    private static Document visitContains(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
+        if (mongoOperator == MongoOperator.CONTAINS_ALL) {
+            return buildContainsAll(sqlExpr, left, right, globalContext);
+        } else if (mongoOperator == MongoOperator.CONTAINS_ANY) {
+            return buildContainsAny(sqlExpr, left, right, globalContext);
+        } else {
+            return buildContainsSingle(sqlExpr, left, right, globalContext);
+        }
+    }
+
+    /**
+     * @param sqlExpr
+     * @param left
+     * @param right
+     * @param globalContext
+     * @return
+     */
+    private static Document buildContainsAll(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
+        return new Document(String.valueOf(left), new Document("$all", Arrays.asList(right)));
+    }
+
+    /**
+     * @param sqlExpr
+     * @param left
+     * @param right
+     * @param globalContext
+     * @return
+     */
+    private static Document buildContainsAny(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
+        return new Document(String.valueOf(left), new Document("$eleMatch", new Document("$in", right)));
+    }
+
+    /**
+     * @param sqlExpr
+     * @param left
+     * @param right
+     * @param globalContext
+     * @return
+     */
+    private static Document buildContainsSingle(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
+        return new Document(String.valueOf(left), new Document("$all", Arrays.asList(right)));
+    }
+
+
+    /**
+     * @param mongoOperator
+     * @param sqlExpr
+     * @param globalContext
+     * @return
+     */
+    private static Document visitCompute(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, GlobalContext globalContext) {
+        Document document = new Document();
+        Object left = MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext);
+        Object right = MongoExprVisitor.visit(sqlExpr.getRight(), globalContext);
+        document.put(mongoOperator.getExpr(), Arrays.asList(left, right));
+        return document;
+    }
+
+    /**
+     * @param mongoOperator
+     * @param sqlExpr
+     * @param globalContext
+     * @return
+     */
+    private static Document visitLogical(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, GlobalContext globalContext) {
+        Document document = new Document();
+        Object left = MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext);
+        Object right = MongoExprVisitor.visit(sqlExpr.getRight(), globalContext);
+        document.put(mongoOperator.getExpr(), Arrays.asList(left, right));
+        return document;
+    }
 
     /**
      * @param sqlExpr
@@ -184,9 +310,14 @@ public class MongoExpressionVisitor {
      * @param globalContext
      * @return
      */
-    private static Object visitIdentify(SqlIdentifierExpr sqlExpr, MongoOperator mongoOperator, GlobalContext globalContext) {
+    private static Object visitBinaryIdentify(SqlIdentifierExpr sqlExpr, MongoOperator mongoOperator, GlobalContext globalContext) {
         VisitContext identifyContext = new VisitContext();
-        identifyContext.setFieldTag(mongoOperator.isFieldTag());
+
+        // 表达式中可能需要添加fieldTag
+        if (mongoOperator.isCompute() || mongoOperator.isCompare()) {
+            identifyContext.setFieldTag(true);
+        }
+
         return MongoExprVisitor.visit(sqlExpr, globalContext, identifyContext);
     }
 

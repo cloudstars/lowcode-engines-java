@@ -62,19 +62,19 @@ public class MongoExprVisitor {
      *
      * @param sqlExpr
      * @param globalContext
-     * @param innerContext
+     * @param visitContext
      * @return
      */
-    private static Object analyse(SqlExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
+    private static Object analyse(SqlExpr sqlExpr, GlobalContext globalContext, VisitContext visitContext) {
         // 函数
         if (sqlExpr instanceof SqlMethodInvokeExpr) {
-            return MongoMethodExprVisitor.build((SqlMethodInvokeExpr) sqlExpr, globalContext);
+            return MongoMethodExprVisitor.build((SqlMethodInvokeExpr) sqlExpr, globalContext, visitContext);
         }
 
         // 表达式
         // 操作符
         if (sqlExpr instanceof SqlBinaryOpExpr) {
-            return MongoExpressionVisitor.visitBinary((SqlBinaryOpExpr) sqlExpr, globalContext, innerContext);
+            return MongoExpressionVisitor.visitBinary((SqlBinaryOpExpr) sqlExpr, globalContext, visitContext);
         }
         // like todo
         if (sqlExpr instanceof SqlLikeOpExpr) {
@@ -82,24 +82,24 @@ public class MongoExprVisitor {
         }
         // in
         if (sqlExpr instanceof SqlInListExpr) {
-            return MongoExpressionVisitor.visitList((SqlInListExpr) sqlExpr, globalContext);
+            return MongoExpressionVisitor.visitIn((SqlInListExpr) sqlExpr, globalContext);
         }
 
 
         // 字段相关
         if (sqlExpr instanceof SqlIdentifierExpr) {
-            return visitIdentify((SqlIdentifierExpr) sqlExpr, globalContext, innerContext);
+            return visitIdentify((SqlIdentifierExpr) sqlExpr, globalContext, visitContext);
         }
         if (sqlExpr instanceof SqlPropertyExpr) {
-            return visitProperty((SqlPropertyExpr) sqlExpr, globalContext, innerContext);
+            return visitProperty((SqlPropertyExpr) sqlExpr, globalContext, visitContext);
         }
 
         // 值相关
         if (sqlExpr instanceof SqlValuableExpr) {
-            return visitValue((SqlValuableExpr) sqlExpr, globalContext, innerContext);
+            return visitValue((SqlValuableExpr) sqlExpr, globalContext, visitContext);
         }
         if (sqlExpr instanceof SqlVariantRefExpr) {
-            return visitVariable((SqlVariantRefExpr) sqlExpr, globalContext, innerContext);
+            return visitVariable((SqlVariantRefExpr) sqlExpr, globalContext, visitContext);
         }
 
 
@@ -117,6 +117,8 @@ public class MongoExprVisitor {
     private static Object visitIdentify(SqlIdentifierExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         String field = sqlExpr.getName();
         if (innerContext != null && innerContext.isFieldTag()) {
+            return "$" + field;
+        } else if (globalContext != null && globalContext.getPositionEnum() == PositionEnum.VALUE) {
             return "$" + field;
         }
         return field;
@@ -149,6 +151,9 @@ public class MongoExprVisitor {
 
     private static Object visitVariable(SqlVariantRefExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         Object value = MongoDataConverter.convertVariable(sqlExpr, globalContext.getDataMap());
+        if (value == null) {
+            return null;
+        }
         return getVariable(value, innerContext);
     }
 
@@ -160,6 +165,9 @@ public class MongoExprVisitor {
      * @return
      */
     private static Object getVariable(Object value, VisitContext contextInfo) {
+        if (value == null) {
+            return null;
+        }
         // 如果变量塞列表
         if (value instanceof List) {
             List<Object> valList = new ArrayList<>();

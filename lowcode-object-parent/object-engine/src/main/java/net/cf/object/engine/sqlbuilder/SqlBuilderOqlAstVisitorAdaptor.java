@@ -95,6 +95,7 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
             SqlIdentifierExpr sqlX = new SqlIdentifierExpr();
             sqlX.setName(resolvedField.getColumnName());
             sqlX.setSqlDataType(sqlDataType);
+            sqlX.setAutoGen(x.getResolvedField().isAutoGen());
             return sqlX;
         } else {
             SqlPropertyExpr sqlX = new SqlPropertyExpr(object.getTableName());

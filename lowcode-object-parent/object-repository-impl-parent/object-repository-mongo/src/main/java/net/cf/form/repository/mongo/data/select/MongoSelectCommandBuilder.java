@@ -261,7 +261,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             SqlExpr sqlExpr = selectItem.getSqlExpr();
             if (selectItem.getAlias() != null && sqlExpr instanceof SqlValuableExpr) {
                 // 添加常量数据,因为在语句中，所以必须使用mongo格式
-                addFields.put(selectItem.getAlias(), MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap)));
+                addFields.put(selectItem.getAlias(), MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.PARAM)));
             }
         }
         if (addFields.size() > 0) {
@@ -402,7 +402,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
 
     private int parseInt(SqlExpr sqlExpr) {
-        Object value = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap));
+        Object value = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.DEFAULT));
         return Integer.valueOf(String.valueOf(value));
     }
 
@@ -450,7 +450,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         ExprTypeEnum exprEnum = ExprTypeEnum.match(sqlExpr);
 
         if (exprEnum == ExprTypeEnum.PARAM) {
-            Object value = MongoExprVisitor.visit(mongoSelectItem.getSqlExpr(), new GlobalContext(paramMap));
+            Object value = MongoExprVisitor.visit(mongoSelectItem.getSqlExpr(), new GlobalContext(paramMap, PositionEnum.PARAM));
             doAddFieldProject(fieldProject, "", null, String.valueOf(value));
         } else if (exprEnum == ExprTypeEnum.COMMON) {
             doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getAlias());

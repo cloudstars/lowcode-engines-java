@@ -1,6 +1,7 @@
 package net.cf.form.repository.mongo.data;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import org.bson.Document;
@@ -9,7 +10,40 @@ import java.util.*;
 
 public class MongoMethodExprVisitor {
 
-    public static Object build(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
+
+    /**
+     * @param sqlMethodInvokeExpr
+     * @param globalContext
+     * @return
+     */
+    public static Object build(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext, VisitContext visitContext) {
+        if (globalContext.getPositionEnum() == PositionEnum.HAVING) {
+            // having中，返回函数别名
+            return getMethodOrigin(sqlMethodInvokeExpr, globalContext, visitContext);
+        } else {
+            if (sqlMethodInvokeExpr instanceof SqlAggregateExpr && globalContext.getPositionEnum() == PositionEnum.WHERE) {
+                // 聚合函数一般不存在where后面， 且聚合函数查询时会特殊处理
+                return getMethodOrigin(sqlMethodInvokeExpr, globalContext, visitContext);
+            } else {
+                return buildCommon(sqlMethodInvokeExpr, globalContext);
+            }
+        }
+    }
+
+    private static String getMethodOrigin(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext, VisitContext visitContext) {
+        if (visitContext.isFieldTag()) {
+            return "$" + MongoUtils.getOriginExprAlias(sqlMethodInvokeExpr);
+        }
+        return MongoUtils.getOriginExprAlias(sqlMethodInvokeExpr);
+    }
+
+
+    /**
+     * @param sqlMethodInvokeExpr
+     * @param globalContext
+     * @return
+     */
+    private static Object buildCommon(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
         String methodName = sqlMethodInvokeExpr.getMethodName();
 
         switch (methodName.toUpperCase()) {
