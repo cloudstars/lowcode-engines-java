@@ -50,4 +50,11 @@ public class MongoUpdateTravelSelfPropertiesOqlTest extends AbstractUpdateTravel
     public void testUpdateTravelSingleModifierByIdVars() {
         super.testUpdateTravelSingleModifierByIdVars();
     }
+
+    @Test
+    @Override
+    public void testUpdateTravelWithAttachesByIdVars() {
+        super.testUpdateTravelWithAttachesByIdVars();
+    }
+
 }

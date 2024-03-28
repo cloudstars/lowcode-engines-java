@@ -1,5 +1,6 @@
 package net.cf.object.engine.sqlbuilder;
 
+import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
@@ -88,14 +89,17 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
      */
     private SqlExpr buildFieldOqlExpr(final XObject object, final OqlFieldExpr x) {
         XField resolvedField = x.getResolvedField();
+        SqlDataType sqlDataType = SqlDataTypeConvert.toSqlDataType(resolvedField);
         if (object == selfObject) {
             // 省略表名前缀
             SqlIdentifierExpr sqlX = new SqlIdentifierExpr();
             sqlX.setName(resolvedField.getColumnName());
+            sqlX.setSqlDataType(sqlDataType);
             return sqlX;
         } else {
             SqlPropertyExpr sqlX = new SqlPropertyExpr(object.getTableName());
             sqlX.setName(resolvedField.getColumnName());
+            sqlX.setSqlDataType(sqlDataType);
             return sqlX;
         }
     }
@@ -110,13 +114,16 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
     private SqlExpr buildPropertyOqlExpr(final XObject object, final OqlPropertyExpr x) {
         XProperty property = x.getResolvedProperty();
         String columnName = property.getColumnName();
+        SqlDataType sqlDataType = SqlDataTypeConvert.toSqlDataType(property.getOwner());
         if (object == this.selfObject) {
             SqlIdentifierExpr sqlX = new SqlIdentifierExpr();
             sqlX.setName(columnName);
+            sqlX.setSqlDataType(sqlDataType);
             return sqlX;
         } else {
             SqlPropertyExpr sqlX = new SqlPropertyExpr(object.getTableName());
             sqlX.setName(columnName);
+            sqlX.setSqlDataType(sqlDataType);
             return sqlX;
         }
     }
@@ -192,6 +199,36 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
         List<SqlExpr> args = source.getArguments();
         for (SqlExpr arg : args) {
             target.addArgument(this.buildSqlExpr(object, arg));
+        }
+    }
+
+    /**
+     * 获取字段的名称
+     *
+     * @param fieldExpr
+     * @return
+     */
+    protected String getFieldName(OqlFieldExpr fieldExpr) {
+        SqlIdentifierExpr owner = fieldExpr.getOwner();
+        if (owner != null) {
+            return owner.getName() + "." + fieldExpr.getName();
+        } else {
+            return fieldExpr.getName();
+        }
+    }
+
+    /**
+     * 获取属性的名称
+     *
+     * @param propExpr
+     * @return
+     */
+    protected String getPropertyName(OqlPropertyExpr propExpr) {
+        OqlFieldExpr owner = propExpr.getOwner();
+        if (owner != null) {
+            return owner.getName() + "." + propExpr.getName();
+        } else {
+            return propExpr.getName();
         }
     }
 

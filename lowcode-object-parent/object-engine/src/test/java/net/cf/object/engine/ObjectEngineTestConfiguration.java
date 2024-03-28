@@ -43,8 +43,8 @@ public class ObjectEngineTestConfiguration {
     }
 
     @Bean
-    public OqlEngine oqlEngine(MySqlObjectRepositoryImpl repository, XObjectResolver resolver) {
-        return new OqlEngineImpl(repository, resolver);
+    public OqlEngine oqlEngine(MySqlObjectRepositoryImpl repository) {
+        return new OqlEngineImpl(repository);
     }
 
 }

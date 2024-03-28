@@ -36,11 +36,10 @@ public interface ObjectRepository {
      * 批量插入记录，并携带参数
      *
      * @param statement
-     * @param paramMapList
+     * @param paramMaps
      * @return
      */
-    int[] batchInsert(SqlInsertStatement statement, List<Map<String, Object>> paramMapList);
-
+    int[] batchInsert(SqlInsertStatement statement, List<Map<String, Object>> paramMaps);
 
     /**
      * 更新一条数据，并携带参数
@@ -63,10 +62,10 @@ public interface ObjectRepository {
      * 批量更新记录，并携带参数
      *
      * @param statement
-     * @param paramMapList
+     * @param paramMaps
      * @return
      */
-    int[] batchUpdate(SqlUpdateStatement statement, List<Map<String, Object>> paramMapList);
+    int[] batchUpdate(SqlUpdateStatement statement, List<Map<String, Object>> paramMaps);
 
     /**
      * 删除一条数据
@@ -89,10 +88,10 @@ public interface ObjectRepository {
      * 批量删除数据
      *
      * @param statement
-     * @param paramMapList
+     * @param paramMaps
      * @return
      */
-    int[] batchDelete(SqlDeleteStatement statement, List<Map<String, Object>> paramMapList);
+    int[] batchDelete(SqlDeleteStatement statement, List<Map<String, Object>> paramMaps);
 
     /**
      * 查询单条数据
@@ -127,4 +126,5 @@ public interface ObjectRepository {
      * @return
      */
     List<Map<String, Object>> selectList(SqlSelectStatement statement, Map<String, Object> paramMap);
+
 }

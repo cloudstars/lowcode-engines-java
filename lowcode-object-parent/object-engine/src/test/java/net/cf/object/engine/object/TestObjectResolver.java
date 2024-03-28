@@ -31,7 +31,7 @@ public final class TestObjectResolver implements XObjectResolver {
         for (String objectName : orderedObjectNames) {
             String objectDefJson = objectsJson.get(objectName + ".json");
             ObjectDef objectDef = JSONObject.parseObject(objectDefJson, ObjectDef.class);
-            TestObjectImpl object = new TestObjectImpl(objectDef, this);
+            TestObjectImpl object = new TestObjectImpl(objectDef);
             this.objectMap.put(object.getName(), object);
         }
     }

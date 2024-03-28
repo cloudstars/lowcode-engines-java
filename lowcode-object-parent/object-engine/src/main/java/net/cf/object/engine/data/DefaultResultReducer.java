@@ -24,7 +24,7 @@ public class DefaultResultReducer implements ResultReducer {
             return null;
         }
 
-        return this.reduceValue(resultMap, this.valueDefs/*, null*/);
+        return this.reduceValue(resultMap, this.valueDefs);
     }
 
     /**
@@ -48,9 +48,8 @@ public class DefaultResultReducer implements ResultReducer {
      *
      * @param value
      * @param subFields
-     * @param columnNamePrefix 结果集映射key的前缀
      */
-    private Map<String, Object> reduceValue(Map<String, Object> value, List<FieldMapping> subFields/*, String columnNamePrefix*/) {
+    private Map<String, Object> reduceValue(Map<String, Object> value, List<FieldMapping> subFields) {
         Map<String, Object> targetMap = new HashMap<>();
         for (FieldMapping subField : subFields) {
             String subFieldName = subField.getFieldName();
@@ -60,8 +59,7 @@ public class DefaultResultReducer implements ResultReducer {
             boolean hasSubFields = subSubFields != null && subSubFields.size() > 0;
             if (hasSubFields) {
                 // 存在子字段时，归并子字段的值
-                //String subColumnNamePrefix = this.getTargetColumnKey(columnNamePrefix, subFieldColumnName);
-                subFieldValue = this.reduceSubFields(subField, value/*, subColumnNamePrefix*/);
+                subFieldValue = this.reduceSubFields(subField, value);
             } else {
                 // 列名称拼上前缀
                 subFieldValue = value.get(subFieldColumnName);
@@ -90,9 +88,8 @@ public class DefaultResultReducer implements ResultReducer {
      *
      * @param value
      * @param subFields
-     * @param prefixColumnName
      */
-    private List<Map<String, Object>> reduceToListValue(Map<String, Object> value, List<FieldMapping> subFields/*, String prefixColumnName*/) {
+    private List<Map<String, Object>> reduceToListValue(Map<String, Object> value, List<FieldMapping> subFields) {
         // 为每一个子字段生成一个List的值
         int valueSize = 0;
         Map<String, List<?>> subFieldListValueMap = new HashMap<>();
@@ -126,13 +123,9 @@ public class DefaultResultReducer implements ResultReducer {
                 subFieldValue = value.get(subFieldColumnName);
             }
 
-            // 期望这个subFieldValue一定是一个数组（后面按需回）
-            /*if (!(subFieldValue instanceof List)) {
-                subFieldValue = DataConvert.convertList(subFieldValue);
-                if (!(subFieldValue instanceof List)) {
-                    subFieldValue = Arrays.asList(subFieldValue);
-                }
-            }*/
+            if (subFieldValue instanceof String) {
+                subFieldValue = DataConvert.stringToList((String) subFieldValue);
+            }
             assert (subFieldValue instanceof List);
             List<?> subFieldListValue = (List<?>) subFieldValue;
             subFieldListValueMap.put(subFieldName, subFieldListValue);
@@ -165,17 +158,16 @@ public class DefaultResultReducer implements ResultReducer {
      *
      * @param field
      * @param resultMap
-     * @param prefixColumnName
      * @return
      */
-    private Object reduceSubFields(FieldMapping field, Map<String, Object> resultMap/*, String prefixColumnName*/) {
+    private Object reduceSubFields(FieldMapping field, Map<String, Object> resultMap) {
         Object targetValue; // 目标结果
         boolean isArray = field.getValueType().isArray();
         List<FieldMapping> subItems = field.getSubFields();
         if (isArray) { // 字段展开且是数组的情况
-            targetValue = this.reduceToListValue(resultMap, subItems/*, prefixColumnName*/);
+            targetValue = this.reduceToListValue(resultMap, subItems);
         } else { // 模型或字段展开且非数组的情况
-            targetValue = this.reduceValue(resultMap, subItems/*, prefixColumnName*/);
+            targetValue = this.reduceValue(resultMap, subItems);
         }
 
         return targetValue;
@@ -211,18 +203,4 @@ public class DefaultResultReducer implements ResultReducer {
         return subSubList;
     }
 
-    /**
-     * 获取结果集中的列名
-     *
-     * @param prefixName
-     * @param columnName
-     * @return
-     */
-    private String getTargetColumnKey(String prefixName, String columnName) {
-        if (prefixName != null && prefixName.length() > 0) {
-            return prefixName + "." + columnName;
-        } else {
-            return columnName;
-        }
-    }
 }

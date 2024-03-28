@@ -6,10 +6,14 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
+import net.cf.object.engine.data.FieldMapping;
+import net.cf.object.engine.object.ValueType;
 import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.util.OqlUtils;
+import net.cf.object.engine.sqlbuilder.FieldItemInfo;
 import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
 
 import java.util.List;
@@ -63,15 +67,20 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         for (SqlUpdateSetItem setItem : setItems) {
             SqlExpr updateField = setItem.getColumn();
             SqlExpr updateValue = setItem.getValue();
-            if (updateField instanceof OqlObjectExpandExpr) {
-                // 更新关联表的话，更新条件中必须有关联表的主键字段
-            } else if (updateField instanceof OqlFieldExpandExpr) {
-                this.expandSetExpandedField((OqlFieldExpandExpr) updateField, updateValue);
-            } else {
+            if (updateField instanceof OqlFieldExpr || updateField instanceof OqlPropertyExpr) {
                 SqlUpdateSetItem sqlSetItem = setItem.cloneMe();
                 sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, updateField));
                 sqlSetItem.setValue(this.buildSqlExpr(this.selfObject, setItem.getValue()));
                 this.builder.appendSetItem(sqlSetItem);
+
+                if (updateValue instanceof SqlVariantRefExpr) {
+                    String varName = ((SqlVariantRefExpr) updateValue).getVarName();
+                    this.builder.appendFieldMapping(new FieldMapping(varName, varName));
+                }
+            } else if (updateField instanceof OqlFieldExpandExpr) {
+                this.processFieldValueExpand((OqlFieldExpandExpr) updateField, updateValue);
+            } else if (updateField instanceof OqlObjectExpandExpr) {
+                // 更新关联表的话，更新条件中必须有关联表的主键字段
             }
         }
     }
@@ -82,16 +91,15 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param fieldExpandExpr
      * @param updateValue
      */
-    private void expandSetExpandedField(OqlFieldExpandExpr fieldExpandExpr, SqlExpr updateValue) {
-        XField field = fieldExpandExpr.getResolvedField();
+    private void processFieldValueExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr updateValue) {
+        XField resolvedField = fieldExpandExpr.getResolvedField();
         List<? extends SqlExpr> properties;
         if (fieldExpandExpr.isDefaultExpanded() || fieldExpandExpr.isStarExpanded()) {
-            properties = OqlUtils.defaultExpandFieldProperties(field);
+            properties = OqlUtils.defaultExpandFieldProperties(resolvedField);
         } else {
             properties = fieldExpandExpr.getProperties();
         }
 
-        String fieldName = field.getName();
         if (updateValue instanceof SqlJsonObjectExpr) {
             SqlJsonObjectExpr jsonObjectExpr = (SqlJsonObjectExpr) updateValue;
             Map<String, SqlExpr> items = jsonObjectExpr.getItems();
@@ -101,26 +109,40 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
                     sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, property));
                     sqlSetItem.setValue(items.get(((OqlPropertyExpr) property).getName()));
                     this.builder.appendSetItem(sqlSetItem);
-                }else {
-                    throw new FastOqlException("OQL update语句的字段展开表达式中不支持字段属性之外的表达式");
-                }
-            }
-        } else if (updateValue instanceof SqlVariantRefExpr) {
-            SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) updateValue;
-            String varName = variantRefExpr.getVarName();
-            for (SqlExpr property : properties) {
-                if (property instanceof OqlPropertyExpr) {
-                    SqlExpr updateItem = this.buildSqlExpr(this.selfObject, property);
-                    SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
-                    sqlSetItem.setColumn(updateItem);
-                    SqlVariantRefExpr propVariableRefExpr = new SqlVariantRefExpr();
-                    propVariableRefExpr.setVarName(varName + "." + ((OqlPropertyExpr) property).getName());
-                    sqlSetItem.setValue(propVariableRefExpr);
-                    this.builder.appendSetItem(sqlSetItem);
                 } else {
                     throw new FastOqlException("OQL update语句的字段展开表达式中不支持字段属性之外的表达式");
                 }
             }
+        } else if (updateValue instanceof SqlVariantRefExpr) {
+            FieldItemInfo fieldItemInfo = new FieldItemInfo();
+            FieldMapping fieldMapping = new FieldMapping(resolvedField.getName(), resolvedField.getColumnName());
+            fieldMapping.setValueType(new ValueType(resolvedField.getDataType(), resolvedField.isArray()));
+            fieldItemInfo.setFieldMapping(fieldMapping);
+
+            SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) updateValue;
+            String varName = variantRefExpr.getVarName();
+            for (SqlExpr property : properties) {
+                if (property instanceof OqlPropertyExpr) {
+                    OqlPropertyExpr propExpr = (OqlPropertyExpr) property;
+                    XProperty resolvedProp = propExpr.getResolvedProperty();
+
+                    SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
+                    SqlExpr updateItem = this.buildSqlExpr(this.selfObject, property);
+                    sqlSetItem.setColumn(updateItem);
+                    SqlVariantRefExpr propVarRefExpr = new SqlVariantRefExpr();
+                    String propName = resolvedProp.getName();
+                    propVarRefExpr.setVarName(varName + "." + propName);
+                    sqlSetItem.setValue(propVarRefExpr);
+                    this.builder.appendSetItem(sqlSetItem);
+
+                    FieldMapping subFieldMapping = new FieldMapping(propName, propName);
+                    fieldMapping.addSubField(subFieldMapping);
+                } else {
+                    throw new FastOqlException("OQL update语句的字段展开表达式中不支持字段属性之外的表达式");
+                }
+            }
+
+            this.builder.appendFieldMapping(fieldMapping);
         } else {
             throw new FastOqlException("set子句中展开字段的设值必须是JSON或者变量引用，当前值：" + updateValue);
         }

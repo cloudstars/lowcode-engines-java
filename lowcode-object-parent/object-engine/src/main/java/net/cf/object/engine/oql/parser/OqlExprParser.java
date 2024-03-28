@@ -243,6 +243,7 @@ public class OqlExprParser extends SqlExprParser {
                 OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(owner);
                 objectExpandExpr.setStarExpanded(true);
                 objectExpandExpr.setResolvedObjectRefField(objectRefField);
+                objectExpandExpr.setResolvedRefObject(ownerObject);
             } else {
                 XField ownerField = ownerObject.getField(propName);
                 // 校验字段的存在性
@@ -388,6 +389,7 @@ public class OqlExprParser extends SqlExprParser {
 
         OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(refObjectName);
         objectExpandExpr.setResolvedObjectRefField(objectRefField);
+        objectExpandExpr.setResolvedRefObject(refObject);
         List<SqlExpr> args = x.getArguments();
         for (SqlExpr arg : args) {
             if (arg instanceof SqlAggregateExpr) {

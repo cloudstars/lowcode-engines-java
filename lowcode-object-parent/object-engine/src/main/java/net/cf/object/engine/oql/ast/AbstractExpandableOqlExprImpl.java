@@ -1,5 +1,6 @@
 package net.cf.object.engine.oql.ast;
 
+import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 
 /**
@@ -22,6 +23,11 @@ public abstract class AbstractExpandableOqlExprImpl extends AbstractOqlExprImpl 
     @Override
     public SqlExpr cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
+    }
+
+    @Override
+    public SqlDataType computeSqlDataType() {
+        return SqlDataType.OBJECT;
     }
 
     public boolean isDefaultExpanded() {

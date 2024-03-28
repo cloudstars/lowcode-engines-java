@@ -12,7 +12,6 @@ import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.sqlbuilder.AbstractSqlStatementBuilder;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,11 +29,6 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
      * 关联的模型集合（避免重复JOIN）
      */
     private final Set<String> refObjectNames = new HashSet<>();
-
-    /**
-     * 字段映射列表（支持套嵌字段，即展开字段）
-     */
-    private final List<FieldMapping> fieldMappings = new ArrayList<>();
 
     public SqlSelectStatementBuilder() {
     }

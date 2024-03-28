@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ObjectRepositoryTestApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(ObjectRepositoryTestApplication.class, args);
     }
 }

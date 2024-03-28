@@ -13,6 +13,9 @@ import net.cf.object.engine.oql.AbstractOqlObjectImpl;
  */
 public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl implements OqlObjectSource {
 
+    /**
+     * 别名
+     */
     protected String alias;
 
     /**

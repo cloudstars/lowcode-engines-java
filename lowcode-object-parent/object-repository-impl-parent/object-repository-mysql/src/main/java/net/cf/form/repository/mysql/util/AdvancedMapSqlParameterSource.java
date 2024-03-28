@@ -1,4 +1,4 @@
-package net.cf.form.repository.mysql;
+package net.cf.form.repository.mysql.util;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -10,6 +10,9 @@ import java.util.Map;
  * @author 80274507
  */
 public class AdvancedMapSqlParameterSource extends MapSqlParameterSource {
+
+    public AdvancedMapSqlParameterSource() {
+    }
 
     public AdvancedMapSqlParameterSource(Map<String, Object> values) {
         super(values);

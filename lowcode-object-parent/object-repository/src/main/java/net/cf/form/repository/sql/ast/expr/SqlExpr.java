@@ -1,5 +1,6 @@
 package net.cf.form.repository.sql.ast.expr;
 
+import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.form.repository.sql.ast.SqlObject;
 
 /**
@@ -17,5 +18,12 @@ public interface SqlExpr extends SqlObject {
      */
     @Override
     SqlExpr cloneMe();
+
+    /**
+     * 获取SQL的数据类型
+     *
+     * @return
+     */
+    SqlDataType computeSqlDataType();
 
 }

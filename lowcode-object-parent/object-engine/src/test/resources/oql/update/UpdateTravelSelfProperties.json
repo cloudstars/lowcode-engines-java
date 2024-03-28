@@ -38,6 +38,12 @@
       "name": "UpdateTravelSingleModifierByIdVars",
       "oql": "update Travel set modifier.name = #{modifier.name}, modifier.key = #{modifier.key} where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
       "sql": "update TRAVEL set MODIFIER_NAME = #{modifier.name}, MODIFIER_KEY = #{modifier.key} where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据记录ID更新出差记录，含多个附件出差人（仅父属性）（带变量）",
+      "name": "UpdateTravelWithAttachesByIdVars",
+      "oql": "update Travel set attaches = #{attaches} where applyId = #{applyId}",
+      "sql": "update TRAVEL set ATTACH_NAMES = #{attaches.name}, ATTACH_KEYS = #{attaches.key} where APPLY_ID = #{applyId}"
     }
   ]
 }

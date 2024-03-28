@@ -57,7 +57,7 @@ public class DefaultParameterMapper implements ParameterMapper {
      * @param subFields
      */
     private Map<String, Object> mapValue(Map<String, Object> value, List<FieldMapping> subFields) {
-        Map<String, Object> targetMap = new HashMap<>();
+        Map<String, Object> targetMap = new HashMap<>(value);
         for (FieldMapping subField : subFields) {
             String subFieldName = subField.getFieldName();
             String subFieldColumnName = subField.getColumnName();
@@ -165,6 +165,9 @@ public class DefaultParameterMapper implements ParameterMapper {
                 String targetColumnKey = this.getTargetColumnKey(owner, entry.getKey());
                 targetMap.put(targetColumnKey, entry.getValue());
             }
+
+            // 合并后，把原来的变量移除
+            targetMap.remove(owner);
         }
     }
 

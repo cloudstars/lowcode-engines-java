@@ -11,7 +11,6 @@ import net.cf.object.engine.oql.AbstractOqlObjectImpl;
  */
 public abstract class AbstractOqlExprImpl extends AbstractOqlObjectImpl implements SqlExpr {
 
-
     public AbstractOqlExprImpl() {
     }
 
@@ -21,7 +20,6 @@ public abstract class AbstractOqlExprImpl extends AbstractOqlObjectImpl implemen
      * @return
      */
     public abstract SqlName getOwner();
-
 
     @Override
     public SqlExpr cloneMe() {

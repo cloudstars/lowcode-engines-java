@@ -1,11 +1,11 @@
 package net.cf.object.engine.oql.ast;
 
 import net.cf.form.repository.sql.ast.SqlLimit;
+import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.DistinctOption;
 import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
 import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
-import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
@@ -32,7 +32,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     /**
      * 查询的列表
      */
-    private final List<SqlSelectItem> selectItems = new ArrayList<>();
+    private final List<OqlSelectItem> selectItems = new ArrayList<>();
 
     /**
      * 查询的模型
@@ -59,16 +59,16 @@ public class OqlSelect extends AbstractOqlObjectImpl {
      */
     private SqlLimit limit;
 
-    public List<SqlSelectItem> getSelectItems() {
+    public List<OqlSelectItem> getSelectItems() {
         return selectItems;
     }
 
-    public void addSelectItem(SqlSelectItem selectItem) {
+    public void addSelectItem(OqlSelectItem selectItem) {
         this.selectItems.add(selectItem);
         this.addChild(selectItem);
     }
 
-    public void addSelectItems(List<SqlSelectItem> selectItems) {
+    public void addSelectItems(List<OqlSelectItem> selectItems) {
         this.selectItems.addAll(selectItems);
         this.addChildren(selectItems);
     }
@@ -155,7 +155,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     @Override
     public OqlSelect cloneMe() {
         OqlSelect select = new OqlSelect();
-        for (SqlSelectItem selectItem : selectItems) {
+        for (OqlSelectItem selectItem : selectItems) {
             select.addSelectItem(selectItem.cloneMe());
         }
         select.setFrom(this.from.cloneMe());
@@ -164,7 +164,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
         return select;
     }
 
-    /*@Override
+    @Override
     public List<SqlObject> getChildren() {
         List<SqlObject> children = new ArrayList<>();
         children.addAll(this.selectItems);
@@ -174,5 +174,5 @@ public class OqlSelect extends AbstractOqlObjectImpl {
         children.add(this.orderBy);
         children.add(this.limit);
         return children;
-    }*/
+    }
 }

@@ -3,13 +3,9 @@ package net.cf.object.engine.oql.testcase.select;
 import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.object.ExpenseObject;
-import net.cf.object.engine.oql.ast.OqlExprObjectSource;
-import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
-import net.cf.object.engine.oql.ast.OqlObjectSource;
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
+import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
 import net.cf.object.engine.oql.util.OqlUtils;
@@ -38,7 +34,7 @@ public class SelectExpenseLookupTravelOneRefStmtTest extends AbstractOqlTest imp
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
-        List<SqlSelectItem> selectItems = oqlStmt.getSelect().getSelectItems();
+        List<OqlSelectItem> selectItems = oqlStmt.getSelect().getSelectItems();
         assert (selectItems.size() == 4 && selectItems.get(1).getExpr() instanceof OqlObjectExpandExpr);
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
@@ -48,7 +44,7 @@ public class SelectExpenseLookupTravelOneRefStmtTest extends AbstractOqlTest imp
         assert (osExpr instanceof SqlIdentifierExpr && ExpenseObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt, resolver);
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 }

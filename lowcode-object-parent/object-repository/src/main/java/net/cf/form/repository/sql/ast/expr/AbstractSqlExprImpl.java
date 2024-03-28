@@ -1,6 +1,7 @@
 package net.cf.form.repository.sql.ast.expr;
 
 import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
+import net.cf.form.repository.sql.ast.SqlDataType;
 
 /**
  * SQL 表达式抽象实现类
@@ -8,6 +9,8 @@ import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
  * @author clouds
  */
 public abstract class AbstractSqlExprImpl extends AbstractSqlObjectImpl implements SqlExpr {
+
+    private SqlDataType sqlDataType;
 
     public AbstractSqlExprImpl() {
     }
@@ -17,4 +20,12 @@ public abstract class AbstractSqlExprImpl extends AbstractSqlObjectImpl implemen
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 
+    public void setSqlDataType(SqlDataType sqlDataType) {
+        this.sqlDataType = sqlDataType;
+    }
+
+    @Override
+    public SqlDataType computeSqlDataType() {
+        return this.sqlDataType;
+    }
 }

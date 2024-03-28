@@ -530,6 +530,7 @@ public class SqlExprParser extends AbstractSqlParser {
                 accept(Token.AS);
                 String alias = this.lexer.stringVal();
                 this.lexer.nextToken();
+                // 存在这样的场景：field(1 as prop1)、object(f1 as fx)
                 expr = new SqlSelectItem(expr, alias);
             }
 

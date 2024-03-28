@@ -200,7 +200,7 @@ public class RecordEngineImpl implements RecordEngine {
         builder.tableSource(new SqlExprTableSource(object.getTableName()));
         for (Map.Entry<String, Object> entry : dataMaps.get(0).entrySet()) {
             String fieldName = entry.getKey();
-            builder.appendColumn(new SqlIdentifierExpr(fieldName));
+            //builder.appendColumn(new SqlIdentifierExpr(fieldName));
             // TODO builder.appendInsertValuesItem(new SqlVariantRefExpr("#{" + fieldName + "}"));
         }
 

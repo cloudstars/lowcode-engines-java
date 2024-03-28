@@ -1,21 +1,18 @@
 package net.cf.object.engine.sqlbuilder.insert;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
-import net.cf.object.engine.object.XField;
-import net.cf.object.engine.object.XProperty;
+import net.cf.object.engine.data.FieldMapping;
+import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
-import net.cf.object.engine.oql.ast.OqlFieldExpandExpr;
-import net.cf.object.engine.oql.ast.OqlInsertStatement;
-import net.cf.object.engine.oql.ast.OqlPropertyExpr;
+import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.util.OqlUtils;
+import net.cf.object.engine.sqlbuilder.FieldItemInfo;
 import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -60,28 +57,19 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param x
      */
     private void buildInsertColumns(OqlInsertStatement x) {
-        List<SqlExpr> insertFields = x.getFields();
-        for (SqlExpr insertField : insertFields) {
-            if (insertField instanceof OqlFieldExpandExpr) {
-                OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) insertField;
-                XField field = fieldExpandExpr.getResolvedField();
-                List<? extends SqlExpr> properties;
-                if (fieldExpandExpr.isDefaultExpanded() || fieldExpandExpr.isStarExpanded()) {
-                    properties = OqlUtils.defaultExpandFieldProperties(field);
-                } else {
-                    properties = fieldExpandExpr.getProperties();
-                }
-
-                for (SqlExpr property : properties) {
-                    if (!(property instanceof OqlPropertyExpr)) {
-                        throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
-                    }
-                    SqlExpr exprX = this.buildSqlExpr(this.selfObject, property);
-                    this.builder.appendColumn(exprX);
-                }
+        List<SqlExpr> fields = x.getFields();
+        for (SqlExpr field : fields) {
+            if (field instanceof OqlFieldExpr || field instanceof OqlPropertyExpr) {
+                SqlExpr exprX = this.buildSqlExpr(this.selfObject, field);
+                builder.appendColumn(exprX);
+            } else if (field instanceof OqlFieldExpandExpr) {
+                OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) field;
+                this.processFieldExpand(fieldExpandExpr);
+            } else if (field instanceof OqlObjectExpandExpr) {
+                OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) field;
+                this.processObjectExpand(objectExpandExpr);
             } else {
-                SqlExpr exprX = this.buildSqlExpr(this.selfObject, insertField);
-                this.builder.appendColumn(exprX);
+                throw new FastOqlException("不支持的插入字段类型：" + field.getClass().getName());
             }
         }
     }
@@ -108,38 +96,88 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @return
      */
     private SqlInsertStatement.ValuesClause toSqlValuesClause(SqlInsertStatement.ValuesClause valuesClause, List<SqlExpr> insertFields) {
-        SqlInsertStatement.ValuesClause sqlValuesClause = new SqlInsertStatement.ValuesClause();
+        SqlInsertStatement.ValuesClause valuesClauseX = new SqlInsertStatement.ValuesClause();
         List<SqlExpr> values = valuesClause.getValues();
         // 判断插入的列是否有被展开，如果列有展开，那么值也要被展开
         int size = insertFields.size();
+        this.builder.getFieldMappings();
         for (int i = 0; i < size; i++) {
             SqlExpr insertField = insertFields.get(i);
             SqlExpr insertValue = values.get(i);
-            if (insertField instanceof OqlFieldExpandExpr) {
+            if (insertField instanceof OqlFieldExpr || insertField instanceof OqlPropertyExpr) {
+                valuesClauseX.addValue(this.buildSqlExpr(this.selfObject, insertValue));
+            } else if (insertField instanceof OqlFieldExpandExpr) {
                 OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) insertField;
-            } else {
-                sqlValuesClause.addValue(this.buildSqlExpr(this.selfObject, insertValue));
+                this.processFieldValueExpand(fieldExpandExpr, insertValue, valuesClauseX);
+            } else if (insertField instanceof OqlObjectExpandExpr) {
+                OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) insertField;
+                this.processObjectValueExpand(objectExpandExpr, insertValue, valuesClauseX);
             }
         }
 
-        return sqlValuesClause;
+        return valuesClauseX;
     }
+
+    /**
+     * 处理这段展开表达式
+     *
+     * @param fieldExpandExpr
+     */
+    private void processFieldExpand(OqlFieldExpandExpr fieldExpandExpr) {
+        XField field = fieldExpandExpr.getResolvedField();
+        List<? extends SqlExpr> properties;
+        if (fieldExpandExpr.isDefaultExpanded()) {
+            properties = OqlUtils.defaultExpandFieldProperties(field);
+        } else {
+            properties = fieldExpandExpr.getProperties();
+        }
+
+        for (SqlExpr property : properties) {
+            SqlExpr exprX = this.buildSqlExpr(this.selfObject, property);
+            this.builder.appendColumn(exprX);
+        }
+    }
+
+    /**
+     * 处理这段展开表达式
+     *
+     * @param objectExpandExpr
+     */
+    private FieldItemInfo processObjectExpand(OqlObjectExpandExpr objectExpandExpr) {
+        XObjectRefField objectRefField = objectExpandExpr.getResolvedObjectRefField();
+        XObject refObject = objectExpandExpr.getResolvedRefObject();
+        List<? extends SqlExpr> properties;
+        if (objectExpandExpr.isDefaultExpanded()) {
+            properties = OqlUtils.defaultExpandObjectFields(refObject);
+        } else {
+            properties = objectRefField.getProperties();
+        }
+
+        FieldItemInfo fieldItemInfo = new FieldItemInfo();
+        FieldMapping fieldMapping = new FieldMapping(objectRefField.getName());
+        fieldMapping.setValueType(new ValueType(DataType.OBJECT, true));
+        for (SqlExpr property : properties) {
+            SqlExpr exprX = this.buildSqlExpr(this.selfObject, property);
+            fieldItemInfo.addItem(exprX);
+        }
+
+        return fieldItemInfo;
+    }
+
 
     /**
      * 处理字段展开
      *
      * @param fieldExpandExpr
      * @param insertValue
-     * @param sqlValuesClause
+     * @param valuesClause
      */
-    private void processFieldExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr insertValue, SqlInsertStatement.ValuesClause sqlValuesClause) {
-        List<SqlExpr> properties;
+    private void processFieldValueExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr insertValue, SqlInsertStatement.ValuesClause valuesClause) {
+        XField resolvedField = fieldExpandExpr.getResolvedField();
+        XObject resolvedObject = resolvedField.getOwner();
+        List<? extends SqlExpr> properties;
         if (fieldExpandExpr.isDefaultExpanded()) {
-            properties = new ArrayList<>();
-            List<XProperty> fieldProps = fieldExpandExpr.getResolvedField().getProperties();
-            for (XProperty fieldProp : fieldProps) {
-                properties.add(new SqlIdentifierExpr(fieldProp.getName()));
-            }
+            properties = OqlUtils.defaultExpandFieldProperties(resolvedField);
         } else {
             properties = fieldExpandExpr.getProperties();
         }
@@ -148,28 +186,54 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
             SqlJsonObjectExpr jsonObjectExpr = (SqlJsonObjectExpr) insertValue;
             Map<String, SqlExpr> items = jsonObjectExpr.getItems();
             for (SqlExpr property : properties) {
-                if (property instanceof SqlIdentifierExpr) {
-                    SqlExpr itemValue = items.get(((SqlIdentifierExpr) property).getName());
-                    sqlValuesClause.addValue(itemValue);
+                SqlExpr itemValue;
+                if (property instanceof OqlPropertyExpr) {
+                    itemValue = items.get(((OqlPropertyExpr) property).getName());
                 } else {
-                    throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
+                    itemValue = this.buildSqlExpr(resolvedObject, property);
                 }
+                valuesClause.addValue(itemValue);
             }
         } else if (insertValue instanceof SqlVariantRefExpr) {
+            FieldItemInfo fieldItemInfo = new FieldItemInfo();
+            FieldMapping fieldMapping = new FieldMapping(resolvedField.getName(), resolvedField.getColumnName());
+            fieldMapping.setValueType(new ValueType(resolvedField.getDataType(), resolvedField.isArray()));
+            fieldItemInfo.setFieldMapping(fieldMapping);
+
             SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) insertValue;
             String varName = variantRefExpr.getVarName();
             for (SqlExpr property : properties) {
-                if (property instanceof SqlIdentifierExpr) {
-                    SqlVariantRefExpr propVariableRefExpr = new SqlVariantRefExpr();
-                    propVariableRefExpr.setVarName(varName + "." + ((SqlIdentifierExpr) property).getName());
-                    sqlValuesClause.addValue(propVariableRefExpr);
+                if (property instanceof OqlPropertyExpr) {// 按属性展开
+                    OqlPropertyExpr propExpr = (OqlPropertyExpr) property;
+                    XProperty resolvedProp = propExpr.getResolvedProperty();
+                    String propName = resolvedProp.getName();
+                    SqlVariantRefExpr propVarRefExpr = new SqlVariantRefExpr();
+                    propVarRefExpr.setVarName(varName + "." + propName);
+                    valuesClause.addValue(propVarRefExpr);
+
+                    FieldMapping subFieldMapping = new FieldMapping(propName, propName);
+                    fieldMapping.addSubField(subFieldMapping);
                 } else {
-                    throw new FastOqlException("OQL insert语句的字段展开表达式中不支持字段属性之外的表达式");
+                    SqlExpr itemValue = this.buildSqlExpr(resolvedObject, property);
+                    valuesClause.addValue(itemValue);
                 }
             }
+
+            this.builder.appendFieldMapping(fieldMapping);
         } else {
-            sqlValuesClause.addValue(this.buildSqlExpr(this.selfObject, insertValue));
+            valuesClause.addValue(this.buildSqlExpr(this.selfObject, insertValue));
         }
+    }
+
+    /**
+     * 处理模型展开
+     *
+     * @param objectExpandExpr
+     * @param insertValue
+     * @param sqlValuesClause
+     */
+    private void processObjectValueExpand(OqlObjectExpandExpr objectExpandExpr, SqlExpr insertValue, SqlInsertStatement.ValuesClause sqlValuesClause) {
+
     }
 
 }

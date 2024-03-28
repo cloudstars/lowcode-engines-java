@@ -21,6 +21,8 @@ public interface InsertTravelSelfPropertiesTest {
 
     String OQL_INSERT_TRAVEL_WITH_SINGLE_CREATOR_VARS = "InsertTravelWithSingleCreatorVars";
 
+    String OQL_INSERT_TRAVEL_WITH_ATTACHES_VARS = "InsertTravelWithAttachesVars";
+
     void testInsertTravelWithCreator();
 
     void testInsertTravelWithCreatorVars();
@@ -32,6 +34,8 @@ public interface InsertTravelSelfPropertiesTest {
     void testInsertTravelWithSingleCreator();
 
     void testInsertTravelWithSingleCreatorVars();
+
+    void testInsertTravelWithAttachesVars();
 
 }
 

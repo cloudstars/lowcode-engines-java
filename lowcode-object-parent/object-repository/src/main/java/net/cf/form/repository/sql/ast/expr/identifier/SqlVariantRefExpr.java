@@ -95,4 +95,5 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
         SqlVariantRefExpr var = new SqlVariantRefExpr(this.name);
         return var;
     }
+
 }

@@ -1,12 +1,14 @@
 package net.cf.object.engine.oql.testcase.update;
 
+import net.cf.commons.test.util.DataCompareTestUtils;
 import net.cf.object.engine.object.TravelObject;
-import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.oql.util.OqlUtils;
+import org.junit.Assert;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,6 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
         {
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_MODIFIER_BY_ID_VARS);
-            XObject object = this.resolver.resolve(TravelObject.NAME);
             OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", TravelObject.RECORD1);
@@ -52,7 +53,6 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName, modifier from Travel where applyId = #{applyId}";
-            XObject object = this.resolver.resolve(TravelObject.NAME);
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", TravelObject.RECORD1);
@@ -84,5 +84,41 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testUpdateTravelSingleModifierByIdVars() {
 
+    }
+
+    @Override
+    public void testUpdateTravelWithAttachesByIdVars() {
+        List<Map<String, Object>> newAttaches;
+        {
+            // 更新数据
+            OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_WITH_ATTACHES_BY_ID_VARS);
+            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("applyId", TravelObject.RECORD1);
+            Map<String, Object> attach1 = new HashMap<>();
+            attach1.put("name", "附件1-1");
+            attach1.put("key", "attach1-1");
+            Map<String, Object> attach2 = new HashMap<>();
+            attach2.put("name", "附件2-2");
+            attach2.put("key", "attach2-2");
+            newAttaches = Arrays.asList(attach1, attach2);
+            paramMap.put("attaches", newAttaches);
+            int effectedRows = this.engine.modify(oqlStmt, paramMap);
+            assert (effectedRows == 1);
+        }
+
+        {
+            // 重新查出来作断言
+            String selectOql = "select applyId, applyName, attaches from Travel where applyId = #{applyId}";
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("applyId", TravelObject.RECORD1);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);
+            assert (dataList != null && dataList.size() == 1);
+            Object attaches = dataList.get(0).get("attaches");
+            assert (attaches != null && attaches instanceof List);
+            List<Map<String, Object>> attachesList = (List<Map<String, Object>>) attaches;
+            Assert.assertTrue(DataCompareTestUtils.isAssignableFromList(attachesList, newAttaches));
+        }
     }
 }

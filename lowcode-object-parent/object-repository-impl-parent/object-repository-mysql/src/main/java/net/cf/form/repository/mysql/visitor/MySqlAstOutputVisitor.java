@@ -16,8 +16,8 @@ public class MySqlAstOutputVisitor extends SqlAstOutputVisitor {
 
     @Override
     public boolean visit(SqlVariantRefExpr x) {
-        String varName = x.getVarName();
         this.print(':');
+        String varName = x.getVarName();
         this.print(varName);
 
         return false;

@@ -42,7 +42,7 @@ public class SelectTravelSelfStarStmtTest extends AbstractOqlTest implements Sel
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt, resolver);
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
@@ -63,7 +63,7 @@ public class SelectTravelSelfStarStmtTest extends AbstractOqlTest implements Sel
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt, resolver);
+        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 

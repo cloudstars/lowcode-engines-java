@@ -5,7 +5,6 @@ import net.cf.object.engine.def.field.TestFieldImpl;
 import net.cf.object.engine.def.field.TestObjectRefFieldImpl;
 import net.cf.object.engine.fieldtype.FieldTypeConstants;
 import net.cf.object.engine.object.XObject;
-import net.cf.object.engine.oql.parser.XObjectResolver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +44,7 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
      */
     private final Map<String, TestObjectRefFieldImpl> refObjectFieldMap = new HashMap<>();
 
-    public TestObjectImpl(ObjectDef objectDef, XObjectResolver<TestObjectImpl> objectResolver) {
+    public TestObjectImpl(ObjectDef objectDef) {
         this.objectDef = objectDef;
         List<FieldDef> fieldDefs = objectDef.getFields();
         for (FieldDef fieldDef : fieldDefs) {
@@ -75,7 +74,7 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
 
     @Override
     public String getMasterName() {
-        return objectDef.getName();
+        return objectDef.getMasterName();
     }
 
     @Override

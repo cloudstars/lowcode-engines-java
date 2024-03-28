@@ -1,9 +1,10 @@
 package net.cf.object.engine.data;
 
+import net.cf.object.engine.object.DataType;
 import net.cf.object.engine.object.ValueType;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Date;
 
 /**
  * 数据转换器
@@ -20,47 +21,25 @@ public class DataConvert {
      */
     public static Object convert(final Object resultVal, ValueType valueType) {
         Object resultValue = resultVal;
-        if (resultValue != null) {
-            if (valueType.isArray()) {
-                resultValue = DataConvert.convertList(resultValue);
-            } else {
-                resultValue = DataConvert.convertObject(resultValue);
-            }
+        if (resultValue == null) {
+            return null;
         }
 
-        return resultValue;
-    }
-
-    /**
-     * 从结果集中的值解析为一个List
-     *
-     * @param resultVal
-     * @return
-     */
-    public static Object convertList(final Object resultVal) {
-        Object resultValue = resultVal;
-        if (resultValue != null) {
-            // 数据中可能存在用文本存数组的情况
-            if (resultValue instanceof String) {
-                resultValue = DataConvert.stringToList((String) resultValue);
+        // 时间戳数字的格式转换对象格式
+        DataType dataType = valueType.getDataType();
+        if (valueType.isArray()) {
+            if (resultVal instanceof String) {
+                resultValue = DataConvert.stringToList((String) resultVal);
             }
-        }
-
-        return resultValue;
-    }
-
-    /**
-     * 从结果集中的值解析为一个Object
-     *
-     * @param resultVal
-     * @return
-     */
-    public static Object convertObject(final Object resultVal) {
-        Object resultValue = resultVal;
-        if (resultValue != null) {
-            // 数据中可能存在数组转非数组的情况
-            if (resultValue instanceof List) {
-                resultValue = resultValue.toString();
+        } else {
+            if (dataType == DataType.DATE) {
+                if (resultVal instanceof Long) {
+                    resultValue = new Date(((Long) resultVal).longValue());
+                }
+            } else if (dataType == DataType.TIME) {
+                if (resultVal instanceof Integer) {
+                    resultValue = new Date(((Integer) resultVal).intValue());
+                }
             }
         }
 
@@ -73,7 +52,7 @@ public class DataConvert {
      * @param s
      * @return
      */
-    private static Object stringToList(final String s) {
+    public static Object stringToList(final String s) {
         String str = s;
         if (str.startsWith("[") && str.endsWith("]")) {
             str = str.substring(1, str.length() - 1);

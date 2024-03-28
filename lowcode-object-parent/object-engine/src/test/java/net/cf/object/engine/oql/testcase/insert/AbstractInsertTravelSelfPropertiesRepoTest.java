@@ -5,9 +5,7 @@ import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.oql.util.OqlUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 插入出差表本表的测试集
@@ -73,5 +71,33 @@ public abstract class AbstractInsertTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testInsertTravelWithSingleCreatorVars() {
 
+    }
+
+    @Override
+    public void testInsertTravelWithAttachesVars() {
+        {
+            OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_WITH_ATTACHES_VARS);
+            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
+            dataMap.put("applyName", "测试申请单的名称");
+            Map<String, Object> attach1 = new HashMap<>();
+            attach1.put("name", "附件1");
+            attach1.put("key", "attach1");
+            Map<String, Object> attach2 = new HashMap<>();
+            attach2.put("name", "附件2");
+            attach2.put("key", "attach2");
+            dataMap.put("attaches", Arrays.asList(attach1, attach2));
+            int effectedRows = this.engine.create(oqlStmt, dataMap);
+            assert (effectedRows == 1);
+        }
+
+        {
+            // 重新查出来作断言
+            String selectOql = "select applyId, applyName, creator from Travel";
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            assert (dataList != null && dataList.size() == 3);
+        }
     }
 }

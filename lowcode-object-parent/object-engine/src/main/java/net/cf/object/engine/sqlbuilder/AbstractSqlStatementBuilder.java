@@ -1,10 +1,11 @@
 package net.cf.object.engine.sqlbuilder;
 
 import net.cf.form.repository.sql.ast.statement.SqlStatement;
+import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.oql.ast.OqlStatement;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SQL语句构建器
@@ -14,23 +15,12 @@ import java.util.Map;
  */
 public abstract class AbstractSqlStatementBuilder<O extends OqlStatement, S extends SqlStatement> {
 
-    protected final Map<String, Object> paramMap = new HashMap<>();
+    /**
+     * 字段映射列表（支持套嵌字段，即展开字段）
+     */
+    protected final List<FieldMapping> fieldMappings = new ArrayList<>();
 
     protected AbstractSqlStatementBuilder() {
-    }
-
-    /**
-     * 添加一个SQL语句的参数
-     *
-     * @param key
-     * @param value
-     */
-    protected void addParameter(String key, Object value) {
-        this.paramMap.put(key, value);
-    }
-
-    public Map<String, Object> getParamMap() {
-        return paramMap;
     }
 
     /**
@@ -39,5 +29,18 @@ public abstract class AbstractSqlStatementBuilder<O extends OqlStatement, S exte
      * @return
      */
     protected abstract S build();
+
+    public List<FieldMapping> getFieldMappings() {
+        return fieldMappings;
+    }
+
+    /**
+     * 添加字段映射
+     *
+     * @param fieldMapping
+     */
+    public void appendFieldMapping(FieldMapping fieldMapping) {
+        this.fieldMappings.add(fieldMapping);
+    }
 
 }

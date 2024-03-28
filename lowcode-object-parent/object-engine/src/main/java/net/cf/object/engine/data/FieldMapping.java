@@ -38,6 +38,11 @@ public class FieldMapping {
         this.columnName = fieldName;
     }
 
+    public FieldMapping(String fieldName, String columnName) {
+        this.fieldName = fieldName;
+        this.columnName = columnName;
+    }
+
     public FieldMapping(String fieldName, String columnName, DataType dataType) {
         this.fieldName = fieldName;
         this.columnName = columnName;

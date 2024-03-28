@@ -1,6 +1,7 @@
 {
   "desc": "出差行程",
   "name": "TravelTrip",
+  "masterName": "Travel",
   "tableName": "TRAVEL_TRIP",
   "primaryFieldName": "tripId",
   "fields": [

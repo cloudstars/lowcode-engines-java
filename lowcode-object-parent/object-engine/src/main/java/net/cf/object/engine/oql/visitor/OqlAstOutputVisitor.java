@@ -98,7 +98,7 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         }
 
         // 输出查询的列
-        List<SqlSelectItem> selectItems = x.getSelectItems();
+        List<OqlSelectItem> selectItems = x.getSelectItems();
         this.printAndAcceptList(selectItems, ", ");
 
         // 输出查询的模型

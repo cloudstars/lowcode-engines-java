@@ -10,7 +10,6 @@ import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.parser.XObjectResolver;
 import net.cf.object.engine.oql.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
 
@@ -26,11 +25,8 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
 
     private final SqlSelectStatementBuilder builder;
 
-    private final XObjectResolver resolver;
-
-    public OqlSelectAstVisitor(SqlSelectStatementBuilder builder, XObjectResolver resolver) {
+    public OqlSelectAstVisitor(SqlSelectStatementBuilder builder) {
         this.builder = builder;
-        this.resolver = resolver;
     }
 
     @Override
@@ -50,8 +46,8 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         }
 
         // 构建查询列的列表
-        List<SqlSelectItem> selectItems = x.getSelectItems();
-        for (SqlSelectItem selectItem : selectItems) {
+        List<OqlSelectItem> selectItems = x.getSelectItems();
+        for (OqlSelectItem selectItem : selectItems) {
             SqlExpr sqlExpr = selectItem.getExpr();
             if (sqlExpr instanceof SqlAllColumnExpr) { // 本模型全部字段
                 List<SelectItemInfo> selectItemInfos = this.buildSelectObjectAllFields(this.selfObject);
@@ -124,8 +120,7 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      */
     private SelectItemInfo buildSelectRefObjectExpand(OqlObjectExpandExpr objectExpandExpr) {
         XObjectRefField objectRefField = objectExpandExpr.getResolvedObjectRefField();
-        String refObjectName = objectRefField.getRefObjectName();
-        XObject refObject = this.resolver.resolve(refObjectName);
+        XObject refObject = objectExpandExpr.getResolvedRefObject();
         assert (!objectRefField.getRefObjectName().equals(this.selfObject.getName()));
 
         // 添加关联表
@@ -278,36 +273,6 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         }
 
         return fieldMapping;
-    }
-
-    /**
-     * 获取字段的名称
-     *
-     * @param fieldExpr
-     * @return
-     */
-    private String getFieldName(OqlFieldExpr fieldExpr) {
-        SqlIdentifierExpr owner = fieldExpr.getOwner();
-        if (owner != null) {
-            return owner.getName() + "." + fieldExpr.getName();
-        } else {
-            return fieldExpr.getName();
-        }
-    }
-
-    /**
-     * 获取属性的名称
-     *
-     * @param propExpr
-     * @return
-     */
-    private String getPropertyName(OqlPropertyExpr propExpr) {
-        OqlFieldExpr owner = propExpr.getOwner();
-        if (owner != null) {
-            return owner.getName() + "." + propExpr.getName();
-        } else {
-            return propExpr.getName();
-        }
     }
 
 }

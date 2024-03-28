@@ -1,17 +1,17 @@
-package net.cf.object.engine.sqlbuilder.select;
+package net.cf.object.engine.sqlbuilder;
 
-import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.object.engine.data.FieldMapping;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  查询字段信息
+ *  插入或更新共用的字段信息
  *
  * @author clouds
  */
-public class SelectItemInfo {
+public class FieldItemInfo {
 
     /**
      * 字段的映射信息（OQL语句的一个Expr对应一个mapping，含展开类型的字段：*、模型展开、字段展开Expr）
@@ -21,9 +21,9 @@ public class SelectItemInfo {
     /**
      * 对于非展开字段，只有一个字段，展开类型可以有多个字段
      */
-    private final List<SqlSelectItem> selectItems = new ArrayList<>();
+    private final List<SqlExpr> items = new ArrayList<>();
 
-    public SelectItemInfo() {
+    public FieldItemInfo() {
     }
 
     public FieldMapping getFieldMapping() {
@@ -34,16 +34,16 @@ public class SelectItemInfo {
         this.fieldMapping = fieldMapping;
     }
 
-    public List<SqlSelectItem> getSelectItems() {
-        return selectItems;
+    public List<SqlExpr> getItems() {
+        return items;
     }
 
-    public void addSelectItems(List<SqlSelectItem> selectItems) {
-        this.selectItems.addAll(selectItems);
+    public void addItems(List<SqlExpr> items) {
+        this.items.addAll(items);
     }
 
-    public void addSelectItem(SqlSelectItem selectItem) {
-        this.selectItems.add(selectItem);
+    public void addItem(SqlExpr item) {
+        this.items.add(item);
     }
 
     /**
@@ -51,10 +51,10 @@ public class SelectItemInfo {
      *
      * @param subItemInfos
      */
-    public void addSubItemInfos(List<SelectItemInfo> subItemInfos) {
-        for (SelectItemInfo subItemInfo : subItemInfos) {
+    public void addSubItemInfos(List<FieldItemInfo> subItemInfos) {
+        for (FieldItemInfo subItemInfo : subItemInfos) {
             this.fieldMapping.addSubField(subItemInfo.getFieldMapping());
-            this.addSelectItems(subItemInfo.getSelectItems());
+            this.addItems(subItemInfo.getItems());
         }
     }
 }

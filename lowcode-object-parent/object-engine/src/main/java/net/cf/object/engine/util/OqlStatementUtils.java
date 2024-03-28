@@ -8,7 +8,6 @@ import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
-import net.cf.object.engine.oql.parser.XObjectResolver;
 import net.cf.object.engine.sqlbuilder.delete.OqlDeleteAstVisitor;
 import net.cf.object.engine.sqlbuilder.delete.SqlDeleteStatementBuilder;
 import net.cf.object.engine.sqlbuilder.insert.OqlInsertAstVisitor;
@@ -29,8 +28,8 @@ public final class OqlStatementUtils {
      * @param stmt
      * @return
      */
-    public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt, SqlSelectStatementBuilder builder, XObjectResolver resolver) {
-        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder, resolver);
+    public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt, SqlSelectStatementBuilder builder) {
+        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder);
         stmt.accept(visitor);
         return builder.build();
     }
@@ -41,9 +40,21 @@ public final class OqlStatementUtils {
      * @param stmt
      * @return
      */
-    public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt, XObjectResolver resolver) {
+    public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt) {
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder, resolver);
+        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder);
+        stmt.accept(visitor);
+        return builder.build();
+    }
+
+    /**
+     * 将OQL插入转为SQL插入
+     *
+     * @param stmt
+     * @return
+     */
+    public static SqlInsertStatement toSqlInsert(final OqlInsertStatement stmt, SqlInsertStatementBuilder builder) {
+        OqlInsertAstVisitor visitor = new OqlInsertAstVisitor(builder);
         stmt.accept(visitor);
         return builder.build();
     }
@@ -69,6 +80,18 @@ public final class OqlStatementUtils {
      */
     public static SqlUpdateStatement toSqlUpdate(final OqlUpdateStatement stmt) {
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
+        OqlUpdateAstVisitor visitor = new OqlUpdateAstVisitor(builder);
+        stmt.accept(visitor);
+        return builder.build();
+    }
+
+    /**
+     * 将OQL更新转为SQL更新
+     *
+     * @param stmt
+     * @return
+     */
+    public static SqlUpdateStatement toSqlUpdate(final OqlUpdateStatement stmt, SqlUpdateStatementBuilder builder) {
         OqlUpdateAstVisitor visitor = new OqlUpdateAstVisitor(builder);
         stmt.accept(visitor);
         return builder.build();

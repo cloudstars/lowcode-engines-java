@@ -31,8 +31,8 @@ public class ObjectEngineOqlMongoTestConfiguration {
     }
 
     @Bean
-    public OqlEngine oqlEngine(@Qualifier("MongoObjectRepositoryImpl") MongoObjectRepositoryImpl repository, XObjectResolver resolver) {
-        return new OqlEngineImpl(repository, resolver);
+    public OqlEngine oqlEngine(@Qualifier("MongoObjectRepositoryImpl") MongoObjectRepositoryImpl repository) {
+        return new OqlEngineImpl(repository);
     }
 
 }

@@ -21,6 +21,8 @@ public interface UpdateTravelSelfPropertiesTest {
 
     String OQL_UPDATE_TRAVEL_SINGLE_MODIFIER_BY_ID_VARS = "UpdateTravelSingleModifierByIdVars";
 
+    String OQL_UPDATE_TRAVEL_WITH_ATTACHES_BY_ID_VARS = "UpdateTravelWithAttachesByIdVars";
+
     void testUpdateTravelModifierById();
 
     void testUpdateTravelModifierByIdVars();
@@ -32,5 +34,7 @@ public interface UpdateTravelSelfPropertiesTest {
     void testUpdateTravelSingleModifierById();
 
     void testUpdateTravelSingleModifierByIdVars();
+
+    void testUpdateTravelWithAttachesByIdVars();
 
 }

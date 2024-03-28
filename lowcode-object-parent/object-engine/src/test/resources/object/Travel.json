@@ -55,21 +55,22 @@
     },
     {
       "type": "File",
-      "desc": "附件",
-      "name": "attach",
+      "desc": "附件列表",
+      "name": "attaches",
       "dataType": "Object",
+      "isArray": true,
       "properties": [
         {
           "desc": "名称",
           "name": "name",
-          "columnName": "ATTACH_NAME",
+          "columnName": "ATTACH_NAMES",
           "dataType": "String",
           "dataLength": 128
         },
         {
           "desc": "编号",
           "name": "key",
-          "columnName": "ATTACH_KEY",
+          "columnName": "ATTACH_KEYS",
           "dataType": "String",
           "dataLength": 36
         }

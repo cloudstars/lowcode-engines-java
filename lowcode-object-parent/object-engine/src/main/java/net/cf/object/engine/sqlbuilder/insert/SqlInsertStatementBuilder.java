@@ -31,17 +31,18 @@ public class SqlInsertStatementBuilder extends AbstractSqlStatementBuilder<OqlIn
     }
 
     public SqlInsertStatementBuilder tableSource(SqlExprTableSource tableSource) {
-        insertInto.setTableSource(tableSource);
+        this.insertInto.setTableSource(tableSource);
         return this;
     }
 
     public SqlInsertStatementBuilder appendColumn(SqlExpr column) {
-        insertInto.addColumn(column);
+        this.insertInto.addColumn(column);
         return this;
     }
 
+
     public SqlInsertStatementBuilder appendInsertValues(SqlInsertStatement.ValuesClause insertValues) {
-        insertInto.addValues(insertValues);
+        this.insertInto.addValues(insertValues);
         return this;
     }
 

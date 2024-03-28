@@ -87,4 +87,26 @@ public class UpdateTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
     public void testUpdateTravelSingleModifierByIdVars() {
 
     }
+
+    @Test
+    @Override
+    public void testUpdateTravelWithAttachesByIdVars() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_WITH_ATTACHES_BY_ID_VARS);
+        assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
+
+        // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
+        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
+
+        // 断言解析出来的OQL的一些关键信息是符合预期的
+        OqlObjectSource objectSource = oqlStmt.getObjectSource();
+        assert (objectSource instanceof OqlExprObjectSource);
+        SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
+        assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
+
+        // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
+        SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(oqlStmt);
+        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
+    }
+
 }

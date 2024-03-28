@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * OQL语句解析器
+ * OQL语句解析器，解析的过程中会将识别到的模型、字段、属性保存下来
  *
  * @author clouds
  */
@@ -70,10 +70,9 @@ public class OqlStatementParser extends OqlExprParser {
         for (SqlSelectItem selectItem : selectItems) {
             SqlExpr expr = selectItem.getExpr();
             SqlExpr exprX = this.parseSqlExpr(resolvedObject, expr);
-            if (exprX != expr) {
-                selectItem.setExpr(exprX);
-            }
-            oqlSelect.addSelectItem(selectItem);
+            OqlSelectItem oqlSelectItem = new OqlSelectItem(exprX);
+            oqlSelectItem.setAlias(selectItem.getAlias());
+            oqlSelect.addSelectItem(oqlSelectItem);
         }
         SqlExpr sqlWhere = sqlSelect.getWhere();
         SqlExpr oqlWhere = this.toValidOqlWhere(resolvedObject, sqlWhere);
@@ -100,8 +99,8 @@ public class OqlStatementParser extends OqlExprParser {
 
         List<SqlExpr> columns = sqlInsertInto.getColumns();
         for (SqlExpr column : columns) {
-            // 获取精确的字段类型
-            oqlInsertInto.addField(this.parseSqlExpr(resolvedObject, column));
+            SqlExpr columnX = this.parseSqlExpr(resolvedObject, column);
+            oqlInsertInto.addField(columnX);
         }
         oqlInsertInto.addValuesList(sqlInsertInto.getValuesList());
 

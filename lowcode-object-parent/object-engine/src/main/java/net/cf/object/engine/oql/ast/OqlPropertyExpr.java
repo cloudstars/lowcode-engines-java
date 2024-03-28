@@ -1,9 +1,11 @@
 package net.cf.object.engine.oql.ast;
 
+import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
+import net.cf.object.engine.sqlbuilder.SqlDataTypeConvert;
 
 import java.util.Collections;
 import java.util.List;
@@ -88,6 +90,11 @@ public class OqlPropertyExpr extends AbstractOqlExprImpl implements SqlName {
         x.setName(this.name);
         x.setResolvedProperty(this.resolvedProperty);
         return x;
+    }
+
+    @Override
+    public SqlDataType computeSqlDataType() {
+        return SqlDataTypeConvert.toSqlDataType(this.resolvedProperty.getOwner());
     }
 
     @Override

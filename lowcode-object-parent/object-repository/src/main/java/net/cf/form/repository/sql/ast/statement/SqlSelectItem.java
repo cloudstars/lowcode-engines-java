@@ -1,16 +1,20 @@
 package net.cf.form.repository.sql.ast.statement;
 
+import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
+import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
-import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**
  * SQL 查询的字段
  *
+ * 继承了SqlExpr是为了OQL层在转换模型or字段展开时，存在as别名的问题，
+ * 如：object(1 as f1, f2 as fx)、field('1' as prop1, prop2 as propX)
+ *
  * @author clouds
  */
-public class SqlSelectItem extends AbstractSqlExprImpl implements SqlReplaceable {
+public class SqlSelectItem extends AbstractSqlObjectImpl implements SqlReplaceable, SqlExpr {
 
     /**
      * 字段表达式
@@ -63,6 +67,12 @@ public class SqlSelectItem extends AbstractSqlExprImpl implements SqlReplaceable
         v.endVisit(this);
     }
 
+
+    @Override
+    public SqlDataType computeSqlDataType() {
+        return null;
+    }
+
     @Override
     public SqlSelectItem cloneMe() {
         SqlSelectItem x = new SqlSelectItem();
@@ -73,6 +83,7 @@ public class SqlSelectItem extends AbstractSqlExprImpl implements SqlReplaceable
 
         return x;
     }
+
 
     public boolean replace(SqlExpr expr, SqlExpr target) {
         if (this.expr == expr) {
