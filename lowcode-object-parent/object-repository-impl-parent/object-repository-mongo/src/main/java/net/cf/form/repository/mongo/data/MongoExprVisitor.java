@@ -151,6 +151,9 @@ public class MongoExprVisitor {
 
     private static Object visitVariable(SqlVariantRefExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
         Object value = MongoDataConverter.convertVariable(sqlExpr, globalContext.getDataMap());
+        if (value == null) {
+            return null;
+        }
         return getVariable(value, innerContext);
     }
 
@@ -162,6 +165,9 @@ public class MongoExprVisitor {
      * @return
      */
     private static Object getVariable(Object value, VisitContext contextInfo) {
+        if (value == null) {
+            return null;
+        }
         // 如果变量塞列表
         if (value instanceof List) {
             List<Object> valList = new ArrayList<>();
