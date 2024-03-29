@@ -259,9 +259,12 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
         for (MongoSelectItem selectItem : this.selectItems) {
             SqlExpr sqlExpr = selectItem.getSqlExpr();
-            if (selectItem.getAlias() != null && sqlExpr instanceof SqlValuableExpr) {
+            if (sqlExpr instanceof SqlValuableExpr || selectItem.getExprEnum() == ExprTypeEnum.METHOD || selectItem.getExprEnum() == ExprTypeEnum.EXPRESSION) {
+                Object value = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.PARAM));
+                String originExpr = sqlExpr.toString();
                 // 添加常量数据,因为在语句中，所以必须使用mongo格式
-                addFields.put(selectItem.getAlias(), MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.PARAM)));
+                String alias = selectItem.getAlias() != null ? selectItem.getAlias() : originExpr;
+                addFields.put(alias, value);
             }
         }
         if (addFields.size() > 0) {
@@ -456,7 +459,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             doAddFieldProject(fieldProject, "", null, String.valueOf(value));
         } else if (exprEnum == ExprTypeEnum.COMMON) {
             doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getAlias());
-        } else if (exprEnum.isMethod()) {
+        } else if (exprEnum.isMethod() || exprEnum == ExprTypeEnum.EXPRESSION) {
             doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getAlias());
         } else {
             throw new RuntimeException("not support project field");
