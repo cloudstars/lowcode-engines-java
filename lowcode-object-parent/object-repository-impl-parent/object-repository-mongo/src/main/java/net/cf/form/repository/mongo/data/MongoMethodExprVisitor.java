@@ -214,7 +214,7 @@ public class MongoMethodExprVisitor {
         Document document = new Document();
         SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
         Object val = getTagVal(sqlExpr, globalContext);
-        document.put("toLong", new Document("$toDate", val));
+        document.put("$toLong", new Document("$toDate", val));
         return document;
     }
 
@@ -228,7 +228,7 @@ public class MongoMethodExprVisitor {
         SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
         Object val = getTagVal(sqlExpr, globalContext);
 
-        SqlExpr formatSqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
+        SqlExpr formatSqlExpr = sqlMethodInvokeExpr.getArguments().get(1);
         Object formatVal = MongoExprVisitor.visit(formatSqlExpr, globalContext);
         String format = String.valueOf(formatVal);
         String mongoFormat = format.replace("%i", "%M").replace("%s", "%S");
