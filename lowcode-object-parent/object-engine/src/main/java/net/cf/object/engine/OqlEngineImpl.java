@@ -1,6 +1,7 @@
 package net.cf.object.engine;
 
 import net.cf.form.repository.ObjectRepository;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
@@ -9,20 +10,24 @@ import net.cf.object.engine.data.DefaultParameterMapper;
 import net.cf.object.engine.data.DefaultResultReducer;
 import net.cf.object.engine.data.ParameterMapper;
 import net.cf.object.engine.data.ResultReducer;
-import net.cf.object.engine.oql.ast.OqlDeleteStatement;
-import net.cf.object.engine.oql.ast.OqlInsertStatement;
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
-import net.cf.object.engine.oql.ast.OqlUpdateStatement;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.oql.FastOqlException;
+import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.oql.check.DeleteStatementChecker;
 import net.cf.object.engine.oql.check.InsertStatementChecker;
+import net.cf.object.engine.oql.check.SelectStatementChecker;
 import net.cf.object.engine.oql.check.UpdateStatementChecker;
+import net.cf.object.engine.sqlbuilder.delete.SqlDeleteStatementBuilder;
 import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
 import net.cf.object.engine.sqlbuilder.select.SqlSelectStatementBuilder;
 import net.cf.object.engine.sqlbuilder.update.SqlUpdateStatementBuilder;
-import net.cf.object.engine.util.OqlStatementUtils;
+import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
+import net.cf.object.engine.util.OqlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +48,12 @@ public class OqlEngineImpl implements OqlEngine {
 
     @Override
     public Map<String, Object> queryOne(OqlSelectStatement stmt) {
+        // 对OQL语句进行合法性校验
+        SelectStatementChecker checker = new SelectStatementChecker();
+        stmt.accept(checker);
+
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt, builder);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(stmt, builder);
         Map<String, Object> resultMap = this.repository.selectOne(sqlStmt);
         DefaultResultReducer resultReducer = new DefaultResultReducer(builder.getFieldMappings());
         return resultReducer.reduceResult(resultMap);
@@ -52,17 +61,40 @@ public class OqlEngineImpl implements OqlEngine {
 
     @Override
     public Map<String, Object> queryOne(OqlSelectStatement stmt, Map<String, Object> paramMap) {
+        // 对OQL语句进行合法性校验
+        SelectStatementChecker checker = new SelectStatementChecker();
+        stmt.accept(checker);
+
+        // 查询本表的结果
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt, builder);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(stmt, builder);
         Map<String, Object> resultMap = this.repository.selectOne(sqlStmt, paramMap);
         DefaultResultReducer resultReducer = new DefaultResultReducer(builder.getFieldMappings());
-        return resultReducer.reduceResult(resultMap);
+        Map<String, Object> mainResultMap = resultReducer.reduceResult(resultMap);
+
+
+        // 相询一对多的关联表的结果
+        String mainPrimaryFieldName = stmt.getSelect().getFrom().getResolvedObject().getPrimaryField().getName();
+        String masterId = (String) mainResultMap.get(mainPrimaryFieldName);
+        List<OqlObjectExpandExpr> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
+        for (OqlObjectExpandExpr detailObjectExpandExpr : detailObjectExpandExprs) {
+            XObject detailObject = detailObjectExpandExpr.getResolvedRefObject();
+            String masterFieldName = detailObject.getMasterField().getName();
+            Map<String, Object> detailParamMap = new HashMap<>();
+            detailParamMap.put(masterFieldName, masterId);
+            OqlSelectStatement refObjectStmt = OqlUtils.buildDetailObjectSelectStatement(detailObjectExpandExpr);
+            List<Map<String, Object>> refResultMaps = this.queryList(refObjectStmt, detailParamMap);
+            String refFieldName = detailObjectExpandExpr.getResolvedObjectRefField().getName();
+            mainResultMap.put(refFieldName, refResultMaps);
+        }
+
+        return mainResultMap;
     }
 
     @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement stmt) {
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt, builder);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(stmt, builder);
         List<Map<String, Object>> resultMapList = this.repository.selectList(sqlStmt);
         DefaultResultReducer resultReducer = new DefaultResultReducer(builder.getFieldMappings());
         return this.convertResultMapList(resultReducer, resultMapList);
@@ -70,8 +102,12 @@ public class OqlEngineImpl implements OqlEngine {
 
     @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap) {
+        // 对OQL语句进行合法性校验
+        SelectStatementChecker checker = new SelectStatementChecker();
+        stmt.accept(checker);
+
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(stmt, builder);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(stmt, builder);
         List<Map<String, Object>> resultMapList = this.repository.selectList(sqlStmt, paramMap);
         DefaultResultReducer resultReducer = new DefaultResultReducer(builder.getFieldMappings());
         return this.convertResultMapList(resultReducer, resultMapList);
@@ -105,8 +141,12 @@ public class OqlEngineImpl implements OqlEngine {
 
     @Override
     public int create(OqlInsertStatement stmt) {
+        // 对OQL语句进行合法性校验
+        InsertStatementChecker checker = new InsertStatementChecker();
+        stmt.accept(checker);
+
         SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
-        SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt, builder);
+        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(stmt, builder);
         int effectedRows = this.repository.insert(sqlStmt);
         if (effectedRows == 0) {
             logger.warn("未成功创建记录，OQL：", stmt);
@@ -123,7 +163,7 @@ public class OqlEngineImpl implements OqlEngine {
 
         // 构建SQL语句
         SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
-        SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt, builder);
+        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(stmt, builder);
 
         // 作参数映射，将引擎层的参数转换驱动层的参数格式
         DefaultParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
@@ -133,6 +173,26 @@ public class OqlEngineImpl implements OqlEngine {
             logger.warn("未成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
         } else {
             logger.warn("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
+        }
+
+        // 循环插入子表
+        String masterId = targetParamMap.get(stmt.getObjectSource().getResolvedObject().getPrimaryField().getName()).toString();
+        Map<OqlObjectExpandExpr, List<SqlExpr>> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
+        for (Map.Entry<OqlObjectExpandExpr, List<SqlExpr>> entry : detailObjectExpandExprs.entrySet()) {
+            OqlObjectExpandExpr objectExpandExpr = entry.getKey();
+            Object subParamMaps = paramMap.get(objectExpandExpr.getResolvedObjectRefField().getName());
+            if (subParamMaps == null && !(subParamMaps instanceof List)) {
+                throw new FastOqlException("子表数据不能为空，且参数格式必须是List<Map>");
+            }
+
+            // 添加主表记录ID
+            String subObjectMasterFieldName = objectExpandExpr.getResolvedRefObject().getMasterField().getName();
+            List<Map<String, Object>> subParamMapList = (List<Map<String, Object>>) subParamMaps;
+            for (Map<String, Object> subParamMap : subParamMapList) {
+                subParamMap.put(subObjectMasterFieldName, masterId);
+            }
+            OqlInsertStatement detailStmt = OqlUtils.buildDetailObjectInsertStatement(objectExpandExpr, entry.getValue());
+            this.createList(detailStmt, subParamMapList);
         }
 
         return effectedRows;
@@ -147,22 +207,13 @@ public class OqlEngineImpl implements OqlEngine {
 
         // 构建SQL语句
         SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
-        SqlInsertStatement sqlStmt = OqlStatementUtils.toSqlInsert(stmt, builder);
+        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(stmt, builder);
 
         // 作参数映射，将引擎层的参数转换驱动层的参数格式
         DefaultParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         List<Map<String, Object>> targetParamMaps = this.convertParameterMapList(parameterMapper, paramMaps);
         int[] effectedRowsArray = this.repository.batchInsert(sqlStmt, targetParamMaps);
-        int effectedRows = 0;
-        for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
-            effectedRows += effectedRowsArray[i];
-        }
-        if (effectedRows == 0) {
-            logger.warn("未成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
-        } else {
-            logger.warn("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
-        }
-
+        this.sumAndLogsumEffectedRows(effectedRowsArray, stmt);
         return effectedRowsArray;
     }
 
@@ -199,9 +250,9 @@ public class OqlEngineImpl implements OqlEngine {
         UpdateStatementChecker checker = new UpdateStatementChecker();
         stmt.accept(checker);
 
-        SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(stmt);
-        this.repository.update(sqlStmt);
-        return 0;
+        SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(stmt);
+        int effectedRows = this.repository.update(sqlStmt);
+        return effectedRows;
     }
 
     @Override
@@ -211,7 +262,7 @@ public class OqlEngineImpl implements OqlEngine {
         stmt.accept(checker);
 
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
-        SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(stmt, builder);
+        SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(stmt, builder);
         ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         Map<String, Object> targetParamMap = this.convertParameterMap(parameterMapper, paramMap);
         int effectedRows = this.repository.update(sqlStmt, targetParamMap);
@@ -225,40 +276,70 @@ public class OqlEngineImpl implements OqlEngine {
         stmt.accept(checker);
 
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
-        SqlUpdateStatement sqlStmt = OqlStatementUtils.toSqlUpdate(stmt, builder);
+        SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(stmt, builder);
         ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         List<Map<String, Object>> targetParamMaps = this.convertParameterMapList(parameterMapper, paramMaps);
         int[] effectedRowsArray = this.repository.batchUpdate(sqlStmt, targetParamMaps);
-        int effectedRows = 0;
-        for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
-            effectedRows += effectedRowsArray[i];
-        }
-        if (effectedRows == 0) {
-            logger.warn("未成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
-        } else {
-            logger.warn("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
-        }
-
+        this.sumAndLogsumEffectedRows(effectedRowsArray, stmt);
         return effectedRowsArray;
     }
 
     @Override
     public int remove(OqlDeleteStatement stmt) {
-        SqlDeleteStatement sqlStmt = OqlStatementUtils.toSqlDelete(stmt);
-        this.repository.delete(sqlStmt);
-        return 0;
+        // 对OQL语句进行合法性校验
+        DeleteStatementChecker checker = new DeleteStatementChecker();
+        stmt.accept(checker);
+
+        SqlDeleteStatement sqlStmt = Oql2SqlUtils.toSqlDelete(stmt);
+        int effectedRows = this.repository.delete(sqlStmt);
+        return effectedRows;
     }
 
     @Override
     public int remove(OqlDeleteStatement stmt, Map<String, Object> paramMap) {
-        SqlDeleteStatement sqlStmt = OqlStatementUtils.toSqlDelete(stmt);
-        this.repository.delete(sqlStmt, paramMap);
-        return 0;
+        // 对OQL语句进行合法性校验
+        DeleteStatementChecker checker = new DeleteStatementChecker();
+        stmt.accept(checker);
+
+        SqlDeleteStatement sqlStmt = Oql2SqlUtils.toSqlDelete(stmt);
+        int effectedRows = this.repository.delete(sqlStmt, paramMap);
+        return effectedRows;
     }
 
     @Override
-    public int[] removeList(OqlDeleteStatement statement, List<Map<String, Object>> paramMaps) {
-        return new int[0];
+    public int[] removeList(OqlDeleteStatement stmt, List<Map<String, Object>> paramMaps) {
+        // 对OQL语句进行合法性校验
+        DeleteStatementChecker checker = new DeleteStatementChecker();
+        stmt.accept(checker);
+
+        SqlDeleteStatement sqlStmt = Oql2SqlUtils.toSqlDelete(stmt);
+        SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
+        ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
+        List<Map<String, Object>> targetParamMaps = this.convertParameterMapList(parameterMapper, paramMaps);
+        int[] effectedRowsArray = this.repository.batchDelete(sqlStmt, targetParamMaps);
+        this.sumAndLogsumEffectedRows(effectedRowsArray, stmt);
+        return effectedRowsArray;
+    }
+
+    /**
+     * 汇总总影响行数
+     *
+     * @param effectedRowsArray
+     * @return
+     */
+    private int sumAndLogsumEffectedRows(int[] effectedRowsArray, OqlStatement stmt) {
+        int totalEffectedRows = 0;
+        for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
+            totalEffectedRows += effectedRowsArray[i];
+        }
+
+        if (totalEffectedRows == 0) {
+            logger.warn("OQL批量执行异常，总影响行数：0，OQL：{}", stmt);
+        } else {
+            logger.warn("OQL批量执行成功，总影响行数：{}，OQL：{}", totalEffectedRows, stmt);
+        }
+
+        return totalEffectedRows;
     }
 
 }

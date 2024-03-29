@@ -2,7 +2,7 @@ package net.cf.object.engine.oql.testcase.select;
 
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.oql.util.OqlUtils;
+import net.cf.object.engine.util.OqlUtils;
 
 import java.util.List;
 import java.util.Map;

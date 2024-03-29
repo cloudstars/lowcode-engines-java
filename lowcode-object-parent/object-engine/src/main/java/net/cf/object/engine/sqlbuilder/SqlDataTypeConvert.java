@@ -23,7 +23,8 @@ public final class SqlDataTypeConvert {
         if (dataType == DataType.STRING) {
             return SqlDataType.CHAR;
         } else if (dataType == DataType.NUMBER) {
-            if (field.getDataPrecision() > 0) {
+            Integer precision = field.getDataPrecision();
+            if (precision != null && precision > 0) {
                 return SqlDataType.DECIMAL;
             } else {
                 Number maxValue = field.getMaxValue();

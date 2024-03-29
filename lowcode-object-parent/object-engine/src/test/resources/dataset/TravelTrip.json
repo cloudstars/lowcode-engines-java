@@ -13,11 +13,6 @@
       "dataType": "String"
     },
     {
-      "desc": "申请单名称",
-      "name": "APPLY_NAME",
-      "dataType": "String"
-    },
-    {
       "desc": "创建人姓名",
       "name": "CREATOR_NAME",
       "dataType": "String"
@@ -31,13 +26,16 @@
   "valuesList": [
     {
       "APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
-      "APPLY_NAME": "测试申请单1",
+      "CREATOR_NAME": "张三",
+      "CREATOR_KEY": "zhangsan"
+    },
+    {
+      "APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
       "CREATOR_NAME": "张三",
       "CREATOR_KEY": "zhangsan"
     },
     {
       "APPLY_ID": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
-      "APPLY_NAME": "测试申请单2",
       "CREATOR_NAME": "李四",
       "CREATOR_KEY": "lisi"
     }

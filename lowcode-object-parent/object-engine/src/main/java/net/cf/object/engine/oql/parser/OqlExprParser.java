@@ -115,7 +115,18 @@ public class OqlExprParser extends SqlExprParser {
         String fieldName = expr.getName();
         XField field = object.getField(fieldName);
         if (field == null) {
-            throw new FastOqlException("字段" + fieldName + "不存在！");
+            String objectName = fieldName;
+            XObject refObject = this.resolver.resolve(objectName);
+            if (refObject == null) {
+                throw new FastOqlException("字段" + fieldName + "不存在！");
+            } else {
+                OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(objectName);
+                objectExpandExpr.setDefaultExpanded(true);
+                XObjectRefField objectRefField = object.getObjectRefField(objectName);
+                objectExpandExpr.setResolvedObjectRefField(objectRefField);
+                objectExpandExpr.setResolvedRefObject(refObject);
+                return objectExpandExpr;
+            }
         }
 
         // 如果字段下存在子属性的话，那么转换为字段展开表达式（默认展开）
@@ -406,9 +417,17 @@ public class OqlExprParser extends SqlExprParser {
                 }
 
                 // 解析为一个属性
-                OqlFieldExpr fieldExpr = new OqlFieldExpr(null, fieldName);
-                fieldExpr.setResolvedField(field);
-                objectExpandExpr.addField(fieldExpr);
+                List<XProperty> properties = field.getProperties();
+                if (properties != null && properties.size() > 0) {
+                    OqlFieldExpandExpr fieldExpandExpr = new OqlFieldExpandExpr(fieldName);
+                    fieldExpandExpr.setDefaultExpanded(true);
+                    fieldExpandExpr.setResolvedField(field);
+                    objectExpandExpr.addField(fieldExpandExpr);
+                } else {
+                    OqlFieldExpr fieldExpr = new OqlFieldExpr(null, fieldName);
+                    fieldExpr.setResolvedField(field);
+                    objectExpandExpr.addField(fieldExpr);
+                }
             } else {
                 objectExpandExpr.addField(this.parseSqlExpr(refObject, arg));
             }

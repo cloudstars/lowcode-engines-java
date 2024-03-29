@@ -5,7 +5,7 @@
   "primaryFieldName": "staffId",
   "fields": [
     {
-      "type": "AutoId",
+      "type": "Text",
       "desc": "员工ID",
       "name": "staffId",
       "columnName": "STA_ID",

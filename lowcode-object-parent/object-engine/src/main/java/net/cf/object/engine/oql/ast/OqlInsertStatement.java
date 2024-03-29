@@ -31,7 +31,6 @@ public class OqlInsertStatement extends OqlInsertInto implements OqlStatement {
         children.add(this.objectSource);
         children.addAll(this.fields);
         children.addAll(this.valuesList);
-
         return children;
     }
 }

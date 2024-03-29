@@ -1,9 +1,10 @@
 package net.cf.object.engine.oql.testcase.insert;
 
+import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.oql.util.OqlUtils;
+import net.cf.object.engine.util.OqlUtils;
 
 import java.util.*;
 
@@ -34,7 +35,7 @@ public abstract class AbstractInsertTravelSelfPropertiesRepoTest extends Abstrac
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_WITH_CREATOR_VARS);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> dataMap = new HashMap<>();
-            dataMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
+            dataMap.put("applyId", TravelObject.RECORD1);
             dataMap.put("applyName", "测试申请单的名称");
             Map<String, Object> creator = new HashMap<>();
             creator.put("name", "张三");

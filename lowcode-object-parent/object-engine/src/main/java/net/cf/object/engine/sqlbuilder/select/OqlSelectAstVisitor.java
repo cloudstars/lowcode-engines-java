@@ -10,7 +10,7 @@ import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.util.OqlUtils;
+import net.cf.object.engine.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
 
 import java.util.ArrayList;
@@ -60,7 +60,13 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
             SelectItemInfo itemInfo;
             if (sqlExpr instanceof OqlObjectExpandExpr) { // 关联模型展开
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) sqlExpr;
-                itemInfo = this.buildSelectRefObjectExpand(objectExpandExpr);
+                XObjectRefField objectRefField = objectExpandExpr.getResolvedObjectRefField();
+                if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
+                    this.builder.appendDetailObjectExpandExpr(objectExpandExpr);
+                    continue;
+                } else {
+                    itemInfo = this.buildSelectRefObjectExpand(objectExpandExpr);
+                }
             } else if (sqlExpr instanceof OqlFieldExpandExpr) { // 字段展开
                 OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) sqlExpr;
                 itemInfo = this.buildSelectFieldExpandExpr(fieldExpandExpr);
@@ -89,7 +95,6 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         List<SelectItemInfo> selectItemInfos = this.buildItemInfoList(object, fieldExprs);
         return selectItemInfos;
     }
-
 
     /**
      * 构建查询字段的全部属性
@@ -124,7 +129,7 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         assert (!objectRefField.getRefObjectName().equals(this.selfObject.getName()));
 
         // 添加关联表
-        this.builder.refObject(objectRefField, refObject);
+        this.builder.refNonMultiRefObject(objectRefField, refObject);
 
         // 构建模型的查询信息（展开无字段信息）
         SelectItemInfo parentItemInfo = new SelectItemInfo();
@@ -183,13 +188,11 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
             if (expr instanceof OqlObjectExpandExpr) {
                 OqlObjectExpandExpr expandExpr = (OqlObjectExpandExpr) expr;
                 XObjectRefField objectRefField = expandExpr.getResolvedObjectRefField();
-                XObject refObject = objectRefField.getOwner();
-                itemInfo = this.expand(refObject, objectRefField, expandExpr.getFields());
+                itemInfo = this.expandObject(objectRefField, expandExpr.getFields());
             } else if (expr instanceof OqlFieldExpandExpr) {
                 OqlFieldExpandExpr expandExpr = (OqlFieldExpandExpr) expr;
                 XField expandField = expandExpr.getResolvedField();
-                XObject expandObject = expandField.getOwner();
-                itemInfo = this.expand(expandObject, expandField, expandExpr.getProperties());
+                itemInfo = this.expandField(expandField, expandExpr.getProperties());
             } else {
                 itemInfo = this.buildSimpleItemInfo(object, expr);
             }
@@ -202,17 +205,35 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
     /**
      * 展开模型或展开字段
      *
-     * @param expandObject
      * @param expandField
      * @param expandExprs
      * @return
      */
-    private SelectItemInfo expand(XObject expandObject, XField expandField, List<SqlExpr> expandExprs) {
+    private SelectItemInfo expandObject(XObjectRefField expandField, List<SqlExpr> expandExprs) {
         SelectItemInfo parentItemInfo = new SelectItemInfo();
         FieldMapping parentFieldMapping = new FieldMapping(expandField.getOwner().getName());
+        parentFieldMapping.setValueType(new ValueType(DataType.OBJECT, expandField.isArray()));
+        parentItemInfo.setFieldMapping(parentFieldMapping);
+        List<SelectItemInfo> subItemInfos = this.buildItemInfoList(expandField.getOwner(), expandExprs);
+        parentItemInfo.addSubItemInfos(subItemInfos);
+
+        return parentItemInfo;
+    }
+
+
+    /**
+     * 展开模型或展开字段
+     *
+     * @param expandField
+     * @param expandExprs
+     * @return
+     */
+    private SelectItemInfo expandField(XField expandField, List<SqlExpr> expandExprs) {
+        SelectItemInfo parentItemInfo = new SelectItemInfo();
+        FieldMapping parentFieldMapping = new FieldMapping(expandField.getName());
         parentFieldMapping.setValueType(new ValueType(expandField.getDataType(), expandField.isArray()));
         parentItemInfo.setFieldMapping(parentFieldMapping);
-        List<SelectItemInfo> subItemInfos = this.buildItemInfoList(expandObject, expandExprs);
+        List<SelectItemInfo> subItemInfos = this.buildItemInfoList(expandField.getOwner(), expandExprs);
         parentItemInfo.addSubItemInfos(subItemInfos);
 
         return parentItemInfo;

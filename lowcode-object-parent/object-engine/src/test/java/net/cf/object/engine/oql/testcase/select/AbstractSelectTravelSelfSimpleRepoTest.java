@@ -1,10 +1,9 @@
 package net.cf.object.engine.oql.testcase.select;
 
 import net.cf.object.engine.object.TravelObject;
-import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.oql.util.OqlUtils;
+import net.cf.object.engine.util.OqlUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +26,6 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelOne() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_ONE);
-        XObject object = this.resolver.resolve(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> data = this.engine.queryOne(oqlStmt);
         assert (data != null && TravelObject.RECORD1.equals(data.get("applyId")));
@@ -46,7 +44,6 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelList() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST);
-        XObject object = this.resolver.resolve(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
         assert (dataList != null && dataList.size() == 2);
@@ -58,7 +55,6 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelListVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST_VARS);
-        XObject object = this.resolver.resolve(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyId", TravelObject.RECORD1);
@@ -69,7 +65,6 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelInList() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_IN_LIST);
-        XObject object = this.resolver.resolve(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
         assert (dataList != null && dataList.size() == 2);
@@ -81,7 +76,6 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelInListVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_IN_LIST_VARS);
-        XObject object = this.resolver.resolve(TravelObject.NAME);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyIds", Arrays.asList(TravelObject.RECORD1, TravelObject.RECORD2));

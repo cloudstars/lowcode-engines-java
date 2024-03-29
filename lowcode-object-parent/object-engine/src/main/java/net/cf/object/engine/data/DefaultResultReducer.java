@@ -126,13 +126,16 @@ public class DefaultResultReducer implements ResultReducer {
             if (subFieldValue instanceof String) {
                 subFieldValue = DataConvert.stringToList((String) subFieldValue);
             }
-            assert (subFieldValue instanceof List);
-            List<?> subFieldListValue = (List<?>) subFieldValue;
-            subFieldListValueMap.put(subFieldName, subFieldListValue);
 
-            // 可能存在不同子字段的数组长度不一致的情形，如：[1, 2, 3]、[4, 5]
-            if (subFieldListValue.size() > valueSize) {
-                valueSize = subFieldListValue.size();
+            if (subFieldValue != null) {
+                assert (subFieldValue instanceof List);
+                List<?> subFieldListValue = (List<?>) subFieldValue;
+                subFieldListValueMap.put(subFieldName, subFieldListValue);
+
+                // 可能存在不同子字段的数组长度不一致的情形，如：[1, 2, 3]、[4, 5]
+                if (subFieldListValue.size() > valueSize) {
+                    valueSize = subFieldListValue.size();
+                }
             }
         }
 

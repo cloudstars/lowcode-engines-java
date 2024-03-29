@@ -6,12 +6,13 @@
   "primaryFieldName": "tripId",
   "fields": [
     {
-      "type": "AutoId",
+      "type": "Text",
       "desc": "行程ID",
       "name": "tripId",
       "columnName": "TRIP_ID",
       "dataType": "String",
-      "dataLength": 36
+      "dataLength": 36,
+      "autoGen": true
     },
     {
       "type": "ObjectRef",

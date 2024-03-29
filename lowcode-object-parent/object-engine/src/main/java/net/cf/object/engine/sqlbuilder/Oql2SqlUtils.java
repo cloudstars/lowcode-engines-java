@@ -1,4 +1,4 @@
-package net.cf.object.engine.util;
+package net.cf.object.engine.sqlbuilder;
 
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
@@ -17,9 +17,9 @@ import net.cf.object.engine.sqlbuilder.select.SqlSelectStatementBuilder;
 import net.cf.object.engine.sqlbuilder.update.OqlUpdateAstVisitor;
 import net.cf.object.engine.sqlbuilder.update.SqlUpdateStatementBuilder;
 
-public final class OqlStatementUtils {
+public final class Oql2SqlUtils {
 
-    private OqlStatementUtils() {
+    private Oql2SqlUtils() {
     }
 
     /**

@@ -30,6 +30,11 @@ public abstract class AbstractSqlStatementBuilder<O extends OqlStatement, S exte
      */
     protected abstract S build();
 
+    /**
+     * 获取字段映射列表
+     *
+     * @return
+     */
     public List<FieldMapping> getFieldMappings() {
         return fieldMappings;
     }

@@ -2,6 +2,7 @@ package net.cf.object.engine.def.field;
 
 import com.alibaba.fastjson.annotation.JSONCreator;
 import net.cf.object.engine.object.DataType;
+import net.cf.object.engine.object.ObjectRefType;
 
 import java.util.List;
 

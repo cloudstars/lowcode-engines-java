@@ -4,7 +4,7 @@ import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.oql.util.OqlUtils;
+import net.cf.object.engine.util.OqlUtils;
 
 import java.util.HashMap;
 import java.util.List;

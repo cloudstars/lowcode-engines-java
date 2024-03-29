@@ -18,13 +18,6 @@ public interface XObject<F extends XField, R extends XObjectRefField> {
     String getName();
 
     /**
-     * 获取父模型的名称
-     *
-     * @return
-     */
-    String getMasterName();
-
-    /**
      * 获取模型的字段列表
      *
      * @return
@@ -45,6 +38,13 @@ public interface XObject<F extends XField, R extends XObjectRefField> {
      * @return
      */
     F getPrimaryField();
+
+    /**
+     * 如果是一个子模型的话，返回主模型列
+     *
+     * @return
+     */
+    F getMasterField();
 
     /**
      * 根据关联模型的编号获取对应的字段

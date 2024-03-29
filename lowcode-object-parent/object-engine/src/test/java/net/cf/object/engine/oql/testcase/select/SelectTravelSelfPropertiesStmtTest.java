@@ -10,8 +10,8 @@ import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.oql.util.OqlUtils;
-import net.cf.object.engine.util.OqlStatementUtils;
+import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +42,7 @@ public class SelectTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
@@ -63,7 +63,7 @@ public class SelectTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
@@ -84,7 +84,7 @@ public class SelectTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
@@ -105,7 +105,7 @@ public class SelectTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
@@ -126,7 +126,7 @@ public class SelectTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = OqlStatementUtils.toSqlSelect(oqlStmt);
+        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 }

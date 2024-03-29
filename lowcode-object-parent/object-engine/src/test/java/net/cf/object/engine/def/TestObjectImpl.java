@@ -4,6 +4,7 @@ import net.cf.object.engine.def.field.FieldDef;
 import net.cf.object.engine.def.field.TestFieldImpl;
 import net.cf.object.engine.def.field.TestObjectRefFieldImpl;
 import net.cf.object.engine.fieldtype.FieldTypeConstants;
+import net.cf.object.engine.object.ObjectRefType;
 import net.cf.object.engine.object.XObject;
 
 import java.util.ArrayList;
@@ -29,6 +30,11 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
     private TestFieldImpl primaryField = null;
 
     /**
+     * 引用主模型的字段
+     */
+    private TestFieldImpl masterField = null;
+
+    /**
      * 字段列表
      */
     private final List<TestFieldImpl> fields = new ArrayList<>();
@@ -37,7 +43,6 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
      * 字段映射表，方便通过字段名称查找
      */
     private final Map<String, TestFieldImpl> fieldMap = new HashMap<>();
-
 
     /**
      * 关联其它模型的字段映射表，方便通过字段名称查找
@@ -54,6 +59,9 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
                 String refObjectName = fieldDef.getRefObjectName();
                 field = new TestObjectRefFieldImpl(this, fieldDef);
                 this.refObjectFieldMap.put(refObjectName, (TestObjectRefFieldImpl) field);
+                if (((TestObjectRefFieldImpl) field).getRefType() == ObjectRefType.MASTER) {
+                    this.masterField = field;
+                }
             } else {
                 field = new TestFieldImpl(this, fieldDef);
             }
@@ -73,11 +81,6 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
     }
 
     @Override
-    public String getMasterName() {
-        return objectDef.getMasterName();
-    }
-
-    @Override
     public List<TestFieldImpl> getFields() {
         return this.fields;
     }
@@ -90,6 +93,11 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
     @Override
     public TestFieldImpl getPrimaryField() {
         return this.primaryField;
+    }
+
+    @Override
+    public TestFieldImpl getMasterField() {
+        return this.masterField;
     }
 
     @Override

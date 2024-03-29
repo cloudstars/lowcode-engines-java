@@ -1,10 +1,14 @@
-package net.cf.object.engine.oql.util;
+package net.cf.object.engine.util;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.object.engine.object.XField;
-import net.cf.object.engine.object.XObject;
-import net.cf.object.engine.object.XObjectRefField;
-import net.cf.object.engine.object.XProperty;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.object.engine.object.*;
+import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.parser.OqlStatementParser;
 import net.cf.object.engine.oql.parser.XObjectResolver;
@@ -110,8 +114,8 @@ public class OqlUtils {
         List<SqlExpr> fieldExprs = new ArrayList<>();
         List<XField> fields = object.getFields();
         for (XField field : fields) {
-            // 一对多的关联表不处理
-            if (field instanceof XObjectRefField && ((XObjectRefField) field).isMultiRef()) {
+            // 引用的表不处理
+            if (field instanceof XObjectRefField) {
                 continue;
             }
 
@@ -153,4 +157,107 @@ public class OqlUtils {
 
         return propExprs;
     }
+
+    /**
+     * 将模型展开语句转换为OQL查询
+     *
+     * @param objectExpandExpr
+     * @return
+     */
+    public static OqlSelectStatement buildDetailObjectSelectStatement(OqlObjectExpandExpr objectExpandExpr) {
+        assert (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.DETAIL);
+
+        OqlSelect select = new OqlSelect();
+        List<SqlExpr> fields = objectExpandExpr.getFields();
+        for (SqlExpr field : fields) {
+            SqlExpr expr = field;
+            String alias = null;
+            if (field instanceof SqlSelectItem) {
+                SqlSelectItem si = (SqlSelectItem) field;
+                expr = si.getExpr();
+                alias = si.getAlias();
+            }
+            select.addSelectItem(new OqlSelectItem(expr, alias));
+        }
+
+        // 关联的表
+        XObject refObject = objectExpandExpr.getResolvedRefObject();
+
+        // 设置数据源
+        select.addSelectItem(new OqlSelectItem(new SqlAllColumnExpr()));
+        OqlExprObjectSource from = new OqlExprObjectSource(refObject.getName());
+        from.setResolvedObject(refObject);
+        select.setFrom(from);
+
+        // 设置过滤条件(where detailObject.masterId = #{masterFieldName})
+        SqlBinaryOpExpr where = new SqlBinaryOpExpr();
+        XField masterField = refObject.getMasterField();
+        OqlFieldExpr refPrimaryFieldExpr = new OqlFieldExpr(null, masterField.getName());
+        refPrimaryFieldExpr.setResolvedField(masterField);
+        where.setLeft(refPrimaryFieldExpr);
+        where.setOperator(SqlBinaryOperator.EQUALITY);
+        where.setRight(new SqlVariantRefExpr("#{" + masterField.getName() + "}"));
+        select.setWhere(where);
+
+        return new OqlSelectStatement(select);
+    }
+
+    /**
+     * 将模型展开语句转换为OQL插入
+     *
+     * @param objectExpandExpr
+     * @return
+     */
+    public static OqlInsertStatement buildDetailObjectInsertStatement(OqlObjectExpandExpr objectExpandExpr, List<SqlExpr> insertValues) {
+        OqlInsertInto insertInto = new OqlInsertInto();
+
+        // 关联的表
+        XObject refObject = objectExpandExpr.getResolvedRefObject();
+
+        // 设置数据源
+        OqlExprObjectSource from = new OqlExprObjectSource(refObject.getName());
+        from.setResolvedObject(refObject);
+        insertInto.setObjectSource(from);
+
+        // 设置插入的列，添加主键列
+        List<SqlExpr> insertFields = objectExpandExpr.getFields();
+        insertInto.addFields(insertFields);
+        XField masterField = refObject.getMasterField();
+        OqlFieldExpr refPrimaryFieldExpr = new OqlFieldExpr(null, masterField.getName());
+        refPrimaryFieldExpr.setResolvedField(masterField);
+        insertInto.addField(refPrimaryFieldExpr);
+
+        // 设置插入的值，添加主键变量引用
+        for (SqlExpr insertValue : insertValues) {
+            if (insertValue instanceof SqlVariantRefExpr) {
+                SqlInsertStatement.ValuesClause valuesClause = new SqlInsertStatement.ValuesClause();
+                for (SqlExpr insertField : insertFields) {
+                    if (insertField instanceof OqlFieldExpandExpr) {
+                        String varName = "#{" + ((OqlFieldExpandExpr) insertField).getOwner().getName() + "}";
+                        valuesClause.addValue(new SqlVariantRefExpr(varName));
+                    } else {
+                        valuesClause.addValue(insertField);
+                    }
+                }
+                valuesClause.addValue(new SqlVariantRefExpr("#{" + masterField.getName() + "}"));
+                insertInto.addValues(valuesClause);
+            } else {
+                throw new FastOqlException("暂不支持非变量展开子表的值");
+            }
+        }
+
+        return new OqlInsertStatement(insertInto);
+    }
+
+    /**
+     * 将模型展开语句转换为OQL更新
+     *
+     * @param objectExpandExpr
+     * @return
+     */
+    public static OqlUpdateStatement toUpdateStatement(OqlObjectExpandExpr objectExpandExpr) {
+        OqlUpdateStatement stmt = new OqlUpdateStatement();
+        return stmt;
+    }
+
 }

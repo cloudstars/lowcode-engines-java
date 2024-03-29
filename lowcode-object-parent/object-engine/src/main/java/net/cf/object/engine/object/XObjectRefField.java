@@ -8,6 +8,13 @@ package net.cf.object.engine.object;
 public interface XObjectRefField extends XField {
 
     /**
+     * 获取引用类型
+     *
+     * @return
+     */
+    ObjectRefType getRefType();
+
+    /**
      * 获取引用模型的名称
      *
      * @return

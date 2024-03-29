@@ -43,6 +43,7 @@ public abstract class AbstractOqlTest {
             oqlInfo.name = oqlJson.getString("name");
             oqlInfo.oql = oqlJson.getString("oql");
             oqlInfo.sql = oqlJson.getString("sql");
+            oqlInfo.detailSql = oqlJson.getString("detailSql");
             this.oqlInfos.put(oqlInfo.name, oqlInfo);
         }
     }
@@ -51,6 +52,7 @@ public abstract class AbstractOqlTest {
         public String name;
         public String oql;
         public String sql;
+        public String detailSql;
     }
 
 }

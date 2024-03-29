@@ -26,5 +26,4 @@ public class SimpleInsertTest extends AbstractSimpleInsertTestCase {
         super.test2();
     }
 
-
 }

@@ -22,11 +22,6 @@ public class InsertStatementChecker extends AbstractStatementChecker {
 
     @Override
     public boolean visit(OqlInsertInto x) {
-        OqlExprObjectSource objectSource = x.getObjectSource();
-        if (objectSource.getResolvedObject() == null) {
-            throw new FastOqlException("OQL插入语句未正设置ObjectSource解析后的模型！");
-        }
-
         List<SqlExpr> fields = x.getFields();
         List<SqlInsertStatement.ValuesClause> valuesList = x.getValuesList();
 
@@ -55,10 +50,6 @@ public class InsertStatementChecker extends AbstractStatementChecker {
                 }
             } else if (field instanceof OqlObjectExpandExpr) {
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) field;
-                if (objectExpandExpr.getResolvedObjectRefField() != null) {
-                    throw new FastOqlException("OQL插入语句未正设置表达式" + objectExpandExpr + "关联模型解析后的关联字段！");
-                }
-
                 List<SqlExpr> expandedFields = objectExpandExpr.getFields();
                 for (SqlExpr expandedField : expandedFields) {
                     if (expandedField instanceof OqlFieldExpr) {

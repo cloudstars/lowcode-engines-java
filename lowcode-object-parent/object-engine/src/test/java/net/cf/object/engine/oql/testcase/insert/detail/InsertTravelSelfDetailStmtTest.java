@@ -1,35 +1,40 @@
-package net.cf.object.engine.oql.testcase.insert;
+package net.cf.object.engine.oql.testcase.insert.detail;
 
 import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
-import net.cf.object.engine.object.HobbyObject;
+import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
+import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
+import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
+import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+import java.util.Map;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ObjectEngineStatementTestApplication.class)
-public class InsertHobbyStmtTest extends AbstractOqlTest implements InsertHobbyTest {
+public class InsertTravelSelfDetailStmtTest extends AbstractOqlTest implements InsertTravelSelfDetailTest {
 
-    public InsertHobbyStmtTest() {
+    public InsertTravelSelfDetailStmtTest() {
         super(OQL_FILE_PATH);
     }
 
     @Test
     @Override
-    public void testInsertHobby() {
-        OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_HOBBY);
+    public void testIInsertTravelAndTripVars() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_AND_TRIPS_VARS);
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
@@ -40,11 +45,20 @@ public class InsertHobbyStmtTest extends AbstractOqlTest implements InsertHobbyT
         OqlObjectSource objectSource = oqlStmt.getObjectSource();
         assert (objectSource instanceof OqlExprObjectSource);
         SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
-        assert (osExpr instanceof SqlIdentifierExpr && HobbyObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
+        assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(oqlStmt);
+        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
+        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(oqlStmt, builder);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
+
+        Map<OqlObjectExpandExpr, List<SqlExpr>> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
+        assert (detailObjectExpandExprs.size() == 1);
+        for (Map.Entry<OqlObjectExpandExpr, List<SqlExpr>> entry : detailObjectExpandExprs.entrySet()) {
+            OqlInsertStatement detailOqlStmt = OqlUtils.buildDetailObjectInsertStatement(entry.getKey(), entry.getValue());
+            SqlInsertStatement detailSqlStmt = Oql2SqlUtils.toSqlInsert(detailOqlStmt);
+            assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
+        }
     }
 
 }

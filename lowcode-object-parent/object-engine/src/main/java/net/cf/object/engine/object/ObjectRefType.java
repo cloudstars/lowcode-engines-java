@@ -1,4 +1,4 @@
-package net.cf.object.engine.def.field;
+package net.cf.object.engine.object;
 
 /**
  * 模型引用的类型

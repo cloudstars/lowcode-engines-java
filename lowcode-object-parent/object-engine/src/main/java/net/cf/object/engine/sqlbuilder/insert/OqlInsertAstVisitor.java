@@ -9,7 +9,7 @@ import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.util.OqlUtils;
+import net.cf.object.engine.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.FieldItemInfo;
 import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
 
@@ -46,7 +46,7 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         this.buildInsertColumns(x);
 
         // 输出插入列的列表
-        buildInsertValuesList(x);
+        this.buildInsertValuesList(x);
 
         return false;
     }
@@ -67,7 +67,13 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
                 this.processFieldExpand(fieldExpandExpr);
             } else if (field instanceof OqlObjectExpandExpr) {
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) field;
-                this.processObjectExpand(objectExpandExpr);
+                XObjectRefField objectRefField = objectExpandExpr.getResolvedObjectRefField();
+                if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
+                    //FieldItemInfo fieldItemInfo = this.processObjectExpand(objectExpandExpr);
+                    this.builder.appendDetailInsertField(objectExpandExpr);
+                } else {
+                    this.processObjectExpand(objectExpandExpr);
+                }
             } else {
                 throw new FastOqlException("不支持的插入字段类型：" + field.getClass().getName());
             }
@@ -95,7 +101,8 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param insertFields
      * @return
      */
-    private SqlInsertStatement.ValuesClause toSqlValuesClause(SqlInsertStatement.ValuesClause valuesClause, List<SqlExpr> insertFields) {
+    private SqlInsertStatement.ValuesClause toSqlValuesClause(SqlInsertStatement.ValuesClause
+                                                                      valuesClause, List<SqlExpr> insertFields) {
         SqlInsertStatement.ValuesClause valuesClauseX = new SqlInsertStatement.ValuesClause();
         List<SqlExpr> values = valuesClause.getValues();
         // 判断插入的列是否有被展开，如果列有展开，那么值也要被展开
@@ -111,6 +118,11 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
                 this.processFieldValueExpand(fieldExpandExpr, insertValue, valuesClauseX);
             } else if (insertField instanceof OqlObjectExpandExpr) {
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) insertField;
+                if (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.DETAIL) {
+                    this.builder.appendDetailInsertValues(objectExpandExpr, insertValue);
+                    continue;
+                }
+
                 this.processObjectValueExpand(objectExpandExpr, insertValue, valuesClauseX);
             }
         }
@@ -172,7 +184,8 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param insertValue
      * @param valuesClause
      */
-    private void processFieldValueExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr insertValue, SqlInsertStatement.ValuesClause valuesClause) {
+    private void processFieldValueExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr
+            insertValue, SqlInsertStatement.ValuesClause valuesClause) {
         XField resolvedField = fieldExpandExpr.getResolvedField();
         XObject resolvedObject = resolvedField.getOwner();
         List<? extends SqlExpr> properties;
@@ -232,7 +245,8 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param insertValue
      * @param sqlValuesClause
      */
-    private void processObjectValueExpand(OqlObjectExpandExpr objectExpandExpr, SqlExpr insertValue, SqlInsertStatement.ValuesClause sqlValuesClause) {
+    private void processObjectValueExpand(OqlObjectExpandExpr objectExpandExpr, SqlExpr
+            insertValue, SqlInsertStatement.ValuesClause sqlValuesClause) {
 
     }
 

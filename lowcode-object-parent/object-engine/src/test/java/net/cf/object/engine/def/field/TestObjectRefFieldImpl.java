@@ -1,6 +1,7 @@
 package net.cf.object.engine.def.field;
 
 import net.cf.object.engine.def.TestObjectImpl;
+import net.cf.object.engine.object.ObjectRefType;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.FastOqlException;
 
@@ -54,4 +55,8 @@ public class TestObjectRefFieldImpl extends TestFieldImpl implements XObjectRefF
         isMultiRef = multiRef;
     }
 
+    @Override
+    public net.cf.object.engine.object.ObjectRefType getRefType() {
+        return this.refType;
+    }
 }
