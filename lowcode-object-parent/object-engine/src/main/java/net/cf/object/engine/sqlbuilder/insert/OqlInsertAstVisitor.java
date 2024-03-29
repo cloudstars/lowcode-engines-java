@@ -35,7 +35,7 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
 
         XField primaryField = this.selfObject.getPrimaryField();
         if (primaryField != null && primaryField.isAutoGen()) {
-            this.builder.setAutoGenName(primaryField.getName());
+            this.builder.setAutoGenName(primaryField.getColumnName());
         }
 
         // 构建表源

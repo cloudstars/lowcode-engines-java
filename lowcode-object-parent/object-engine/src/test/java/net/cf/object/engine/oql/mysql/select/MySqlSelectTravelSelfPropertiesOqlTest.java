@@ -1,7 +1,7 @@
 package net.cf.object.engine.oql.mysql.select;
 
 import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
-import net.cf.object.engine.oql.testcase.select.AbstractSelectTravelSelfPropertiesRepoTest;
+import net.cf.object.engine.oql.testcase.select.property.AbstractSelectTravelSelfPropertiesRepoTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
