@@ -36,7 +36,7 @@ public class OqlExprParser extends SqlExprParser {
     public OqlExprParser(XObjectResolver resolver, String oql) {
         super(oql);
         this.resolver = new CachedObjectResolverProxy(resolver);
-        this.supportedMethodNames.addAll(Arrays.asList("NOW", "LTRIM", "CONCAT"));
+        this.supportedMethodNames.addAll(Arrays.asList("NOW", "LTRIM", "CONCAT", "SUBSTRING", "TRIM", "RTRIM", "YEAR", "MONTH", "DAY", "LENGTH"));
     }
 
     /**

@@ -94,13 +94,13 @@ public class MongoMethodExprVisitor {
         }
 
         Object strValue = MongoExprVisitor.visit(sqlExprList.get(0), globalContext);
-        Object startValue = MongoExprVisitor.visit(sqlExprList.get(0), globalContext);
-        Object endValue = MongoExprVisitor.visit(sqlExprList.get(0), globalContext);
+        Object startValue = MongoExprVisitor.visit(sqlExprList.get(1), globalContext);
+        Object endValue = MongoExprVisitor.visit(sqlExprList.get(2), globalContext);
 
         int start = Integer.parseInt(startValue.toString()) - 1;
         int end = Integer.parseInt(endValue.toString());
 
-        document.put("$substrCp", Arrays.asList(strValue, start, end));
+        document.put("$substrCP", Arrays.asList(strValue, start, end));
         return document;
     }
 
@@ -114,7 +114,7 @@ public class MongoMethodExprVisitor {
             StringBuilder sb = new StringBuilder();
             List<SqlExpr> sqlExprList = sqlMethodInvokeExpr.getArguments();
             for (SqlExpr sqlExpr : sqlExprList) {
-                String val = String.valueOf(MongoExprVisitor.visit(sqlExpr, globalContext));
+                String val = String.valueOf(getTagVal(sqlExpr, globalContext));
                 sb.append(val);
             }
             return sb.toString();
@@ -122,14 +122,7 @@ public class MongoMethodExprVisitor {
             Document document = new Document();
             List<Object> items = new ArrayList<>();
             for (SqlExpr sqlExpr : sqlMethodInvokeExpr.getArguments()) {
-                Object val;
-                if (sqlExpr instanceof SqlIdentifierExpr) {
-                    // 特殊处理下SqlIdentifierExpr
-                    VisitContext innerContext = VisitContext.getFieldTagContext();
-                    val = MongoExprVisitor.visit(sqlExpr, globalContext, innerContext);
-                } else {
-                    val = MongoExprVisitor.visit(sqlExpr, globalContext);
-                }
+                Object val = getTagVal(sqlExpr, globalContext);
                 items.add(String.valueOf(val));
             }
             document.put("$concat", items);
@@ -145,7 +138,7 @@ public class MongoMethodExprVisitor {
     private static Document buildLength(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
         Document document = new Document();
         SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
-        Object val = MongoExprVisitor.visit(sqlExpr, globalContext);
+        Object val = getTagVal(sqlExpr, globalContext);
         document.put("$strLenCP", val);
         return document;
     }
@@ -158,7 +151,7 @@ public class MongoMethodExprVisitor {
     private static Document buildDateSelect(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
         Document document = new Document();
         SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
-        Object val = MongoExprVisitor.visit(sqlExpr, globalContext);
+        Object val = getTagVal(sqlExpr, globalContext);
         String methodName = sqlMethodInvokeExpr.getMethodName().toUpperCase(Locale.ROOT);
         String method = null;
         if ("YEAR".equals(methodName)) {
@@ -184,7 +177,7 @@ public class MongoMethodExprVisitor {
     private static Document buildTrim(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
         Document document = new Document();
         SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
-        Object val = MongoExprVisitor.visit(sqlExpr, globalContext);
+        Object val = getTagVal(sqlExpr, globalContext);
         String methodName = sqlMethodInvokeExpr.getMethodName().toUpperCase(Locale.ROOT);
         String method = null;
         if ("TRIM".equals(methodName)) {
@@ -219,7 +212,7 @@ public class MongoMethodExprVisitor {
     private static Object buildTimeStamp(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
         Document document = new Document();
         SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
-        Object val = MongoExprVisitor.visit(sqlExpr, globalContext);
+        Object val = getTagVal(sqlExpr, globalContext);
         document.put("toLong", new Document("$toDate", val));
         return document;
     }
@@ -232,7 +225,7 @@ public class MongoMethodExprVisitor {
     private static Object buildDateFormat(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
         Document document = new Document();
         SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
-        Object val = MongoExprVisitor.visit(sqlExpr, globalContext);
+        Object val = getTagVal(sqlExpr, globalContext);
 
         SqlExpr formatSqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
         Object formatVal = MongoExprVisitor.visit(formatSqlExpr, globalContext);
@@ -245,6 +238,17 @@ public class MongoMethodExprVisitor {
         dateToString.put("timezone", "+0800");
         document.put("$dateToString", dateToString);
         return document;
+    }
+
+    private static Object getTagVal(SqlExpr sqlExpr, GlobalContext globalContext) {
+
+        if (sqlExpr instanceof SqlIdentifierExpr) {
+            // 特殊处理下SqlIdentifierExpr
+            VisitContext innerContext = VisitContext.getFieldTagContext();
+            return MongoExprVisitor.visit(sqlExpr, globalContext, innerContext);
+        } else {
+            return MongoExprVisitor.visit(sqlExpr, globalContext);
+        }
     }
 
 }
