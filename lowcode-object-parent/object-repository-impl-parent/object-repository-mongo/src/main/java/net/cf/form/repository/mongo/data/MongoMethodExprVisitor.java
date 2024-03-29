@@ -4,6 +4,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import org.bson.Document;
 
 import java.util.*;
@@ -93,7 +94,7 @@ public class MongoMethodExprVisitor {
             throw new RuntimeException("param error");
         }
 
-        Object strValue = MongoExprVisitor.visit(sqlExprList.get(0), globalContext);
+        Object strValue = getTagVal(sqlExprList.get(0), globalContext);
         Object startValue = MongoExprVisitor.visit(sqlExprList.get(1), globalContext);
         Object endValue = MongoExprVisitor.visit(sqlExprList.get(2), globalContext);
 
@@ -123,7 +124,7 @@ public class MongoMethodExprVisitor {
             List<Object> items = new ArrayList<>();
             for (SqlExpr sqlExpr : sqlMethodInvokeExpr.getArguments()) {
                 Object val = getTagVal(sqlExpr, globalContext);
-                items.add(String.valueOf(val));
+                items.add(val);
             }
             document.put("$concat", items);
             return document;
@@ -240,10 +241,17 @@ public class MongoMethodExprVisitor {
         return document;
     }
 
+    /**
+     * 获取值
+     *
+     * @param sqlExpr
+     * @param globalContext
+     * @return
+     */
     private static Object getTagVal(SqlExpr sqlExpr, GlobalContext globalContext) {
 
-        if (sqlExpr instanceof SqlIdentifierExpr) {
-            // 特殊处理下SqlIdentifierExpr
+        if (sqlExpr instanceof SqlIdentifierExpr || sqlExpr instanceof SqlPropertyExpr) {
+            // 特殊处理 SqlIdentifierExpr，SqlPropertyExpr 函数内需要打$
             VisitContext innerContext = VisitContext.getFieldTagContext();
             return MongoExprVisitor.visit(sqlExpr, globalContext, innerContext);
         } else {
