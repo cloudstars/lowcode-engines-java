@@ -1,6 +1,17 @@
 grammar Calculator;
 
-program: statement+;
+/// Program :
+///     SourceElements?
+program
+    : statements? EOF
+    ;
+
+/// SourceElements :
+///     SourceElement
+///     SourceElements SourceElement
+statements
+    : statement+
+    ;
 
 statement:
   expr NEWLINE            # print

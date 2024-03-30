@@ -12,18 +12,18 @@
     <description>低代码函数引擎</description>
 
     <dependencies>
-        <!-- 编译时依赖 -->
+        <!--****编译时依赖****-->
+
+        <!-- 语法解析器 -->
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
         </dependency>
+        <!-- 函数执行器 -->
         <dependency>
-            <groupId>de.odysseus.juel</groupId>
-            <artifactId>juel-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.odysseus.juel</groupId>
-            <artifactId>juel-impl</artifactId>
+            <groupId>com.googlecode.aviator</groupId>
+            <artifactId>aviator</artifactId>
+            <version>5.3.3</version>
         </dependency>
 
         <!-- 测试时依赖 -->

@@ -1,0 +1,6 @@
+let a = 1;
+let b = 2;
+println("a/b is " + a/b); ## a/b is 0
+println("a/double(b) is " + a/double(b)); ## a/double(b) is 0.5
+
+return a/double(b);
