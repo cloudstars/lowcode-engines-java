@@ -9,6 +9,7 @@ import net.cf.object.engine.data.DefaultParameterMapper;
 import net.cf.object.engine.data.DefaultResultReducer;
 import net.cf.object.engine.data.ParameterMapper;
 import net.cf.object.engine.data.ResultReducer;
+import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.FastOqlException;
@@ -283,26 +284,6 @@ public class OqlEngineImpl implements OqlEngine {
             }
         }
 
-        // 循环插入子表
-        /*String masterId = targetParamMap.get(stmt.getObjectSource().getResolvedObject().getPrimaryField().getName()).toString();
-        Map<OqlObjectExpandExpr, List<SqlExpr>> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
-        for (Map.Entry<OqlObjectExpandExpr, List<SqlExpr>> entry : detailObjectExpandExprs.entrySet()) {
-            OqlObjectExpandExpr objectExpandExpr = entry.getKey();
-            Object subParamMaps = paramMap.get(objectExpandExpr.getResolvedObjectRefField().getName());
-            if (subParamMaps == null && !(subParamMaps instanceof List)) {
-                throw new FastOqlException("子表数据不能为空，且参数格式必须是List<Map>");
-            }
-
-            // 添加主表记录ID
-            String subObjectMasterFieldName = objectExpandExpr.getResolvedRefObject().getMasterField().getName();
-            List<Map<String, Object>> subParamMapList = (List<Map<String, Object>>) subParamMaps;
-            for (Map<String, Object> subParamMap : subParamMapList) {
-                subParamMap.put(subObjectMasterFieldName, masterId);
-            }
-            OqlInsertStatement detailStmt = OqlUtils.buildDetailObjectInsertStatement(objectExpandExpr, entry.getValue());
-            this.createList(detailStmt, subParamMapList);
-        }*/
-
         return effectedRows;
     }
 
@@ -369,11 +350,79 @@ public class OqlEngineImpl implements OqlEngine {
         UpdateStatementChecker checker = new UpdateStatementChecker();
         stmt.accept(checker);
 
+        // OQL语句解析
+        OqlUpdateInfoParser infoParser = new OqlUpdateInfoParser(stmt, paramMap);
+        infoParser.parse();
+
+        OqlUpdateInfo mainUpdateInfo = infoParser.getSelfUpdateInfo();
+        OqlUpdateStatement mainStmt = mainUpdateInfo.getStatement();
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
-        SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(stmt, builder);
+        SqlUpdateStatement mainSqlStmt = Oql2SqlUtils.toSqlUpdate(mainStmt, builder);;
         ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         Map<String, Object> targetParamMap = this.convertParameterMap(parameterMapper, paramMap);
-        int effectedRows = this.repository.update(sqlStmt, targetParamMap);
+        int effectedRows = this.repository.update(mainSqlStmt, targetParamMap);
+
+        // 计算主表记录ID
+        XObject mainObject = mainUpdateInfo.getObject();
+        XField mainPrimaryField = mainObject.getPrimaryField();
+        String mainPrimaryFieldName = mainPrimaryField.getName();
+        // TODO 主表记录ID的变量名可能不是mainObjectName，比如update ... where pk = #{pk'}，实际要取pk'的值
+        String masterId = paramMap.get(mainPrimaryFieldName).toString();
+
+        // 先删除不需要保留的子表数据（由于使用not in (...)，所以需要在新数据插入前执行）
+        List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
+        if (detailDeleteInfos != null &&  detailDeleteInfos.size() > 0) {
+            for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
+                List<String> remainedRecordIds = detailDeleteInfo.getRemainedRecordIds();
+                if (remainedRecordIds == null && remainedRecordIds.size() == 0) {
+                    // 更新时没有删除旧数据
+                    continue;
+                }
+
+                // 添加主表记录ID和需要保留的记录ID
+                String detailPrimaryFieldName = detailDeleteInfo.getObject().getPrimaryField().getName();
+                Map<String, Object> detailDeleteParamMap = new HashMap<>();
+                detailDeleteParamMap.put(mainPrimaryFieldName, masterId);
+                detailDeleteParamMap.put("remainedRecordIds", remainedRecordIds);
+                this.remove(detailDeleteInfo.getStatement(), detailDeleteParamMap);
+            }
+        }
+
+        // 插入新增的子表数据
+        List<OqlDetailInsertInfo> detailInsertInfos = infoParser.getDetailInsertInfos();
+        if (detailInsertInfos != null &&  detailInsertInfos.size() > 0) {
+            for (OqlDetailInsertInfo detailInsertInfo : detailInsertInfos) {
+                List<Map<String, Object>> insertParamMaps = detailInsertInfo.getParamMaps();
+                if (insertParamMaps == null && insertParamMaps.size() == 0) {
+                    // 更新时没有新数据
+                    continue;
+                }
+
+                // 给新插入的数据补充主表记录ID
+                for (Map<String, Object> insertParamMap : insertParamMaps) {
+                    insertParamMap.put(mainPrimaryFieldName, masterId);
+                }
+
+                // 批量创建子表记录
+                this.createList(detailInsertInfo.getStatement(), insertParamMaps);
+            }
+        }
+
+        // 更新编辑的子表数据
+        List<OqlDetailUpdateInfo> detailUpdateInfos = infoParser.getDetailUpdateInfos();
+        if (detailUpdateInfos != null &&  detailUpdateInfos.size() > 0) {
+            for (OqlDetailUpdateInfo detailUpdateInfo : detailUpdateInfos) {
+                List<Map<String, Object>> updateParamMaps = detailUpdateInfo.getParamMaps();
+                if (updateParamMaps == null && updateParamMaps.size() == 0) {
+                    // 更新时没有旧数据
+                    continue;
+                }
+
+                // 批量更新子表记录
+                this.modifyList(detailUpdateInfo.getStatement(), updateParamMaps);
+            }
+        }
+
         return effectedRows;
     }
 

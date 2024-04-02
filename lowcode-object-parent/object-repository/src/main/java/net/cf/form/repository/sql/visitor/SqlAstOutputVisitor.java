@@ -371,6 +371,9 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     @Override
     public boolean visit(SqlInListExpr x) {
         x.getLeft().accept(this);
+        if (x.isNot()) {
+            this.print(this.uppercase ? " NOT " : " not ");
+        }
         this.print(this.uppercase ? " IN " : " in ");
         this.printParenthesesAndAcceptList(x.getTargetList(), ", ");
         return false;

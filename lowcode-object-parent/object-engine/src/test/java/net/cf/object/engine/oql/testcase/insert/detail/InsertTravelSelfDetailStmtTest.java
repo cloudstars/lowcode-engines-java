@@ -7,8 +7,9 @@ import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
-import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
+import net.cf.object.engine.oql.info.OqlDetailInsertInfo;
+import net.cf.object.engine.oql.info.OqlInsertInfoParser;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
 import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
@@ -52,13 +53,15 @@ public class InsertTravelSelfDetailStmtTest extends AbstractOqlTest implements I
         SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(oqlStmt, builder);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
 
-        Map<OqlObjectExpandExpr, List<SqlExpr>> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
-        assert (detailObjectExpandExprs.size() == 1);
-        for (Map.Entry<OqlObjectExpandExpr, List<SqlExpr>> entry : detailObjectExpandExprs.entrySet()) {
-            OqlInsertStatement detailOqlStmt = OqlUtils.buildDetailObjectInsertStatement(entry.getKey(), entry.getValue());
-            SqlInsertStatement detailSqlStmt = Oql2SqlUtils.toSqlInsert(detailOqlStmt);
-            assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
-        }
+        // 断言子表的生成
+        Map<String, Object> paramMap = this.getCreateParamMap();
+        OqlInsertInfoParser oqlInfoParser = new OqlInsertInfoParser(oqlStmt, paramMap);
+        oqlInfoParser.parse();
+        List<OqlDetailInsertInfo> detailInsertInfos = oqlInfoParser.getDetailInsertInfos();
+        assert (detailInsertInfos != null && detailInsertInfos.size() == 1);
+        OqlInsertStatement detailOqlStmt = detailInsertInfos.get(0).getStatement();
+        SqlInsertStatement detailSqlStmt = Oql2SqlUtils.toSqlInsert(detailOqlStmt);
+        assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
     }
 
 }

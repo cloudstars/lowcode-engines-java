@@ -5,13 +5,7 @@ import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlInsertInto;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
-import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.sqlbuilder.AbstractSqlStatementBuilder;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 插入SQL语句构建器
@@ -25,7 +19,7 @@ public class SqlInsertStatementBuilder extends AbstractSqlStatementBuilder<OqlIn
     /**
      * 子表插入
      */
-    private final Map<OqlObjectExpandExpr, List<SqlExpr>> detailObjectExpandExprs = new HashMap<>();
+    //private final Map<OqlObjectExpandExpr, List<SqlExpr>> detailObjectExpandExprs = new HashMap<>();
 
     public SqlInsertStatementBuilder() {
     }
@@ -63,10 +57,10 @@ public class SqlInsertStatementBuilder extends AbstractSqlStatementBuilder<OqlIn
      * @param objectExpandExpr
      * @return
      */
-    public SqlInsertStatementBuilder appendDetailInsertField(OqlObjectExpandExpr objectExpandExpr) {
+    /*public SqlInsertStatementBuilder appendDetailInsertField(OqlObjectExpandExpr objectExpandExpr) {
         this.detailObjectExpandExprs.put(objectExpandExpr, new ArrayList<>());
         return this;
-    }
+    }*/
 
     /**
      * 添加子表插入
@@ -75,17 +69,17 @@ public class SqlInsertStatementBuilder extends AbstractSqlStatementBuilder<OqlIn
      * @param insertValue
      * @return
      */
-    public SqlInsertStatementBuilder appendDetailInsertValues(OqlObjectExpandExpr objectExpandExpr, SqlExpr insertValue) {
+    /*public SqlInsertStatementBuilder appendDetailInsertValues(OqlObjectExpandExpr objectExpandExpr, SqlExpr insertValue) {
         List<SqlExpr> insertValues = this.detailObjectExpandExprs.get(objectExpandExpr);
         if (insertValues != null) {
             insertValues.add(insertValue);
         }
         return this;
-    }
+    }*/
 
-    public Map<OqlObjectExpandExpr, List<SqlExpr>> getDetailObjectExpandExprs() {
+    /*public Map<OqlObjectExpandExpr, List<SqlExpr>> getDetailObjectExpandExprs() {
         return detailObjectExpandExprs;
-    }
+    }*/
 
     @Override
     public SqlInsertStatement build() {

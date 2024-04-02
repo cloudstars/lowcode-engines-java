@@ -13,6 +13,16 @@
       "dataType": "String"
     },
     {
+      "desc": "出发地",
+      "name": "FROM_ADDR",
+      "dataType": "String"
+    },
+    {
+      "desc": "目的地",
+      "name": "TO_ADDR",
+      "dataType": "String"
+    },
+    {
       "desc": "创建人姓名",
       "name": "CREATOR_NAME",
       "dataType": "String"
@@ -26,16 +36,22 @@
   "valuesList": [
     {
       "APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+      "FROM_ADDR": "上海",
+      "TO_ADDR": "北京",
       "CREATOR_NAME": "张三",
       "CREATOR_KEY": "zhangsan"
     },
     {
       "APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+      "FROM_ADDR": "天津",
+      "TO_ADDR": "杭州",
       "CREATOR_NAME": "张三",
       "CREATOR_KEY": "zhangsan"
     },
     {
       "APPLY_ID": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
+      "FROM_ADDR": "杭州",
+      "TO_ADDR": "南京",
       "CREATOR_NAME": "李四",
       "CREATOR_KEY": "lisi"
     }

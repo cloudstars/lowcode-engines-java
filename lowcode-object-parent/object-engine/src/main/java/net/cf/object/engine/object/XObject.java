@@ -27,10 +27,10 @@ public interface XObject<F extends XField, R extends XObjectRefField> {
     /**
      * 根据字段名称获取字段
      *
-     * @param fieldCode
+     * @param fieldName
      * @return
      */
-    F getField(String fieldCode);
+    F getField(String fieldName);
 
     /**
      * 获取主键字段

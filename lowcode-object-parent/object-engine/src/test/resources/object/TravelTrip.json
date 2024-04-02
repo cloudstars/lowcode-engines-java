@@ -25,6 +25,22 @@
       "dataLength": "36"
     },
     {
+      "type": "Text",
+      "desc": "出发地",
+      "name": "fromAddr",
+      "columnName": "FROM_ADDR",
+      "dataType": "String",
+      "dataLength": "100"
+    },
+    {
+      "type": "Text",
+      "desc": "目的地",
+      "name": "toAddr",
+      "columnName": "TO_ADDR",
+      "dataType": "String",
+      "dataLength": "100"
+    },
+    {
       "type": "User",
       "desc": "创建人",
       "name": "creator",

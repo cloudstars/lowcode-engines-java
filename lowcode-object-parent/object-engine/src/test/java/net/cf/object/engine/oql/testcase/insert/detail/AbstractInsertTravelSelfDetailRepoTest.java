@@ -4,9 +4,10 @@ import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.util.OqlUtils;
-import net.cf.object.engine.object.TestConstants;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 插入兴趣爱好表的测试集
@@ -29,22 +30,7 @@ public abstract class AbstractInsertTravelSelfDetailRepoTest extends AbstractOql
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_AND_TRIPS_VARS);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
-            // 行程数据
-            List<Map<String, Object>> trips = new ArrayList<>();
-            Map<String, Object> trip1 = new HashMap<>();
-            trip1.put("creator", TestConstants.CREATOR);
-            trip1.put("modifier", TestConstants.MODIFIER);
-            Map<String, Object> trip2 = new HashMap<>();
-            trip2.put("creator", TestConstants.CREATOR);
-            trip2.put("modifier", TestConstants.MODIFIER);
-            trips.add(trip1);
-            trips.add(trip2);
-
-            // 出差主数据
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("applyId", "test----------");
-            paramMap.put("applyName", "测试申请单的名称");
-            paramMap.put("trips", Arrays.asList(trip1, trip2));
+            Map<String, Object> paramMap = this.getCreateParamMap();
             int effectedRows = this.engine.create(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }

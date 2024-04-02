@@ -70,7 +70,7 @@ public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlS
         if (visitor.visit(this)) {
             this.objectSource.accept(visitor);
             this.nullSafeAcceptChildren(visitor, this.setItems);
-            this.where.accept(visitor);
+            this.nullSafeAcceptChildren(visitor, this.where);
         }
 
         visitor.endVisit(this);

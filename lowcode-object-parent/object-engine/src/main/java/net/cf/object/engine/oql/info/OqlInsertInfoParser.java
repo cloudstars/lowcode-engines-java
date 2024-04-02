@@ -77,6 +77,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
             List<SqlInsertStatement.ValuesClause> valuesList = this.stmt.getValuesList();
             int valuesSize = valuesList.size();
             OqlInsertInto selfInsertInto = new OqlInsertInto();
+            selfInsertInto.setObjectSource(this.stmt.getObjectSource());
             for (int j = 0; j < valuesSize; j++) {
                 selfInsertInto.addValues(new SqlInsertStatement.ValuesClause());
             }
@@ -118,7 +119,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
         for (SqlExpr expr : exprs) {
             if (expr instanceof OqlObjectExpandExpr ) {
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) expr;
-                if (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.MASTER) {
+                if (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.DETAIL) {
                     return true;
                 }
             }
@@ -208,16 +209,24 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
 
         XObject detailObject = detailObjectExpandFieldExpr.getResolvedRefObject();
         String detailObjectName = detailObject.getName();
-        XField primaryField = detailObject.getPrimaryField();
+        XField masterField = detailObject.getMasterField();
 
         // 构建子表数据源
         OqlExprObjectSource detailObjectSource = new OqlExprObjectSource(detailObjectName);
         detailObjectSource.setResolvedObject(detailObject);
         detailInsertInto.setObjectSource(detailObjectSource);
+        SqlInsertStatement.ValuesClause valuesClause = new SqlInsertStatement.ValuesClause();
+
+        // 添加主表记录ID字段（更新时新录入的数据需要补充主表记录ID列）
+        String masterFieldName = masterField.getName();
+        OqlFieldExpr masterFieldExpr = new OqlFieldExpr(masterFieldName);
+        masterFieldExpr.setResolvedField(masterField);
+        detailInsertInto.addField(masterFieldExpr);
+        SqlVariantRefExpr masterFieldValueExpr = new SqlVariantRefExpr("#{" + masterFieldName +  "}");
+        valuesClause.addValue(masterFieldValueExpr);
 
         // 插入语句中的字段中添加子模型的全部字段，值中添加全部变量
         List<OqlExpr> detailFields = detailObjectExpandFieldExpr.getFields();
-        SqlInsertStatement.ValuesClause valuesClause = new SqlInsertStatement.ValuesClause();
         for (OqlExpr detailField : detailFields) {
             // TODO 在Check中检查字段只能是OqlFieldExpr或者OqlFieldExpandExpr
             assert (detailField instanceof OqlFieldExpr || detailField instanceof OqlFieldExpandExpr);
@@ -232,6 +241,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
             SqlVariantRefExpr varRefExpr = new SqlVariantRefExpr("#{" + varName + "}");
             valuesClause.addValue(varRefExpr);
         }
+        detailInsertInto.addValues(valuesClause);
 
         return new OqlInsertStatement(detailInsertInto);
     }

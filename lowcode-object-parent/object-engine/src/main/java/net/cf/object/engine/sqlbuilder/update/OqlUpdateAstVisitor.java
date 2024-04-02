@@ -65,21 +65,21 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      */
     private void buildSetItems(final List<OqlUpdateSetItem> setItems) {
         for (OqlUpdateSetItem setItem : setItems) {
-            SqlExpr updateField = setItem.getField();
-            SqlExpr updateValue = setItem.getValue();
-            if (updateField instanceof OqlFieldExpr || updateField instanceof OqlPropertyExpr) {
+            SqlExpr field = setItem.getField();
+            SqlExpr value = setItem.getValue();
+            if (field instanceof OqlFieldExpr || field instanceof OqlPropertyExpr) {
                 SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
-                sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, updateField));
+                sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, field));
                 sqlSetItem.setValue(this.buildSqlExpr(this.selfObject, setItem.getValue()));
                 this.builder.appendSetItem(sqlSetItem);
-                if (updateValue instanceof SqlVariantRefExpr) {
-                    String varName = ((SqlVariantRefExpr) updateValue).getVarName();
+                if (value instanceof SqlVariantRefExpr) {
+                    String varName = ((SqlVariantRefExpr) value).getVarName();
                     this.builder.appendFieldMapping(new FieldMapping(varName, varName));
                 }
-            } else if (updateField instanceof OqlFieldExpandExpr) {
-                this.processFieldValueExpand((OqlFieldExpandExpr) updateField, updateValue);
-            } else if (updateField instanceof OqlObjectExpandExpr) {
-                // 更新关联表的话，更新条件中必须有关联表的主键字段
+            } else if (field instanceof OqlFieldExpandExpr) {
+                this.processFieldValueExpand((OqlFieldExpandExpr) field, value);
+            } else if (!(field instanceof OqlObjectExpandExpr)) {
+                throw new FastOqlException("不支持的更新字段类型：" + field.getClass().getName());
             }
         }
     }

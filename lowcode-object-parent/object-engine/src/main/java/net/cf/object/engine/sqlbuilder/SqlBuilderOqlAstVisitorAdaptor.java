@@ -150,6 +150,7 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
      */
     private SqlExpr buildInListSqlExpr(final XObject object, final SqlInListExpr x) {
         SqlInListExpr sqlX = new SqlInListExpr();
+        sqlX.setNot(x.isNot());
         sqlX.setLeft(this.buildSqlExpr(object, x.getLeft()));
         List<SqlExpr> targetList = x.getTargetList();
         for (SqlExpr targetItem : targetList) {

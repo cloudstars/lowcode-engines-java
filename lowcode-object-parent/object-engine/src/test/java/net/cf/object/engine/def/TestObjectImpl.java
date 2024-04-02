@@ -87,8 +87,8 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
     }
 
     @Override
-    public TestFieldImpl getField(String fieldCode) {
-        return this.fieldMap.get(fieldCode);
+    public TestFieldImpl getField(String fieldName) {
+        return this.fieldMap.get(fieldName);
     }
 
     @Override

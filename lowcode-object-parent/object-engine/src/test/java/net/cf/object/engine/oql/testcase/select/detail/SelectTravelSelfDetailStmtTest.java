@@ -125,8 +125,6 @@ public class SelectTravelSelfDetailStmtTest extends AbstractOqlTest implements S
         assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
     }
 
-
-
     @Test
     @Override
     public void testSelectTravelAndTripListVars() {

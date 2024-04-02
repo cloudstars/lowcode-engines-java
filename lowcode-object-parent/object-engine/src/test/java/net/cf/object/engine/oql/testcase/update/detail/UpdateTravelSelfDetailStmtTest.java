@@ -19,11 +19,13 @@ import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
 import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
 import net.cf.object.engine.sqlbuilder.update.SqlUpdateStatementBuilder;
 import net.cf.object.engine.util.OqlUtils;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ObjectEngineStatementTestApplication.class)
@@ -33,6 +35,7 @@ public class UpdateTravelSelfDetailStmtTest extends AbstractOqlTest implements U
         super(OQL_FILE_PATH);
     }
 
+    @Test
     @Override
     public void testUpdateTravelAndTripByIdVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_VARS);
@@ -54,14 +57,18 @@ public class UpdateTravelSelfDetailStmtTest extends AbstractOqlTest implements U
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
 
         // 断言子表的生成
-        OqlUpdateInfoParser oqlInfoParser = new OqlUpdateInfoParser(oqlStmt);
+        Map<String, Object> paramMap = this.getEditParamMap(TravelObject.RECORD1, "MOCK_TRIP_ID");
+        OqlUpdateInfoParser oqlInfoParser = new OqlUpdateInfoParser(oqlStmt, paramMap);
         oqlInfoParser.parse();
         List<OqlDetailInsertInfo> detailOqlInsertStmts = oqlInfoParser.getDetailInsertInfos();
         List<OqlDetailUpdateInfo> detailOqlUpdateStmts = oqlInfoParser.getDetailUpdateInfos();
         List<OqlDetailDeleteInfo> detailOqlDeleteStmts = oqlInfoParser.getDetailDeleteInfos();
         assert (detailOqlInsertStmts != null && detailOqlInsertStmts.size() == 1);
+        assert (detailOqlInsertStmts.get(0).getParamMaps().size() == 1);
         assert (detailOqlUpdateStmts != null && detailOqlUpdateStmts.size() == 1);
+        assert (detailOqlUpdateStmts.get(0).getParamMaps().size() == 1);
         assert (detailOqlDeleteStmts != null && detailOqlDeleteStmts.size() == 1);
+        assert (detailOqlDeleteStmts.get(0).getRemainedRecordIds().contains("MOCK_TRIP_ID"));
 
         SqlInsertStatement detailSqlInsertStmt = Oql2SqlUtils.toSqlInsert(detailOqlInsertStmts.get(0).getStatement());
         assert (detailSqlInsertStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlInsertStmt.toString(), oqlInfo.detailUpdateInsertSql));
