@@ -30,6 +30,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationUpdate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -70,6 +71,8 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
 
         List<Document> documents = mongoInsertCommand.getMergedDocuments();
         this.template.insert(documents, mongoInsertCommand.getCollectionName());
+
+        addAutoPrimaryKeyValue(statement, paramMapList, mongoInsertCommand.getDocuments());
         int[] nums = new int[mongoInsertCommand.getDocuments().size()];
         int index = 0;
         for (List<Document> doc : mongoInsertCommand.getDocuments()) {
@@ -77,6 +80,24 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
             index++;
         }
         return nums;
+    }
+
+    private void addAutoPrimaryKeyValue(SqlInsertStatement statement, List<Map<String, Object>> paramMapList, List<List<Document>> documents) {
+        if (paramMapList == null || paramMapList.size() == 0) {
+            return;
+        }
+        String autoPrimaryKey = statement.getAutoGenColumn();
+        if (StringUtils.isEmpty(autoPrimaryKey)) {
+            return;
+        }
+
+        int index = 0;
+        for (Map<String, Object> paramMap : paramMapList) {
+            // todo
+            Document document = documents.get(index).get(0);
+            paramMap.put(autoPrimaryKey, MongoDbDataConverter.convertDbData(document.get("_id")));
+            index++;
+        }
     }
 
 
