@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.mysql.insert;
+package net.cf.object.engine.oql.mysql.insert.detail;
 
 import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
 import net.cf.object.engine.oql.testcase.insert.detail.AbstractInsertTravelSelfDetailRepoTest;

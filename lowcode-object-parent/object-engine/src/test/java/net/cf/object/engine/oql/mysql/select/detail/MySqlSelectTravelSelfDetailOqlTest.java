@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.mysql.select;
+package net.cf.object.engine.oql.mysql.select.detail;
 
 import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
 import net.cf.object.engine.oql.testcase.select.detail.AbstractSelectTravelSelfDetailRepoTest;
@@ -17,5 +17,23 @@ public class MySqlSelectTravelSelfDetailOqlTest extends AbstractSelectTravelSelf
     @Override
     public void testSelectTravelAndTripById() {
         super.testSelectTravelAndTripById();
+    }
+
+    @Test
+    @Override
+    public void testSelectTravelAndTripByIdVars() {
+        super.testSelectTravelAndTripByIdVars();
+    }
+
+    @Test
+    @Override
+    public void testSelectTravelAndTripList() {
+        super.testSelectTravelAndTripList();
+    }
+
+    @Test
+    @Override
+    public void testSelectTravelAndTripListVars() {
+        super.testSelectTravelAndTripListVars();
     }
 }

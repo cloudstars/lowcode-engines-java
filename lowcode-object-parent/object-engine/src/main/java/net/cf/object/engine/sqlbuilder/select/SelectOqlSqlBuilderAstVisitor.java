@@ -21,11 +21,11 @@ import java.util.List;
  *
  * @author clouds
  */
-public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
+public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
 
     private final SqlSelectStatementBuilder builder;
 
-    public OqlSelectAstVisitor(SqlSelectStatementBuilder builder) {
+    public SelectOqlSqlBuilderAstVisitor(SqlSelectStatementBuilder builder) {
         this.builder = builder;
     }
 
@@ -61,10 +61,13 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
             if (sqlExpr instanceof OqlObjectExpandExpr) { // 关联模型展开
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) sqlExpr;
                 XObjectRefField objectRefField = objectExpandExpr.getResolvedObjectRefField();
-                if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
+                if (objectRefField.isMultiRef()) { // 查询语句不处理一对多的情况
+                    continue;
+                }
+                /* if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
                     this.builder.appendDetailObjectExpandExpr(objectExpandExpr);
                     continue;
-                } else {
+                } else */ {
                     itemInfo = this.buildSelectRefObjectExpand(objectExpandExpr);
                 }
             } else if (sqlExpr instanceof OqlFieldExpandExpr) { // 字段展开
@@ -91,7 +94,7 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * 构建查询本模型的全部字段（select *）
      */
     private List<SelectItemInfo> buildSelectObjectAllFields(XObject object) {
-        List<SqlExpr> fieldExprs = OqlUtils.defaultExpandObjectFields(object);
+        List<OqlExpr> fieldExprs = OqlUtils.defaultExpandObjectFields(object);
         List<SelectItemInfo> selectItemInfos = this.buildItemInfoList(object, fieldExprs);
         return selectItemInfos;
     }
@@ -141,7 +144,7 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         if (objectExpandExpr.isDefaultExpanded() || objectExpandExpr.isStarExpanded()) {
             subItemInfos = this.buildSelectObjectAllFields(refObject);
         } else {
-            List<SqlExpr> refFields = objectExpandExpr.getFields();
+            List<OqlExpr> refFields = objectExpandExpr.getFields();
             subItemInfos = this.buildItemInfoList(refObject, refFields);
         }
         parentItemInfo.addSubItemInfos(subItemInfos);
@@ -209,7 +212,7 @@ public final class OqlSelectAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param expandExprs
      * @return
      */
-    private SelectItemInfo expandObject(XObjectRefField expandField, List<SqlExpr> expandExprs) {
+    private SelectItemInfo expandObject(XObjectRefField expandField, List<OqlExpr> expandExprs) {
         SelectItemInfo parentItemInfo = new SelectItemInfo();
         FieldMapping parentFieldMapping = new FieldMapping(expandField.getOwner().getName());
         parentFieldMapping.setValueType(new ValueType(DataType.OBJECT, expandField.isArray()));

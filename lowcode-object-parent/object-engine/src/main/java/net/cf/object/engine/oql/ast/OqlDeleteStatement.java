@@ -7,6 +7,11 @@ import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * OQL删除语句
+ *
+ * @author clouds
+ */
 public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlStatement {
 
     protected OqlExprObjectSource from;

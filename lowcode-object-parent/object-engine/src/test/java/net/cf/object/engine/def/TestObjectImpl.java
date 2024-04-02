@@ -32,7 +32,7 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
     /**
      * 引用主模型的字段
      */
-    private TestFieldImpl masterField = null;
+    private TestObjectRefFieldImpl masterField = null;
 
     /**
      * 字段列表
@@ -57,11 +57,12 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
             TestFieldImpl field;
             if (FieldTypeConstants.OBJECT_REF.equals(fieldDef.getType())) {
                 String refObjectName = fieldDef.getRefObjectName();
-                field = new TestObjectRefFieldImpl(this, fieldDef);
-                this.refObjectFieldMap.put(refObjectName, (TestObjectRefFieldImpl) field);
-                if (((TestObjectRefFieldImpl) field).getRefType() == ObjectRefType.MASTER) {
-                    this.masterField = field;
+                TestObjectRefFieldImpl objectRefField = new TestObjectRefFieldImpl(this, fieldDef);
+                this.refObjectFieldMap.put(refObjectName, objectRefField);
+                if (objectRefField.getRefType() == ObjectRefType.MASTER) {
+                    this.masterField = objectRefField;
                 }
+                field = objectRefField;
             } else {
                 field = new TestFieldImpl(this, fieldDef);
             }
@@ -96,7 +97,7 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
     }
 
     @Override
-    public TestFieldImpl getMasterField() {
+    public TestObjectRefFieldImpl getMasterField() {
         return this.masterField;
     }
 

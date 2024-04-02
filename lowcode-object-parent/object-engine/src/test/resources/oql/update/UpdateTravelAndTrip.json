@@ -1,0 +1,13 @@
+{
+  "desc": "测试更新出差本表以及行程子表",
+  "name": "UpdateTravelSelfAndTrip",
+  "oqls": [
+    {
+      "desc": "更新出差记以及行程（带变量）",
+      "name": "UpdateTravelAndTripByIdVars",
+      "oql": "update Travel set applyId = #{applyId}, , applyName = #{applyName}, TravelTrip(creator, modifier) = #{trips}",
+      "sql": "update into TRAVEL(APPLY_ID, APPLY_NAME) values (#{applyId}, #{applyName})",
+      "detailSql": "update TRAVEL_TRIP set CREATOR_NAME = #{creator.name}, CREATOR_KEY = #{creator.key}, MODIFIER_NAME = #{modifier.name}, MODIFIER_KEY = #{modifier.key} where TRIP_ID = ${tripId}"
+    }
+  ]
+}

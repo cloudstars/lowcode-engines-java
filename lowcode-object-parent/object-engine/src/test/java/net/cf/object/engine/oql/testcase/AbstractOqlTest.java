@@ -44,6 +44,10 @@ public abstract class AbstractOqlTest {
             oqlInfo.oql = oqlJson.getString("oql");
             oqlInfo.sql = oqlJson.getString("sql");
             oqlInfo.detailSql = oqlJson.getString("detailSql");
+            oqlInfo.detailUpdateInsertSql = oqlJson.getString("detailUpdateInsertSql");
+            oqlInfo.detailUpdateUpdateSql = oqlJson.getString("detailUpdateUpdateSql");
+            oqlInfo.detailUpdateDeleteSql = oqlJson.getString("detailUpdateDeleteSql");
+
             this.oqlInfos.put(oqlInfo.name, oqlInfo);
         }
     }
@@ -53,6 +57,11 @@ public abstract class AbstractOqlTest {
         public String oql;
         public String sql;
         public String detailSql;
+
+        // 以下3个字段更新子表专用
+        public String detailUpdateUpdateSql;
+        public String detailUpdateInsertSql;
+        public String detailUpdateDeleteSql;
     }
 
 }

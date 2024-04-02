@@ -1,15 +1,19 @@
 package net.cf.object.engine.oql.ast;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 /**
  * OQL查询字段
  * <p>
  * 区别于SqlSelectItem，OQL查询字段中的expr可能包含OQL相关的expr，但是SqlSelectItem中不会包含OqlXxxExpr
+ *
+ * 继承了OqlExpr是因为展开子句中存在别名的需要，
+ * 如：object(1 as f1, f2 as fx)、field('1' as prop1, prop2 as propX)
+ *
+ * @author clouds
  */
-public class OqlSelectItem extends AbstractOqlObjectImpl {
+public class OqlSelectItem extends AbstractOqlExprImpl {
 
     /**
      * 表达式
@@ -22,14 +26,16 @@ public class OqlSelectItem extends AbstractOqlObjectImpl {
     protected String alias;
 
 
+    public OqlSelectItem() {
+    }
+
     public OqlSelectItem(SqlExpr expr) {
-        this(expr, null);
+        this.setExpr(expr);
     }
 
     public OqlSelectItem(SqlExpr expr, String alias) {
-        this.expr = expr;
-        this.alias = alias;
         this.setExpr(expr);
+        this.alias = alias;
     }
 
     public SqlExpr getExpr() {
@@ -62,8 +68,12 @@ public class OqlSelectItem extends AbstractOqlObjectImpl {
 
     @Override
     public OqlSelectItem cloneMe() {
-        OqlSelectItem x = new OqlSelectItem(this.expr.cloneMe());
+        OqlSelectItem x = new OqlSelectItem();
+        if (this.expr != null) {
+            x.setExpr(this.expr.cloneMe());
+        }
         x.setAlias(this.alias);
         return x;
     }
+
 }

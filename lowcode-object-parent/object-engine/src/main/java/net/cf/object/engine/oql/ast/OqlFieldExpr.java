@@ -1,15 +1,10 @@
 package net.cf.object.engine.oql.ast;
 
 import net.cf.form.repository.sql.ast.SqlDataType;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.object.engine.sqlbuilder.SqlDataTypeConvert;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * OQL字段表达式，如：object.field, field, object(field)中的field
@@ -19,9 +14,9 @@ import java.util.List;
 public class OqlFieldExpr extends AbstractOqlExprImpl implements SqlName {
 
     /**
-     * 归属的模型(如本模模的字段前面不带"object.”)
+     * 归属的模型（本模型字段前面不加前缀"object.”)
      */
-    private final SqlIdentifierExpr owner;
+    private String owner;
 
     /**
      * 字段的名称
@@ -37,26 +32,23 @@ public class OqlFieldExpr extends AbstractOqlExprImpl implements SqlName {
      * 不带owner的构造函数，用于本表中的字段、模型展开中的字段
      */
     public OqlFieldExpr() {
-        this.owner = null;
     }
 
-    public OqlFieldExpr(String owner) {
-        this(new SqlIdentifierExpr(owner));
-    }
-
-    public OqlFieldExpr(SqlIdentifierExpr owner) {
-        this.owner = owner;
-        this.addChild(owner);
-    }
-
-    public OqlFieldExpr(SqlIdentifierExpr owner, String name) {
-        this.owner = owner;
-        this.addChild(owner);
+    public OqlFieldExpr(String name) {
         this.name = name;
     }
 
-    public SqlIdentifierExpr getOwner() {
+    public OqlFieldExpr(String owner, String name) {
+        this.owner = owner;
+        this.name = name;
+    }
+
+    public String getOwner() {
         return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Override
@@ -70,24 +62,13 @@ public class OqlFieldExpr extends AbstractOqlExprImpl implements SqlName {
 
     @Override
     protected void accept0(OqlAstVisitor visitor) {
-        if (visitor.visit(this)) {
-            if (this.owner != null) {
-                this.owner.accept(visitor);
-            }
-        }
-
+        visitor.visit(this);
         visitor.endVisit(this);
     }
 
     @Override
     public OqlFieldExpr cloneMe() {
-        SqlIdentifierExpr ownerX = null;
-        if (this.owner != null) {
-            ownerX = this.owner.cloneMe();
-        }
-
-        OqlFieldExpr x = new OqlFieldExpr(ownerX);
-        x.setName(this.name);
+        OqlFieldExpr x = new OqlFieldExpr(this.owner, this.name);
         x.setResolvedField(this.resolvedField);
         return x;
     }
@@ -95,11 +76,6 @@ public class OqlFieldExpr extends AbstractOqlExprImpl implements SqlName {
     @Override
     public SqlDataType computeSqlDataType() {
         return SqlDataTypeConvert.toSqlDataType(this.resolvedField);
-    }
-
-    @Override
-    public List<SqlExpr> getChildren() {
-        return Collections.singletonList(this.owner);
     }
 
     public XField getResolvedField() {

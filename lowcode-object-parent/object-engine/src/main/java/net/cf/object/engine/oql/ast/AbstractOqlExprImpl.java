@@ -1,7 +1,6 @@
 package net.cf.object.engine.oql.ast;
 
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
+import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 
 /**
@@ -9,7 +8,7 @@ import net.cf.object.engine.oql.AbstractOqlObjectImpl;
  *
  * @author clouds
  */
-public abstract class AbstractOqlExprImpl extends AbstractOqlObjectImpl implements SqlExpr {
+public abstract class AbstractOqlExprImpl extends AbstractOqlObjectImpl implements OqlExpr {
 
     public AbstractOqlExprImpl() {
     }
@@ -19,11 +18,15 @@ public abstract class AbstractOqlExprImpl extends AbstractOqlObjectImpl implemen
      *
      * @return
      */
-    public abstract SqlName getOwner();
+    //public abstract SqlName getOwner();
 
     @Override
-    public SqlExpr cloneMe() {
+    public OqlExpr cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 
+    @Override
+    public SqlDataType computeSqlDataType() {
+        return SqlDataType.OBJECT;
+    }
 }

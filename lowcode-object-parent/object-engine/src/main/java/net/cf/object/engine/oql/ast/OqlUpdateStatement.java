@@ -2,17 +2,27 @@ package net.cf.object.engine.oql.ast;
 
 import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * OQL更新语句
+ *
+ * @author clouds
+ */
 public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlStatement {
 
+    /**
+     * 更新的模型源
+     */
     protected OqlExprObjectSource objectSource;
 
-    protected final List<SqlUpdateSetItem> setItems = new ArrayList<>();
+    /**
+     * 更新的字段值
+     */
+    protected final List<OqlUpdateSetItem> setItems = new ArrayList<>();
 
     /**
      * 查询条件
@@ -31,17 +41,17 @@ public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlS
         this.addChild(objectSource);
     }
 
-    public List<SqlUpdateSetItem> getSetItems() {
+    public List<OqlUpdateSetItem> getSetItems() {
         return setItems;
     }
 
-    public void addSetItems(List<SqlUpdateSetItem> setItems) {
-        for (SqlUpdateSetItem setItem : setItems) {
+    public void addSetItems(List<OqlUpdateSetItem> setItems) {
+        for (OqlUpdateSetItem setItem : setItems) {
             this.addSetItem(setItem);
         }
     }
 
-    public void addSetItem(SqlUpdateSetItem setItem) {
+    public void addSetItem(OqlUpdateSetItem setItem) {
         this.setItems.add(setItem);
         this.addChild(setItem);
     }
@@ -82,7 +92,7 @@ public class OqlUpdateStatement extends AbstractOqlStatementImpl implements OqlS
     public OqlUpdateStatement cloneMe() {
         OqlUpdateStatement statement = new OqlUpdateStatement();
         statement.setObjectSource(this.objectSource.cloneMe());
-        for (SqlUpdateSetItem setItem : this.setItems) {
+        for (OqlUpdateSetItem setItem : this.setItems) {
             statement.addSetItem(setItem);
         }
         if (this.where != null) {

@@ -1,7 +1,6 @@
 package net.cf.object.engine;
 
 import net.cf.form.repository.ObjectRepository;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
@@ -11,18 +10,19 @@ import net.cf.object.engine.data.DefaultResultReducer;
 import net.cf.object.engine.data.ParameterMapper;
 import net.cf.object.engine.data.ResultReducer;
 import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.check.DeleteStatementChecker;
 import net.cf.object.engine.oql.check.InsertStatementChecker;
 import net.cf.object.engine.oql.check.SelectStatementChecker;
 import net.cf.object.engine.oql.check.UpdateStatementChecker;
+import net.cf.object.engine.oql.info.*;
+import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
 import net.cf.object.engine.sqlbuilder.delete.SqlDeleteStatementBuilder;
 import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
 import net.cf.object.engine.sqlbuilder.select.SqlSelectStatementBuilder;
 import net.cf.object.engine.sqlbuilder.update.SqlUpdateStatementBuilder;
-import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
-import net.cf.object.engine.util.OqlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,18 +65,41 @@ public class OqlEngineImpl implements OqlEngine {
         SelectStatementChecker checker = new SelectStatementChecker();
         stmt.accept(checker);
 
-        // 查询本表的结果
+        // OQL语句解析
+        OqlSelectInfoParser infoParser = new OqlSelectInfoParser(stmt, paramMap, false);
+        infoParser.parse();
+
+        // 查询本表
+        OqlSelectInfo mainSelectInfo = infoParser.getSelfObjectSelectInfo();
+        OqlSelectStatement mainStmt = mainSelectInfo.getStatement();
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(stmt, builder);
-        Map<String, Object> resultMap = this.repository.selectOne(sqlStmt, paramMap);
+        SqlSelectStatement mainSqlStmt = Oql2SqlUtils.toSqlSelect(mainStmt, builder);
+        Map<String, Object> resultMap = this.repository.selectOne(mainSqlStmt, paramMap);
         DefaultResultReducer resultReducer = new DefaultResultReducer(builder.getFieldMappings());
         Map<String, Object> mainResultMap = resultReducer.reduceResult(resultMap);
 
+        // 查询一对多的关联表的结果
+        List<OqlSelectInfo> detailSelectInfos = infoParser.getDetailObjectSelectInfos();
+        if (detailSelectInfos != null && detailSelectInfos.size() > 0) {
+            XObject mainObject = mainSelectInfo.getObject();
 
-        // 相询一对多的关联表的结果
-        String mainPrimaryFieldName = stmt.getSelect().getFrom().getResolvedObject().getPrimaryField().getName();
-        String masterId = (String) mainResultMap.get(mainPrimaryFieldName);
-        List<OqlObjectExpandExpr> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
+            // 生成masterId
+            String mainPrimaryFieldName = mainObject.getPrimaryField().getName();
+            String masterId = (String) mainResultMap.get(mainPrimaryFieldName);
+
+            // 循环处理子表
+            for (OqlSelectInfo detailSelectInfo : detailSelectInfos) {
+                OqlSelectStatement detailStmt = detailSelectInfo.getStatement();
+                Map<String, Object> detailParamMap = detailSelectInfo.getParamMap();
+                detailParamMap.put(mainPrimaryFieldName, masterId);
+                List<Map<String, Object>> detailResult = this.queryList(detailStmt, detailParamMap);
+                XObject detailObject = detailSelectInfo.getObject();
+                XObjectRefField detailRefField = mainObject.getObjectRefField(detailObject.getName());
+                mainResultMap.put(detailRefField.getName(), detailResult);
+            }
+        }
+
+        /*List<OqlObjectExpandExpr> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
         for (OqlObjectExpandExpr detailObjectExpandExpr : detailObjectExpandExprs) {
             XObject detailObject = detailObjectExpandExpr.getResolvedRefObject();
             String masterFieldName = detailObject.getMasterField().getName();
@@ -86,7 +109,7 @@ public class OqlEngineImpl implements OqlEngine {
             List<Map<String, Object>> refResultMaps = this.queryList(refObjectStmt, detailParamMap);
             String refFieldName = detailObjectExpandExpr.getResolvedObjectRefField().getName();
             mainResultMap.put(refFieldName, refResultMaps);
-        }
+        }*/
 
         return mainResultMap;
     }
@@ -102,15 +125,63 @@ public class OqlEngineImpl implements OqlEngine {
 
     @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap) {
-        // 对OQL语句进行合法性校验
+        // OQL语句合法性校验
         SelectStatementChecker checker = new SelectStatementChecker();
         stmt.accept(checker);
 
+        // OQL语句解析
+        OqlSelectInfoParser infoParser = new OqlSelectInfoParser(stmt, paramMap, true);
+        infoParser.parse();
+
+        // 查询本表
+        OqlSelectInfo mainSelectInfo = infoParser.getSelfObjectSelectInfo();
+        OqlSelectStatement mainStmt = mainSelectInfo.getStatement();
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(stmt, builder);
-        List<Map<String, Object>> resultMapList = this.repository.selectList(sqlStmt, paramMap);
+        SqlSelectStatement selfSqlStmt = Oql2SqlUtils.toSqlSelect(mainStmt, builder);
+        List<Map<String, Object>> mainResultMapList = this.repository.selectList(selfSqlStmt, paramMap);
         DefaultResultReducer resultReducer = new DefaultResultReducer(builder.getFieldMappings());
-        return this.convertResultMapList(resultReducer, resultMapList);
+        mainResultMapList = this.convertResultMapList(resultReducer, mainResultMapList);
+
+        // 相询一对多的关联表的结果
+        List<OqlSelectInfo> detailSelectInfos = infoParser.getDetailObjectSelectInfos();
+        if (detailSelectInfos != null && detailSelectInfos.size() > 0) {
+            // 生成masterId列表
+            XObject mainObject = mainSelectInfo.getObject();
+            String mainPrimaryFieldName = mainObject.getPrimaryField().getName();
+            List<String> masterIds = new ArrayList<>();
+            for (Map<String, Object> mainResultMap : mainResultMapList) {
+                masterIds.add((String) mainResultMap.get(mainPrimaryFieldName));
+            }
+
+            for (OqlSelectInfo detailSelectInfo : detailSelectInfos) {
+                XObject detailObject = detailSelectInfo.getObject();
+                OqlSelectStatement detailStmt = detailSelectInfo.getStatement();
+                Map<String, Object> detailParamMap = detailSelectInfo.getParamMap();
+                // 生成子表OQL语句时加了"s"复数后缀
+                detailParamMap.put(mainPrimaryFieldName + "s", masterIds);
+                List<Map<String, Object>> detailResult = this.queryList(detailStmt, detailParamMap);
+                // 按照masterId聚合
+                Map<String, List<Map<String, Object>>> masterIdGroupedMap = new HashMap<>();
+                for (Map<String, Object> detailItem : detailResult) {
+                    String masterId = detailItem.get(mainPrimaryFieldName).toString();
+                    List<Map<String, Object>> masterIdResult = masterIdGroupedMap.get(masterId);
+                    if (masterIdResult == null) {
+                        masterIdResult = new ArrayList<>();
+                        masterIdGroupedMap.put(masterId, masterIdResult);
+                    }
+                    masterIdResult.add(detailItem);
+                }
+
+                // 把前面的结果再合并到主表的返回数据中
+                for (Map<String, Object> mainResultMap : mainResultMapList) {
+                    XObjectRefField detailRefField = mainObject.getObjectRefField(detailObject.getName());
+                    String recordId = mainResultMap.get(mainPrimaryFieldName).toString();
+                    mainResultMap.put(detailRefField.getName(), masterIdGroupedMap.get(recordId));
+                }
+            }
+        }
+
+        return mainResultMapList;
     }
 
     /**
@@ -161,10 +232,17 @@ public class OqlEngineImpl implements OqlEngine {
         InsertStatementChecker checker = new InsertStatementChecker();
         stmt.accept(checker);
 
-        // 构建SQL语句
-        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
-        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(stmt, builder);
+        // OQL语句解析
+        OqlInsertInfoParser infoParser = new OqlInsertInfoParser(stmt, paramMap);
+        infoParser.parse();
 
+        /**
+         * 插入本表
+         */
+        OqlInsertInfo mainInsertInfo = infoParser.getSelfInsertInfo();
+        OqlInsertStatement mainStmt = mainInsertInfo.getStatement();
+        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
+        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(mainStmt, builder);
         // 作参数映射，将引擎层的参数转换驱动层的参数格式
         DefaultParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         Map<String, Object> targetParamMap = parameterMapper.mapParameter(paramMap);
@@ -175,8 +253,38 @@ public class OqlEngineImpl implements OqlEngine {
             logger.warn("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
         }
 
+        /**
+         * 循环插入子表
+         */
+        List<OqlDetailInsertInfo> detailInsertInfos = infoParser.getDetailInsertInfos();
+        if (detailInsertInfos != null && detailInsertInfos.size() > 0) {
+            XObject mainObject = mainInsertInfo.getObject();
+
+            // 生成masterId
+            String mainPrimaryFieldName = mainObject.getPrimaryField().getName();
+            String masterId = (String) targetParamMap.get(mainPrimaryFieldName);
+
+            // 循环处理子表
+            for (OqlDetailInsertInfo detailInsertInfo : detailInsertInfos) {
+                XObject detailObject = detailInsertInfo.getObject();
+                Object subParamMaps = detailInsertInfo.getParamMaps();
+                if (subParamMaps == null && !(subParamMaps instanceof List)) {
+                    throw new FastOqlException("子表数据不能为空，且参数格式必须是List<Map>");
+                }
+
+                // 添加主表记录ID
+                String subObjectMasterFieldName = detailObject.getMasterField().getName();
+                List<Map<String, Object>> subParamMapList = (List<Map<String, Object>>) subParamMaps;
+                for (Map<String, Object> subParamMap : subParamMapList) {
+                    subParamMap.put(subObjectMasterFieldName, masterId);
+                }
+                OqlInsertStatement detailStmt = detailInsertInfo.getStatement();
+                this.createList(detailStmt, subParamMapList);
+            }
+        }
+
         // 循环插入子表
-        String masterId = targetParamMap.get(stmt.getObjectSource().getResolvedObject().getPrimaryField().getName()).toString();
+        /*String masterId = targetParamMap.get(stmt.getObjectSource().getResolvedObject().getPrimaryField().getName()).toString();
         Map<OqlObjectExpandExpr, List<SqlExpr>> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
         for (Map.Entry<OqlObjectExpandExpr, List<SqlExpr>> entry : detailObjectExpandExprs.entrySet()) {
             OqlObjectExpandExpr objectExpandExpr = entry.getKey();
@@ -193,7 +301,7 @@ public class OqlEngineImpl implements OqlEngine {
             }
             OqlInsertStatement detailStmt = OqlUtils.buildDetailObjectInsertStatement(objectExpandExpr, entry.getValue());
             this.createList(detailStmt, subParamMapList);
-        }
+        }*/
 
         return effectedRows;
     }

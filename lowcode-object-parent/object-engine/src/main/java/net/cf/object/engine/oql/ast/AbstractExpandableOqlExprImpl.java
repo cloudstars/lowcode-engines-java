@@ -1,7 +1,6 @@
 package net.cf.object.engine.oql.ast;
 
 import net.cf.form.repository.sql.ast.SqlDataType;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
 
 /**
  * 可展开的表达式
@@ -21,7 +20,7 @@ public abstract class AbstractExpandableOqlExprImpl extends AbstractOqlExprImpl 
     protected boolean isStarExpanded = false;
 
     @Override
-    public SqlExpr cloneMe() {
+    public OqlExpr cloneMe() {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 

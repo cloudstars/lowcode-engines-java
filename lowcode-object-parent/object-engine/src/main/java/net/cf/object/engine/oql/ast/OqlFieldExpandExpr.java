@@ -1,8 +1,6 @@
 package net.cf.object.engine.oql.ast;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
@@ -19,7 +17,7 @@ public class OqlFieldExpandExpr extends AbstractExpandableOqlExprImpl {
     /**
      *  展开的字段
      */
-    private final SqlName owner;
+    private final String owner;
 
     /**
      *  字段中展开的属性列表（含常量、表达式等）
@@ -31,15 +29,11 @@ public class OqlFieldExpandExpr extends AbstractExpandableOqlExprImpl {
      */
     protected XField resolvedField;
 
-    public OqlFieldExpandExpr(String fieldName) {
-        this(new SqlIdentifierExpr(fieldName));
-    }
-
-    public OqlFieldExpandExpr(SqlName owner) {
+    public OqlFieldExpandExpr(String owner) {
         this.owner = owner;
     }
 
-    public SqlName getOwner() {
+    public String getOwner() {
         return owner;
     }
 
@@ -53,14 +47,6 @@ public class OqlFieldExpandExpr extends AbstractExpandableOqlExprImpl {
 
     public void addProperty(SqlExpr property) {
         this.properties.add(property);
-    }
-
-    public XField getResolvedField() {
-        return resolvedField;
-    }
-
-    public void setResolvedField(XField resolvedField) {
-        this.resolvedField = resolvedField;
     }
 
     @Override
@@ -83,6 +69,15 @@ public class OqlFieldExpandExpr extends AbstractExpandableOqlExprImpl {
         x.resolvedField = this.resolvedField;
 
         return x;
+    }
+
+
+    public XField getResolvedField() {
+        return resolvedField;
+    }
+
+    public void setResolvedField(XField resolvedField) {
+        this.resolvedField = resolvedField;
     }
 
 }

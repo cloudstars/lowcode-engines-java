@@ -10,10 +10,7 @@ import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.parser.SqlExprParser;
 import net.cf.form.repository.sql.parser.Token;
-import net.cf.object.engine.object.XField;
-import net.cf.object.engine.object.XObject;
-import net.cf.object.engine.object.XObjectRefField;
-import net.cf.object.engine.object.XProperty;
+import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
 
@@ -182,7 +179,7 @@ public class OqlExprParser extends SqlExprParser {
                 throw new FastOqlException("模型：" + ownerObjectName + "中的字段" + resolvedOwnerField + "下的属性" + ownerPropertyName + "不存在");
             }
 
-            OqlFieldExpr ownerFieldExpr = new OqlFieldExpr(idOwnerOwner, ownerFieldName);
+            OqlFieldExpr ownerFieldExpr = new OqlFieldExpr(ownerObjectName, ownerFieldName);
             ownerFieldExpr.setResolvedField(resolvedOwnerField);
             OqlPropertyExpr propExpr = new OqlPropertyExpr(ownerFieldExpr, ownerPropertyName);
             propExpr.setResolvedProperty(resolvedOwnerProperty);
@@ -251,7 +248,7 @@ public class OqlExprParser extends SqlExprParser {
             String propName = x.getName();
             if (Token.STAR.getName().equals(propName)) { // 展开整个模型
                 // 识别为OQL模型展开表达式
-                OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(owner);
+                OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(ownerObjectName);
                 objectExpandExpr.setStarExpanded(true);
                 objectExpandExpr.setResolvedObjectRefField(objectRefField);
                 objectExpandExpr.setResolvedRefObject(ownerObject);
@@ -263,7 +260,7 @@ public class OqlExprParser extends SqlExprParser {
                 }
 
                 // 识别为OQL字段表达式
-                OqlFieldExpr fieldExpr = new OqlFieldExpr(new SqlIdentifierExpr(ownerObjectName), propName);
+                OqlFieldExpr fieldExpr = new OqlFieldExpr(ownerObjectName, propName);
                 fieldExpr.setResolvedField(ownerField);
                 sqlX = fieldExpr;
             }
@@ -407,7 +404,10 @@ public class OqlExprParser extends SqlExprParser {
                 throw new FastOqlException("模型展开的字段中不能有嵌合函数");
             } else if (arg instanceof SqlMethodInvokeExpr) { // 内嵌展开字段
                 SqlExpr argX = this.parseMethodInvokeExpr(refObject, (SqlMethodInvokeExpr) arg);
-                objectExpandExpr.addField(argX);
+                if (argX instanceof OqlExpr) {
+                    throw new FastOqlException("OQL模型展开的字段中，只允许出现OqlExpr类型的表达式");
+                }
+                objectExpandExpr.addField((OqlExpr) argX);
             } else if (arg instanceof SqlIdentifierExpr) {
                 String fieldName = ((SqlIdentifierExpr) arg).getName();
                 XField field = refObject.getField(fieldName);
@@ -429,7 +429,11 @@ public class OqlExprParser extends SqlExprParser {
                     objectExpandExpr.addField(fieldExpr);
                 }
             } else {
-                objectExpandExpr.addField(this.parseSqlExpr(refObject, arg));
+                SqlExpr argX = this.parseSqlExpr(refObject, arg);
+                if (argX instanceof OqlExpr) {
+                    throw new FastOqlException("OQL模型展开的字段中，只允许出现OqlExpr类型的表达式");
+                }
+                objectExpandExpr.addField((OqlExpr) argX);
             }
         }
 
@@ -477,6 +481,22 @@ public class OqlExprParser extends SqlExprParser {
         }
 
         return fieldExpandExpr;
+    }
+
+    /**
+     * 判断是否是一个子表
+     *
+     * @param selfObject 本模型
+     * @param someName 某个(方法、字段等)名称
+     * @return
+     */
+    protected boolean isDetailObject(XObject selfObject, String someName) {
+        XObjectRefField objectRefField = selfObject.getObjectRefField(someName);
+        if (objectRefField != null) {
+            return objectRefField.getRefType() == ObjectRefType.MASTER;
+        }
+
+        return false;
     }
 
 }

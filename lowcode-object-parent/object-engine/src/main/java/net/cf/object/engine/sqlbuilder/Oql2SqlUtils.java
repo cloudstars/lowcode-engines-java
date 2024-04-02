@@ -12,7 +12,7 @@ import net.cf.object.engine.sqlbuilder.delete.OqlDeleteAstVisitor;
 import net.cf.object.engine.sqlbuilder.delete.SqlDeleteStatementBuilder;
 import net.cf.object.engine.sqlbuilder.insert.OqlInsertAstVisitor;
 import net.cf.object.engine.sqlbuilder.insert.SqlInsertStatementBuilder;
-import net.cf.object.engine.sqlbuilder.select.OqlSelectAstVisitor;
+import net.cf.object.engine.sqlbuilder.select.SelectOqlSqlBuilderAstVisitor;
 import net.cf.object.engine.sqlbuilder.select.SqlSelectStatementBuilder;
 import net.cf.object.engine.sqlbuilder.update.OqlUpdateAstVisitor;
 import net.cf.object.engine.sqlbuilder.update.SqlUpdateStatementBuilder;
@@ -29,7 +29,7 @@ public final class Oql2SqlUtils {
      * @return
      */
     public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt, SqlSelectStatementBuilder builder) {
-        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder);
+        SelectOqlSqlBuilderAstVisitor visitor = new SelectOqlSqlBuilderAstVisitor(builder);
         stmt.accept(visitor);
         return builder.build();
     }
@@ -42,7 +42,7 @@ public final class Oql2SqlUtils {
      */
     public static SqlSelectStatement toSqlSelect(final OqlSelectStatement stmt) {
         SqlSelectStatementBuilder builder = new SqlSelectStatementBuilder();
-        OqlSelectAstVisitor visitor = new OqlSelectAstVisitor(builder);
+        SelectOqlSqlBuilderAstVisitor visitor = new SelectOqlSqlBuilderAstVisitor(builder);
         stmt.accept(visitor);
         return builder.build();
     }

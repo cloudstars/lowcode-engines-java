@@ -210,9 +210,9 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
      * @return
      */
     protected String getFieldName(OqlFieldExpr fieldExpr) {
-        SqlIdentifierExpr owner = fieldExpr.getOwner();
+        String owner = fieldExpr.getOwner();
         if (owner != null) {
-            return owner.getName() + "." + fieldExpr.getName();
+            return owner + "." + fieldExpr.getName();
         } else {
             return fieldExpr.getName();
         }

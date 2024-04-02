@@ -57,8 +57,8 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param x
      */
     private void buildInsertColumns(OqlInsertStatement x) {
-        List<SqlExpr> fields = x.getFields();
-        for (SqlExpr field : fields) {
+        List<OqlExpr> fields = x.getFields();
+        for (OqlExpr field : fields) {
             if (field instanceof OqlFieldExpr || field instanceof OqlPropertyExpr) {
                 SqlExpr exprX = this.buildSqlExpr(this.selfObject, field);
                 builder.appendColumn(exprX);
@@ -86,7 +86,7 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param x
      */
     private void buildInsertValuesList(OqlInsertStatement x) {
-        List<SqlExpr> insertFields = x.getFields();
+        List<OqlExpr> insertFields = x.getFields();
         List<SqlInsertStatement.ValuesClause> valuesClauses = x.getValuesList();
         for (SqlInsertStatement.ValuesClause valuesClause : valuesClauses) {
             SqlInsertStatement.ValuesClause sqlValuesClause = this.toSqlValuesClause(valuesClause, insertFields);
@@ -101,8 +101,7 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param insertFields
      * @return
      */
-    private SqlInsertStatement.ValuesClause toSqlValuesClause(SqlInsertStatement.ValuesClause
-                                                                      valuesClause, List<SqlExpr> insertFields) {
+    private SqlInsertStatement.ValuesClause toSqlValuesClause(SqlInsertStatement.ValuesClause valuesClause, List<OqlExpr> insertFields) {
         SqlInsertStatement.ValuesClause valuesClauseX = new SqlInsertStatement.ValuesClause();
         List<SqlExpr> values = valuesClause.getValues();
         // 判断插入的列是否有被展开，如果列有展开，那么值也要被展开
@@ -184,8 +183,7 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param insertValue
      * @param valuesClause
      */
-    private void processFieldValueExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr
-            insertValue, SqlInsertStatement.ValuesClause valuesClause) {
+    private void processFieldValueExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr insertValue, SqlInsertStatement.ValuesClause valuesClause) {
         XField resolvedField = fieldExpandExpr.getResolvedField();
         XObject resolvedObject = resolvedField.getOwner();
         List<? extends SqlExpr> properties;
@@ -245,8 +243,7 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      * @param insertValue
      * @param sqlValuesClause
      */
-    private void processObjectValueExpand(OqlObjectExpandExpr objectExpandExpr, SqlExpr
-            insertValue, SqlInsertStatement.ValuesClause sqlValuesClause) {
+    private void processObjectValueExpand(OqlObjectExpandExpr objectExpandExpr, SqlExpr insertValue, SqlInsertStatement.ValuesClause sqlValuesClause) {
 
     }
 

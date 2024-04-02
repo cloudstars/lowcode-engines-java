@@ -22,7 +22,7 @@ public class InsertStatementChecker extends AbstractStatementChecker {
 
     @Override
     public boolean visit(OqlInsertInto x) {
-        List<SqlExpr> fields = x.getFields();
+        List<OqlExpr> fields = x.getFields();
         List<SqlInsertStatement.ValuesClause> valuesList = x.getValuesList();
 
         // 检查插入的值与字段的数量是否匹配
@@ -50,8 +50,8 @@ public class InsertStatementChecker extends AbstractStatementChecker {
                 }
             } else if (field instanceof OqlObjectExpandExpr) {
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) field;
-                List<SqlExpr> expandedFields = objectExpandExpr.getFields();
-                for (SqlExpr expandedField : expandedFields) {
+                List<OqlExpr> expandedFields = objectExpandExpr.getFields();
+                for (OqlExpr expandedField : expandedFields) {
                     if (expandedField instanceof OqlFieldExpr) {
                         //throw new FastOqlException("OQL插入语句的模型展开表达式" + objectExpandExpr + "中的字段，只允许出现字段的属性！");
                     }

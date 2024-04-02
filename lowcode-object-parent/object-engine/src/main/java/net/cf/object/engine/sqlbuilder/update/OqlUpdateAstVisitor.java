@@ -63,16 +63,15 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
      *
      * @param setItems
      */
-    private void buildSetItems(final List<SqlUpdateSetItem> setItems) {
-        for (SqlUpdateSetItem setItem : setItems) {
-            SqlExpr updateField = setItem.getColumn();
+    private void buildSetItems(final List<OqlUpdateSetItem> setItems) {
+        for (OqlUpdateSetItem setItem : setItems) {
+            SqlExpr updateField = setItem.getField();
             SqlExpr updateValue = setItem.getValue();
             if (updateField instanceof OqlFieldExpr || updateField instanceof OqlPropertyExpr) {
-                SqlUpdateSetItem sqlSetItem = setItem.cloneMe();
+                SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
                 sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, updateField));
                 sqlSetItem.setValue(this.buildSqlExpr(this.selfObject, setItem.getValue()));
                 this.builder.appendSetItem(sqlSetItem);
-
                 if (updateValue instanceof SqlVariantRefExpr) {
                     String varName = ((SqlVariantRefExpr) updateValue).getVarName();
                     this.builder.appendFieldMapping(new FieldMapping(varName, varName));

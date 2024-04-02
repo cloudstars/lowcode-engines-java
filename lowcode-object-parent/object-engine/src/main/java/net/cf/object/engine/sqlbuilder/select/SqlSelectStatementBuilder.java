@@ -9,11 +9,12 @@ import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
-import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.sqlbuilder.AbstractSqlStatementBuilder;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * SQL查询语句构建器
@@ -27,7 +28,7 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
     /**
      * 子表展开
      */
-    private final List<OqlObjectExpandExpr> detailObjectExpandExprs = new ArrayList<>();
+    //private final List<OqlObjectExpandExpr> detailObjectExpandExprs = new ArrayList<>();
 
     /**
      * 关联的模型集合（避免重复JOIN）
@@ -161,11 +162,11 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
      * @param objectExpandExpr
      * @return
      */
-    public SqlSelectStatementBuilder appendDetailObjectExpandExpr(OqlObjectExpandExpr objectExpandExpr) {
+    /*public SqlSelectStatementBuilder appendDetailObjectExpandExpr(OqlObjectExpandExpr objectExpandExpr) {
         assert (objectExpandExpr.getResolvedObjectRefField().isMultiRef());
-        this.detailObjectExpandExprs.add(objectExpandExpr);
+        //this.detailObjectExpandExprs.add(objectExpandExpr);
         return this;
-    }
+    }*/
 
     @Override
     public SqlSelectStatement build() {
@@ -177,7 +178,7 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
      *
      * @return
      */
-    public List<OqlObjectExpandExpr> getDetailObjectExpandExprs() {
+    /*public List<OqlObjectExpandExpr> getDetailObjectExpandExprs() {
         return detailObjectExpandExprs;
-    }
+    }*/
 }

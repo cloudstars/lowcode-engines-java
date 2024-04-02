@@ -100,7 +100,10 @@ public class OqlStatementParser extends OqlExprParser {
         List<SqlExpr> columns = sqlInsertInto.getColumns();
         for (SqlExpr column : columns) {
             SqlExpr columnX = this.parseSqlExpr(resolvedObject, column);
-            oqlInsertInto.addField(columnX);
+            if (!(columnX instanceof OqlExpr)) {
+                throw new FastOqlException("OQL插入语句的列中只允许出现OqlExpr类型的表达式");
+            }
+            oqlInsertInto.addField((OqlExpr) columnX);
         }
         oqlInsertInto.addValuesList(sqlInsertInto.getValuesList());
 
@@ -124,9 +127,15 @@ public class OqlStatementParser extends OqlExprParser {
         for (SqlUpdateSetItem setItem : setItems) {
             // 获取准确的字段类型
             SqlExpr column = setItem.getColumn();
-            setItem.setColumn(this.parseSqlExpr(resolvedObject, column));
-            setItem.setValue(setItem.getValue());
-            oqlUpdateStmt.addSetItem(setItem);
+            SqlExpr columnX = this.parseSqlExpr(resolvedObject, column);
+            if (!(columnX instanceof OqlExpr)) {
+                throw new FastOqlException("OQL更新语句的列中只允许出现OqlExpr类型的表达式");
+            }
+
+            OqlUpdateSetItem oqlSetItem = new OqlUpdateSetItem();
+            oqlSetItem.setField((OqlExpr) columnX);
+            oqlSetItem.setValue(setItem.getValue());
+            oqlUpdateStmt.addSetItem(oqlSetItem);
         }
         SqlExpr sqlWhere = sqlUpdateStmt.getWhere();
         SqlExpr oqlWhere = this.toValidOqlWhere(resolvedObject, sqlWhere);

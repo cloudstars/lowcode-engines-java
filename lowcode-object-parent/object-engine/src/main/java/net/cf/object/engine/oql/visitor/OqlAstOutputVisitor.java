@@ -2,7 +2,6 @@ package net.cf.object.engine.oql.visitor;
 
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
 import net.cf.object.engine.oql.ast.*;
@@ -22,9 +21,9 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
 
     @Override
     public boolean visit(OqlFieldExpr x) {
-        SqlIdentifierExpr owner = x.getOwner();
+        String owner = x.getOwner();
         if (owner != null) {
-            this.print(owner.getName());
+            this.print(owner);
             this.print(".");
         }
 
@@ -48,7 +47,7 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
 
     @Override
     public boolean visit(OqlObjectExpandExpr x) {
-        this.print(x.getOwner().getName());
+        this.print(x.getOwner());
         if (x.isStarExpanded()) {
             this.print(".*");
         } else if (!x.isDefaultExpanded()) {
@@ -135,6 +134,16 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
     }
 
     @Override
+    public boolean visit(OqlSelectItem x) {
+        x.getExpr().accept(this);
+        if (x.getAlias() != null) {
+            this.print(" as " + x.getAlias());
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean visit(OqlInsertStatement x) {
         this.print(this.uppercase ? "INSERT INTO " : "insert into ");
 
@@ -169,6 +178,14 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         // 输出where条件
         this.printWhere(x.getWhere());
 
+        return false;
+    }
+
+    @Override
+    public boolean visit(OqlUpdateSetItem x) {
+        x.getField().accept(this);
+        this.print(" = ");
+        x.getValue().accept(this);
         return false;
     }
 

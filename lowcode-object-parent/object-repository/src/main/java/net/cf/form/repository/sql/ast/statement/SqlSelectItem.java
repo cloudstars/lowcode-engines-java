@@ -9,8 +9,10 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 /**
  * SQL 查询的字段
  *
- * 继承了SqlExpr是为了OQL层在转换模型or字段展开时，存在as别名的问题，
- * 如：object(1 as f1, f2 as fx)、field('1' as prop1, prop2 as propX)
+ * 正常情况下，SqlSelectItem不需要实现SqlExpr，只需要实现SqlObject。
+ * 继承了SqlExpr是因为OQL语句的解析时，用了SQL解析器，先把文本转为SQL，将SQL语句转换为了OQL语句，
+ * 同时OQL语句的展开子句中存在如下子句：object(1 as f1, f2 as fx)、field('1' as prop1, prop2 as propX)
+ * 为了能用到SqlExprParser的exprList的解析过程，所以续承了SqlExpr，后续可以改进，提供OqlExprParser来处理这一种情况
  *
  * @author clouds
  */

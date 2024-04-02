@@ -14,7 +14,7 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements SqlReplac
 
     protected OqlExprObjectSource objectSource;
 
-    protected final List<SqlExpr> fields = new ArrayList();
+    protected final List<OqlExpr> fields = new ArrayList();
 
     protected final List<SqlInsertStatement.ValuesClause> valuesList = new ArrayList();
 
@@ -30,22 +30,22 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements SqlReplac
         this.addChild(objectSource);
     }
 
-    public List<SqlExpr> getFields() {
+    public List<OqlExpr> getFields() {
         return fields;
     }
 
-    public void addFields(List<SqlExpr> fields) {
-        for (SqlExpr field : fields) {
+    public void addFields(List<OqlExpr> fields) {
+        for (OqlExpr field : fields) {
             this.addField(field);
         }
     }
 
-    public void addField(SqlExpr field) {
+    public void addField(OqlExpr field) {
         this.fields.add(field);
         this.addChild(field);
     }
 
-    public void addField(int index, SqlExpr field) {
+    public void addField(int index, OqlExpr field) {
         this.fields.add(index, field);
         this.addChild(field);
     }
@@ -88,7 +88,7 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements SqlReplac
     public OqlInsertInto cloneMe() {
         OqlInsertInto x = new OqlInsertInto();
         x.setObjectSource(this.objectSource.cloneMe());
-        for (SqlExpr field : this.fields) {
+        for (OqlExpr field : this.fields) {
             x.fields.add(field.cloneMe());
         }
         for (SqlInsertStatement.ValuesClause valuesItem : this.valuesList) {
