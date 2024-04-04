@@ -10,8 +10,8 @@ import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
+import net.cf.object.engine.util.OqlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,9 +72,9 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
                 }
             } else if (sqlExpr instanceof OqlFieldExpandExpr) { // 字段展开
                 OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) sqlExpr;
-                itemInfo = this.buildSelectFieldExpandExpr(fieldExpandExpr);
+                itemInfo = this.buildSelectFieldExpandExpr(fieldExpandExpr, selectItem.getAlias());
             } else {
-                itemInfo = this.buildSimpleItemInfo(this.selfObject, sqlExpr);
+                itemInfo = this.buildSimpleItemInfo(this.selfObject, sqlExpr, selectItem.getAlias());
             }
             this.builder.appendSelectItemInfo(itemInfo);
         }
@@ -157,13 +157,14 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
      *
      * @param expr
      */
-    private SelectItemInfo buildSelectFieldExpandExpr(OqlFieldExpandExpr expr) {
+    private SelectItemInfo buildSelectFieldExpandExpr(OqlFieldExpandExpr expr, String alias) {
         XField field = expr.getResolvedField();
         XObject object = field.getOwner();
 
         // 构建字段的查询信息（展开无字段信息）
         SelectItemInfo parentSelectItemInfo = new SelectItemInfo();
-        FieldMapping parentFieldMapping = new FieldMapping(field.getName(), field.getDataType(), field.isArray());
+        String fieldName = alias != null ? alias : field.getName();
+        FieldMapping parentFieldMapping = new FieldMapping(fieldName, field.getDataType(), field.isArray());
         parentSelectItemInfo.setFieldMapping(parentFieldMapping);
 
         if (expr.isDefaultExpanded() || expr.isStarExpanded()) {
@@ -197,7 +198,7 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
                 XField expandField = expandExpr.getResolvedField();
                 itemInfo = this.expandField(expandField, expandExpr.getProperties());
             } else {
-                itemInfo = this.buildSimpleItemInfo(object, expr);
+                itemInfo = this.buildSimpleItemInfo(object, expr, null);
             }
             itemInfos.add(itemInfo);
         }
@@ -248,10 +249,10 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
      * @param object
      * @param expr
      */
-    private SelectItemInfo buildSimpleItemInfo(XObject object, SqlExpr expr) {
+    private SelectItemInfo buildSimpleItemInfo(XObject object, SqlExpr expr, String alias) {
         SqlExpr exprX = this.buildSqlExpr(object, expr);
         SelectItemInfo itemInfo = new SelectItemInfo();
-        FieldMapping fieldMapping = this.createFieldMapping(object, expr, exprX);
+        FieldMapping fieldMapping = this.createFieldMapping(object, expr, exprX, alias);
         itemInfo.setFieldMapping(fieldMapping);
         SqlSelectItem sqlSelectItem = new SqlSelectItem(exprX);
         itemInfo.addSelectItem(sqlSelectItem);
@@ -265,7 +266,7 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
      * @param oqlExpr
      * @param sqlExpr
      */
-    private FieldMapping createFieldMapping(XObject object, SqlExpr oqlExpr, SqlExpr sqlExpr) {
+    private FieldMapping createFieldMapping(XObject object, SqlExpr oqlExpr, SqlExpr sqlExpr, String alias) {
         // 经过OQL转换后，这两种类型已经不存在了
         assert (!(oqlExpr instanceof SqlIdentifierExpr && oqlExpr instanceof SqlPropertyExpr));
 
@@ -274,7 +275,7 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
             OqlFieldExpr fieldExpr = (OqlFieldExpr) oqlExpr;
             XField resolvedField = fieldExpr.getResolvedField();
             // TODO 生成列名可以优化，把前面生成SqlIdentifierExp、SqlPropertyExpr的结果保存下来
-            String fieldName = this.getFieldName(fieldExpr);
+            String fieldName = alias != null ? alias : this.getFieldName(fieldExpr);
             String columnName = resolvedField.getColumnName();
             if (object != selfObject) {
                 columnName = object.getTableName() + "." + columnName;
@@ -283,14 +284,14 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
         } else if (oqlExpr instanceof OqlPropertyExpr) {
             OqlPropertyExpr propExpr = (OqlPropertyExpr) oqlExpr;
             XProperty property = propExpr.getResolvedProperty();
-            String fieldName = this.getPropertyName(propExpr);
+            String fieldName = alias != null ? alias : this.getPropertyName(propExpr);
             String columnName = property.getColumnName();
             if (object != selfObject) {
                 columnName = object.getTableName() + "." + columnName;
             }
             fieldMapping = new FieldMapping(fieldName, columnName, property.getDataType(), property.isArray());
         } else {
-            String fieldName = OqlUtils.expr2String(oqlExpr);
+            String fieldName = alias != null ? alias : OqlUtils.expr2String(oqlExpr);
             String columnName = sqlExpr.toString();
             // TODO 这里没有数据类型，可以考虑SqlExpr定义getDataType()接口
             fieldMapping = new FieldMapping(fieldName, columnName, null, false);

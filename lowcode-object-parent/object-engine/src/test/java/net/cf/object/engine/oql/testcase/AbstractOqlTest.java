@@ -61,6 +61,18 @@ public abstract class AbstractOqlTest {
                     oqlInfo.paramMaps.add(array.getJSONObject(j));
                 }
             }
+            String resultMap = oqlJson.getString("resultMap");
+            if (resultMap != null) {
+                oqlInfo.resultMap = JSONObject.parseObject(resultMap, HashMap.class);
+            }
+            String resultMaps = oqlJson.getString("resultMaps");
+            if (resultMaps != null) {
+                oqlInfo.resultMaps = new ArrayList<>();
+                JSONArray array = JSONArray.parseArray(resultMaps);
+                for (int j = 0, s = array.size(); j < s; j++) {
+                    oqlInfo.resultMaps.add(array.getJSONObject(j));
+                }
+            }
 
             this.oqlInfos.put(oqlInfo.name, oqlInfo);
         }
@@ -71,8 +83,14 @@ public abstract class AbstractOqlTest {
         public String oql;
         public String sql;
         public String detailSql;
+
         public Map<String, Object> paramMap;
+
         public List<Map<String, Object>> paramMaps;
+
+        public Map<String, Object> resultMap;
+
+        public List<Map<String, Object>> resultMaps;
 
         // 以下3个字段更新子表专用
         public String detailUpdateUpdateSql;

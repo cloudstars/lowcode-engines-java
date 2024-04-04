@@ -1,7 +1,13 @@
 {
   "desc": "测试常量查询员工表的案例",
-  "name": "SelectConcatWhere",
+  "name": "SelectStaffSelfLiteral",
   "oqls": [
-
+    {
+      "desc": "查询常量",
+      "name": "SelectSelfLiteral",
+      "oql": "select 1, '1', 1.1, '2010-10-10' as a from Staff limit 1",
+      "sql": "select 1, '1', 1.1, '2010-10-10' from STAFF limit 1",
+      "resultMap": {"1":  1, "'1'":  "'1'", "1.1": 1.1, "a": "2010-10-10"}
+    }
   ]
 }

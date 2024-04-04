@@ -26,11 +26,6 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
     private final SqlSelect select = new SqlSelect();
 
     /**
-     * 子表展开
-     */
-    //private final List<OqlObjectExpandExpr> detailObjectExpandExprs = new ArrayList<>();
-
-    /**
      * 关联的模型集合（避免重复JOIN）
      */
     private final Set<String> refObjectNames = new HashSet<>();
