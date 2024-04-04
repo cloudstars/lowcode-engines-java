@@ -6,7 +6,9 @@ import net.cf.commons.test.util.FileTestUtils;
 import net.cf.object.engine.oql.parser.XObjectResolver;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,6 +49,18 @@ public abstract class AbstractOqlTest {
             oqlInfo.detailUpdateInsertSql = oqlJson.getString("detailUpdateInsertSql");
             oqlInfo.detailUpdateUpdateSql = oqlJson.getString("detailUpdateUpdateSql");
             oqlInfo.detailUpdateDeleteSql = oqlJson.getString("detailUpdateDeleteSql");
+            String paramMap = oqlJson.getString("paramMap");
+            if (paramMap != null) {
+                oqlInfo.paramMap = JSONObject.parseObject(paramMap, HashMap.class);
+            }
+            String paramMaps = oqlJson.getString("paramMaps");
+            if (paramMaps != null) {
+                oqlInfo.paramMaps = new ArrayList<>();
+                JSONArray array = JSONArray.parseArray(paramMaps);
+                for (int j = 0, s = array.size(); j < s; j++) {
+                    oqlInfo.paramMaps.add(array.getJSONObject(j));
+                }
+            }
 
             this.oqlInfos.put(oqlInfo.name, oqlInfo);
         }
@@ -57,6 +71,8 @@ public abstract class AbstractOqlTest {
         public String oql;
         public String sql;
         public String detailSql;
+        public Map<String, Object> paramMap;
+        public List<Map<String, Object>> paramMaps;
 
         // 以下3个字段更新子表专用
         public String detailUpdateUpdateSql;

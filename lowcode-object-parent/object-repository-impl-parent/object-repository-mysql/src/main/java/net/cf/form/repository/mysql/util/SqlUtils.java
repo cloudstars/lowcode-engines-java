@@ -1,5 +1,6 @@
 package net.cf.form.repository.mysql.util;
 
+import net.cf.form.repository.mysql.jdbc.AdvancedMapSqlParameterSource;
 import net.cf.form.repository.mysql.visitor.MySqlAstOutputVisitor;
 import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;

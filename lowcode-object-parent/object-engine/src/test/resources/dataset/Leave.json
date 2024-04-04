@@ -5,7 +5,7 @@
     {
       "desc": "创建人编号",
       "name": "CREATOR_KEY",
-      "dataType": "String"
+      "dataType": "CHAR"
     }
   ],
   "valuesList": [

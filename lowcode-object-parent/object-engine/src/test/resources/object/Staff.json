@@ -23,7 +23,7 @@
     },
     {
       "type": "Text",
-      "desc": "员工名称",
+      "desc": "员工姓名",
       "name": "staffName",
       "columnName": "STA_NAME",
       "dataType": "String",
@@ -32,8 +32,8 @@
     {
       "type": "Date",
       "desc": "入职日期",
-      "name": "entryDate",
-      "columnName": "ENTRY_DATE",
+      "name": "joinDate",
+      "columnName": "JOIN_DATE",
       "dataType": "Date",
       "dataFormat": "yyyy-MM-dd"
     },

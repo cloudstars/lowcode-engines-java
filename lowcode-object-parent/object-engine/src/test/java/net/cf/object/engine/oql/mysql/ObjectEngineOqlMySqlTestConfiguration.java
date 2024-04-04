@@ -8,6 +8,7 @@ import net.cf.object.engine.object.TestObjectResolver;
 import net.cf.object.engine.oql.parser.XObjectResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
@@ -19,8 +20,8 @@ public class ObjectEngineOqlMySqlTestConfiguration {
     }
 
     @Bean
-    public MySqlObjectRepositoryImpl mySQLObjectRepository(NamedParameterJdbcTemplate jdbcTemplate) {
-        return new MySqlObjectRepositoryImpl(jdbcTemplate);
+    public MySqlObjectRepositoryImpl mySQLObjectRepository(NamedParameterJdbcTemplate jdbcTemplate, JdbcTemplate template) {
+        return new MySqlObjectRepositoryImpl(jdbcTemplate, template);
     }
 
     @Bean

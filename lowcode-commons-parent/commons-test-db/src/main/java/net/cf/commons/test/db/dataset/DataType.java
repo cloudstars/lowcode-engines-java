@@ -6,8 +6,9 @@ package net.cf.commons.test.db.dataset;
  * @author clouds 
  */
 public enum DataType {
-    STRING,
+    CHAR,
     INTEGER,
+    LONG,
     DECIMAL,
     TIMESTAMP,
     DATE,

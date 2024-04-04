@@ -10,7 +10,7 @@ import java.sql.Types;
 public enum SqlDataType {
     CHAR(Types.CHAR),
     INTEGER(Types.INTEGER),
-    BIGINT(Types.BIGINT),
+    LONG(Types.BIGINT),
     DECIMAL(Types.DECIMAL),
     TIMESTAMP(Types.TIMESTAMP),
     DATE(Types.DATE),

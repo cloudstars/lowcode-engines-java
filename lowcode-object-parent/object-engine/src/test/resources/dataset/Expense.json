@@ -5,32 +5,32 @@
     {
       "desc": "报销单ID",
       "name": "APPLY_ID",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "报销单名称",
       "name": "APPLY_NAME",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "申请单ID",
       "name": "TRV_ID",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "报销金额",
       "name": "CASH",
-      "dataType": "Decimal"
+      "dataType": "DECIMAL"
     },
     {
       "desc": "报销说明",
       "name": "REMARK",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "创建人编号",
       "name": "CREATOR_KEY",
-      "dataType": "String"
+      "dataType": "CHAR"
     }
   ],
   "valuesList": [

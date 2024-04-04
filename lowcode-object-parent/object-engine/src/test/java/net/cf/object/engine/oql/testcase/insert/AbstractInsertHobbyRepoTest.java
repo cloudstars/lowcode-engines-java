@@ -46,4 +46,28 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
         }
     }
 
+    @Override
+    public void testInsertHobbyVars() {
+        {
+            OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_HOBBY_VARS);
+            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
+            int effectedRows = this.engine.create(oqlStmt, oqlInfo.paramMap);
+            assert (effectedRows == 1);
+            assert (oqlInfo.paramMap.containsKey("id"));
+        }
+
+        {
+            // 重新查出来作断言
+            String selectOql = "select code, name, descr from Hobby where code = #{code}";
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("code", "DJ");
+            Map<String, Object> data = this.engine.queryOne(selectOqlStmt, paramMap);
+            assert (data != null);
+            Object dbRecordId = data.get("code");
+            assert (dbRecordId != null && "DJ".equals(dbRecordId.toString()));
+        }
+    }
+
+
 }

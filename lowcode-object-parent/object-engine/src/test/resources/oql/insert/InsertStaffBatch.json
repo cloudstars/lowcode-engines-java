@@ -1,0 +1,17 @@
+{
+  "desc": "测试批量插入员工表，测试点，批量执行，自动生成主键ID",
+  "name": "InsertStaffBatch",
+  "oqls": [
+    {
+      "desc": "批量插入员工表",
+      "name": "InsertStaffBatchVars",
+      "oql": "insert into Staff(staffCode, staffName, joinDate, departDate, descr, status, creator) values (#{staffCode}, #{staffName}, #{joinDate}, #{departDate}, #{descr}, #{status}, #{creator})",
+      "sql": "insert into STAFF(STA_CODE, STA_NAME, JOIN_DATE, DEPART_DATE, DESCR, STATUS, CREATOR_NAME, CREATOR_KEY) values (#{staffCode}, #{staffName}, #{joinDate}, #{departDate}, #{descr}, #{status}, #{creator.name}, #{creator.key})",
+      "paramMaps": [
+        {"staffCode": "X001", "staffName": "员工1", "joinDate": "2021-01-01", "departDate": null, "descr":  "员工1描述", "status":  "1", "creator":  {"name": "管理员1", "key":  "XXX"}},
+        {"staffCode": "X002", "staffName": "员工2", "joinDate": "2021-01-01", "departDate": "2022-01-09", "descr":  "员工2描述", "status":  "2", "creator":  {"name": "管理员1", "key":  "XXX"}}
+      ]
+
+    }
+  ]
+}

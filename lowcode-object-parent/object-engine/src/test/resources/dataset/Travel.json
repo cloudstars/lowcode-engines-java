@@ -5,22 +5,22 @@
     {
       "desc": "申请单号",
       "name": "APPLY_ID",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "申请单名称",
       "name": "APPLY_NAME",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "创建人姓名",
       "name": "CREATOR_NAME",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "创建人编号",
       "name": "CREATOR_KEY",
-      "dataType": "String"
+      "dataType": "CHAR"
     }
   ],
   "valuesList": [

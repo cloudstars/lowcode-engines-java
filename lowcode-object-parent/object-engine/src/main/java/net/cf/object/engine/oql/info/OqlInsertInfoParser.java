@@ -32,6 +32,11 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
     private final Map<String, Object> paramMap;
 
     /**
+     * 输入的参数（批量模式）
+     */
+    private final List<Map<String, Object>> paramMaps;
+
+    /**
      * 本表的插入信息
      */
     private OqlInsertInfo selfInsertInfo;
@@ -49,6 +54,14 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
         super(false);
         this.stmt = stmt;
         this.paramMap = paramMap;
+        this.paramMaps = null;
+    }
+
+    public OqlInsertInfoParser(OqlInsertStatement stmt, List<Map<String, Object>> paramMaps) {
+        super(false);
+        this.stmt = stmt;
+        this.paramMap = null;
+        this.paramMaps = paramMaps;
     }
 
     public OqlInsertInfo getSelfInsertInfo() {

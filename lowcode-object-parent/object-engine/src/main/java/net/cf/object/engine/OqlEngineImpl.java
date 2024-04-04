@@ -251,7 +251,17 @@ public class OqlEngineImpl implements OqlEngine {
         if (effectedRows == 0) {
             logger.warn("未成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
         } else {
-            logger.warn("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
+            logger.info("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
+        }
+
+        // 生成获取结果数据中的主键ID，如果是自增主键的情况，则放入输入参数中
+        XObject mainObject = mainInsertInfo.getObject();
+        XField mainPrimaryField = mainObject.getPrimaryField();
+        if (mainPrimaryField.isAutoGen()) {
+            String mainPrimaryFieldName = mainPrimaryField.getName();
+            String mainPrimaryColumnName = mainPrimaryField.getColumnName();
+            String mainPrimaryId = targetParamMap.get(mainPrimaryColumnName).toString();
+            paramMap.put(mainPrimaryFieldName, mainPrimaryId);
         }
 
         /**
@@ -259,11 +269,7 @@ public class OqlEngineImpl implements OqlEngine {
          */
         List<OqlDetailInsertInfo> detailInsertInfos = infoParser.getDetailInsertInfos();
         if (detailInsertInfos != null && detailInsertInfos.size() > 0) {
-            XObject mainObject = mainInsertInfo.getObject();
-
-            // 生成masterId
-            String mainPrimaryFieldName = mainObject.getPrimaryField().getName();
-            String masterId = (String) targetParamMap.get(mainPrimaryFieldName);
+            String masterId = paramMap.get(mainPrimaryField.getName()).toString(); // 主表中的主表记录ID
 
             // 循环处理子表
             for (OqlDetailInsertInfo detailInsertInfo : detailInsertInfos) {
@@ -294,15 +300,31 @@ public class OqlEngineImpl implements OqlEngine {
         InsertStatementChecker checker = new InsertStatementChecker();
         stmt.accept(checker);
 
-        // 构建SQL语句
-        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
-        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(stmt, builder);
+        // OQL语句解析
+        OqlInsertInfoParser infoParser = new OqlInsertInfoParser(stmt, paramMaps);
+        infoParser.parse();
 
+        // 构建SQL语句
+        OqlInsertInfo mainInsertInfo = infoParser.getSelfInsertInfo();
+        OqlInsertStatement mainStmt = mainInsertInfo.getStatement();
+        SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
+        SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(mainStmt, builder);
         // 作参数映射，将引擎层的参数转换驱动层的参数格式
         DefaultParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         List<Map<String, Object>> targetParamMaps = this.convertParameterMapList(parameterMapper, paramMaps);
         int[] effectedRowsArray = this.repository.batchInsert(sqlStmt, targetParamMaps);
+        // 如果存在自增主键的话，将自增ID复制到参数中
+        XField mainPrimaryField = mainStmt.getObjectSource().getResolvedObject().getPrimaryField();
+        if (mainPrimaryField.isAutoGen()) {
+            String fieldName = mainPrimaryField.getName();
+            String columnName = mainPrimaryField.getColumnName();
+            for (int i = 0, l = paramMaps.size(); i < l; i++) {
+                Map<String, Object> paramMap = paramMaps.get(i);
+                paramMap.put(fieldName, targetParamMaps.get(i).get(columnName));
+            }
+        }
         this.sumAndLogsumEffectedRows(effectedRowsArray, stmt);
+
         return effectedRowsArray;
     }
 

@@ -1,8 +1,8 @@
 
-package net.cf.object.engine.oql.mysql.insert;
+package net.cf.object.engine.oql.mysql.insert.batch;
 
 import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
-import net.cf.object.engine.oql.testcase.insert.AbstractInsertHobbyRepoTest;
+import net.cf.object.engine.oql.testcase.insert.batch.AbstractInsertStaffSelfBatchRepoTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,17 +12,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("mysql")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ObjectEngineOqlMySqlTestApplication.class)
-public class MySqlInsertHobbyOqlTest extends AbstractInsertHobbyRepoTest {
+public class MySqlInsertStaffSelfBatchOqlTest extends AbstractInsertStaffSelfBatchRepoTest {
 
     @Test
     @Override
-    public void testInsertHobby() {
-        super.testInsertHobby();
+    public void testInsertStaffBatchVars() {
+        super.testInsertStaffBatchVars();
     }
 
-    @Test
-    @Override
-    public void testInsertHobbyVars() {
-        super.testInsertHobbyVars();
-    }
 }

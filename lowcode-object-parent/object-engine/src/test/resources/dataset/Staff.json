@@ -5,29 +5,55 @@
     {
       "desc": "员工ID",
       "name": "STA_ID",
-      "dataType": "Integer",
+      "dataType": "INTEGER",
       "autoGen": true
+    },
+    {
+      "desc": "员工编号",
+      "name": "STA_CODE",
+      "dataType": "CHAR"
     },
     {
       "desc": "员工姓名",
       "name": "STA_NAME",
-      "dataType": "String"
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "入职日期",
+      "name": "JOIN_DATE",
+      "dataType": "DATE"
+    },
+    {
+      "desc": "离职日期",
+      "name": "DEPART_DATE",
+      "dataType": "DATE"
+    },
+    {
+      "desc": "个人简介",
+      "name": "DESCR",
+      "dataType": "CHAR"
     },
     {
       "desc": "举趣爱好",
       "name": "HOBBIES",
-      "dataType": "String"
+      "dataType": "CHAR"
     }
   ],
   "valuesList": [
     {
-      "STA_ID": "zhangsan",
+      "STA_CODE": "zhangsan",
       "STA_NAME": "张三",
+      "JOIN_DATE": "2020-10-10",
+      "DEPART_DATE": "2021-10-01",
+      "DESCR": "此人名叫张三，爱好抽烟、喝酒",
       "HOBBIES": "['cy', 'hj']"
     },
     {
-      "STA_ID": "lisi",
+      "STA_CODE": "lisi",
       "STA_NAME": "李四",
+      "JOIN_DATE": "2010-01-01",
+      "DEPART_DATE": null,
+      "DESCR": "我叫李四，小李的李，小四的四，爱好唱歌、跳舞",
       "HOBBIES": "['cg', 'tw']"
     }
   ]

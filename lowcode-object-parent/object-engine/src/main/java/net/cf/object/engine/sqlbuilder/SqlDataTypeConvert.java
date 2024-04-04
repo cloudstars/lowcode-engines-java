@@ -30,12 +30,12 @@ public final class SqlDataTypeConvert {
                 Number maxValue = field.getMaxValue();
                 if (maxValue != null) {
                     if (maxValue.longValue() > Integer.MAX_VALUE) {
-                        return SqlDataType.BIGINT;
+                        return SqlDataType.LONG;
                     } else {
                         return SqlDataType.INTEGER;
                     }
                 } else {
-                    return SqlDataType.BIGINT;
+                    return SqlDataType.LONG;
                 }
             }
         } else if (dataType == DataType.DATE) {

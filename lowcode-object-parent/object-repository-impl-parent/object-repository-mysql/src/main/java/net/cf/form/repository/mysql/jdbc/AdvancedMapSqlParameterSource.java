@@ -1,4 +1,4 @@
-package net.cf.form.repository.mysql.util;
+package net.cf.form.repository.mysql.jdbc;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 

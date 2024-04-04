@@ -352,15 +352,21 @@ public class Lexer {
         if (this.ch == '{') {
             do {
                 this.scanChar(true);
-            } while (this.ch != '}');
+            } while (CharTypes.isIdentifierChar(this.ch));
+        }
+
+        if (this.ch != '}') {
+            throw new SqlParseException("illegal variable, unterminated with '}'. " + this.info());
+        } else {
+            // 变量长度至少是4，如：${v}
+            if (this.bufPos < 4) {
+                throw new SqlParseException("illegal variable. " + this.info());
+            }
+
+            // 扫描过变量引用结束符："}"
             this.scanChar(true);
+            this.strVal = this.subStr(this.mark, this.bufPos);
         }
-
-        if (this.bufPos < 4) {
-            throw new SqlParseException("illegal variable. " + this.info());
-        }
-
-        this.strVal = this.subStr(this.mark, this.bufPos);
     }
 
     /**

@@ -2,22 +2,31 @@
   "desc": "兴趣爱好",
   "name": "Hobby",
   "tableName": "HOBBY",
-  "primaryFieldName": "name",
+  "primaryFieldName": "id",
   "fields": [
+    {
+      "type": "Text",
+      "desc": "记录ID",
+      "name": "id",
+      "columnName": "RECORD_ID",
+      "dataType": "Integer",
+      "autoGen": true
+    },
+    {
+      "type": "Text",
+      "desc": "爱好名称",
+      "name": "name",
+      "columnName": "NAME",
+      "dataType": "String",
+      "dataLength": 32
+    },
     {
       "type": "Text",
       "desc": "爱好代码",
       "name": "code",
       "columnName": "CODE",
-      "dataType": "String"
-    },
-    {
-      "type": "Text",
-      "desc": "名称",
-      "name": "name",
-      "columnName": "NAME",
       "dataType": "String",
-      "dataLength": 32
+      "dataLength": 10
     },
     {
       "type": "Text",

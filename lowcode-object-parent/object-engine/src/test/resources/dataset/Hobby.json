@@ -3,37 +3,50 @@
   "name": "HOBBY",
   "columns": [
     {
-      "desc": "代码",
-      "name": "CODE",
-      "dataType": "String"
+      "desc": "id",
+      "name": "RECORD_ID",
+      "dataType": "INTEGER",
+      "autoGen": true
     },
     {
       "desc": "名称",
       "name": "NAME",
-      "dataType": "String"
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "代码",
+      "name": "CODE",
+      "dataType": "CHAR"
     },
     {
       "desc": "描述",
       "name": "DESCR",
-      "dataType": "String"
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人姓名",
+      "name": "CREATOR_NAME",
+      "dataType": "CHAR"
     },
     {
       "desc": "创建人编号",
       "name": "CREATOR_KEY",
-      "dataType": "String"
+      "dataType": "CHAR"
     }
   ],
   "valuesList": [
     {
-      "CODE": "CY",
       "NAME": "抽烟",
+      "CODE": "CY",
       "DESCR": "喜欢叼个大烟",
+      "CREATOR_NAME": "张三",
       "CREATOR_KEY": "zhangsan"
     },
     {
-      "CODE": "HJ",
       "NAME": "喝酒",
+      "CODE": "HJ",
       "DESCR": "喜欢喝老酒一",
+      "CREATOR_NAME": "李四",
       "CREATOR_KEY": "lisi"
     }
   ]

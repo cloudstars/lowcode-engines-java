@@ -7,6 +7,13 @@
       "name": "InsertHobby",
       "oql": "insert into Hobby(code, name, descr) values ('DJ', '打架', '喜欢打架')",
       "sql": "insert into HOBBY(CODE, NAME, DESCR) values ('DJ', '打架', '喜欢打架')"
+    },
+    {
+      "desc": "插入兴趣爱好（带参数）",
+      "name": "InsertHobbyVars",
+      "oql": "insert into Hobby(code, name, descr) values (#{code}, #{name}, #{descr})",
+      "paramMap": {"code": "DJ", "name": "打架", "descr": "喜欢打架"},
+      "sql": "insert into HOBBY(CODE, NAME, DESCR) values (#{code}, #{name}, #{descr})"
     }
   ]
 }

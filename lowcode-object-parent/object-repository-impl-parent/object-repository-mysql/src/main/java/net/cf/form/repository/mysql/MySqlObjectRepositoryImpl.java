@@ -1,7 +1,8 @@
 package net.cf.form.repository.mysql;
 
 import net.cf.form.repository.ObjectRepository;
-import net.cf.form.repository.mysql.util.AdvancedMapSqlParameterSource;
+import net.cf.form.repository.mysql.jdbc.AdvancedMapSqlParameterSource;
+import net.cf.form.repository.mysql.jdbc.BatchInsertJdbcTemplate;
 import net.cf.form.repository.mysql.util.SqlUtils;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
@@ -9,6 +10,7 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -24,8 +26,19 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public MySqlObjectRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+    private JdbcTemplate template;
+
+    public MySqlObjectRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate, JdbcTemplate template) {
         this.jdbcTemplate = jdbcTemplate;
+        this.template = template;
+    }
+
+    public JdbcTemplate getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(JdbcTemplate template) {
+        this.template = template;
     }
 
     @Override
@@ -63,8 +76,8 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     @Override
     public int insert(SqlInsertStatement statement, Map<String, Object> paramMap) {
         String sql = SqlUtils.toSqlText(statement);
-        String autoPrimaryKey = statement.getAutoGenColumn();
         int effectedRows;
+        String autoPrimaryKey = statement.getAutoGenColumn();
         if (autoPrimaryKey != null && autoPrimaryKey.length() > 0) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             SqlParameterSource paramSource = SqlUtils.convertInsertParamMap(statement, paramMap);
@@ -84,7 +97,15 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     public int[] batchInsert(SqlInsertStatement statement, List<Map<String, Object>> paramMaps) {
         String sql = SqlUtils.toSqlText(statement);
         SqlParameterSource[] paramSources = SqlUtils.convertInsertParamMaps(statement, paramMaps);
-        int[] effectedRowsArray = this.jdbcTemplate.batchUpdate(sql, paramSources);
+        int[] effectedRowsArray;
+        String autoPrimaryKey = statement.getAutoGenColumn();
+        if (autoPrimaryKey != null && autoPrimaryKey.length() > 0) {
+            BatchInsertJdbcTemplate batchInsertJdbcTemplate = new BatchInsertJdbcTemplate(template);
+            effectedRowsArray = batchInsertJdbcTemplate.batchInsert(statement, paramMaps);
+        } else {
+            effectedRowsArray = this.jdbcTemplate.batchUpdate(sql, paramSources);
+        }
+
         int effectedRows = 0;
         for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
             effectedRows += effectedRowsArray[i];

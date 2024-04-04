@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
@@ -33,8 +34,8 @@ public class ObjectEngineTestConfiguration {
     }
 
     @Bean
-    public MySqlObjectRepositoryImpl mySQLObjectRepository(NamedParameterJdbcTemplate jdbcTemplate) {
-        return new MySqlObjectRepositoryImpl(jdbcTemplate);
+    public MySqlObjectRepositoryImpl mySQLObjectRepository(NamedParameterJdbcTemplate jdbcTemplate, JdbcTemplate template) {
+        return new MySqlObjectRepositoryImpl(jdbcTemplate, template);
     }
 
     @Bean

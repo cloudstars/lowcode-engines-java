@@ -5,32 +5,32 @@
     {
       "desc": "行程ID",
       "name": "TRIP_ID",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "申请单号",
       "name": "APPLY_ID",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "出发地",
       "name": "FROM_ADDR",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "目的地",
       "name": "TO_ADDR",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "创建人姓名",
       "name": "CREATOR_NAME",
-      "dataType": "String"
+      "dataType": "CHAR"
     },
     {
       "desc": "创建人编号",
       "name": "CREATOR_KEY",
-      "dataType": "String"
+      "dataType": "CHAR"
     }
   ],
   "valuesList": [
