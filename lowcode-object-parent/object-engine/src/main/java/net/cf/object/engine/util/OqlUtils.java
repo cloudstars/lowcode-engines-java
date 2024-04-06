@@ -118,6 +118,7 @@ public class OqlUtils {
             String fieldName = field.getName();
             List<XProperty> properties = field.getProperties();
             if (properties != null && properties.size() > 0) {
+                // 默认把所有的字段展开
                 OqlFieldExpandExpr fieldExpandExpr = new OqlFieldExpandExpr(fieldName);
                 fieldExpandExpr.setDefaultExpanded(true);
                 fieldExpandExpr.setResolvedField(field);
@@ -133,6 +134,17 @@ public class OqlUtils {
         }
 
         return fieldExprs;
+    }
+
+    /**
+     * 默认的主键字段
+     *
+     * @param object
+     * @return
+     */
+    public static OqlExpr defaultPrimaryField(XObject object) {
+        XField primaryField = object.getPrimaryField();
+        return OqlUtils.defaultFieldExpr(primaryField);
     }
 
     /**

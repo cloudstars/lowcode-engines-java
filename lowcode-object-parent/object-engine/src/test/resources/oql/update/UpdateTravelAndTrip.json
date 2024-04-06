@@ -5,7 +5,7 @@
     {
       "desc": "更新出差记以及行程（带变量）",
       "name": "UpdateTravelAndTripByIdVars",
-      "oql": "update Travel set applyName = #{applyName}, TravelTrip(fromAddr, toAddr) = #{trips} where applyId = #{applyId}",
+      "oql": "update Travel set applyName = #{applyName}, trips(fromAddr, toAddr) = #{trips} where applyId = #{applyId}",
       "sql": "update TRAVEL set APPLY_NAME = #{applyName} where APPLY_ID = #{applyId}",
       "detailUpdateInsertSql": "insert into TRAVEL_TRIP(APPLY_ID, FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY) values (#{applyId}, #{fromAddr}, #{toAddr}, #{creator.name}, #{creator.key})",
       "detailUpdateUpdateSql": "update TRAVEL_TRIP set FROM_ADDR = #{fromAddr}, TO_ADDR = #{toAddr}, MODIFIER_NAME = #{modifier.name}, MODIFIER_KEY = #{modifier.key} where TRIP_ID = #{tripId}",

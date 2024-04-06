@@ -9,6 +9,8 @@ public interface SelectTravelSelfDetailTest {
 
     String OQL_FILE_PATH = "oql/select/detail/SelectTravelSelfDetail.json";
 
+    String OQL_SELECT_TRAVEL_AND_TRIP_IDS_BY_ID = "SelectTravelAndTripIdsById";
+
     String OQL_SELECT_TRAVEL_AND_TRIP_BY_ID = "SelectTravelAndTripById";
 
     String OQL_SELECT_TRAVEL_AND_TRIP_BY_ID_VARS = "SelectTravelAndTripByIdVars";
@@ -16,6 +18,8 @@ public interface SelectTravelSelfDetailTest {
     String OQL_SELECT_TRAVEL_AND_TRIP_LIST = "SelectTravelAndTripList";
 
     String OQL_SELECT_TRAVEL_AND_TRIP_LIST_VARS = "SelectTravelAndTripListVars";
+
+    void testSelectTravelAndTripIdsById();
 
     void testSelectTravelAndTripById();
 

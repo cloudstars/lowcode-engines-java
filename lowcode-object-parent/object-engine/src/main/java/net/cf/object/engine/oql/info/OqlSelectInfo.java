@@ -27,6 +27,11 @@ public class OqlSelectInfo {
      */
     private Map<String, Object> paramMap;
 
+    /**
+     * 是否子表默认展开的查询
+     */
+    private boolean isDetailDefaultExpandQuery;
+
     public XObject getObject() {
         return object;
     }
@@ -49,6 +54,14 @@ public class OqlSelectInfo {
 
     public void setParamMap(Map<String, Object> paramMap) {
         this.paramMap = paramMap;
+    }
+
+    public boolean isDetailDefaultExpandQuery() {
+        return isDetailDefaultExpandQuery;
+    }
+
+    public void setDetailDefaultExpandQuery(boolean detailDefaultExpandQuery) {
+        isDetailDefaultExpandQuery = detailDefaultExpandQuery;
     }
 
 }

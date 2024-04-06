@@ -5,7 +5,7 @@
     {
       "desc": "插入出差记以及行程（带变量）",
       "name": "InsertTravelAndTripVars",
-      "oql": "insert into Travel(applyId, applyName, TravelTrip(fromAddr, toAddr, creator)) values (#{applyId}, #{applyName}, #{trips})",
+      "oql": "insert into Travel(applyId, applyName, trips(fromAddr, toAddr, creator)) values (#{applyId}, #{applyName}, #{trips})",
       "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values (#{applyId}, #{applyName})",
       "detailSql": "insert into TRAVEL_TRIP(APPLY_ID, FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY) values (#{applyId}, #{fromAddr}, #{toAddr}, #{creator.name}, #{creator.key})"
     }

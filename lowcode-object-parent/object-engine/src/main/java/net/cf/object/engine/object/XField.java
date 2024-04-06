@@ -132,4 +132,14 @@ public interface XField {
         return null;
     }
 
+    /**
+     * 获取字段的主属性
+     *
+     * @param <T>
+     * @return
+     */
+    /*default <T extends XProperty> T getPrimaryProperty() {
+        return null;
+    }*/
+
 }

@@ -96,23 +96,34 @@ public class OqlEngineImpl implements OqlEngine {
                 List<Map<String, Object>> detailResult = this.queryList(detailStmt, detailParamMap);
                 XObject detailObject = detailSelectInfo.getObject();
                 XObjectRefField detailRefField = mainObject.getObjectRefField(detailObject.getName());
-                mainResultMap.put(detailRefField.getName(), detailResult);
+                String detailRefFieldName = detailRefField.getName();
+                if (!detailSelectInfo.isDetailDefaultExpandQuery()) {
+                    mainResultMap.put(detailRefFieldName, detailResult);
+                } else {
+                    List<String> detailIds = this.parseDetailObjectIds(detailObject, detailResult);
+                    mainResultMap.put(detailRefFieldName, detailIds);
+                }
             }
         }
 
-        /*List<OqlObjectExpandExpr> detailObjectExpandExprs = builder.getDetailObjectExpandExprs();
-        for (OqlObjectExpandExpr detailObjectExpandExpr : detailObjectExpandExprs) {
-            XObject detailObject = detailObjectExpandExpr.getResolvedRefObject();
-            String masterFieldName = detailObject.getMasterField().getName();
-            Map<String, Object> detailParamMap = new HashMap<>();
-            detailParamMap.put(masterFieldName, masterId);
-            OqlSelectStatement refObjectStmt = OqlUtils.buildDetailObjectSelectStatement(detailObjectExpandExpr);
-            List<Map<String, Object>> refResultMaps = this.queryList(refObjectStmt, detailParamMap);
-            String refFieldName = detailObjectExpandExpr.getResolvedObjectRefField().getName();
-            mainResultMap.put(refFieldName, refResultMaps);
-        }*/
-
         return mainResultMap;
+    }
+
+    /**
+     * 从结果集中提取子表的ID列表
+     *
+     * @param detailObject
+     * @param detailResultMaps
+     * @return
+     */
+    private List<String> parseDetailObjectIds(XObject detailObject, List<Map<String, Object>> detailResultMaps) {
+        String detailPrimaryFieldName = detailObject.getPrimaryField().getName();
+        List<String> detailIds = new ArrayList<>();
+        for (Map<String, Object> resultMap : detailResultMaps) {
+            detailIds.add(resultMap.get(detailPrimaryFieldName).toString());
+        }
+
+        return detailIds;
     }
 
     @Override
@@ -177,7 +188,14 @@ public class OqlEngineImpl implements OqlEngine {
                 for (Map<String, Object> mainResultMap : mainResultMapList) {
                     XObjectRefField detailRefField = mainObject.getObjectRefField(detailObject.getName());
                     String recordId = mainResultMap.get(mainPrimaryFieldName).toString();
-                    mainResultMap.put(detailRefField.getName(), masterIdGroupedMap.get(recordId));
+                    List<Map<String, Object>> masterIdResult = masterIdGroupedMap.get(recordId);
+                    String detailRefFieldName = detailRefField.getName();
+                    if (!detailSelectInfo.isDetailDefaultExpandQuery()) {
+                        mainResultMap.put(detailRefFieldName, masterIdResult);
+                    } else {
+                        List<String> detailIds = this.parseDetailObjectIds(detailObject, masterIdResult);
+                        mainResultMap.put(detailRefFieldName, detailIds);
+                    }
                 }
             }
         }

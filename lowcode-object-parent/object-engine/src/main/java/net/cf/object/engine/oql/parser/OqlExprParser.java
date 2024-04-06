@@ -13,6 +13,7 @@ import net.cf.form.repository.sql.parser.Token;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.util.OqlUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -112,15 +113,18 @@ public class OqlExprParser extends SqlExprParser {
         String fieldName = expr.getName();
         XField field = object.getField(fieldName);
         if (field == null) {
-            String objectName = fieldName;
-            XObject refObject = this.resolver.resolve(objectName);
-            if (refObject == null) {
-                throw new FastOqlException("字段" + fieldName + "不存在！");
-            } else {
-                OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(objectName);
+            throw new FastOqlException("字段" + fieldName + "不存在！");
+        }
+
+        if (field instanceof XObjectRefField) {
+            XObjectRefField objectRefField = (XObjectRefField) field;
+            // 对于子表，如果直接指定本表中的子表字段名的话，默认查询子表的主键列，相当于detailObject(primaryField)
+            if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
+                OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(fieldName);
                 objectExpandExpr.setDefaultExpanded(true);
-                XObjectRefField objectRefField = object.getObjectRefField(objectName);
                 objectExpandExpr.setResolvedObjectRefField(objectRefField);
+                String refObjectName = objectRefField.getRefObjectName();
+                XObject refObject = this.resolver.resolve(refObjectName);
                 objectExpandExpr.setResolvedRefObject(refObject);
                 return objectExpandExpr;
             }
@@ -204,17 +208,16 @@ public class OqlExprParser extends SqlExprParser {
         String objectName = object.getName();
 
         // 校验模型的存在性
-        SqlName owner = x.getOwner();
-        String ownerObjectName = owner.getName();
-        XObject ownerObject = this.resolver.resolve(ownerObjectName);
-        if (ownerObject == null) { // 当作本模型的字段处理
-            String fieldName = ownerObjectName;
-            XField ownerField = object.getField(fieldName);
-            // 校验字段的存在性
-            if (ownerField == null) {
-                throw new FastOqlException("模型" + objectName + "下的字段" + fieldName + "不存在");
-            }
+        //SqlName owner = x.getOwner();
+        String ownerName = x.getOwner().getName();
+        //XObject ownerObject = this.resolver.resolve(ownerObjectName);
+        XField ownerField = object.getField(ownerName);
+        // 校验字段的存在性
+        if (ownerField == null) {
+            throw new FastOqlException("模型" + objectName + "下的字段" + ownerName + "不存在");
+        }
 
+        if (!(ownerField instanceof XObjectRefField)) { // 非引用模型（它表）的字段
             String propName = x.getName();
             if (Token.STAR.getName().equals(propName)) {
                 // field.* 识别为字段展开表达式
@@ -226,42 +229,37 @@ public class OqlExprParser extends SqlExprParser {
                 // 校验字段属性的存在性
                 XProperty property = ownerField.getProperty(propName);
                 if (property == null) {
-                    throw new FastOqlException("字段" + fieldName + "下的属性" + propName + "不存在！");
+                    throw new FastOqlException("字段" + ownerName + "下的属性" + propName + "不存在！");
                 }
 
                 // 识别为字段属性表达式
-                OqlFieldExpr fieldExpr = new OqlFieldExpr(null, fieldName);
+                OqlFieldExpr fieldExpr = new OqlFieldExpr(null, ownerName);
                 OqlPropertyExpr propExpr = new OqlPropertyExpr(fieldExpr, propName);
                 propExpr.setResolvedProperty(property);
                 sqlX = propExpr;
             }
-        } else { // 当作其它的模型处理
-            XObjectRefField objectRefField = null;
-            if (!objectName.equals(ownerObject.getName())) {
-                // 非子模型的情况下，校验关联模型的合法性
-                objectRefField = object.getObjectRefField(ownerObjectName);
-                if (objectRefField == null) {
-                    throw new FastOqlException("模型" + ownerObjectName + "与当前模型" + objectName + "不存在关联关系，不允许访问");
-                }
-            }
-
+        } else { // 当作引用模型（它表）处理
+            XObjectRefField objectRefField = (XObjectRefField) ownerField;
+            String refObjectName = objectRefField.getRefObjectName();
+            XObject refObject = this.resolver.resolve(refObjectName);
             String propName = x.getName();
             if (Token.STAR.getName().equals(propName)) { // 展开整个模型
                 // 识别为OQL模型展开表达式
-                OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(ownerObjectName);
+                OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(ownerName);
                 objectExpandExpr.setStarExpanded(true);
                 objectExpandExpr.setResolvedObjectRefField(objectRefField);
-                objectExpandExpr.setResolvedRefObject(ownerObject);
+                objectExpandExpr.setResolvedRefObject(refObject);
+                sqlX = objectExpandExpr;
             } else {
-                XField ownerField = ownerObject.getField(propName);
+                XField refField = refObject.getField(propName);
                 // 校验字段的存在性
-                if (ownerField == null) {
-                    throw new FastOqlException("模型" + ownerObjectName + "中的字段" + propName + "不存在！");
+                if (refField == null) {
+                    throw new FastOqlException("模型" + refObjectName + "中的字段" + propName + "不存在！");
                 }
 
                 // 识别为OQL字段表达式
-                OqlFieldExpr fieldExpr = new OqlFieldExpr(ownerObjectName, propName);
-                fieldExpr.setResolvedField(ownerField);
+                OqlFieldExpr fieldExpr = new OqlFieldExpr(ownerName, propName);
+                fieldExpr.setResolvedField(refField);
                 sqlX = fieldExpr;
             }
         }
@@ -368,10 +366,12 @@ public class OqlExprParser extends SqlExprParser {
             return sqlX;
         }
 
-        XObject refObject = this.resolver.resolve(methodName);
-        if (refObject != null) { // 模型展开
-            sqlX = this.expandObject(object, refObject, x);
-        } else { // 字段展开
+        //不是方法调用的话，那就是模型展开或者字段展开表达式
+        XField field = object.getField(methodName);
+        if (field instanceof XObjectRefField) { // 模型引用字段（即模型展开）
+            XObjectRefField objectRefField = (XObjectRefField) field;
+            sqlX = this.expandObject(objectRefField, x);
+        } else { // 普通字段（即字段展开）
             sqlX = this.expandObjectField(object, x);
         }
 
@@ -381,28 +381,22 @@ public class OqlExprParser extends SqlExprParser {
     /**
      * 展开模型
      *
-     * @param object    当前模型
-     * @param refObject 展开的关联模型
+     * @param objectRefField 本表中展开的字段
      * @param x
      */
-    private OqlObjectExpandExpr expandObject(XObject object, XObject refObject, SqlMethodInvokeExpr x) {
+    private OqlObjectExpandExpr expandObject(XObjectRefField objectRefField, SqlMethodInvokeExpr x) {
+        XObject refObject = this.resolver.resolve(objectRefField.getRefObjectName());
         String refObjectName = refObject.getName();
-        XObjectRefField objectRefField = null;
-        if (!object.getName().equals(refObjectName)) {
-            objectRefField = object.getObjectRefField(refObjectName);
-            if (objectRefField == null) {
-                throw new FastOqlException("模型" + refObjectName + "与当前模型不存在关联关系");
-            }
-        }
 
-        OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(refObjectName);
+        String refObjectFieldName = x.getMethodName();
+        OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(refObjectFieldName);
         objectExpandExpr.setResolvedObjectRefField(objectRefField);
         objectExpandExpr.setResolvedRefObject(refObject);
         List<SqlExpr> args = x.getArguments();
         for (SqlExpr arg : args) {
             if (arg instanceof SqlAggregateExpr) {
                 throw new FastOqlException("模型展开的字段中不能有嵌合函数");
-            } else if (arg instanceof SqlMethodInvokeExpr) { // 内嵌展开字段
+            } else if (arg instanceof SqlMethodInvokeExpr) { // 内嵌字段展开
                 SqlExpr argX = this.parseMethodInvokeExpr(refObject, (SqlMethodInvokeExpr) arg);
                 if (argX instanceof OqlExpr) {
                     throw new FastOqlException("OQL模型展开的字段中，只允许出现OqlExpr类型的表达式");
@@ -416,18 +410,7 @@ public class OqlExprParser extends SqlExprParser {
                     throw new FastOqlException("模型" + refObjectName + "中的属性" + fieldName + "不存在");
                 }
 
-                // 解析为一个属性
-                List<XProperty> properties = field.getProperties();
-                if (properties != null && properties.size() > 0) {
-                    OqlFieldExpandExpr fieldExpandExpr = new OqlFieldExpandExpr(fieldName);
-                    fieldExpandExpr.setDefaultExpanded(true);
-                    fieldExpandExpr.setResolvedField(field);
-                    objectExpandExpr.addField(fieldExpandExpr);
-                } else {
-                    OqlFieldExpr fieldExpr = new OqlFieldExpr(null, fieldName);
-                    fieldExpr.setResolvedField(field);
-                    objectExpandExpr.addField(fieldExpr);
-                }
+                objectExpandExpr.addField(OqlUtils.defaultFieldExpr(field));
             } else {
                 SqlExpr argX = this.parseSqlExpr(refObject, arg);
                 if (argX instanceof OqlExpr) {
@@ -487,7 +470,7 @@ public class OqlExprParser extends SqlExprParser {
      * 判断是否是一个子表
      *
      * @param selfObject 本模型
-     * @param someName 某个(方法、字段等)名称
+     * @param someName   某个(方法、字段等)名称
      * @return
      */
     protected boolean isDetailObject(XObject selfObject, String someName) {

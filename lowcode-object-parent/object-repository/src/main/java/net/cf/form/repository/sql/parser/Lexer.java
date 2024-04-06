@@ -352,7 +352,7 @@ public class Lexer {
         if (this.ch == '{') {
             do {
                 this.scanChar(true);
-            } while (CharTypes.isIdentifierChar(this.ch));
+            } while (CharTypes.isIdentifierChar(this.ch) || this.ch == '.'); // 变量名允许带点
         }
 
         if (this.ch != '}') {

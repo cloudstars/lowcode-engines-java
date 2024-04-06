@@ -86,4 +86,5 @@ public class TestFieldImpl implements XField {
     public TestPropertyImpl getProperty(String propertyCode) {
         return this.propertyMap.get(propertyCode);
     }
+
 }

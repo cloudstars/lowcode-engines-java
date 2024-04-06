@@ -64,7 +64,7 @@ public class OqlFieldExpandExpr extends AbstractExpandableOqlExprImpl {
         for (SqlExpr property : this.properties) {
             x.addProperty(property);
         }
-        x.isDefaultExpanded = this.isDefaultExpanded;
+        //x.isDefaultExpanded = this.isDefaultExpanded;
         x.isStarExpanded = this.isStarExpanded;
         x.resolvedField = this.resolvedField;
 

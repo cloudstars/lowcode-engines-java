@@ -14,7 +14,11 @@ public class WhereExprValidCheckAstVisitor implements OqlAstVisitor {
 
     @Override
     public boolean visit(OqlObjectExpandExpr x) {
-        throw new FastOqlException("OQL的查询条件中不允许使用模型展开表达式：" + x);
+        if (x.isStarExpanded() || !x.isDefaultExpanded()) {
+            throw new FastOqlException("OQL的查询条件中不允许使用显式模型展开表达式：" + x);
+        }
+
+        return true;
     }
 
     @Override

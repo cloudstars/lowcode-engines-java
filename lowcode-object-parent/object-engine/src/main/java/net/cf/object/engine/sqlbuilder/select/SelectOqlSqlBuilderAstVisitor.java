@@ -14,6 +14,7 @@ import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
 import net.cf.object.engine.util.OqlUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,11 +64,7 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
                 XObjectRefField objectRefField = objectExpandExpr.getResolvedObjectRefField();
                 if (objectRefField.isMultiRef()) { // 查询语句不处理一对多的情况
                     continue;
-                }
-                /* if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
-                    this.builder.appendDetailObjectExpandExpr(objectExpandExpr);
-                    continue;
-                } else */ {
+                } else {
                     itemInfo = this.buildSelectRefObjectExpand(objectExpandExpr);
                 }
             } else if (sqlExpr instanceof OqlFieldExpandExpr) { // 字段展开
@@ -141,8 +138,12 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
         parentItemInfo.setFieldMapping(parentFieldMapping);
 
         List<SelectItemInfo> subItemInfos;
-        if (objectExpandExpr.isDefaultExpanded() || objectExpandExpr.isStarExpanded()) {
+        if (objectExpandExpr.isStarExpanded()) {
             subItemInfos = this.buildSelectObjectAllFields(refObject);
+        } else if (objectExpandExpr.isDefaultExpanded()) { // 默认展开查询ID字段
+            XField refObjectPrimaryField = objectExpandExpr.getResolvedRefObject().getPrimaryField();
+            OqlExpr refObjectPrimaryFieldExpr = OqlUtils.defaultFieldExpr(refObjectPrimaryField);
+            subItemInfos = this.buildItemInfoList(refObject, Arrays.asList(refObjectPrimaryFieldExpr));
         } else {
             List<OqlExpr> refFields = objectExpandExpr.getFields();
             subItemInfos = this.buildItemInfoList(refObject, refFields);

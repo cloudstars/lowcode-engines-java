@@ -37,7 +37,7 @@ public abstract class AbstractInsertTravelSelfDetailRepoTest extends AbstractOql
 
         {
             // 重新查出来作断言
-            String selectOql = "select *, TravelTrip from Travel";
+            String selectOql = "select *, trips.* from Travel";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             List<Map<String, Object>> data = this.engine.queryList(selectOqlStmt, paramMap);

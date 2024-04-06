@@ -15,6 +15,12 @@ public class MySqlSelectTravelSelfDetailOqlTest extends AbstractSelectTravelSelf
 
     @Test
     @Override
+    public void testSelectTravelAndTripIdsById() {
+        super.testSelectTravelAndTripIdsById();
+    }
+
+    @Test
+    @Override
     public void testSelectTravelAndTripById() {
         super.testSelectTravelAndTripById();
     }

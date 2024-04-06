@@ -134,7 +134,13 @@ public class OqlSelectInfoParser extends AbstractOqlInfoParser {
         OqlSelect detailSelect = new OqlSelect();
 
         // 构建子模型的查询字段
-        if (objectExpandFieldExpr.isDefaultExpanded() || objectExpandFieldExpr.isStarExpanded()) { // case1/2
+        boolean isDetailDefaultExpandQuery = false;
+        if (objectExpandFieldExpr.isDefaultExpanded()) { // case1，默认取模型的主键字段
+            OqlSelectItem detailSelectItem = new OqlSelectItem();
+            detailSelectItem.setExpr(OqlUtils.defaultPrimaryField(objectExpandFieldExpr.getResolvedRefObject()));
+            detailSelect.addSelectItem(detailSelectItem);
+            isDetailDefaultExpandQuery = true;
+        } else if (objectExpandFieldExpr.isStarExpanded()) { // case2
             List<OqlExpr> detailExprs = OqlUtils.defaultExpandObjectFields(detailObject);
             for (OqlExpr detailExpr : detailExprs) {
                 OqlSelectItem detailSelectItem = new OqlSelectItem();
@@ -172,6 +178,7 @@ public class OqlSelectInfoParser extends AbstractOqlInfoParser {
         detailSelectInfo.setObject(detailObject);
         detailSelectInfo.setStatement(new OqlSelectStatement(detailSelect));
         detailSelectInfo.setParamMap(new HashMap<>());
+        detailSelectInfo.setDetailDefaultExpandQuery(isDetailDefaultExpandQuery);
         return detailSelectInfo;
     }
 

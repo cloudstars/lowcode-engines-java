@@ -24,6 +24,19 @@ public abstract class AbstractSelectTravelSelfDetailRepoTest
     }
 
     @Override
+    public void testSelectTravelAndTripIdsById() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_IDS_BY_ID);
+        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        Map<String, Object> resultMap = this.engine.queryOne(oqlStmt, new HashMap<>());
+        assert (resultMap != null && resultMap.containsKey("trips"));
+
+        Object trips = resultMap.get("trips");
+        assert (trips instanceof List && ((List<?>) trips).size() == 2);
+        // 断言trips的内容是String
+        assert (((List<?>) trips).get(0) instanceof String);
+    }
+
+    @Override
     public void testSelectTravelAndTripById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_BY_ID);
         OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
