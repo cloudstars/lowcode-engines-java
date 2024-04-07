@@ -6,10 +6,7 @@ import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
-import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.parser.Token;
 
@@ -329,7 +326,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
     /**********************************************************************
-     *                标识符类表达式节点                                         *
+     *                操作类表达式节点                                         *
      **********************************************************************/
 
     @Override
@@ -378,6 +375,21 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         this.printParenthesesAndAcceptList(x.getTargetList(), ", ");
         return false;
     }
+
+    @Override
+    public boolean visit(SqlExistsExpr x) {
+        if (x.isNot()) {
+            this.print(this.uppercase ? " NOT " : " not ");
+        }
+        this.print(this.uppercase ? " EXISTS " : " exists ");
+        this.visit(x.getSubQuery());
+
+        return false;
+    }
+
+    /**********************************************************************
+     *                标识符类表达式节点                                         *
+     **********************************************************************/
 
     @Override
     public boolean visit(SqlPropertyExpr x) {
@@ -476,6 +488,10 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     @Override
     public boolean visit(SqlSelect x) {
+        if (x.isParenthesized()) {
+            this.print("(");
+        }
+
         this.print(this.uppercase ? "SELECT " : "select ");
 
         DistinctOption distinctOption = x.getDistinctOption();
@@ -521,6 +537,10 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         SqlLimit limit = x.getLimit();
         if (limit != null) {
             limit.accept(this);
+        }
+
+        if (x.isParenthesized()) {
+            this.print(")");
         }
 
         return false;

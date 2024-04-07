@@ -45,6 +45,16 @@ public final class SqlExistsExpr extends AbstractNotableExpr {
     }
 
     @Override
+    public boolean isNot() {
+        return not;
+    }
+
+    @Override
+    public void setNot(boolean not) {
+        this.not = not;
+    }
+
+    @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChildren(visitor, this.subQuery);

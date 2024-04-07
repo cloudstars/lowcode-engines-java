@@ -79,6 +79,7 @@ public enum Token {
     CROSS("CROSS"),
     JOIN("JOIN"),
     ON("ON"),
+    EXISTS("EXISTS"),
     IS("IS"),
     IN("IN"),
     LIKE("LIKE"),

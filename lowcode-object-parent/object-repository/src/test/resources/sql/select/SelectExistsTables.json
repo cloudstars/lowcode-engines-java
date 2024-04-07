@@ -1,0 +1,11 @@
+{
+  "name": "SELECT_EXISTS_SUB_QUERY",
+  "desc": "Exists子查询",
+  "sqls": [
+    {
+      "name": "SELECT_SUB_QUERY_WHERE",
+      "desc": "测试子查询条件",
+      "sql": "select a.* from tableA where exists (select 1 from tableB where tableB.id = tableA.id and tableB.name like '%xx%')"
+    }
+  ]
+}

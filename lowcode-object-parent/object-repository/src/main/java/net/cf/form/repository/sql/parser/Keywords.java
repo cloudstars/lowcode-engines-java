@@ -49,6 +49,7 @@ public class Keywords {
                 Token.IN,
                 Token.IS,
                 Token.LIKE,
+                Token.EXISTS,
                 Token.NULL,
                 Token.TRUE,
                 Token.FALSE,

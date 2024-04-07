@@ -6,10 +6,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.*;
-import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
-import net.cf.form.repository.sql.ast.statement.SqlJoinTableSource;
-import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
-import net.cf.form.repository.sql.ast.statement.SqlTableSource;
+import net.cf.form.repository.sql.ast.statement.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -284,7 +281,7 @@ public class SqlExprParser extends AbstractSqlParser {
             case LIKE:
                 this.lexer.nextToken();
                 rightExp = this.expr();
-                this.lexer.nextToken();
+                //this.lexer.nextToken(); 这里多扫描了一次
                 targetExpr = new SqlLikeOpExpr(targetExpr, rightExp);
 
                 if (this.lexer.token == Token.ESCAPE) {
@@ -419,6 +416,16 @@ public class SqlExprParser extends AbstractSqlParser {
                 }
 
                 this.accept(Token.RPAREN);
+                break;
+            case EXISTS: // exists子查询
+                this.lexer.nextToken();
+
+                SqlSelectParser subQuerySelectParser = new SqlSelectParser(this.lexer);
+                SqlSelect subQuery = subQuerySelectParser.select();
+                SqlExistsExpr existsExpr = new SqlExistsExpr();
+                existsExpr.setSubQuery(subQuery);
+                expr = existsExpr;
+
                 break;
             default:
                 printError(this.lexer.token);
