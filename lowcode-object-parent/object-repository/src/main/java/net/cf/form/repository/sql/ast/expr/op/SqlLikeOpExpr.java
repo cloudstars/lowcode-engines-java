@@ -18,6 +18,7 @@ public class SqlLikeOpExpr extends AbstractNotableExpr {
     private SqlBinaryOpExpr binaryOpExpr;
 
     public SqlLikeOpExpr() {
+        binaryOpExpr = new SqlBinaryOpExpr(null, SqlBinaryOperator.LIKE, null);
     }
 
     public SqlLikeOpExpr(SqlExpr left, SqlExpr right) {

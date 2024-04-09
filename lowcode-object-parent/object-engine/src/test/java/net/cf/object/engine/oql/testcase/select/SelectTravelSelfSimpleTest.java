@@ -21,6 +21,10 @@ public interface SelectTravelSelfSimpleTest {
 
     String OQL_SELECT_TRAVEL_IN_LIST_VARS = "SelectTravelInListVars";
 
+    String OQL_SELECT_TRAVEL_LIKE_LIST = "SelectTravelLikeList";
+
+    String OQL_SELECT_TRAVEL_LIKE_LIST_VARS = "SelectTravelLikeListVars";
+
     /**
      * 测试查询出差记录
      *
@@ -56,5 +60,15 @@ public interface SelectTravelSelfSimpleTest {
      *
      */
     void testSelectTravelInListVars();
+
+    /**
+     * 测试like查询出差列表
+     */
+    void testSelectTravelLikeList();
+
+    /**
+     * 测试like查询出差列表
+     */
+    void testSelectTravelLikeListVars();
 
 }

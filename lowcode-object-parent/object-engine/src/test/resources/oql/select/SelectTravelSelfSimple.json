@@ -37,6 +37,18 @@
       "name": "SelectTravelInListVars",
       "oql": "select applyId, applyName from Travel where applyId in (#{applyIds})",
       "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID in (#{applyIds})"
+    },
+    {
+      "desc": "查询出差列表-LIKE",
+      "name": "SelectTravelLikeList",
+      "oql": "select applyId, applyName from Travel where applyName like '%测试申请单%'",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_NAME like '%测试申请单%'"
+    },
+    {
+      "desc": "查询出差列表-LIKE（带变量）",
+      "name": "SelectTravelLikeListVars",
+      "oql": "select applyId, applyName from Travel where applyName like #{applyName}",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_NAME like #{applyName}"
     }
   ]
 }

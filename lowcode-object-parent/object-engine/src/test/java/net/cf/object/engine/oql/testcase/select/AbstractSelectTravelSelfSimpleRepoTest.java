@@ -82,4 +82,22 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
         List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt, paramMap);
         assert (dataList != null && dataList.size() == 2);
     }
+
+    @Override
+    public void testSelectTravelLikeList() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIKE_LIST);
+        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
+        assert (dataList != null && dataList.size() == 2);
+    }
+
+    @Override
+    public void testSelectTravelLikeListVars() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIKE_LIST_VARS);
+        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("applyName", "%测试申请单%");
+        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt, paramMap);
+        assert (dataList != null && dataList.size() == 2);
+    }
 }
