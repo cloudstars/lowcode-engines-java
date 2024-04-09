@@ -36,6 +36,11 @@ public class OqlUpdateInfoParser extends AbstractOqlInfoParser {
     private final Map<String, Object> paramMap;
 
     /**
+     * 输入的参数（批量模式）
+     */
+    private final List<Map<String, Object>> paramMaps;
+
+    /**
      * 本表的更新语句
      */
     private OqlUpdateInfo selfUpdateInfo;
@@ -56,13 +61,21 @@ public class OqlUpdateInfoParser extends AbstractOqlInfoParser {
     private List<OqlDetailDeleteInfo> detailDeleteInfos;
 
     public OqlUpdateInfoParser(OqlUpdateStatement stmt) {
-        this(stmt, null);
+        this(stmt, (Map<String, Object>) null);
     }
 
     public OqlUpdateInfoParser(OqlUpdateStatement stmt, Map<String, Object> paramMap) {
         super(false);
         this.stmt = stmt;
         this.paramMap = paramMap;
+        this.paramMaps = null;
+    }
+
+    public OqlUpdateInfoParser(OqlUpdateStatement stmt, List<Map<String, Object>> paramMaps) {
+        super(false);
+        this.stmt = stmt;
+        this.paramMap = null;
+        this.paramMaps = paramMaps;
     }
 
     public OqlUpdateInfo getSelfUpdateInfo() {
@@ -92,7 +105,7 @@ public class OqlUpdateInfoParser extends AbstractOqlInfoParser {
 
 
         List<OqlUpdateSetItem> setItems = this.stmt.getSetItems();
-        if (!this.hasDetailSetItems(setItems)) {
+        if (!OqlUtils.hasDetailSetItems(this.stmt)) {
             selfOqlInfo.setStatement(this.stmt);
         } else {
             OqlUpdateStatement selfStmt = new OqlUpdateStatement();
@@ -121,26 +134,6 @@ public class OqlUpdateInfoParser extends AbstractOqlInfoParser {
         }
 
         this.selfUpdateInfo = selfOqlInfo;
-    }
-
-    /**
-     * 表达式列表中是否包含子表
-     *
-     * @param setItems
-     * @return
-     */
-    protected boolean hasDetailSetItems(List<OqlUpdateSetItem> setItems) {
-        for (OqlUpdateSetItem setItem : setItems) {
-            OqlExpr field = setItem.getField();
-            if (field instanceof OqlObjectExpandExpr) {
-                OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) field;
-                if (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.DETAIL) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -281,12 +274,12 @@ public class OqlUpdateInfoParser extends AbstractOqlInfoParser {
         }
 
         // 设置更新语句的过滤条件 where primaryFieldName = #{primaryFieldName}
-        SqlBinaryOpExpr primaryIdEqualsCondition = this.buildFieldEqualityVariantRefExpr(primaryField);
+        SqlBinaryOpExpr primaryIdEqualsCondition = OqlUtils.buildFieldEqualsVarRefExpr(primaryField);
         OqlFieldExpr primaryFieldExpr = (OqlFieldExpr) primaryIdEqualsCondition.getLeft();
         detailUpdateStmt.setWhere(primaryIdEqualsCondition);
 
         // 设置删除语句的过滤条件 where masterFieldName = #{masterFieldName} and primaryFieldName not in (#{remainedRecordIds}})
-        SqlBinaryOpExpr masterIdEqualsCondition = this.buildFieldEqualityVariantRefExpr(masterField);
+        SqlBinaryOpExpr masterIdEqualsCondition = OqlUtils.buildFieldEqualsVarRefExpr(masterField);
         SqlInListExpr primaryIdNotInCondition = new SqlInListExpr();
         primaryIdNotInCondition.setNot(true);
         primaryIdNotInCondition.setLeft(primaryFieldExpr);

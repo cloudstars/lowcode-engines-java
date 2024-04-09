@@ -9,7 +9,6 @@ import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.object.ObjectRefType;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
-import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
 
 import java.util.*;
@@ -179,13 +178,13 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
             if (fieldValue instanceof SqlVariantRefExpr) {
                 SqlVariantRefExpr varRefExpr = (SqlVariantRefExpr) fieldValue;
                 String varName = varRefExpr.getVarName();
-                Object paramValue = this.paramMap.get(varName);
-                if (!(paramValue instanceof List)) {
-                    throw new FastOqlException("子表的参数类型必须是一个List<Map>");
+                List<Map<String, Object>> detailValues;
+                if (!isBatchMode) {
+                    detailValues = this.extractDetailValues(Arrays.asList(this.paramMap), varName);
+                } else {
+                    detailValues = this.extractDetailValues(this.paramMaps, varName);
                 }
-
-                List<Map<String, Object>> listParamValue = (List<Map<String, Object>>) paramValue;
-                detailParamMaps.addAll(listParamValue);
+                detailParamMaps.addAll(detailValues);
             } else if (fieldValue instanceof SqlJsonArrayExpr) {
                 // 将Array常量转为List<Map>
                 SqlJsonArrayExpr listValueExpr = (SqlJsonArrayExpr) fieldValue;
@@ -210,6 +209,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
 
         return detailParamMaps;
     }
+
 
     /**
      * 构建子表的插入语句

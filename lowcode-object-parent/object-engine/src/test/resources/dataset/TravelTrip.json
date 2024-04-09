@@ -9,7 +9,7 @@
     },
     {
       "desc": "申请单号",
-      "name": "APPLY_ID",
+      "name": "TRAVEL_APPLY_ID",
       "dataType": "CHAR"
     },
     {
@@ -35,21 +35,21 @@
   ],
   "valuesList": [
     {
-      "APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+      "TRAVEL_APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
       "FROM_ADDR": "上海",
       "TO_ADDR": "北京",
       "CREATOR_NAME": "张三",
       "CREATOR_KEY": "zhangsan"
     },
     {
-      "APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+      "TRAVEL_APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
       "FROM_ADDR": "天津",
       "TO_ADDR": "杭州",
       "CREATOR_NAME": "张三",
       "CREATOR_KEY": "zhangsan"
     },
     {
-      "APPLY_ID": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
+      "TRAVEL_APPLY_ID": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
       "FROM_ADDR": "杭州",
       "TO_ADDR": "南京",
       "CREATOR_NAME": "李四",

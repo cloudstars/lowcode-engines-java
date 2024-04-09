@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractSelectTravelSelfDetailRepoTest
+public abstract class AbstractSelectTravelDetailRepoTest
         extends AbstractOqlRepoTest
-        implements SelectTravelSelfDetailTest {
+        implements SelectTravelDetailTest {
 
-    protected AbstractSelectTravelSelfDetailRepoTest() {
+    protected AbstractSelectTravelDetailRepoTest() {
         super(OQL_FILE_PATH);
     }
 

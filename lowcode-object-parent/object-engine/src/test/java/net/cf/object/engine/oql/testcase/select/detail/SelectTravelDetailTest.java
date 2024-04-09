@@ -5,7 +5,7 @@ package net.cf.object.engine.oql.testcase.select.detail;
  *
  * @author clouds
  */
-public interface SelectTravelSelfDetailTest {
+public interface SelectTravelDetailTest {
 
     String OQL_FILE_PATH = "oql/select/detail/SelectTravelSelfDetail.json";
 

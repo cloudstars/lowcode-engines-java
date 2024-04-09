@@ -164,13 +164,15 @@ public class OqlSelectInfoParser extends AbstractOqlInfoParser {
         OqlExprObjectSource objectSource = this.buildExprObjectSource(detailObject);
         detailSelect.setFrom(objectSource);
 
-        // 设置子表查询语句的过滤条件 where masterFieldName in (#{masterFieldNames})
+        // 设置子表查询语句的过滤条件 where
         XObjectRefField masterField = detailObject.getMasterField();
         SqlExpr selectWhere;
         if (this.isBatchMode) {
-            selectWhere = this.buildFieldInVariantRefListExpr(masterField);
+            //  masterField in (#{masterFields})
+            selectWhere = OqlUtils.buildFieldInListVarRefExpr(masterField);
         } else {
-            selectWhere = this.buildFieldEqualityVariantRefExpr(masterField);
+            // masterField = #{masterField}
+            selectWhere = OqlUtils.buildFieldEqualsVarRefExpr(masterField);
         }
         detailSelect.setWhere(selectWhere);
 

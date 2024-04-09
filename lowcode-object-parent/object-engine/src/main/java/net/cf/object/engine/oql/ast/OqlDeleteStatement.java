@@ -16,6 +16,11 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
 
     protected OqlExprObjectSource from;
 
+    /**
+     * 要删除的子表
+     */
+    protected List<OqlExprObjectSource> detailFroms;
+
     protected SqlExpr where;
 
     public OqlDeleteStatement() {
@@ -28,6 +33,14 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
     public void setFrom(OqlExprObjectSource from) {
         this.from = from;
         this.addChild(from);
+    }
+
+    public List<OqlExprObjectSource> getDetailFroms() {
+        return detailFroms;
+    }
+
+    public void setDetailFroms(List<OqlExprObjectSource> detailFroms) {
+        this.detailFroms = detailFroms;
     }
 
     public SqlExpr getWhere() {

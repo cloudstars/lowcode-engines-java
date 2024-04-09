@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public interface UpdateTravelSelfDetailTest {
+public interface UpdateTravelDetailTest {
 
     String OQL_FILE_PATH = "oql/update/UpdateTravelAndTrip.json";
 

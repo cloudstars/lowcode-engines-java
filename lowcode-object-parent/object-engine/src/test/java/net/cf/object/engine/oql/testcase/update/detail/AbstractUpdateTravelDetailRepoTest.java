@@ -9,11 +9,11 @@ import net.cf.object.engine.util.OqlUtils;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractUpdateTravelSelfDetailRepoTest
+public abstract class AbstractUpdateTravelDetailRepoTest
         extends AbstractOqlRepoTest
-        implements UpdateTravelSelfDetailTest {
+        implements UpdateTravelDetailTest {
 
-    protected AbstractUpdateTravelSelfDetailRepoTest() {
+    protected AbstractUpdateTravelDetailRepoTest() {
         super(OQL_FILE_PATH);
     }
 

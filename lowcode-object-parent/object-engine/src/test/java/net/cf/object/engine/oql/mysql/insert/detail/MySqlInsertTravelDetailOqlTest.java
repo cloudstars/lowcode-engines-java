@@ -1,7 +1,7 @@
-package net.cf.object.engine.oql.mysql.update.detail;
+package net.cf.object.engine.oql.mysql.insert.detail;
 
 import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
-import net.cf.object.engine.oql.testcase.update.detail.AbstractUpdateTravelSelfDetailRepoTest;
+import net.cf.object.engine.oql.testcase.insert.detail.AbstractInsertTravelDetailRepoTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,12 +11,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("mysql")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ObjectEngineOqlMySqlTestApplication.class)
-public class MySqlUpdateTravelSelfDetailOqlTest extends AbstractUpdateTravelSelfDetailRepoTest {
+public class MySqlInsertTravelDetailOqlTest extends AbstractInsertTravelDetailRepoTest {
 
     @Test
     @Override
-    public void testUpdateTravelAndTripByIdVars() {
-        super.testUpdateTravelAndTripByIdVars();
+    public void testIInsertTravelAndTripVars() {
+        super.testIInsertTravelAndTripVars();
     }
-
+    
 }

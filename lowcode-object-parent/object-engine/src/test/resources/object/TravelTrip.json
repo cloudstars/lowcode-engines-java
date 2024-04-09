@@ -18,9 +18,9 @@
       "type": "ObjectRef",
       "refObjectName": "Travel",
       "refType": "MASTER",
-      "desc": "单请单ID",
-      "name": "applyId",
-      "columnName": "APPLY_ID",
+      "desc": "出差单请单ID（特意取名与主表的applyId不同，方便发现一些问题）",
+      "name": "travelApplyId",
+      "columnName": "TRAVEL_APPLY_ID",
       "dataType": "String",
       "dataLength": "36"
     },

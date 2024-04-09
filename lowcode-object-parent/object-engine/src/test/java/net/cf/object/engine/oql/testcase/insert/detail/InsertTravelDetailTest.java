@@ -9,7 +9,7 @@ import java.util.*;
  *
  * @author clouds
  */
-public interface InsertTravelSelfDetailTest {
+public interface InsertTravelDetailTest {
 
     String OQL_FILE_PATH = "oql/insert/InsertTravelAndTrip.json";
 

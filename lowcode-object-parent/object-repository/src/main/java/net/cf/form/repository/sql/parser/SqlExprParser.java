@@ -281,7 +281,6 @@ public class SqlExprParser extends AbstractSqlParser {
             case LIKE:
                 this.lexer.nextToken();
                 rightExp = this.expr();
-                //this.lexer.nextToken(); 这里多扫描了一次
                 targetExpr = new SqlLikeOpExpr(targetExpr, rightExp);
 
                 if (this.lexer.token == Token.ESCAPE) {

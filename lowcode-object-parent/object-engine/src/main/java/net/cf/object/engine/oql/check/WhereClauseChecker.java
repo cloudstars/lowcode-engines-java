@@ -1,30 +1,79 @@
 package net.cf.object.engine.oql.check;
 
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
+import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.FastOqlException;
-import net.cf.object.engine.oql.ast.OqlFieldExpandExpr;
-import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
+import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 /**
- * Where子句的合法性校验器
+ * Where条件检查OQL遍历器（select、update、delete中会出现where）
+ *
+ * update、delete如果含子表，那么主表的where条件中必须有主键列作为查询条件
  *
  * @author clouds
  */
-public class WhereClauseChecker extends AbstractStatementChecker {
+public class WhereClauseChecker implements OqlAstVisitor {
 
-    public WhereClauseChecker() {
+    private final OqlStatement statement;
+
+    private final XObject selfObject;
+
+    /**
+     * 是否含有主键 = ...的条件
+     */
+    private boolean hasPrimaryField;
+
+    /**
+     * 主键的值
+     */
+    private SqlExpr primaryFieldValue;
+
+    public WhereClauseChecker(OqlStatement statement, XObject selfObject) {
+        this.statement = statement;
+        this.selfObject = selfObject;
+    }
+
+    public boolean isHasPrimaryField() {
+        return hasPrimaryField;
+    }
+
+    public SqlExpr getPrimaryFieldValue() {
+        return primaryFieldValue;
     }
 
     @Override
-    public void endVisit(OqlObjectExpandExpr x) {
+    public boolean visit(OqlObjectExpandExpr x) {
         if (x.isStarExpanded() || !x.isDefaultExpanded()) {
-            throw new FastOqlException("OQL查询条件中不允许使用模型展开语法：" + x);
+            throw new FastOqlException("OQL的查询条件中不允许使用显式模型展开表达式：" + x);
         }
+
+        return true;
     }
 
     @Override
-    public void endVisit(OqlFieldExpandExpr x) {
-        if (x.isStarExpanded() || !x.isDefaultExpanded()) {
-            throw new FastOqlException("OQL查询条件中不允许使用字段展开语法：" + x);
+    public boolean visit(OqlFieldExpandExpr x) {
+        throw new FastOqlException("OQL的查询条件中不允许使用字段展开表达式：" + x);
+    }
+
+
+    @Override
+    public boolean visit(SqlBinaryOpExpr x) {
+        if (x.getOperator() == SqlBinaryOperator.EQUALITY) {
+            SqlExpr left = x.getLeft();
+            if (left instanceof OqlFieldExpr) {
+                OqlFieldExpr fieldExpr = (OqlFieldExpr) left;
+                XField resolvedField = fieldExpr.getResolvedField();
+                if (this.selfObject.getPrimaryField() == resolvedField) {
+                    this.hasPrimaryField = true;
+                    this.primaryFieldValue = x.getRight();
+                }
+             }
         }
+
+        return true;
     }
 }

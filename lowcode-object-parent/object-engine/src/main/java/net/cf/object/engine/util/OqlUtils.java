@@ -1,6 +1,10 @@
 package net.cf.object.engine.util;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
+import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.parser.OqlStatementParser;
@@ -8,6 +12,7 @@ import net.cf.object.engine.oql.parser.XObjectResolver;
 import net.cf.object.engine.oql.visitor.OqlAstOutputVisitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -185,4 +190,58 @@ public class OqlUtils {
             return fieldExpr;
         }
     }
+
+    /**
+     * 构建字段等于它自身变量的比较表达式，即：field = #{field}
+     *
+     * @param field
+     */
+    public static SqlBinaryOpExpr buildFieldEqualsVarRefExpr(XField field) {
+        OqlExpr fieldExpr = OqlUtils.defaultFieldExpr(field);
+        String fieldName = field.getName();
+        SqlExpr fieldVarRefExpr = new SqlVariantRefExpr("#{" + fieldName + "}");
+        SqlBinaryOpExpr fieldEqualsVarRefExpr = new SqlBinaryOpExpr();
+        fieldEqualsVarRefExpr.setLeft(fieldExpr);
+        fieldEqualsVarRefExpr.setOperator(SqlBinaryOperator.EQUALITY);
+        fieldEqualsVarRefExpr.setRight(fieldVarRefExpr);
+        return fieldEqualsVarRefExpr;
+    }
+
+
+    /**
+     * 构建字段属于它自身变量的复数形式的比较表达式，即：field = #{fields}
+     *
+     * @param field
+     */
+    public static SqlInListExpr buildFieldInListVarRefExpr(XField field) {
+        OqlExpr fieldExpr = OqlUtils.defaultFieldExpr(field);
+        String fieldName = field.getName();
+        SqlExpr fieldVarRefExpr = new SqlVariantRefExpr("#{" + fieldName + "s}");
+        SqlInListExpr fieldInListVarRefExpr = new SqlInListExpr();
+        fieldInListVarRefExpr.setLeft(fieldExpr);
+        fieldInListVarRefExpr.setTargetList(Arrays.asList(fieldVarRefExpr));
+        return fieldInListVarRefExpr;
+    }
+
+    /**
+     * 表达式列表中是否包含子表
+     *
+     * @param stmt
+     * @return
+     */
+    public static boolean hasDetailSetItems(OqlUpdateStatement stmt) {
+        List<OqlUpdateSetItem> setItems = stmt.getSetItems();
+        for (OqlUpdateSetItem setItem : setItems) {
+            OqlExpr field = setItem.getField();
+            if (field instanceof OqlObjectExpandExpr) {
+                OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) field;
+                if (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.DETAIL) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }

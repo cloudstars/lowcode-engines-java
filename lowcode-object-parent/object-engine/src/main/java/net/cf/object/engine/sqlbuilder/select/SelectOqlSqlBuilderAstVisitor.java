@@ -62,11 +62,12 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
             if (sqlExpr instanceof OqlObjectExpandExpr) { // 关联模型展开
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) sqlExpr;
                 XObjectRefField objectRefField = objectExpandExpr.getResolvedObjectRefField();
-                if (objectRefField.isMultiRef()) { // 查询语句不处理一对多的情况
-                    continue;
-                } else {
+                assert (!objectRefField.isMultiRef()); // 查询语句不处理一对多的情况
+                //if (objectRefField.isMultiRef()) {
+                //    continue;
+                //} else {
                     itemInfo = this.buildSelectRefObjectExpand(objectExpandExpr);
-                }
+                //}
             } else if (sqlExpr instanceof OqlFieldExpandExpr) { // 字段展开
                 OqlFieldExpandExpr fieldExpandExpr = (OqlFieldExpandExpr) sqlExpr;
                 itemInfo = this.buildSelectFieldExpandExpr(fieldExpandExpr, selectItem.getAlias());

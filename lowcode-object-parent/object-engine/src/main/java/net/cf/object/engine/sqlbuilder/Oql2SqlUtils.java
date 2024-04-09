@@ -110,4 +110,17 @@ public final class Oql2SqlUtils {
         return builder.build();
     }
 
+
+    /**
+     * 将OQL更新转为SQL删除
+     *
+     * @param stmt
+     * @return
+     */
+    public static SqlDeleteStatement toSqlDelete(final OqlDeleteStatement stmt, SqlDeleteStatementBuilder builder) {
+        OqlDeleteAstVisitor visitor = new OqlDeleteAstVisitor(builder);
+        stmt.accept(visitor);
+        return builder.build();
+    }
+
 }

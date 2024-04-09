@@ -26,9 +26,9 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ObjectEngineStatementTestApplication.class)
-public class InsertTravelSelfDetailStmtTest extends AbstractOqlTest implements InsertTravelSelfDetailTest {
+public class InsertTravelDetailStmtTest extends AbstractOqlTest implements InsertTravelDetailTest {
 
-    public InsertTravelSelfDetailStmtTest() {
+    public InsertTravelDetailStmtTest() {
         super(OQL_FILE_PATH);
     }
 

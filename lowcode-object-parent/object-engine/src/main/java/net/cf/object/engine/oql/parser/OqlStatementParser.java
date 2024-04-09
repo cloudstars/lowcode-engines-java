@@ -4,8 +4,10 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.parser.SqlStatementParser;
 import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.util.XObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +77,7 @@ public class OqlStatementParser extends OqlExprParser {
             oqlSelect.addSelectItem(oqlSelectItem);
         }
         SqlExpr sqlWhere = sqlSelect.getWhere();
-        SqlExpr oqlWhere = this.toValidOqlWhere(resolvedObject, sqlWhere);
+        SqlExpr oqlWhere = this.toOqlWhere(resolvedObject, sqlWhere);
         oqlSelect.setWhere(oqlWhere);
         oqlSelect.setGroupBy(sqlSelect.getGroupBy());
         oqlSelect.setOrderBy(sqlSelect.getOrderBy());
@@ -132,13 +134,14 @@ public class OqlStatementParser extends OqlExprParser {
                 throw new FastOqlException("OQL更新语句的列中只允许出现OqlExpr类型的表达式");
             }
 
+            SqlExpr valueX = this.parseSqlExpr(resolvedObject, setItem.getValue());
             OqlUpdateSetItem oqlSetItem = new OqlUpdateSetItem();
             oqlSetItem.setField((OqlExpr) columnX);
-            oqlSetItem.setValue(setItem.getValue());
+            oqlSetItem.setValue(valueX);
             oqlUpdateStmt.addSetItem(oqlSetItem);
         }
         SqlExpr sqlWhere = sqlUpdateStmt.getWhere();
-        SqlExpr oqlWhere = this.toValidOqlWhere(resolvedObject, sqlWhere);
+        SqlExpr oqlWhere = this.toOqlWhere(resolvedObject, sqlWhere);
         oqlUpdateStmt.setWhere(oqlWhere);
 
         return oqlUpdateStmt;
@@ -158,25 +161,40 @@ public class OqlStatementParser extends OqlExprParser {
         oqlDeleteStmt.setFrom(objectSource);
         XObject resolvedObject = objectSource.getResolvedObject();
         SqlExpr sqlWhere = sqlDeleteStmt.getWhere();
-        SqlExpr oqlWhere = this.toValidOqlWhere(resolvedObject, sqlWhere);
+        SqlExpr oqlWhere = this.toOqlWhere(resolvedObject, sqlWhere);
         oqlDeleteStmt.setWhere(oqlWhere);
+
+        List<XObjectRefField> detailFields = XObjectUtils.getDetailFields(resolvedObject);
+        if (detailFields.size() > 0) {
+            // 解析出子模型的列表
+            List<OqlExprObjectSource> detailObjectSources = new ArrayList<>();
+            for (XObjectRefField detailField : detailFields) {
+                String detailObjectName = detailField.getRefObjectName();
+                OqlExprObjectSource detailObjectSource = new OqlExprObjectSource(detailObjectName);
+                XObject detailObject = this.resolver.resolve(detailObjectName);
+                detailObjectSource.setResolvedObject(detailObject);
+                detailObjectSources.add(detailObjectSource);
+            }
+            oqlDeleteStmt.setDetailFroms(detailObjectSources);
+        }
+
         return oqlDeleteStmt;
     }
 
     /**
-     * 将 SQL 语法的 where 条件转换合法的 OQL 语法的 where 条件
+     * 将 SQL 语法的 where 条件转 OQL 语法的 where 条件
      *
      * @param resolvedObject
      * @param sqlWhere
      * @return
      */
-    private SqlExpr toValidOqlWhere(XObject resolvedObject, SqlExpr sqlWhere) {
+    private SqlExpr toOqlWhere(XObject resolvedObject, SqlExpr sqlWhere) {
         SqlExpr oqlWhere = null;
         if (sqlWhere != null) {
             oqlWhere = this.parseSqlExpr(resolvedObject, sqlWhere);
-            // where 条件语法检查
-            WhereExprValidCheckAstVisitor whereCheckVisitor = new WhereExprValidCheckAstVisitor();
-            oqlWhere.accept(whereCheckVisitor);
+            // where 条件语法检查（放在OqlEngineImpl的实现中）
+            // WhereExprValidCheckAstVisitor whereCheckVisitor = new WhereExprValidCheckAstVisitor();
+            // oqlWhere.accept(whereCheckVisitor);
         }
 
         return oqlWhere;

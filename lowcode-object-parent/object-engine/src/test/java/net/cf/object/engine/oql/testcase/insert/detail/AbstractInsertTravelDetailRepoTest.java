@@ -14,9 +14,9 @@ import java.util.Map;
  *
  * @author clouds
  */
-public abstract class AbstractInsertTravelSelfDetailRepoTest extends AbstractOqlRepoTest implements InsertTravelSelfDetailTest {
+public abstract class AbstractInsertTravelDetailRepoTest extends AbstractOqlRepoTest implements InsertTravelDetailTest {
 
-    protected AbstractInsertTravelSelfDetailRepoTest() {
+    protected AbstractInsertTravelDetailRepoTest() {
         super(OQL_FILE_PATH);
     }
 
