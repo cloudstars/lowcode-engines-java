@@ -29,6 +29,7 @@ import net.cf.object.engine.util.OqlUtils;
 import net.cf.object.engine.util.XObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -512,13 +513,15 @@ public class OqlEngineImpl implements OqlEngine {
         List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
         if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
             // TODO 考虑用同样的where条件，把主表的记录ID查出来，再批量删除子表数据
-            SqlExpr masterIdExpr = checker.getMasterIdExpr();
-            if (masterIdExpr == null) {
+            List<SqlExpr> masterIdExprs = checker.getMasterIdExprs();
+            if (CollectionUtils.isEmpty(masterIdExprs)) {
                 throw new FastOqlException("OQL where条件中未指明主表记录ID");
             }
-
-            Object masterId = ((SqlValuableExpr) masterIdExpr).getValue();
-            this.removeDetailByMasterId(masterId, detailDeleteInfos);
+            List<Object> masterIds = new ArrayList<>();
+            for (SqlExpr masterIdExpr : masterIdExprs) {
+                masterIds.add(((SqlValuableExpr) masterIdExpr).getValue());
+            }
+            this.removeDetailByMasterId(masterIds, detailDeleteInfos);
         }
 
         return effectedRows;
@@ -539,28 +542,34 @@ public class OqlEngineImpl implements OqlEngine {
         OqlDeleteStatement mainStmt = mainDeleteInfo.getStatement();
         SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
         SqlDeleteStatement mainSqlStmt = Oql2SqlUtils.toSqlDelete(mainStmt, builder);
-        ;
+
         int effectedRows = this.repository.delete(mainSqlStmt, paramMap);
 
         // 循环删除子表数据
         List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
         if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
             // TODO 考虑用同样的where条件，把主表的记录ID查出来，再批量删除子表数据
-            SqlExpr masterIdExpr = checker.getMasterIdExpr();
-            // SqlValuableExpr || SqlInListExpr
-            if (masterIdExpr == null) {
+            List<SqlExpr> masterIdExprs = checker.getMasterIdExprs();
+
+            if (CollectionUtils.isEmpty(masterIdExprs)) {
                 throw new FastOqlException("OQL where条件中未指明主表记录ID");
             }
 
-            Object masterId;
-            if (masterIdExpr instanceof SqlVariantRefExpr) { //applyId = #{applyId}, applyId in (#{applyIds})
-                String varName = ((SqlVariantRefExpr) masterIdExpr).getVarName();
-                masterId = paramMap.get(varName);
+            List<Object> masterIds = new ArrayList<>();
+            if (masterIdExprs.get(0) instanceof SqlVariantRefExpr) { //applyId = #{applyId}, applyId in (#{applyIds})
+                String varName = ((SqlVariantRefExpr) masterIdExprs.get(0)).getVarName();
+                if (paramMap.get(varName) instanceof List) {
+                    masterIds.addAll((List) paramMap.get(varName));
+                } else {
+                    masterIds.add(paramMap.get(varName));
+                }
             } else {
-                masterId = ((SqlValuableExpr) masterIdExpr).getValue();
+                for (SqlExpr masterIdExpr : masterIdExprs) {
+                    masterIds.add(((SqlValuableExpr) masterIdExpr).getValue());
+                }
             }
 
-            this.removeDetailByMasterId(masterId, detailDeleteInfos);
+            this.removeDetailByMasterId(masterIds, detailDeleteInfos);
         }
 
 
@@ -568,17 +577,17 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     /**
-     * 根据masterId来删除子表
+     * 根据masterIds来删除子表
      *
-     * @param masterId
+     * @param masterIds
      * @param detailDeleteInfos
      */
-    private void removeDetailByMasterId(Object masterId, List<OqlDetailDeleteInfo> detailDeleteInfos) {
+    private void removeDetailByMasterId(Object masterIds, List<OqlDetailDeleteInfo> detailDeleteInfos) {
         for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
             XObject detailObject = detailDeleteInfo.getObject();
             String masterFieldName = detailObject.getMasterField().getName();
             Map<String, Object> detailParamMap = new HashMap<>();
-            detailParamMap.put(masterFieldName, masterId);
+            detailParamMap.put(masterFieldName + "s", masterIds);
             this.remove(detailDeleteInfo.getStatement(), detailParamMap);
         }
     }
@@ -606,16 +615,16 @@ public class OqlEngineImpl implements OqlEngine {
         List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
         if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
             // 假设OQL语句中一定带了主表记录ID的条件，并且是变量，然后从paramMaps中抽取ID数据
-            SqlExpr masterIdExpr = checker.getMasterIdExpr();
-            if (masterIdExpr == null) {
+            List<SqlExpr> masterIdExprs = checker.getMasterIdExprs();
+            if (CollectionUtils.isEmpty(masterIdExprs)) {
                 throw new FastOqlException("批量删除OQL where条件中未指明主表记录ID");
             }
-            if (!(masterIdExpr instanceof SqlVariantRefExpr)) {
+            if (!(masterIdExprs.get(0) instanceof SqlVariantRefExpr)) {
                 throw new FastOqlException("批量删除OQL where条件中未指明主表记录ID的变量表达式");
             }
 
             // 依次从变量中抽取ID数据
-            String masterVarName = ((SqlVariantRefExpr) masterIdExpr).getVarName();
+            String masterVarName = ((SqlVariantRefExpr) masterIdExprs.get(0)).getVarName();
             List<Object> recordIds = new ArrayList<>();
             for (Map<String, Object> paramMap : paramMaps) {
                 recordIds.add(paramMap.get(masterVarName));

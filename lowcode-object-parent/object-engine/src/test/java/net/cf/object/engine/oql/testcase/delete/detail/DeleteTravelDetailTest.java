@@ -7,22 +7,34 @@ package net.cf.object.engine.oql.testcase.delete.detail;
  */
 public interface DeleteTravelDetailTest {
 
-    String OQL_FILE_PATH = "oql/delete/DeleteTravelDetail.json";
+    String OQL_FILE_PATH = "oql/delete/detail/DeleteTravelDetail.json";
 
-    String OQL_DELETE_TRAVEL_BY_ID = "DeleteTravelById";
+    String OQL_DELETE_TRAVEL_AND_TRIP_BY_ID = "DeleteTravelAndTripById";
 
-    String OQL_DELETE_TRAVEL_BY_ID_VARS = "DeleteTravelByIdVars";
+    String OQL_DELETE_TRAVEL_AND_TRIP_BY_ID_VARS = "DeleteTravelAndTripByIdVars";
 
-    /**
-     * 测试根据记录ID删除出差本表记录
-     *
-     */
-    void testDeleteTravelById();
+    String OQL_DELETE_TRAVEL_AND_TRIP_IN_IDS = "DeleteTravelAndTripInIds";
+
+    String OQL_DELETE_TRAVEL_AND_TRIP_IN_IDS_VARS = "DeleteTravelAndTripInIdsVars";
 
     /**
-     * 测试根据记录ID删除出差本表记录（带变量）
-     *
+     * 测试根据记录ID删除出差本表记录和出差行程记录
      */
-    void testDeleteTravelByIdVars();
+    void testDeleteTravelAndTripById();
+
+    /**
+     * 测试根据记录ID删除出差本表记录和出差行程记录（带变量）
+     */
+    void testDeleteTravelAndTripByIdVars();
+
+    /**
+     * 测试根据记录ID集合删除出差本表记录和出差行程记录
+     */
+    void testDeleteTravelAndTripInIds();
+
+    /**
+     * 测试根据记录ID集合删除出差本表记录和出差行程记录（带变量）
+     */
+    void testDeleteTravelAndTripInIdsVars();
 
 }

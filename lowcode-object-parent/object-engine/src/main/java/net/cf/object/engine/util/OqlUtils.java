@@ -209,7 +209,7 @@ public class OqlUtils {
 
 
     /**
-     * 构建字段属于它自身变量的复数形式的比较表达式，即：field = #{fields}
+     * 构建字段属于它自身变量的复数形式的比较表达式，即：field in (#{fields})
      *
      * @param field
      */

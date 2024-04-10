@@ -1,6 +1,7 @@
 package net.cf.object.engine.oql.info;
 
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
@@ -55,7 +56,7 @@ public class OqlDeleteInfoParser extends AbstractOqlInfoParser {
     }
 
     public OqlDeleteInfoParser(OqlDeleteStatement stmt, List<Map<String, Object>> paramMaps) {
-        super(false);
+        super(true);
         this.stmt = stmt;
         this.paramMap = null;
         this.paramMaps = paramMaps;
@@ -87,10 +88,14 @@ public class OqlDeleteInfoParser extends AbstractOqlInfoParser {
             for (OqlExprObjectSource detailFrom : detailFroms) {
                 OqlDeleteStatement detailOqlDeleteStmt = new OqlDeleteStatement();
                 detailOqlDeleteStmt.setFrom(detailFrom);
-                // where masterId = #{masterId}
+                // where masterId in (#{masterIds})
                 XObjectRefField masterField = detailFrom.getResolvedObject().getMasterField();
-                SqlBinaryOpExpr whereExpr = OqlUtils.buildFieldEqualsVarRefExpr(masterField);
+                SqlInListExpr whereExpr = OqlUtils.buildFieldInListVarRefExpr(masterField);
                 detailOqlDeleteStmt.setWhere(whereExpr);
+                OqlDetailDeleteInfo detailDeleteInfo = new OqlDetailDeleteInfo();
+                detailDeleteInfo.setStatement(detailOqlDeleteStmt);
+                detailDeleteInfo.setObject(detailFrom.getResolvedObject());
+                detailDeleteInfos.add(detailDeleteInfo);
             }
         }
     }

@@ -7,6 +7,8 @@ import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 import net.cf.object.engine.util.XObjectUtils;
 
+import java.util.List;
+
 /**
  * 更新语句的合法性校验器
  *
@@ -17,13 +19,13 @@ public class DeleteStatementChecker implements OqlAstVisitor {
     /**
      * 从OQL语句中解析出来的主表记录ID的值
      */
-    private SqlExpr masterIdExpr;
+    private List<SqlExpr> masterIdExprs;
 
     public DeleteStatementChecker() {
     }
 
-    public SqlExpr getMasterIdExpr() {
-        return masterIdExpr;
+    public List<SqlExpr> getMasterIdExprs() {
+        return masterIdExprs;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class DeleteStatementChecker implements OqlAstVisitor {
                 throw new FastOqlException("带子模型的删除语句必须指定主键ID为查询条件");
             }
 
-            this.masterIdExpr = checker.getPrimaryFieldValue();
+            this.masterIdExprs = checker.getPrimaryFieldValues();
         }
 
         return false;

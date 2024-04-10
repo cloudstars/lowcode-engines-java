@@ -24,7 +24,7 @@ public final class XObjectUtils {
         List<XObjectRefField> detailFields = new ArrayList<>();
         for (XField field : fields) {
             if (field instanceof XObjectRefField) {
-                if (((XObjectRefField) field).getRefType() == ObjectRefType.MASTER) {
+                if (((XObjectRefField) field).getRefType() == ObjectRefType.DETAIL) {
                     detailFields.add((XObjectRefField) field);
                 }
             }
@@ -43,7 +43,7 @@ public final class XObjectUtils {
         List<XField> fields = object.getFields();
         for (XField field : fields) {
             if (field instanceof XObjectRefField) {
-                if (((XObjectRefField) field).getRefType() == ObjectRefType.MASTER) {
+                if (((XObjectRefField) field).getRefType() == ObjectRefType.DETAIL) {
                     return true;
                 }
             }
