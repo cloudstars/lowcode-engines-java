@@ -94,10 +94,10 @@ public class OqlEngineImpl implements OqlEngine {
             // 循环处理子表
             for (OqlSelectInfo detailSelectInfo : detailSelectInfos) {
                 OqlSelectStatement detailStmt = detailSelectInfo.getStatement();
-                Map<String, Object> detailParamMap = detailSelectInfo.getParamMap();
-                detailParamMap.put(mainPrimaryFieldName, masterId);
-                List<Map<String, Object>> detailResult = this.queryList(detailStmt, detailParamMap);
                 XObject detailObject = detailSelectInfo.getObject();
+                Map<String, Object> detailParamMap = detailSelectInfo.getParamMap();
+                detailParamMap.put(detailObject.getMasterField().getName(), masterId);
+                List<Map<String, Object>> detailResult = this.queryList(detailStmt, detailParamMap);
                 XObjectRefField detailRefField = mainObject.getObjectRefField(detailObject.getName());
                 String detailRefFieldName = detailRefField.getName();
                 if (!detailSelectInfo.isDetailDefaultExpandQuery()) {
@@ -173,13 +173,13 @@ public class OqlEngineImpl implements OqlEngine {
                 String detailMasterFieldName = detailObject.getMasterField().getName();
                 OqlSelectStatement detailStmt = detailSelectInfo.getStatement();
                 Map<String, Object> detailParamMap = detailSelectInfo.getParamMap();
-                // 生成子表OQL语句时加了"s"复数后缀
-                detailParamMap.put(detailMasterFieldName, masterIds);
+                // 生成子表OQL语句时变量加了"s"复数后缀
+                detailParamMap.put(detailMasterFieldName + "s", masterIds);
                 List<Map<String, Object>> detailResult = this.queryList(detailStmt, detailParamMap);
                 // 按照masterId聚合
                 Map<String, List<Map<String, Object>>> masterIdGroupedMap = new HashMap<>();
                 for (Map<String, Object> detailItem : detailResult) {
-                    String masterId = detailItem.get(mainPrimaryFieldName).toString();
+                    String masterId = detailItem.get(detailMasterFieldName).toString();
                     List<Map<String, Object>> masterIdResult = masterIdGroupedMap.get(masterId);
                     if (masterIdResult == null) {
                         masterIdResult = new ArrayList<>();
@@ -401,7 +401,8 @@ public class OqlEngineImpl implements OqlEngine {
         OqlUpdateInfo mainUpdateInfo = infoParser.getSelfUpdateInfo();
         OqlUpdateStatement mainStmt = mainUpdateInfo.getStatement();
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
-        SqlUpdateStatement mainSqlStmt = Oql2SqlUtils.toSqlUpdate(mainStmt, builder);;
+        SqlUpdateStatement mainSqlStmt = Oql2SqlUtils.toSqlUpdate(mainStmt, builder);
+        ;
         ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         Map<String, Object> targetParamMap = this.convertParameterMap(parameterMapper, paramMap);
         int effectedRows = this.repository.update(mainSqlStmt, targetParamMap);
@@ -415,7 +416,7 @@ public class OqlEngineImpl implements OqlEngine {
 
         // 先删除不需要保留的子表数据（由于使用not in (...)，所以需要在新数据插入前执行）
         List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
-        if (detailDeleteInfos != null &&  detailDeleteInfos.size() > 0) {
+        if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
             for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
                 List<String> remainedRecordIds = detailDeleteInfo.getRemainedRecordIds();
                 if (remainedRecordIds == null && remainedRecordIds.size() == 0) {
@@ -434,7 +435,7 @@ public class OqlEngineImpl implements OqlEngine {
 
         // 插入新增的子表数据
         List<OqlDetailInsertInfo> detailInsertInfos = infoParser.getDetailInsertInfos();
-        if (detailInsertInfos != null &&  detailInsertInfos.size() > 0) {
+        if (detailInsertInfos != null && detailInsertInfos.size() > 0) {
             for (OqlDetailInsertInfo detailInsertInfo : detailInsertInfos) {
                 List<Map<String, Object>> insertParamMaps = detailInsertInfo.getParamMaps();
                 if (insertParamMaps == null && insertParamMaps.size() == 0) {
@@ -454,7 +455,7 @@ public class OqlEngineImpl implements OqlEngine {
 
         // 更新编辑的子表数据
         List<OqlDetailUpdateInfo> detailUpdateInfos = infoParser.getDetailUpdateInfos();
-        if (detailUpdateInfos != null &&  detailUpdateInfos.size() > 0) {
+        if (detailUpdateInfos != null && detailUpdateInfos.size() > 0) {
             for (OqlDetailUpdateInfo detailUpdateInfo : detailUpdateInfos) {
                 List<Map<String, Object>> updateParamMaps = detailUpdateInfo.getParamMaps();
                 if (updateParamMaps == null && updateParamMaps.size() == 0) {
@@ -537,7 +538,8 @@ public class OqlEngineImpl implements OqlEngine {
         OqlDeleteInfo mainDeleteInfo = infoParser.getSelfDeleteInfo();
         OqlDeleteStatement mainStmt = mainDeleteInfo.getStatement();
         SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
-        SqlDeleteStatement mainSqlStmt = Oql2SqlUtils.toSqlDelete(mainStmt, builder);;
+        SqlDeleteStatement mainSqlStmt = Oql2SqlUtils.toSqlDelete(mainStmt, builder);
+        ;
         int effectedRows = this.repository.delete(mainSqlStmt, paramMap);
 
         // 循环删除子表数据
@@ -595,7 +597,8 @@ public class OqlEngineImpl implements OqlEngine {
         OqlDeleteInfo mainDeleteInfo = infoParser.getSelfDeleteInfo();
         OqlDeleteStatement mainStmt = mainDeleteInfo.getStatement();
         SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
-        SqlDeleteStatement mainSqlStmt = Oql2SqlUtils.toSqlDelete(mainStmt, builder);;
+        SqlDeleteStatement mainSqlStmt = Oql2SqlUtils.toSqlDelete(mainStmt, builder);
+        ;
         int[] effectedRowsArray = this.repository.batchDelete(mainSqlStmt, paramMaps);
         this.sumAndLogsumEffectedRows(effectedRowsArray, stmt);
 
