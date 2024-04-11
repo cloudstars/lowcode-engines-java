@@ -96,7 +96,9 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         mongoSelectCommand.setCollectionName(this.collectionName);
         mongoSelectCommand.setReplaceFields(this.replaceFields);
         log.info("select sql : {} ", mongoSelectCommand.getSqlExpr());
-        log.info("select field replace : {}", JSON.toJSON(this.replaceFields));
+        if (this.replaceFields != null) {
+            log.info("select field replace : {}", JSON.toJSON(this.replaceFields));
+        }
         return mongoSelectCommand;
     }
 
