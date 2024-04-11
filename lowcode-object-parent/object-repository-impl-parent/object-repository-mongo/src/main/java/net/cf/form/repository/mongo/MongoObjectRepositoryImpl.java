@@ -3,6 +3,7 @@ package net.cf.form.repository.mongo;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import net.cf.form.repository.ObjectRepository;
+import net.cf.form.repository.mongo.data.DataConvertContext;
 import net.cf.form.repository.mongo.data.DocumentAggregationOperation;
 import net.cf.form.repository.mongo.data.MongoDbDataConverter;
 import net.cf.form.repository.mongo.data.MongoUtils;
@@ -176,16 +177,16 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
     }
 
 
-    private List<Map<String, Object>> convert(List<Document> documents) {
+    private List<Map<String, Object>> convert(List<Document> documents, DataConvertContext convertContext) {
         List<Map<String, Object>> res = new ArrayList<>();
         for (Document document : documents) {
-            res.add(convert(document));
+            res.add(convert(document, convertContext));
         }
         return res;
     }
 
-    private Map<String, Object> convert(Document document) {
-        return MongoDbDataConverter.convertDoc(document);
+    private Map<String, Object> convert(Document document, DataConvertContext convertContext) {
+        return MongoDbDataConverter.convertDoc(document, convertContext);
     }
 
 
@@ -197,7 +198,9 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
         MongoSelectCommand command = builder.build();
 
         AggregationResults<Document> results = this.template.aggregate(command.getAggregation(), command.getCollectionName(), Document.class);
-        List<Map<String, Object>> res = convert(results.getMappedResults());
+
+        DataConvertContext convertContext = new DataConvertContext(command.getReplaceFields());
+        List<Map<String, Object>> res = convert(results.getMappedResults(), convertContext);
         return res;
     }
 }

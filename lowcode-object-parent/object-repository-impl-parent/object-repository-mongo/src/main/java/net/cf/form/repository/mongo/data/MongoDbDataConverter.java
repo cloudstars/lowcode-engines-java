@@ -23,7 +23,7 @@ public class MongoDbDataConverter {
             return null;
         }
         if (mongoData instanceof Document) {
-            return convertDoc((Document) mongoData);
+            return convertDoc((Document) mongoData, null);
         } else if (mongoData instanceof List) {
             return convertList((List) mongoData);
         } else {
@@ -32,20 +32,45 @@ public class MongoDbDataConverter {
 
     }
 
-
-    public static Map<String, Object> convertDoc(Document document) {
+    /**
+     * @param document
+     * @param convertContext
+     * @return
+     */
+    public static Map<String, Object> convertDoc(Document document, DataConvertContext convertContext) {
         Map<String, Object> data = new HashMap<>();
         for (Map.Entry<String, Object> entry : document.entrySet()) {
-            data.put(entry.getKey(), convertDbData(entry.getValue()));
+            String key = getOriginFieldName(entry.getKey(), convertContext);
+            data.put(key, convertDbData(entry.getValue()));
         }
         return data;
     }
 
+    /**
+     * @param key
+     * @param dataConvertContext
+     * @return
+     */
+    private static String getOriginFieldName(String key, DataConvertContext dataConvertContext) {
+        if (dataConvertContext == null || !dataConvertContext.isReplaceField()) {
+            return key;
+        }
+        if (dataConvertContext.getReplaceFields().containsKey(key)) {
+            return dataConvertContext.getReplaceFields().get(key);
+        }
+        return key;
+    }
+
+
+    /**
+     * @param mongoData
+     * @return
+     */
     private static List<Object> convertList(List mongoData) {
         List<Object> items = new ArrayList<>();
         for (Object listItem : (List) mongoData) {
             if (listItem instanceof Document) {
-                items.add(convertDoc((Document) listItem));
+                items.add(convertDoc((Document) listItem, null));
             } else {
                 items.add(convertDbData(listItem));
             }
@@ -53,7 +78,10 @@ public class MongoDbDataConverter {
         return items;
     }
 
-
+    /**
+     * @param data
+     * @return
+     */
     private static Object convertData(Object data) {
         if (data instanceof Decimal128) {
             return ((Decimal128) data).bigDecimalValue();

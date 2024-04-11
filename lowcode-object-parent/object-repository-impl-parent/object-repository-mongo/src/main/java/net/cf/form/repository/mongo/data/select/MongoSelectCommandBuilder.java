@@ -1,5 +1,6 @@
 package net.cf.form.repository.mongo.data.select;
 
+import com.alibaba.fastjson.JSON;
 import net.cf.form.repository.mongo.data.*;
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
@@ -39,6 +40,8 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     private SqlOrderBy orderBy;
 
     private SqlLimit limit;
+
+    private Map<String, String> replaceFields;
 
     private static final List<String> AGGR_METHODS = Arrays.asList("COUNT", "SUM", "MAX", "MIN", "AVG");
 
@@ -91,7 +94,9 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         MongoSelectCommand mongoSelectCommand = new MongoSelectCommand();
         mongoSelectCommand.setAggregation(aggregation);
         mongoSelectCommand.setCollectionName(this.collectionName);
+        mongoSelectCommand.setReplaceFields(this.replaceFields);
         log.info("select sql : {} ", mongoSelectCommand.getSqlExpr());
+        log.info("select field replace : {}", JSON.toJSON(this.replaceFields));
         return mongoSelectCommand;
     }
 
@@ -104,42 +109,73 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
 
     private void buildAggregationOperation() {
+        LinkedList<AggregationOpEnum> operations = AggregationOpEnum.getDefaultOperations();
 
         // 初始化分析【后续看是否可以移到visitor中】
         analyse();
 
-        // 构建过滤条件
-        buildWhere();
-
-        //
-        buildAddField();
-
-        //
-        buildLookup();
-
-        // 构建聚合信息
-        buildGroupBy();
+        // 构建mongo操作命令
+        for (AggregationOpEnum opEnum : operations) {
+            buildOperation(opEnum);
+        }
+    }
 
 
-        //
-        buildOrderAndLimit();
-
-        // 构建返回映射
-        buildReturn();
-
+    private void buildOperation(AggregationOpEnum opEnum) {
+        switch (opEnum) {
+            case MATCH:
+                // 构建过滤条件
+                buildWhere();
+                break;
+            case LOOKUP:
+                //
+                buildLookup();
+                break;
+            case ADD_FIELD:
+                //
+                buildAddField();
+                break;
+            case ORDER:
+                buildOrderBy();
+                break;
+            case LIMIT:
+                buildLimit();
+                break;
+            case GROUP_BY:
+                buildGroupBy();
+                break;
+            case PROJECT:
+                // 构建返回映射
+                buildReturn();
+                break;
+            default:
+                throw new RuntimeException("error aggregate operation");
+        }
     }
 
 
     private void analyse() {
         for (MongoSelectItem selectItem : this.selectItems) {
-            // 设置别名
-            if (selectItem.getExprEnum().shouldGetOriginExpression()) {
-                if (selectItem.getAlias() == null) {
+            if (selectItem.getExprEnum() == ExprTypeEnum.PARAM) {
+                selectItem.setOriginFieldName(MongoUtils.getOriginExpr(selectItem.getSqlExpr()));
+                // 字段类型只用原始字段名作为构建命令时的字段名
+                selectItem.setFieldName(selectItem.getOriginFieldName());
+            } else {
+                if (StringUtils.isEmpty(selectItem.getAlias())) {
                     String originExpr = MongoUtils.getOriginExprAlias(selectItem.getSqlExpr());
                     selectItem.setAlias(originExpr);
-
                 }
+                if (StringUtils.isEmpty(selectItem.getOriginFieldName())) {
+                    selectItem.setOriginFieldName(selectItem.getAlias());
+                }
+                // 其他类型一律使用别名作为构建命令时的字段名
+                selectItem.setFieldName(selectItem.getAlias());
             }
+
+            // 设置替换字段名
+            setReplaceName(selectItem);
+
+
             //
             if (selectItem.getExprEnum() == ExprTypeEnum.AGGR) {
                 selectItem.setAggr(true);
@@ -150,6 +186,46 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
                 aliasMap.put(selectItem.getAlias(), selectItem);
             }
 
+        }
+    }
+
+    /**
+     * 设置替换字段名
+     *
+     * @param selectItem
+     */
+    private void setReplaceName(MongoSelectItem selectItem) {
+
+        if (!StringUtils.isEmpty(selectItem.getAlias())) {
+            // 别名不带点，不需要替换
+            if (!selectItem.getAlias().contains(".")) {
+                return;
+            }
+        } else {
+            // 字段名不带点，不需要替换
+            if (!StringUtils.isEmpty(selectItem.getOriginFieldName()) && !selectItem.getOriginFieldName().contains(".")) {
+                return;
+            }
+        }
+
+        SequenceNameGenerator sequenceNameGenerator = new SequenceNameGenerator("rfield");
+        String replaceName = sequenceNameGenerator.getNextName();
+        selectItem.setReplaceName(replaceName);
+        if (this.replaceFields == null) {
+            replaceFields = new HashMap<>();
+        }
+        // 写入替换名
+        if (StringUtils.isEmpty(selectItem.getAlias())) {
+            // 有别名，原返回键肯定是别名，替换别名作为返回键
+            replaceFields.put(replaceName, selectItem.getAlias());
+        } else {
+            // 没有别名，原返回键是解析字段名，替换origin field name
+            replaceFields.put(replaceName, selectItem.getOriginFieldName());
+        }
+
+        // 特殊处理，非字段类型，别名必定不为空，一旦包含".", 需要改解析时字段名为 替换字段名
+        if (selectItem.getExprEnum() != ExprTypeEnum.PARAM) {
+            selectItem.setFieldName(replaceName);
         }
     }
 
@@ -214,7 +290,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         Document opDoc = new Document();
         String mongoMethod = getMongoMethod(methodName);
         opDoc.put(mongoMethod, expression);
-        groupDocInfo.put(selectItem.getAlias(), opDoc);
+        groupDocInfo.put(selectItem.getFieldName(), opDoc);
 
     }
 
@@ -261,10 +337,8 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             SqlExpr sqlExpr = selectItem.getSqlExpr();
             if (sqlExpr instanceof SqlValuableExpr || selectItem.getExprEnum() == ExprTypeEnum.METHOD || selectItem.getExprEnum() == ExprTypeEnum.EXPRESSION) {
                 Object value = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.PARAM));
-                String originExpr = sqlExpr.toString();
                 // 添加常量数据,因为在语句中，所以必须使用mongo格式
-                String alias = selectItem.getAlias() != null ? selectItem.getAlias() : originExpr;
-                addFields.put(alias, value);
+                addFields.put(selectItem.getFieldName(), value);
             }
         }
         if (addFields.size() > 0) {
@@ -372,6 +446,9 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
     private void buildOrderBy() {
+        if (this.orderBy == null) {
+            return;
+        }
         SqlOrderBy sqlOrderBy = this.orderBy;
         List<Sort.Order> orders = new ArrayList<>();
         for (SqlSelectOrderByItem item : sqlOrderBy.getItems()) {
@@ -390,6 +467,10 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
     private void buildLimit() {
+        if (this.limit == null) {
+            return;
+        }
+
         SqlLimit sqlLimit = this.limit;
         SqlExpr offsetExpr = sqlLimit.getOffset();
         if (offsetExpr != null) {
@@ -450,28 +531,33 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
 
+    /**
+     * @param mongoSelectItem
+     * @param fieldProject
+     */
     private void addProjectField(MongoSelectItem mongoSelectItem, Document fieldProject) {
-        SqlExpr sqlExpr = mongoSelectItem.getSqlExpr();
-        ExprTypeEnum exprEnum = ExprTypeEnum.match(sqlExpr);
-
-        if (exprEnum == ExprTypeEnum.PARAM) {
-            Object value = MongoExprVisitor.visit(mongoSelectItem.getSqlExpr(), new GlobalContext(paramMap, PositionEnum.PARAM));
-            doAddFieldProject(fieldProject, "", null, String.valueOf(value));
-        } else if (exprEnum == ExprTypeEnum.COMMON) {
-            doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getAlias());
-        } else if (exprEnum.isMethod() || exprEnum == ExprTypeEnum.EXPRESSION) {
-            doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getAlias());
-        } else {
-            throw new RuntimeException("not support project field");
-        }
+        doAddFieldProject(fieldProject, "", mongoSelectItem.getAlias(), mongoSelectItem.getOriginFieldName(), mongoSelectItem.getReplaceName());
     }
 
 
-    private void doAddFieldProject(Document fieldProject, String prefix, String alias, String value) {
-        if (!StringUtils.isEmpty(alias) && !alias.equals(value)) {
-            fieldProject.put(prefix + alias, "$" + prefix + value);
+    /**
+     * @param fieldProject
+     * @param prefix
+     * @param alias
+     * @param fieldName
+     * @param replaceFieldName
+     */
+    private void doAddFieldProject(Document fieldProject, String prefix, String alias, String fieldName, String replaceFieldName) {
+        // 如果有字段名替换，直接使用替换字段名
+        if (!StringUtils.isEmpty(replaceFieldName)) {
+            fieldProject.put(prefix + replaceFieldName, 1);
+            return;
+        }
+
+        if (!StringUtils.isEmpty(alias) && !alias.equals(fieldName)) {
+            fieldProject.put(prefix + alias, "$" + prefix + fieldName);
         } else {
-            fieldProject.put(prefix + value, 1);
+            fieldProject.put(prefix + fieldName, 1);
         }
     }
 

@@ -8,7 +8,25 @@ public class MongoSelectItem {
 
     private ExprTypeEnum exprEnum;
 
+    /**
+     * 别名
+     */
     private String alias;
+
+    /**
+     * 原始解析得到的字段名
+     */
+    private String originFieldName;
+
+    /**
+     * 替换字段名
+     */
+    private String replaceName;
+
+    /**
+     * operation解析时上下文内使用的字段名
+     */
+    private String fieldName;
 
     private boolean isAggr = false;
 
@@ -43,5 +61,29 @@ public class MongoSelectItem {
 
     public void setAggr(boolean aggr) {
         isAggr = aggr;
+    }
+
+    public String getOriginFieldName() {
+        return originFieldName;
+    }
+
+    public void setOriginFieldName(String originFieldName) {
+        this.originFieldName = originFieldName;
+    }
+
+    public String getReplaceName() {
+        return replaceName;
+    }
+
+    public void setReplaceName(String replaceName) {
+        this.replaceName = replaceName;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
 }

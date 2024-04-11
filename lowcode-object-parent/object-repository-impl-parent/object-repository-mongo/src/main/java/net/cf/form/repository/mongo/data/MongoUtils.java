@@ -1,8 +1,6 @@
 package net.cf.form.repository.mongo.data;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
-import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -23,9 +21,9 @@ public class MongoUtils {
 
     public static String getOriginExprAlias(SqlExpr sqlExpr) {
         String originExpr = getOriginExpr(sqlExpr);
-        if (sqlExpr instanceof SqlCharExpr && !StringUtils.isEmpty(originExpr)) {
-            return originExpr.substring(1, originExpr.length() - 1);
-        }
+//        if (sqlExpr instanceof SqlCharExpr && !StringUtils.isEmpty(originExpr)) {
+//            return originExpr.substring(1, originExpr.length() - 1);
+//        }
         return originExpr;
     }
 

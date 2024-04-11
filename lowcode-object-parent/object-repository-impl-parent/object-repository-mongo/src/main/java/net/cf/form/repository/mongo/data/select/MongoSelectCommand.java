@@ -3,11 +3,15 @@ package net.cf.form.repository.mongo.data.select;
 import net.cf.form.repository.mongo.data.AbstractMongoCommand;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 
+import java.util.Map;
+
 public class MongoSelectCommand extends AbstractMongoCommand {
 
     private String collectionName;
 
     private Aggregation aggregation;
+
+    private Map<String, String> replaceFields;
 
 
     public String getCollectionName() {
@@ -24,6 +28,14 @@ public class MongoSelectCommand extends AbstractMongoCommand {
 
     public void setAggregation(Aggregation aggregation) {
         this.aggregation = aggregation;
+    }
+
+    public Map<String, String> getReplaceFields() {
+        return replaceFields;
+    }
+
+    public void setReplaceFields(Map<String, String> replaceFields) {
+        this.replaceFields = replaceFields;
     }
 
     public String getSqlExpr() {
