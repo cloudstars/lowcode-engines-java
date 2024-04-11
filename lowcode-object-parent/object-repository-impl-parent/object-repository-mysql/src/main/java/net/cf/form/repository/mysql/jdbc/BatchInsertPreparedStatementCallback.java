@@ -34,9 +34,10 @@ public class BatchInsertPreparedStatementCallback implements PreparedStatementCa
 
     @Override
     public int[] doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-        if (logger.isDebugEnabled())
+        if (logger.isDebugEnabled()) {
             logger.debug("Executing batch SQL update and returning " +
                     "generated keys [" + sql + "]");
+        }
 
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         try {

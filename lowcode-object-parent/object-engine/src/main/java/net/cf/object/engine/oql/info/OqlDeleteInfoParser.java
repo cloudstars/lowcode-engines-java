@@ -1,6 +1,5 @@
 package net.cf.object.engine.oql.info;
 
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
