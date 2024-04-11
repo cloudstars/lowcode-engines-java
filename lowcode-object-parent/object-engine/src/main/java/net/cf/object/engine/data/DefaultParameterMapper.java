@@ -1,5 +1,7 @@
 package net.cf.object.engine.data;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,11 +94,23 @@ public class DefaultParameterMapper implements ParameterMapper {
      *   "name": ["yy", "bb"]
      * }
      *
+     * 如果待展开值空，展开后结果为：
+     * {
+     *   "id": null,
+     *   "name": null
+     * }
      * @param value
      * @param subFields
      */
     private Map<String, Object> mapListValue(List<Map<String, Object>> value, List<FieldMapping> subFields) {
         Map<String, Object> targetMap = new HashMap<>();
+        // 待展开值为空
+        if (CollectionUtils.isEmpty(value)) {
+            for (FieldMapping subField : subFields) {
+                targetMap.put(subField.getColumnName(), null);
+            }
+            return targetMap;
+        }
         int valueSize = value.size();
         for (FieldMapping subField : subFields) {
             String subFieldName = subField.getFieldName();

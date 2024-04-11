@@ -139,6 +139,11 @@ public class DefaultResultReducer implements ResultReducer {
             }
         }
 
+        // 结果为空，返回null
+        if (valueSize == 0) {
+            return null;
+        }
+
         // 将上面的处理结果处理成一个长度为valueSize的List<Map>
         List<Map<String, Object>> targetMapList = new ArrayList<>();
         for (int i = 0; i < valueSize; i++) {
