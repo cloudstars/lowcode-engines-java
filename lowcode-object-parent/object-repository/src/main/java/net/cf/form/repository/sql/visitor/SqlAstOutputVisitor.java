@@ -387,6 +387,14 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         return false;
     }
 
+    @Override
+    public boolean visit(SqlContainsOpExpr x) {
+        x.getLeft().accept(this);
+        this.print(this.uppercase ? " CONTAINS " : " contains ");
+        this.printParenthesesAndAcceptList(x.getTargetList(), ", ");
+        return false;
+    }
+
     /**********************************************************************
      *                标识符类表达式节点                                         *
      **********************************************************************/

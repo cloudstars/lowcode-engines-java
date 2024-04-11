@@ -73,6 +73,7 @@ public enum SqlBinaryOperator {
             case LIKE:
             case NOT_LIKE:
             case IN:
+            case CONTAINS:
                 return true;
             default:
                 return false;

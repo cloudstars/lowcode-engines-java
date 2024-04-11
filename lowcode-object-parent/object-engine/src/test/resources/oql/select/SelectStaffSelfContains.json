@@ -2,6 +2,11 @@
   "desc": "测试contains的查询员工表的案例，测试点：contains",
   "name": "SelectContainsWhere",
   "oqls": [
-
+    {
+      "desc": "查询员工记录",
+      "name": "SelectStaffByHobby",
+      "oql": "select staffId, staffCode, staffName, joinDate from Staff where hobbies contains ('111')",
+      "sql": "select STA_ID, STA_CODE, STA_NAME, JOIN_DATE from STAFF where HOBBIES contains ('111')"
+    }
   ]
 }

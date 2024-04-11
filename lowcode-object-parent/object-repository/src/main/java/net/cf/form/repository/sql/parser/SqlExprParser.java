@@ -300,7 +300,17 @@ public class SqlExprParser extends AbstractSqlParser {
                 break;
             case CONTAINS:
                 this.lexer.nextToken();
-
+                targetExpr = new SqlContainsOpExpr(targetExpr);
+                if (this.lexer.token == Token.ANY) {
+                    ((SqlContainsOpExpr) targetExpr).setOption(SqlContainsOption.ANY);
+                    this.lexer.nextToken();
+                } else if (this.lexer.token == Token.ALL) {
+                    ((SqlContainsOpExpr) targetExpr).setOption(SqlContainsOption.ALL);
+                    this.lexer.nextToken();
+                }
+                this.accept(Token.LPAREN);
+                this.exprList(((SqlContainsOpExpr) targetExpr).getTargetList(), targetExpr);
+                this.accept(Token.RPAREN);
                 /*SqlJsonArrayExpr array = new SqlJsonArrayExpr();
                 targetExpr = new SqlArrayContainsOpExpr(targetExpr, array);
                 if (this.lexer.token == Token.ANY) {
