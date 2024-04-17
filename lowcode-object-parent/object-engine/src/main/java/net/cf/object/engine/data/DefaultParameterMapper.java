@@ -78,6 +78,7 @@ public class DefaultParameterMapper implements ParameterMapper {
             for (FieldMapping subField : subFields) {
                 targetMap.put(subField.getColumnName(), null);
             }
+            return targetMap;
         }
         targetMap.putAll(value);
         for (FieldMapping subField : subFields) {
