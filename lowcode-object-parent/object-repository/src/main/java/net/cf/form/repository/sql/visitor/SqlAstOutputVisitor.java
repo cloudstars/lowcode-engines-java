@@ -391,7 +391,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     public boolean visit(SqlContainsOpExpr x) {
         x.getLeft().accept(this);
         this.print(this.uppercase ? " CONTAINS " : " contains ");
-        this.printParenthesesAndAcceptList(x.getTargetList(), ", ");
+        x.getRight().accept(this);
         return false;
     }
 

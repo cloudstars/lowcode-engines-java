@@ -11,6 +11,6 @@ public interface SelectStaffContainsWhereTest {
 
     String OQL_SELECT_STAFF_BY_HOBBY = "SelectStaffByHobby";
 
-    public void testSelectStaffByHobby();
+    void testSelectStaffByHobby();
 
 }

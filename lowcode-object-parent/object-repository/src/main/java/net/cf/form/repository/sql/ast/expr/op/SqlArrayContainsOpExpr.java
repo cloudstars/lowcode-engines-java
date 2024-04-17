@@ -5,6 +5,7 @@ import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
 
 public class SqlArrayContainsOpExpr extends SqlBinaryOpExpr{
 
+    private SqlContainsOption option = SqlContainsOption.ALL;
     public SqlArrayContainsOpExpr() {
     }
 
@@ -16,4 +17,11 @@ public class SqlArrayContainsOpExpr extends SqlBinaryOpExpr{
         return (SqlJsonArrayExpr) right;
     }
 
+    public SqlContainsOption getOption(){
+        return option;
+    }
+
+    public void setOption(SqlContainsOption option) {
+        this.option = option;
+    }
 }
