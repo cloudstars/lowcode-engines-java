@@ -420,7 +420,7 @@ public class OqlEngineImpl implements OqlEngine {
         if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
             for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
                 List<String> remainedRecordIds = detailDeleteInfo.getRemainedRecordIds();
-                if (remainedRecordIds == null && remainedRecordIds.size() == 0) {
+                if (remainedRecordIds == null || remainedRecordIds.size() == 0) {
                     // 更新时没有删除旧数据
                     continue;
                 }
@@ -439,7 +439,7 @@ public class OqlEngineImpl implements OqlEngine {
         if (detailInsertInfos != null && detailInsertInfos.size() > 0) {
             for (OqlDetailInsertInfo detailInsertInfo : detailInsertInfos) {
                 List<Map<String, Object>> insertParamMaps = detailInsertInfo.getParamMaps();
-                if (insertParamMaps == null && insertParamMaps.size() == 0) {
+                if (insertParamMaps == null || insertParamMaps.size() == 0) {
                     // 更新时没有新数据
                     continue;
                 }
@@ -459,7 +459,7 @@ public class OqlEngineImpl implements OqlEngine {
         if (detailUpdateInfos != null && detailUpdateInfos.size() > 0) {
             for (OqlDetailUpdateInfo detailUpdateInfo : detailUpdateInfos) {
                 List<Map<String, Object>> updateParamMaps = detailUpdateInfo.getParamMaps();
-                if (updateParamMaps == null && updateParamMaps.size() == 0) {
+                if (updateParamMaps == null || updateParamMaps.size() == 0) {
                     // 更新时没有旧数据
                     continue;
                 }
