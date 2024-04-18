@@ -39,7 +39,7 @@ public final class SqlContainsOpExpr extends SqlBinaryOpExpr {
     }
 
     @Override
-    public SqlContainsOpExpr clone() {
+    public SqlContainsOpExpr cloneMe() {
         SqlContainsOpExpr x = new SqlContainsOpExpr();
         cloneT(x);
         return x;

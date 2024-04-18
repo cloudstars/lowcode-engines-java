@@ -6,10 +6,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
-import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
@@ -67,6 +64,8 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
             return this.buildLikeSqlExpr(object, (SqlLikeOpExpr) x);
         } else if (clazz == SqlInListExpr.class) {
             return this.buildInListSqlExpr(object, (SqlInListExpr) x);
+        } else if (clazz == SqlContainsOpExpr.class) {
+            return this.buildSqlExpr(object, (SqlContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.buildSqlExpr(object, (SqlBinaryOpExpr) x);
         } else if (clazz == SqlBinaryOpExprGroup.class) {
@@ -156,6 +155,15 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
         for (SqlExpr targetItem : targetList) {
             sqlX.addTarget(this.buildSqlExpr(object, targetItem));
         }
+        return sqlX;
+    }
+
+    private SqlExpr buildSqlExpr(final XObject object, final SqlContainsOpExpr x) {
+        SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
+        sqlX.setLeft(this.buildSqlExpr(object, x.getLeft()));
+        sqlX.setOperator(x.getOperator());
+        sqlX.setRight(this.buildSqlExpr(object, x.getRight()));
+        sqlX.setParenthesized(x.isParenthesized());
         return sqlX;
     }
 
