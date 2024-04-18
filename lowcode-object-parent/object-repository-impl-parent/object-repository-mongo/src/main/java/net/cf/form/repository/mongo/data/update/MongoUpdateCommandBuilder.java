@@ -2,6 +2,7 @@ package net.cf.form.repository.mongo.data.update;
 
 import net.cf.form.repository.mongo.data.*;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -73,7 +74,12 @@ public class MongoUpdateCommandBuilder extends AbstractMongoCommandBuilder<SqlUp
         Document document = new Document();
         for (MongoUpdateItem updateItem : this.updateItems) {
             String field = String.valueOf(MongoExprVisitor.visit(updateItem.getFieldExpr(), fieldContext));
-            Object value = MongoExprVisitor.visit(updateItem.getValueExpr(), valueContext);
+            VisitContext visitContext = VisitContext.getDefaultContextInfo();
+            if (updateItem.getFieldExpr() instanceof SqlIdentifierExpr &&
+                    (((SqlIdentifierExpr) updateItem.getFieldExpr()).isAutoGen())) {
+                visitContext.setAutoGen(true);
+            }
+            Object value = MongoExprVisitor.visit(updateItem.getValueExpr(), valueContext, visitContext);
             document.put(field, value);
         }
 

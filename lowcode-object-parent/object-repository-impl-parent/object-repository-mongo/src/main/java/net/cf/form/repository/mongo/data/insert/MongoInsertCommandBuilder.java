@@ -99,7 +99,11 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
     private Document buildSingleInsertDoc(List<MongoInsertItem> insertItems, GlobalContext globalContext) {
         Document document = new Document();
         for (MongoInsertItem insertItem : insertItems) {
-            Object value = MongoExprVisitor.visit(insertItem.getValueExpr(), globalContext);
+            VisitContext visitContext = new VisitContext();
+            if (insertItem.getColumn().isAutoGen()) {
+                visitContext.setAutoGen(true);
+            }
+            Object value = MongoExprVisitor.visit(insertItem.getValueExpr(), globalContext, visitContext);
             document.put(insertItem.getColName(), value);
         }
         return document;
