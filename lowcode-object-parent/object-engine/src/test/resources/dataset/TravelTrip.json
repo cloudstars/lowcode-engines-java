@@ -5,7 +5,8 @@
     {
       "desc": "行程ID",
       "name": "TRIP_ID",
-      "dataType": "CHAR"
+      "dataType": "CHAR",
+      "autoGen": true
     },
     {
       "desc": "申请单号",

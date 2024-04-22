@@ -1,6 +1,7 @@
 package net.cf.commons.test.db.dataset;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.ArrayList;
@@ -36,7 +37,13 @@ public class MongoDataSetOperator implements IDataSetOperator {
                 Column column = columns[j];
                 String columnName = column.getColumnName();
                 Object value = table.getValue(i, columnName);
-                document.put(columnName, value);
+                if (column.isAuto() && value == null) {
+                    document.put(columnName, new ObjectId());
+                } else if (column.isAuto() && value != null) {
+                    document.put(columnName, new ObjectId(String.valueOf(value)));
+                } else {
+                    document.put(columnName, value);
+                }
             }
             documents.add(document);
         }
