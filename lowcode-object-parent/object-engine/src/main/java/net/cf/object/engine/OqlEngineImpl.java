@@ -426,9 +426,9 @@ public class OqlEngineImpl implements OqlEngine {
                 }
 
                 // 添加主表记录ID和需要保留的记录ID
-                String detailPrimaryFieldName = detailDeleteInfo.getObject().getPrimaryField().getName();
+                String detailMasterFieldName = detailDeleteInfo.getObject().getMasterField().getName();
                 Map<String, Object> detailDeleteParamMap = new HashMap<>();
-                detailDeleteParamMap.put(mainPrimaryFieldName, masterId);
+                detailDeleteParamMap.put(detailMasterFieldName, masterId);
                 detailDeleteParamMap.put("remainedRecordIds", remainedRecordIds);
                 this.remove(detailDeleteInfo.getStatement(), detailDeleteParamMap);
             }
@@ -444,9 +444,10 @@ public class OqlEngineImpl implements OqlEngine {
                     continue;
                 }
 
+                String detailMasterFieldName = detailInsertInfo.getObject().getMasterField().getName();
                 // 给新插入的数据补充主表记录ID
                 for (Map<String, Object> insertParamMap : insertParamMaps) {
-                    insertParamMap.put(mainPrimaryFieldName, masterId);
+                    insertParamMap.put(detailMasterFieldName, masterId);
                 }
 
                 // 批量创建子表记录
