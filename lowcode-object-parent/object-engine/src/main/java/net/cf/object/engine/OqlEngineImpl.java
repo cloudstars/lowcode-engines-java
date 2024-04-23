@@ -97,7 +97,8 @@ public class OqlEngineImpl implements OqlEngine {
                 OqlSelectStatement detailStmt = detailSelectInfo.getStatement();
                 XObject detailObject = detailSelectInfo.getObject();
                 Map<String, Object> detailParamMap = detailSelectInfo.getParamMap();
-                detailParamMap.put(detailObject.getMasterField().getName(), masterId);
+                XObjectRefField masterField = detailObject.getObjectRefField(mainObject.getName());
+                detailParamMap.put(masterField.getName(), masterId);
                 List<Map<String, Object>> detailResult = this.queryList(detailStmt, detailParamMap);
                 XObjectRefField detailRefField = mainObject.getObjectRefField(detailObject.getName());
                 String detailRefFieldName = detailRefField.getName();
@@ -171,7 +172,7 @@ public class OqlEngineImpl implements OqlEngine {
 
             for (OqlSelectInfo detailSelectInfo : detailSelectInfos) {
                 XObject detailObject = detailSelectInfo.getObject();
-                String detailMasterFieldName = detailObject.getMasterField().getName();
+                String detailMasterFieldName = detailObject.getObjectRefField(mainObject.getName()).getName();
                 OqlSelectStatement detailStmt = detailSelectInfo.getStatement();
                 Map<String, Object> detailParamMap = detailSelectInfo.getParamMap();
                 // 生成子表OQL语句时变量加了"s"复数后缀
@@ -303,7 +304,7 @@ public class OqlEngineImpl implements OqlEngine {
                 }
 
                 // 添加主表记录ID
-                String subObjectMasterFieldName = detailObject.getMasterField().getName();
+                String subObjectMasterFieldName = detailObject.getObjectRefField(mainObject.getName()).getName();
                 List<Map<String, Object>> subParamMapList = (List<Map<String, Object>>) subParamMaps;
                 for (Map<String, Object> subParamMap : subParamMapList) {
                     subParamMap.put(subObjectMasterFieldName, masterId);
@@ -403,7 +404,6 @@ public class OqlEngineImpl implements OqlEngine {
         OqlUpdateStatement mainStmt = mainUpdateInfo.getStatement();
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
         SqlUpdateStatement mainSqlStmt = Oql2SqlUtils.toSqlUpdate(mainStmt, builder);
-        ;
         ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         Map<String, Object> targetParamMap = this.convertParameterMap(parameterMapper, paramMap);
         int effectedRows = this.repository.update(mainSqlStmt, targetParamMap);
@@ -426,9 +426,9 @@ public class OqlEngineImpl implements OqlEngine {
                 }
 
                 // 添加主表记录ID和需要保留的记录ID
-                String detailPrimaryFieldName = detailDeleteInfo.getObject().getPrimaryField().getName();
+                XObjectRefField detailMasterField = detailDeleteInfo.getObject().getObjectRefField(mainObject.getName());
                 Map<String, Object> detailDeleteParamMap = new HashMap<>();
-                detailDeleteParamMap.put(mainPrimaryFieldName, masterId);
+                detailDeleteParamMap.put(detailMasterField.getName(), masterId);
                 detailDeleteParamMap.put("remainedRecordIds", remainedRecordIds);
                 this.remove(detailDeleteInfo.getStatement(), detailDeleteParamMap);
             }
@@ -521,7 +521,8 @@ public class OqlEngineImpl implements OqlEngine {
             for (SqlExpr masterIdExpr : masterIdExprs) {
                 masterIds.add(((SqlValuableExpr) masterIdExpr).getValue());
             }
-            this.removeDetailByMasterId(masterIds, detailDeleteInfos);
+            String mainObjetName = mainDeleteStmt.getStatement().getFrom().getResolvedObject().getName();
+            this.removeDetailByMasterId(mainObjetName, masterIds, detailDeleteInfos);
         }
 
         return effectedRows;
@@ -569,7 +570,8 @@ public class OqlEngineImpl implements OqlEngine {
                 }
             }
 
-            this.removeDetailByMasterId(masterIds, detailDeleteInfos);
+            String mainObjetName = mainDeleteInfo.getStatement().getFrom().getResolvedObject().getName();
+            this.removeDetailByMasterId(mainObjetName, masterIds, detailDeleteInfos);
         }
 
 
@@ -582,10 +584,10 @@ public class OqlEngineImpl implements OqlEngine {
      * @param masterIds
      * @param detailDeleteInfos
      */
-    private void removeDetailByMasterId(Object masterIds, List<OqlDetailDeleteInfo> detailDeleteInfos) {
+    private void removeDetailByMasterId(String mainObjectName, Object masterIds, List<OqlDetailDeleteInfo> detailDeleteInfos) {
         for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
             XObject detailObject = detailDeleteInfo.getObject();
-            String masterFieldName = detailObject.getMasterField().getName();
+            String masterFieldName = detailObject.getObjectRefField(mainObjectName).getName();
             Map<String, Object> detailParamMap = new HashMap<>();
             detailParamMap.put(masterFieldName + "s", masterIds);
             this.remove(detailDeleteInfo.getStatement(), detailParamMap);
@@ -632,7 +634,8 @@ public class OqlEngineImpl implements OqlEngine {
 
             for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
                 XObject detailObject = detailDeleteInfo.getObject();
-                XObjectRefField masterField = detailObject.getMasterField();
+                String mainObjetName = mainDeleteInfo.getStatement().getFrom().getResolvedObject().getName();
+                XObjectRefField masterField = detailObject.getObjectRefField(mainObjetName);
                 // delete from detailObject where masterId in (#{masterIds})
                 SqlDeleteStatement detailDeleteSqlStmt = new SqlDeleteStatement();
                 detailDeleteSqlStmt.setFrom(new SqlExprTableSource(detailObject.getTableName()));

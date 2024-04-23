@@ -38,6 +38,11 @@ public class OqlSelectInfoParser extends AbstractOqlInfoParser {
      */
     private List<OqlSelectInfo> detailSelectInfos;
 
+    /**
+     * 一对多的相关表的信息（可能有多个一对多的相关表）
+     */
+    private List<OqlSelectInfo> multiLookupSelectInfos;
+
     public OqlSelectInfoParser(OqlSelectStatement stmt) {
         this(stmt, null);
     }
@@ -165,7 +170,7 @@ public class OqlSelectInfoParser extends AbstractOqlInfoParser {
         detailSelect.setFrom(objectSource);
 
         // 设置子表查询语句的过滤条件 where
-        XObjectRefField masterField = detailObject.getMasterField();
+        XObjectRefField masterField = detailObject.getObjectRefField(this.stmt.getSelect().getFrom().getResolvedObject().getName());
         SqlExpr selectWhere;
         if (this.isBatchMode) {
             //  masterField in (#{masterFields})

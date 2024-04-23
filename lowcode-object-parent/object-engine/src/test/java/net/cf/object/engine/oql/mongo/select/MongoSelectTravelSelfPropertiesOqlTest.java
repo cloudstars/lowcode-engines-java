@@ -23,12 +23,6 @@ public class MongoSelectTravelSelfPropertiesOqlTest extends AbstractSelectTravel
 
     @Test
     @Override
-    public void testSelectTravelExpandCreatorListById() {
-        super.testSelectTravelExpandCreatorListById();
-    }
-
-    @Test
-    @Override
     public void testSelectTravelSingleCreatorListById() {
         super.testSelectTravelSingleCreatorListById();
     }

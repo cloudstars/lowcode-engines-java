@@ -6,14 +6,12 @@
 package net.cf.form.repository.sql.ast.expr.op;
 
 import net.cf.form.repository.sql.ast.SqlObject;
-import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.util.SqlExprUtils;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,30 +19,32 @@ import java.util.List;
  *
  * @author clouds
  */
-public final class SqlInListExpr extends AbstractNotableExpr implements SqlReplaceable {
+public final class SqlInListExpr extends AbstractNotableBinaryOpExpr {
 
     /**
      * 左边的表达式
      */
-    private SqlExpr left;
+    //private SqlExpr left;
 
     /**
      * 右边的值列表
      */
-    private List<SqlExpr> targetList = new ArrayList();
-
+    //private List<SqlExpr> targetList = new ArrayList();
     public SqlInListExpr() {
+        this(null);
     }
 
     public SqlInListExpr(SqlExpr left) {
         this.setLeft(left);
+        this.operator = SqlBinaryOperator.IN;
+        this.right = new SqlListExpr();
     }
 
     public SqlInListExpr(String left, String... values) {
         this.setLeft(SqlExprUtils.toSqlExpr(left));
         int l = values.length;
         for (int i = 0; i < l; i++) {
-            this.targetList.add(new SqlCharExpr(values[i]));
+            ((SqlListExpr) this.right).addItem(new SqlCharExpr(values[i]));
         }
     }
 
@@ -56,50 +56,23 @@ public final class SqlInListExpr extends AbstractNotableExpr implements SqlRepla
     @Override
     public SqlInListExpr cloneMe() {
         SqlInListExpr x = new SqlInListExpr();
-        x.not = this.not;
-        if (this.left != null) {
-            x.setLeft(this.left.cloneMe());
-        }
-
-        Iterator var2 = this.targetList.iterator();
-        while (var2.hasNext()) {
-            SqlExpr e = (SqlExpr) var2.next();
-            SqlExpr e2 = e.cloneMe();
-            e2.setParent(x);
-            x.targetList.add(e2);
-        }
-
+        this.cloneTo(x);
         return x;
-    }
-
-    public SqlExpr getLeft() {
-        return this.left;
-    }
-
-    public void setLeft(SqlExpr left) {
-        if (left != null) {
-            left.setParent(this);
-        }
-
-        this.left = left;
     }
 
     public void addTarget(SqlExpr x) {
         x.setParent(this);
-        this.targetList.add(x);
-    }
-
-    public void addTarget(int index, SqlExpr x) {
-        x.setParent(this);
-        this.targetList.add(index, x);
+        ((SqlListExpr) this.right).addItem(x);
     }
 
     public List<SqlExpr> getTargetList() {
-        return this.targetList;
+        return ((SqlListExpr) this.right).getItems();
     }
 
     public void setTargetList(List<SqlExpr> targetList) {
-        this.targetList = targetList;
+        for (SqlExpr e : targetList) {
+            ((SqlListExpr) this.right).addItem(e);
+        }
     }
 
     @Override
@@ -109,14 +82,9 @@ public final class SqlInListExpr extends AbstractNotableExpr implements SqlRepla
                 this.left.accept(visitor);
             }
 
-            if (this.targetList != null) {
-                Iterator var2 = this.targetList.iterator();
-                while (var2.hasNext()) {
-                    SqlExpr item = (SqlExpr) var2.next();
-                    if (item != null) {
-                        item.accept(visitor);
-                    }
-                }
+            if (this.right != null) {
+                List<SqlExpr> targetList = this.getTargetList();
+                this.nullSafeAcceptChildren(visitor, targetList);
             }
         }
 
@@ -130,7 +98,7 @@ public final class SqlInListExpr extends AbstractNotableExpr implements SqlRepla
             children.add(this.left);
         }
 
-        children.addAll(this.targetList);
+        children.addAll(((SqlListExpr) this.right).getChildren());
         return children;
     }
 
@@ -140,12 +108,13 @@ public final class SqlInListExpr extends AbstractNotableExpr implements SqlRepla
             this.setLeft(target);
             return true;
         } else {
-            for (int i = this.targetList.size() - 1; i >= 0; --i) {
-                if (this.targetList.get(i) == expr) {
+            List<SqlExpr> targetList = ((SqlListExpr) this.right).getItems();
+            for (int i = targetList.size() - 1; i >= 0; --i) {
+                if (targetList.get(i) == expr) {
                     if (target == null) {
-                        this.targetList.remove(i);
+                        targetList.remove(i);
                     } else {
-                        this.targetList.set(i, target);
+                        targetList.set(i, target);
                         target.setParent(this);
                     }
 

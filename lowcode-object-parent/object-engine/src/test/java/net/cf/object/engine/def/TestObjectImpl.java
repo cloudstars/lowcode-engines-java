@@ -4,7 +4,6 @@ import net.cf.object.engine.def.field.FieldDef;
 import net.cf.object.engine.def.field.TestFieldImpl;
 import net.cf.object.engine.def.field.TestObjectRefFieldImpl;
 import net.cf.object.engine.fieldtype.FieldTypeConstants;
-import net.cf.object.engine.object.ObjectRefType;
 import net.cf.object.engine.object.XObject;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
     /**
      * 引用主模型的字段
      */
-    private TestObjectRefFieldImpl masterField = null;
+    //private TestObjectRefFieldImpl masterField = null;
 
     /**
      * 字段列表
@@ -59,9 +58,9 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
                 String refObjectName = fieldDef.getRefObjectName();
                 TestObjectRefFieldImpl objectRefField = new TestObjectRefFieldImpl(this, fieldDef);
                 this.refObjectFieldMap.put(refObjectName, objectRefField);
-                if (objectRefField.getRefType() == ObjectRefType.MASTER) {
+                /*if (objectRefField.getRefType() == ObjectRefType.MASTER) {
                     this.masterField = objectRefField;
-                }
+                }*/
                 field = objectRefField;
             } else {
                 field = new TestFieldImpl(this, fieldDef);
@@ -96,10 +95,10 @@ public class TestObjectImpl implements XObject<TestFieldImpl, TestObjectRefField
         return this.primaryField;
     }
 
-    @Override
+    /*@Override
     public TestObjectRefFieldImpl getMasterField() {
         return this.masterField;
-    }
+    }*/
 
     @Override
     public TestObjectRefFieldImpl getObjectRefField(String refObjectName) {

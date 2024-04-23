@@ -88,7 +88,7 @@ public class OqlDeleteInfoParser extends AbstractOqlInfoParser {
                 OqlDeleteStatement detailOqlDeleteStmt = new OqlDeleteStatement();
                 detailOqlDeleteStmt.setFrom(detailFrom);
                 // where masterId in (#{masterIds})
-                XObjectRefField masterField = detailFrom.getResolvedObject().getMasterField();
+                XObjectRefField masterField = detailFrom.getResolvedObject().getObjectRefField(selfObject.getName());
                 SqlInListExpr whereExpr = OqlUtils.buildFieldInListVarRefExpr(masterField);
                 detailOqlDeleteStmt.setWhere(whereExpr);
                 OqlDetailDeleteInfo detailDeleteInfo = new OqlDetailDeleteInfo();

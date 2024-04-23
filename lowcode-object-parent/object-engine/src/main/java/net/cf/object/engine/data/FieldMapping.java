@@ -29,7 +29,7 @@ public class FieldMapping {
     private ValueType valueType;
 
     /**
-     * 子属性列表
+     * 字段属性列表
      */
     private final List<FieldMapping> subFields = new ArrayList<>();
 

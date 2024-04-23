@@ -5,7 +5,7 @@ import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 /**
- * SQL AST 中的变量引用节点
+ * SQL AST 中的变量引用节点，#{x}, #{x.y}
  *
  * @author clouds
  */
@@ -21,13 +21,7 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
      */
     private String varName;
 
-    /**
-     * 变量出现在SQL语名中的序号（从0开始）
-     */
-    private int index;
-
     public SqlVariantRefExpr() {
-        this.index = -1;
     }
 
     public SqlVariantRefExpr(String name) {
@@ -40,7 +34,6 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
         }
         this.name = name;
         this.parent = parent;
-        this.index = -1;
     }
 
     @Override
@@ -74,14 +67,6 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
 
     private void setVarNameByName(String name) {
         this.varName = name.substring(2, name.length() -1);
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     @Override

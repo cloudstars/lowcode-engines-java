@@ -21,6 +21,11 @@
       "desc": "创建人编号",
       "name": "CREATOR_KEY",
       "dataType": "CHAR"
+    },
+    {
+      "desc": "创建时间",
+      "name": "CREATED_AT",
+      "dataType": "DATETIME"
     }
   ],
   "valuesList": [

@@ -7,6 +7,6 @@ package net.cf.object.engine.object;
  */
 public enum ObjectRefType {
     DETAIL, /* 子表引用 */
-    MASTER, /* 主表引用 */
+    //MASTER, /* 主表引用(也当作是一个查找) */
     LOOKUP; /* 查找表引用 */
 }

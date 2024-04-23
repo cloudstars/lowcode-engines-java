@@ -25,7 +25,7 @@
       "refObjectName": "Travel",
       "refType": "LOOKUP",
       "desc": "关联申请单",
-      "name": "travelId",
+      "name": "travel",
       "columnName": "TRV_ID",
       "dataType": "String",
       "dataLength": 64

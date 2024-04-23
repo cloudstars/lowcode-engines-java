@@ -379,10 +379,11 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     @Override
     public boolean visit(SqlExistsExpr x) {
         if (x.isNot()) {
-            this.print(this.uppercase ? " NOT " : " not ");
+            this.print(this.uppercase ? "NOT " : "not ");
         }
-        this.print(this.uppercase ? " EXISTS " : " exists ");
+        this.print(this.uppercase ? "EXISTS (" : "exists (");
         this.visit(x.getSubQuery());
+        this.print(")");
 
         return false;
     }

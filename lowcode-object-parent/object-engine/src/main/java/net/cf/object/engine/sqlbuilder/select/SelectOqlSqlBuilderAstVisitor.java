@@ -46,8 +46,18 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
         } else if (from instanceof OqlSubQueryObjectSource) { // 子查询的模型源
         }
 
+
         // 构建查询列的列表
         List<OqlSelectItem> selectItems = x.getSelectItems();
+        // 先判断一下查询语句中是否包含相关表的字段
+        for (OqlSelectItem selectItem : selectItems) {
+            SqlExpr sqlExpr = selectItem.getExpr();
+            if (sqlExpr instanceof OqlObjectExpandExpr) {
+                this.isHasRefFieldSelect = true;
+                break;
+            }
+        }
+
         for (OqlSelectItem selectItem : selectItems) {
             SqlExpr sqlExpr = selectItem.getExpr();
             if (sqlExpr instanceof SqlAllColumnExpr) { // 本模型全部字段

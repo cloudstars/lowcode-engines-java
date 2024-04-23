@@ -7,6 +7,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.*;
+import net.cf.form.repository.sql.util.SqlExprUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -99,7 +100,7 @@ public class SqlExprParser extends AbstractSqlParser {
 
             this.lexer.nextToken();
             SqlExpr rightExp = this.and();
-            tExpr = new SqlBinaryOpExpr(tExpr, SqlBinaryOperator.BOOLEAN_OR, rightExp);
+            tExpr = SqlExprUtils.or(tExpr, rightExp);
         }
 
         return tExpr;
@@ -137,7 +138,7 @@ public class SqlExprParser extends AbstractSqlParser {
 
             this.lexer.nextToken();
             SqlExpr rightExp = this.relational();
-            tExpr = new SqlBinaryOpExpr(tExpr, SqlBinaryOperator.BOOLEAN_AND, rightExp);
+            tExpr = SqlExprUtils.and(tExpr, rightExp);
         }
 
         return tExpr;
@@ -473,7 +474,14 @@ public class SqlExprParser extends AbstractSqlParser {
         if (this.lexer.token == Token.IDENTIFIER) {
             name = this.lexer.stringVal();
             this.lexer.nextToken();
-            tExpr = new SqlPropertyExpr((SqlName) tExpr, name);
+            if (tExpr instanceof SqlPropertyExpr) {
+                // 碰到a.b.c的情况，保持a作为owner不变，使名称带点，SQL层不支持属性
+                SqlPropertyExpr propExpr = (SqlPropertyExpr) tExpr;
+                String newName = propExpr.getName() + Token.DOT.name + name;
+                propExpr.setName(newName);
+            } else {
+                tExpr = new SqlPropertyExpr((SqlIdentifierExpr) tExpr, name);
+            }
         }
 
         tExpr = this.primaryRest(tExpr);

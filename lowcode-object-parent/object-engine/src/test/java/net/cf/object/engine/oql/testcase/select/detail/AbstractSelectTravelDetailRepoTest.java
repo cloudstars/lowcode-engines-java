@@ -1,9 +1,7 @@
 package net.cf.object.engine.oql.testcase.select.detail;
 
 import net.cf.object.engine.object.TravelObject;
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,8 +24,7 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripIdsById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_IDS_BY_ID);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        Map<String, Object> resultMap = this.engine.queryOne(oqlStmt, new HashMap<>());
+        Map<String, Object> resultMap = this.engineNew.queryOne(oqlInfo.oql);
         assert (resultMap != null && resultMap.containsKey("trips"));
 
         Object trips = resultMap.get("trips");
@@ -39,8 +36,7 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_BY_ID);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        Map<String, Object> resultMap = this.engine.queryOne(oqlStmt, new HashMap<>());
+        Map<String, Object> resultMap = this.engineNew.queryOne(oqlInfo.oql);
         assert (resultMap != null && resultMap.containsKey("trips"));
 
         Object trips = resultMap.get("trips");
@@ -50,10 +46,9 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripByIdVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_BY_ID_VARS);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyId", TravelObject.RECORD1);
-        Map<String, Object> resultMap = this.engine.queryOne(oqlStmt, paramMap);
+        Map<String, Object> resultMap = this.engineNew.queryOne(oqlInfo.oql, paramMap);
         assert (resultMap != null && resultMap.containsKey("trips"));
 
         Object trips = resultMap.get("trips");
@@ -63,8 +58,7 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripList() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_LIST);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> resultList = this.engine.queryList(oqlStmt, new HashMap<>());
+        List<Map<String, Object>> resultList = this.engineNew.queryList(oqlInfo.oql);
         assert (resultList != null && resultList.size() == 2);
 
         Object trips0 = resultList.get(0).get("trips");
@@ -76,10 +70,9 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripListVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_LIST_VARS);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyIds", Arrays.asList(TravelObject.RECORD1, TravelObject.RECORD2));
-        List<Map<String, Object>> resultList = this.engine.queryList(oqlStmt, paramMap);
+        List<Map<String, Object>> resultList = this.engineNew.queryList(oqlInfo.oql, paramMap);
         assert (resultList != null && resultList.size() == 2);
 
         Object trips0 = resultList.get(0).get("trips");

@@ -3,6 +3,7 @@ package net.cf.form.repository.sql.ast.statement;
 import net.cf.form.repository.sql.ast.AbstractSqlObjectImpl;
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.util.ArrayList;
@@ -73,14 +74,52 @@ public class SqlSelect extends AbstractSqlObjectImpl {
         return selectItems;
     }
 
+    /**
+     * 添加一组查询字段
+     *
+     * @param selectItems
+     */
     public void addSelectItems(List<SqlSelectItem> selectItems) {
-        this.selectItems.addAll(selectItems);
-        this.addChildren(selectItems);
+        for (SqlSelectItem selectItem : selectItems) {
+            this.addSelectItem(selectItem);
+        }
     }
 
+    /**
+     * 添加一个查询字段
+     *
+     * @param selectItem
+     */
     public void addSelectItem(SqlSelectItem selectItem) {
+        SqlExpr selectItemExpr = selectItem.getExpr();
+        if (selectItemExpr instanceof SqlIdentifierExpr) {
+            String identName = ((SqlIdentifierExpr) selectItemExpr).getName();
+            if (this.existIdentifierSelectItem(identName)) {
+                return;
+            }
+        }
+
         this.selectItems.add(selectItem);
         this.addChild(selectItem);
+    }
+
+    /**
+     * 是否存在某个标识符的查询字段
+     *
+     * @param identName
+     * @return
+     */
+    private boolean existIdentifierSelectItem(String identName) {
+        for (SqlSelectItem selectItem : selectItems) {
+            if (selectItem.getExpr() instanceof SqlIdentifierExpr) {
+                SqlIdentifierExpr itemExpr = (SqlIdentifierExpr) selectItem.getExpr();
+                if (itemExpr.getName().equals(identName)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public SqlTableSource getFrom() {

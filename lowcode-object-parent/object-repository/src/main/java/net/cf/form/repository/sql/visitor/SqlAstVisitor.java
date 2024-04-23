@@ -20,7 +20,6 @@ public interface SqlAstVisitor {
      *                基础类节点                                            *
      **********************************************************************/
 
-
     /**
      * 访问一个SqlObject前
      *
@@ -400,24 +399,6 @@ public interface SqlAstVisitor {
      **********************************************************************/
 
     /**
-     * 开始访问 SqlPropertyExpr 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlPropertyExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlPropertyExpr
-     *
-     * @param x
-     */
-    default void endVisit(SqlPropertyExpr x) {
-    }
-
-    /**
      * 开始访问 SqlIdentifierExpr 节点
      *
      * @param x
@@ -433,6 +414,24 @@ public interface SqlAstVisitor {
      * @param x
      */
     default void endVisit(SqlIdentifierExpr x) {
+    }
+
+    /**
+     * 开始访问 SqlPropertyExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlPropertyExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlPropertyExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlPropertyExpr x) {
     }
 
     /**

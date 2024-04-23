@@ -50,6 +50,23 @@ public abstract class AbstractOqlInfoParser {
     }
 
     /**
+     * 是否相关表字段
+     *
+     * @param expr
+     * @return
+     */
+    protected boolean isLookupFieldExpr(SqlExpr expr) {
+        if (expr instanceof OqlObjectExpandExpr) {
+            OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) expr;
+            if (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.LOOKUP) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * 构建模型源
      *
      * @param object

@@ -26,6 +26,7 @@ public enum DataType {
     /**
      * 时间，仅时分秒
      */
+    @Deprecated
     TIME,
     /**
      * 上面的4种类型为基础类型时，Object为非基础类型

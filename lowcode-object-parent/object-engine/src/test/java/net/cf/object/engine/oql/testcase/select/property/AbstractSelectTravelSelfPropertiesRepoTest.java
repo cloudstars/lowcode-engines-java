@@ -1,9 +1,6 @@
 package net.cf.object.engine.oql.testcase.select.property;
 
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.oql.testcase.select.property.SelectTravelSelfPropertiesTest;
-import net.cf.object.engine.util.OqlUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,21 +20,7 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelCreatorListById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_CREATOR_LIST_BY_ID);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
-        assert (dataList != null && dataList.size() == 1);
-        assert (dataList.get(0).containsKey("creator"));
-        Object creator = dataList.get(0).get("creator");
-        assert (creator != null && creator instanceof Map);
-        assert ("张三".equals(((Map<?, ?>) creator).get("name")));
-        assert ("zhangsan".equals(((Map<?, ?>) creator).get("key")));
-    }
-
-    @Override
-    public void testSelectTravelExpandCreatorListById() {
-        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_EXPAND_CREATOR_LIST_BY_ID);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql);
         assert (dataList != null && dataList.size() == 1);
         assert (dataList.get(0).containsKey("creator"));
         Object creator = dataList.get(0).get("creator");
@@ -49,30 +32,29 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelSingleCreatorListById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_SINGLE_CREATOR_LIST_BY_ID);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql);
         assert (dataList != null && dataList.size() == 1);
-        assert (dataList.get(0).containsKey("creator.name") && dataList.get(0).containsKey("creator.key") );
-        assert ("张三".equals(((Map<?, ?>) dataList.get(0)).get("creator.name")));
-        assert ("zhangsan".equals(((Map<?, ?>) dataList.get(0)).get("creator.key")));
+        Map<String, Object> resultMap = dataList.get(0);
+        assert (resultMap.get("creator") instanceof Map);
+        Map<String, Object> creator = (Map<String, Object>) resultMap.get("creator");
+        assert ("张三".equals(creator.get("name")));
+        assert ("zhangsan".equals(creator.get("key")));
     }
 
     @Override
     public void testSelectTravelListBySingleCreator() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST_BY_SINGLE_CREATOR);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql);
         assert (dataList != null && dataList.size() == 1);
     }
 
     @Override
     public void testSelectTravelListBySingleCreatorVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST_BY_SINGLE_CREATOR_VARS);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("creator.name", "张三");
         paramMap.put("creator.key", "zhangsan");
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt, paramMap);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql, paramMap);
         assert (dataList != null && dataList.size() == 1);
     }
 }

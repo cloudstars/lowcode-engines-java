@@ -2,6 +2,7 @@ package net.cf.form.repository.sql.ast.expr.op;
 
 
 import net.cf.form.repository.sql.ast.SqlObject;
+import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.ast.statement.SqlSelect;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
@@ -13,7 +14,12 @@ import java.util.List;
  *
  * @author clouds 
  */
-public final class SqlExistsExpr extends AbstractNotableExpr {
+public final class SqlExistsExpr extends AbstractSqlExprImpl {
+
+    /**
+     * 是否有not关键字
+     */
+    public boolean not;
 
     /**
      * 子查询
@@ -44,12 +50,10 @@ public final class SqlExistsExpr extends AbstractNotableExpr {
         this.subQuery = subQuery;
     }
 
-    @Override
     public boolean isNot() {
         return not;
     }
 
-    @Override
     public void setNot(boolean not) {
         this.not = not;
     }

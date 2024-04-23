@@ -2,7 +2,6 @@ package net.cf.object.engine.sqlbuilder.select;
 
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.statement.*;
@@ -81,7 +80,7 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
         joinTable.setExpr(refObject.getTableName());
         SqlBinaryOpExpr joinCondition = new SqlBinaryOpExpr();
         joinCondition.setOperator(SqlBinaryOperator.EQUALITY);
-        {
+        /*{
             String leftTableName = objectRefField.getOwner().getTableName();
             String leftColumnName = objectRefField.getColumnName();
             joinCondition.setLeft(new SqlPropertyExpr(leftTableName, leftColumnName));
@@ -90,8 +89,8 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
             String rightTableName = refObject.getTableName();
             String rightColumnName = refObject.getPrimaryField().getColumnName();
             joinCondition.setRight(new SqlPropertyExpr(rightTableName, rightColumnName));
-        }
-        this.join(joinTable, joinCondition);
+        }*/
+        //this.join(joinTable, joinCondition);
 
         return this;
     }
@@ -102,14 +101,14 @@ public class SqlSelectStatementBuilder extends AbstractSqlStatementBuilder<OqlSe
      * @param joinTable
      * @param joinCondition
      */
-    private void join(SqlExprTableSource joinTable, SqlExpr joinCondition) {
+    /*private void join(SqlExprTableSource joinTable, SqlExpr joinCondition) {
         SqlJoinTableSource joinTableSource = new SqlJoinTableSource();
         joinTableSource.setLeft(this.select.getFrom());
         joinTableSource.setRight(joinTable);
         joinTableSource.setJoinType(SqlJoinTableSource.JoinType.LEFT_OUTER_JOIN);
         joinTableSource.setCondition(joinCondition);
         this.select.setFrom(joinTableSource);
-    }
+    }*/
 
     /**
      * 设置查询表件

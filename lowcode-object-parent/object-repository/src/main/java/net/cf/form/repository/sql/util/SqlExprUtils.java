@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
 import java.util.Date;
-import java.util.List;
 
 public final class SqlExprUtils {
 
@@ -31,57 +30,31 @@ public final class SqlExprUtils {
         }
     }
 
+    /**
+     * 两个表达式 and
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static SqlExpr and(final SqlExpr a, final SqlExpr b) {
-        if (a == null) {
-            return b;
-        }
-
-        if (b == null) {
-            return a;
-        }
-
-
-        SqlBinaryOpExprGroup group;
-        SqlExpr ta = a;
-        SqlExpr tb = b;
-        if (ta instanceof SqlBinaryOpExprGroup) {
-            group = (SqlBinaryOpExprGroup) ta;
-            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
-                group.addItem(tb);
-                return group;
-            }
-
-            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR && group.getItems().size() == 1) {
-                ta= (group.getItems().get(0)).cloneMe();
-            }
-        }
-
-        if (tb instanceof SqlBinaryOpExpr) {
-            SqlBinaryOpExpr bb = (SqlBinaryOpExpr) tb;
-            if (bb.getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
-                return and(and(ta, bb.getLeft()), bb.getRight());
-            }
-        } else if (tb instanceof SqlBinaryOpExprGroup) {
-            group = (SqlBinaryOpExprGroup) tb;
-            if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR && group.getItems().size() == 1) {
-                tb = (group.getItems().get(0)).cloneMe();
-            }
-        }
-
-        if (ta instanceof SqlBinaryOpExpr && tb instanceof SqlBinaryOpExprGroup && ((SqlBinaryOpExprGroup) tb).getOperator() == SqlBinaryOperator.BOOLEAN_AND) {
-            group = (SqlBinaryOpExprGroup) tb;
-            group.addItem(0, ta);
-            return group;
-        } else {
-            return new SqlBinaryOpExpr(ta, SqlBinaryOperator.BOOLEAN_AND, tb);
-        }
+        return SqlExprUtils.andOr(a, b, true);
     }
 
-    public static SqlExpr and(SqlExpr a, SqlExpr b, SqlExpr c) {
-        return and(and(a, b), c);
-    }
-
+    /**
+     * 两个表达式 or
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public static SqlExpr or(SqlExpr a, SqlExpr b) {
+        return SqlExprUtils.andOr(a, b, false);
+    }
+
+
+    private static SqlExpr andOr(SqlExpr a, SqlExpr b, boolean isAnd) {
+        SqlBinaryOperator op = isAnd ? SqlBinaryOperator.BOOLEAN_AND : SqlBinaryOperator.BOOLEAN_OR;
         if (a == null) {
             return b;
         } else if (b == null) {
@@ -89,34 +62,21 @@ public final class SqlExprUtils {
         } else {
             if (a instanceof SqlBinaryOpExprGroup) {
                 SqlBinaryOpExprGroup group = (SqlBinaryOpExprGroup) a;
-                if (group.getOperator() == SqlBinaryOperator.BOOLEAN_OR) {
+                if (group.getOperator() == op) {
                     group.addItem(b);
                     return group;
                 }
             }
 
-            if (b instanceof SqlBinaryOpExpr) {
-                SqlBinaryOpExpr bb = (SqlBinaryOpExpr) b;
-                if (bb.getOperator() == SqlBinaryOperator.BOOLEAN_OR) {
-                    return or(or(a, bb.getLeft()), bb.getRight());
+            if (b instanceof SqlBinaryOpExprGroup) {
+                SqlBinaryOpExprGroup group = (SqlBinaryOpExprGroup) b;
+                if (group.getOperator() == op) {
+                    group.addItem(0, a);
+                    return group;
                 }
             }
 
-            return new SqlBinaryOpExpr(a, SqlBinaryOperator.BOOLEAN_OR, b);
-        }
-    }
-
-    public static SqlExpr or(List<? extends SqlExpr> list) {
-        if (list.isEmpty()) {
-            return null;
-        } else {
-            SqlExpr first = list.get(0);
-
-            for (int i = 1; i < list.size(); ++i) {
-                first = or(first, list.get(i));
-            }
-
-            return first;
+            return new SqlBinaryOpExpr(a, op, b);
         }
     }
 

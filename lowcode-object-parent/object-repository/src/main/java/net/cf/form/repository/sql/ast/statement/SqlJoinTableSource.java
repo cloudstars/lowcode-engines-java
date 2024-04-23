@@ -10,6 +10,12 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * SQL层不采用JOIN的方式，它表的查询条件统一采用exists
+ *
+ * @author clouds
+ */
+@Deprecated
 public class SqlJoinTableSource extends AbstractSqlTableSourceImpl implements SqlReplaceable {
 
     protected SqlTableSource left;

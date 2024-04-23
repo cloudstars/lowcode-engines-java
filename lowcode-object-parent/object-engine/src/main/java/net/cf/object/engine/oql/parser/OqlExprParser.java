@@ -13,6 +13,9 @@ import net.cf.form.repository.sql.parser.Token;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.oql.ast.OqlFieldExpr;
+import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
+import net.cf.object.engine.oql.ast.OqlPropertyExpr;
 import net.cf.object.engine.util.OqlUtils;
 
 import java.util.Arrays;
@@ -465,21 +468,4 @@ public class OqlExprParser extends SqlExprParser {
 
         return fieldExpandExpr;
     }
-
-    /**
-     * 判断是否是一个子表
-     *
-     * @param selfObject 本模型
-     * @param someName   某个(方法、字段等)名称
-     * @return
-     */
-    protected boolean isDetailObject(XObject selfObject, String someName) {
-        XObjectRefField objectRefField = selfObject.getObjectRefField(someName);
-        if (objectRefField != null) {
-            return objectRefField.getRefType() == ObjectRefType.MASTER;
-        }
-
-        return false;
-    }
-
 }

@@ -26,18 +26,16 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelOne() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_ONE);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        Map<String, Object> data = this.engine.queryOne(oqlStmt);
+        Map<String, Object> data = this.engineNew.queryOne(oqlInfo.oql);
         assert (data != null && TravelObject.RECORD1.equals(data.get("applyId")));
     }
 
     @Override
     public void testSelectTravelOneVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_ONE_VARS);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyId", TravelObject.RECORD1);
-        Map<String, Object> data = this.engine.queryOne(oqlStmt, paramMap);
+        Map<String, Object> data = this.engineNew.queryOne(oqlInfo.oql, paramMap);
         assert (data != null && TravelObject.RECORD1.equals(data.get("applyId")));
     }
 
@@ -55,18 +53,16 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelListVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST_VARS);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyId", TravelObject.RECORD1);
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt, paramMap);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql, paramMap);
         assert (dataList != null && dataList.size() == 1);
     }
 
     @Override
     public void testSelectTravelInList() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_IN_LIST);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql);
         assert (dataList != null && dataList.size() == 2);
         for (Map<String, Object> data : dataList) {
             assert (data.containsKey("applyId") && data.containsKey("applyName"));
@@ -76,28 +72,25 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelInListVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_IN_LIST_VARS);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyIds", Arrays.asList(TravelObject.RECORD1, TravelObject.RECORD2));
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt, paramMap);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql, paramMap);
         assert (dataList != null && dataList.size() == 2);
     }
 
     @Override
     public void testSelectTravelLikeList() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIKE_LIST);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql);
         assert (dataList != null && dataList.size() == 2);
     }
 
     @Override
     public void testSelectTravelLikeListVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIKE_LIST_VARS);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyName", "%测试申请单%");
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt, paramMap);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql, paramMap);
         assert (dataList != null && dataList.size() == 2);
     }
 }

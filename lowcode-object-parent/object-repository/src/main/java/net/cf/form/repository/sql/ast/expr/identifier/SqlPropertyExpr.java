@@ -17,7 +17,8 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
     /**
      * 属性的归属
      */
-    private final SqlName owner;
+    // private final SqlName owner;
+    private final SqlIdentifierExpr owner;
 
     /**
      * 属性的名称
@@ -35,25 +36,30 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
     //private String resolvedColumn;
 
     public SqlPropertyExpr(String owner) {
-        this(new SqlIdentifierExpr(owner));
+        this(new SqlIdentifierExpr(owner), null);
     }
 
-    public SqlPropertyExpr(SqlName owner) {
+    /*public SqlPropertyExpr(SqlName owner) {
         this.owner = owner;
         this.addChild(owner);
-    }
+    }*/
 
-    public SqlPropertyExpr(String owner, String name) {
-        this(new SqlIdentifierExpr(owner), name);
-    }
-
-    public SqlPropertyExpr(SqlName owner, String name) {
+    public SqlPropertyExpr(SqlIdentifierExpr owner, String name) {
         this.owner = owner;
         this.addChild(owner);
         this.name = name;
     }
 
-    public SqlName getOwner() {
+    /*public SqlPropertyExpr(SqlName owner, String name) {
+        this.owner = owner;
+        this.addChild(owner);
+        this.name = name;
+    }*/
+
+    /*public SqlName getOwner() {
+        return owner;
+    }*/
+    public SqlIdentifierExpr getOwner() {
         return owner;
     }
 
@@ -95,7 +101,7 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
 
     @Override
     public SqlPropertyExpr cloneMe() {
-        SqlName ownerX = null;
+        SqlIdentifierExpr ownerX = null;
         if (this.owner != null) {
             ownerX = this.owner.cloneMe();
         }

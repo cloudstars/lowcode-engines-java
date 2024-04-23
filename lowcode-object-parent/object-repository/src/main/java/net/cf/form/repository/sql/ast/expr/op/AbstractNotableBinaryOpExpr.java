@@ -1,13 +1,11 @@
 package net.cf.form.repository.sql.ast.expr.op;
 
-import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
-
 /**
  * 可以带 not 关键字的表达式
  *
  * @author clouds
  */
-public abstract class AbstractNotableExpr extends AbstractSqlExprImpl {
+public abstract class AbstractNotableBinaryOpExpr extends SqlBinaryOpExpr {
 
     /**
      * 是否有not关键字
@@ -20,5 +18,10 @@ public abstract class AbstractNotableExpr extends AbstractSqlExprImpl {
 
     public void setNot(boolean not) {
         this.not = not;
+    }
+
+    protected void cloneTo(AbstractNotableBinaryOpExpr x) {
+        super.cloneTo(x);
+        x.not = this.not;
     }
 }

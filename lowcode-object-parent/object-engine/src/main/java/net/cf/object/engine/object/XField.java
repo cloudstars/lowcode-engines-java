@@ -6,9 +6,9 @@ import java.util.List;
 /**
  * 模型的字段
  *
- * @author clouds
+ * @param <P>
  */
-public interface XField {
+public interface XField<P extends XProperty> {
 
     /**
      * 获取字段所属的模型
@@ -117,7 +117,7 @@ public interface XField {
      *
      * @return
      */
-    default <T extends XProperty> List<T> getProperties() {
+    default List<P> getProperties() {
         return Collections.emptyList();
     }
 
@@ -125,21 +125,19 @@ public interface XField {
      * 获取属性的名称获取子属性
      *
      * @param propName
-     * @param <T>
      * @return
      */
-    default <T extends XProperty> T getProperty(String propName) {
+    default P getProperty(String propName) {
         return null;
     }
 
     /**
      * 获取字段的主属性
      *
-     * @param <T>
      * @return
      */
-    /*default <T extends XProperty> T getPrimaryProperty() {
+    default P getPrimaryProperty() {
         return null;
-    }*/
+    }
 
 }

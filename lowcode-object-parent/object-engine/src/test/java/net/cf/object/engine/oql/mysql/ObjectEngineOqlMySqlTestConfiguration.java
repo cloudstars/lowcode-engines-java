@@ -4,6 +4,8 @@ import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.form.repository.mysql.MySqlObjectRepositoryImpl;
 import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.OqlEngineImpl;
+import net.cf.object.engine.OqlEngineNew;
+import net.cf.object.engine.OqlEngineNewImpl;
 import net.cf.object.engine.object.TestObjectResolver;
 import net.cf.object.engine.oql.parser.XObjectResolver;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +34,11 @@ public class ObjectEngineOqlMySqlTestConfiguration {
     @Bean
     public OqlEngine oqlEngine(MySqlObjectRepositoryImpl repository) {
         return new OqlEngineImpl(repository);
+    }
+
+    @Bean
+    public OqlEngineNew oqlEngineNew(XObjectResolver resolver, MySqlObjectRepositoryImpl repository) {
+        return new OqlEngineNewImpl(resolver, repository);
     }
 
 }

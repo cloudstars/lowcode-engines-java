@@ -3,6 +3,11 @@
   "name": "LEAVE",
   "columns": [
     {
+      "desc": "创建人姓名",
+      "name": "CREATOR_NAME",
+      "dataType": "CHAR"
+    },
+    {
       "desc": "创建人编号",
       "name": "CREATOR_KEY",
       "dataType": "CHAR"

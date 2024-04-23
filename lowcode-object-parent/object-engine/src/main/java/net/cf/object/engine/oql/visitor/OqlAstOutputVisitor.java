@@ -5,6 +5,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
 import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 
 import java.util.List;
 

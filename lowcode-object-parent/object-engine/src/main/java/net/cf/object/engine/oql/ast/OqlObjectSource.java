@@ -3,6 +3,8 @@ package net.cf.object.engine.oql.ast;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.object.engine.object.XObject;
 
+import java.util.List;
+
 /**
  * OQL 模型源
  *
@@ -24,5 +26,12 @@ public interface OqlObjectSource extends SqlTableSource {
      * @return
      */
     XObject getResolvedObject();
+
+    /**
+     * 获取解析后的子模型列表
+     *
+     * @return
+     */
+    List<XObject> getResolvedDetailObjects();
 
 }

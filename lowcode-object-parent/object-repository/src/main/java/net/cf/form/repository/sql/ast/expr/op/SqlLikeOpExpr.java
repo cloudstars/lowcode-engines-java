@@ -8,37 +8,21 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public class SqlLikeOpExpr extends AbstractNotableExpr {
+public class SqlLikeOpExpr extends AbstractNotableBinaryOpExpr {
 
     /**
      * 转义字符
      */
     private String escape;
 
-    private SqlBinaryOpExpr binaryOpExpr;
-
     public SqlLikeOpExpr() {
-        binaryOpExpr = new SqlBinaryOpExpr(null, SqlBinaryOperator.LIKE, null);
+        this.operator = SqlBinaryOperator.LIKE;
     }
 
     public SqlLikeOpExpr(SqlExpr left, SqlExpr right) {
-        this.binaryOpExpr = new SqlBinaryOpExpr(left, SqlBinaryOperator.LIKE, right);
-    }
-
-    public SqlExpr getLeft() {
-        return this.binaryOpExpr.getLeft();
-    }
-
-    public void setLeft(SqlExpr left) {
-        this.binaryOpExpr.setLeft(left);
-    }
-
-    public SqlExpr getRight() {
-        return this.binaryOpExpr.getRight();
-    }
-
-    public void setRight(SqlExpr right) {
-        this.binaryOpExpr.setRight(right);
+        this.left = left;
+        this.operator = SqlBinaryOperator.LIKE;
+        this.right = right;
     }
 
     public String getEscape() {
@@ -51,18 +35,14 @@ public class SqlLikeOpExpr extends AbstractNotableExpr {
 
     @Override
     protected void accept0(SqlAstVisitor visitor) {
-        if (visitor.visit(this)) {
-            this.nullSafeAcceptChildren(visitor, binaryOpExpr);
-        }
-
-        visitor.endVisit(this);
+        super.accept0(visitor);
     }
 
     @Override
     public SqlLikeOpExpr cloneMe() {
         SqlLikeOpExpr x = new SqlLikeOpExpr();
+        super.cloneTo(x);
         x.setNot(this.isNot());
-        x.binaryOpExpr = this.binaryOpExpr.cloneMe();
         x.setEscape(this.escape);
         return x;
     }

@@ -5,6 +5,8 @@ import net.cf.form.repository.sql.util.SqlUtils;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.AbstractOqlObjectImpl;
 
+import java.util.List;
+
 
 /**
  * OQL 模型数据源抽象实现类
@@ -22,6 +24,11 @@ public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl 
      * 解析后的模型
      */
     protected XObject resolvedObject;
+
+    /**
+     * 解析后的子模型列表
+     */
+    protected List<XObject> resolvedDetailObjects;
 
     public AbstractOqlObjectSourceImpl() {
     }
@@ -61,5 +68,14 @@ public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl 
 
     public void setResolvedObject(XObject resolvedObject) {
         this.resolvedObject = resolvedObject;
+    }
+
+    @Override
+    public List<XObject> getResolvedDetailObjects() {
+        return resolvedDetailObjects;
+    }
+
+    public void setResolvedDetailObjects(List<XObject> resolvedDetailObjects) {
+        this.resolvedDetailObjects = resolvedDetailObjects;
     }
 }

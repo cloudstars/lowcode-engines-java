@@ -19,6 +19,7 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
     /**
      * 要删除的子表
      */
+    @Deprecated
     protected List<OqlExprObjectSource> detailFroms;
 
     protected SqlExpr where;

@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.testcase.select;
+package net.cf.object.engine.oql.testcase.select.lookup;
 
 import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
@@ -8,8 +8,8 @@ import net.cf.object.engine.object.ExpenseObject;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
+import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

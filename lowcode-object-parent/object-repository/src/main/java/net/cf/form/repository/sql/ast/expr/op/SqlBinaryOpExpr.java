@@ -108,11 +108,11 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
     @Override
     public SqlBinaryOpExpr cloneMe() {
         SqlBinaryOpExpr x = new SqlBinaryOpExpr();
-        this.cloneT(x);
+        this.cloneTo(x);
         return x;
     }
 
-    protected void cloneT(SqlBinaryOpExpr x) {
+    protected void cloneTo(SqlBinaryOpExpr x) {
         if (this.left != null) {
             x.setLeft(this.left.cloneMe());
         }

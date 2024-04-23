@@ -6,6 +6,7 @@ import net.cf.form.repository.sql.parser.SqlStatementParser;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.FastOqlException;
+import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.util.XObjectUtils;
 
@@ -38,7 +39,7 @@ public class OqlStatementParser extends OqlExprParser {
             OqlStatement oqlStmt;
             if (sqlStmt instanceof SqlSelectStatement) {
                 OqlSelect oqlSelect = this.toOqlSelect(((SqlSelectStatement) sqlStmt).getSelect());
-                oqlStmt = new OqlSelectStatement(oqlSelect);
+                oqlStmt = new net.cf.object.engine.oql.ast.OqlSelectStatement(oqlSelect);
             } else if (sqlStmt instanceof SqlInsertStatement) {
                 OqlInsertInto oqlInsertInto = this.toOqlInsertInto((SqlInsertStatement) sqlStmt);
                 oqlStmt = new OqlInsertStatement(oqlInsertInto);
@@ -168,14 +169,17 @@ public class OqlStatementParser extends OqlExprParser {
         if (detailFields.size() > 0) {
             // 解析出子模型的列表
             List<OqlExprObjectSource> detailObjectSources = new ArrayList<>();
+            List<XObject> detailObjects = new ArrayList<>();
             for (XObjectRefField detailField : detailFields) {
                 String detailObjectName = detailField.getRefObjectName();
                 OqlExprObjectSource detailObjectSource = new OqlExprObjectSource(detailObjectName);
                 XObject detailObject = this.resolver.resolve(detailObjectName);
                 detailObjectSource.setResolvedObject(detailObject);
                 detailObjectSources.add(detailObjectSource);
+                detailObjects.add(detailObject);
             }
             oqlDeleteStmt.setDetailFroms(detailObjectSources);
+            objectSource.setResolvedDetailObjects(detailObjects);
         }
 
         return oqlDeleteStmt;

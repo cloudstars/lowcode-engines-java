@@ -33,6 +33,11 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
      */
     protected XObject selfObject;
 
+    /**
+     * 是否包含相关表查询的select语句
+     */
+    protected boolean isHasRefFieldSelect;
+
     public SqlBuilderOqlAstVisitorAdaptor() {
     }
 
@@ -90,7 +95,7 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
     private SqlExpr buildFieldOqlExpr(final XObject object, final OqlFieldExpr x) {
         XField resolvedField = x.getResolvedField();
         SqlDataType sqlDataType = SqlDataTypeConvert.toSqlDataType(resolvedField);
-        if (object == selfObject) {
+        if (object == selfObject && !this.isHasRefFieldSelect) {
             // 省略表名前缀
             SqlIdentifierExpr sqlX = new SqlIdentifierExpr();
             sqlX.setName(resolvedField.getColumnName());

@@ -25,9 +25,7 @@ public class TestObjectRefFieldImpl extends TestFieldImpl implements XObjectRefF
     public TestObjectRefFieldImpl(TestObjectImpl owner, FieldDef fieldDef) {
         super(owner, fieldDef);
         this.refType = fieldDef.getRefType();
-        if (this.refType == ObjectRefType.MASTER) {
-            this.isMultiRef = false;
-        } else if (this.refType == ObjectRefType.DETAIL) {
+        if (this.refType == ObjectRefType.DETAIL) {
             this.isMultiRef = true;
         }
     }
@@ -48,7 +46,7 @@ public class TestObjectRefFieldImpl extends TestFieldImpl implements XObjectRefF
      * @param multiRef
      */
     public void setMultiRef(boolean multiRef) {
-        if (this.refType == ObjectRefType.MASTER || this.refType == ObjectRefType.DETAIL) {
+        if (this.refType == ObjectRefType.DETAIL) {
             throw new FastOqlException("主子表关系不允许设置是否一对多引用，默认为一对多关系");
         }
 

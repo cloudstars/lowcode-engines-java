@@ -222,7 +222,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
 
         XObject detailObject = detailObjectExpandFieldExpr.getResolvedRefObject();
         String detailObjectName = detailObject.getName();
-        XField masterField = detailObject.getMasterField();
+        XField masterField = detailObject.getObjectRefField(this.stmt.getObjectSource().getResolvedObject().getName());
 
         // 构建子表数据源
         OqlExprObjectSource detailObjectSource = new OqlExprObjectSource(detailObjectName);

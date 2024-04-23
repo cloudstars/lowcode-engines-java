@@ -4,7 +4,6 @@ import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
 import net.cf.form.repository.sql.ast.statement.*;
@@ -74,7 +73,7 @@ public class SqlSelectParser extends SqlExprParser {
     protected List<SqlSelectItem> parseSelectItems() {
         List<SqlSelectItem> selectList = new ArrayList<>();
         while (true) {
-            SqlExpr selectItemExpr = this.parseSelectItemExpr(null);
+            SqlExpr selectItemExpr = this.parseSelectItemExpr();
             SqlSelectItem selectItem = new SqlSelectItem(selectItemExpr);
 
             if (this.lexer.token == Token.AS) {
@@ -107,16 +106,12 @@ public class SqlSelectParser extends SqlExprParser {
      *
      * @return
      */
-    private SqlExpr parseSelectItemExpr(final SqlExpr expr) {
-        SqlExpr tExpr = expr;
+    private SqlExpr parseSelectItemExpr() {
+        SqlExpr tExpr = null;
         Token token = this.lexer.token;
         switch (token) {
             case STAR:
-                if (tExpr == null) {
-                    tExpr = new SqlAllColumnExpr();
-                } else {
-                    tExpr = new SqlPropertyExpr((SqlName) tExpr, Token.STAR.getName());
-                }
+                tExpr = new SqlAllColumnExpr();
                 this.lexer.nextToken();
                 break;
             case LITERAL_STRING:
@@ -127,20 +122,8 @@ public class SqlSelectParser extends SqlExprParser {
             case IDENTIFIER:
                 String identifier = this.lexer.stringVal();
                 this.lexer.nextToken();
-                if (tExpr == null) {
-                    tExpr = new SqlIdentifierExpr(identifier);
-                    if (this.lexer.token == Token.LPAREN) {
-                        tExpr = this.methodInvokeRest(tExpr);
-                    }
-                } else {
-                    tExpr = new SqlPropertyExpr((SqlName) tExpr, identifier);
-                }
-
-                if (this.lexer.token == Token.DOT) {
-                    this.lexer.nextToken();
-                    tExpr = parseSelectItemExpr(tExpr);
-                }
-
+                tExpr = new SqlIdentifierExpr(identifier);
+                tExpr = this.parseIdentifierRest((SqlIdentifierExpr) tExpr);
                 break;
             default:
                 printError(token);
@@ -150,8 +133,45 @@ public class SqlSelectParser extends SqlExprParser {
     }
 
     /**
-     * 解析 select 语句中 from
+     * 解析标识符的剩余部分
      *
+     * @param expr
+     * @return
+     */
+    private SqlExpr parseIdentifierRest(SqlIdentifierExpr expr) {
+        SqlExpr tExpr = expr;
+        if (this.lexer.token == Token.LPAREN) {
+            tExpr = this.methodInvokeRest(tExpr);
+        } else {
+            int level = 0;
+            while (this.lexer.token == Token.DOT) {
+                level++;
+                if (level > 2) {
+                    throw new SqlParseException("不支持3级以上的属性表达式，如：a.b.c.d");
+                }
+
+                this.lexer.nextToken();
+                if (this.lexer.token == Token.STAR) { // x.*
+                    tExpr = new SqlPropertyExpr((SqlIdentifierExpr) tExpr, Token.STAR.name);
+                } else {
+                    String propName = this.lexer.stringVal();
+                    if (tExpr instanceof SqlIdentifierExpr) {
+                        tExpr = new SqlPropertyExpr((SqlIdentifierExpr) tExpr, propName);
+                    } else {
+                        SqlPropertyExpr propExpr = (SqlPropertyExpr) tExpr;
+                        // a.b.c的情况下，owner不变，属性名带点
+                        String newPropName = propExpr.getName() + Token.STAR.name + propName;
+                        propExpr.setName(newPropName);
+                    }
+                }
+                this.lexer.nextToken();
+            }
+        }
+        return tExpr;
+    }
+
+    /**
+     * 解析 select 语句中 from
      */
     private SqlTableSource parseFrom() {
         accept(Token.FROM);
@@ -160,7 +180,6 @@ public class SqlSelectParser extends SqlExprParser {
 
     /**
      * 解析 select 语句中 where
-     *
      */
     protected SqlExpr parseWhere() {
         accept(Token.WHERE);
@@ -169,7 +188,6 @@ public class SqlSelectParser extends SqlExprParser {
 
     /**
      * 解析 select 语句中 group by
-     *
      */
     protected SqlSelectGroupByClause parseGroupBy() {
         this.accept(Token.GROUP);
@@ -199,7 +217,6 @@ public class SqlSelectParser extends SqlExprParser {
 
     /**
      * 解析 select 语句中 order by
-     *
      */
     protected SqlOrderBy parseOrderBy() {
         this.accept(Token.ORDER);
@@ -231,7 +248,6 @@ public class SqlSelectParser extends SqlExprParser {
 
     /**
      * 解析 select 语句中 limit
-     *
      */
     protected SqlLimit parseLimit() {
         this.accept(Token.LIMIT);

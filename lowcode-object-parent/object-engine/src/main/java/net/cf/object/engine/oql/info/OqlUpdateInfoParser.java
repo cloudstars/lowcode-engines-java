@@ -188,7 +188,7 @@ public class OqlUpdateInfoParser extends AbstractOqlInfoParser {
         String detailObjectName = detailObject.getName();
         XField primaryField = detailObject.getPrimaryField();
         String primaryFieldName = primaryField.getName();
-        XField masterField = detailObject.getMasterField();
+        XField masterField = detailObject.getObjectRefField(stmt.getObjectSource().getResolvedObject().getName());
         String masterFieldName = masterField.getName();
 
         // 构建子表数据源

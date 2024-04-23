@@ -28,9 +28,19 @@
       "dataType": "CHAR"
     },
     {
+      "desc": "创建人姓名",
+      "name": "CREATOR_NAME",
+      "dataType": "CHAR"
+    },
+    {
       "desc": "创建人编号",
       "name": "CREATOR_KEY",
       "dataType": "CHAR"
+    },
+    {
+      "desc": "创建时间",
+      "name": "CREATED_AT",
+      "dataType": "DATETIME"
     }
   ],
   "valuesList": [
@@ -45,7 +55,7 @@
     {
       "APPLY_ID": "222222222-FEL3232-323KLFJFDS-323FDSD",
       "APPLY_NAME": "关于李四5月出差上海的报销单",
-      "TRV_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+      "TRV_ID": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
       "CASH": "32323.4",
       "REMARK": "加急，缺钱...",
       "CREATOR_KEY": "lisi"

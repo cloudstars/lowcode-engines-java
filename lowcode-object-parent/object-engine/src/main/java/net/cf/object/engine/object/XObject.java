@@ -44,7 +44,7 @@ public interface XObject<F extends XField, R extends XObjectRefField> {
      *
      * @return
      */
-    R getMasterField();
+    //R getMasterField();
 
     /**
      * 根据关联模型的编号获取对应的字段
