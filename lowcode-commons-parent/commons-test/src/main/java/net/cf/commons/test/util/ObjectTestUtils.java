@@ -64,8 +64,6 @@ public final class ObjectTestUtils {
      */
     public static boolean isAssignableFromWithProperties(Object source, Object target, List<String> properties) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
-            Class sourceClass = source.getClass();
-            Class targetClass = target.getClass();
             for (String property : properties) {
                 Object spv = ObjectTestUtils.getFieldValue(source, property);
                 Object tpv = ObjectTestUtils.getFieldValue(target, property);

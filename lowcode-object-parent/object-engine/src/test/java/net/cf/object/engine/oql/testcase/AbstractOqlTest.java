@@ -46,6 +46,7 @@ public abstract class AbstractOqlTest {
             oqlInfo.oql = oqlJson.getString("oql");
             oqlInfo.sql = oqlJson.getString("sql");
             oqlInfo.detailSql = oqlJson.getString("detailSql");
+            oqlInfo.lookupSql = oqlJson.getString("lookupSql");
             oqlInfo.detailUpdateInsertSql = oqlJson.getString("detailUpdateInsertSql");
             oqlInfo.detailUpdateUpdateSql = oqlJson.getString("detailUpdateUpdateSql");
             oqlInfo.detailUpdateDeleteSql = oqlJson.getString("detailUpdateDeleteSql");
@@ -83,6 +84,7 @@ public abstract class AbstractOqlTest {
         public String oql;
         public String sql;
         public String detailSql;
+        public String lookupSql;
 
         public Map<String, Object> paramMap;
 

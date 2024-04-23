@@ -16,9 +16,8 @@
             "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
             "applyName": "测试申请单1"
           },
-          "cash": "1134.4",
-          "remark": "",
-          "travel": "434743DSS-FEL3232-323KLFJFDS-323FDSD"
+          "cash": 1134.4,
+          "remark": ""
         },
         {
           "applyId": "222222222-FEL3232-323KLFJFDS-323FDSD",
@@ -27,9 +26,8 @@
             "applyId": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
             "applyName": "测试申请单2"
           },
-          "cash": "32323.4",
-          "remark": "加急，缺钱...",
-          "travel": "534743DSS-FEL2232-323KLFJFDS-323FDSD"
+          "cash": 32323.4,
+          "remark": "加急，缺钱..."
         }
       ]
     }

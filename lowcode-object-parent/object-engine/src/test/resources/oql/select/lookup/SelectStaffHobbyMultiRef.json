@@ -1,0 +1,31 @@
+{
+  "desc": "测试员工关联兴趣爱好，1对多",
+  "name": "SelectStaffLookupHobby",
+  "oqls": [
+    {
+      "desc": "查询员工关联兴趣爱好",
+      "name": "SelectStaffLookupHobby",
+      "oql": "select staffId, staffName, staffCode, hobbies(id, name, code, descr) from Staff where staffName like '%张三%'",
+      "sql": "select STA_ID, STA_NAME, STA_CODE, HOBBIES from STAFF where STAFF_NAME like '%张三%'",
+      "lookupSql": "select RECORD_ID, NAME, CODE, DESCR from HOBBY where RECORD_ID in (#{ids})",
+      "resultMaps": [
+        {
+          "staffId": 1,
+          "staffName": "张三",
+          "staffCode": "zhangsan",
+          "hobbies": [{
+            "id": 1,
+            "name": "抽烟",
+            "code": "CY",
+            "descr": "喜欢叼个大烟"
+          }, {
+            "id": 2,
+            "name": "喝酒",
+            "code": "HJ",
+            "descr": "喜欢喝老酒一"
+          }]
+        }
+      ]
+    }
+  ]
+}

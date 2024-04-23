@@ -1,10 +1,13 @@
 package net.cf.object.engine;
 
 import net.cf.form.repository.ObjectRepository;
+import net.cf.form.repository.sql.ast.SqlLimit;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
+import net.cf.form.repository.sql.ast.statement.SqlSelect;
+import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
-import net.cf.object.engine.data.DefaultResultReducer;
-import net.cf.object.engine.data.PageResult;
-import net.cf.object.engine.data.ResultReducer;
+import net.cf.object.engine.data.*;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.parser.XObjectResolver;
@@ -13,6 +16,7 @@ import net.cf.object.engine.oql.stmt.OqlSelectStatement;
 import net.cf.object.engine.util.OqlStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -158,6 +162,10 @@ public class OqlEngineNewImpl implements OqlEngineNew {
      * @return
      */
     private List<String> convertToLookupRecordIds(Object lookupFieldValue) {
+        if (lookupFieldValue instanceof String) {
+            lookupFieldValue = DataConvert.stringToList((String) lookupFieldValue);
+        }
+
         if (lookupFieldValue instanceof List) {
             List<?> lookupFieldListValue = ((List<?>) lookupFieldValue);
             if (lookupFieldListValue.size() > 0 && !(lookupFieldListValue.get(0) instanceof String)) {
@@ -170,6 +178,8 @@ public class OqlEngineNewImpl implements OqlEngineNew {
             } else {
                 return (List<String>) lookupFieldValue;
             }
+        } else if (lookupFieldValue instanceof String) {
+            return Arrays.asList((String) lookupFieldValue);
         } else {
             return Arrays.asList(lookupFieldValue.toString());
         }
@@ -183,6 +193,64 @@ public class OqlEngineNewImpl implements OqlEngineNew {
     @Override
     public List<Map<String, Object>> queryList(String oql, Map<String, Object> paramMap) {
         OqlSelectStatement thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(resolver, oql, true);
+        return this.queryList(thisOqlStmt, paramMap);
+    }
+
+    @Override
+    public PageResult<Map<String, Object>> queryPage(String oql, Map<String, Object> paramMap, PageRequest pageRequest) {
+        OqlSelectStatement thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(resolver, oql, true);
+        SqlSelectStatement selfSqlStmt = thisOqlStmt.getSelfSelectInfo().getStatement();
+
+        // 生成count语句
+        SqlSelectStatement countSqlStmt = this.getCountSqlStmt(selfSqlStmt);
+        Map<String, Object> countResultMap = this.repository.selectOne(countSqlStmt, paramMap);
+        int total = (Integer) countResultMap.get("total");
+
+        // 添加分页信息后查询当前页数据
+        this.addPageInfo(selfSqlStmt, pageRequest);
+        List<Map<String, Object>> list = this.queryList(thisOqlStmt, paramMap);
+
+        return new PageResult<>(total, list);
+    }
+
+    /**
+     * 添加分页信息
+     *
+     * @param sqlStmt
+     * @param pageRequest
+     */
+    private void addPageInfo(SqlSelectStatement sqlStmt, PageRequest pageRequest) {
+        SqlSelect select = sqlStmt.getSelect();
+        SqlLimit limit = new SqlLimit();
+        limit.setOffset(pageRequest.getIndex() * pageRequest.getSize());
+        limit.setRowCount(pageRequest.getSize());
+        select.setLimit(limit);
+    }
+
+    /**
+     * 根据SQL生成对应的COUNT语句
+     * @param stmt
+     * @return
+     */
+    private SqlSelectStatement getCountSqlStmt(SqlSelectStatement stmt) {
+        SqlSelect countSelect = new SqlSelect();
+        SqlAggregateExpr countAgExpr = new SqlAggregateExpr("COUNT");
+        countAgExpr.addArgument(new SqlIntegerExpr(1));
+        countSelect.addSelectItem(new SqlSelectItem(countAgExpr));
+        countSelect.setFrom(stmt.getSelect().getFrom());
+        countSelect.setWhere(stmt.getSelect().getWhere());
+        SqlSelectStatement countStmt = new SqlSelectStatement(countSelect);
+        return countStmt;
+    }
+
+    /**
+     * 根据OQL语句执行查询
+     *
+     * @param thisOqlStmt
+     * @return
+     */
+    private List<Map<String, Object>> queryList(OqlSelectStatement thisOqlStmt, Map<String, Object> paramMap) {
+        // 当前模型
         XObject selfObject = thisOqlStmt.getResolvedSelfObject();
 
         // 查询本表数据
@@ -241,9 +309,12 @@ public class OqlEngineNewImpl implements OqlEngineNew {
                 Map<String, Object> lookupParamMap = new HashMap<>();
                 List<String> lookupRecordIds = this.extractRecordIdsFromResultMapList(selfResultMapList, selfLookupFieldName);
                 String lookupPrimaryFieldName = lookupObject.getPrimaryField().getName();
-                lookupParamMap.put(lookupPrimaryFieldName, lookupRecordIds);
+                lookupParamMap.put(lookupPrimaryFieldName + "s", lookupRecordIds);
                 SqlSelectStatement lookupSqlStmt = lookupSelectInfo.getStatement();
                 List<Map<String, Object>> lookupResultMapList = this.repository.selectList(lookupSqlStmt, lookupParamMap);
+                if (CollectionUtils.isEmpty(lookupResultMapList)) {
+                    continue;
+                }
                 DefaultResultReducer resultReducer = new DefaultResultReducer(lookupSelectInfo.getFieldMappings());
                 lookupResultMapList = this.convertResultMapList(resultReducer, lookupResultMapList);
                 // 将相关表归并后的数据按主表中相关表的记录ID分组追加到主表返回结果中
@@ -267,12 +338,6 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         }
 
         return selfResultMapList;
-    }
-
-
-    @Override
-    public PageResult<Map<String, Object>> queryPage(String oql, Map<String, Object> paramMap, int pageSize, int pageIndex) {
-        return null;
     }
 
     /**
@@ -339,8 +404,14 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         List<String> columnValues = new ArrayList<>();
         for (Map<String, Object> resultMap : resultMapList) {
             Object columnResult = resultMap.get(fieldName);
+            if (columnResult instanceof String) {
+                columnResult = DataConvert.stringToList((String) columnResult);
+            }
+
             if (columnResult instanceof List) {
                 columnValues.addAll((List) columnResult);
+            } else if (columnResult instanceof String) {
+                columnValues.add((String) columnResult);
             } else {
                 columnValues.add(columnResult.toString());
             }

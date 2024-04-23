@@ -194,7 +194,7 @@ public class FieldDef {
     }
 
     public boolean isMultiRef() {
-        return isMultiRef;
+        return this.refType == ObjectRefType.DETAIL || isMultiRef;
     }
 
     public void setMultiRef(boolean multiRef) {

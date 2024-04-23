@@ -46,8 +46,8 @@ public final class SqlLimit extends AbstractSqlObjectImpl implements SqlReplacea
         return this.rowCount;
     }
 
-    public void setRowCount(int rowCount) {
-        this.setRowCount(new SqlIntegerExpr(rowCount));
+    public void setRowCount(int rows) {
+        this.setRowCount(new SqlIntegerExpr(rows));
     }
 
     public void setRowCount(SqlExpr rowCount) {

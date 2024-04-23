@@ -2,10 +2,7 @@ package net.cf.object.engine.oql.parser;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExprGroup;
-import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.parser.SqlExprParser;
@@ -92,6 +89,8 @@ public class OqlExprParser extends SqlExprParser {
             return this.parseLikeExpr(object, (SqlLikeOpExpr) x);
         } else if (clazz == SqlInListExpr.class) {
             return this.parseInListExpr(object, (SqlInListExpr) x);
+        } else if (clazz == SqlContainsOpExpr.class) {
+            return this.parseContainsOpExpr(object, (SqlContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.parseBinaryOpExpr(object, (SqlBinaryOpExpr) x);
         } else if (clazz == SqlBinaryOpExprGroup.class) {
@@ -298,6 +297,22 @@ public class OqlExprParser extends SqlExprParser {
         for (SqlExpr targetItem : targetList) {
             sqlX.addTarget(this.parseSqlExpr(object, targetItem));
         }
+        return sqlX;
+    }
+
+    /**
+     * 解析 Contains 表达式
+     *
+     * @param object 当前模型
+     * @param x
+     * @return
+     */
+    private SqlExpr parseContainsOpExpr(XObject object, SqlContainsOpExpr x) {
+        SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
+        sqlX.setLeft(this.parseSqlExpr(object, x.getLeft()));
+        sqlX.setOperator(x.getOperator());
+        sqlX.setRight(this.parseSqlExpr(object, x.getRight()));
+        sqlX.setParenthesized(x.isParenthesized());
         return sqlX;
     }
 

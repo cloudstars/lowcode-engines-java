@@ -393,6 +393,24 @@ public interface SqlAstVisitor {
     default void endVisit(SqlExistsExpr x) {
     }
 
+    /**
+     * 开始访问 SqlContainsOpExpr 节点
+     *
+     * @param x
+     * @return 是否允许访问当前节点的子节点
+     */
+    default boolean visit(SqlContainsOpExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 SqlContainsExpr
+     *
+     * @param x
+     */
+    default void endVisit(SqlContainsOpExpr x) {
+    }
+
 
     /**********************************************************************
      *                标识符类表达式节点                                         *
@@ -549,7 +567,7 @@ public interface SqlAstVisitor {
     }
 
     /**
-     * 开始访问 SqlSubqueryTableSource 节点
+     * 开始访问 SqlSubQueryTableSource 节点
      *
      * @param x
      * @return 是否允许访问当前节点的子节点

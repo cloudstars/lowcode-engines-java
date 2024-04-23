@@ -1,9 +1,7 @@
 package net.cf.object.engine.oql.testcase.select;
 
 import net.cf.object.engine.object.TravelObject;
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,8 +40,7 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
     @Override
     public void testSelectTravelList() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST);
-        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engine.queryList(oqlStmt);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(oqlInfo.oql);
         assert (dataList != null && dataList.size() == 2);
         for (Map<String, Object> data : dataList) {
             assert (data.containsKey("applyId") && data.containsKey("applyName"));

@@ -1,5 +1,7 @@
 package net.cf.object.engine.data;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +39,7 @@ public class DefaultResultReducer implements ResultReducer {
      * "sub.s1": "xx",
      * "sub.s3": "yy"
      * }
-     * 按 ["id", "name", "sub(s1, s3)"]展开后的结果为:
+     * 按 ["id", "name", "sub(s1, s3)"]归并后的结果为:
      * {
      * "id": "xx",
      * "name": "yy",
@@ -46,6 +48,18 @@ public class DefaultResultReducer implements ResultReducer {
      * "s2": "yy"
      * }
      *
+     * {
+     * "id": "xx",
+     * "name": "aa",
+     * "sub.s1": null,
+     * "sub.s3": null
+     * }
+     * 按 ["id", "name", "sub(s1, s3)"]归并后的结果为:
+     * {
+     * "id": "xx",
+     * "name": "yy",
+     * "sub": null
+     * }
      * @param value
      * @param subFields
      */
@@ -69,7 +83,22 @@ public class DefaultResultReducer implements ResultReducer {
             targetMap.put(subFieldName, subFieldValue);
         }
 
+        if (!CollectionUtils.isEmpty(subFields) && allSubFieldValueIsNull(targetMap)) {
+            // 如果一个字段所有subField的值都为null，将此字段的值设为null
+            return null;
+        }
         return targetMap;
+    }
+
+    private boolean allSubFieldValueIsNull(Map<String, Object> subFieldValue) {
+        if (!CollectionUtils.isEmpty(subFieldValue)) {
+            for (Object value : subFieldValue.values()) {
+                if (value != null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

@@ -21,7 +21,7 @@ public enum MongoOperator {
     GREATER_THAN_OR_EQUAL("$gte", SqlBinaryOperator.GREATER_THAN_OR_EQUAL),
     IN("$in", SqlBinaryOperator.IN),
     LIKE("$regex", SqlBinaryOperator.LIKE),
-    CONTAINS("", SqlBinaryOperator.CONTAINS),
+    CONTAINS("$contains", SqlBinaryOperator.CONTAINS),
     CONTAINS_ALL("", SqlBinaryOperator.CONTAINS_ALL),
     CONTAINS_ANY("", SqlBinaryOperator.CONTAINS_ANY),
     IS("", SqlBinaryOperator.IS),
@@ -62,7 +62,8 @@ public enum MongoOperator {
     }
 
     private static List<MongoOperator> CONDITION_OPERATORS = Arrays.asList(
-            IN
+            IN,
+            CONTAINS
     );
 
     private static List<MongoOperator> COMPARE_OPERATORS = Arrays.asList(

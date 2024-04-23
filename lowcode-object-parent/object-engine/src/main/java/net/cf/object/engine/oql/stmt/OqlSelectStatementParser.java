@@ -344,7 +344,8 @@ public class OqlSelectStatementParser extends AbstractOqStatementParser<OqlSelec
             this.parseMethodInvoke(thisObject, methodInvokeExpr, alias, sqlMethodInvokeExpr);
         } else {
             // 其它模型引用
-            XObject resolvedObject = this.resolveObject(methodName);
+            XObjectRefField objectRefField = this.resolveObjectRefField(selfObject, methodName);
+            XObject resolvedObject = this.resolveObject(objectRefField.getRefObjectName());
             for (SqlExpr arg : args) {
                 SqlSelectItem refSelectItem;
                 if (arg instanceof SqlSelectItem) {

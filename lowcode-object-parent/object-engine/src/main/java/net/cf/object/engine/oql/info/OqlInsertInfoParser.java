@@ -106,7 +106,9 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
                         fieldValues.add(valuesList.get(j).getValue(i));
                     }
                     OqlDetailInsertInfo detailInsertInfo = this.processDetail(objectExpandExpr, fieldValues);
-                    this.detailInsertInfos.add(detailInsertInfo);
+                    if (detailInsertInfo != null) {
+                        this.detailInsertInfos.add(detailInsertInfo);
+                    }
                 } else {
                     selfInsertInto.addField(field);
                     for (int j = 0; j < valuesSize; j++) {
@@ -129,7 +131,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
      */
     protected boolean hasDetailFields(List<OqlExpr> exprs) {
         for (SqlExpr expr : exprs) {
-            if (expr instanceof OqlObjectExpandExpr ) {
+            if (expr instanceof OqlObjectExpandExpr) {
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) expr;
                 if (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.DETAIL) {
                     return true;
@@ -235,7 +237,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
         OqlFieldExpr masterFieldExpr = new OqlFieldExpr(masterFieldName);
         masterFieldExpr.setResolvedField(masterField);
         detailInsertInto.addField(masterFieldExpr);
-        SqlVariantRefExpr masterFieldValueExpr = new SqlVariantRefExpr("#{" + masterFieldName +  "}");
+        SqlVariantRefExpr masterFieldValueExpr = new SqlVariantRefExpr("#{" + masterFieldName + "}");
         valuesClause.addValue(masterFieldValueExpr);
 
         // 插入语句中的字段中添加子模型的全部字段，值中添加全部变量

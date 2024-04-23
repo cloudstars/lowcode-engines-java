@@ -6,6 +6,7 @@ import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,8 +124,14 @@ public abstract class AbstractOqlInfoParser {
         List<Map<String, Object>> targetValues = new ArrayList<>();
         for (Map<String, Object> paramMap : paramMaps) {
             Object paramValue = paramMap.get(varName);
+            if (paramValue == null) {
+                continue;
+            }
             if (!(paramValue instanceof List)) {
                 throw new FastOqlException("子模型的参数类型必须是一个List<Map>");
+            }
+            if (CollectionUtils.isEmpty((List) paramValue)) {
+                continue;
             }
             List<Map<String, Object>> listParamValue = (List<Map<String, Object>>) paramValue;
             targetValues.addAll(listParamValue);

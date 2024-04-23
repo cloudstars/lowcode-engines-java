@@ -29,7 +29,7 @@ public class MongoInsertSqlAstVisitor implements SqlAstVisitor {
 
     private int columnIndex = -1;
 
-    private List<String> columnNames = new ArrayList<>();
+    private List<SqlIdentifierExpr> columns = new ArrayList<>();
 
     public MongoInsertSqlAstVisitor(MongoInsertCommandBuilder builder) {
         this.builder = builder;
@@ -45,7 +45,7 @@ public class MongoInsertSqlAstVisitor implements SqlAstVisitor {
     @Override
     public boolean visit(SqlIdentifierExpr x) {
         if (!isInValues) {
-            columnNames.add(x.getName());
+            columns.add(x);
             builder.addColName(x.getName());
         }
 
@@ -62,7 +62,8 @@ public class MongoInsertSqlAstVisitor implements SqlAstVisitor {
         for (SqlExpr sqlExpr : insertValues.getValues()) {
             MongoInsertItem mongoInsertItem = new MongoInsertItem();
             mongoInsertItem.setValueExpr(sqlExpr);
-            mongoInsertItem.setColName(this.columnNames.get(columnIndex));
+            mongoInsertItem.setColumn(this.columns.get(columnIndex));
+            mongoInsertItem.setColName(mongoInsertItem.getColumn().getName());
             mongoInsertItems.add(mongoInsertItem);
             columnIndex++;
         }

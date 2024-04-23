@@ -76,7 +76,8 @@ public class MongoExpressionVisitor {
         }
         Document document = new Document(MongoOperator.IN.getExpr(), Arrays.asList(left, rightValues));
         if (sqlExpr.not) {
-            return new Document("$expr", new Document("$nor", Arrays.asList(document)));
+            // {"$expr":{"$not":{"$in":[param, []]}}}
+            return new Document("$expr", new Document("$not", document));
         } else {
             return new Document("$expr", document);
         }
@@ -94,6 +95,7 @@ public class MongoExpressionVisitor {
         Object regexValue = parseRegexValue(right);
         Document document = new Document(field, new Document(MongoOperator.LIKE.getExpr(), regexValue));
         if (sqlLikeOpExpr.not) {
+            // {"$nor":[{"param":{"$regex", ""}}]}
             return new Document("$nor", Arrays.asList(document));
         } else {
             return document;

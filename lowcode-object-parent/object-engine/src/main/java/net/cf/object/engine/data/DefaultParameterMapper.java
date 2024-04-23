@@ -55,11 +55,32 @@ public class DefaultParameterMapper implements ParameterMapper {
      *   "sub.s2": "yy"
      * }
      *
+     * {
+     *   "id": "xx",
+     *   "name": "yy",
+     *   "sub": null
+     * }
+     * 按 ["id", "name", "sub(s1, s2)"]展开后的结果为:
+     * {
+     *   "id": "xx",
+     *   "name": "aa",
+     *   "sub.s1": null,
+     *   "sub.s2": null
+     * }
+     *
      * @param value
      * @param subFields
      */
     private Map<String, Object> mapValue(Map<String, Object> value, List<FieldMapping> subFields) {
-        Map<String, Object> targetMap = new HashMap<>(value);
+        Map<String, Object> targetMap = new HashMap<>();
+        // 待展开值为空
+        if (CollectionUtils.isEmpty(value)) {
+            for (FieldMapping subField : subFields) {
+                targetMap.put(subField.getColumnName(), null);
+            }
+            return targetMap;
+        }
+        targetMap.putAll(value);
         for (FieldMapping subField : subFields) {
             String subFieldName = subField.getFieldName();
             String subFieldColumnName = subField.getColumnName();

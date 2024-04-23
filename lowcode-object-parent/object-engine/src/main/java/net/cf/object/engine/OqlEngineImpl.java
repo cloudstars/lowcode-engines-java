@@ -404,6 +404,7 @@ public class OqlEngineImpl implements OqlEngine {
         OqlUpdateStatement mainStmt = mainUpdateInfo.getStatement();
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
         SqlUpdateStatement mainSqlStmt = Oql2SqlUtils.toSqlUpdate(mainStmt, builder);
+
         ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
         Map<String, Object> targetParamMap = this.convertParameterMap(parameterMapper, paramMap);
         int effectedRows = this.repository.update(mainSqlStmt, targetParamMap);
@@ -427,8 +428,9 @@ public class OqlEngineImpl implements OqlEngine {
 
                 // 添加主表记录ID和需要保留的记录ID
                 XObjectRefField detailMasterField = detailDeleteInfo.getObject().getObjectRefField(mainObject.getName());
+                String detailMasterFieldName = detailMasterField.getName();
                 Map<String, Object> detailDeleteParamMap = new HashMap<>();
-                detailDeleteParamMap.put(detailMasterField.getName(), masterId);
+                detailDeleteParamMap.put(detailMasterFieldName, masterId);
                 detailDeleteParamMap.put("remainedRecordIds", remainedRecordIds);
                 this.remove(detailDeleteInfo.getStatement(), detailDeleteParamMap);
             }
@@ -445,8 +447,10 @@ public class OqlEngineImpl implements OqlEngine {
                 }
 
                 // 给新插入的数据补充主表记录ID
+                XObjectRefField detailMasterField = detailInsertInfo.getObject().getObjectRefField(mainObject.getName());
+                String detailMasterFieldName = detailMasterField.getName();
                 for (Map<String, Object> insertParamMap : insertParamMaps) {
-                    insertParamMap.put(mainPrimaryFieldName, masterId);
+                    insertParamMap.put(detailMasterFieldName, masterId);
                 }
 
                 // 批量创建子表记录
@@ -512,6 +516,8 @@ public class OqlEngineImpl implements OqlEngine {
         // 循环删除子表数据
         List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
         if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
+            String masterObjectName = stmt.getFrom().getResolvedObject().getName();
+
             // TODO 考虑用同样的where条件，把主表的记录ID查出来，再批量删除子表数据
             List<SqlExpr> masterIdExprs = checker.getMasterIdExprs();
             if (CollectionUtils.isEmpty(masterIdExprs)) {
@@ -521,8 +527,7 @@ public class OqlEngineImpl implements OqlEngine {
             for (SqlExpr masterIdExpr : masterIdExprs) {
                 masterIds.add(((SqlValuableExpr) masterIdExpr).getValue());
             }
-            String mainObjetName = mainDeleteStmt.getStatement().getFrom().getResolvedObject().getName();
-            this.removeDetailByMasterId(mainObjetName, masterIds, detailDeleteInfos);
+            this.removeDetailByMasterId(masterObjectName, masterIds, detailDeleteInfos);
         }
 
         return effectedRows;
@@ -549,6 +554,8 @@ public class OqlEngineImpl implements OqlEngine {
         // 循环删除子表数据
         List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
         if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
+            String masterObjectName = mainStmt.getFrom().getResolvedObject().getName();
+
             // TODO 考虑用同样的where条件，把主表的记录ID查出来，再批量删除子表数据
             List<SqlExpr> masterIdExprs = checker.getMasterIdExprs();
 
@@ -570,8 +577,8 @@ public class OqlEngineImpl implements OqlEngine {
                 }
             }
 
-            String mainObjetName = mainDeleteInfo.getStatement().getFrom().getResolvedObject().getName();
-            this.removeDetailByMasterId(mainObjetName, masterIds, detailDeleteInfos);
+
+            this.removeDetailByMasterId(masterObjectName, masterIds, detailDeleteInfos);
         }
 
 
@@ -581,13 +588,14 @@ public class OqlEngineImpl implements OqlEngine {
     /**
      * 根据masterIds来删除子表
      *
+     * @param masterObjectName
      * @param masterIds
      * @param detailDeleteInfos
      */
-    private void removeDetailByMasterId(String mainObjectName, Object masterIds, List<OqlDetailDeleteInfo> detailDeleteInfos) {
+    private void removeDetailByMasterId(String masterObjectName, Object masterIds, List<OqlDetailDeleteInfo> detailDeleteInfos) {
         for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
             XObject detailObject = detailDeleteInfo.getObject();
-            String masterFieldName = detailObject.getObjectRefField(mainObjectName).getName();
+            String masterFieldName = detailObject.getObjectRefField(masterObjectName).getName();
             Map<String, Object> detailParamMap = new HashMap<>();
             detailParamMap.put(masterFieldName + "s", masterIds);
             this.remove(detailDeleteInfo.getStatement(), detailParamMap);
@@ -609,13 +617,15 @@ public class OqlEngineImpl implements OqlEngine {
         OqlDeleteStatement mainStmt = mainDeleteInfo.getStatement();
         SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
         SqlDeleteStatement mainSqlStmt = Oql2SqlUtils.toSqlDelete(mainStmt, builder);
-        ;
+
         int[] effectedRowsArray = this.repository.batchDelete(mainSqlStmt, paramMaps);
         this.sumAndLogsumEffectedRows(effectedRowsArray, stmt);
 
         // 循环批量删除子表数据
         List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
         if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
+            String mainObjectName = mainStmt.getFrom().getResolvedObject().getName();
+
             // 假设OQL语句中一定带了主表记录ID的条件，并且是变量，然后从paramMaps中抽取ID数据
             List<SqlExpr> masterIdExprs = checker.getMasterIdExprs();
             if (CollectionUtils.isEmpty(masterIdExprs)) {
@@ -634,8 +644,7 @@ public class OqlEngineImpl implements OqlEngine {
 
             for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
                 XObject detailObject = detailDeleteInfo.getObject();
-                String mainObjetName = mainDeleteInfo.getStatement().getFrom().getResolvedObject().getName();
-                XObjectRefField masterField = detailObject.getObjectRefField(mainObjetName);
+                XObjectRefField masterField = detailObject.getObjectRefField(mainObjectName);
                 // delete from detailObject where masterId in (#{masterIds})
                 SqlDeleteStatement detailDeleteSqlStmt = new SqlDeleteStatement();
                 detailDeleteSqlStmt.setFrom(new SqlExprTableSource(detailObject.getTableName()));

@@ -21,15 +21,6 @@ import java.util.List;
  */
 public final class SqlInListExpr extends AbstractNotableBinaryOpExpr {
 
-    /**
-     * 左边的表达式
-     */
-    //private SqlExpr left;
-
-    /**
-     * 右边的值列表
-     */
-    //private List<SqlExpr> targetList = new ArrayList();
     public SqlInListExpr() {
         this(null);
     }

@@ -72,7 +72,7 @@ public final class DataCompareTestUtils {
                 Object source = entry.getValue();
                 Object target = t.get(entry.getKey());
                 if (!DataCompareTestUtils.equalsObject(source, target)) {
-                    logger.debug("属性：{}比较失败，源对象：{}，目标对象：{}", entry.getKey(), source, target);
+                    logger.warn("对象的属性{}比较失败，源对象值：{}，目标对象值：{}", entry.getKey(), source, target);
                     return false;
                 }
             }
@@ -100,6 +100,7 @@ public final class DataCompareTestUtils {
                 Object source = sourceList.get(i);
                 Object target = targetList.get(i);
                 if (!DataCompareTestUtils.equalsObject(source, target)) {
+                    logger.warn("对象比较失败，源对象：{}，目标对象：{}", JSONObject.toJSONString(source), JSONObject.toJSONString(target));
                     return false;
                 }
             }

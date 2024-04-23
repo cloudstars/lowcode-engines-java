@@ -165,11 +165,9 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      */
     private SqlExpr parseLikeExpr(SqlLikeOpExpr x) {
         SqlLikeOpExpr sqlX = new SqlLikeOpExpr();
-        sqlX.setLeft(this.parseExpr(x.getLeft()));
         sqlX.setNot(x.isNot());
-        sqlX.setRight(this.parseExpr(x.getRight()));
         sqlX.setEscape(x.getEscape());
-        return sqlX;
+        return this.parseBinaryOpExprTo(x, sqlX);
     }
 
     /**
@@ -193,12 +191,7 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      */
     private SqlExpr parseInListExpr(SqlInListExpr x) {
         SqlInListExpr sqlX = new SqlInListExpr();
-        sqlX.setLeft(this.parseExpr(x.getLeft()));
-        List<SqlExpr> targetList = x.getTargetList();
-        for (SqlExpr targetItem : targetList) {
-            sqlX.addTarget(this.parseExpr(targetItem));
-        }
-        return sqlX;
+        return this.parseBinaryOpExprTo(x, sqlX);
     }
 
     /**
@@ -209,7 +202,10 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      */
     private SqlExpr parseBinaryOpExpr(SqlBinaryOpExpr x) {
         SqlBinaryOpExpr sqlX = new SqlBinaryOpExpr();
+        return this.parseBinaryOpExprTo(x, sqlX);
+    }
 
+    private SqlExpr parseBinaryOpExprTo(SqlBinaryOpExpr x, SqlBinaryOpExpr sqlX) {
         SqlBinaryOperator op = x.getOperator();
         sqlX.setLeft(this.parseExpr(x.getLeft()));
         XObject leftObject = this.lastResolvedObject;
@@ -316,7 +312,7 @@ public class OqlWhereExprParser extends AbstractOqlParser {
         } else if (refType == ObjectRefType.LOOKUP) {
             // where lookup.primaryField = self.lookupField
             XField lookupPrimaryField = refObject.getPrimaryField();
-            joinOpExpr.setLeft(this.toRepoSelfExpr(lookupPrimaryField));
+            joinOpExpr.setLeft(this.toRepoRefExpr(lookupPrimaryField));
             XObjectRefField selfLookupField = this.selfObject.getObjectRefField(refObject.getName());
             joinOpExpr.setRight(this.toRepoRefExpr(selfLookupField));
         }
@@ -347,7 +343,7 @@ public class OqlWhereExprParser extends AbstractOqlParser {
     private SqlExpr parseMethodInvokeExpr(SqlMethodInvokeExpr x) {
         String methodName = x.getMethodName();
         if (!METHOD_NAMES.contains(methodName)) {
-            throw new FastOqlException("方法名：" + methodName + "不支持！");
+            throw new FastOqlException("方法：" + methodName + "不支持！");
         }
 
         SqlMethodInvokeExpr sqlX = new SqlMethodInvokeExpr();

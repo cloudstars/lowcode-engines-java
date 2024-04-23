@@ -9,4 +9,8 @@ public interface SelectStaffContainsWhereTest {
 
     String OQL_FILE_PATH = "oql/select/SelectStaffSelfContains.json";
 
+    String OQL_SELECT_STAFF_BY_HOBBY = "SelectStaffByHobby";
+
+    void testSelectStaffByHobby();
+
 }

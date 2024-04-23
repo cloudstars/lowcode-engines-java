@@ -31,11 +31,14 @@ public interface UpdateTravelDetailTest {
         newTrip0.put("fromAddr", "苏州");
         newTrip0.put("toAddr", "天津");
         newTrip0.put("creator", TestConstants.CREATOR);
+        newTrip0.put("modifier", TestConstants.CREATOR);
+
         // 更新一条旧数据（带主键字段）
         Map<String, Object> editTrip0 = new HashMap<>();
         editTrip0.put("tripId", editTripId);
         editTrip0.put("fromAddr", "连云港");
         editTrip0.put("toAddr", "济南");
+        newTrip0.put("creator", TestConstants.CREATOR);
         editTrip0.put("modifier", TestConstants.MODIFIER);
 
         Map<String, Object> paramMap = new HashMap<>();

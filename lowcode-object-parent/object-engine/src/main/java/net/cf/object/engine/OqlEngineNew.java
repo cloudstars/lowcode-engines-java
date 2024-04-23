@@ -1,5 +1,6 @@
 package net.cf.object.engine;
 
+import net.cf.object.engine.data.PageRequest;
 import net.cf.object.engine.data.PageResult;
 
 import java.util.List;
@@ -51,11 +52,10 @@ public interface OqlEngineNew {
      *
      * @param oql
      * @param paramMap
-     * @param pageSize
-     * @param pageIndex
+     * @param pageRequest
      * @return
      */
-    PageResult<Map<String, Object>> queryPage(String oql, Map<String, Object> paramMap, int pageSize, int pageIndex);
+    PageResult<Map<String, Object>> queryPage(String oql, Map<String, Object> paramMap, PageRequest pageRequest);
 
     /**
      * 创建记录

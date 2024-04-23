@@ -69,8 +69,7 @@ public class WhereClauseChecker implements OqlAstVisitor {
 
     @Override
     public boolean visit(SqlBinaryOpExpr x) {
-        if (x.getOperator() == SqlBinaryOperator.EQUALITY
-                || x.getOperator() == SqlBinaryOperator.IN) {
+        if (x.getOperator() == SqlBinaryOperator.EQUALITY) {
             SqlExpr left = x.getLeft();
             if (left instanceof OqlFieldExpr) {
                 OqlFieldExpr fieldExpr = (OqlFieldExpr) left;

@@ -129,7 +129,17 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public int[] batchUpdate(SqlUpdateStatement statement, List<Map<String, Object>> paramMapList) {
-        return new int[0];
+        if (CollectionUtils.isEmpty(paramMapList)) {
+            return new int[0];
+        }
+        int[] effectedCounts = new int[paramMapList.size()];
+        int index = 0;
+        for (Map<String, Object> paramMap : paramMapList) {
+            int effectedCount = update(statement, paramMap);
+            effectedCounts[index] = effectedCount;
+            index++;
+        }
+        return effectedCounts;
     }
 
     @Override
@@ -150,7 +160,17 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
 
     @Override
     public int[] batchDelete(SqlDeleteStatement statement, List<Map<String, Object>> paramMapList) {
-        return new int[0];
+        if (CollectionUtils.isEmpty(paramMapList)) {
+            return new int[0];
+        }
+        int[] effectedCounts = new int[paramMapList.size()];
+        int index = 0;
+        for (Map<String, Object> paramMap : paramMapList) {
+            int effectedCount = delete(statement, paramMap);
+            effectedCounts[index] = effectedCount;
+            index++;
+        }
+        return effectedCounts;
     }
 
     @Override

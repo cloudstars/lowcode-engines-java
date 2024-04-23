@@ -6,7 +6,7 @@
       "desc": "根据行程地点查询出差申请记录",
       "name": "SelectTravelByTripsLike",
       "oql": "select applyId, applyName from Travel where trips.fromAddr like '%南京%'",
-      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where exists (select 1 from TRAVEL_TRIP where TRAVEL_TRIP.APPLY_ID = TRAVEL_.APPLY_ID AND FROM_ADDR like '%杭州%')",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where exists (select 1 from TRAVEL_TRIP where TRAVEL_TRIP.APPLY_ID = TRAVEL.APPLY_ID AND FROM_ADDR like '%杭州%')",
       "resultMap": {"applyId": "534743DSS-FEL2232-323KLFJFDS-323FDSD", "applyName":  "测试申请单2"}
     }
   ]

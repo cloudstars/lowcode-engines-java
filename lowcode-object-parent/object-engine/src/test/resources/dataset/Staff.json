@@ -46,7 +46,7 @@
       "JOIN_DATE": "2020-10-10",
       "DEPART_DATE": "2021-10-01",
       "DESCR": "此人名叫张三，爱好抽烟、喝酒",
-      "HOBBIES": "['cy', 'hj']"
+      "HOBBIES": "[1, 2]"
     },
     {
       "STA_CODE": "lisi",
@@ -54,7 +54,7 @@
       "JOIN_DATE": "2010-01-01",
       "DEPART_DATE": null,
       "DESCR": "我叫李四，小李的李，小四的四，爱好唱歌、跳舞",
-      "HOBBIES": "['cg', 'tw']"
+      "HOBBIES": "[2]"
     }
   ]
 }

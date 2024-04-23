@@ -1,0 +1,25 @@
+{
+  "desc": "测试报销申请关联出差申请，1对1，测试作为查询条件",
+  "name": "SelectExpenseLookupTravelWhere",
+  "oqls": [
+    {
+      "desc": "查询报销申请关联出差申请，出差申请单作为查询条件",
+      "name": "SelectTravelLookupTravelByTravelName",
+      "oql": "select applyId, applyName, travel(applyId, applyName), cash, remark from Expense where travel.applyName like '%申请单1'",
+      "sql": "select APPLY_ID, APPLY_NAME, CASH, REMARK, TRV_ID from EXPENSE where exists (select 1 from TRAVEL where TRAVEL.APPLY_ID = EXPENSE.TRV_ID and TRAVEL.APPLY_NAME like '%申请单1')",
+      "lookupSql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID in (#{applyIds})",
+      "resultMaps": [
+        {
+          "applyId": "111111111-FEL3232-323KLFJFDS-323FDSD",
+          "applyName": "关于张三3月出差南京的报销单",
+          "travel": {
+            "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单1"
+          },
+          "cash": 1134.4,
+          "remark": ""
+        }
+      ]
+    }
+  ]
+}

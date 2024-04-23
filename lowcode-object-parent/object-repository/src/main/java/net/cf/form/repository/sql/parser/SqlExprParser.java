@@ -301,21 +301,25 @@ public class SqlExprParser extends AbstractSqlParser {
                 break;
             case CONTAINS:
                 this.lexer.nextToken();
-
-                /*SqlJsonArrayExpr array = new SqlJsonArrayExpr();
-                targetExpr = new SqlArrayContainsOpExpr(targetExpr, array);
-                if (this.lexer.token == Token.ANY) {
-                    ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlArrayContainsOption.ANY);
-                    this.lexer.nextToken();
-                } else if (this.lexer.token == Token.ALL) {
-                    ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlArrayContainsOption.ALL);
-                    this.lexer.nextToken();
+                Token nextToken = this.lexer.token;
+                if (nextToken == Token.ALL || nextToken == Token.ANY) {
+                    SqlJsonArrayExpr array = new SqlJsonArrayExpr();
+                    if (this.lexer.token == Token.ANY) {
+                        targetExpr = new SqlArrayContainsOpExpr(targetExpr, SqlBinaryOperator.CONTAINS_ANY, array);
+                        ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlContainsOption.ANY);
+                        this.lexer.nextToken();
+                    } else if (this.lexer.token == Token.ALL) {
+                        targetExpr = new SqlArrayContainsOpExpr(targetExpr, SqlBinaryOperator.CONTAINS_ANY, array);
+                        ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlContainsOption.ALL);
+                        this.lexer.nextToken();
+                    }
+                    this.accept(Token.LPAREN);
+                    this.exprList(array.getItems(), targetExpr);
+                    this.accept(Token.RPAREN);
+                } else {
+                    rightExp = this.additive();
+                    targetExpr = new SqlContainsOpExpr(targetExpr, rightExp);
                 }
-
-                this.accept(Token.LBRACKET);
-                this.exprList(array.getItems(), array);
-                this.accept(Token.RBRACKET);
-*/
                 break;
             default:
                 break;
