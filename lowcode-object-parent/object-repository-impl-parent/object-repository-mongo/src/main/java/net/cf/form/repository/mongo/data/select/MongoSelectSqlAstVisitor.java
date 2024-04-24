@@ -2,7 +2,10 @@ package net.cf.form.repository.mongo.data.select;
 
 import net.cf.form.repository.mongo.data.ExprTypeEnum;
 import net.cf.form.repository.mongo.data.MongoSelectItem;
-import net.cf.form.repository.sql.ast.statement.*;
+import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
+import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
+import net.cf.form.repository.sql.ast.statement.SqlSelect;
+import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 public class MongoSelectSqlAstVisitor implements SqlAstVisitor {
@@ -22,21 +25,6 @@ public class MongoSelectSqlAstVisitor implements SqlAstVisitor {
     }
 
     @Override
-    public boolean visit(SqlJoinTableSource x) {
-        SqlTableSource left = x.getLeft();
-        SqlTableSource right = x.getRight();
-        if (!(left instanceof SqlExprTableSource) || !(right instanceof SqlExprTableSource)) {
-            throw new RuntimeException("not support");
-        }
-
-        this.builder.setCollectionName(((SqlExprTableSource) left).getTableName());
-        this.builder.addJoin(x);
-
-        return false;
-    }
-
-
-    @Override
     public boolean visit(SqlSelect x) {
 
         if (x.getWhere() != null) {
@@ -54,6 +42,10 @@ public class MongoSelectSqlAstVisitor implements SqlAstVisitor {
         return true;
     }
 
+    @Override
+    public boolean visit(SqlExistsExpr sqlExistsExpr) {
+        return false;
+    }
 
     @Override
     public boolean visit(SqlSelectItem x) {

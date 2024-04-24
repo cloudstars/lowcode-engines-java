@@ -1,5 +1,6 @@
 package net.cf.form.repository.mongo.data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,6 +23,8 @@ public class GlobalContext {
 
     // expr所处位置
     private PositionEnum positionEnum;
+
+    private Map<String, String> existAliasMap = new HashMap<>();
 
 
     public GlobalContext(PositionEnum positionEnum) {
@@ -80,5 +83,13 @@ public class GlobalContext {
 
     public void setPositionEnum(PositionEnum positionEnum) {
         this.positionEnum = positionEnum;
+    }
+
+    public Map<String, String> getExistAliasMap() {
+        return existAliasMap;
+    }
+
+    public void setExistAliasMap(Map<String, String> existAliasMap) {
+        this.existAliasMap = existAliasMap;
     }
 }

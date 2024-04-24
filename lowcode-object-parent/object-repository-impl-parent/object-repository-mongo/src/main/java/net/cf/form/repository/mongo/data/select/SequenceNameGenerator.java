@@ -7,13 +7,7 @@ public class SequenceNameGenerator {
 
     private int index = 1;
 
-    private String prefix;
-
-    public SequenceNameGenerator(String prefix) {
-        this.prefix = prefix;
-    }
-
-    public String getNextName() {
+    public String getNextName(String prefix) {
         String name = prefix + "@" + index;
         index++;
         return name;

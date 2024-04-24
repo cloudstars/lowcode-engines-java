@@ -8,6 +8,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -25,13 +27,13 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
     private boolean enableVariable = false;
 
+    private SequenceNameGenerator sequenceNameGenerator;
+
     private Map<String, Object> paramMap = null;
 
     private String collectionName;
 
     private List<MongoSelectItem> selectItems = new ArrayList<>();
-
-    private SqlJoinTableSource joinTableSource;
 
     private SqlExpr whereExpr;
 
@@ -41,9 +43,13 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
     private SqlLimit limit;
 
-    private Map<String, String> replaceFields;
+    private Map<String, String> replaceFields = new HashMap<>();
 
-    private static final List<String> AGGR_METHODS = Arrays.asList("COUNT", "SUM", "MAX", "MIN", "AVG");
+    // 关联查询结果别名
+    private Map<String, String> subQueryAliasMap = new HashMap<>();
+
+    // 关联查询
+    private List<SqlExistsExpr> subQueryExprs = new ArrayList<>();
 
     private List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
@@ -72,10 +78,6 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         this.groupBy = groupBy;
     }
 
-    public void addJoin(SqlJoinTableSource joinTableSource) {
-        this.joinTableSource = joinTableSource;
-    }
-
     public MongoSelectCommandBuilder() {
     }
 
@@ -86,21 +88,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         }
     }
 
-
-    @Override
-    public MongoSelectCommand build() {
-        buildAggregationOperation();
-        Aggregation aggregation = Aggregation.newAggregation(this.aggregationOperations);
-        MongoSelectCommand mongoSelectCommand = new MongoSelectCommand();
-        mongoSelectCommand.setAggregation(aggregation);
-        mongoSelectCommand.setCollectionName(this.collectionName);
-        mongoSelectCommand.setReplaceFields(this.replaceFields);
-        log.info("select sql : {} ", mongoSelectCommand.getSqlExpr());
-        if (this.replaceFields != null) {
-            log.info("select field replace : {}", JSON.toJSON(this.replaceFields));
-        }
-        return mongoSelectCommand;
-    }
+    private LinkedList<AggregationOpEnum> operations;
 
 
     private boolean shouldGroupBy = false;
@@ -109,15 +97,30 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
     private Map<String, Object> aliasMap = new HashMap<>();
 
+    @Override
+    public MongoSelectCommand build() {
+        sequenceNameGenerator = new SequenceNameGenerator();
+        buildAggregationOperation();
+        Aggregation aggregation = Aggregation.newAggregation(this.aggregationOperations);
+        MongoSelectCommand mongoSelectCommand = new MongoSelectCommand();
+        mongoSelectCommand.setAggregation(aggregation);
+        mongoSelectCommand.setCollectionName(this.collectionName);
+        mongoSelectCommand.setReplaceFields(this.replaceFields);
+        log.info("select sql : {} ", mongoSelectCommand.getSqlExpr());
+        if (!this.replaceFields.isEmpty()) {
+            log.info("select field replace : {}", JSON.toJSON(this.replaceFields));
+        }
+        return mongoSelectCommand;
+    }
 
     private void buildAggregationOperation() {
-        LinkedList<AggregationOpEnum> operations = AggregationOpEnum.getDefaultOperations();
+        this.operations = AggregationOpEnum.getDefaultOperations();
 
-        // 初始化分析【后续看是否可以移到visitor中】
+        // 初始化分析
         analyse();
 
         // 构建mongo操作命令
-        for (AggregationOpEnum opEnum : operations) {
+        for (AggregationOpEnum opEnum : this.operations) {
             buildOperation(opEnum);
         }
     }
@@ -157,6 +160,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
 
     private void analyse() {
+        // 处理查询字段
         for (MongoSelectItem selectItem : this.selectItems) {
             if (selectItem.getExprEnum() == ExprTypeEnum.PARAM) {
                 selectItem.setOriginFieldName(MongoUtils.getOriginExpr(selectItem.getSqlExpr()));
@@ -173,21 +177,29 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
                 // 其他类型一律使用别名作为构建命令时的字段名
                 selectItem.setFieldName(selectItem.getAlias());
             }
-
             // 设置替换字段名
             setReplaceName(selectItem);
-
-
             //
             if (selectItem.getExprEnum() == ExprTypeEnum.AGGR) {
                 selectItem.setAggr(true);
             }
-
             // 缓存别名
             if (selectItem.getAlias() != null) {
                 aliasMap.put(selectItem.getAlias(), selectItem);
             }
+        }
 
+        // 处理关联表字段作为查询条件
+        MongoExistsExprVisitor existsExprVisitor = new MongoExistsExprVisitor(whereExpr);
+        this.subQueryExprs = existsExprVisitor.visit();
+        for (SqlExistsExpr sqlExistsExpr : this.subQueryExprs) {
+            SqlSelect subQuery = sqlExistsExpr.getSubQuery();
+            SqlExprTableSource from = (SqlExprTableSource) subQuery.getFrom();
+            this.subQueryAliasMap.put(String.valueOf(sqlExistsExpr.hashCode()), sequenceNameGenerator.getNextName(from.getTableName()));
+        }
+        if (!CollectionUtils.isEmpty(this.subQueryExprs)) {
+            // match 后置到 LOOKUP后
+            AggregationOpEnum.moveFirstAfter(this.operations, AggregationOpEnum.LOOKUP, AggregationOpEnum.MATCH);
         }
     }
 
@@ -210,12 +222,8 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             }
         }
 
-        SequenceNameGenerator sequenceNameGenerator = new SequenceNameGenerator("rfield");
-        String replaceName = sequenceNameGenerator.getNextName();
+        String replaceName = sequenceNameGenerator.getNextName("rfield");
         selectItem.setReplaceName(replaceName);
-        if (this.replaceFields == null) {
-            replaceFields = new HashMap<>();
-        }
         // 写入替换名
         if (StringUtils.isEmpty(selectItem.getAlias())) {
             // 有别名，原返回键肯定是别名，替换别名作为返回键
@@ -235,7 +243,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     private void buildWhere() {
         Document document = new Document();
         if (this.whereExpr != null) {
-            WhereBuilder whereBuilder = new WhereBuilder(this.whereExpr, paramMap);
+            WhereBuilder whereBuilder = new WhereBuilder(this.whereExpr, paramMap, this.subQueryAliasMap);
             document = whereBuilder.build();
         }
         AggregationOperation aggregationOperation = new DocumentAggregationOperation(new Document("$match", document));
@@ -351,19 +359,29 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
 
     private void buildLookup() {
-        if (this.joinTableSource == null) {
+        if (this.subQueryExprs.isEmpty()) {
             return;
         }
 
-        List<Document> documents = buildLookup(this.joinTableSource);
-
-        for (Document document : documents) {
-            AggregationOperation aggregationOperation = new DocumentAggregationOperation(document);
-            this.aggregationOperations.add(aggregationOperation);
+        for (SqlExistsExpr sqlExistsExpr : subQueryExprs) {
+            SqlSelect select = sqlExistsExpr.getSubQuery();
+            SqlExpr sqlExpr = select.getWhere();
+            String slaveTable = ((SqlExprTableSource) select.getFrom()).getTableName();
+            String slaveTableAs = this.subQueryAliasMap.get(String.valueOf(sqlExistsExpr.hashCode()));
+            String mainTable = this.collectionName;
+            List<Document> documents = buildSingleLeftJoinLookup(mainTable, slaveTable, slaveTableAs, sqlExpr);
+            for (Document document : documents) {
+                AggregationOperation aggregationOperation = new DocumentAggregationOperation(document);
+                this.aggregationOperations.add(aggregationOperation);
+            }
         }
+
     }
 
-
+    /**
+     * @param sqlJoinTableSource
+     * @return
+     */
     private List<Document> buildLookup(SqlJoinTableSource sqlJoinTableSource) {
 
         if (!(sqlJoinTableSource.getLeft() instanceof SqlExprTableSource)) {
@@ -379,7 +397,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             String slaveTable = ((SqlExprTableSource) rightTableSource).getTableName();
             SqlJoinTableSource.JoinType joinType = sqlJoinTableSource.getJoinType();
             if (joinType == SqlJoinTableSource.JoinType.JOIN || joinType == SqlJoinTableSource.JoinType.LEFT_OUTER_JOIN) {
-                return buildSingleLeftJoinLookup(mainTable, slaveTable, sqlJoinTableSource);
+                return buildSingleLeftJoinLookup(mainTable, slaveTable, slaveTable, sqlJoinTableSource.getCondition());
             } else {
                 throw new RuntimeException("not support");
             }
@@ -389,9 +407,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     }
 
 
-    private List<Document> buildSingleLeftJoinLookup(String mainTable, String slaveTable, SqlJoinTableSource joinTableSource) {
-
-        SqlExpr sqlExpr = joinTableSource.getCondition();
+    private List<Document> buildSingleLeftJoinLookup(String mainTable, String slaveTable, String slaveTableAs, SqlExpr sqlExpr) {
         Map<String, List<String>> table2JoinParam = JoinConditionBuilder.getJoinParam((SqlBinaryOpExpr) sqlExpr);
 
         JoinInfo joinInfo = new JoinInfo();
@@ -404,14 +420,16 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             String innerMainParam = param.replace(mainTable + ".", "");
             letDoc.put(innerMainMasterKey, "$" + innerMainParam);
             // 用于on变量替换
-            joinInfo.addConditionReplace(param, "$$" + innerMainMasterKey);
+            joinInfo.addMainReplace(param, "$$" + innerMainMasterKey);
         }
 
         for (String param : table2JoinParam.get(slaveTable)) {
             String newParam = param.replace(slaveTable + ".", "");
             // 用于on变量替换
-            joinInfo.addConditionReplace(param, "$" + newParam);
+            joinInfo.addSlaveReplace(param, newParam);
         }
+        joinInfo.addTableNames(mainTable);
+        joinInfo.addTableNames(slaveTable);
 
         // lookup pipeline
         List<Document> refPipeline = new ArrayList<>();
@@ -422,7 +440,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
         Document refLookUp = new Document();
         refLookUp.append("from", slaveTable)
-                .append("as", slaveTable)
+                .append("as", slaveTableAs)
                 .append("let", letDoc)
                 .append("pipeline", refPipeline);
 
@@ -431,21 +449,12 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         singleRef.add(new Document("$lookup", lookupDoc));
 
         Document unwindDoc = new Document();
-        unwindDoc.put("path", "$" + slaveTable);
+        unwindDoc.put("path", "$" + slaveTableAs);
         unwindDoc.put("preserveNullAndEmptyArrays", true);
         singleRef.add(new Document("$unwind", unwindDoc));
         return singleRef;
     }
 
-
-    private void buildOrderAndLimit() {
-        if (this.orderBy != null) {
-            buildOrderBy();
-        }
-        if (this.limit != null) {
-            buildLimit();
-        }
-    }
 
     private void buildOrderBy() {
         if (this.orderBy == null) {

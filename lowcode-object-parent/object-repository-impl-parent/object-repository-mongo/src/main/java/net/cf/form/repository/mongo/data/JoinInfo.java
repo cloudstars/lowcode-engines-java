@@ -1,27 +1,55 @@
 package net.cf.form.repository.mongo.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JoinInfo {
 
     /**
-     * join 条件参数替换
+     * 表名
      */
-    private Map<String, String> conditionReplaceMap;
+    private List<String> tableNames;
+    /**
+     * 主表 字段替换
+     */
+    private Map<String, String> mainReplaceMap;
+    /**
+     * 关联表 字段替换
+     */
+    private Map<String, String> slaveReplaceMap;
 
-    public Map<String, String> getConditionReplaceMap() {
-        return conditionReplaceMap;
+    public Map<String, String> getSlaveReplaceMap() {
+        return slaveReplaceMap;
     }
 
-    public void addConditionReplace(String key, String value) {
-        if (this.conditionReplaceMap == null) {
-            this.conditionReplaceMap = new HashMap<>();
+    public void addSlaveReplace(String key, String value) {
+        if (this.slaveReplaceMap == null) {
+            this.slaveReplaceMap = new HashMap<>();
         }
-        this.conditionReplaceMap.put(key, value);
+        this.slaveReplaceMap.put(key, value);
     }
 
-    public void setConditionReplaceMap(Map<String, String> conditionReplaceMap) {
-        this.conditionReplaceMap = conditionReplaceMap;
+    public void addMainReplace(String key, String value) {
+        if (this.mainReplaceMap == null) {
+            this.mainReplaceMap = new HashMap<>();
+        }
+        this.mainReplaceMap.put(key, value);
+    }
+
+    public void addTableNames(String value) {
+        if (this.tableNames == null) {
+            this.tableNames = new ArrayList<>();
+        }
+        this.tableNames.add(value);
+    }
+
+    public Map<String, String> getMainReplaceMap() {
+        return mainReplaceMap;
+    }
+
+    public List<String> getTableNames() {
+        return tableNames;
     }
 }

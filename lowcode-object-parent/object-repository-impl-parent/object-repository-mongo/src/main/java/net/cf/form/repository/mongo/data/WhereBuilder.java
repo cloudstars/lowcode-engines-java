@@ -13,6 +13,8 @@ public class WhereBuilder {
 
     private boolean enableVariable = false;
 
+    private Map<String, String> existsAliasMap = null;
+
     public WhereBuilder(SqlExpr sqlExpr, Map<String, Object> paramMap) {
         this.sqlExpr = sqlExpr;
         if (MongoUtils.isVariableEnable(paramMap)) {
@@ -21,9 +23,25 @@ public class WhereBuilder {
         }
     }
 
+    public WhereBuilder(SqlExpr sqlExpr, Map<String, Object> paramMap, Map<String, String> existsAliasMap) {
+        this.sqlExpr = sqlExpr;
+        if (MongoUtils.isVariableEnable(paramMap)) {
+            this.enableVariable = true;
+            this.paramMap = paramMap;
+        }
+        if (existsAliasMap != null) {
+            this.existsAliasMap = existsAliasMap;
+        }
+    }
+
 
     public Document build() {
-        Object object = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.WHERE));
+        GlobalContext globalContext = new GlobalContext(paramMap, PositionEnum.WHERE);
+        if (this.existsAliasMap != null) {
+            globalContext.setExistAliasMap(this.existsAliasMap);
+        }
+        Object object = MongoExprVisitor.visit(sqlExpr, globalContext);
+
         if (!(object instanceof Document)) {
             throw new RuntimeException("error");
         }
