@@ -56,9 +56,6 @@ public class InsertStatementChecker extends AbstractStatementChecker {
                         //throw new FastOqlException("OQL插入语句的模型展开表达式" + objectExpandExpr + "中的字段，只允许出现字段的属性！");
                     }
                 }
-
-            } else if (field instanceof OqlFieldExpandExpr) {
-                // TODO
             } else if (field instanceof OqlFieldExpr) {
                 // TODO
             } else if (field instanceof OqlPropertyExpr) {

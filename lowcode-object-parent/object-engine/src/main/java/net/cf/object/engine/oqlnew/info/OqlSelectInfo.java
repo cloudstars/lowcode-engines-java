@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.stmt;
+package net.cf.object.engine.oqlnew.info;
 
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.data.FieldMapping;
@@ -10,12 +10,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlSelectInfo extends AbstractOqlInfo {
-
-    /**
-     * 驱动层的查询语句
-     */
-    private SqlSelectStatement statement;
+public class OqlSelectInfo extends AbstractOqlInfo<SqlSelectStatement> {
 
     /**
      * 查询的字段映射关系
@@ -36,14 +31,6 @@ public class OqlSelectInfo extends AbstractOqlInfo {
      * 是否是直接查询了子表的字段，如：select detailField from ...，并且不含子表的其它字段查询
      */
     private boolean isDetailFieldDirectQuery;
-
-    public SqlSelectStatement getStatement() {
-        return statement;
-    }
-
-    public void setStatement(SqlSelectStatement statement) {
-        this.statement = statement;
-    }
 
     public List<FieldMapping> getFieldMappings() {
         return fieldMappings;

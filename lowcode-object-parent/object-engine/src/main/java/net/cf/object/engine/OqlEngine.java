@@ -21,6 +21,7 @@ public interface OqlEngine {
      * @param statement
      * @return
      */
+    @Deprecated
     Map<String, Object> queryOne(OqlSelectStatement statement);
 
     /**
@@ -30,6 +31,7 @@ public interface OqlEngine {
      * @param paramMap
      * @return
      */
+    @Deprecated
     Map<String, Object> queryOne(OqlSelectStatement statement, Map<String, Object> paramMap);
 
     /**
@@ -38,6 +40,7 @@ public interface OqlEngine {
      * @param statement
      * @return
      */
+    @Deprecated
     List<Map<String, Object>> queryList(OqlSelectStatement statement);
 
     /**
@@ -47,6 +50,7 @@ public interface OqlEngine {
      * @param paramMap
      * @return
      */
+    @Deprecated
     List<Map<String, Object>> queryList(OqlSelectStatement statement, Map<String, Object> paramMap);
 
     /**

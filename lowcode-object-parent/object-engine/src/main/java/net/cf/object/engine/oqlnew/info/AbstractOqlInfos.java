@@ -1,8 +1,8 @@
-package net.cf.object.engine.oql.stmt;
+package net.cf.object.engine.oqlnew.info;
 
 import net.cf.object.engine.object.XObject;
 
-public abstract class AbstractOqlStatement {
+public abstract class AbstractOqlInfos {
 
     /**
      * 解析后的本表模型

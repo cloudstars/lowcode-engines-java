@@ -12,9 +12,10 @@ import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.util.OqlUtils;
 import net.cf.object.engine.sqlbuilder.FieldItemInfo;
 import net.cf.object.engine.sqlbuilder.SqlBuilderOqlAstVisitorAdaptor;
+import net.cf.object.engine.util.OqlUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -67,17 +68,20 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         for (OqlUpdateSetItem setItem : setItems) {
             SqlExpr field = setItem.getField();
             SqlExpr value = setItem.getValue();
-            if (field instanceof OqlFieldExpr || field instanceof OqlPropertyExpr) {
-                SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
-                sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, field));
-                sqlSetItem.setValue(this.buildSqlExpr(this.selfObject, setItem.getValue()));
-                this.builder.appendSetItem(sqlSetItem);
-                if (value instanceof SqlVariantRefExpr) {
-                    String varName = ((SqlVariantRefExpr) value).getVarName();
-                    this.builder.appendFieldMapping(new FieldMapping(varName, varName));
+            if (field instanceof OqlFieldExpr) {
+                XField resolvedField = ((OqlFieldExpr) field).getResolvedField();
+                if (CollectionUtils.isEmpty(resolvedField.getProperties())) {
+                    SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
+                    sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, field));
+                    sqlSetItem.setValue(this.buildSqlExpr(this.selfObject, setItem.getValue()));
+                    this.builder.appendSetItem(sqlSetItem);
+                    if (value instanceof SqlVariantRefExpr) {
+                        String varName = ((SqlVariantRefExpr) value).getVarName();
+                        this.builder.appendFieldMapping(new FieldMapping(varName, varName));
+                    }
+                } else {
+                    this.processFieldValueExpand(resolvedField, value);
                 }
-            } else if (field instanceof OqlFieldExpandExpr) {
-                this.processFieldValueExpand((OqlFieldExpandExpr) field, value);
             } else if (!(field instanceof OqlObjectExpandExpr)) {
                 throw new FastOqlException("不支持的更新字段类型：" + field.getClass().getName());
             }
@@ -87,30 +91,19 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
     /**
      * 展开set带子属性的字段
      *
-     * @param fieldExpandExpr
+     * @param resolvedField
      * @param updateValue
      */
-    private void processFieldValueExpand(OqlFieldExpandExpr fieldExpandExpr, SqlExpr updateValue) {
-        XField resolvedField = fieldExpandExpr.getResolvedField();
-        List<? extends SqlExpr> properties;
-        if (fieldExpandExpr.isDefaultExpanded() || fieldExpandExpr.isStarExpanded()) {
-            properties = OqlUtils.defaultExpandFieldProperties(resolvedField);
-        } else {
-            properties = fieldExpandExpr.getProperties();
-        }
-
+    private void processFieldValueExpand(XField resolvedField, SqlExpr updateValue) {
+        List<OqlPropertyExpr> properties = OqlUtils.defaultExpandFieldProperties(resolvedField);
         if (updateValue instanceof SqlJsonObjectExpr) {
             SqlJsonObjectExpr jsonObjectExpr = (SqlJsonObjectExpr) updateValue;
             Map<String, SqlExpr> items = jsonObjectExpr.getItems();
-            for (SqlExpr property : properties) {
-                if (property instanceof OqlPropertyExpr) {
-                    SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
-                    sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, property));
-                    sqlSetItem.setValue(items.get(((OqlPropertyExpr) property).getName()));
-                    this.builder.appendSetItem(sqlSetItem);
-                } else {
-                    throw new FastOqlException("OQL update语句的字段展开表达式中不支持字段属性之外的表达式");
-                }
+            for (OqlPropertyExpr property : properties) {
+                SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
+                sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, property));
+                sqlSetItem.setValue(items.get(property.getName()));
+                this.builder.appendSetItem(sqlSetItem);
             }
         } else if (updateValue instanceof SqlVariantRefExpr) {
             FieldItemInfo fieldItemInfo = new FieldItemInfo();
@@ -120,11 +113,9 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
 
             SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) updateValue;
             String varName = variantRefExpr.getVarName();
-            for (SqlExpr property : properties) {
+            for (OqlPropertyExpr property : properties) {
                 if (property instanceof OqlPropertyExpr) {
-                    OqlPropertyExpr propExpr = (OqlPropertyExpr) property;
-                    XProperty resolvedProp = propExpr.getResolvedProperty();
-
+                    XProperty resolvedProp = property.getResolvedProperty();
                     SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
                     SqlExpr updateItem = this.buildSqlExpr(this.selfObject, property);
                     sqlSetItem.setColumn(updateItem);
@@ -146,4 +137,5 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
             throw new FastOqlException("set子句中展开字段的设值必须是JSON或者变量引用，当前值：" + updateValue);
         }
     }
+
 }

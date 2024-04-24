@@ -10,9 +10,9 @@ import net.cf.form.repository.sql.ast.SqlDataType;
 public abstract class AbstractExpandableOqlExprImpl extends AbstractOqlExprImpl {
 
     /**
-     * 是否默认全部展开，即不带后面的部分，如：field、refObject
+     * 是否默认全部展开，即不带后面的部分，如：refObject
      */
-    protected boolean isDefaultExpanded = false;
+    //protected boolean isDefaultExpanded = false;
 
     /**
      * 是否“*”全部展开，即field.*
@@ -29,13 +29,13 @@ public abstract class AbstractExpandableOqlExprImpl extends AbstractOqlExprImpl 
         return SqlDataType.OBJECT;
     }
 
-    public boolean isDefaultExpanded() {
+    /*public boolean isDefaultExpanded() {
         return isDefaultExpanded;
     }
 
     public void setDefaultExpanded(boolean defaultExpanded) {
         isDefaultExpanded = defaultExpanded;
-    }
+    }*/
 
     public boolean isStarExpanded() {
         return isStarExpanded;

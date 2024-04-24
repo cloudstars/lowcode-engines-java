@@ -20,16 +20,6 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
      */
     private boolean autoGen;
 
-    /**
-     * 对应数据表列
-     */
-    // private String resolvedColumn;
-
-    /**
-     * 归属的数据库表
-     */
-    // private String resolvedOwnerTable;
-
     public SqlIdentifierExpr() {
     }
 

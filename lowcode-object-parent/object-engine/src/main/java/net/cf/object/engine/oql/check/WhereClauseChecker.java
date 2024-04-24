@@ -7,7 +7,6 @@ import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.FastOqlException;
-import net.cf.object.engine.oql.ast.OqlFieldExpandExpr;
 import net.cf.object.engine.oql.ast.OqlFieldExpr;
 import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.oql.ast.OqlStatement;
@@ -54,18 +53,8 @@ public class WhereClauseChecker implements OqlAstVisitor {
 
     @Override
     public boolean visit(OqlObjectExpandExpr x) {
-        if (x.isStarExpanded() || !x.isDefaultExpanded()) {
-            throw new FastOqlException("OQL的查询条件中不允许使用显式模型展开表达式：" + x);
-        }
-
-        return true;
+        throw new FastOqlException("OQL的查询条件中不允许使用显式模型展开表达式：" + x);
     }
-
-    @Override
-    public boolean visit(OqlFieldExpandExpr x) {
-        throw new FastOqlException("OQL的查询条件中不允许使用字段展开表达式：" + x);
-    }
-
 
     @Override
     public boolean visit(SqlBinaryOpExpr x) {

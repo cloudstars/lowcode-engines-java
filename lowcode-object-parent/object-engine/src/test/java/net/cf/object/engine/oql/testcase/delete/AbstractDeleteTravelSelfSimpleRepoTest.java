@@ -40,7 +40,7 @@ public abstract class AbstractDeleteTravelSelfSimpleRepoTest extends AbstractOql
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
         }
     }
@@ -61,7 +61,7 @@ public abstract class AbstractDeleteTravelSelfSimpleRepoTest extends AbstractOql
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
         }
     }

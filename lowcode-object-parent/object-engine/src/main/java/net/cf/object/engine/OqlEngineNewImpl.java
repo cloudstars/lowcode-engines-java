@@ -10,9 +10,12 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.data.*;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
-import net.cf.object.engine.oql.parser.XObjectResolver;
-import net.cf.object.engine.oql.stmt.OqlSelectInfo;
-import net.cf.object.engine.oql.stmt.OqlSelectStatement;
+import net.cf.object.engine.oql.ast.OqlDeleteStatement;
+import net.cf.object.engine.oql.ast.OqlInsertStatement;
+import net.cf.object.engine.oql.ast.OqlSelectStatement;
+import net.cf.object.engine.oql.ast.OqlUpdateStatement;
+import net.cf.object.engine.oqlnew.info.OqlSelectInfo;
+import net.cf.object.engine.oqlnew.info.OqlSelectInfos;
 import net.cf.object.engine.util.OqlStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,14 +32,11 @@ public class OqlEngineNewImpl implements OqlEngineNew {
 
     private static Logger LOGGER = LoggerFactory.getLogger(OqlEngineImpl.class);
 
-    private final XObjectResolver resolver;
-
     private final ObjectRepository repository;
 
     private final int limitSize = -1;
 
-    public OqlEngineNewImpl(XObjectResolver resolver, ObjectRepository repository) {
-        this.resolver = resolver;
+    public OqlEngineNewImpl(ObjectRepository repository) {
         this.repository = repository;
     }
 
@@ -45,13 +45,13 @@ public class OqlEngineNewImpl implements OqlEngineNew {
     }
 
     @Override
-    public Map<String, Object> queryOne(String oql) {
-        return this.queryOne(oql, Collections.emptyMap());
+    public Map<String, Object> queryOne(OqlSelectStatement stmt) {
+        return this.queryOne(stmt, Collections.emptyMap());
     }
 
     @Override
-    public Map<String, Object> queryOne(String oql, Map<String, Object> paramMap) {
-        OqlSelectStatement thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(resolver, oql);
+    public Map<String, Object> queryOne(OqlSelectStatement stmt, Map<String, Object> paramMap) {
+        OqlSelectInfos thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(stmt, false);
         XObject selfObject = thisOqlStmt.getResolvedSelfObject();
 
         // 查询本表数据
@@ -161,44 +161,45 @@ public class OqlEngineNewImpl implements OqlEngineNew {
      * @param lookupFieldValue
      * @return
      */
-    private List<String> convertToLookupRecordIds(Object lookupFieldValue) {
-        if (lookupFieldValue instanceof String) {
-            lookupFieldValue = DataConvert.stringToList((String) lookupFieldValue);
+    private List<String> convertToLookupRecordIds(final Object lookupFieldValue) {
+        Object lookupFieldValueX = lookupFieldValue;
+        if (lookupFieldValueX instanceof String) {
+            lookupFieldValueX = DataConvert.stringToList((String) lookupFieldValueX);
         }
 
-        if (lookupFieldValue instanceof List) {
-            List<?> lookupFieldListValue = ((List<?>) lookupFieldValue);
+        if (lookupFieldValueX instanceof List) {
+            List<?> lookupFieldListValue = ((List<?>) lookupFieldValueX);
             if (lookupFieldListValue.size() > 0 && !(lookupFieldListValue.get(0) instanceof String)) {
                 // 如果不是字符串列表的话，则转话字符串列表
                 List<String> lookupFieldListStringValue = new ArrayList<>();
-                for (Object lookupFieldItem : (List) lookupFieldValue) {
+                for (Object lookupFieldItem : (List) lookupFieldValueX) {
                     lookupFieldListStringValue.add(lookupFieldItem.toString());
                 }
                 return lookupFieldListStringValue;
             } else {
-                return (List<String>) lookupFieldValue;
+                return (List<String>) lookupFieldValueX;
             }
-        } else if (lookupFieldValue instanceof String) {
-            return Arrays.asList((String) lookupFieldValue);
+        } else if (lookupFieldValueX instanceof String) {
+            return Arrays.asList((String) lookupFieldValueX);
         } else {
-            return Arrays.asList(lookupFieldValue.toString());
+            return Arrays.asList(lookupFieldValueX.toString());
         }
     }
 
     @Override
-    public List<Map<String, Object>> queryList(String oql) {
-        return this.queryList(oql, Collections.emptyMap());
+    public List<Map<String, Object>> queryList(OqlSelectStatement stmt) {
+        return this.queryList(stmt, Collections.emptyMap());
     }
 
     @Override
-    public List<Map<String, Object>> queryList(String oql, Map<String, Object> paramMap) {
-        OqlSelectStatement thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(resolver, oql, true);
+    public List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap) {
+        OqlSelectInfos thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(stmt, true);
         return this.queryList(thisOqlStmt, paramMap);
     }
 
     @Override
-    public PageResult<Map<String, Object>> queryPage(String oql, Map<String, Object> paramMap, PageRequest pageRequest) {
-        OqlSelectStatement thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(resolver, oql, true);
+    public PageResult<Map<String, Object>> queryPage(OqlSelectStatement stmt, Map<String, Object> paramMap, PageRequest pageRequest) {
+        OqlSelectInfos thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(stmt, true);
         SqlSelectStatement selfSqlStmt = thisOqlStmt.getSelfSelectInfo().getStatement();
 
         // 生成count语句
@@ -246,16 +247,18 @@ public class OqlEngineNewImpl implements OqlEngineNew {
     /**
      * 根据OQL语句执行查询
      *
-     * @param thisOqlStmt
+     * @param selfOqlStmt
      * @return
      */
-    private List<Map<String, Object>> queryList(OqlSelectStatement thisOqlStmt, Map<String, Object> paramMap) {
+    private List<Map<String, Object>> queryList(OqlSelectInfos selfOqlStmt, Map<String, Object> paramMap) {
         // 当前模型
-        XObject selfObject = thisOqlStmt.getResolvedSelfObject();
+        XObject selfObject = selfOqlStmt.getResolvedSelfObject();
 
         // 查询本表数据
-        OqlSelectInfo selfSelectInfo = thisOqlStmt.getSelfSelectInfo();
-        List<Map<String, Object>> selfResultMapList = this.repository.selectList(selfSelectInfo.getStatement(), paramMap);
+        OqlSelectInfo selfSelectInfo = selfOqlStmt.getSelfSelectInfo();
+        SqlSelectStatement selfSqlStmt = selfSelectInfo.getStatement();
+        this.addLimitInfo(selfSqlStmt); // 添加条数限制
+        List<Map<String, Object>> selfResultMapList = this.repository.selectList(selfSqlStmt, paramMap);
         if (selfResultMapList != null && selfResultMapList.size() > 0) {
             DefaultResultReducer resultReducer = new DefaultResultReducer(selfSelectInfo.getFieldMappings());
             selfResultMapList = this.convertResultMapList(resultReducer, selfResultMapList);
@@ -266,7 +269,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         }
 
         // 存在子表的情况下，依次查询子表
-        List<OqlSelectInfo> detailSelectInfos = thisOqlStmt.getDetailSelectInfos();
+        List<OqlSelectInfo> detailSelectInfos = selfOqlStmt.getDetailSelectInfos();
         if (detailSelectInfos != null && detailSelectInfos.size() > 0) {
             String selfPrimaryFieldName = selfObject.getPrimaryField().getName();
             List<String> selfRecordIds = this.extractRecordIdsFromResultMapList(selfResultMapList, selfPrimaryFieldName);
@@ -280,6 +283,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
                 detailParamMap.put(detailMasterFieldName + 's', selfRecordIds);
                 // 查询子表的数据并作归并
                 SqlSelectStatement detailSqlStmt = detailSelectInfo.getStatement();
+                this.addLimitInfo(detailSqlStmt); // 添加条数限制
                 List<Map<String, Object>> detailResultMapList = this.repository.selectList(detailSqlStmt, detailParamMap);
                 DefaultResultReducer resultReducer = new DefaultResultReducer(detailSelectInfo.getFieldMappings());
                 detailResultMapList = this.convertResultMapList(resultReducer, detailResultMapList);
@@ -299,7 +303,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         }
 
         // 存在相关表的情况下，
-        List<OqlSelectInfo> lookupSelectInfos = thisOqlStmt.getLookupSelectInfos();
+        List<OqlSelectInfo> lookupSelectInfos = selfOqlStmt.getLookupSelectInfos();
         if (lookupSelectInfos != null && lookupSelectInfos.size() > 0) {
             for (OqlSelectInfo lookupSelectInfo : lookupSelectInfos) {
                 XObject lookupObject = lookupSelectInfo.getResolvedObject();
@@ -311,6 +315,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
                 String lookupPrimaryFieldName = lookupObject.getPrimaryField().getName();
                 lookupParamMap.put(lookupPrimaryFieldName + "s", lookupRecordIds);
                 SqlSelectStatement lookupSqlStmt = lookupSelectInfo.getStatement();
+                this.addLimitInfo(lookupSqlStmt); // 添加条数限制
                 List<Map<String, Object>> lookupResultMapList = this.repository.selectList(lookupSqlStmt, lookupParamMap);
                 if (CollectionUtils.isEmpty(lookupResultMapList)) {
                     continue;
@@ -338,6 +343,23 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         }
 
         return selfResultMapList;
+    }
+
+    /**
+     * 添加分页信息
+     *
+     * @param sqlStmt
+     */
+    private void addLimitInfo(SqlSelectStatement sqlStmt) {
+        if (this.limitSize > 0) {
+            SqlSelect select = sqlStmt.getSelect();
+            SqlLimit limit = select.getLimit();
+            if (limit == null) {
+                limit = new SqlLimit();
+                select.setLimit(limit);
+            }
+            limit.setRowCount(limitSize);
+        }
     }
 
     /**
@@ -448,47 +470,48 @@ public class OqlEngineNewImpl implements OqlEngineNew {
 
 
     @Override
-    public int create(String oql) {
+    public int create(OqlInsertStatement stmt) {
         return 0;
     }
 
     @Override
-    public int create(String oql, Map<String, Object> paramMap) {
+    public int create(OqlInsertStatement stmt, Map<String, Object> paramMap) {
         return 0;
     }
 
     @Override
-    public int[] createList(String oql, List<Map<String, Object>> dataMaps) {
+    public int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> dataMaps) {
         return new int[0];
     }
 
     @Override
-    public int modify(String oql) {
+    public int modify(OqlUpdateStatement stmt) {
         return 0;
     }
 
     @Override
-    public int modify(String oql, Map<String, Object> paramMap) {
+    public int modify(OqlUpdateStatement stmt, Map<String, Object> paramMap) {
         return 0;
     }
 
     @Override
-    public int[] modifyList(String oql, List<Map<String, Object>> dataMaps) {
+    public int[] modifyList(OqlUpdateStatement stmt, List<Map<String, Object>> dataMaps) {
         return new int[0];
     }
 
     @Override
-    public int remove(String oql) {
+    public int remove(OqlDeleteStatement stmt) {
         return 0;
     }
 
     @Override
-    public int remove(String oql, Map<String, Object> paramMap) {
+    public int remove(OqlDeleteStatement stmt, Map<String, Object> paramMap) {
         return 0;
     }
 
     @Override
-    public int[] removeList(String oql, List<Map<String, Object>> dataMaps) {
+    public int[] removeList(OqlDeleteStatement stmt, List<Map<String, Object>> dataMaps) {
         return new int[0];
     }
+
 }

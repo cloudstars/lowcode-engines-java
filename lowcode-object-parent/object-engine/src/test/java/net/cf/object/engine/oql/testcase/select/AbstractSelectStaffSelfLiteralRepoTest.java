@@ -1,7 +1,9 @@
 package net.cf.object.engine.oql.testcase.select;
 
 import net.cf.commons.test.util.DataCompareTestUtils;
+import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
+import net.cf.object.engine.util.OqlUtils;
 
 import java.util.Map;
 
@@ -19,9 +21,10 @@ public abstract class AbstractSelectStaffSelfLiteralRepoTest
     }
 
     @Override
-    public void testSelectSelfLiteral() {
-        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_SELF_LITERAL);
-        Map<String, Object> resultMap = this.engineNew.queryOne(oqlInfo.oql);
+    public void testSelectStaffSelfLiteral() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_SELF_LITERAL);
+        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        Map<String, Object> resultMap = this.engineNew.queryOne(stmt);
         assert (DataCompareTestUtils.equalsMap(resultMap, oqlInfo.resultMap));
     }
 }

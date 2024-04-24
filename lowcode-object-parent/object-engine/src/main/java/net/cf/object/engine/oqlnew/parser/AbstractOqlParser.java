@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.stmt;
+package net.cf.object.engine.oqlnew.parser;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
@@ -9,102 +9,24 @@ import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
-import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.object.XProperty;
-import net.cf.object.engine.oql.FastOqlException;
-import net.cf.object.engine.oql.parser.XObjectResolver;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 抽象的OQL解析器，用于提供一些公共的能力
+ *
+ * @author clouds
+ */
 public abstract class AbstractOqlParser {
 
     /**
      * 支持的方法名称
      */
-    protected List<String> METHOD_NAMES = Arrays.asList("NOW", "LTRIM", "RTRIM", "TRIM", "CONCAT", "SUBSTRING", "LENGTH", "YEAR", "MONTH", "DAY");
+    protected static final List<String> METHOD_NAMES = Arrays.asList("NOW", "LTRIM", "RTRIM", "TRIM", "CONCAT", "SUBSTRING", "LENGTH", "YEAR", "MONTH", "DAY");
 
-    /**
-     * 模型解析器
-     */
-    protected final XObjectResolver resolver;
-
-    // 最后一次解析到的模型
-    protected XObject lastResolvedObject;
-
-    public AbstractOqlParser(XObjectResolver resolver) {
-        this.resolver = resolver;
-    }
-
-    /**
-     * 根据模型名称解析模型
-     *
-     * @param objectName
-     * @return
-     */
-    protected XObject resolveObject(String objectName) {
-        XObject resolvedObject = this.resolver.resolve(objectName);
-        if (resolvedObject == null) {
-            throw new FastOqlException("模型" + objectName + "不存在");
-        }
-
-        this.lastResolvedObject = resolvedObject;
-
-        return resolvedObject;
-    }
-
-    /**
-     * 根据模型的字段名称解析普通字段
-     *
-     * @param object
-     * @param fieldName
-     * @return
-     */
-    protected XField resolveField(XObject object, String fieldName) {
-        XField field = object.getField(fieldName);
-        if (field == null) {
-            String objectName = object.getName();
-            throw new FastOqlException("模型" + objectName + "下的字段" + fieldName + "不存在");
-        }
-
-        return field;
-    }
-
-    /**
-     * 根据模型的字段名称解析模型引用字段
-     *
-     * @param object
-     * @param fieldName
-     * @return
-     */
-    protected XObjectRefField resolveObjectRefField(XObject object, String fieldName) {
-        XField field = this.resolveField(object, fieldName);
-        if (!(field instanceof XObjectRefField)) {
-            String objectName = object.getName();
-            throw new FastOqlException("模型" + objectName + "下的字段" + fieldName + "不是一个模型引用的字段");
-        }
-
-        return (XObjectRefField) field;
-    }
-
-    /**
-     * 根据模型的字段名称解析普通字段
-     *
-     * @param field
-     * @param propName
-     * @return
-     */
-    protected XProperty resolveProperty(XField field, String propName) {
-        XProperty property = field.getProperty(propName);
-        if (property == null) {
-            XObject object = field.getOwner();
-            String objectName = object.getName();
-            String fieldName = field.getName();
-            throw new FastOqlException("模型" + objectName + "下的字段" + fieldName + "下的属性" + propName + "不存在");
-        }
-
-        return property;
-    }
+    public AbstractOqlParser() {}
 
     /**
      * 将字段转换成驱动层的表达式
@@ -114,7 +36,8 @@ public abstract class AbstractOqlParser {
      * @return
      */
     protected SqlExpr toRepoExpr(XObject selfObject, XField field) {
-        if (selfObject == field.getOwner()) {
+        XObject thisObject = field.getOwner();
+        if (thisObject == selfObject) {
             return this.toRepoSelfExpr(field);
         } else {
             return this.toRepoRefExpr(field);
@@ -131,7 +54,8 @@ public abstract class AbstractOqlParser {
      * @return
      */
     protected SqlExpr toRepoExpr(XObject selfObject, XProperty property) {
-        if (selfObject == property.getOwner().getOwner()) {
+        XObject thisObject = property.getOwner().getOwner();
+        if (thisObject == selfObject) {
             return this.toRepoSelfExpr(property);
         } else {
             return this.toRepoRefExpr(property);
@@ -217,6 +141,5 @@ public abstract class AbstractOqlParser {
         fieldInListVarRefExpr.setTargetList(Arrays.asList(fieldVarRefExpr));
         return fieldInListVarRefExpr;
     }
-
 
 }

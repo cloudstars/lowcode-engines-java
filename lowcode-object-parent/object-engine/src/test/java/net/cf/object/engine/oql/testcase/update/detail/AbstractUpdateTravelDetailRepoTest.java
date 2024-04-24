@@ -26,7 +26,7 @@ public abstract class AbstractUpdateTravelDetailRepoTest
     public void testUpdateTravelAndTripByIdVars() {
         String detailOqlSelect = "select * from TravelTrip where travelApplyId = '" + TravelObject.RECORD1 + "'";
         OqlSelectStatement detailOqlSelectStmt = OqlUtils.parseSingleSelectStatement(this.resolver, detailOqlSelect);
-        List<Map<String, Object>> subRecords = this.engine.queryList(detailOqlSelectStmt);
+        List<Map<String, Object>> subRecords = this.engineNew.queryList(detailOqlSelectStmt);
         assert (subRecords.size() == 2);
         String tripId0 = subRecords.get(0).get("tripId").toString();
         String tripId1 = subRecords.get(1).get("tripId").toString();
@@ -42,7 +42,7 @@ public abstract class AbstractUpdateTravelDetailRepoTest
 
         {
             // 重新查出来作断言
-            subRecords = this.engine.queryList(detailOqlSelectStmt);
+            subRecords = this.engineNew.queryList(detailOqlSelectStmt);
             assert (subRecords != null && subRecords.size() == 2); // 新加一条、更新一条、删一条还是2
             boolean tripId0Updated = false; // 第1条子表字段是否更新过、
             boolean tripId1Exist = false; // 第2条子表记录是否存在

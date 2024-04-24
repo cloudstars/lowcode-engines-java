@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.stmt;
+package net.cf.object.engine.oqlnew.parser;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
@@ -7,11 +7,12 @@ import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlSelect;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
-import net.cf.form.repository.sql.parser.Token;
 import net.cf.form.repository.sql.util.SqlExprUtils;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
-import net.cf.object.engine.oql.parser.XObjectResolver;
+import net.cf.object.engine.oql.ast.OqlFieldExpr;
+import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
+import net.cf.object.engine.oql.ast.OqlPropertyExpr;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,10 +45,15 @@ public class OqlWhereExprParser extends AbstractOqlParser {
     // 当前分组的层级
     private int currGroupLevel = 0;
 
-    public OqlWhereExprParser(XObjectResolver resolver, XObject selfObject) {
-        super(resolver);
+    // 最后一次解析到的模型
+    private XObject lastResolvedObject;
+
+    private RepoExprBuilder repoExprBuilder;
+
+    public OqlWhereExprParser(XObject selfObject) {
         this.selfObject = selfObject;
         this.lastResolvedObject = selfObject;
+        this.repoExprBuilder = new RepoExprBuilder();
     }
 
     /**
@@ -58,20 +64,25 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      * @param x where条件
      */
     public SqlExpr parseExpr(SqlExpr x) {
+        // 经过OQL转换后，这两种类型已经不存在了
+        assert (!(x instanceof SqlIdentifierExpr) && !(x instanceof SqlPropertyExpr));
+
         Class<?> clazz = x.getClass();
-        if (clazz == SqlIdentifierExpr.class) {
-            return this.parseIdentifierExpr((SqlIdentifierExpr) x);
-        } else if (clazz == SqlPropertyExpr.class) {
-            return this.parsePropertyExpr((SqlPropertyExpr) x);
+        if (clazz == OqlFieldExpr.class) {
+            return this.parseFieldExpr((OqlFieldExpr) x);
+        } else if (clazz == OqlPropertyExpr.class) {
+            return this.parsePropertyExpr((OqlPropertyExpr) x);
+        } else if (clazz == OqlObjectExpandExpr.class) {
+            throw new RuntimeException("模型展开字段不能作为查询条件");
         } else if (clazz == SqlLikeOpExpr.class) {
             return this.parseLikeExpr((SqlLikeOpExpr) x);
         } else if (clazz == SqlInListExpr.class) {
             return this.parseInListExpr((SqlInListExpr) x);
+        } else if (clazz == SqlContainsOpExpr.class) {
+            return this.parseContainsOpExpr((SqlContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.parseBinaryOpExpr((SqlBinaryOpExpr) x);
-        }/* else if (clazz == SqlContainsOpExpr.class) {
-            return this.parseContainsOpExprGroup((SqlContainsOpExpr) x);
-        }*/ else if (clazz == SqlBinaryOpExprGroup.class) {
+        }  else if (clazz == SqlBinaryOpExprGroup.class) {
             return this.parseBinaryOpExprGroup((SqlBinaryOpExprGroup) x);
         } else if (clazz == SqlAggregateExpr.class) {
             return this.parseAggregateExpr((SqlAggregateExpr) x);
@@ -88,9 +99,10 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      * @param expr
      * @return
      */
-    private SqlExpr parseIdentifierExpr(SqlIdentifierExpr expr) {
+    private SqlExpr parseFieldExpr(OqlFieldExpr expr) {
         String fieldName = expr.getName();
-        XField resolvedField = this.resolveField(selfObject, fieldName);
+        XField resolvedField = expr.getResolvedField();//this.resolveField(selfObject, fieldName);
+        this.lastResolvedObject = resolvedField.getOwner();
 
         // 如果字段下存在子属性的话，那么转换为字段展开表达式（默认展开）
         List<XProperty> properties = resolvedField.getProperties();
@@ -113,29 +125,23 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      * @param x
      * @return
      */
-    private SqlExpr parsePropertyExpr(SqlPropertyExpr x) {
-        String owner = x.getOwner().getName();
-        String propName = x.getName();
-        XField resolvedField = this.resolveField(selfObject, owner);
-        if (!(resolvedField instanceof XObjectRefField)) { // 是本模型的字段
-            XProperty resolvedProperty = this.resolveProperty(resolvedField, propName);
-            return this.toRepoExpr(selfObject, resolvedProperty);
+    private SqlExpr parsePropertyExpr(OqlPropertyExpr x) {
+        XProperty resolvedProperty = x.getResolvedProperty();
+        XField resolvedField = resolvedProperty.getOwner();
+        this.lastResolvedObject = resolvedField.getOwner();
+
+        return this.toRepoExpr(this.selfObject, resolvedProperty);
+
+        /*if (resolvedObject == this.selfObject) { // 是本模型的字段
+            return this.repoExprBuilder.toRepoExpr(selfObject, resolvedProperty);
         } else { // 非本模型的字段
-            XObjectRefField objectRefField = (XObjectRefField) resolvedField;
-            XObject resolvedObject = this.resolveObject(objectRefField.getRefObjectName());
             int dotIndex = propName.indexOf(Token.DOT.name);
             if (dotIndex > 0) { // 三级属性处理，如：object.field.property
-                String fieldName = propName.substring(0, dotIndex);
-                propName = propName.substring(dotIndex + 1);
-                resolvedField = this.resolveField(resolvedObject, fieldName);
-                XProperty resolvedProperty = this.resolveProperty(resolvedField, propName);
                 return this.toRepoExpr(selfObject, resolvedProperty);
             } else {
-                resolvedField = this.resolveField(resolvedObject, propName);
                 return this.toRepoExpr(selfObject, resolvedField);
             }
-
-        }
+        }*/
     }
 
     /**
@@ -171,19 +177,6 @@ public class OqlWhereExprParser extends AbstractOqlParser {
     }
 
     /**
-     * 解析 Contains 表达式
-     *
-     * @param x
-     * @return
-    private SqlExpr parseContainsExpr(SqlContainsOpExpr x) {
-        SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
-        sqlX.setLeft(this.parseExpr(x.getLeft()));
-        sqlX.setNot(x.isNot());
-        sqlX.setRight(this.parseExpr(x.getRight()));
-        return sqlX;
-    } */
-
-    /**
      * 解析 InList 表达式
      *
      * @param x
@@ -192,6 +185,20 @@ public class OqlWhereExprParser extends AbstractOqlParser {
     private SqlExpr parseInListExpr(SqlInListExpr x) {
         SqlInListExpr sqlX = new SqlInListExpr();
         return this.parseBinaryOpExprTo(x, sqlX);
+    }
+
+    /**
+     * 解析 Contains 表达式
+     * @param x
+     * @return
+     */
+    private SqlExpr parseContainsOpExpr(SqlContainsOpExpr x) {
+        SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
+        sqlX.setLeft(this.parseExpr(x.getLeft()));
+        sqlX.setOperator(x.getOperator());
+        sqlX.setRight(this.parseExpr(x.getRight()));
+        sqlX.setParenthesized(x.isParenthesized());
+        return sqlX;
     }
 
     /**

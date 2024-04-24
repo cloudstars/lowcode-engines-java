@@ -4,7 +4,7 @@
   "oqls": [
     {
       "desc": "查询常量",
-      "name": "SelectSelfLiteral",
+      "name": "SelectStaffSelfLiteral",
       "oql": "select 1, '1', 1.1, '2010-10-10' as a from Staff limit 1",
       "sql": "select 1, '1', 1.1, '2010-10-10' from STAFF limit 1",
       "resultMap": {"1":  1, "'1'":  "'1'", "1.1": 1.1, "a": "2010-10-10"}

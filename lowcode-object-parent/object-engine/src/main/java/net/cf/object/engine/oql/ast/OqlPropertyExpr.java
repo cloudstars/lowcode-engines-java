@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * OQL字段属性表达式，如：object.field.property, field.property, field(property)中的property
+ * OQL字段属性表达式，如：object.field.property, field.property
  *
  * @author clouds
  */
@@ -31,17 +31,6 @@ public class OqlPropertyExpr extends AbstractOqlExprImpl implements SqlName {
      * OQL解析时生成的字段属性
      */
     private XProperty resolvedProperty;
-
-    /**
-     * 不带owner的构造函数，用于字段展开中的属性
-     */
-    public OqlPropertyExpr() {
-        this.owner = null;
-    }
-
-    public OqlPropertyExpr(String owner) {
-        this(new OqlFieldExpr(null, owner));
-    }
 
     public OqlPropertyExpr(OqlFieldExpr owner) {
         this.owner = owner;

@@ -5,7 +5,6 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.object.StaffObject;
-import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;

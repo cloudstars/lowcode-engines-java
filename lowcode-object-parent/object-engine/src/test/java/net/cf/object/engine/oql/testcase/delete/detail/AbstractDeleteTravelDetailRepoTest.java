@@ -40,12 +40,12 @@ public abstract class AbstractDeleteTravelDetailRepoTest extends AbstractOqlRepo
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
 
             String detailSelectOql = "select tripId from TravelTrip where travelApplyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
             OqlSelectStatement detailSelectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, detailSelectOql);
-            List<Map<String, Object>> detailDataList = this.engine.queryList(detailSelectOqlStmt);
+            List<Map<String, Object>> detailDataList = this.engineNew.queryList(detailSelectOqlStmt);
             assert (detailDataList != null && detailDataList.size() == 0);
         }
     }
@@ -65,12 +65,12 @@ public abstract class AbstractDeleteTravelDetailRepoTest extends AbstractOqlRepo
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
 
             String detailSelectOql = "select tripId from TravelTrip where travelApplyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
             OqlSelectStatement detailSelectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, detailSelectOql);
-            List<Map<String, Object>> detailDataList = this.engine.queryList(detailSelectOqlStmt);
+            List<Map<String, Object>> detailDataList = this.engineNew.queryList(detailSelectOqlStmt);
             assert (detailDataList != null && detailDataList.size() == 0);
         }
     }
@@ -88,12 +88,12 @@ public abstract class AbstractDeleteTravelDetailRepoTest extends AbstractOqlRepo
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId in ('434743DSS-FEL3232-323KLFJFDS-323FDSD','534743DSS-FEL2232-323KLFJFDS-323FDSD')";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
 
             String detailSelectOql = "select tripId from TravelTrip where travelApplyId in ('434743DSS-FEL3232-323KLFJFDS-323FDSD','534743DSS-FEL2232-323KLFJFDS-323FDSD')";
             OqlSelectStatement detailSelectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, detailSelectOql);
-            List<Map<String, Object>> detailDataList = this.engine.queryList(detailSelectOqlStmt);
+            List<Map<String, Object>> detailDataList = this.engineNew.queryList(detailSelectOqlStmt);
             assert (detailDataList != null && detailDataList.size() == 0);
         }
     }
@@ -113,12 +113,12 @@ public abstract class AbstractDeleteTravelDetailRepoTest extends AbstractOqlRepo
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId in ('434743DSS-FEL3232-323KLFJFDS-323FDSD','534743DSS-FEL2232-323KLFJFDS-323FDSD')";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
 
             String detailSelectOql = "select tripId from TravelTrip where travelApplyId in ('434743DSS-FEL3232-323KLFJFDS-323FDSD','534743DSS-FEL2232-323KLFJFDS-323FDSD')";
             OqlSelectStatement detailSelectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, detailSelectOql);
-            List<Map<String, Object>> detailDataList = this.engine.queryList(detailSelectOqlStmt);
+            List<Map<String, Object>> detailDataList = this.engineNew.queryList(detailSelectOqlStmt);
             assert (detailDataList != null && detailDataList.size() == 0);
         }
     }

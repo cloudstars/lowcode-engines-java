@@ -6,7 +6,6 @@ import net.cf.form.repository.sql.parser.SqlStatementParser;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.FastOqlException;
-import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.util.XObjectUtils;
 
@@ -39,7 +38,7 @@ public class OqlStatementParser extends OqlExprParser {
             OqlStatement oqlStmt;
             if (sqlStmt instanceof SqlSelectStatement) {
                 OqlSelect oqlSelect = this.toOqlSelect(((SqlSelectStatement) sqlStmt).getSelect());
-                oqlStmt = new net.cf.object.engine.oql.ast.OqlSelectStatement(oqlSelect);
+                oqlStmt = new OqlSelectStatement(oqlSelect);
             } else if (sqlStmt instanceof SqlInsertStatement) {
                 OqlInsertInto oqlInsertInto = this.toOqlInsertInto((SqlInsertStatement) sqlStmt);
                 oqlStmt = new OqlInsertStatement(oqlInsertInto);

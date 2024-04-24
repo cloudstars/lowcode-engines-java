@@ -9,8 +9,8 @@ public interface SelectStaffSelfLiteralTest {
 
     String OQL_FILE_PATH = "oql/select/SelectStaffSelfLiteral.json";
 
-    String OQL_SELECT_SELF_LITERAL = "SelectSelfLiteral";
+    String OQL_SELECT_STAFF_SELF_LITERAL = "SelectStaffSelfLiteral";
 
-    void testSelectSelfLiteral();
+    void testSelectStaffSelfLiteral();
 
 }

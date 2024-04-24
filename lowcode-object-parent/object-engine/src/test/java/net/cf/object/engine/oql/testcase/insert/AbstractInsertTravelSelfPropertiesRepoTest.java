@@ -6,7 +6,10 @@ import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.util.OqlUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 插入出差表本表的测试集
@@ -49,7 +52,7 @@ public abstract class AbstractInsertTravelSelfPropertiesRepoTest extends Abstrac
             // 重新查出来作断言
             String selectOql = "select applyId, applyName, creator from Travel";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
         }
     }
@@ -97,7 +100,7 @@ public abstract class AbstractInsertTravelSelfPropertiesRepoTest extends Abstrac
             // 重新查出来作断言
             String selectOql = "select applyId, applyName, creator from Travel";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
         }
     }

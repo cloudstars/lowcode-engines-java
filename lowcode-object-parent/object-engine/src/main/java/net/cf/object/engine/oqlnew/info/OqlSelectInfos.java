@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.stmt;
+package net.cf.object.engine.oqlnew.info;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlSelectStatement extends AbstractOqlStatement {
+public class OqlSelectInfos extends AbstractOqlInfos {
 
     /**
      * 本表查询信息

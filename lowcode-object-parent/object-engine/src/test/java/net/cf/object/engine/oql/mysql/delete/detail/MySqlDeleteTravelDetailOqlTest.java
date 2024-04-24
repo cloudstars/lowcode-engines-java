@@ -2,7 +2,6 @@ package net.cf.object.engine.oql.mysql.delete.detail;
 
 import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
 import net.cf.object.engine.oql.testcase.delete.detail.AbstractDeleteTravelDetailRepoTest;
-import net.cf.object.engine.oql.testcase.insert.detail.AbstractInsertTravelDetailRepoTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

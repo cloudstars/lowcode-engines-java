@@ -1,7 +1,10 @@
 package net.cf.object.engine.oql.check;
 
 import net.cf.object.engine.oql.FastOqlException;
-import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.oql.ast.OqlExprObjectSource;
+import net.cf.object.engine.oql.ast.OqlFieldExpr;
+import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
+import net.cf.object.engine.oql.ast.OqlPropertyExpr;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 
 public abstract class AbstractStatementChecker implements OqlAstVisitor {
@@ -38,15 +41,6 @@ public abstract class AbstractStatementChecker implements OqlAstVisitor {
     }
 
     @Override
-    public boolean visit(OqlFieldExpandExpr x) {
-        if (x.getResolvedField() == null) {
-            throw new FastOqlException("OQL语句未正设置OqlFieldExpandExpr表达式解析后的字段！");
-        }
-
-        return true;
-    }
-
-    @Override
     public boolean visit(OqlExprObjectSource x) {
         if (x.getResolvedObject() == null) {
             throw new FastOqlException("OQL语句未正设置ObjectSource解析后的模型！");
@@ -54,4 +48,5 @@ public abstract class AbstractStatementChecker implements OqlAstVisitor {
 
         return true;
     }
+
 }

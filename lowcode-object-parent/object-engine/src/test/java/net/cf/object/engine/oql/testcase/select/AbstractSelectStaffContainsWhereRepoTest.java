@@ -1,6 +1,11 @@
 package net.cf.object.engine.oql.testcase.select;
 
+import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
+import net.cf.object.engine.util.OqlUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractSelectStaffContainsWhereRepoTest
         extends AbstractOqlRepoTest
@@ -19,9 +24,9 @@ public abstract class AbstractSelectStaffContainsWhereRepoTest
     @Override
     public void testSelectStaffByHobby() {
         //todo H2 不支持 JSON_CONTAINS
-//        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_BY_HOBBY);
-//        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-//        Map<String, Object> resultMap = this.engine.queryOne(oqlStmt, new HashMap<>());
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_BY_HOBBY);
+        OqlSelectStatement oqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        Map<String, Object> resultMap = this.engineNew.queryOne(oqlStmt, new HashMap<>());
     }
 
 }

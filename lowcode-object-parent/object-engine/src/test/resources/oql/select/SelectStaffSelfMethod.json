@@ -1,0 +1,22 @@
+{
+  "desc": "测试查询员工表方法调用的案例, NOW, LTRIM, RTRIM, TRIM, CONCAT, SUBSTRING, LENGTH, YEAR, MONTH, DAY",
+  "name": "SelectStaffSelfMethod",
+  "oqls": [
+    {
+      "desc": "查询常量",
+      "name": "SelectStaffSelfMethod",
+      "oql": "select NOW() as now, LTRIM(staffName), RTRIM(staffName), TRIM(staffName), CONCAT(staffName, '/', staffCode) as staff, LENGTH(staffName), YEAR(joinDate), MONTH(joinDate), DAY(joinDate) as day from Staff where staffName = '张三'",
+      "sql": "select NOW(), LTRIM(STA_NAME), RTRIM(STA_NAME), TRIM(STA_NAME), CONCAT(STA_NAME, '/', STA_CODE), LENGTH(STA_NAME), YEAR(JOIN_DATE), MONTH(JOIN_DATE), DAY(JOIN_DATE) from STAFF where STA_NAME = '张三'",
+      "resultMap": {
+        "LTRIM(staffName)": "张三",
+        "RTRIM(staffName)": "张三",
+        "TRIM(staffName)": "张三",
+        "staff": "张三/zhangsan",
+        "LENGTH(staffName)": 2,
+        "YEAR(joinDate)": 2020,
+        "MONTH(joinDate)": 10,
+        "day": 10
+      }
+    }
+  ]
+}

@@ -23,16 +23,6 @@ import java.util.List;
 public class OqlUtils {
 
     /**
-     * 创建一个输出访问器
-     *
-     * @param out
-     * @return
-     */
-    public static OqlAstOutputVisitor createAstOutputVisitor(Appendable out) {
-        return new OqlAstOutputVisitor(out);
-    }
-
-    /**
      * 将AST表达式转为字符串
      *
      * @param expr
@@ -121,21 +111,10 @@ public class OqlUtils {
             }
 
             String fieldName = field.getName();
-            List<XProperty> properties = field.getProperties();
-            if (properties != null && properties.size() > 0) {
-                // 默认把所有的字段展开
-                OqlFieldExpandExpr fieldExpandExpr = new OqlFieldExpandExpr(fieldName);
-                fieldExpandExpr.setDefaultExpanded(true);
-                fieldExpandExpr.setResolvedField(field);
-                List<OqlPropertyExpr> propExprs = OqlUtils.defaultExpandFieldProperties(field);
-                fieldExpandExpr.addProperties(propExprs);
-                fieldExprs.add(fieldExpandExpr);
-            } else {
-                OqlFieldExpr fieldExpr = new OqlFieldExpr();
-                fieldExpr.setName(fieldName);
-                fieldExpr.setResolvedField(field);
-                fieldExprs.add(fieldExpr);
-            }
+            OqlFieldExpr fieldExpr = new OqlFieldExpr();
+            fieldExpr.setName(fieldName);
+            fieldExpr.setResolvedField(field);
+            fieldExprs.add(fieldExpr);
         }
 
         return fieldExprs;
@@ -179,16 +158,9 @@ public class OqlUtils {
      */
     public static OqlExpr defaultFieldExpr(XField field) {
         String fieldName = field.getName();
-        if (field.getProperties() != null && field.getProperties().size() > 0) {
-            OqlFieldExpandExpr fieldExpandExpr = new OqlFieldExpandExpr(fieldName);
-            fieldExpandExpr.setDefaultExpanded(true);
-            fieldExpandExpr.setResolvedField(field);
-            return fieldExpandExpr;
-        } else {
-            OqlFieldExpr fieldExpr = new OqlFieldExpr(fieldName);
-            fieldExpr.setResolvedField(field);
-            return fieldExpr;
-        }
+        OqlFieldExpr fieldExpr = new OqlFieldExpr(fieldName);
+        fieldExpr.setResolvedField(field);
+        return fieldExpr;
     }
 
     /**

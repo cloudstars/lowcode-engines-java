@@ -100,7 +100,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
                     OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) field;
                     // TODO 请在Checker中校验不支持相关表、子表展开必须显式展开
                     assert (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.DETAIL);
-                    assert (!objectExpandExpr.isStarExpanded() && !objectExpandExpr.isDefaultExpanded());
+                    assert (!objectExpandExpr.isStarExpanded());
                     List<SqlExpr> fieldValues = new ArrayList<>();
                     for (int j = 0; j < valuesSize; j++) {
                         fieldValues.add(valuesList.get(j).getValue(i));
@@ -243,16 +243,11 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
         // 插入语句中的字段中添加子模型的全部字段，值中添加全部变量
         List<OqlExpr> detailFields = detailObjectExpandFieldExpr.getFields();
         for (OqlExpr detailField : detailFields) {
-            // TODO 在Check中检查字段只能是OqlFieldExpr或者OqlFieldExpandExpr
-            assert (detailField instanceof OqlFieldExpr || detailField instanceof OqlFieldExpandExpr);
+            // TODO 在Check中检查字段只能是OqlFieldExpr
+            assert (detailField instanceof OqlFieldExpr);
 
             detailInsertInto.addField(detailField);
-            String varName = null;
-            if (detailField instanceof OqlFieldExpr) {
-                varName = ((OqlFieldExpr) detailField).getName();
-            } else if (detailField instanceof OqlFieldExpandExpr) {
-                varName = ((OqlFieldExpandExpr) detailField).getOwner();
-            }
+            String varName = ((OqlFieldExpr) detailField).getName();
             SqlVariantRefExpr varRefExpr = new SqlVariantRefExpr("#{" + varName + "}");
             valuesClause.addValue(varRefExpr);
         }

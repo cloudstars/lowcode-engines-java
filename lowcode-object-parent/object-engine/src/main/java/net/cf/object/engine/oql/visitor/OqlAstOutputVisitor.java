@@ -1,11 +1,12 @@
 package net.cf.object.engine.oql.visitor;
 
 import net.cf.form.repository.sql.ast.SqlLimit;
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.statement.*;
+import net.cf.form.repository.sql.ast.statement.DistinctOption;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.statement.SqlOrderBy;
+import net.cf.form.repository.sql.ast.statement.SqlSelectGroupByClause;
 import net.cf.form.repository.sql.visitor.SqlAstOutputVisitor;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 
 import java.util.List;
 
@@ -51,23 +52,9 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         this.print(x.getOwner());
         if (x.isStarExpanded()) {
             this.print(".*");
-        } else if (!x.isDefaultExpanded()) {
+        } /*else if (!x.isDefaultExpanded()) {
             this.printParenthesesAndAcceptList(x.getFields(), ", ");
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(OqlFieldExpandExpr x) {
-        String fieldName = x.getResolvedField().getName();
-        this.print(fieldName);
-        if (x.isStarExpanded()) {
-            this.print(".*");
-        } else if (!x.isDefaultExpanded()) {
-            List<SqlExpr> properties = x.getProperties();
-            this.printParenthesesAndAcceptList(properties, ", ");
-        }
+        }*/
 
         return false;
     }

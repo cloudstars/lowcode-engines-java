@@ -42,7 +42,7 @@ public abstract class AbstractInsertStaffSelfBatchRepoTest extends AbstractOqlRe
             String selectOql = "select staffId, staffCode, staffName from Staff";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
-            List<Map<String, Object>> resultList = this.engine.queryList(selectOqlStmt, paramMap);
+            List<Map<String, Object>> resultList = this.engineNew.queryList(selectOqlStmt, paramMap);
             assert (resultList != null && resultList.size() == 4);
         }
     }

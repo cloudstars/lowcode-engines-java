@@ -1,10 +1,13 @@
 package net.cf.object.engine.util;
 
-import net.cf.form.repository.sql.ast.statement.*;
+import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.statement.SqlStatement;
+import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import net.cf.form.repository.sql.parser.SqlStatementParser;
-import net.cf.object.engine.oql.stmt.OqlSelectStatementParser;
-import net.cf.object.engine.oql.parser.XObjectResolver;
-import net.cf.object.engine.oql.stmt.OqlSelectStatement;
+import net.cf.object.engine.oql.ast.OqlSelectStatement;
+import net.cf.object.engine.oqlnew.info.OqlSelectInfos;
+import net.cf.object.engine.oqlnew.parser.OqlSelectInfosParser;
 
 import java.util.List;
 
@@ -14,27 +17,28 @@ public final class OqlStatementUtils {
     }
 
     /**
-     * 解析并返回唯一的一条查询 OQL 语句
+     * 解析OQL查询语句并返回OQL查询指令信息
      *
-     * @param resolver
-     * @param oql
+     * @param stmt
+     * @param isBatch
      * @return
      */
-    public static OqlSelectStatement parseSingleSelectStatement(XObjectResolver resolver, String oql) {
-        OqlSelectStatementParser parser = new OqlSelectStatementParser(resolver, oql);
+    public static OqlSelectInfos parseSingleSelectStatement(OqlSelectStatement stmt, boolean isBatch) {
+        OqlSelectInfosParser parser = new OqlSelectInfosParser(stmt, isBatch);
         return parser.parse();
     }
 
     /**
-     * 解析并返回唯一的一条查询 OQL 语句
+     * 解析并返回唯一的一条插入 SQL 语句
      *
-     * @param resolver
-     * @param oql
+     * @param sql
      * @return
      */
-    public static OqlSelectStatement parseSingleSelectStatement(XObjectResolver resolver, String oql, boolean isBatch) {
-        OqlSelectStatementParser parser = new OqlSelectStatementParser(resolver, oql, isBatch);
-        return parser.parse();
+    public static SqlInsertStatement parseSingleSelectStatement(String sql) {
+        SqlStatementParser parser = new SqlStatementParser(sql);
+        List<SqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof SqlInsertStatement);
+        return (SqlInsertStatement) statements.get(0);
     }
 
     /**

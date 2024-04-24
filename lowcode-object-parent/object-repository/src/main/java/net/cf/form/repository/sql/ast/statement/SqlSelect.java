@@ -17,7 +17,7 @@ import java.util.List;
 public class SqlSelect extends AbstractSqlObjectImpl {
 
     /**
-     * 是否有小手号
+     * 是否有小括号
      */
     protected boolean parenthesized;
 

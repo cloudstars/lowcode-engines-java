@@ -2,6 +2,10 @@ package net.cf.object.engine;
 
 import net.cf.object.engine.data.PageRequest;
 import net.cf.object.engine.data.PageResult;
+import net.cf.object.engine.oql.ast.OqlDeleteStatement;
+import net.cf.object.engine.oql.ast.OqlInsertStatement;
+import net.cf.object.engine.oql.ast.OqlSelectStatement;
+import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 
 import java.util.List;
 import java.util.Map;
@@ -16,123 +20,123 @@ public interface OqlEngineNew {
     /**
      * 查询记录，限制返回一条
      *
-     * @param oql
+     * @param stmt
      * @return
      */
-    Map<String, Object> queryOne(String oql);
+    Map<String, Object> queryOne(OqlSelectStatement stmt);
 
     /**
      * 查询记录，限制返回一条
      *
-     * @param oql
+     * @param stmt
      * @param paramMap
      * @return
      */
-    Map<String, Object> queryOne(String oql, Map<String, Object> paramMap);
+    Map<String, Object> queryOne(OqlSelectStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 查询记录列表
      *
-     * @param oql
+     * @param stmt
      * @return
      */
-    List<Map<String, Object>> queryList(String oql);
+    List<Map<String, Object>> queryList(OqlSelectStatement stmt);
 
     /**
      * 查询记录列表
      *
-     * @param oql
+     * @param stmt
      * @param paramMap
      * @return
      */
-    List<Map<String, Object>> queryList(String oql, Map<String, Object> paramMap);
+    List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 分页查询
      *
-     * @param oql
+     * @param stmt
      * @param paramMap
      * @param pageRequest
      * @return
      */
-    PageResult<Map<String, Object>> queryPage(String oql, Map<String, Object> paramMap, PageRequest pageRequest);
+    PageResult<Map<String, Object>> queryPage(OqlSelectStatement stmt, Map<String, Object> paramMap, PageRequest pageRequest);
 
     /**
      * 创建记录
      *
-     * @param oql
+     * @param stmt
      * @return 影响行数
      */
-    int create(String oql);
+    int create(OqlInsertStatement stmt);
 
     /**
      * 创建记录
      *
-     * @param oql
+     * @param stmt
      * @param paramMap
      * @return
      */
-    int create(String oql, Map<String, Object> paramMap);
+    int create(OqlInsertStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 批量创建记录
      *
-     * @param oql
+     * @param stmt
      * @param dataMaps
      * @return 影响行数
      */
-    int[] createList(String oql, List<Map<String, Object>> dataMaps);
+    int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> dataMaps);
 
     /**
      * 更新记录
      *
-     * @param oql
+     * @param stmt
      * @return 影响行数
      */
-    int modify(String oql);
+    int modify(OqlUpdateStatement stmt);
 
     /**
      * 更新记录
      *
-     * @param oql
+     * @param stmt
      * @param paramMap
      * @return 影响行数
      */
-    int modify(String oql, Map<String, Object> paramMap);
+    int modify(OqlUpdateStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 批量更新记录
      *
-     * @param oql
+     * @param stmt
      * @param dataMaps
      * @return 影响行数
      */
-    int[] modifyList(String oql, List<Map<String, Object>> dataMaps);
+    int[] modifyList(OqlUpdateStatement stmt, List<Map<String, Object>> dataMaps);
 
     /**
      * 移除记录
      *
-     * @param oql
+     * @param stmt
      * @return 影响行数
      */
-    int remove(String oql);
+    int remove(OqlDeleteStatement stmt);
 
     /**
      * 移除记录
      *
-     * @param oql
+     * @param stmt
      * @param paramMap
      * @return 影响行数
      */
-    int remove(String oql, Map<String, Object> paramMap);
+    int remove(OqlDeleteStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 批量移除记录
      *
-     * @param oql
+     * @param stmt
      * @param dataMaps
      * @return 影响行数
      */
-    int[] removeList(String oql, List<Map<String, Object>> dataMaps);
+    int[] removeList(OqlDeleteStatement stmt, List<Map<String, Object>> dataMaps);
 
 }

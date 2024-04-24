@@ -15,7 +15,7 @@ public class MySqlSelectStaffLiteralOqlTest extends AbstractSelectStaffSelfLiter
 
     @Test
     @Override
-    public void testSelectSelfLiteral() {
-        super.testSelectSelfLiteral();
+    public void testSelectStaffSelfLiteral() {
+        super.testSelectStaffSelfLiteral();
     }
 }

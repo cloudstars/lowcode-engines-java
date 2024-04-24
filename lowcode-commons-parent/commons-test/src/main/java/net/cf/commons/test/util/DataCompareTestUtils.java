@@ -222,6 +222,9 @@ public final class DataCompareTestUtils {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
             // 只要有一个是基础类型就直接比较
             if (ObjectTestUtils.isGeneralValue(s) || ObjectTestUtils.isGeneralValue(t)) {
+                if ((s instanceof Integer && t instanceof Long) || (s instanceof Long && t instanceof Integer)) {
+                    return ((Number) s).longValue() == ((Number) t).longValue();
+                }
                 return s.equals(t);
             }
 
@@ -266,6 +269,7 @@ public final class DataCompareTestUtils {
                 Object source = sourceMap.get(property);
                 Object target = targetMap.get(property);
                 if (!DataCompareTestUtils.isAssignableFromObjectWithProperties(source, target, properties)) {
+                    logger.warn("对象的属性{}比较失败，源对象值：{}，目标对象值：{}", property, source, target);
                     return false;
                 }
             }

@@ -27,8 +27,8 @@ public class SelectTravelSelfLiteralStmtTest extends AbstractOqlTest implements 
 
     @Test
     @Override
-    public void testSelectSelfLiteral() {
-        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_SELF_LITERAL);
+    public void testSelectStaffSelfLiteral() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_SELF_LITERAL);
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的

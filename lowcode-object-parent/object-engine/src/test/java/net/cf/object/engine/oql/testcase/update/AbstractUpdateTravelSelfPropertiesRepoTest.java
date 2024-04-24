@@ -56,7 +56,7 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", TravelObject.RECORD1);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
             assert (dataList != null && dataList.size() == 1);
             Object modifier = dataList.get(0).get("modifier");
             assert (modifier != null && modifier instanceof Map);
@@ -113,7 +113,7 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", TravelObject.RECORD1);
-            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
             assert (dataList != null && dataList.size() == 1);
             Object attaches = dataList.get(0).get("attaches");
             assert (attaches != null && attaches instanceof List);

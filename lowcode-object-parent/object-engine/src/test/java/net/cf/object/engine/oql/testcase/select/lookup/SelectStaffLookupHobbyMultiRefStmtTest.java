@@ -2,11 +2,13 @@ package net.cf.object.engine.oql.testcase.select.lookup;
 
 import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
-import net.cf.object.engine.oql.stmt.OqlSelectInfo;
-import net.cf.object.engine.oql.stmt.OqlSelectStatement;
+import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
+import net.cf.object.engine.oqlnew.info.OqlSelectInfo;
+import net.cf.object.engine.oqlnew.info.OqlSelectInfos;
 import net.cf.object.engine.util.OqlStatementUtils;
+import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,10 +29,11 @@ public class SelectStaffLookupHobbyMultiRefStmtTest extends AbstractOqlTest impl
     @Override
     public void testSelectStaffLookupHobby() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_LOOKUP_HOBBY);
+        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        OqlSelectStatement oqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql, true);
+        OqlSelectInfos oqlStmt = OqlStatementUtils.parseSingleSelectStatement(stmt, true);
         OqlSelectInfo selfSelectInfo = oqlStmt.getSelfSelectInfo();
         List<OqlSelectInfo> detailSelectInfos = oqlStmt.getDetailSelectInfos();
         List<OqlSelectInfo> lookupSelectInfos = oqlStmt.getLookupSelectInfos();

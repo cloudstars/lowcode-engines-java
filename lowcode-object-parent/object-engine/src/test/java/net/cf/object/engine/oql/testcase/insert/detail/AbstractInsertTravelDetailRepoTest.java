@@ -40,7 +40,7 @@ public abstract class AbstractInsertTravelDetailRepoTest extends AbstractOqlRepo
             String selectOql = "select *, trips.* from Travel";
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
-            List<Map<String, Object>> data = this.engine.queryList(selectOqlStmt, paramMap);
+            List<Map<String, Object>> data = this.engineNew.queryList(selectOqlStmt, paramMap);
             assert (data.size() == 3);
         }
     }
