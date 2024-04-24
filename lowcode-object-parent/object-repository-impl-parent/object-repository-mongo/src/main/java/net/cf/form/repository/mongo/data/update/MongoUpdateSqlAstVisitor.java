@@ -1,7 +1,6 @@
 package net.cf.form.repository.mongo.data.update;
 
 import net.cf.form.repository.mongo.data.ExprTypeEnum;
-import net.cf.form.repository.mongo.data.MongoUpdateItem;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;

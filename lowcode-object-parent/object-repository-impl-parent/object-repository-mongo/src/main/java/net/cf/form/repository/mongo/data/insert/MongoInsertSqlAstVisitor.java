@@ -1,6 +1,5 @@
 package net.cf.form.repository.mongo.data.insert;
 
-import net.cf.form.repository.mongo.data.MongoInsertItem;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;

@@ -1,7 +1,8 @@
-package net.cf.form.repository.mongo.data;
+package net.cf.form.repository.mongo.data.visitor;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
@@ -160,30 +161,51 @@ public class MongoExpressionVisitor {
      * @return
      */
     private static Pair<Object, Object> convertRelationalData(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, GlobalContext globalContext) {
-        ExprTypeEnum leftType = ExprTypeEnum.match(sqlExpr.getLeft());
-        ExprTypeEnum rightType = ExprTypeEnum.match(sqlExpr.getRight());
-        // 判断左右两边是否有字段,需要上下文传递
-        if (leftType == ExprTypeEnum.PARAM && rightType != ExprTypeEnum.PARAM) {
-            SqlIdentifierExpr leftExpr = (SqlIdentifierExpr) sqlExpr.getLeft();
-            Object left = visitBinaryIdentify(leftExpr, mongoOperator, globalContext);
+//        ExprTypeEnum leftType = ExprTypeEnum.match(sqlExpr.getLeft());
+//        ExprTypeEnum rightType = ExprTypeEnum.match(sqlExpr.getRight());
+//        // 判断左右两边是否有字段,需要上下文传递
+//        if (leftType == ExprTypeEnum.PARAM && rightType != ExprTypeEnum.PARAM) {
+//            SqlIdentifierExpr leftExpr = (SqlIdentifierExpr) sqlExpr.getLeft();
+//            Object left = visitBinaryIdentify(leftExpr, mongoOperator, globalContext);
+//
+//            VisitContext contextInfo = new VisitContext();
+//            contextInfo.setAutoGen(leftExpr.isAutoGen());
+//            Object right = MongoExprVisitor.visit(sqlExpr.getRight(), globalContext, contextInfo);
+//            return Pair.of(left, right);
+//
+//        } else if (rightType == ExprTypeEnum.PARAM && leftType != ExprTypeEnum.PARAM) {
+//            SqlIdentifierExpr rightExpr = (SqlIdentifierExpr) sqlExpr.getRight();
+//            Object right = visitBinaryIdentify(rightExpr, mongoOperator, globalContext);
+//
+//            VisitContext contextInfo = new VisitContext();
+//            contextInfo.setAutoGen(rightExpr.isAutoGen());
+//            Object left = MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext, contextInfo);
+//            return Pair.of(left, right);
+//        }
 
-            VisitContext contextInfo = new VisitContext();
-            contextInfo.setAutoGen(leftExpr.isAutoGen());
-            Object right = MongoExprVisitor.visit(sqlExpr.getRight(), globalContext, contextInfo);
-            return Pair.of(left, right);
+        VisitContext leftContextInfo = new VisitContext();
+        VisitContext rightContextInfo = new VisitContext();
 
-        } else if (rightType == ExprTypeEnum.PARAM && leftType != ExprTypeEnum.PARAM) {
-            SqlIdentifierExpr rightExpr = (SqlIdentifierExpr) sqlExpr.getRight();
-            Object right = visitBinaryIdentify(rightExpr, mongoOperator, globalContext);
-
-            VisitContext contextInfo = new VisitContext();
-            contextInfo.setAutoGen(rightExpr.isAutoGen());
-            Object left = MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext, contextInfo);
-            return Pair.of(left, right);
+        if (globalContext.getPositionEnum() == PositionEnum.JOIN) {
+            if (sqlExpr.getLeft() instanceof SqlPropertyExpr) {
+                leftContextInfo.setFieldTag(true);
+            }
+            if (sqlExpr.getRight() instanceof SqlPropertyExpr) {
+                rightContextInfo.setFieldTag(true);
+            }
+        } else {
+            if (sqlExpr.getLeft() instanceof SqlIdentifierExpr) {
+                leftContextInfo.setFieldTag(true);
+                rightContextInfo.setAutoGen(((SqlIdentifierExpr) sqlExpr.getLeft()).isAutoGen());
+            }
+            if (sqlExpr.getRight() instanceof SqlIdentifierExpr) {
+                rightContextInfo.setFieldTag(true);
+                leftContextInfo.setAutoGen(((SqlIdentifierExpr) sqlExpr.getLeft()).isAutoGen());
+            }
         }
 
         // 如果两边都不是字段，暂时不支持往下检索
-        return Pair.of(MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext), MongoExprVisitor.visit(sqlExpr.getRight(), globalContext));
+        return Pair.of(MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext, leftContextInfo), MongoExprVisitor.visit(sqlExpr.getRight(), globalContext, rightContextInfo));
     }
 
 

@@ -1,5 +1,7 @@
-package net.cf.form.repository.mongo.data;
+package net.cf.form.repository.mongo.data.visitor;
 
+import net.cf.form.repository.mongo.data.MongoDataConverter;
+import net.cf.form.repository.mongo.data.select.JoinInfo;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.AbstractSqlNumericLiteralExpr;
@@ -7,8 +9,10 @@ import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlDecimalExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,10 +76,6 @@ public class MongoExprVisitor {
         }
 
         // 表达式
-        // 操作符
-        if (sqlExpr instanceof SqlBinaryOpExpr) {
-            return MongoExpressionVisitor.visitBinary((SqlBinaryOpExpr) sqlExpr, globalContext, visitContext);
-        }
         // like todo
         if (sqlExpr instanceof SqlLikeOpExpr) {
             return MongoExpressionVisitor.visitLike((SqlLikeOpExpr) sqlExpr, globalContext);
@@ -84,7 +84,10 @@ public class MongoExprVisitor {
         if (sqlExpr instanceof SqlInListExpr) {
             return MongoExpressionVisitor.visitIn((SqlInListExpr) sqlExpr, globalContext);
         }
-
+        // 操作符
+        if (sqlExpr instanceof SqlBinaryOpExpr) {
+            return MongoExpressionVisitor.visitBinary((SqlBinaryOpExpr) sqlExpr, globalContext, visitContext);
+        }
 
         // 字段相关
         if (sqlExpr instanceof SqlIdentifierExpr) {
@@ -100,6 +103,11 @@ public class MongoExprVisitor {
         }
         if (sqlExpr instanceof SqlVariantRefExpr) {
             return visitVariable((SqlVariantRefExpr) sqlExpr, globalContext, visitContext);
+        }
+
+        // 子查询
+        if (sqlExpr instanceof SqlExistsExpr) {
+            return visitSqlExistsExpr((SqlExistsExpr) sqlExpr, globalContext, visitContext);
         }
 
 
@@ -192,21 +200,50 @@ public class MongoExprVisitor {
     // 目前property只会有两层
     private static Object visitProperty(SqlPropertyExpr sqlPropertyExpr, GlobalContext globalContext, VisitContext contextInfo) {
         SqlName sqlName = sqlPropertyExpr.getOwner();
-        StringBuilder propertyNameBuilder = new StringBuilder();
+        String parentName = "";
         if (sqlName instanceof SqlIdentifierExpr) {
-            propertyNameBuilder.append(visitIdentify((SqlIdentifierExpr) sqlName, globalContext, contextInfo));
+            parentName = (String) visitIdentify((SqlIdentifierExpr) sqlName, globalContext, VisitContext.getDefaultContextInfo());
         } else {
             throw new RuntimeException("NOT SUPPORT");
         }
-        propertyNameBuilder.append(".").append(sqlPropertyExpr.getName());
-        String propertyName = propertyNameBuilder.toString();
+        String properExprName = sqlPropertyExpr.getName();
+        String name = parentName + "." + properExprName;
         // join替换
         if (globalContext != null && globalContext.getJoinInfo() != null) {
-            // 替换
-            JoinInfo joinInfo = globalContext.getJoinInfo();
-            propertyName = joinInfo.getConditionReplaceMap().get(propertyName);
+            name = getJoinReplaceName(parentName, name, globalContext, contextInfo);
         }
-        return propertyName;
+        return name;
+    }
+
+    private static String getJoinReplaceName(String parentName, String name, GlobalContext globalContext, VisitContext contextInfo) {
+        // 替换
+        JoinInfo joinInfo = globalContext.getJoinInfo();
+        String replaceName = name;
+        if (joinInfo.getTableNames().contains(parentName)) {
+
+            if (joinInfo.getMainReplaceMap().containsKey(name)) {
+                replaceName = joinInfo.getMainReplaceMap().get(name);
+            } else if (joinInfo.getSlaveReplaceMap().containsKey(name)) {
+                replaceName = joinInfo.getSlaveReplaceMap().get(name);
+                if (contextInfo.isFieldTag()) {
+                    replaceName = "$" + replaceName;
+                }
+            }
+        }
+        return replaceName;
+    }
+
+
+    private static Object visitSqlExistsExpr(SqlExistsExpr sqlExistsExpr, GlobalContext globalContext, VisitContext context) {
+        String key = String.valueOf(sqlExistsExpr.hashCode());
+        String alias = globalContext.getExistAliasMap().get(key);
+        Document document;
+        if (sqlExistsExpr.not) {
+            document = new Document(alias, new Document("$exists", false));
+        } else {
+            document = new Document(alias, new Document("$exists", true));
+        }
+        return document;
     }
 
 

@@ -1,9 +1,11 @@
 package net.cf.commons.test.db.dataset;
 
 import org.bson.Document;
+import org.bson.types.Decimal128;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -41,6 +43,8 @@ public class MongoDataSetOperator implements IDataSetOperator {
                     document.put(columnName, new ObjectId());
                 } else if (column.isAuto() && value != null) {
                     document.put(columnName, new ObjectId(String.valueOf(value)));
+                } else if (column.getDataType() == DataType.DECIMAL) {
+                    document.put(columnName, new Decimal128((BigDecimal) value));
                 } else {
                     document.put(columnName, value);
                 }
