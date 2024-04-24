@@ -1,4 +1,4 @@
-package net.cf.form.repository.mongo.data;
+package net.cf.form.repository.mongo.data.select;
 
 import java.util.ArrayList;
 import java.util.HashMap;

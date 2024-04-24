@@ -1,7 +1,6 @@
 package net.cf.form.repository.mongo.data.select;
 
 import net.cf.form.repository.mongo.data.ExprTypeEnum;
-import net.cf.form.repository.mongo.data.MongoSelectItem;
 import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlSelect;

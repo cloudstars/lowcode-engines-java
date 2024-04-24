@@ -1,4 +1,4 @@
-package net.cf.form.repository.mongo.data;
+package net.cf.form.repository.mongo.data.visitor;
 
 public class Pair<S, T> {
     private S left;
