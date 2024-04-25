@@ -362,6 +362,7 @@ public class OqlSelectInfosParser extends AbstractOqInfoParser<OqlSelectStatemen
             fieldMapping.addSubFields(subFieldMappings);
         } else {
             SqlIdentifierExpr identExpr = new SqlIdentifierExpr(field.getColumnName());
+            identExpr.setAutoGen(field.isAutoGen());
             SqlSelectItem selectItem = new SqlSelectItem(identExpr);
             select.addSelectItem(selectItem);
         }
