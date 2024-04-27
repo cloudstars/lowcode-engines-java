@@ -23,7 +23,7 @@ public class SqlExprParser extends AbstractSqlParser {
     /**
      * 聚合函数的名称
      */
-    public static final List<String> AGGREGATE_FUNCTIONS = Arrays.asList("AVG", "COUNT", "MAX", "MIN", "STDDEV", "SUM");
+    public static final List<String> AGGREGATE_FUNCTIONS = Arrays.asList("COUNT", "SUM", "AVG", "MAX", "MIN");
 
     /**
      * 是否在解析一个数组

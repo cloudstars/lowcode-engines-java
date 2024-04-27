@@ -1,0 +1,51 @@
+{
+  "desc": "测试查询报销表聚合函数的案例, COUNT, SUM, AVG, MAX, MIN",
+  "name": "SelectExpenseSelfAggregate",
+  "oqls": [
+    {
+      "desc": "查询报销记录条数",
+      "name": "SelectExpenseCount",
+      "oql": "select COUNT(1) as cnt from Expense",
+      "sql": "select COUNT(1) from EXPENSE",
+      "resultMap": {
+        "cnt": 2
+      }
+    },
+    {
+      "desc": "查询报销总金额",
+      "name": "SelectExpenseSum",
+      "oql": "select SUM(cash) as sum from Expense",
+      "sql": "select SUM(CASH) as sum from EXPENSE",
+      "resultMap": {
+        "sum": 33457.8
+      }
+    },
+    {
+      "desc": "查询报销平均金额",
+      "name": "SelectExpenseAvg",
+      "oql": "select AVG(cash) as avg from Expense",
+      "sql": "select AVG(CASH) as avg from EXPENSE",
+      "resultMap": {
+        "avg": 16728.9
+      }
+    },
+    {
+      "desc": "查询报销最大金额",
+      "name": "SelectExpenseMax",
+      "oql": "select MAX(cash) as max from Expense",
+      "sql": "select MAX(CASH) as max from EXPENSE",
+      "resultMap": {
+        "max": 32323.4
+      }
+    },
+    {
+      "desc": "查询报销最小金额",
+      "name": "SelectExpenseMin",
+      "oql": "select MIN(cash) as min from Expense",
+      "sql": "select MIN(CASH) as min from EXPENSE",
+      "resultMap": {
+        "min": 1134.4
+      }
+    }
+  ]
+}

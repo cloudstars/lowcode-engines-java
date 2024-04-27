@@ -413,12 +413,13 @@ public class OqlEngineImpl implements OqlEngine {
         XObject mainObject = mainUpdateInfo.getObject();
         XField mainPrimaryField = mainObject.getPrimaryField();
         String mainPrimaryFieldName = mainPrimaryField.getName();
-        // TODO 主表记录ID的变量名可能不是mainObjectName，比如update ... where pk = #{pk'}，实际要取pk'的值
-        String masterId = paramMap.get(mainPrimaryFieldName).toString();
 
         // 先删除不需要保留的子表数据（由于使用not in (...)，所以需要在新数据插入前执行）
         List<OqlDetailDeleteInfo> detailDeleteInfos = infoParser.getDetailDeleteInfos();
         if (detailDeleteInfos != null && detailDeleteInfos.size() > 0) {
+            // TODO 这里的逻辑有问题，如果存在子表的情况下，需要先查询一次，得到所有的主表记录ID（除非where条件中带了where primaryField = #{xx}，或者 primaryField = 'xx'）
+            String masterId = paramMap.get(mainPrimaryFieldName).toString();
+
             for (OqlDetailDeleteInfo detailDeleteInfo : detailDeleteInfos) {
                 List<String> remainedRecordIds = detailDeleteInfo.getRemainedRecordIds();
                 if (remainedRecordIds == null && remainedRecordIds.size() == 0) {
@@ -439,6 +440,9 @@ public class OqlEngineImpl implements OqlEngine {
         // 插入新增的子表数据
         List<OqlDetailInsertInfo> detailInsertInfos = infoParser.getDetailInsertInfos();
         if (detailInsertInfos != null && detailInsertInfos.size() > 0) {
+            // TODO 这里的逻辑有问题，如果存在子表的情况下，需要先查询一次，得到所有的主表记录ID（除非where条件中带了where primaryField = #{xx}，或者 primaryField = 'xx'）
+            String masterId = paramMap.get(mainPrimaryFieldName).toString();
+
             for (OqlDetailInsertInfo detailInsertInfo : detailInsertInfos) {
                 List<Map<String, Object>> insertParamMaps = detailInsertInfo.getParamMaps();
                 if (insertParamMaps == null && insertParamMaps.size() == 0) {

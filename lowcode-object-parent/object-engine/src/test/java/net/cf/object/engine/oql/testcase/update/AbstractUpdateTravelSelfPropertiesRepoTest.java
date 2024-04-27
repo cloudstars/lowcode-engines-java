@@ -31,7 +31,15 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
 
     @Override
     public void testUpdateTravelModifierById() {
+        {
+            // 更新数据
+            OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_MODIFIER_BY_ID);
+            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+            int effectedRows = this.engine.modify(oqlStmt);
+            assert (effectedRows == 1);
+        }
 
+        this.assertUpdateRecords();
     }
 
     @Override
@@ -40,51 +48,32 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_MODIFIER_BY_ID_VARS);
             OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("applyId", TravelObject.RECORD1);
-            Map<String, Object> modifier = new HashMap<>();
-            modifier.put("name", "更新人姓名");
-            modifier.put("key", "更新人编号");
-            paramMap.put("modifier", modifier);
+            Map<String, Object> paramMap = this.getEditParamMap();
             int effectedRows = this.engine.modify(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }
 
-        {
-            // 重新查出来作断言
-            String selectOql = "select applyId, applyName, modifier from Travel where applyId = #{applyId}";
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("applyId", TravelObject.RECORD1);
-            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
-            assert (dataList != null && dataList.size() == 1);
-            Object modifier = dataList.get(0).get("modifier");
-            assert (modifier != null && modifier instanceof Map);
-            Map<String, Object> modifierMap = (Map<String, Object>) modifier;
-            assert ("更新人姓名".equals(modifierMap.get("name")));
-            assert ("更新人编号".equals(modifierMap.get("key")));
-        }
+        this.assertUpdateRecords();
     }
 
-    @Override
-    public void testUpdateTravelExpandModifierById() {
-
+    /**
+     * 断言更新后的结果
+     */
+    private void assertUpdateRecords() {
+        // 重新查出来作断言
+        String selectOql = "select applyId, applyName, modifier from Travel where applyId = #{applyId}";
+        OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("applyId", TravelObject.RECORD1);
+        List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
+        assert (dataList != null && dataList.size() == 1);
+        Object modifier = dataList.get(0).get("modifier");
+        assert (modifier != null && modifier instanceof Map);
+        Map<String, Object> modifierMap = (Map<String, Object>) modifier;
+        assert ("更新人姓名".equals(modifierMap.get("name")));
+        assert ("更新人编号".equals(modifierMap.get("key")));
     }
 
-    @Override
-    public void testUpdateTravelExpandModifierByIdVars() {
-
-    }
-
-    @Override
-    public void testUpdateTravelSingleModifierById() {
-
-    }
-
-    @Override
-    public void testUpdateTravelSingleModifierByIdVars() {
-
-    }
 
     @Override
     public void testUpdateTravelWithAttachesByIdVars() {

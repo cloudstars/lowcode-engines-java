@@ -7,6 +7,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -225,6 +226,11 @@ public final class DataCompareTestUtils {
                 if ((s instanceof Integer && t instanceof Long) || (s instanceof Long && t instanceof Integer)) {
                     return ((Number) s).longValue() == ((Number) t).longValue();
                 }
+
+                if (s instanceof BigDecimal && t instanceof BigDecimal) {
+                    return ((BigDecimal) s).compareTo((BigDecimal) t) == 0;
+                }
+
                 return s.equals(t);
             }
 

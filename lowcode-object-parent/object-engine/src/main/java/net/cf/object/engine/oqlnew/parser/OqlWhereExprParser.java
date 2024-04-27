@@ -101,7 +101,7 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      */
     private SqlExpr parseFieldExpr(OqlFieldExpr expr) {
         String fieldName = expr.getName();
-        XField resolvedField = expr.getResolvedField();//this.resolveField(selfObject, fieldName);
+        XField resolvedField = expr.getResolvedField();
         this.lastResolvedObject = resolvedField.getOwner();
 
         // 如果字段下存在子属性的话，那么转换为字段展开表达式（默认展开）
@@ -131,17 +131,6 @@ public class OqlWhereExprParser extends AbstractOqlParser {
         this.lastResolvedObject = resolvedField.getOwner();
 
         return this.toRepoExpr(this.selfObject, resolvedProperty);
-
-        /*if (resolvedObject == this.selfObject) { // 是本模型的字段
-            return this.repoExprBuilder.toRepoExpr(selfObject, resolvedProperty);
-        } else { // 非本模型的字段
-            int dotIndex = propName.indexOf(Token.DOT.name);
-            if (dotIndex > 0) { // 三级属性处理，如：object.field.property
-                return this.toRepoExpr(selfObject, resolvedProperty);
-            } else {
-                return this.toRepoExpr(selfObject, resolvedField);
-            }
-        }*/
     }
 
     /**

@@ -36,12 +36,6 @@ public class UpdateTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
-        // 断言解析出来的OQL的一些关键信息是符合预期的
-        OqlObjectSource objectSource = oqlStmt.getObjectSource();
-        assert (objectSource instanceof OqlExprObjectSource);
-        SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
-        assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
-
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
         SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
@@ -57,35 +51,9 @@ public class UpdateTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
-        // 断言解析出来的OQL的一些关键信息是符合预期的
-        OqlObjectSource objectSource = oqlStmt.getObjectSource();
-        assert (objectSource instanceof OqlExprObjectSource);
-        SqlExpr osExpr = ((OqlExprObjectSource) objectSource).getExpr();
-        assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
-
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
         SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(oqlStmt);
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
-    }
-
-    @Override
-    public void testUpdateTravelExpandModifierById() {
-
-    }
-
-    @Override
-    public void testUpdateTravelExpandModifierByIdVars() {
-
-    }
-
-    @Override
-    public void testUpdateTravelSingleModifierById() {
-
-    }
-
-    @Override
-    public void testUpdateTravelSingleModifierByIdVars() {
-
     }
 
     @Test

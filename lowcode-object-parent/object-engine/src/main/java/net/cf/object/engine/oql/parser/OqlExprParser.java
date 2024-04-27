@@ -381,7 +381,7 @@ public class OqlExprParser extends SqlExprParser {
      */
     private SqlExpr parseMethodInvokeExpr(XObject selfObject, SqlMethodInvokeExpr x) {
         String methodName = x.getMethodName();
-        if (this.supportedMethodNames.contains(methodName)) {
+        if (this.supportedMethodNames.contains(methodName.toUpperCase())) {
             SqlMethodInvokeExpr sqlX = new SqlMethodInvokeExpr();
             sqlX.setMethodName(x.getMethodName());
             List<SqlExpr> args = x.getArguments();

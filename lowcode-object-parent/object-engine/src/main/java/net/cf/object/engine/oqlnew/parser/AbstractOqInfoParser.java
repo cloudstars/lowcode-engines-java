@@ -9,15 +9,15 @@ import net.cf.object.engine.oqlnew.info.AbstractOqlInfos;
  * 抽象的OQL指令构建器，用于将OQL语句解析为OQL执行指令信息
  *
  * @author clouds
- * @param <S> OQL语句
+ * @param <O> OQL语句
  * @param <I> OQL信息
  */
-public abstract class AbstractOqInfoParser<S extends OqlStatement, I extends AbstractOqlInfos> extends AbstractOqlParser {
+public abstract class AbstractOqInfoParser<O extends OqlStatement, I extends AbstractOqlInfos> extends AbstractOqlParser {
 
     /**
      * 待解析的OQL语句
      */
-    protected final S stmt;
+    protected final O stmt;
 
     /**
      * 是否批量OQL语句
@@ -29,7 +29,7 @@ public abstract class AbstractOqInfoParser<S extends OqlStatement, I extends Abs
      */
     protected XObject selfObject;
 
-    public AbstractOqInfoParser(S stmt, boolean isBatch) {
+    public AbstractOqInfoParser(O stmt, boolean isBatch) {
         this.stmt = stmt;
         this.isBatch = isBatch;
     }

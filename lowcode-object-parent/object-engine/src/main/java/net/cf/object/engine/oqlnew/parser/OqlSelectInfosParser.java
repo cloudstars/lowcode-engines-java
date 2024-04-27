@@ -195,7 +195,7 @@ public class OqlSelectInfosParser extends AbstractOqInfoParser<OqlSelectStatemen
         SqlSelectGroupByClause groupByClauseX = new SqlSelectGroupByClause();
         List<SqlExpr> groupByItems = groupByClause.getItems();
         for (SqlExpr groupByItem : groupByItems) {
-            SqlExpr groupByItemX = this.sqlExprBuilder.buildSqlExpr(this.selfObject, groupByItem);//this.toRepoSelfIdentifierExpr(groupByItem, "分组");
+            SqlExpr groupByItemX = this.sqlExprBuilder.buildSqlExpr(this.selfObject, groupByItem);
             groupByClauseX.addItem(groupByItemX);
         }
 

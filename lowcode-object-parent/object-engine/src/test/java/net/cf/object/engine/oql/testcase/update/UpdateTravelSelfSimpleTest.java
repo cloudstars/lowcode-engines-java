@@ -19,7 +19,6 @@ public interface UpdateTravelSelfSimpleTest {
      */
     void testUpdateTravelById();
 
-
     /**
      * 测试根据记录ID更新出差本表记录（带变量）
      *

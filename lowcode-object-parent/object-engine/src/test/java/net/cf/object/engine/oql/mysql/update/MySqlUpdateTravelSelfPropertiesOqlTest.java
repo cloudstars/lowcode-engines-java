@@ -27,30 +27,6 @@ public class MySqlUpdateTravelSelfPropertiesOqlTest extends AbstractUpdateTravel
 
     @Test
     @Override
-    public void testUpdateTravelExpandModifierById() {
-        super.testUpdateTravelExpandModifierById();
-    }
-
-    @Test
-    @Override
-    public void testUpdateTravelExpandModifierByIdVars() {
-        super.testUpdateTravelExpandModifierByIdVars();
-    }
-
-    @Test
-    @Override
-    public void testUpdateTravelSingleModifierById() {
-        super.testUpdateTravelSingleModifierById();
-    }
-
-    @Test
-    @Override
-    public void testUpdateTravelSingleModifierByIdVars() {
-        super.testUpdateTravelSingleModifierByIdVars();
-    }
-
-    @Test
-    @Override
     public void testUpdateTravelWithAttachesByIdVars() {
         super.testUpdateTravelWithAttachesByIdVars();
     }

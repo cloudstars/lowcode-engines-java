@@ -4,16 +4,34 @@
   "desc": "测试点：简单的更新，不含子表",
   "oqls": [
     {
+      "desc": "将描述更新为姓名相关",
+      "name": "UpdateStaffDescrWithNameRela",
+      "oql": "update Staff set descr = concat('这是', staffName, '的描述')  where staffCode = 'zhangsan'",
+      "sql": "update STAFF set DESCR = concat('这是', STA_NAME, '的描述') where STA_CODE = 'zhangsan'"
+    },
+    {
+      "desc": "将描述更新为姓名相关（带变量）",
+      "name": "UpdateStaffDescrWithNameRelaVars",
+      "oql": "update Staff set descr = concat('这是', #{staffName}, '的描述') where staffCode = 'zhangsan'",
+      "sql": "update STAFF set DESCR = concat('这是', #{staffName}, '的描述') where STA_CODE = 'zhangsan'"
+    },
+    {
       "desc": "将更新人更新为创建人",
       "name": "UpdateStaffModifierWithCreator",
-      "oql": "update Staff set modifier = creator where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
-      "sql": "update STAFF set MODIFIER_NAME = CREATOR_NAME, MODIFIER_KEY = CREATOR_KEY where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+      "oql": "update Staff set modifier = creator where staffCode = 'zhangsan'",
+      "sql": "update STAFF set MODIFIER_NAME = CREATOR_NAME, MODIFIER_KEY = CREATOR_KEY where STA_CODE = 'zhangsan'"
     },
     {
       "desc": "将更新人更新为创建人（带变量）",
       "name": "UpdateStaffModifierWithCreatorVars",
-      "oql": "update Staff set modifier = creator where applyId = #{applyId}",
-      "sql": "update STAFF set MODIFIER_NAME = CREATOR_NAME, MODIFIER_KEY = CREATOR_KEY where APPLY_ID = #{applyId}"
+      "oql": "update Staff set modifier = #{creator} where staffCode = #{staffCode}",
+      "sql": "update STAFF set MODIFIER_NAME = #{creator.name}, MODIFIER_KEY = #{creator.key} where staffCode = #{staffCode}"
+    },
+    {
+      "desc": "将一个人的年龄+1（带变量）",
+      "name": "UpdateStaffAgeByIdVars",
+      "oql": "update Staff set age = age + 1 where staffCode = #{staffCode}",
+      "sql": "update STAFF set AGE = AGE + 1 where STA_CODE = #{staffCode}"
     }
   ]
 }

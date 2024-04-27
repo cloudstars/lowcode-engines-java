@@ -7,9 +7,11 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
+import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XProperty;
+import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +46,16 @@ public abstract class AbstractOqlParser {
         }
     }
 
+    /**
+     * 构建表源
+     *
+     * @param x
+     */
+    protected SqlExprTableSource toRepoExprTableSource(OqlExprObjectSource x) {
+        SqlExprTableSource tableSource = new SqlExprTableSource();
+        tableSource.setExpr(x.getResolvedObject().getTableName());
+        return tableSource;
+    }
 
 
     /**

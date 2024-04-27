@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public interface UpdateTravelDetailTest {
 
-    String OQL_FILE_PATH = "oql/update/UpdateTravelAndTrip.json";
+    String OQL_FILE_PATH = "oql/update/detail/UpdateTravelAndTrip.json";
 
     String OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_VARS = "UpdateTravelAndTripByIdVars";
 

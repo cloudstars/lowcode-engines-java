@@ -46,6 +46,13 @@
       "dataFormat": "yyyy-MM-dd"
     },
     {
+      "type": "Number",
+      "desc": "年龄",
+      "name": "age",
+      "columnName": "AGE",
+      "dataType": "Number"
+    },
+    {
       "type": "Text",
       "desc": "个人简介",
       "name": "descr",

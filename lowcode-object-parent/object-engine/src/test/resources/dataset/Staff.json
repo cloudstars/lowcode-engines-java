@@ -37,6 +37,46 @@
       "desc": "举趣爱好",
       "name": "HOBBIES",
       "dataType": "CHAR"
+    },
+    {
+      "desc": "年龄",
+      "name": "AGE",
+      "dataType": "INTEGER"
+    },
+    {
+      "desc": "拥有者",
+      "name": "OWNER_KEY",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人姓名",
+      "name": "CREATOR_NAME",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人编号",
+      "name": "CREATOR_KEY",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建时间",
+      "name": "CREATED_AT",
+      "dataType": "DATETIME"
+    },
+    {
+      "desc": "更新人姓名",
+      "name": "MODIFIER_NAME",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "更新人编号",
+      "name": "MODIFIER_KEY",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "更新时间",
+      "name": "MODIFIED_AT",
+      "dataType": "DATETIME"
     }
   ],
   "valuesList": [
@@ -46,7 +86,11 @@
       "JOIN_DATE": "2020-10-10",
       "DEPART_DATE": "2021-10-01",
       "DESCR": "此人名叫张三，爱好抽烟、喝酒",
-      "HOBBIES": "[1, 2]"
+      "HOBBIES": "[1, 2]",
+      "AGE": 30,
+      "OWNER_KEY": "zhangsan",
+      "CREATOR_NAME": "张三",
+      "CREATOR_KEY": "zhangsan"
     },
     {
       "STA_CODE": "lisi",
@@ -54,7 +98,11 @@
       "JOIN_DATE": "2010-01-01",
       "DEPART_DATE": null,
       "DESCR": "我叫李四，小李的李，小四的四，爱好唱歌、跳舞",
-      "HOBBIES": "[2]"
+      "HOBBIES": "[2]",
+      "AGE": 20,
+      "OWNER_KEY": "zhangsan",
+      "CREATOR_NAME": "李四",
+      "CREATOR_KEY": "lisi"
     }
   ]
 }

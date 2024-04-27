@@ -45,7 +45,7 @@ public class SqlUpdateStatementParser extends SqlExprParser {
             SqlUpdateSetItem setItem = new SqlUpdateSetItem();
             setItem.setColumn(this.primary());
             this.accept(Token.EQ);
-            setItem.setValue(this.primary());
+            setItem.setValue(this.expr());
             statement.addSetItem(setItem);
         });
     }
