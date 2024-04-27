@@ -82,6 +82,7 @@ public abstract class AbstractOqlParser {
      */
     protected SqlIdentifierExpr toRepoSelfExpr(XField field) {
         SqlIdentifierExpr identExpr = new SqlIdentifierExpr(field.getColumnName());
+        identExpr.setAutoGen(field.isAutoGen());
         return identExpr;
     }
 
