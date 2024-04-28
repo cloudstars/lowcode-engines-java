@@ -16,8 +16,9 @@ import java.util.Map;
 
 public class JoinConditionBuilder {
 
-    public static Document buildExpr(SqlBinaryOpExpr sqlExpr, JoinInfo joinInfo) {
+    public static Document buildExpr(SqlBinaryOpExpr sqlExpr, JoinInfo joinInfo, Map<String, Object> paramMap) {
         GlobalContext globalContext = new GlobalContext(PositionEnum.JOIN);
+        globalContext.setDataMap(paramMap);
         globalContext.setJoinInfo(joinInfo);
         Object object = MongoExprVisitor.visit(sqlExpr, globalContext);
         if (!(object instanceof Document)) {

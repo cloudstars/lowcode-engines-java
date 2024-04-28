@@ -438,7 +438,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         // lookup pipeline
         List<Document> refPipeline = new ArrayList<>();
         Document pipelineMatch = new Document();
-        Document onExpr = JoinConditionBuilder.buildExpr((SqlBinaryOpExpr) sqlExpr, joinInfo);
+        Document onExpr = JoinConditionBuilder.buildExpr((SqlBinaryOpExpr) sqlExpr, joinInfo, this.paramMap);
         pipelineMatch.append("$match", onExpr);
         refPipeline.add(pipelineMatch);
 
