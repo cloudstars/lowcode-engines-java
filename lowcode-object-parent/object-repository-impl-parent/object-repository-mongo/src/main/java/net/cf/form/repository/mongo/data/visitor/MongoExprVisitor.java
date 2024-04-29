@@ -10,8 +10,6 @@ import net.cf.form.repository.sql.ast.expr.literal.SqlDecimalExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,14 +74,6 @@ public class MongoExprVisitor {
         }
 
         // 表达式
-        // like todo
-        if (sqlExpr instanceof SqlLikeOpExpr) {
-            return MongoExpressionVisitor.visitLike((SqlLikeOpExpr) sqlExpr, globalContext);
-        }
-        // in
-        if (sqlExpr instanceof SqlInListExpr) {
-            return MongoExpressionVisitor.visitIn((SqlInListExpr) sqlExpr, globalContext);
-        }
         // 操作符
         if (sqlExpr instanceof SqlBinaryOpExpr) {
             return MongoExpressionVisitor.visitBinary((SqlBinaryOpExpr) sqlExpr, globalContext, visitContext);
