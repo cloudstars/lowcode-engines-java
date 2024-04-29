@@ -3,7 +3,6 @@ package net.cf.form.repository.mongo.data.visitor;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.op.*;
 import org.bson.Document;
 
@@ -77,20 +76,9 @@ public class MongoExpressionVisitor {
         }
 
         Object left = MongoExprVisitor.visit(leftExpr, globalContext, fieldContextInfo);
-        List<SqlExpr> targetList = sqlExpr.getTargetList();
-        List<Object> rightValues = new ArrayList<>();
-        for (SqlExpr item : targetList) {
-            if (item instanceof SqlVariantRefExpr) {
-                Object val = MongoExprVisitor.visit((SqlVariantRefExpr) item, globalContext, idContextInfo);
-                if (val instanceof List) {
-                    rightValues.addAll((List) val);
-                } else {
-                    rightValues.add(val);
-                }
-            } else {
-                rightValues.add(MongoExprVisitor.visit(item, globalContext, idContextInfo));
-            }
-        }
+
+        Object rightValues = MongoExprVisitor.visit(sqlExpr.getRight(), globalContext, idContextInfo);
+
         Document document = new Document(MongoOperator.IN.getExpr(), Arrays.asList(left, rightValues));
         if (sqlExpr.not) {
             // {"$expr":{"$not":{"$in":[param, []]}}}
@@ -293,7 +281,7 @@ public class MongoExpressionVisitor {
      * @return
      */
     private static Document buildContainsAll(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
-        return new Document(String.valueOf(left), new Document("$all", Arrays.asList(right)));
+        return new Document(String.valueOf(left), new Document("$all", right));
     }
 
     /**
