@@ -54,7 +54,7 @@ public final class RepoExprBuilder extends AbstractOqlParser {
         Class<?> clazz = x.getClass();
         if (clazz == OqlFieldExpr.class) {
             return this.buildFieldOqlExpr(selfObject, (OqlFieldExpr) x);
-        } else if (clazz == OqlPropertyExpr.class)  {
+        } else if (clazz == OqlPropertyExpr.class) {
             return this.buildPropertyOqlExpr(selfObject, (OqlPropertyExpr) x);
         } else if (clazz == OqlObjectExpandExpr.class) {
             throw new RuntimeException("模型展开字段不能构建为驱动层的表达式");
@@ -64,6 +64,8 @@ public final class RepoExprBuilder extends AbstractOqlParser {
             return this.buildInListSqlExpr(selfObject, (SqlInListExpr) x);
         } else if (clazz == SqlContainsOpExpr.class) {
             return this.buildSqlExpr(selfObject, (SqlContainsOpExpr) x);
+        } else if (clazz == SqlArrayContainsOpExpr.class) {
+            return this.buildSqlExpr(selfObject, (SqlArrayContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.buildSqlExpr(selfObject, (SqlBinaryOpExpr) x);
         } else if (clazz == SqlBinaryOpExprGroup.class) {
@@ -164,6 +166,16 @@ public final class RepoExprBuilder extends AbstractOqlParser {
         sqlX.setOperator(x.getOperator());
         sqlX.setRight(this.buildSqlExpr(object, x.getRight()));
         sqlX.setParenthesized(x.isParenthesized());
+        return sqlX;
+    }
+
+    private SqlExpr buildSqlExpr(final XObject object, final SqlArrayContainsOpExpr x) {
+        SqlArrayContainsOpExpr sqlX = new SqlArrayContainsOpExpr();
+        sqlX.setLeft(this.buildSqlExpr(object, x.getLeft()));
+        sqlX.setOperator(x.getOperator());
+        sqlX.setRight(this.buildSqlExpr(object, x.getRight()));
+        sqlX.setParenthesized(x.isParenthesized());
+        sqlX.setOption(x.getOption());
         return sqlX;
     }
 

@@ -30,8 +30,6 @@ import java.util.Map;
  * 1、同一个最底层分组里的标识符，属于同一个模型的表达式组合在一起, a = 1 and b = 2 and refField.a = 1 and refField.b = 2, a = 1 and b = 2 and (refField.a = 1 or refField.b = 2)
  * 2、对于非本表的二元操作表达式，转换为exists子查询
  *
- *
- *
  * @author clouds
  */
 public class OqlWhereExprParser extends AbstractOqlParser {
@@ -80,9 +78,11 @@ public class OqlWhereExprParser extends AbstractOqlParser {
             return this.parseInListExpr((SqlInListExpr) x);
         } else if (clazz == SqlContainsOpExpr.class) {
             return this.parseContainsOpExpr((SqlContainsOpExpr) x);
+        } else if (clazz == SqlArrayContainsOpExpr.class) {
+            return this.parseArrayContainsOpExpr((SqlArrayContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.parseBinaryOpExpr((SqlBinaryOpExpr) x);
-        }  else if (clazz == SqlBinaryOpExprGroup.class) {
+        } else if (clazz == SqlBinaryOpExprGroup.class) {
             return this.parseBinaryOpExprGroup((SqlBinaryOpExprGroup) x);
         } else if (clazz == SqlAggregateExpr.class) {
             return this.parseAggregateExpr((SqlAggregateExpr) x);
@@ -189,16 +189,25 @@ public class OqlWhereExprParser extends AbstractOqlParser {
 
     /**
      * 解析 Contains 表达式
+     *
      * @param x
      * @return
      */
     private SqlExpr parseContainsOpExpr(SqlContainsOpExpr x) {
         SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
-        sqlX.setLeft(this.parseExpr(x.getLeft()));
-        sqlX.setOperator(x.getOperator());
-        sqlX.setRight(this.parseExpr(x.getRight()));
-        sqlX.setParenthesized(x.isParenthesized());
-        return sqlX;
+        return this.parseBinaryOpExprTo(x, sqlX);
+    }
+
+    /**
+     * 解析 array Contains 表达式
+     *
+     * @param x
+     * @return
+     */
+    private SqlExpr parseArrayContainsOpExpr(SqlArrayContainsOpExpr x) {
+        SqlArrayContainsOpExpr sqlX = new SqlArrayContainsOpExpr();
+        sqlX.setOption(x.getOption());
+        return this.parseBinaryOpExprTo(x, sqlX);
     }
 
     /**
@@ -298,7 +307,7 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      * 将非本模型的查询条件转换为驱动层的exists子查询
      *
      * @param refObject 引用的模型
-     * @param sqlX 引用模型的查询条件
+     * @param sqlX      引用模型的查询条件
      */
     private SqlExistsExpr toExistsSubQueryExpr(XObject refObject, SqlExpr sqlX) {
         SqlExistsExpr existsExpr = new SqlExistsExpr();
