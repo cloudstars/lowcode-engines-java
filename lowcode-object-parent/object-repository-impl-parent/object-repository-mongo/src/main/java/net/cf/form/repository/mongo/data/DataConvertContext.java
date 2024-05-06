@@ -17,7 +17,7 @@ public class DataConvertContext {
         return replaceFields;
     }
 
-    public boolean isReplaceField() {
+    public boolean needReplaceField() {
         return replaceFields != null && replaceFields.size() > 0;
     }
 }
