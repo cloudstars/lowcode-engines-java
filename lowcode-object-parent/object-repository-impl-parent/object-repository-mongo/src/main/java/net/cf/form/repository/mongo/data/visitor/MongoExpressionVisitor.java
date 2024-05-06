@@ -292,7 +292,7 @@ public class MongoExpressionVisitor {
      * @return
      */
     private static Document buildContainsAny(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
-        return new Document(String.valueOf(left), new Document("$eleMatch", new Document("$in", right)));
+        return new Document(String.valueOf(left), new Document("$elemMatch", new Document("$in", right)));
     }
 
     /**
