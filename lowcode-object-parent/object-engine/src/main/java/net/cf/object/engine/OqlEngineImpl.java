@@ -43,7 +43,7 @@ import java.util.Map;
  */
 public class OqlEngineImpl implements OqlEngine {
 
-    private static Logger logger = LoggerFactory.getLogger(OqlEngineImpl.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(OqlEngineImpl.class);
 
     private final ObjectRepository repository;
 
@@ -245,7 +245,7 @@ public class OqlEngineImpl implements OqlEngine {
         SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(stmt, builder);
         int effectedRows = this.repository.insert(sqlStmt);
         if (effectedRows == 0) {
-            logger.warn("未成功创建记录，OQL：", stmt);
+            LOGGER.warn("未成功创建记录，OQL：", stmt);
         }
 
         return effectedRows;
@@ -269,13 +269,13 @@ public class OqlEngineImpl implements OqlEngine {
         SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
         SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(mainStmt, builder);
         // 作参数映射，将引擎层的参数转换驱动层的参数格式
-        DefaultParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
-        Map<String, Object> targetParamMap = parameterMapper.mapParameter(paramMap);
+        DefaultParameterMapper paramMapper = new DefaultParameterMapper(builder.getFieldMappings());
+        Map<String, Object> targetParamMap = paramMapper.mapParameter(paramMap);
         int effectedRows = this.repository.insert(sqlStmt, targetParamMap);
         if (effectedRows == 0) {
-            logger.warn("未成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
+            LOGGER.warn("未成功创建记录，影响行数：{}，OQL：{}", effectedRows, stmt);
         } else {
-            logger.info("成功创建记录，影响行数：{}，OQL：", effectedRows, stmt);
+            LOGGER.info("成功创建记录，影响行数：{}，OQL：{}", effectedRows, stmt);
         }
 
         // 生成获取结果数据中的主键ID，如果是自增主键的情况，则放入输入参数中
@@ -334,8 +334,8 @@ public class OqlEngineImpl implements OqlEngine {
         SqlInsertStatementBuilder builder = new SqlInsertStatementBuilder();
         SqlInsertStatement sqlStmt = Oql2SqlUtils.toSqlInsert(mainStmt, builder);
         // 作参数映射，将引擎层的参数转换驱动层的参数格式
-        DefaultParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
-        List<Map<String, Object>> targetParamMaps = this.convertParameterMapList(parameterMapper, paramMaps);
+        DefaultParameterMapper paramMapper = new DefaultParameterMapper(builder.getFieldMappings());
+        List<Map<String, Object>> targetParamMaps = this.convertParameterMapList(paramMapper, paramMaps);
         int[] effectedRowsArray = this.repository.batchInsert(sqlStmt, targetParamMaps);
         // 如果存在自增主键的话，将自增ID复制到参数中
         XField mainPrimaryField = mainStmt.getObjectSource().getResolvedObject().getPrimaryField();
@@ -353,29 +353,29 @@ public class OqlEngineImpl implements OqlEngine {
     }
 
     /**
-     * 转换输入参数，将parameterMap中的key（字段名）转换为列名
+     * 转换输入参数，将paramMap中的key（字段名）转换为列名
      *
-     * @param parameterMapper
-     * @param parameterMapList
+     * @param paramMapper
+     * @param paramMapList
      * @return 生成新的对象返回
      */
-    private List<Map<String, Object>> convertParameterMapList(ParameterMapper parameterMapper, List<Map<String, Object>> parameterMapList) {
+    private List<Map<String, Object>> convertParameterMapList(ParameterMapper paramMapper, List<Map<String, Object>> paramMapList) {
         List<Map<String, Object>> targetMapList = new ArrayList<>();
-        for (Map<String, Object> paramaeterMap : parameterMapList) {
-            targetMapList.add(this.convertParameterMap(parameterMapper, paramaeterMap));
+        for (Map<String, Object> paramaeterMap : paramMapList) {
+            targetMapList.add(this.convertParameterMap(paramMapper, paramaeterMap));
         }
         return targetMapList;
     }
 
     /**
-     * 转换输入参数，将parameterMap中的key（字段名）转换为列名
+     * 转换输入参数，将paramMap中的key（字段名）转换为列名
      *
-     * @param parameterMapper
-     * @param parameterMap
+     * @param paramMapper
+     * @param paramMap
      * @return 生成新的对象返回
      */
-    private Map<String, Object> convertParameterMap(ParameterMapper parameterMapper, Map<String, Object> parameterMap) {
-        return parameterMapper.mapParameter(parameterMap);
+    private Map<String, Object> convertParameterMap(ParameterMapper paramMapper, Map<String, Object> paramMap) {
+        return paramMapper.mapParameter(paramMap);
     }
 
 
@@ -405,8 +405,8 @@ public class OqlEngineImpl implements OqlEngine {
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
         SqlUpdateStatement mainSqlStmt = Oql2SqlUtils.toSqlUpdate(mainStmt, builder);
 
-        ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
-        Map<String, Object> targetParamMap = this.convertParameterMap(parameterMapper, paramMap);
+        ParameterMapper paramMapper = new DefaultParameterMapper(builder.getFieldMappings());
+        Map<String, Object> targetParamMap = this.convertParameterMap(paramMapper, paramMap);
         int effectedRows = this.repository.update(mainSqlStmt, targetParamMap);
 
         // 计算主表记录ID
@@ -492,8 +492,8 @@ public class OqlEngineImpl implements OqlEngine {
 
         SqlUpdateStatementBuilder builder = new SqlUpdateStatementBuilder();
         SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(stmt, builder);
-        ParameterMapper parameterMapper = new DefaultParameterMapper(builder.getFieldMappings());
-        List<Map<String, Object>> targetParamMaps = this.convertParameterMapList(parameterMapper, paramMaps);
+        ParameterMapper paramMapper = new DefaultParameterMapper(builder.getFieldMappings());
+        List<Map<String, Object>> targetParamMaps = this.convertParameterMapList(paramMapper, paramMaps);
         int[] effectedRowsArray = this.repository.batchUpdate(sqlStmt, targetParamMaps);
         this.sumAndLogsumEffectedRows(effectedRowsArray, stmt);
 
@@ -676,9 +676,9 @@ public class OqlEngineImpl implements OqlEngine {
         }
 
         if (totalEffectedRows == 0) {
-            logger.warn("OQL批量执行异常，总影响行数：0，OQL：{}", stmt);
+            LOGGER.warn("OQL批量执行异常，总影响行数：0，OQL：{}", stmt);
         } else {
-            logger.warn("OQL批量执行成功，总影响行数：{}，OQL：{}", totalEffectedRows, stmt);
+            LOGGER.warn("OQL批量执行成功，总影响行数：{}，OQL：{}", totalEffectedRows, stmt);
         }
 
         return totalEffectedRows;

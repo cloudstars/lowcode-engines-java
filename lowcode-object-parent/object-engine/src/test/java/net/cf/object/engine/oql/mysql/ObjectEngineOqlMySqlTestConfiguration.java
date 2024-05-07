@@ -2,8 +2,6 @@ package net.cf.object.engine.oql.mysql;
 
 import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
 import net.cf.form.repository.mysql.MySqlObjectRepositoryImpl;
-import net.cf.object.engine.OqlEngine;
-import net.cf.object.engine.OqlEngineImpl;
 import net.cf.object.engine.OqlEngineNew;
 import net.cf.object.engine.OqlEngineNewImpl;
 import net.cf.object.engine.object.TestObjectResolver;
@@ -29,11 +27,6 @@ public class ObjectEngineOqlMySqlTestConfiguration {
     @Bean
     public MySqlDataSetOperator mysqlDataSetOperator(NamedParameterJdbcTemplate jdbcTemplate) {
         return new MySqlDataSetOperator(jdbcTemplate);
-    }
-
-    @Bean
-    public OqlEngine oqlEngine(MySqlObjectRepositoryImpl repository) {
-        return new OqlEngineImpl(repository);
     }
 
     @Bean

@@ -8,14 +8,18 @@ import net.cf.form.repository.sql.ast.statement.SqlSelect;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.data.*;
+import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
-import net.cf.object.engine.oqlnew.info.OqlSelectInfo;
-import net.cf.object.engine.oqlnew.info.OqlSelectInfos;
+import net.cf.object.engine.oqlnew.cmd.*;
+import net.cf.object.engine.oqlnew.sql.SqlCmdExecutor;
+import net.cf.object.engine.oqlnew.sql.SqlDeleteCmd;
+import net.cf.object.engine.oqlnew.sql.SqlInsertCmd;
+import net.cf.object.engine.oqlnew.sql.SqlUpdateCmd;
 import net.cf.object.engine.util.OqlStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +34,17 @@ import java.util.*;
  */
 public class OqlEngineNewImpl implements OqlEngineNew {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(OqlEngineImpl.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(OqlEngineNewImpl.class);
 
     private final ObjectRepository repository;
+
+    private final SqlCmdExecutor executor;
 
     private final int limitSize = -1;
 
     public OqlEngineNewImpl(ObjectRepository repository) {
         this.repository = repository;
+        this.executor = new SqlCmdExecutor(repository);
     }
 
     public int getLimitSize() {
@@ -51,12 +58,14 @@ public class OqlEngineNewImpl implements OqlEngineNew {
 
     @Override
     public Map<String, Object> queryOne(OqlSelectStatement stmt, Map<String, Object> paramMap) {
-        OqlSelectInfos thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(stmt, false);
-        XObject selfObject = thisOqlStmt.getResolvedSelfObject();
+        OqlSelectInfos selectInfos = OqlStatementUtils.parseOqlSelectInfos(stmt, false);
+        XObject selfObject = selectInfos.getResolvedMasterObject();
 
         // 查询本表数据
-        OqlSelectInfo selfSelectInfo = thisOqlStmt.getSelfSelectInfo();
-        Map<String, Object> selfResultMap = this.repository.selectOne(selfSelectInfo.getStatement(), paramMap);
+        OqlSelectInfo selfSelectInfo = selectInfos.getSelfSelectInfo();
+        SqlSelectStatement selfSqlStmt = selfSelectInfo.getStatement();
+        this.addLimitInfo(selfSqlStmt);
+        Map<String, Object> selfResultMap = this.repository.selectOne(selfSqlStmt, paramMap);
         if (selfResultMap != null) {
             DefaultResultReducer resultReducer = new DefaultResultReducer(selfSelectInfo.getFieldMappings());
             selfResultMap = this.convertResultMap(resultReducer, selfResultMap);
@@ -67,7 +76,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         }
 
         // 存在子表的情况下，依次查询子表
-        List<OqlSelectInfo> detailSelectInfos = thisOqlStmt.getDetailSelectInfos();
+        List<OqlSelectInfo> detailSelectInfos = selectInfos.getDetailSelectInfos();
         if (detailSelectInfos != null && detailSelectInfos.size() > 0) {
             // 从主表返回的数据中抽取记录ID
             String selfPrimaryFieldName = selfObject.getPrimaryField().getName();
@@ -97,7 +106,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         }
 
         // 存在相关表的情况下，依次查询相关表
-        List<OqlSelectInfo> lookupSelectInfos = thisOqlStmt.getLookupSelectInfos();
+        List<OqlSelectInfo> lookupSelectInfos = selectInfos.getLookupSelectInfos();
         if (lookupSelectInfos != null && lookupSelectInfos.size() > 0) {
             for (OqlSelectInfo lookupSelectInfo : lookupSelectInfos) {
                 XObject lookupObject = lookupSelectInfo.getResolvedObject();
@@ -193,14 +202,14 @@ public class OqlEngineNewImpl implements OqlEngineNew {
 
     @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap) {
-        OqlSelectInfos thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(stmt, true);
+        OqlSelectInfos thisOqlStmt = OqlStatementUtils.parseOqlSelectInfos(stmt, true);
         return this.queryList(thisOqlStmt, paramMap);
     }
 
     @Override
     public PageResult<Map<String, Object>> queryPage(OqlSelectStatement stmt, Map<String, Object> paramMap, PageRequest pageRequest) {
-        OqlSelectInfos thisOqlStmt = OqlStatementUtils.parseSingleSelectStatement(stmt, true);
-        SqlSelectStatement selfSqlStmt = thisOqlStmt.getSelfSelectInfo().getStatement();
+        OqlSelectInfos selectInfos = OqlStatementUtils.parseOqlSelectInfos(stmt, true);
+        SqlSelectStatement selfSqlStmt = selectInfos.getSelfSelectInfo().getStatement();
 
         // 生成count语句
         SqlSelectStatement countSqlStmt = this.getCountSqlStmt(selfSqlStmt);
@@ -209,7 +218,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
 
         // 添加分页信息后查询当前页数据
         this.addPageInfo(selfSqlStmt, pageRequest);
-        List<Map<String, Object>> list = this.queryList(thisOqlStmt, paramMap);
+        List<Map<String, Object>> list = this.queryList(selectInfos, paramMap);
 
         return new PageResult<>(total, list);
     }
@@ -230,6 +239,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
 
     /**
      * 根据SQL生成对应的COUNT语句
+     *
      * @param stmt
      * @return
      */
@@ -252,7 +262,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
      */
     private List<Map<String, Object>> queryList(OqlSelectInfos selfOqlStmt, Map<String, Object> paramMap) {
         // 当前模型
-        XObject selfObject = selfOqlStmt.getResolvedSelfObject();
+        XObject selfObject = selfOqlStmt.getResolvedMasterObject();
 
         // 查询本表数据
         OqlSelectInfo selfSelectInfo = selfOqlStmt.getSelfSelectInfo();
@@ -394,6 +404,7 @@ public class OqlEngineNewImpl implements OqlEngineNew {
                 return resultMap;
             }
         }
+
         return null;
     }
 
@@ -442,6 +453,262 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         return columnValues;
     }
 
+    @Override
+    public int create(OqlInsertStatement stmt) {
+        return this.create(stmt, new HashMap<>());
+    }
+
+    @Override
+    public int create(OqlInsertStatement stmt, Map<String, Object> paramMap) {
+        OqlInsertInfos insertInfos = OqlStatementUtils.parseOqlInsertInfos(stmt, paramMap);
+        XObject masterObject = insertInfos.getResolvedMasterObject();
+        String masterObjectName = masterObject.getName();
+        XField masterPrimaryField = masterObject.getPrimaryField();
+        String masterPrimaryFieldName = masterPrimaryField.getName();
+
+        // 插入主表
+        SqlInsertCmd masterInsertCmd = insertInfos.getMasterInsertCmd();
+        int effectedRows = this.executor.insert(masterInsertCmd);
+        Object masterAutoFieldValue = null;
+        if (masterPrimaryField.isAutoGen()) {
+            masterAutoFieldValue = masterInsertCmd.getParamMap().get(masterPrimaryFieldName);
+            paramMap.put(masterPrimaryFieldName, masterAutoFieldValue);
+        }
+
+        // 不存在子表时直接返回
+        List<XObject> detailObjects = insertInfos.getResolvedDetailObjects();
+        if (CollectionUtils.isEmpty(detailObjects)) {
+            return effectedRows;
+        }
+
+        // 循环插入子表
+        //Object masterRecordId = paramMap.get(masterPrimaryFieldName);
+        Map<XObject, SqlInsertCmd> detailInsertCmds = insertInfos.getDetailInsertCmds();
+        for (XObject detailObject : detailObjects) {
+            SqlInsertCmd detailInsertCmd = detailInsertCmds.get(detailObject);
+
+            // 如果存在自动生成主键的情况下，将主表插入时返回的自增主键的值添加到每一个子表参数中
+            if (masterPrimaryField.isAutoGen()) {
+                List<Map<String, Object>> detailParamMapList = detailInsertCmd.getParamMaps();
+                String detailObjectMasterFieldName = detailObject.getObjectRefField(masterObjectName).getName();
+                for (Map<String, Object> subParamMap : detailParamMapList) {
+                    subParamMap.put(detailObjectMasterFieldName, masterAutoFieldValue);
+                }
+            }
+
+            // 执行子表插入指令
+            this.executor.executeInsert(detailInsertCmd);
+        }
+
+        return effectedRows;
+    }
+
+    @Override
+    public int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> paramMaps) {
+        OqlInsertInfos insertInfos = OqlStatementUtils.parseOqlInsertInfos(stmt, paramMaps);
+        XObject masterObject = insertInfos.getResolvedMasterObject();
+
+        // 批量插入本表
+        SqlInsertCmd mainInsertCmd = insertInfos.getMasterInsertCmd();
+        int[] effectedRowsArray = this.executor.batchInsert(mainInsertCmd);
+
+        // 不存在子表时直接返回
+        List<XObject> detailObjects = insertInfos.getResolvedDetailObjects();
+        if (CollectionUtils.isEmpty(detailObjects)) {
+            return effectedRowsArray;
+        }
+
+        // 循环批量插入子表
+        String masterObjectName = masterObject.getName();
+        XField masterPrimaryField = masterObject.getPrimaryField();
+        String masterPrimaryFieldName = masterPrimaryField.getName();
+        Map<XObject, SqlInsertCmd> detailInsertCmds = insertInfos.getDetailInsertCmds();
+        for (XObject detailObject : detailObjects) {
+            // 获取子表的插入指令
+            SqlInsertCmd detailInsertCmd = detailInsertCmds.get(detailObject);
+
+            // 如果存在自增主键的情况下，将主表插入时返回的自增主键的值按参数的顺序添加到每一个子表参数中
+            List<Map<String, Object>> detailParamMapList = detailInsertCmd.getParamMaps();
+            if (masterPrimaryField.isAutoGen()) {
+                String detailObjectMasterFieldName = detailObject.getObjectRefField(masterObjectName).getName();
+                for (Map<String, Object> subParamMap : detailParamMapList) {
+                    int paramIndex = (Integer) subParamMap.get(AbstractOqlInfos.PARAM_INDEX);
+                    Object masterAutoId = paramMaps.get(paramIndex).get(masterPrimaryFieldName);
+                    subParamMap.put(detailObjectMasterFieldName, masterAutoId);
+                }
+            }
+
+            // 批量插入子表数据
+            this.executor.batchInsert(detailInsertCmd);
+        }
+
+        return effectedRowsArray;
+    }
+
+    @Override
+    public int modify(OqlUpdateStatement stmt) {
+        return this.modify(stmt, new HashMap<>());
+    }
+
+    @Override
+    public int modify(OqlUpdateStatement stmt, Map<String, Object> paramMap) {
+        // OQL语句解析
+        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(stmt, paramMap);
+
+        // 更新本表
+        SqlUpdateCmd masterUpdateCmd = updateInfos.getMasterUpdateCmd();
+        int effectedRows = this.executor.update(masterUpdateCmd);
+
+        // 不存在子表时直接返回
+        List<XObject> detailObjects = updateInfos.getResolvedDetailObjects();
+        if (CollectionUtils.isEmpty(detailObjects)) {
+            return effectedRows;
+        }
+
+        // 循环处理子表
+        Map<XObject, SqlDeleteCmd> detailDeleteCmds = updateInfos.getDetailDeleteCmds();
+        Map<XObject, SqlInsertCmd> detailInsertCmds = updateInfos.getDetailInsertCmds();
+        Map<XObject, SqlUpdateCmd> detailUpdateCmds = updateInfos.getDetailUpdateCmds();
+        for (XObject detailObject : detailObjects) {
+            // 先删除被删除的记录
+            SqlDeleteCmd deleteCmd = detailDeleteCmds.get(detailObject);
+            if (deleteCmd != null) {
+                this.executor.delete(deleteCmd);
+            }
+
+            // 再批量插入新添加的记录
+            SqlInsertCmd insertCmd = detailInsertCmds.get(detailObject);
+            if (insertCmd != null) {
+                this.executor.batchInsert(insertCmd);
+            }
+
+            // 再批量更新有变更的记录
+            SqlUpdateCmd updateCmd = detailUpdateCmds.get(detailObject);
+            if (updateCmd != null) {
+                this.executor.batchUpdate(updateCmd);
+            }
+        }
+
+        return effectedRows;
+    }
+
+    @Override
+    public int[] modifyList(OqlUpdateStatement stmt, List<Map<String, Object>> paramMaps) {
+        // OQL语句解析
+        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(stmt, paramMaps);
+
+        // 批量更新本表
+        SqlUpdateCmd masterUpdateCmd = updateInfos.getMasterUpdateCmd();
+        int[] effectedRowsArray = this.executor.batchUpdate(masterUpdateCmd);
+
+        // 不存在子表时直接返回
+        List<XObject> detailObjects = updateInfos.getResolvedDetailObjects();
+        if (CollectionUtils.isEmpty(detailObjects)) {
+            return effectedRowsArray;
+        }
+
+        // 循环处理子表
+        Map<XObject, SqlDeleteCmd> detailDeleteCmds = updateInfos.getDetailDeleteCmds();
+        Map<XObject, SqlInsertCmd> detailInsertCmds = updateInfos.getDetailInsertCmds();
+        Map<XObject, SqlUpdateCmd> detailUpdateCmds = updateInfos.getDetailUpdateCmds();
+        for (XObject detailObject : detailObjects) {
+            // 先批量删除被删除的记录
+            SqlDeleteCmd deleteCmd = detailDeleteCmds.get(detailObject);
+            if (deleteCmd != null) {
+                this.executor.batchDelete(deleteCmd);
+            }
+
+            // 再批量插入新添加的记录
+            SqlInsertCmd insertCmd = detailInsertCmds.get(detailObject);
+            if (insertCmd != null) {
+                this.executor.batchInsert(insertCmd);
+            }
+
+            // 再批量更新有变更的记录
+            SqlUpdateCmd updateCmd = detailUpdateCmds.get(detailObject);
+            if (updateCmd != null) {
+                this.executor.batchUpdate(updateCmd);
+            }
+        }
+
+        return effectedRowsArray;
+    }
+
+    @Override
+    public int remove(OqlDeleteStatement stmt) {
+        return this.remove(stmt, new HashMap<>());
+    }
+
+    @Override
+    public int remove(OqlDeleteStatement stmt, Map<String, Object> paramMap) {
+        // OQL语句解析
+        OqlDeleteInfos deleteInfos = OqlStatementUtils.parseOqlDeleteInfos(stmt, paramMap);
+
+        // 删除主表
+        SqlDeleteCmd masterDeleteCmd = deleteInfos.getMasterDeleteCmd();
+        int effectedRows = this.executor.delete(masterDeleteCmd);
+
+        // 不存在子表时直接返回
+        List<XObject> detailObjects = deleteInfos.getResolvedDetailObjects();
+        if (CollectionUtils.isEmpty(detailObjects)) {
+            return effectedRows;
+        }
+
+        // 循环删除子表数据
+        Map<XObject, SqlDeleteCmd> detailDeleteCmds = deleteInfos.getDetailDeleteCmds();
+        for (XObject detailObject : detailObjects) {
+            SqlDeleteCmd deleteCmd = detailDeleteCmds.get(detailObject);
+            this.executor.delete(deleteCmd);
+        }
+
+        return effectedRows;
+    }
+
+    @Override
+    public int[] removeList(OqlDeleteStatement stmt, List<Map<String, Object>> paramMaps) {
+        // OQL语句解析
+        OqlDeleteInfos deleteInfos = OqlStatementUtils.parseOqlDeleteInfos(stmt, paramMaps);
+
+        // 删除主表
+        SqlDeleteCmd masterDeleteCmd = deleteInfos.getMasterDeleteCmd();
+        int[] effectedRowsArray = this.executor.batchDelete(masterDeleteCmd);
+
+        // 不存在子表时直接返回
+        List<XObject> detailObjects = deleteInfos.getResolvedDetailObjects();
+        if (CollectionUtils.isEmpty(detailObjects)) {
+            return effectedRowsArray;
+        }
+
+        // 循环删除子表数据
+        Map<XObject, SqlDeleteCmd> detailDeleteCmds = deleteInfos.getDetailDeleteCmds();
+        for (XObject detailObject : detailObjects) {
+            SqlDeleteCmd deleteCmd = detailDeleteCmds.get(detailObject);
+            this.executor.batchDelete(deleteCmd);
+        }
+
+        return effectedRowsArray;
+
+        // 循环删除子表数据
+        /*for (OqlDeleteCmd detailDeleteInfo : detailDeleteInfos) {
+            // 计算主表记录ID
+            SqlExpr selfPrimaryIdExpr = deleteInfos.getMainPrimaryIdExpr();
+            XObject detailObject = detailDeleteInfo.getResolvedObject();
+            XObjectRefField masterRefField = detailObject.getObjectRefField(mainObject.getName());
+            String masterFieldName = masterRefField.getName();
+
+            // 添加主表记录ID
+            List<Map<String, Object>> detailDeleteParamMaps = detailDeleteInfo.getParamMaps();
+            for (Map<String, Object> detailDeleteParamMap : detailDeleteParamMaps) {
+                int paramIndex = (Integer) detailDeleteParamMap.get(AbstractOqlInfos.PARAM_INDEX);
+                Object masterId = this.extractMasterId(selfPrimaryIdExpr, paramMaps.get(paramIndex));
+                detailDeleteParamMap.put(masterFieldName, masterId);
+            }
+
+            SqlDeleteStatement detailDeleteSqlStmt = detailDeleteInfo.getStatement();
+            this.repository.batchDelete(detailDeleteSqlStmt, detailDeleteParamMaps);
+        }*/
+    }
+
     /**
      * 转换查询结果，将resultMap中的key（列名）转换为字段名
      *
@@ -468,50 +735,73 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         return resultReducer.reduceResult(resultMap);
     }
 
+    /**
+     * 转换输入参数，将paramMap中的key（字段名）转换为列名
+     *
+     * @param paramMapper
+     * @param paramMapList
+     * @return 生成新的对象返回
+     */
+    /*private List<Map<String, Object>> convertParameterMaps(ParameterMapper paramMapper, List<Map<String, Object>> paramMapList) {
+        List<Map<String, Object>> targetMapList = new ArrayList<>();
+        for (Map<String, Object> paramaeterMap : paramMapList) {
+            targetMapList.add(this.convertParameterMap(paramMapper, paramaeterMap));
+        }
+        return targetMapList;
+    }*/
 
-    @Override
-    public int create(OqlInsertStatement stmt) {
-        return 0;
-    }
+    /**
+     * 转换输入参数，将paramMap中的key（字段名）转换为列名
+     *
+     * @param paramMapper
+     * @param paramMap
+     * @return 生成新的对象返回
+     */
+    /*private Map<String, Object> convertParameterMap(ParameterMapper paramMapper, Map<String, Object> paramMap) {
+        return paramMapper.mapParameter(paramMap);
+    }*/
 
-    @Override
-    public int create(OqlInsertStatement stmt, Map<String, Object> paramMap) {
-        return 0;
-    }
+    /**
+     * 汇总总影响行数
+     *
+     * @param effectedRowsArray
+     * @return
+     */
+    /*private int sumAndLogsumEffectedRows(int[] effectedRowsArray, OqlStatement stmt) {
+        int totalEffectedRows = 0;
+        for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
+            totalEffectedRows += effectedRowsArray[i];
+        }
 
-    @Override
-    public int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> dataMaps) {
-        return new int[0];
-    }
+        if (totalEffectedRows == 0) {
+            LOGGER.warn("OQL批量执行异常，总影响行数：0，OQL：{}", stmt);
+        } else {
+            LOGGER.warn("OQL批量执行成功，总影响行数：{}，OQL：{}", totalEffectedRows, stmt);
+        }
 
-    @Override
-    public int modify(OqlUpdateStatement stmt) {
-        return 0;
-    }
+        return totalEffectedRows;
+    }*/
 
-    @Override
-    public int modify(OqlUpdateStatement stmt, Map<String, Object> paramMap) {
-        return 0;
-    }
+    /**
+     * 根据主表ID表达式和入参中抽取主表记录ID
+     *
+     * @param masterIdExpr
+     * @param paramMap
+     * @return
+     */
+    /*private Object extractMasterId(SqlExpr masterIdExpr, Map<String, Object> paramMap) {
+        if (masterIdExpr == null) {
+            throw new FastOqlException("主表记录ID的值不存在");
+        }
 
-    @Override
-    public int[] modifyList(OqlUpdateStatement stmt, List<Map<String, Object>> dataMaps) {
-        return new int[0];
-    }
-
-    @Override
-    public int remove(OqlDeleteStatement stmt) {
-        return 0;
-    }
-
-    @Override
-    public int remove(OqlDeleteStatement stmt, Map<String, Object> paramMap) {
-        return 0;
-    }
-
-    @Override
-    public int[] removeList(OqlDeleteStatement stmt, List<Map<String, Object>> dataMaps) {
-        return new int[0];
-    }
+        if (masterIdExpr instanceof SqlValuableExpr) {
+            return ((SqlValuableExpr) masterIdExpr).getValue();
+        } else if (masterIdExpr instanceof SqlVariantRefExpr) {
+            String varName = ((SqlVariantRefExpr) masterIdExpr).getVarName();
+            return paramMap.get(varName);
+        } else {
+            throw new FastOqlException("主表记录ID的值计算出错");
+        }
+    }*/
 
 }

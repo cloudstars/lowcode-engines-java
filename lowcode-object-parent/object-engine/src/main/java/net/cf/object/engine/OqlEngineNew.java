@@ -82,10 +82,10 @@ public interface OqlEngineNew {
      * 批量创建记录
      *
      * @param stmt
-     * @param dataMaps
+     * @param paramMaps
      * @return 影响行数
      */
-    int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> dataMaps);
+    int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> paramMaps);
 
     /**
      * 更新记录
@@ -108,10 +108,10 @@ public interface OqlEngineNew {
      * 批量更新记录
      *
      * @param stmt
-     * @param dataMaps
+     * @param paramMaps
      * @return 影响行数
      */
-    int[] modifyList(OqlUpdateStatement stmt, List<Map<String, Object>> dataMaps);
+    int[] modifyList(OqlUpdateStatement stmt, List<Map<String, Object>> paramMaps);
 
     /**
      * 移除记录
@@ -134,9 +134,9 @@ public interface OqlEngineNew {
      * 批量移除记录
      *
      * @param stmt
-     * @param dataMaps
+     * @param paramMaps
      * @return 影响行数
      */
-    int[] removeList(OqlDeleteStatement stmt, List<Map<String, Object>> dataMaps);
+    int[] removeList(OqlDeleteStatement stmt, List<Map<String, Object>> paramMaps);
 
 }

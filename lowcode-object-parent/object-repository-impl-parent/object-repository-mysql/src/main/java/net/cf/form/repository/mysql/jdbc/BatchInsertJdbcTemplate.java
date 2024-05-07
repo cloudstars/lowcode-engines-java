@@ -6,11 +6,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 批量插入专用的JdbcTemplate
+ *
+ * @author clouds
+ */
 public class BatchInsertJdbcTemplate {
 
     private final Logger logger = LoggerFactory.getLogger(BatchInsertJdbcTemplate.class);
@@ -29,10 +35,12 @@ public class BatchInsertJdbcTemplate {
      * @return
      */
     public int[] batchInsert(SqlInsertStatement stmt, List<Map<String, Object>> paramMaps) {
+        assert (!CollectionUtils.isEmpty(paramMaps));
+
         // 将变量替换为问号
         String sql = SqlUtils.toSqlText(stmt);
         String targetSql = sql.replaceAll(":[\\w\\.]+", "?");
-        logger.info("目标执行的SQL语句为：" + targetSql);
+        logger.info("目标执行的批量SQL语句为：" + targetSql);
 
         BatchPreparedStatementSetter pss = new MapListBatchPreparedStatementSetter(stmt, paramMaps);
         BatchInsertPreparedStatementCallback callback = new BatchInsertPreparedStatementCallback(sql, pss);

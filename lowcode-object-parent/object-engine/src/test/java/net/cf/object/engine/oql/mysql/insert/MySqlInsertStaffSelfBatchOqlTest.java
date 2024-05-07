@@ -1,8 +1,8 @@
 
-package net.cf.object.engine.oql.mysql.insert.batch;
+package net.cf.object.engine.oql.mysql.insert;
 
 import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
-import net.cf.object.engine.oql.testcase.insert.batch.AbstractInsertStaffSelfBatchRepoTest;
+import net.cf.object.engine.oql.testcase.insert.AbstractInsertStaffSelfBatchRepoTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

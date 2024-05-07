@@ -1,7 +1,7 @@
 package net.cf.object.engine.data;
 
 import net.cf.object.engine.object.DataType;
-import net.cf.object.engine.object.ValueType;
+import net.cf.object.engine.object.ValueTypeImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,14 +30,14 @@ public final class FieldMappingDefs {
 
     public static List<FieldMapping> getDefList2() {
         FieldMapping valueDef1 = new FieldMapping("f1");
-        valueDef1.setValueType(new ValueType(DataType.OBJECT, true));
+        valueDef1.setValueType(new ValueTypeImpl(DataType.OBJECT, true));
         valueDef1.addSubFields(Arrays.asList(
                 new FieldMapping("f11", "f1.f11", DataType.STRING),
                 new FieldMapping("f12", "f1.f12", DataType.NUMBER),
                 new FieldMapping("f13", "f1.f13", DataType.NUMBER))
         );
         FieldMapping valueDef2 = new FieldMapping("f2");
-        valueDef2.setValueType(new ValueType(DataType.OBJECT, true));
+        valueDef2.setValueType(new ValueTypeImpl(DataType.OBJECT, true));
         FieldMapping valueDef3 = new FieldMapping("f3", DataType.OBJECT);
         valueDef3.addSubFields(Arrays.asList(
                 new FieldMapping("f31", "f3.f31", DataType.STRING),
@@ -81,14 +81,14 @@ public final class FieldMappingDefs {
 
     public static List<FieldMapping> getDefList5() {
         FieldMapping valueDef1 = new FieldMapping("f1");
-        valueDef1.setValueType(new ValueType(DataType.OBJECT, true));
+        valueDef1.setValueType(new ValueTypeImpl(DataType.OBJECT, true));
         valueDef1.addSubFields(Arrays.asList(
                 new FieldMapping("f11", "f1.f11", DataType.STRING),
                 new FieldMapping("f12", "f1.f12", DataType.NUMBER),
                 new FieldMapping("f13", "f1.f13", DataType.NUMBER))
         );
         FieldMapping valueDef2 = new FieldMapping("f2");
-        valueDef2.setValueType(new ValueType(DataType.OBJECT, true));
+        valueDef2.setValueType(new ValueTypeImpl(DataType.OBJECT, true));
         valueDef2.addSubFields(Arrays.asList(
                 new FieldMapping("f21", "f2.f21", DataType.STRING),
                 new FieldMapping("f22", "f2.f22", DataType.NUMBER),

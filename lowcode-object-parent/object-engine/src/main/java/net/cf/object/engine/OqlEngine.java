@@ -59,6 +59,7 @@ public interface OqlEngine {
      * @param statement
      * @return 影响行数
      */
+    @Deprecated
     int create(OqlInsertStatement statement);
 
     /**
@@ -68,6 +69,7 @@ public interface OqlEngine {
      * @param paramMap
      * @return
      */
+    @Deprecated
     int create(OqlInsertStatement statement, Map<String, Object> paramMap);
 
     /**
@@ -77,6 +79,7 @@ public interface OqlEngine {
      * @param dataMaps
      * @return 影响行数
      */
+    @Deprecated
     int[] createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps);
 
     /**

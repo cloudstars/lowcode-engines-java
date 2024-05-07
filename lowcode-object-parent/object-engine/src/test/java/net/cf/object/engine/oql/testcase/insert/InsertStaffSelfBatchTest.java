@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.testcase.insert.batch;
+package net.cf.object.engine.oql.testcase.insert;
 
 /**
  * 插入员工本表（批量）记录
@@ -7,7 +7,7 @@ package net.cf.object.engine.oql.testcase.insert.batch;
  */
 public interface InsertStaffSelfBatchTest {
 
-    String OQL_FILE_PATH = "oql/insert/InsertStaffBatch.json";
+    String OQL_FILE_PATH = "oql/insert/InsertStaff.json";
 
     String OQL_INSERT_STAFF_BATCH_VARS = "InsertStaffBatchVars";
 

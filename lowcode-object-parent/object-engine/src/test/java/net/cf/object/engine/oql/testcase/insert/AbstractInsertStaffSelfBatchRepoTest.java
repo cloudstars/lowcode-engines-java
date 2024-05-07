@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.testcase.insert.batch;
+package net.cf.object.engine.oql.testcase.insert;
 
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
@@ -31,7 +31,7 @@ public abstract class AbstractInsertStaffSelfBatchRepoTest extends AbstractOqlRe
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_STAFF_BATCH_VARS);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
             assert (oqlInfo.paramMaps.size() == 2);
-            int[] effectedRowsArray = this.engine.createList(oqlStmt, oqlInfo.paramMaps);
+            int[] effectedRowsArray = this.engineNew.createList(oqlStmt, oqlInfo.paramMaps);
             assert (effectedRowsArray.length == 2);
             assert (oqlInfo.paramMaps.get(0).get("staffId") != null);
             assert (oqlInfo.paramMaps.get(1).get("staffId") != null);

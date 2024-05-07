@@ -28,6 +28,16 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
         this(name, null);
     }
 
+    /**
+     * 从变量名构建
+     *
+     * @param varName
+     * @return
+     */
+    public static SqlVariantRefExpr fromVarName(String varName) {
+        return new SqlVariantRefExpr("#{" + varName + "}");
+    }
+
     public SqlVariantRefExpr(String name, SqlObject parent) {
         if ((name.startsWith("#{") && name.endsWith("}")) || (name.startsWith("${") && name.endsWith("}"))) {
             this.setVarNameByName(name);

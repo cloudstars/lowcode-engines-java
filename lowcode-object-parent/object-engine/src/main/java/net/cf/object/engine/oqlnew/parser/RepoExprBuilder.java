@@ -212,35 +212,4 @@ public final class RepoExprBuilder extends AbstractOqlParser {
         }
     }
 
-    /**
-     * 获取字段的名称
-     *
-     * @param fieldExpr
-     * @return
-     */
-    /*protected String getFieldName(OqlFieldExpr fieldExpr) {
-        String owner = fieldExpr.getOwner();
-        if (owner != null) {
-            return owner + "." + fieldExpr.getName();
-        } else {
-            return fieldExpr.getName();
-        }
-    }*/
-
-    /**
-     * 获取属性的名称
-     *
-     * @param propExpr
-     * @return
-     */
-    /*protected String getPropertyName(ObjectExpandField propExpr) {
-        OqlFieldExpr owner = propExpr.getOwner();
-        if (owner != null) {
-            return owner.getName() + "." + propExpr.getName();
-        } else {
-            return propExpr.getName();
-        }
-    }*/
-
-
 }

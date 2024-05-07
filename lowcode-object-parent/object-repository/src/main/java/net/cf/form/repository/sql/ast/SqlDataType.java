@@ -14,7 +14,6 @@ public enum SqlDataType {
     DECIMAL(Types.DECIMAL),
     TIMESTAMP(Types.TIMESTAMP),
     DATE(Types.DATE),
-    TIME(Types.TIME),
     BOOLEAN(Types.BOOLEAN),
     OBJECT(Types.JAVA_OBJECT);
 

@@ -1,7 +1,8 @@
-package net.cf.object.engine.oqlnew.info;
+package net.cf.object.engine.oqlnew.cmd;
 
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.data.FieldMapping;
+import net.cf.object.engine.oqlnew.sql.AbstractSqlCmd;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class OqlSelectInfo extends AbstractOqlInfo<SqlSelectStatement> {
+public class OqlSelectInfo extends AbstractSqlCmd<SqlSelectStatement> {
 
     /**
      * 查询的字段映射关系

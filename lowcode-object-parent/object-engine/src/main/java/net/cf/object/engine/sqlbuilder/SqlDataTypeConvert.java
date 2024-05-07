@@ -3,6 +3,7 @@ package net.cf.object.engine.sqlbuilder;
 import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.object.engine.object.DataType;
 import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XProperty;
 
 /**
  * SQL数据格式转换器
@@ -20,14 +21,31 @@ public final class SqlDataTypeConvert {
         }
 
         DataType dataType = field.getDataType();
+        Integer precision = field.getDataPrecision();
+        Number maxValue = field.getMaxValue();
+        return SqlDataTypeConvert.toSqlDataType(dataType, precision, maxValue);
+    }
+
+
+    public static SqlDataType toSqlDataType(XProperty property) {
+        if (property.isArray()) {
+            return SqlDataType.OBJECT;
+        }
+
+        DataType dataType = property.getDataType();
+        Integer precision = property.getDataPrecision();
+        // TODO XField、XProperty需要抽一个抽象类
+        Number maxValue = property.getMaxValue();
+        return SqlDataTypeConvert.toSqlDataType(dataType, precision, maxValue);
+    }
+
+    private static SqlDataType toSqlDataType(DataType dataType, Integer precision, Number maxValue) {
         if (dataType == DataType.STRING) {
             return SqlDataType.CHAR;
         } else if (dataType == DataType.NUMBER) {
-            Integer precision = field.getDataPrecision();
             if (precision != null && precision > 0) {
                 return SqlDataType.DECIMAL;
             } else {
-                Number maxValue = field.getMaxValue();
                 if (maxValue != null) {
                     if (maxValue.longValue() > Integer.MAX_VALUE) {
                         return SqlDataType.LONG;
@@ -40,8 +58,6 @@ public final class SqlDataTypeConvert {
             }
         } else if (dataType == DataType.DATE) {
             return SqlDataType.DATE;
-        } else if (dataType == DataType.TIME) {
-            return SqlDataType.TIME;
         } else if (dataType == DataType.BOOLEAN) {
             return SqlDataType.BOOLEAN;
         } else {

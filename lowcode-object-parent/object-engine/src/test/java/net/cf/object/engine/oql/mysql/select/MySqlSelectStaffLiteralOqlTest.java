@@ -18,4 +18,5 @@ public class MySqlSelectStaffLiteralOqlTest extends AbstractSelectStaffSelfLiter
     public void testSelectStaffSelfLiteral() {
         super.testSelectStaffSelfLiteral();
     }
+
 }

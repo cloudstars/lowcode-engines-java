@@ -10,7 +10,6 @@ import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.util.SqlExprUtils;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -395,7 +394,7 @@ public class SqlExprParser extends AbstractSqlParser {
                         String key = this.lexer.stringVal();
                         this.lexer.nextToken();
                         this.accept(Token.COLON);
-                        ((SqlJsonObjectExpr) expr).putItem(key, this.expr());
+                        ((SqlJsonObjectExpr) expr).putItem(key, (SqlValuableExpr) this.expr());
                         if (this.lexer.token == Token.COMMA) {
                             this.lexer.nextToken();
                         }
@@ -540,7 +539,7 @@ public class SqlExprParser extends AbstractSqlParser {
      * @param exprCol
      * @param parent
      */
-    public final void exprList(Collection<SqlExpr> exprCol, SqlObject parent) {
+    public final <T extends SqlExpr> void exprList(List<T> exprCol, SqlObject parent) {
         while (this.lexer.token != Token.RPAREN) {
             SqlExpr expr = this.expr();
 
@@ -548,12 +547,12 @@ public class SqlExprParser extends AbstractSqlParser {
                 accept(Token.AS);
                 String alias = this.lexer.stringVal();
                 this.lexer.nextToken();
-                // 存在这样的场景：field(1 as prop1)、object(f1 as fx)
+                // 存在这样的场景：object(f1 as f1')
                 expr = new SqlSelectItem(expr, alias);
             }
 
             expr.setParent(parent);
-            exprCol.add(expr);
+            exprCol.add((T) expr);
 
             if (this.lexer.token != Token.COMMA) {
                 return;

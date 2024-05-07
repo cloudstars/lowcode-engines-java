@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.testcase.insert.batch;
+package net.cf.object.engine.oql.testcase.insert;
 
 import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;

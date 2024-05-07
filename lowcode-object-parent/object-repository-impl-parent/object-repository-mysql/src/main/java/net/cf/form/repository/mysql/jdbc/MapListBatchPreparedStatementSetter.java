@@ -83,14 +83,6 @@ public class MapListBatchPreparedStatementSetter implements BatchPreparedStateme
                     } else {
                         ps.setString(pi, (String) javaValue);
                     }
-                } else if (columnDataType == SqlDataType.TIME) {
-                    if (javaValue instanceof Time) {
-                        ps.setTime(pi, (Time) javaValue);
-                    } else if (javaValue instanceof Number) {
-                        ps.setTime(pi, new Time(((Number) javaValue).intValue()));
-                    } else {
-                        ps.setString(pi, (String) javaValue);
-                    }
                 } else if (columnDataType == SqlDataType.TIMESTAMP) {
                     if (javaValue instanceof Timestamp) {
                         ps.setTimestamp(pi, (Timestamp) javaValue);

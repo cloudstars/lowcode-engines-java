@@ -28,15 +28,15 @@ public abstract class AbstractUpdateTravelDetailRepoTest
         OqlSelectStatement detailOqlSelectStmt = OqlUtils.parseSingleSelectStatement(this.resolver, detailOqlSelect);
         List<Map<String, Object>> subRecords = this.engineNew.queryList(detailOqlSelectStmt);
         assert (subRecords.size() == 2);
-        String tripId0 = subRecords.get(0).get("tripId").toString();
-        String tripId1 = subRecords.get(1).get("tripId").toString();
+        Object tripId0 = subRecords.get(0).get("tripId");
+        Object tripId1 = subRecords.get(1).get("tripId");
 
         {
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_VARS);
             OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
-            Map<String, Object> paramMap = this.getEditParamMap(TravelObject.RECORD1, tripId0);
-            int effectedRows = this.engine.modify(oqlStmt, paramMap);
+            ((Map) (((List) oqlInfo.paramMap.get("trips")).get(0))).put("tripId", tripId0);
+            int effectedRows = this.engineNew.modify(oqlStmt, oqlInfo.paramMap);
             assert (effectedRows == 1);
         }
 
@@ -44,18 +44,17 @@ public abstract class AbstractUpdateTravelDetailRepoTest
             // 重新查出来作断言
             subRecords = this.engineNew.queryList(detailOqlSelectStmt);
             assert (subRecords != null && subRecords.size() == 2); // 新加一条、更新一条、删一条还是2
-            boolean tripId0Updated = false; // 第1条子表字段是否更新过、
+            boolean tripId0Exist = false; // 第1条子表字段是否存在、
             boolean tripId1Exist = false; // 第2条子表记录是否存在
             for (Map<String, Object> subRecord : subRecords) {
-                String tripId = subRecord.get("tripId").toString();
+                Object tripId = subRecord.get("tripId");
                 if (tripId.equals(tripId0)) {
-                    // assert (subRecord.get("modifier") != null);
-                    tripId0Updated = true;
+                    tripId0Exist = true;
                 } else if (tripId.equals(tripId1)) {
                     tripId1Exist = true;
                 }
             }
-            assert (tripId0Updated && !tripId1Exist);
+            assert (tripId0Exist && !tripId1Exist);
         }
     }
 }

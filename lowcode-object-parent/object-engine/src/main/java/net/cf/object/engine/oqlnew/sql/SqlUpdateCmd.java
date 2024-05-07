@@ -1,21 +1,17 @@
-package net.cf.object.engine.oqlnew.info;
+package net.cf.object.engine.oqlnew.sql;
 
-import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
+import net.cf.object.engine.data.FieldMapping;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 模型的插入信息
+ * SQL 更新指令
  *
  * @author clouds
  */
-public class OqlInsertInfo extends AbstractOqlInfo<SqlInsertStatement> {
-
-    /**
-     * 是否批量执行
-     */
-    private boolean isBatch;
+public class SqlUpdateCmd extends AbstractSqlCmd<SqlUpdateStatement> {
 
     /**
      * 单条执行时的参数
@@ -27,13 +23,10 @@ public class OqlInsertInfo extends AbstractOqlInfo<SqlInsertStatement> {
      */
     private List<Map<String, Object>> paramMaps;
 
-    public boolean isBatch() {
-        return isBatch;
-    }
-
-    public void setBatch(boolean batch) {
-        isBatch = batch;
-    }
+    /**
+     * 字段映射表
+     */
+    private List<FieldMapping> fieldMappings;
 
     public Map<String, Object> getParamMap() {
         return paramMap;
@@ -50,4 +43,13 @@ public class OqlInsertInfo extends AbstractOqlInfo<SqlInsertStatement> {
     public void setParamMaps(List<Map<String, Object>> paramMaps) {
         this.paramMaps = paramMaps;
     }
+
+    public List<FieldMapping> getFieldMappings() {
+        return fieldMappings;
+    }
+
+    public void setFieldMappings(List<FieldMapping> fieldMappings) {
+        this.fieldMappings = fieldMappings;
+    }
+
 }

@@ -114,7 +114,7 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
         // 构建字段的查询信息（展开无字段信息）
         SelectItemInfo parentItemInfo = new SelectItemInfo();
         FieldMapping parentFieldMapping = new FieldMapping(field.getName());
-        parentFieldMapping.setValueType(new ValueType(field.getDataType(), field.isArray()));
+        parentFieldMapping.setValueType(new ValueTypeImpl(field.getDataType(), field.isArray()));
         parentItemInfo.setFieldMapping(parentFieldMapping);
 
         List<OqlPropertyExpr> propExprs = OqlUtils.defaultExpandFieldProperties(field);
@@ -140,7 +140,7 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
         // 构建模型的查询信息（展开无字段信息）
         SelectItemInfo parentItemInfo = new SelectItemInfo();
         FieldMapping parentFieldMapping = new FieldMapping(objectRefField.getName());
-        parentFieldMapping.setValueType(new ValueType(objectRefField.getDataType(), objectRefField.isArray()));
+        parentFieldMapping.setValueType(new ValueTypeImpl(objectRefField.getDataType(), objectRefField.isArray()));
         parentItemInfo.setFieldMapping(parentFieldMapping);
 
         List<SelectItemInfo> subItemInfos;
@@ -193,7 +193,7 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
     private SelectItemInfo expandObject(XObjectRefField expandField, List<OqlExpr> expandExprs) {
         SelectItemInfo parentItemInfo = new SelectItemInfo();
         FieldMapping parentFieldMapping = new FieldMapping(expandField.getOwner().getName());
-        parentFieldMapping.setValueType(new ValueType(DataType.OBJECT, expandField.isArray()));
+        parentFieldMapping.setValueType(new ValueTypeImpl(DataType.OBJECT, expandField.isArray()));
         parentItemInfo.setFieldMapping(parentFieldMapping);
         List<SelectItemInfo> subItemInfos = this.buildItemInfoList(expandField.getOwner(), expandExprs);
         parentItemInfo.addSubItemInfos(subItemInfos);
@@ -212,7 +212,7 @@ public final class SelectOqlSqlBuilderAstVisitor extends SqlBuilderOqlAstVisitor
     private SelectItemInfo expandField(XField expandField, List<SqlExpr> expandExprs) {
         SelectItemInfo parentItemInfo = new SelectItemInfo();
         FieldMapping parentFieldMapping = new FieldMapping(expandField.getName());
-        parentFieldMapping.setValueType(new ValueType(expandField.getDataType(), expandField.isArray()));
+        parentFieldMapping.setValueType(new ValueTypeImpl(expandField.getDataType(), expandField.isArray()));
         parentItemInfo.setFieldMapping(parentFieldMapping);
         List<SelectItemInfo> subItemInfos = this.buildItemInfoList(expandField.getOwner(), expandExprs);
         parentItemInfo.addSubItemInfos(subItemInfos);

@@ -69,26 +69,6 @@ public class InsertTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
-    @Override
-    public void testInsertTravelWithExpandCreator() {
-
-    }
-
-    @Override
-    public void testInsertTravelWithExpandCreatorVars() {
-
-    }
-
-    @Override
-    public void testInsertTravelWithSingleCreator() {
-
-    }
-
-    @Override
-    public void testInsertTravelWithSingleCreatorVars() {
-
-    }
-
     @Test
     @Override
     public void testInsertTravelWithAttachesVars() {

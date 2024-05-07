@@ -148,6 +148,23 @@ public final class SqlUtils {
     }
 
     /**
+     * 将 List<Map> 参数转换为JDBC-TEMPLATE批量更新的参数格式
+     *
+     * @param paramMaps
+     * @return
+     */
+    public static SqlParameterSource[] convertParamMaps(List<Map<String, Object>> paramMaps) {
+        int paramSize = paramMaps.size();
+        SqlParameterSource[] paramSources = new AdvancedMapSqlParameterSource[paramSize];
+        for (int i = 0; i < paramSize; i++) {
+            Map<String, Object> paramMap = paramMaps.get(i);
+            paramSources[i] = new AdvancedMapSqlParameterSource(paramMap);
+        }
+
+        return paramSources;
+    }
+
+    /**
      * 处理变量引用节点
      *
      * @param varRefExpr

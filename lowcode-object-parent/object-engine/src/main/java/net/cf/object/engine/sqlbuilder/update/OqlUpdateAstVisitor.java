@@ -4,10 +4,11 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateSetItem;
 import net.cf.object.engine.data.FieldMapping;
-import net.cf.object.engine.object.ValueType;
+import net.cf.object.engine.object.ValueTypeImpl;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.FastOqlException;
@@ -102,7 +103,7 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         List<OqlPropertyExpr> properties = OqlUtils.defaultExpandFieldProperties(resolvedField);
         if (updateValue instanceof SqlJsonObjectExpr) {
             SqlJsonObjectExpr jsonObjectExpr = (SqlJsonObjectExpr) updateValue;
-            Map<String, SqlExpr> items = jsonObjectExpr.getItems();
+            Map<String, SqlValuableExpr> items = jsonObjectExpr.getItems();
             for (OqlPropertyExpr property : properties) {
                 SqlUpdateSetItem sqlSetItem = new SqlUpdateSetItem();
                 sqlSetItem.setColumn(this.buildSqlExpr(this.selfObject, property));
@@ -112,11 +113,11 @@ public final class OqlUpdateAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         } else if (updateValue instanceof SqlVariantRefExpr) {
             FieldItemInfo fieldItemInfo = new FieldItemInfo();
             FieldMapping fieldMapping = new FieldMapping(resolvedField.getName(), resolvedField.getColumnName());
-            fieldMapping.setValueType(new ValueType(resolvedField.getDataType(), resolvedField.isArray()));
+            fieldMapping.setValueType(new ValueTypeImpl(resolvedField.getDataType(), resolvedField.isArray()));
             fieldItemInfo.setFieldMapping(fieldMapping);
 
-            SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) updateValue;
-            String varName = variantRefExpr.getVarName();
+            SqlVariantRefExpr varRefExpr = (SqlVariantRefExpr) updateValue;
+            String varName = varRefExpr.getVarName();
             for (OqlPropertyExpr property : properties) {
                 if (property instanceof OqlPropertyExpr) {
                     XProperty resolvedProp = property.getResolvedProperty();

@@ -1,9 +1,15 @@
-package net.cf.object.engine.oqlnew.info;
+package net.cf.object.engine.oqlnew.sql;
 
 import net.cf.form.repository.sql.ast.statement.SqlStatement;
 import net.cf.object.engine.object.XObject;
 
-public abstract class AbstractOqlInfo<S extends SqlStatement> {
+
+/**
+ * 抽象的SQL指令，用于一次 SQL 执行
+ *
+ * @param <S>
+ */
+public abstract class AbstractSqlCmd<S extends SqlStatement> {
 
     /**
      * 解析后的本表模型
@@ -14,6 +20,11 @@ public abstract class AbstractOqlInfo<S extends SqlStatement> {
      * 解析后的SQL语句
      */
     protected S statement;
+
+    /**
+     * 是否批量指令
+     */
+    private boolean isBatch;
 
     public XObject getResolvedObject() {
         return resolvedObject;
@@ -31,4 +42,11 @@ public abstract class AbstractOqlInfo<S extends SqlStatement> {
         this.statement = statement;
     }
 
+    public boolean isBatch() {
+        return isBatch;
+    }
+
+    public void setBatch(boolean batch) {
+        isBatch = batch;
+    }
 }

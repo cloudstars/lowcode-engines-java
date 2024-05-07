@@ -2,6 +2,7 @@ package net.cf.object.engine.data;
 
 import net.cf.object.engine.object.DataType;
 import net.cf.object.engine.object.ValueType;
+import net.cf.object.engine.object.ValueTypeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,16 +47,16 @@ public class FieldMapping {
     public FieldMapping(String fieldName, String columnName, DataType dataType) {
         this.fieldName = fieldName;
         this.columnName = columnName;
-        this.valueType = new ValueType(dataType);
+        this.valueType = new ValueTypeImpl(dataType);
     }
 
     public FieldMapping(String fieldName, DataType dataType) {
         this.fieldName = fieldName;
         this.columnName = fieldName;
-        this.valueType = new ValueType(dataType);
+        this.valueType = new ValueTypeImpl(dataType);
     }
 
-    public FieldMapping(String fieldName, ValueType valueType) {
+    public FieldMapping(String fieldName, ValueTypeImpl valueType) {
         this.fieldName = fieldName;
         this.columnName = fieldName;
         this.valueType = valueType;
@@ -64,13 +65,13 @@ public class FieldMapping {
     public FieldMapping(String fieldName, DataType dataType, boolean isArray) {
         this.fieldName = fieldName;
         this.columnName = fieldName;
-        this.valueType = new ValueType(dataType, isArray);
+        this.valueType = new ValueTypeImpl(dataType, isArray);
     }
 
     public FieldMapping(String fieldName, String columnName, DataType dataType, boolean isArray) {
         this.fieldName = fieldName;
         this.columnName = columnName;
-        this.valueType = new ValueType(dataType, isArray);
+        this.valueType = new ValueTypeImpl(dataType, isArray);
     }
 
     public String getFieldName() {

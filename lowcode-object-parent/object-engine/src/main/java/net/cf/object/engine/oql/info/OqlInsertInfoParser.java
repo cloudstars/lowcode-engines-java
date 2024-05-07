@@ -110,7 +110,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
                         this.detailInsertInfos.add(detailInsertInfo);
                     }
                 } else {
-                    selfInsertInto.addField(field);
+                    selfInsertInto.addField((OqlFieldExpr) field);
                     for (int j = 0; j < valuesSize; j++) {
                         SqlExpr fieldValue = valuesList.get(j).getValues().get(i);
                         selfInsertInto.getValuesList().get(j).addValue(fieldValue);
@@ -129,7 +129,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
      * @param exprs
      * @return
      */
-    protected boolean hasDetailFields(List<OqlExpr> exprs) {
+    protected boolean hasDetailFields(List<? extends SqlExpr> exprs) {
         for (SqlExpr expr : exprs) {
             if (expr instanceof OqlObjectExpandExpr) {
                 OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) expr;
@@ -195,8 +195,8 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
                     assert (itemValueExpr instanceof SqlJsonObjectExpr);
                     Map<String, Object> itemValueMap = new HashMap<>();
                     SqlJsonObjectExpr itemObjectValueExpr = (SqlJsonObjectExpr) itemValueExpr;
-                    Map<String, SqlExpr> itemObjectItems = itemObjectValueExpr.getItems();
-                    for (Map.Entry<String, SqlExpr> entry : itemObjectItems.entrySet()) {
+                    Map<String, SqlValuableExpr> itemObjectItems = itemObjectValueExpr.getItems();
+                    for (Map.Entry<String, SqlValuableExpr> entry : itemObjectItems.entrySet()) {
                         SqlExpr vExpr = entry.getValue();
                         // TODO 语法检查应该在Checker里面做
                         assert (vExpr instanceof SqlValuableExpr);
@@ -245,8 +245,7 @@ public class OqlInsertInfoParser extends AbstractOqlInfoParser {
         for (OqlExpr detailField : detailFields) {
             // TODO 在Check中检查字段只能是OqlFieldExpr
             assert (detailField instanceof OqlFieldExpr);
-
-            detailInsertInto.addField(detailField);
+            detailInsertInto.addField((OqlFieldExpr) detailField);
             String varName = ((OqlFieldExpr) detailField).getName();
             SqlVariantRefExpr varRefExpr = new SqlVariantRefExpr("#{" + varName + "}");
             valuesClause.addValue(varRefExpr);

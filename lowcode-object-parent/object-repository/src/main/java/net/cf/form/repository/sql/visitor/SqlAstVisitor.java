@@ -171,24 +171,6 @@ public interface SqlAstVisitor {
     }
 
     /**
-     * 开始访问 SqlTimeExpr 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlTimeExpr x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlTimeExpr
-     *
-     * @param x
-     */
-    default void endVisit(SqlTimeExpr x) {
-    }
-
-    /**
      * 开始访问 SqlNullExpr 节点
      *
      * @param x

@@ -1,7 +1,7 @@
 package net.cf.object.engine.data;
 
 import net.cf.object.engine.object.DataType;
-import net.cf.object.engine.object.ValueType;
+import net.cf.object.engine.object.ValueTypeImpl;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -19,7 +19,7 @@ public class DataConvert {
      * @param resultVal
      * @return
      */
-    public static Object convert(final Object resultVal, ValueType valueType) {
+    public static Object convert(final Object resultVal, ValueTypeImpl valueType) {
         Object resultValue = resultVal;
         if (resultValue == null) {
             return null;

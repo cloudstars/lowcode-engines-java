@@ -8,7 +8,7 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlJsonArrayExpr extends AbstractSqlExprImpl {
+public class SqlJsonArrayExpr extends AbstractSqlExprImpl implements SqlValuableExpr {
 
     private List<SqlExpr> items = new ArrayList();
 
@@ -40,13 +40,25 @@ public class SqlJsonArrayExpr extends AbstractSqlExprImpl {
     }
 
     @Override
-    public SqlExpr cloneMe() {
+    public SqlJsonArrayExpr cloneMe() {
         List<SqlExpr> x = new ArrayList<>();
         for (SqlExpr item : this.items) {
             x.add(item.cloneMe());
         }
 
         return new SqlJsonArrayExpr(x);
+    }
+
+    @Override
+    public Object getValue() {
+        List<Object> value = new ArrayList<>();
+        for (SqlExpr item : this.items) {
+            if (item instanceof SqlValuableExpr) {
+                value.add(((SqlValuableExpr) item).getValue());
+            }
+        }
+
+        return value;
     }
 
     @Override

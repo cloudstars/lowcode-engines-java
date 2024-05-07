@@ -2,7 +2,7 @@
 package net.cf.object.engine.oql.mongo.insert.batch;
 
 import net.cf.object.engine.oql.mongo.ObjectEngineOqlMongoTestApplication;
-import net.cf.object.engine.oql.testcase.insert.batch.AbstractInsertStaffSelfBatchRepoTest;
+import net.cf.object.engine.oql.testcase.insert.AbstractInsertStaffSelfBatchRepoTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

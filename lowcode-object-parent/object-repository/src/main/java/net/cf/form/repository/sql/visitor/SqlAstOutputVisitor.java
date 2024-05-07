@@ -21,6 +21,12 @@ import java.util.Map;
  */
 public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements ParameterizedVisitor, PrintableVisitor {
 
+
+    /**
+     * 列表中每项输出的分隔符
+     */
+    private static final String LIST_ITEM_SEPARATOR = ", ";
+
     /**
      * 输出目标
      */
@@ -271,26 +277,22 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         this.printChars(x.getText());
         return false;
     }
-
-    @Override
-    public boolean visit(SqlTimeExpr x) {
-        this.print(this.uppercase ? "TIME " : "time ");
-        this.printChars(x.getText());
-        return false;
-    }
-
     @Override
     public boolean visit(SqlNullExpr x) {
         this.print(this.uppercase ? "NULL" : "null");
         return false;
     }
-
+    @Override
+    public boolean visit(SqlListExpr x) {
+        this.printParenthesesAndAcceptList(x.getItems(), ", ");
+        return false;
+    }
     @Override
     public boolean visit(SqlJsonObjectExpr x) {
         this.print("{");
-        Map<String, SqlExpr> items = x.getItems();
+        Map<String, SqlValuableExpr> items = x.getItems();
         int i = 0;
-        for (Map.Entry<String, SqlExpr> entry : items.entrySet()) {
+        for (Map.Entry<String, SqlValuableExpr> entry : items.entrySet()) {
             if (i++ > 0) {
                 this.print(", ");
             }
@@ -312,7 +314,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         List<SqlExpr> items = x.getItems();
         for (int i = 0, l = items.size(); i < l; i++) {
             if (i != 0) {
-                this.print(", ");
+                this.print(LIST_ITEM_SEPARATOR);
             }
             SqlExpr item = items.get(i);
             if (item instanceof SqlCharExpr) {
@@ -372,7 +374,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
             this.print(this.uppercase ? " NOT " : " not ");
         }
         this.print(this.uppercase ? " IN " : " in ");
-        this.printParenthesesAndAcceptList(x.getTargetList(), ", ");
+        this.printParenthesesAndAcceptList(x.getTargetList(), LIST_ITEM_SEPARATOR);
         return false;
     }
 
@@ -428,7 +430,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     public boolean visit(SqlMethodInvokeExpr x) {
         String methodName = x.getMethodName();
         this.print(this.uppercase ? methodName.toUpperCase() : methodName.toLowerCase());
-        this.printParenthesesAndAcceptList(x.getArguments(), ", ");
+        this.printParenthesesAndAcceptList(x.getArguments(), LIST_ITEM_SEPARATOR);
         return false;
     }
 
@@ -436,7 +438,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     public boolean visit(SqlAggregateExpr x) {
         String methodName = x.getMethodName();
         this.print(this.uppercase ? methodName.toUpperCase() : methodName.toLowerCase());
-        this.printParenthesesAndAcceptList(x.getArguments(), ", ");
+        this.printParenthesesAndAcceptList(x.getArguments(), LIST_ITEM_SEPARATOR);
         return false;
     }
 
@@ -516,7 +518,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
         // 输出查询的列
         List<SqlSelectItem> selectItems = x.getSelectItems();
-        this.printAndAcceptList(selectItems, ", ");
+        this.printAndAcceptList(selectItems, LIST_ITEM_SEPARATOR);
 
         // 输出查询的表
         SqlTableSource from = x.getFrom();
@@ -586,7 +588,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         SqlExpr offset = x.getOffset();
         if (offset != null) {
             offset.accept(this);
-            this.print(", ");
+            this.print(LIST_ITEM_SEPARATOR);
         }
 
         SqlExpr rowCount = x.getRowCount();
@@ -605,14 +607,14 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         x.getTableSource().accept(this);
 
         // 输出插入的列
-        this.printParenthesesAndAcceptList(x.getColumns(), ", ");
+        this.printParenthesesAndAcceptList(x.getColumns(), LIST_ITEM_SEPARATOR);
 
         // 输出插入的列列表
         List<SqlInsertStatement.ValuesClause> valuesClauses = x.getValuesList();
         if (!valuesClauses.isEmpty()) {
             this.println();
             this.print(this.uppercase ? "VALUES " : "values ");
-            this.printAndAcceptList(valuesClauses, ", ");
+            this.printAndAcceptList(valuesClauses, LIST_ITEM_SEPARATOR);
         }
 
         return false;
@@ -620,7 +622,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     @Override
     public boolean visit(SqlInsertStatement.ValuesClause x) {
-        this.printParenthesesAndAcceptList(x.getValues(), ", ");
+        this.printParenthesesAndAcceptList(x.getValues(), LIST_ITEM_SEPARATOR);
         return false;
     }
 
@@ -633,7 +635,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
         // 输出set子句
         this.print(this.uppercase ? " SET " : " set ");
-        this.printAndAcceptList(x.getSetItems(), ", ");
+        this.printAndAcceptList(x.getSetItems(), LIST_ITEM_SEPARATOR);
 
         // 输出where条件
         this.printWhere(x.getWhere());

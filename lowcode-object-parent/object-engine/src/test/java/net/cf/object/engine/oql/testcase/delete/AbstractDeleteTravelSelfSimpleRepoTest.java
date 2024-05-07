@@ -33,7 +33,7 @@ public abstract class AbstractDeleteTravelSelfSimpleRepoTest extends AbstractOql
             // 删除数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_DELETE_TRAVEL_BY_ID);
             OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
-            this.engine.remove(oqlStmt);
+            this.engineNew.remove(oqlStmt);
         }
 
         {
@@ -54,7 +54,7 @@ public abstract class AbstractDeleteTravelSelfSimpleRepoTest extends AbstractOql
             OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> dataMap = new HashMap<>();
             dataMap.put("applyId", TravelObject.RECORD1);
-            this.engine.remove(oqlStmt, dataMap);
+            this.engineNew.remove(oqlStmt, dataMap);
         }
 
         {

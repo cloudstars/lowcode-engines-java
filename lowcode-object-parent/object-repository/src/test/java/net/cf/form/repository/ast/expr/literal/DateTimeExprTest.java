@@ -2,9 +2,7 @@ package net.cf.form.repository.ast.expr.literal;
 
 import com.alibaba.druid.sql.ast.expr.SQLDateExpr;
 import com.alibaba.druid.sql.ast.expr.SQLDateTimeExpr;
-import com.alibaba.druid.sql.ast.expr.SQLTimeExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlDateExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlTimeExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlTimestampExpr;
 import org.junit.Assert;
 import org.junit.Test;
@@ -54,19 +52,4 @@ public class DateTimeExprTest {
         Assert.assertTrue(tsExpr.toString().equalsIgnoreCase(druidTsExpr.toString()));
     }
 
-    @Test
-    public void testTime1() {
-        String ts = "02:02:02";
-        SqlTimeExpr timeExpr = new SqlTimeExpr(ts);
-        SQLTimeExpr druidTimeExpr = new SQLTimeExpr(ts);
-        Assert.assertTrue(timeExpr.toString().equalsIgnoreCase(druidTimeExpr.toString()));
-    }
-
-    @Test
-    public void testTime2() {
-        Date time = new Date(System.currentTimeMillis());
-        SqlTimeExpr timeExpr = new SqlTimeExpr(time);
-        SQLTimeExpr druidTsExpr = new SQLTimeExpr(time, TimeZone.getDefault());
-        Assert.assertTrue(timeExpr.toString().equalsIgnoreCase(druidTsExpr.toString()));
-    }
 }

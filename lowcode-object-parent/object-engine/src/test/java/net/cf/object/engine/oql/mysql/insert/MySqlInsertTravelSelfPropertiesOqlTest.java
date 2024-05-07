@@ -15,6 +15,12 @@ public class MySqlInsertTravelSelfPropertiesOqlTest extends AbstractInsertTravel
 
     @Test
     @Override
+    public void testInsertTravelWithCreator() {
+        super.testInsertTravelWithCreator();
+    }
+
+    @Test
+    @Override
     public void testInsertTravelWithCreatorVars() {
         super.testInsertTravelWithCreatorVars();
     }
@@ -24,4 +30,5 @@ public class MySqlInsertTravelSelfPropertiesOqlTest extends AbstractInsertTravel
     public void testInsertTravelWithAttachesVars() {
         super.testInsertTravelWithAttachesVars();
     }
+
 }

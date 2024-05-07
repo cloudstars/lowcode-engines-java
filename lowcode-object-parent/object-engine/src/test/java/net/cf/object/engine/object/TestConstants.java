@@ -10,8 +10,8 @@ import java.util.Map;
  */
 public final class TestConstants {
 
-    public final static Map<String, Object> CREATOR = new HashMap<>();
-    public final static Map<String, Object> MODIFIER = new HashMap<>();
+    public static final Map<String, Object> CREATOR = new HashMap<>();
+    public static final Map<String, Object> MODIFIER = new HashMap<>();
 
     static {
 

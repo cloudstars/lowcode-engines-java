@@ -31,7 +31,7 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
         // 更新数据
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_STAFF_MODIFIER_WITH_CREATOR);
         OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
-        int effectedRows = this.engine.modify(oqlStmt);
+        int effectedRows = this.engineNew.modify(oqlStmt);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -49,7 +49,7 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("creator", creator);
         paramMap.put("staffCode", "zhangsan");
-        int effectedRows = this.engine.modify(oqlStmt, paramMap);
+        int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -83,7 +83,7 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
         // 更新数据
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_STAFF_DESCR_WITH_NAME_RELA);
         OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
-        int effectedRows = this.engine.modify(oqlStmt);
+        int effectedRows = this.engineNew.modify(oqlStmt);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -97,7 +97,7 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
         OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("staffName", "张三");
-        int effectedRows = this.engine.modify(oqlStmt, paramMap);
+        int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -126,7 +126,7 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
         OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("staffCode", "zhangsan");
-        int effectedRows = this.engine.modify(oqlStmt, paramMap);
+        int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
         assert (effectedRows == 1);
 
         // 重新查询后断言

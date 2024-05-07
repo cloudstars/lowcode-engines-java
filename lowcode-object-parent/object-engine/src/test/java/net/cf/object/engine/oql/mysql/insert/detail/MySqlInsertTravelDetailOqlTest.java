@@ -15,8 +15,26 @@ public class MySqlInsertTravelDetailOqlTest extends AbstractInsertTravelDetailRe
 
     @Test
     @Override
-    public void testIInsertTravelAndTripVars() {
-        super.testIInsertTravelAndTripVars();
+    public void testInsertTravelAndTrip() {
+        super.testInsertTravelAndTrip();
     }
-    
+
+    @Test
+    @Override
+    public void testInsertMultiTravelAndTrip() {
+        super.testInsertMultiTravelAndTrip();
+    }
+
+    @Test
+    @Override
+    public void testBatchInsertTravelAndTripVars() {
+        super.testBatchInsertTravelAndTripVars();
+    }
+
+    @Test
+    @Override
+    public void testBatchInsertMultiTravelAndTripVars() {
+        super.testBatchInsertMultiTravelAndTripVars();
+    }
+
 }

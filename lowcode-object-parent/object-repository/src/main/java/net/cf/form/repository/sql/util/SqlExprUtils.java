@@ -12,7 +12,6 @@ import net.cf.form.repository.sql.parser.Token;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Time;
 import java.util.Date;
 
 public final class SqlExprUtils {
@@ -95,8 +94,6 @@ public final class SqlExprUtils {
             return new SqlDecimalExpr((BigDecimal) o);
         } else if (o instanceof Date) {
             return new SqlDateExpr((Date) o);
-        } else if (o instanceof Time) {
-            return new SqlTimeExpr((Time) o);
         } else if (o instanceof Number) {
             if ((o instanceof Byte) || (o instanceof Short) || (o instanceof Integer) || (o instanceof Long) || o instanceof BigInteger) {
                 return new SqlIntegerExpr((Number) o);

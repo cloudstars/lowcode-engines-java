@@ -18,15 +18,17 @@ public class SqlListExpr extends AbstractSqlExprImpl implements SqlReplaceable {
 
     public SqlListExpr(SqlExpr... items) {
         this.items = new ArrayList(items.length);
-        SqlExpr[] var2 = items;
-        int var3 = items.length;
-
-        for (int var4 = 0; var4 < var3; ++var4) {
-            SqlExpr item = var2[var4];
+        for (SqlExpr item : items) {
             item.setParent(this);
             this.items.add(item);
         }
+    }
 
+    public SqlListExpr(List<SqlExpr> items) {
+        this.items = items;
+        for (SqlExpr item : items) {
+            item.setParent(this);
+        }
     }
 
     public List<SqlExpr> getItems() {

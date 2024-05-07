@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @param <P>
  */
-public interface XField<P extends XProperty> {
+public interface XField<P extends XProperty> extends ValueType {
 
     /**
      * 获取字段所属的模型
@@ -45,6 +45,7 @@ public interface XField<P extends XProperty> {
      *
      * @return
      */
+    @Override
     default boolean isArray() {
         return false;
     }
@@ -54,6 +55,7 @@ public interface XField<P extends XProperty> {
      *
      * @return
      */
+    @Override
     default DataType getDataType() {
         return DataType.STRING;
     }

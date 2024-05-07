@@ -12,6 +12,7 @@ import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
+import net.cf.object.engine.sqlbuilder.SqlDataTypeConvert;
 
 import java.util.Arrays;
 import java.util.List;
@@ -83,6 +84,7 @@ public abstract class AbstractOqlParser {
     protected SqlIdentifierExpr toRepoSelfExpr(XField field) {
         SqlIdentifierExpr identExpr = new SqlIdentifierExpr(field.getColumnName());
         identExpr.setAutoGen(field.isAutoGen());
+        identExpr.setSqlDataType(SqlDataTypeConvert.toSqlDataType(field));
         return identExpr;
     }
 
@@ -96,6 +98,7 @@ public abstract class AbstractOqlParser {
         String tableName = field.getOwner().getTableName();
         SqlPropertyExpr propExpr = new SqlPropertyExpr(tableName);
         propExpr.setName(field.getColumnName());
+        propExpr.setSqlDataType(SqlDataTypeConvert.toSqlDataType(field));
         return propExpr;
     }
 
@@ -107,6 +110,7 @@ public abstract class AbstractOqlParser {
      */
     protected SqlIdentifierExpr toRepoSelfExpr(XProperty property) {
         SqlIdentifierExpr identExpr = new SqlIdentifierExpr(property.getColumnName());
+        identExpr.setSqlDataType(SqlDataTypeConvert.toSqlDataType(property.getOwner()));
         return identExpr;
     }
 
@@ -124,21 +128,42 @@ public abstract class AbstractOqlParser {
     }
 
     /**
+     * 构建字段的变量引用表达式，即：#{field}
+     *
+     * @param field
+     */
+    protected SqlVariantRefExpr buildFieldVarRefExpr(XField field) {
+        String fieldName = field.getName();
+        SqlVariantRefExpr fieldVarRefExpr = new SqlVariantRefExpr("#{" + fieldName + "}");
+        return fieldVarRefExpr;
+    }
+
+    /**
+     * 构建字段属性的变量引用表达式，即：#{property}
+     *
+     * @param property
+     */
+    protected SqlVariantRefExpr buildPropertyVarRefExpr(XProperty property, String prefix) {
+        String propName = property.getName();
+        SqlVariantRefExpr propVarRefExpr = new SqlVariantRefExpr("#{" + prefix + "." +propName + "}");
+        return propVarRefExpr;
+    }
+
+
+    /**
      * 构建字段等于它自身变量的比较表达式，即：field = #{field}
      *
      * @param field
      */
     protected SqlBinaryOpExpr buildFieldEqualsVarRefExpr(XField field) {
         SqlExpr fieldExpr = this.toRepoSelfExpr(field);
-        String fieldName = field.getName();
-        SqlExpr fieldVarRefExpr = new SqlVariantRefExpr("#{" + fieldName + "}");
+        SqlExpr fieldVarRefExpr = SqlVariantRefExpr.fromVarName(field.getName());
         SqlBinaryOpExpr fieldEqualsVarRefExpr = new SqlBinaryOpExpr();
         fieldEqualsVarRefExpr.setLeft(fieldExpr);
         fieldEqualsVarRefExpr.setOperator(SqlBinaryOperator.EQUALITY);
         fieldEqualsVarRefExpr.setRight(fieldVarRefExpr);
         return fieldEqualsVarRefExpr;
     }
-
 
     /**
      * 构建字段属于它自身变量的复数形式的比较表达式，即：field in (#{fields})

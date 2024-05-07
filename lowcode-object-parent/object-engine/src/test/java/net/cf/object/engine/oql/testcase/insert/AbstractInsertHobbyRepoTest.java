@@ -29,7 +29,7 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_HOBBY);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
-            int effectedRows = this.engine.create(oqlStmt);
+            int effectedRows = this.engineNew.create(oqlStmt);
             assert (effectedRows == 1);
         }
 
@@ -39,7 +39,7 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("code", "DJ");
-            Map<String, Object> data = this.engine.queryOne(selectOqlStmt, paramMap);
+            Map<String, Object> data = this.engineNew.queryOne(selectOqlStmt, paramMap);
             assert (data != null);
             Object dbRecordId = data.get("code");
             assert (dbRecordId != null && "DJ".equals(dbRecordId.toString()));
@@ -51,7 +51,7 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_HOBBY_VARS);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
-            int effectedRows = this.engine.create(oqlStmt, oqlInfo.paramMap);
+            int effectedRows = this.engineNew.create(oqlStmt, oqlInfo.paramMap);
             assert (effectedRows == 1);
             assert (oqlInfo.paramMap.containsKey("id"));
         }
@@ -62,7 +62,7 @@ public abstract class AbstractInsertHobbyRepoTest extends AbstractOqlRepoTest im
             OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("code", "DJ");
-            Map<String, Object> data = this.engine.queryOne(selectOqlStmt, paramMap);
+            Map<String, Object> data = this.engineNew.queryOne(selectOqlStmt, paramMap);
             assert (data != null);
             Object dbRecordId = data.get("code");
             assert (dbRecordId != null && "DJ".equals(dbRecordId.toString()));

@@ -17,8 +17,8 @@ public class MongoInsertTravelDetailOqlTest extends AbstractInsertTravelDetailRe
 
     @Test
     @Override
-    public void testIInsertTravelAndTripVars() {
-        super.testIInsertTravelAndTripVars();
+    public void testBatchInsertTravelAndTripVars() {
+        super.testBatchInsertTravelAndTripVars();
     }
 
 }

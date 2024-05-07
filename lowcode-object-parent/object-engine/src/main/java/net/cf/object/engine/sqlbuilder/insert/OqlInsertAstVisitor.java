@@ -3,10 +3,11 @@ package net.cf.object.engine.sqlbuilder.insert;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.data.FieldMapping;
-import net.cf.object.engine.object.ValueType;
+import net.cf.object.engine.object.ValueTypeImpl;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.FastOqlException;
@@ -147,7 +148,7 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         List<OqlPropertyExpr> properties = OqlUtils.defaultExpandFieldProperties(resolvedField);
         if (insertValue instanceof SqlJsonObjectExpr) {
             SqlJsonObjectExpr jsonObjectExpr = (SqlJsonObjectExpr) insertValue;
-            Map<String, SqlExpr> items = jsonObjectExpr.getItems();
+            Map<String, SqlValuableExpr> items = jsonObjectExpr.getItems();
             for (OqlPropertyExpr property : properties) {
                 SqlExpr itemValue = items.get(property.getName());;
                 /*if (property instanceof OqlPropertyExpr) {
@@ -160,11 +161,11 @@ public final class OqlInsertAstVisitor extends SqlBuilderOqlAstVisitorAdaptor {
         } else if (insertValue instanceof SqlVariantRefExpr) {
             FieldItemInfo fieldItemInfo = new FieldItemInfo();
             FieldMapping fieldMapping = new FieldMapping(resolvedField.getName(), resolvedField.getColumnName());
-            fieldMapping.setValueType(new ValueType(resolvedField.getDataType(), resolvedField.isArray()));
+            fieldMapping.setValueType(new ValueTypeImpl(resolvedField.getDataType(), resolvedField.isArray()));
             fieldItemInfo.setFieldMapping(fieldMapping);
 
-            SqlVariantRefExpr variantRefExpr = (SqlVariantRefExpr) insertValue;
-            String varName = variantRefExpr.getVarName();
+            SqlVariantRefExpr varRefExpr = (SqlVariantRefExpr) insertValue;
+            String varName = varRefExpr.getVarName();
             for (OqlPropertyExpr property : properties) {
                 //if (property instanceof OqlPropertyExpr) {// 按属性展开
                     XProperty resolvedProp = property.getResolvedProperty();

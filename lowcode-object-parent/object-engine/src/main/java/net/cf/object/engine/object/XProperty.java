@@ -5,7 +5,7 @@ package net.cf.object.engine.object;
  *
  * @author clouds
  */
-public interface XProperty {
+public interface XProperty extends ValueType {
 
     /**
      * 获取子属性归属的字段
@@ -33,6 +33,7 @@ public interface XProperty {
      *
      * @return
      */
+    @Override
     default boolean isArray() {
         return false;
     }
@@ -42,7 +43,9 @@ public interface XProperty {
      *
      * @return
      */
+    @Override
     DataType getDataType();
+
     /**
      * 获取字段属性的最大长度
      *
@@ -56,5 +59,23 @@ public interface XProperty {
      * @return
      */
     Integer getDataPrecision();
+
+    /**
+     * 获取最小值（当字段类型是数字时有效）
+     *
+     * @return
+     */
+    default Number getMinValue() {
+        return null;
+    }
+
+    /**
+     * 获取最大值（当字段类型是数字时有效）
+     *
+     * @return
+     */
+    default Number getMaxValue() {
+        return null;
+    }
 
 }

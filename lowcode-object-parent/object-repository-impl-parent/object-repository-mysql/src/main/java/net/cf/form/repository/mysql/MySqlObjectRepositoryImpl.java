@@ -16,13 +16,14 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MySqlObjectRepositoryImpl implements ObjectRepository {
 
-    private final Logger logger = LoggerFactory.getLogger(MySqlObjectRepositoryImpl.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(MySqlObjectRepositoryImpl.class);
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -44,58 +45,80 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     @Override
     public Map<String, Object> selectOne(SqlSelectStatement statement) {
         String sql = SqlUtils.toSqlText(statement);
-        return jdbcTemplate.queryForMap(sql, new HashMap<>());
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
+        return this.jdbcTemplate.queryForMap(sql, new HashMap<>());
     }
 
     @Override
     public Map<String, Object> selectOne(SqlSelectStatement statement, Map<String, Object> paramMap) {
         String sql = SqlUtils.toSqlText(statement);
-        return jdbcTemplate.queryForMap(sql, new AdvancedMapSqlParameterSource(paramMap));
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
+        return this.jdbcTemplate.queryForMap(sql, new AdvancedMapSqlParameterSource(paramMap));
     }
 
     @Override
     public List<Map<String, Object>> selectList(SqlSelectStatement statement) {
         String sql = SqlUtils.toSqlText(statement);
-        return jdbcTemplate.queryForList(sql, new HashMap<>());
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
+        return this.jdbcTemplate.queryForList(sql, new HashMap<>());
     }
 
     @Override
     public List<Map<String, Object>> selectList(SqlSelectStatement statement, Map<String, Object> paramMap) {
         String sql = SqlUtils.toSqlText(statement);
-        return jdbcTemplate.queryForList(sql, new AdvancedMapSqlParameterSource(paramMap));
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
+        return this.jdbcTemplate.queryForList(sql, new AdvancedMapSqlParameterSource(paramMap));
     }
 
     @Override
     public int insert(SqlInsertStatement statement) {
         String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
         int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
-        logger.info("数据插入成功，影响行数：{}", effectedRows);
+        LOGGER.info("数据插入成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
 
     @Override
     public int insert(SqlInsertStatement statement, Map<String, Object> paramMap) {
         String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
         int effectedRows;
-        String autoPrimaryKey = statement.getAutoGenColumn();
-        if (autoPrimaryKey != null && autoPrimaryKey.length() > 0) {
+        String autoGenColumn = statement.getAutoGenColumn();
+        if (autoGenColumn != null && autoGenColumn.length() > 0) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             SqlParameterSource paramSource = SqlUtils.convertInsertParamMap(statement, paramMap);
             effectedRows = this.jdbcTemplate.update(sql, paramSource, keyHolder);
-            String autoId = String.valueOf(keyHolder.getKey());
-            paramMap.put(autoPrimaryKey, autoId);
+            if (statement.getValuesList().size() == 1) {
+                paramMap.put(autoGenColumn, keyHolder.getKey());
+            } else {
+                List<Map<String, Object>> keysList = keyHolder.getKeyList();
+                List<Object> autoGenColumnValues = new ArrayList<>();
+                for (Map<String, Object> keys : keysList) {
+                    autoGenColumnValues.add(keys.get(autoGenColumn));
+                }
+                paramMap.put(autoGenColumn, autoGenColumnValues);
+            }
         } else {
             SqlParameterSource paramSource = SqlUtils.convertInsertParamMap(statement, paramMap);
             effectedRows = this.jdbcTemplate.update(sql, paramSource);
         }
 
-        logger.info("数据插入成功，影响行数：{}", effectedRows);
+        LOGGER.info("数据插入成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
 
     @Override
     public int[] batchInsert(SqlInsertStatement statement, List<Map<String, Object>> paramMaps) {
         String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
         SqlParameterSource[] paramSources = SqlUtils.convertInsertParamMaps(statement, paramMaps);
         int[] effectedRowsArray;
         String autoPrimaryKey = statement.getAutoGenColumn();
@@ -110,7 +133,7 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
         for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
             effectedRows += effectedRowsArray[i];
         }
-        logger.info("数据插入成功，影响行数：{}", effectedRows);
+        LOGGER.info("数据插入成功，影响行数：{}", effectedRows);
 
         return effectedRowsArray;
     }
@@ -118,46 +141,83 @@ public class MySqlObjectRepositoryImpl implements ObjectRepository {
     @Override
     public int update(SqlUpdateStatement statement) {
         String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
         int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
-        logger.info("数据更新成功，影响行数：{}", effectedRows);
+        LOGGER.info("数据更新成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
 
     @Override
     public int update(SqlUpdateStatement statement, Map<String, Object> paramMap) {
         String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
         SqlParameterSource paramSource = SqlUtils.convertUpdateParamMap(statement, paramMap);
         int effectedRows = this.jdbcTemplate.update(sql, paramSource);
-        logger.info("数据更新成功，影响行数：{}", effectedRows);
+        LOGGER.info("数据更新成功，影响行数：{}", effectedRows);
+
         return effectedRows;
     }
 
     @Override
     public int[] batchUpdate(SqlUpdateStatement statement, List<Map<String, Object>> paramMaps) {
-        SqlParameterSource[] paramSources = SqlUtils.convertUpdateParamMaps(statement, paramMaps);
+        String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
 
-        return new int[0];
+        SqlParameterSource[] paramSources = SqlUtils.convertUpdateParamMaps(statement, paramMaps);
+        int[] effectedRowsArray = this.jdbcTemplate.batchUpdate(sql, paramSources);
+        int totalEffectedRows = this.sumTotalEffectedRows(effectedRowsArray);
+        LOGGER.info("批量数据更新成功，总影响行数：{}", totalEffectedRows);
+
+        return effectedRowsArray;
     }
 
     @Override
     public int delete(SqlDeleteStatement statement) {
         String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
         int effectedRows = this.jdbcTemplate.update(sql, new HashMap<>());
-        logger.info("数据删除成功，影响行数：{}", effectedRows);
+        LOGGER.info("数据删除成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
 
     @Override
     public int delete(SqlDeleteStatement statement, Map<String, Object> paramMap) {
         String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
         int effectedRows = this.jdbcTemplate.update(sql, paramMap);
-        logger.info("数据删除成功，影响行数：{}", effectedRows);
+        LOGGER.info("数据删除成功，影响行数：{}", effectedRows);
         return effectedRows;
     }
 
     @Override
     public int[] batchDelete(SqlDeleteStatement statement, List<Map<String, Object>> paramMaps) {
-        return new int[0];
+        String sql = SqlUtils.toSqlText(statement);
+        LOGGER.info("目标执行的SQL语句为：{}", sql);
+
+        SqlParameterSource[] paramSources = SqlUtils.convertParamMaps(paramMaps);
+        int[] effectedRowsArray = this.jdbcTemplate.batchUpdate(sql, paramSources);
+        int totalEffectedRows = this.sumTotalEffectedRows(effectedRowsArray);
+        LOGGER.info("批量数据删除成功，总影响行数：{}", totalEffectedRows);
+
+        return effectedRowsArray;
+    }
+
+    /**
+     * 汇总总影响行数
+     *
+     * @param effectedRowsArray
+     * @return
+     */
+    private int sumTotalEffectedRows(int[] effectedRowsArray) {
+        int effectedRows = 0;
+        for (int i = 0, l = effectedRowsArray.length; i < l; i++) {
+            effectedRows += effectedRowsArray[i];
+        }
+        return effectedRows;
     }
 
 }

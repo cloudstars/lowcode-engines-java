@@ -35,7 +35,7 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_MODIFIER_BY_ID);
             OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
-            int effectedRows = this.engine.modify(oqlStmt);
+            int effectedRows = this.engineNew.modify(oqlStmt);
             assert (effectedRows == 1);
         }
 
@@ -49,7 +49,7 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_MODIFIER_BY_ID_VARS);
             OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> paramMap = this.getEditParamMap();
-            int effectedRows = this.engine.modify(oqlStmt, paramMap);
+            int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }
 
@@ -92,7 +92,7 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
             attach2.put("key", "attach2-2");
             newAttaches = Arrays.asList(attach1, attach2);
             paramMap.put("attaches", newAttaches);
-            int effectedRows = this.engine.modify(oqlStmt, paramMap);
+            int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }
 

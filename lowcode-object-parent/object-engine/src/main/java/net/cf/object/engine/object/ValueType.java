@@ -1,47 +1,28 @@
 package net.cf.object.engine.object;
 
 /**
- * 值类型
+ * 值类型接口
  *
  * @author clouds
  */
-public class ValueType {
+public interface ValueType {
 
     /**
-     * 是否是一个数组
+     * 判断值是不是一个数组值（即含有多个值）
+     * @return
      */
-    private boolean isArray;
+    default boolean isArray() {
+        return false;
+    }
+
 
     /**
-     * 数据类型（如果是数组的话，那是每一项的数据类型）
+     * 获取值的数据类型
+     *
+     * @return
      */
-    private DataType dataType;
-
-    public ValueType() {
+    default DataType getDataType() {
+        return DataType.OBJECT;
     }
 
-    public ValueType(DataType dataType) {
-        this(dataType, false);
-    }
-
-    public ValueType(DataType dataType, boolean isArray) {
-        this.isArray = isArray;
-        this.dataType = dataType;
-    }
-
-    public boolean isArray() {
-        return isArray;
-    }
-
-    public void setArray(boolean array) {
-        isArray = array;
-    }
-
-    public DataType getDataType() {
-        return dataType;
-    }
-
-    public void setDataType(DataType dataType) {
-        this.dataType = dataType;
-    }
 }

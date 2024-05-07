@@ -52,9 +52,9 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         this.print(x.getOwner());
         if (x.isStarExpanded()) {
             this.print(".*");
-        } /*else if (!x.isDefaultExpanded()) {
+        } else {
             this.printParenthesesAndAcceptList(x.getFields(), ", ");
-        }*/
+        }
 
         return false;
     }

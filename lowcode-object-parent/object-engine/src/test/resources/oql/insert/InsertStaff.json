@@ -11,7 +11,12 @@
         {"staffCode": "X001", "staffName": "员工1", "joinDate": "2021-01-01", "departDate": null, "descr":  "员工1描述", "status":  "1", "creator":  {"name": "管理员1", "key":  "XXX"}},
         {"staffCode": "X002", "staffName": "员工2", "joinDate": "2021-01-01", "departDate": "2022-01-09", "descr":  "员工2描述", "status":  "2", "creator":  {"name": "管理员1", "key":  "XXX"}}
       ]
-
+    },
+    {
+      "desc": "插入员工",
+      "name": "InsertStaff",
+      "oql": "insert into Staff(staffCode, staffName, hobbies) values ('001', '员工1', [\"cg\", \"tw\"])",
+      "sql": "insert into STAFF(STA_CODE, STA_NAME, HOBBIES) values ('001', '员工1', [\"cg\", \"tw\"])"
     }
   ]
 }

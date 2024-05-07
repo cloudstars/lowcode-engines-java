@@ -3,9 +3,11 @@ package net.cf.object.engine.oqlnew.parser;
 
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
-import net.cf.object.engine.oqlnew.info.OqlDeleteInfos;
+import net.cf.object.engine.oql.ast.OqlExprObjectSource;
+import net.cf.object.engine.oqlnew.cmd.OqlDeleteInfos;
+import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,17 +18,26 @@ import java.util.Map;
 public class OqlDeleteInfosParser extends AbstractOqInfoParser<OqlDeleteStatement, OqlDeleteInfos> {
 
     /**
-     * 模型关联的删除语句
+     * 输入的参数
      */
-    private final Map<XObject, OqlDeleteStatement> stmtMap = new HashMap<>();
+    private final Map<String, Object> paramMap;
 
-    private final RepoExprBuilder sqlExprBuilder;
+    /**
+     * 输入的参数（批量模式）
+     */
+    private final List<Map<String, Object>> paramMaps;
 
-    private int nonFieldSelectItemIndex = 0;
 
-    public OqlDeleteInfosParser(OqlDeleteStatement stmt, boolean isBatch) {
-        super(stmt, isBatch);
-        this.sqlExprBuilder = new RepoExprBuilder();
+    public OqlDeleteInfosParser(OqlDeleteStatement stmt, Map<String, Object> paramMap) {
+        super(stmt, false);
+        this.paramMap = paramMap;
+        this.paramMaps = null;
+    }
+
+    public OqlDeleteInfosParser(OqlDeleteStatement stmt, List<Map<String, Object>> paramMaps) {
+        super(stmt, true);
+        this.paramMap = null;
+        this.paramMaps = paramMaps;
     }
 
     /**
@@ -35,6 +46,29 @@ public class OqlDeleteInfosParser extends AbstractOqInfoParser<OqlDeleteStatemen
      * @return
      */
     public OqlDeleteInfos parse() {
+        // 解析当前语句的本模型
+        this.masterObject = this.stmt.getFrom().getResolvedObject();
+
+        // 构建本模型信息
+        /*OqlDeleteCmd selfDeleteInfo = new OqlDeleteCmd();
+        selfDeleteInfo.setResolvedObject(this.masterObject);
+        selfDeleteInfo.setBatch(this.isBatch);
+        selfDeleteInfo.setParamMap(this.paramMap);
+        selfDeleteInfo.setParamMaps(this.paramMaps);*/
+
+        //selfDeleteInfo.setFieldMappings();
+        List<OqlExprObjectSource> detailObjectSources = stmt.getDetailFroms();
+        if (!CollectionUtils.isEmpty(detailObjectSources)) {
+            for (OqlExprObjectSource detailObjectSource : detailObjectSources) {
+                XObject detailObject = detailObjectSource.getResolvedObject();
+                // delete from detail where masterField in (#{masterFields})
+                //OqlDeleteCmd detailDeleleInfo = new OqlDeleteCmd();
+                //detailDeleleInfo.setResolvedObject(detailObject);
+            }
+        }
+
+
         return null;
     }
+
 }

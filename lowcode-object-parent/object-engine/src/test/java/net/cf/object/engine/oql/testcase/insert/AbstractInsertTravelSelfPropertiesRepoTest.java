@@ -6,7 +6,6 @@ import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.util.OqlUtils;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,20 @@ public abstract class AbstractInsertTravelSelfPropertiesRepoTest extends Abstrac
 
     @Override
     public void testInsertTravelWithCreator() {
+        {
+            OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_WITH_CREATOR);
+            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
+            int effectedRows = this.engineNew.create(oqlStmt);
+            assert (effectedRows == 1);
+        }
 
+        {
+            // 重新查出来作断言
+            String selectOql = "select applyId, applyName, creator from Travel";
+            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
+            assert (dataList != null && dataList.size() == 3);
+        }
     }
 
     @Override
@@ -44,7 +56,7 @@ public abstract class AbstractInsertTravelSelfPropertiesRepoTest extends Abstrac
             creator.put("name", "张三");
             creator.put("key", "zhangsan");
             dataMap.put("creator", creator);
-            int effectedRows = this.engine.create(oqlStmt, dataMap);
+            int effectedRows = this.engineNew.create(oqlStmt, dataMap);
             assert (effectedRows == 1);
         }
 
@@ -58,41 +70,11 @@ public abstract class AbstractInsertTravelSelfPropertiesRepoTest extends Abstrac
     }
 
     @Override
-    public void testInsertTravelWithExpandCreator() {
-
-    }
-
-    @Override
-    public void testInsertTravelWithExpandCreatorVars() {
-
-    }
-
-    @Override
-    public void testInsertTravelWithSingleCreator() {
-
-    }
-
-    @Override
-    public void testInsertTravelWithSingleCreatorVars() {
-
-    }
-
-    @Override
     public void testInsertTravelWithAttachesVars() {
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_WITH_ATTACHES_VARS);
             OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
-            Map<String, Object> dataMap = new HashMap<>();
-            dataMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
-            dataMap.put("applyName", "测试申请单的名称");
-            Map<String, Object> attach1 = new HashMap<>();
-            attach1.put("name", "附件1");
-            attach1.put("key", "attach1");
-            Map<String, Object> attach2 = new HashMap<>();
-            attach2.put("name", "附件2");
-            attach2.put("key", "attach2");
-            dataMap.put("attaches", Arrays.asList(attach1, attach2));
-            int effectedRows = this.engine.create(oqlStmt, dataMap);
+            int effectedRows = this.engineNew.create(oqlStmt, oqlInfo.paramMap);
             assert (effectedRows == 1);
         }
 

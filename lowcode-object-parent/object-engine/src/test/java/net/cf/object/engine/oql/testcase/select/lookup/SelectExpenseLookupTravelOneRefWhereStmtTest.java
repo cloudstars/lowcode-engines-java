@@ -5,8 +5,8 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.oqlnew.info.OqlSelectInfo;
-import net.cf.object.engine.oqlnew.info.OqlSelectInfos;
+import net.cf.object.engine.oqlnew.cmd.OqlSelectInfo;
+import net.cf.object.engine.oqlnew.cmd.OqlSelectInfos;
 import net.cf.object.engine.util.OqlStatementUtils;
 import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class SelectExpenseLookupTravelOneRefWhereStmtTest extends AbstractOqlTes
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        OqlSelectInfos oqlStmt = OqlStatementUtils.parseSingleSelectStatement(stmt, true);
+        OqlSelectInfos oqlStmt = OqlStatementUtils.parseOqlSelectInfos(stmt, true);
         OqlSelectInfo selfSelectInfo = oqlStmt.getSelfSelectInfo();
         List<OqlSelectInfo> detailSelectInfos = oqlStmt.getDetailSelectInfos();
         List<OqlSelectInfo> lookupSelectInfos = oqlStmt.getLookupSelectInfos();

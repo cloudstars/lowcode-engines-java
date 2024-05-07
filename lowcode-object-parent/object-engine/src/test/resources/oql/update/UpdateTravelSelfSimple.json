@@ -13,7 +13,11 @@
       "desc": "根据记录ID更新出差记录（带变量）",
       "name": "UpdateTravelByIdVars",
       "oql": "update Travel set applyName = #{applyName} where applyId = #{applyId}",
-      "sql": "update TRAVEL set APPLY_NAME = #{applyName} where APPLY_ID = #{applyId}"
+      "sql": "update TRAVEL set APPLY_NAME = #{applyName} where APPLY_ID = #{applyId}",
+      "paramMap": {
+        "applyName": "测试申请单1（变更）",
+        "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD"
+      }
     }
   ]
 }

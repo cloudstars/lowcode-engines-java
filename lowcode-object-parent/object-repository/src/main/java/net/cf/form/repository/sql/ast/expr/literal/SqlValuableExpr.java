@@ -16,4 +16,11 @@ public interface SqlValuableExpr extends SqlExpr {
      */
     Object getValue();
 
+    /**
+     * 克隆
+     *
+     * @return
+     */
+    SqlValuableExpr cloneMe();
+
 }

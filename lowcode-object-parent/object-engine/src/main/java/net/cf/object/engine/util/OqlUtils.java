@@ -91,6 +91,17 @@ public class OqlUtils {
         return (OqlSelectStatement) statements.get(0);
     }
 
+    /**
+     * 根据模型构建OQL模型源
+     *
+     * @param object
+     * @return
+     */
+    public static OqlExprObjectSource defaultObjectSource(XObject object) {
+        OqlExprObjectSource objectSource = new OqlExprObjectSource(object.getName());
+        objectSource.setResolvedObject(object);
+        return objectSource;
+    }
 
     /**
      * 默认展开模型的全部字段
@@ -156,7 +167,7 @@ public class OqlUtils {
      * @param field
      * @return
      */
-    public static OqlExpr defaultFieldExpr(XField field) {
+    public static OqlFieldExpr defaultFieldExpr(XField field) {
         String fieldName = field.getName();
         OqlFieldExpr fieldExpr = new OqlFieldExpr(fieldName);
         fieldExpr.setResolvedField(field);
@@ -179,18 +190,27 @@ public class OqlUtils {
         return fieldEqualsVarRefExpr;
     }
 
-
     /**
      * 构建字段属于它自身变量的复数形式的比较表达式，即：field in (#{fields})
      *
      * @param field
      */
     public static SqlInListExpr buildFieldInListVarRefExpr(XField field) {
+        return OqlUtils.buildFieldInListVarRefExpr(field, false);
+    }
+
+    /**
+     * 构建字段属于它自身变量的复数形式的比较表达式，即：field in (#{fields})
+     *
+     * @param field
+     */
+    public static SqlInListExpr buildFieldInListVarRefExpr(XField field, boolean not) {
         OqlExpr fieldExpr = OqlUtils.defaultFieldExpr(field);
         String fieldName = field.getName();
         SqlExpr fieldVarRefExpr = new SqlVariantRefExpr("#{" + fieldName + "s}");
         SqlInListExpr fieldInListVarRefExpr = new SqlInListExpr();
         fieldInListVarRefExpr.setLeft(fieldExpr);
+        fieldInListVarRefExpr.setNot(not);
         fieldInListVarRefExpr.setTargetList(Arrays.asList(fieldVarRefExpr));
         return fieldInListVarRefExpr;
     }

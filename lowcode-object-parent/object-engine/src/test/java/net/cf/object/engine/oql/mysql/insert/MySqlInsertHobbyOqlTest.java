@@ -25,4 +25,5 @@ public class MySqlInsertHobbyOqlTest extends AbstractInsertHobbyRepoTest {
     public void testInsertHobbyVars() {
         super.testInsertHobbyVars();
     }
+
 }

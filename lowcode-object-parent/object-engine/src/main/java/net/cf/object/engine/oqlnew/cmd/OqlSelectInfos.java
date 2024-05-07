@@ -1,4 +1,4 @@
-package net.cf.object.engine.oqlnew.info;
+package net.cf.object.engine.oqlnew.cmd;
 
 import java.util.ArrayList;
 import java.util.List;
