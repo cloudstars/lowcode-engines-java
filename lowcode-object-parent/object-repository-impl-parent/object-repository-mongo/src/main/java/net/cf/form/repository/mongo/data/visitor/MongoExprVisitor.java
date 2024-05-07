@@ -144,7 +144,10 @@ public class MongoExprVisitor {
             }
         }
 
-        if (sqlExpr instanceof SqlDecimalExpr) {
+        if (sqlExpr instanceof SqlIntegerExpr) {
+            // int类型直接返回
+            return ((SqlIntegerExpr) sqlExpr).getValue();
+        } else if (sqlExpr instanceof SqlDecimalExpr) {
             return MongoDataConverter.convert(((SqlDecimalExpr) sqlExpr).getValue());
         } else if (sqlExpr instanceof AbstractSqlNumericLiteralExpr) {
             return MongoDataConverter.convert(((AbstractSqlNumericLiteralExpr) sqlExpr).getNumber());
