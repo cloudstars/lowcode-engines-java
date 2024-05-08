@@ -5,21 +5,22 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
 import net.cf.object.engine.object.TravelObject;
+import net.cf.object.engine.object.TravelTripObject;
+import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
-import net.cf.object.engine.oql.info.OqlDeleteInfoParser;
-import net.cf.object.engine.oql.info.OqlDetailDeleteInfo;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
-import net.cf.object.engine.sqlbuilder.delete.SqlDeleteStatementBuilder;
+import net.cf.object.engine.oql.cmd.OqlDeleteInfos;
+import net.cf.object.engine.oql.infos.OqlDeleteInfosParser;
+import net.cf.object.engine.sql.SqlDeleteCmd;
 import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
+import java.util.Map;
 
 
 @RunWith(SpringRunner.class)
@@ -47,16 +48,16 @@ public class DeleteTravelDetailStmtTest extends AbstractOqlTest implements Delet
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
-        SqlDeleteStatement sqlStmt = Oql2SqlUtils.toSqlDelete(oqlStmt, builder);
+        OqlDeleteInfosParser parser = new OqlDeleteInfosParser(oqlStmt, oqlInfo.paramMap);
+        OqlDeleteInfos deleteInfos = parser.parse();
+        SqlDeleteStatement sqlStmt = deleteInfos.getMasterDeleteCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
 
         // 断言子表的生成
-        OqlDeleteInfoParser oqlInfoParser = new OqlDeleteInfoParser(oqlStmt);
-        oqlInfoParser.parse();
-        List<OqlDetailDeleteInfo> detailOqlStmts = oqlInfoParser.getDetailDeleteInfos();
-        assert (detailOqlStmts != null && detailOqlStmts.size() == 1);
-        SqlDeleteStatement detailSqlStmt = Oql2SqlUtils.toSqlDelete(detailOqlStmts.get(0).getStatement());
+        Map<XObject, SqlDeleteCmd> deleteCmds = deleteInfos.getDetailDeleteCmds();
+        assert (deleteCmds != null && deleteCmds.size() == 1);
+        XObject detailObject = this.resolver.resolve(TravelTripObject.NAME);
+        SqlDeleteStatement detailSqlStmt = deleteCmds.get(detailObject).getStatement();
         assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
     }
 
@@ -77,16 +78,16 @@ public class DeleteTravelDetailStmtTest extends AbstractOqlTest implements Delet
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
-        SqlDeleteStatement sqlStmt = Oql2SqlUtils.toSqlDelete(oqlStmt, builder);
+        OqlDeleteInfosParser parser = new OqlDeleteInfosParser(oqlStmt, oqlInfo.paramMap);
+        OqlDeleteInfos deleteInfos = parser.parse();
+        SqlDeleteStatement sqlStmt = deleteInfos.getMasterDeleteCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
 
         // 断言子表的生成
-        OqlDeleteInfoParser oqlInfoParser = new OqlDeleteInfoParser(oqlStmt);
-        oqlInfoParser.parse();
-        List<OqlDetailDeleteInfo> detailOqlStmts = oqlInfoParser.getDetailDeleteInfos();
-        assert (detailOqlStmts != null && detailOqlStmts.size() == 1);
-        SqlDeleteStatement detailSqlStmt = Oql2SqlUtils.toSqlDelete(detailOqlStmts.get(0).getStatement());
+        Map<XObject, SqlDeleteCmd> deleteCmds = deleteInfos.getDetailDeleteCmds();
+        assert (deleteCmds != null && deleteCmds.size() == 1);
+        XObject detailObject = this.resolver.resolve(TravelTripObject.NAME);
+        SqlDeleteStatement detailSqlStmt = deleteCmds.get(detailObject).getStatement();
         assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
     }
 
@@ -107,16 +108,16 @@ public class DeleteTravelDetailStmtTest extends AbstractOqlTest implements Delet
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
-        SqlDeleteStatement sqlStmt = Oql2SqlUtils.toSqlDelete(oqlStmt, builder);
+        OqlDeleteInfosParser parser = new OqlDeleteInfosParser(oqlStmt, oqlInfo.paramMap);
+        OqlDeleteInfos deleteInfos = parser.parse();
+        SqlDeleteStatement sqlStmt = deleteInfos.getMasterDeleteCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
 
         // 断言子表的生成
-        OqlDeleteInfoParser oqlInfoParser = new OqlDeleteInfoParser(oqlStmt);
-        oqlInfoParser.parse();
-        List<OqlDetailDeleteInfo> detailOqlStmts = oqlInfoParser.getDetailDeleteInfos();
-        assert (detailOqlStmts != null && detailOqlStmts.size() == 1);
-        SqlDeleteStatement detailSqlStmt = Oql2SqlUtils.toSqlDelete(detailOqlStmts.get(0).getStatement());
+        Map<XObject, SqlDeleteCmd> deleteCmds = deleteInfos.getDetailDeleteCmds();
+        assert (deleteCmds != null && deleteCmds.size() == 1);
+        XObject detailObject = this.resolver.resolve(TravelTripObject.NAME);
+        SqlDeleteStatement detailSqlStmt = deleteCmds.get(detailObject).getStatement();
         assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
     }
 
@@ -137,16 +138,16 @@ public class DeleteTravelDetailStmtTest extends AbstractOqlTest implements Delet
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlDeleteStatementBuilder builder = new SqlDeleteStatementBuilder();
-        SqlDeleteStatement sqlStmt = Oql2SqlUtils.toSqlDelete(oqlStmt, builder);
+        OqlDeleteInfosParser parser = new OqlDeleteInfosParser(oqlStmt, oqlInfo.paramMap);
+        OqlDeleteInfos deleteInfos = parser.parse();
+        SqlDeleteStatement sqlStmt = deleteInfos.getMasterDeleteCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
 
         // 断言子表的生成
-        OqlDeleteInfoParser oqlInfoParser = new OqlDeleteInfoParser(oqlStmt);
-        oqlInfoParser.parse();
-        List<OqlDetailDeleteInfo> detailOqlStmts = oqlInfoParser.getDetailDeleteInfos();
-        assert (detailOqlStmts != null && detailOqlStmts.size() == 1);
-        SqlDeleteStatement detailSqlStmt = Oql2SqlUtils.toSqlDelete(detailOqlStmts.get(0).getStatement());
+        Map<XObject, SqlDeleteCmd> deleteCmds = deleteInfos.getDetailDeleteCmds();
+        assert (deleteCmds != null && deleteCmds.size() == 1);
+        XObject detailObject = this.resolver.resolve(TravelTripObject.NAME);
+        SqlDeleteStatement detailSqlStmt = deleteCmds.get(detailObject).getStatement();
         assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
     }
 }

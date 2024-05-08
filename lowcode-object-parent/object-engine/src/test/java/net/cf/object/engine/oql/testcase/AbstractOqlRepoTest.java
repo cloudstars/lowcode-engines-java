@@ -3,7 +3,7 @@ package net.cf.object.engine.oql.testcase;
 import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.IDataSetOperator;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
-import net.cf.object.engine.OqlEngineNew;
+import net.cf.object.engine.OqlEngine;
 import org.junit.After;
 import org.junit.Before;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 public abstract class AbstractOqlRepoTest extends AbstractOqlTest {
 
     @Resource
-    protected OqlEngineNew engineNew;
+    protected OqlEngine engineNew;
 
     @Resource
     protected IDataSetOperator dataSetOperator;

@@ -10,7 +10,8 @@ import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
+import net.cf.object.engine.oql.cmd.OqlSelectInfos;
+import net.cf.object.engine.oql.infos.OqlSelectInfosParser;
 import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,8 +43,10 @@ public class SelectExpenseAggregateStmtTest extends AbstractOqlTest implements S
         assert (osExpr instanceof SqlIdentifierExpr && ExpenseObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
-        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
+        OqlSelectInfosParser parser = new OqlSelectInfosParser(oqlStmt, false);
+        OqlSelectInfos selectInfos = parser.parse();
+        SqlSelectStatement sqlStmt = selectInfos.getSelfSelectInfo().getStatement();
+        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
     @Test
@@ -57,8 +60,10 @@ public class SelectExpenseAggregateStmtTest extends AbstractOqlTest implements S
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
-        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
+        OqlSelectInfosParser parser = new OqlSelectInfosParser(oqlStmt, false);
+        OqlSelectInfos selectInfos = parser.parse();
+        SqlSelectStatement sqlStmt = selectInfos.getSelfSelectInfo().getStatement();
+        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
     @Test
@@ -72,8 +77,10 @@ public class SelectExpenseAggregateStmtTest extends AbstractOqlTest implements S
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
-        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
+        OqlSelectInfosParser parser = new OqlSelectInfosParser(oqlStmt, false);
+        OqlSelectInfos selectInfos = parser.parse();
+        SqlSelectStatement sqlStmt = selectInfos.getSelfSelectInfo().getStatement();
+        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
     @Test
@@ -87,8 +94,10 @@ public class SelectExpenseAggregateStmtTest extends AbstractOqlTest implements S
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
-        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
+        OqlSelectInfosParser parser = new OqlSelectInfosParser(oqlStmt, false);
+        OqlSelectInfos selectInfos = parser.parse();
+        SqlSelectStatement sqlStmt = selectInfos.getSelfSelectInfo().getStatement();
+        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
     @Test
@@ -102,8 +111,10 @@ public class SelectExpenseAggregateStmtTest extends AbstractOqlTest implements S
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlSelectStatement sqlStmt = Oql2SqlUtils.toSqlSelect(oqlStmt);
-        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
+        OqlSelectInfosParser parser = new OqlSelectInfosParser(oqlStmt, false);
+        OqlSelectInfos selectInfos = parser.parse();
+        SqlSelectStatement sqlStmt = selectInfos.getSelfSelectInfo().getStatement();
+        assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
 }

@@ -4,7 +4,7 @@ import net.cf.form.repository.sql.ast.SqlDataType;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
-import net.cf.object.engine.sqlbuilder.SqlDataTypeConvert;
+import net.cf.object.engine.sql.SqlDataTypeConvert;
 
 /**
  * OQL字段表达式，如：object.field, field, object(field)中的field

@@ -1,5 +1,7 @@
 package net.cf.object.engine;
 
+import net.cf.object.engine.data.PageRequest;
+import net.cf.object.engine.data.PageResult;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
@@ -18,120 +20,123 @@ public interface OqlEngine {
     /**
      * 查询记录，限制返回一条
      *
-     * @param statement
+     * @param stmt
      * @return
      */
-    @Deprecated
-    Map<String, Object> queryOne(OqlSelectStatement statement);
+    Map<String, Object> queryOne(OqlSelectStatement stmt);
 
     /**
      * 查询记录，限制返回一条
      *
-     * @param statement
+     * @param stmt
      * @param paramMap
      * @return
      */
-    @Deprecated
-    Map<String, Object> queryOne(OqlSelectStatement statement, Map<String, Object> paramMap);
+    Map<String, Object> queryOne(OqlSelectStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 查询记录列表
      *
-     * @param statement
+     * @param stmt
      * @return
      */
-    @Deprecated
-    List<Map<String, Object>> queryList(OqlSelectStatement statement);
+    List<Map<String, Object>> queryList(OqlSelectStatement stmt);
 
     /**
      * 查询记录列表
      *
-     * @param statement
+     * @param stmt
      * @param paramMap
      * @return
      */
-    @Deprecated
-    List<Map<String, Object>> queryList(OqlSelectStatement statement, Map<String, Object> paramMap);
+    List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap);
+
+    /**
+     * 分页查询
+     *
+     * @param stmt
+     * @param paramMap
+     * @param pageRequest
+     * @return
+     */
+    PageResult<Map<String, Object>> queryPage(OqlSelectStatement stmt, Map<String, Object> paramMap, PageRequest pageRequest);
 
     /**
      * 创建记录
      *
-     * @param statement
+     * @param stmt
      * @return 影响行数
      */
-    @Deprecated
-    int create(OqlInsertStatement statement);
+    int create(OqlInsertStatement stmt);
 
     /**
      * 创建记录
      *
-     * @param statement
+     * @param stmt
      * @param paramMap
      * @return
      */
-    @Deprecated
-    int create(OqlInsertStatement statement, Map<String, Object> paramMap);
+    int create(OqlInsertStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 批量创建记录
      *
-     * @param statement
-     * @param dataMaps
+     * @param stmt
+     * @param paramMaps
      * @return 影响行数
      */
-    @Deprecated
-    int[] createList(OqlInsertStatement statement, List<Map<String, Object>> dataMaps);
+    int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> paramMaps);
 
     /**
      * 更新记录
      *
-     * @param statement
+     * @param stmt
      * @return 影响行数
      */
-    int modify(OqlUpdateStatement statement);
+    int modify(OqlUpdateStatement stmt);
 
     /**
      * 更新记录
      *
-     * @param statement
+     * @param stmt
      * @param paramMap
      * @return 影响行数
      */
-    int modify(OqlUpdateStatement statement, Map<String, Object> paramMap);
+    int modify(OqlUpdateStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 批量更新记录
      *
-     * @param statement
-     * @param dataMaps
+     * @param stmt
+     * @param paramMaps
      * @return 影响行数
      */
-    int[] modifyList(OqlUpdateStatement statement, List<Map<String, Object>> dataMaps);
+    int[] modifyList(OqlUpdateStatement stmt, List<Map<String, Object>> paramMaps);
 
     /**
      * 移除记录
      *
-     * @param statement
+     * @param stmt
      * @return 影响行数
      */
-    int remove(OqlDeleteStatement statement);
+    int remove(OqlDeleteStatement stmt);
 
     /**
      * 移除记录
      *
-     * @param statement
+     * @param stmt
      * @param paramMap
      * @return 影响行数
      */
-    int remove(OqlDeleteStatement statement, Map<String, Object> paramMap);
+    int remove(OqlDeleteStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 批量移除记录
      *
-     * @param statement
-     * @param dataMaps
+     * @param stmt
+     * @param paramMaps
      * @return 影响行数
      */
-    int[] removeList(OqlDeleteStatement statement, List<Map<String, Object>> dataMaps);
+    int[] removeList(OqlDeleteStatement stmt, List<Map<String, Object>> paramMaps);
 
 }

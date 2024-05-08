@@ -33,33 +33,4 @@ public final class XObjectUtils {
         return detailFields;
     }
 
-    /**
-     * 判断一个模型下是否有子表字段
-     *
-     * @param object
-     * @return
-     */
-    public static boolean hasDetailFields(XObject object) {
-        List<XField> fields = object.getFields();
-        for (XField field : fields) {
-            if (field instanceof XObjectRefField) {
-                if (((XObjectRefField) field).getRefType() == ObjectRefType.DETAIL) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * 获取一个字段名称的复数形式
-     *
-     * @param field
-     * @return
-     */
-    public static String  getFieldNamePlural(XField field) {
-        return field.getName() + "s";
-    }
-
 }

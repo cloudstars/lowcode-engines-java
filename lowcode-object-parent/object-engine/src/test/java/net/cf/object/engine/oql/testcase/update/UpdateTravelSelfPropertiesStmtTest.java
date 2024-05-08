@@ -10,7 +10,8 @@ import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.sqlbuilder.Oql2SqlUtils;
+import net.cf.object.engine.oql.cmd.OqlUpdateInfos;
+import net.cf.object.engine.util.OqlStatementUtils;
 import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +38,8 @@ public class UpdateTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(oqlStmt);
+        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
+        SqlUpdateStatement sqlStmt = updateInfos.getMasterUpdateCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
@@ -52,7 +54,8 @@ public class UpdateTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(oqlStmt);
+        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
+        SqlUpdateStatement sqlStmt = updateInfos.getMasterUpdateCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 
@@ -73,7 +76,8 @@ public class UpdateTravelSelfPropertiesStmtTest extends AbstractOqlTest implemen
         assert (osExpr instanceof SqlIdentifierExpr && TravelObject.NAME.equals(((SqlIdentifierExpr) osExpr).getName()));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        SqlUpdateStatement sqlStmt = Oql2SqlUtils.toSqlUpdate(oqlStmt);
+        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
+        SqlUpdateStatement sqlStmt = updateInfos.getMasterUpdateCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
 

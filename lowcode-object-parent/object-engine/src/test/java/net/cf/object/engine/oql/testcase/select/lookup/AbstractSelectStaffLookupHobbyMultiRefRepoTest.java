@@ -1,7 +1,7 @@
 package net.cf.object.engine.oql.testcase.select.lookup;
 
 import net.cf.commons.test.util.DataCompareTestUtils;
-import net.cf.object.engine.OqlEngineNew;
+import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.util.OqlUtils;
@@ -15,7 +15,7 @@ public abstract class AbstractSelectStaffLookupHobbyMultiRefRepoTest
         implements SelectStaffLookupHobbyMultiRefTest {
 
     @Resource
-    private OqlEngineNew engineNew;
+    private OqlEngine engineNew;
 
     protected AbstractSelectStaffLookupHobbyMultiRefRepoTest() {
         super(OQL_FILE_PATH);

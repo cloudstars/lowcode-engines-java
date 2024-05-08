@@ -5,7 +5,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
 import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
-import net.cf.object.engine.sqlbuilder.SqlDataTypeConvert;
+import net.cf.object.engine.sql.SqlDataTypeConvert;
 
 import java.util.Collections;
 import java.util.List;

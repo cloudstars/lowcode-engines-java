@@ -132,36 +132,6 @@ public class OqlUtils {
     }
 
     /**
-     * 默认的主键字段
-     *
-     * @param object
-     * @return
-     */
-    public static OqlExpr defaultPrimaryField(XObject object) {
-        XField primaryField = object.getPrimaryField();
-        return OqlUtils.defaultFieldExpr(primaryField);
-    }
-
-    /**
-     * 默认展开字段的全部属性
-     *
-     * @param field 待展开的字段
-     * @return 展开后的属性表达式列表
-     */
-    public static List<OqlPropertyExpr> defaultExpandFieldProperties(XField field) {
-        List<OqlPropertyExpr> propExprs = new ArrayList<>();
-        List<XProperty> properties = field.getProperties();
-        for (XProperty property : properties) {
-            String propName = property.getName();
-            OqlPropertyExpr propExpr = new OqlPropertyExpr(null, propName);
-            propExpr.setResolvedProperty(property);
-            propExprs.add(propExpr);
-        }
-
-        return propExprs;
-    }
-
-    /**
      * 根据字段构建OqlExpr
      *
      * @param field
