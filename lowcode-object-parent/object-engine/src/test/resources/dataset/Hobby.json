@@ -5,8 +5,7 @@
     {
       "desc": "id",
       "name": "RECORD_ID",
-      "dataType": "INTEGER",
-      "autoGen": true
+      "dataType": "CHAR"
     },
     {
       "desc": "名称",
@@ -36,6 +35,7 @@
   ],
   "valuesList": [
     {
+      "RECORD_ID": "663b6e868cb215763ccfbd9e",
       "NAME": "抽烟",
       "CODE": "CY",
       "DESCR": "喜欢叼个大烟",
@@ -43,6 +43,7 @@
       "CREATOR_KEY": "zhangsan"
     },
     {
+      "RECORD_ID": "663b6e868cb215763ccfbd9f",
       "NAME": "喝酒",
       "CODE": "HJ",
       "DESCR": "喜欢喝老酒一",

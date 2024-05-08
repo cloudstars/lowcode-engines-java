@@ -35,6 +35,14 @@ public class MongoInsertSqlAstVisitor implements SqlAstVisitor {
     }
 
     @Override
+    public boolean visit(SqlInsertStatement x) {
+        if (x.getAutoGenColumn() != null) {
+            builder.addAutoGenColumn(x.getAutoGenColumn());
+        }
+        return true;
+    }
+
+    @Override
     public boolean visit(SqlExprTableSource x) {
         this.builder.setCollectionName(x.getTableName());
         return false;

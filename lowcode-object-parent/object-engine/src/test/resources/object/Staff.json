@@ -95,7 +95,7 @@
       "name": "hobbies",
       "columnName": "HOBBIES",
       "isArray": true,
-      "dataType": "Number"
+      "dataType": "String"
     },
     {
       "type": "User",

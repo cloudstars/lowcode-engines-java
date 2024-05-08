@@ -9,8 +9,7 @@
       "desc": "记录ID",
       "name": "id",
       "columnName": "RECORD_ID",
-      "dataType": "Integer",
-      "autoGen": true
+      "dataType": "String"
     },
     {
       "type": "Text",

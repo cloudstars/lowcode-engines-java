@@ -36,7 +36,7 @@
     {
       "desc": "举趣爱好",
       "name": "HOBBIES",
-      "dataType": "CHAR"
+      "dataType": "JSON"
     },
     {
       "desc": "年龄",
@@ -86,19 +86,25 @@
       "JOIN_DATE": "2020-10-10",
       "DEPART_DATE": "2021-10-01",
       "DESCR": "此人名叫张三，爱好抽烟、喝酒",
-      "HOBBIES": "[1, 2]",
+      "HOBBIES": [
+        "663b6e868cb215763ccfbd9e",
+        "663b6e868cb215763ccfbd9f"
+      ],
       "AGE": 30,
       "OWNER_KEY": "zhangsan",
       "CREATOR_NAME": "张三",
       "CREATOR_KEY": "zhangsan"
     },
     {
+      "STA_ID": "663b71b25deba92149b80763",
       "STA_CODE": "lisi",
       "STA_NAME": "李四",
       "JOIN_DATE": "2010-01-01",
       "DEPART_DATE": null,
       "DESCR": "我叫李四，小李的李，小四的四，爱好唱歌、跳舞",
-      "HOBBIES": "[2]",
+      "HOBBIES": [
+        "663b6e868cb215763ccfbd9f"
+      ],
       "AGE": 20,
       "OWNER_KEY": "zhangsan",
       "CREATOR_NAME": "李四",

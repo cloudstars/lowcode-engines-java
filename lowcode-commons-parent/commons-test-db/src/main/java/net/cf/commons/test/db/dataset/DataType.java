@@ -3,16 +3,15 @@ package net.cf.commons.test.db.dataset;
 /**
  * 数据类型
  *
- * @author clouds 
+ * @author clouds
  */
 public enum DataType {
     CHAR,
     INTEGER,
     LONG,
     DECIMAL,
-    TIMESTAMP,
+    DATETIME,
     DATE,
-    TIME,
     BOOLEAN,
-    OBJECT;
+    JSON;
 }

@@ -6,8 +6,8 @@ import net.cf.commons.test.util.FileTestUtils;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +20,9 @@ public final class JsonDataSetLoader {
 
     private JsonDataSetLoader() {
     }
+
+    private static final SimpleDateFormat SDF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat SDF_DATETIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 从类路径加载JSON数据集
@@ -45,7 +48,7 @@ public final class JsonDataSetLoader {
                 JSONObject columnJson = columnsJson.getJSONObject(j);
                 String columnName = columnJson.getString("name");
                 String dataType = columnJson.getString("dataType");
-                if (dataType != null) {
+                if (dataType == null) {
                     dataType = DataType.CHAR.name();
                 }
                 Column column = new Column(columnName, DataType.valueOf(dataType.toUpperCase()));
@@ -66,30 +69,38 @@ public final class JsonDataSetLoader {
                 for (int t = 0; t < cs; t++) {
                     Column column = columns[t];
                     String columnName = column.getColumnName();
-                    String value;
+                    Object value;
+                    if (column.isAuto()) {
+                        continue;
+                    }
                     if (!valuesJson.containsKey(columnName)) {
                         value = column.getDefaultValue();
                     } else {
-                        value = valuesJson.getString(columnName);
+                        value = valuesJson.get(columnName);
                     }
+                    if (value == null) {
+                        values.put(columnName, null);
+                        continue;
+                    }
+
 
                     DataType dataType = column.getDataType();
                     if (dataType == DataType.CHAR) {
                         values.put(columnName, value);
                     } else if (dataType == DataType.BOOLEAN) {
-                        values.put(columnName, Boolean.parseBoolean(value));
+                        values.put(columnName, Boolean.parseBoolean(String.valueOf(value)));
                     } else if (dataType == DataType.INTEGER) {
-                        values.put(columnName, Integer.parseInt(value));
+                        values.put(columnName, Integer.parseInt(String.valueOf(value)));
                     } else if (dataType == DataType.DECIMAL) {
-                        values.put(columnName, new BigDecimal(value));
-                    } else if (dataType == DataType.TIMESTAMP) {
-                        values.put(columnName, new Timestamp(Long.parseLong(value)));
+                        values.put(columnName, new BigDecimal(String.valueOf(value)));
+                    } else if (dataType == DataType.DATETIME) {
+                        values.put(columnName, new Date(toDateTime(String.valueOf(value))));
                     } else if (dataType == DataType.DATE) {
-                        values.put(columnName, new Date(Long.parseLong(value)));
-                    } else if (dataType == DataType.TIME) {
-                        values.put(columnName, new Time(Long.parseLong(value)));
-                    } else {
+                        values.put(columnName, new Date(toDate(String.valueOf(value))));
+                    } else if (dataType == DataType.JSON) {
                         values.put(columnName, value);
+                    } else {
+                        values.put(columnName, String.valueOf(value));
                     }
                 }
                 table.addValues(values);
@@ -99,4 +110,25 @@ public final class JsonDataSetLoader {
 
         return dataSet;
     }
+
+    private static Long toDate(String value) {
+        java.util.Date date = null;
+        try {
+            date = SDF_DATE.parse(value);
+        } catch (ParseException e) {
+            throw new RuntimeException();
+        }
+        return date.getTime();
+    }
+
+    private static Long toDateTime(String value) {
+        java.util.Date date = null;
+        try {
+            date = SDF_DATETIME.parse(value);
+        } catch (ParseException e) {
+            throw new RuntimeException();
+        }
+        return date.getTime();
+    }
+
 }

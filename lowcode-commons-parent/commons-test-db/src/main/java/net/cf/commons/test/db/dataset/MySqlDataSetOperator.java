@@ -1,5 +1,6 @@
 package net.cf.commons.test.db.dataset;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.HashMap;
@@ -73,7 +74,12 @@ public class MySqlDataSetOperator implements IDataSetOperator {
                     continue;
                 }
                 String columnName = column.getColumnName();
-                Object value = table.getValue(i, columnName);
+                Object value;
+                if (column.getDataType() == DataType.JSON) {
+                    value = JSON.toJSONString(table.getValue(i, columnName));
+                } else {
+                    value = table.getValue(i, columnName);
+                }
                 batchValue.put(columnName, value);
             }
             batchValues[i] = batchValue;

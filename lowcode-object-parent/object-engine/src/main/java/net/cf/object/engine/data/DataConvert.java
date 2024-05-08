@@ -1,9 +1,9 @@
 package net.cf.object.engine.data;
 
+import com.alibaba.fastjson.JSONArray;
 import net.cf.object.engine.object.DataType;
 import net.cf.object.engine.object.ValueTypeImpl;
 
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -55,12 +55,13 @@ public class DataConvert {
     public static Object stringToList(final String s) {
         String str = s;
         if (str.startsWith("[") && str.endsWith("]")) {
-            str = str.substring(1, str.length() - 1);
+            return JSONArray.parse(s);
+            /*str = str.substring(1, str.length() - 1);
             String[] items = str.split(",");
             for (int i = 0, l = items.length; i < l; i++) {
                 items[i] = items[i].trim();
             }
-            return Arrays.asList(items);
+            return Arrays.asList(items);*/
         }
 
         return str;
