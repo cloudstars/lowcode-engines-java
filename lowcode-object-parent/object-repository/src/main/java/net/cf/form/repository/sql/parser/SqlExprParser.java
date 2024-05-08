@@ -302,13 +302,13 @@ public class SqlExprParser extends AbstractSqlParser {
                 this.lexer.nextToken();
                 Token nextToken = this.lexer.token;
                 if (nextToken == Token.ALL || nextToken == Token.ANY) {
-                    SqlJsonArrayExpr array = new SqlJsonArrayExpr();
+                    SqlListExpr array = new SqlListExpr();
                     if (this.lexer.token == Token.ANY) {
                         targetExpr = new SqlArrayContainsOpExpr(targetExpr, SqlBinaryOperator.CONTAINS_ANY, array);
                         ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlContainsOption.ANY);
                         this.lexer.nextToken();
                     } else if (this.lexer.token == Token.ALL) {
-                        targetExpr = new SqlArrayContainsOpExpr(targetExpr, SqlBinaryOperator.CONTAINS_ANY, array);
+                        targetExpr = new SqlArrayContainsOpExpr(targetExpr, SqlBinaryOperator.CONTAINS_ALL, array);
                         ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlContainsOption.ALL);
                         this.lexer.nextToken();
                     }

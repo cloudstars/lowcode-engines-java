@@ -161,7 +161,7 @@ public class MongoMethodExprVisitor {
         } else if ("MONTH".equals(methodName)) {
             method = "$month";
         } else if ("DAY".equals(methodName)) {
-            method = "$dayOdMonth";
+            method = "$dayOfMonth";
         }
 
         Document dateDoc = new Document();

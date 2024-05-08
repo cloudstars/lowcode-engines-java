@@ -7,6 +7,7 @@ import net.cf.object.engine.OqlEngineNewImpl;
 import net.cf.object.engine.object.TestObjectResolver;
 import net.cf.object.engine.oql.parser.XObjectResolver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -30,7 +31,7 @@ public class ObjectEngineOqlMongoTestConfiguration {
     }
 
     @Bean
-    public OqlEngineNew oqlEngineNew(MongoObjectRepositoryImpl repository) {
+    public OqlEngineNew oqlEngineNew(@Qualifier("MongoObjectRepositoryImpl") MongoObjectRepositoryImpl repository) {
         return new OqlEngineNewImpl(repository);
     }
 

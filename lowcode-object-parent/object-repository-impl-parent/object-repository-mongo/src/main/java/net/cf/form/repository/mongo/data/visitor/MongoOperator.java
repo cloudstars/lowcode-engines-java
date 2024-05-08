@@ -111,4 +111,17 @@ public enum MongoOperator {
         return this == CONTAINS || this == CONTAINS_ALL || this == CONTAINS_ANY;
     }
 
+
+    /**
+     * 是否字段标记
+     *
+     * @return
+     */
+    public boolean isFieldTag() {
+        if (this == CONTAINS || this == CONTAINS_ALL || this == CONTAINS_ANY) {
+            return false;
+        }
+        return true;
+    }
+
 }

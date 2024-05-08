@@ -71,6 +71,8 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
             return this.buildInListSqlExpr(object, (SqlInListExpr) x);
         } else if (clazz == SqlContainsOpExpr.class) {
             return this.buildSqlExpr(object, (SqlContainsOpExpr) x);
+        } else if (clazz == SqlArrayContainsOpExpr.class) {
+            return this.buildSqlExpr(object, (SqlArrayContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.buildSqlExpr(object, (SqlBinaryOpExpr) x);
         } else if (clazz == SqlBinaryOpExprGroup.class) {
@@ -169,6 +171,16 @@ public class SqlBuilderOqlAstVisitorAdaptor implements OqlAstVisitor {
         sqlX.setOperator(x.getOperator());
         sqlX.setRight(this.buildSqlExpr(object, x.getRight()));
         sqlX.setParenthesized(x.isParenthesized());
+        return sqlX;
+    }
+
+    private SqlExpr buildSqlExpr(final XObject object, final SqlArrayContainsOpExpr x) {
+        SqlArrayContainsOpExpr sqlX = new SqlArrayContainsOpExpr();
+        sqlX.setLeft(this.buildSqlExpr(object, x.getLeft()));
+        sqlX.setOperator(x.getOperator());
+        sqlX.setRight(this.buildSqlExpr(object, x.getRight()));
+        sqlX.setParenthesized(x.isParenthesized());
+        sqlX.setOption(x.getOption());
         return sqlX;
     }
 

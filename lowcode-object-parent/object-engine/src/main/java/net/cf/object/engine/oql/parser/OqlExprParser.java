@@ -154,6 +154,8 @@ public class OqlExprParser extends SqlExprParser {
             return this.parseInListExpr(selfObject, (SqlInListExpr) x);
         } else if (clazz == SqlContainsOpExpr.class) {
             return this.parseContainsOpExpr(selfObject, (SqlContainsOpExpr) x);
+        } else if (clazz == SqlArrayContainsOpExpr.class) {
+            return this.parseArrayContainsOpExpr(selfObject, (SqlArrayContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.parseBinaryOpExpr(selfObject, (SqlBinaryOpExpr) x);
         } else if (clazz == SqlBinaryOpExprGroup.class) {
@@ -319,6 +321,23 @@ public class OqlExprParser extends SqlExprParser {
     }
 
     /**
+     * 解析 array Contains 表达式
+     *
+     * @param selfObject 当前模型
+     * @param x
+     * @return
+     */
+    private SqlExpr parseArrayContainsOpExpr(XObject selfObject, SqlArrayContainsOpExpr x) {
+        SqlArrayContainsOpExpr sqlX = new SqlArrayContainsOpExpr();
+        sqlX.setLeft(this.parseSqlExpr(selfObject, x.getLeft()));
+        sqlX.setOperator(x.getOperator());
+        sqlX.setRight(this.parseSqlExpr(selfObject, x.getRight()));
+        sqlX.setParenthesized(x.isParenthesized());
+        sqlX.setOption(x.getOption());
+        return sqlX;
+    }
+
+    /**
      * 解析二元操作表达式
      *
      * @param selfObject 当前模型
@@ -385,7 +404,7 @@ public class OqlExprParser extends SqlExprParser {
             SqlMethodInvokeExpr sqlX = new SqlMethodInvokeExpr();
             sqlX.setMethodName(x.getMethodName());
             List<SqlExpr> args = x.getArguments();
-            for (SqlExpr arg: args) {
+            for (SqlExpr arg : args) {
                 sqlX.addArgument(this.parseSqlExpr(selfObject, arg));
             }
             return sqlX;

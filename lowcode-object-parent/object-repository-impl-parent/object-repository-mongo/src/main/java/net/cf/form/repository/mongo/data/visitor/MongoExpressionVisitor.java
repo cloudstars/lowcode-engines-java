@@ -3,11 +3,7 @@ package net.cf.form.repository.mongo.data.visitor;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
-import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.*;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -26,7 +22,20 @@ public class MongoExpressionVisitor {
      * @param innerContext
      * @return
      */
-    public static Document visitBinary(SqlBinaryOpExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
+    public static Object visitBinary(SqlBinaryOpExpr sqlExpr, GlobalContext globalContext, VisitContext innerContext) {
+        // like todo
+        if (sqlExpr instanceof SqlLikeOpExpr) {
+            return visitLike((SqlLikeOpExpr) sqlExpr, globalContext);
+        }
+        // in
+        if (sqlExpr instanceof SqlInListExpr) {
+            return visitIn((SqlInListExpr) sqlExpr, globalContext);
+        }
+        // contains
+        if (sqlExpr instanceof SqlContainsOpExpr || sqlExpr instanceof SqlArrayContainsOpExpr) {
+            return visitContains(sqlExpr, globalContext, innerContext);
+        }
+
         SqlBinaryOperator sqlBinaryOperator = sqlExpr.getOperator();
         MongoOperator mongoOperator = MongoOperator.match(sqlBinaryOperator);
         if (mongoOperator.isLogical()) {
@@ -53,28 +62,23 @@ public class MongoExpressionVisitor {
     public static Object visitIn(SqlInListExpr sqlExpr, GlobalContext globalContext) {
         SqlExpr leftExpr = sqlExpr.getLeft();
         VisitContext idContextInfo = VisitContext.getDefaultContextInfo();
-        if (leftExpr instanceof SqlIdentifierExpr) {
-            SqlIdentifierExpr sqlIdentifierExpr = (SqlIdentifierExpr) leftExpr;
-            if (sqlIdentifierExpr.isAutoGen()) {
-                idContextInfo.setAutoGen(true);
+        VisitContext fieldContextInfo = VisitContext.getDefaultContextInfo();
+
+        if (globalContext.getPositionEnum() == PositionEnum.JOIN) {
+            if (sqlExpr.getLeft() instanceof SqlPropertyExpr) {
+                fieldContextInfo.setFieldTag(true);
+            }
+        } else {
+            if (sqlExpr.getLeft() instanceof SqlIdentifierExpr) {
+                fieldContextInfo.setFieldTag(true);
+                idContextInfo.setAutoGen(((SqlIdentifierExpr) sqlExpr.getLeft()).isAutoGen());
             }
         }
-        VisitContext fieldContextInfo = VisitContext.getFieldTagContext();
+
         Object left = MongoExprVisitor.visit(leftExpr, globalContext, fieldContextInfo);
-        List<SqlExpr> targetList = sqlExpr.getTargetList();
-        List<Object> rightValues = new ArrayList<>();
-        for (SqlExpr item : targetList) {
-            if (item instanceof SqlVariantRefExpr) {
-                Object val = MongoExprVisitor.visit((SqlVariantRefExpr) item, globalContext, idContextInfo);
-                if (val instanceof List) {
-                    rightValues.addAll((List) val);
-                } else {
-                    rightValues.add(val);
-                }
-            } else {
-                rightValues.add(MongoExprVisitor.visit(item, globalContext, idContextInfo));
-            }
-        }
+
+        Object rightValues = MongoExprVisitor.visit(sqlExpr.getRight(), globalContext, idContextInfo);
+
         Document document = new Document(MongoOperator.IN.getExpr(), Arrays.asList(left, rightValues));
         if (sqlExpr.not) {
             // {"$expr":{"$not":{"$in":[param, []]}}}
@@ -143,8 +147,6 @@ public class MongoExpressionVisitor {
 
         if (mongoOperator == MongoOperator.IS || mongoOperator == MongoOperator.IS_NOT) {
             return visitIsOp(mongoOperator, sqlExpr, left, right, globalContext);
-        } else if (mongoOperator.isContains()) {
-            return visitContains(mongoOperator, sqlExpr, left, right, globalContext);
         } else if (mongoOperator.isCompare()) {
             Document document = new Document(mongoOperator.getExpr(), Arrays.asList(left, right));
             return new Document("$expr", document);
@@ -188,18 +190,18 @@ public class MongoExpressionVisitor {
 
         if (globalContext.getPositionEnum() == PositionEnum.JOIN) {
             if (sqlExpr.getLeft() instanceof SqlPropertyExpr) {
-                leftContextInfo.setFieldTag(true);
+                leftContextInfo.setFieldTag(mongoOperator.isFieldTag());
             }
             if (sqlExpr.getRight() instanceof SqlPropertyExpr) {
-                rightContextInfo.setFieldTag(true);
+                rightContextInfo.setFieldTag(mongoOperator.isFieldTag());
             }
         } else {
             if (sqlExpr.getLeft() instanceof SqlIdentifierExpr) {
-                leftContextInfo.setFieldTag(true);
+                leftContextInfo.setFieldTag(mongoOperator.isFieldTag());
                 rightContextInfo.setAutoGen(((SqlIdentifierExpr) sqlExpr.getLeft()).isAutoGen());
             }
             if (sqlExpr.getRight() instanceof SqlIdentifierExpr) {
-                rightContextInfo.setFieldTag(true);
+                rightContextInfo.setFieldTag(mongoOperator.isFieldTag());
                 leftContextInfo.setAutoGen(((SqlIdentifierExpr) sqlExpr.getLeft()).isAutoGen());
             }
         }
@@ -249,20 +251,25 @@ public class MongoExpressionVisitor {
     }
 
     /**
-     * @param mongoOperator
      * @param sqlExpr
-     * @param left
-     * @param right
      * @param globalContext
+     * @param visitContext
      * @return
      */
-    private static Document visitContains(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
-        if (mongoOperator == MongoOperator.CONTAINS_ALL) {
-            return buildContainsAll(sqlExpr, left, right, globalContext);
-        } else if (mongoOperator == MongoOperator.CONTAINS_ANY) {
-            return buildContainsAny(sqlExpr, left, right, globalContext);
-        } else {
+    private static Document visitContains(SqlBinaryOpExpr sqlExpr, GlobalContext globalContext, VisitContext visitContext) {
+        Pair<Object, Object> pair = convertRelationalData(MongoOperator.CONTAINS, sqlExpr, globalContext);
+        Object left = pair.getLeft();
+        Object right = pair.getRight();
+
+        if (sqlExpr instanceof SqlContainsOpExpr) {
             return buildContainsSingle(sqlExpr, left, right, globalContext);
+        }
+
+        SqlArrayContainsOpExpr sqlArrayContainsOpExpr = (SqlArrayContainsOpExpr) sqlExpr;
+        if (sqlArrayContainsOpExpr.getOption() == SqlContainsOption.ALL) {
+            return buildContainsAll(sqlExpr, left, right, globalContext);
+        } else {
+            return buildContainsAny(sqlExpr, left, right, globalContext);
         }
     }
 
@@ -274,7 +281,7 @@ public class MongoExpressionVisitor {
      * @return
      */
     private static Document buildContainsAll(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
-        return new Document(String.valueOf(left), new Document("$all", Arrays.asList(right)));
+        return new Document(String.valueOf(left), new Document("$all", right));
     }
 
     /**
@@ -285,7 +292,7 @@ public class MongoExpressionVisitor {
      * @return
      */
     private static Document buildContainsAny(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
-        return new Document(String.valueOf(left), new Document("$eleMatch", new Document("$in", right)));
+        return new Document(String.valueOf(left), new Document("$elemMatch", new Document("$in", right)));
     }
 
     /**

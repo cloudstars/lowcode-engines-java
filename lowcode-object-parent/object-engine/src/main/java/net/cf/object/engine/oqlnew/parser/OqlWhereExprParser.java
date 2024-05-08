@@ -84,6 +84,8 @@ public class OqlWhereExprParser extends AbstractOqlParser {
             return this.parseInListExpr((SqlInListExpr) x);
         } else if (clazz == SqlContainsOpExpr.class) {
             return this.parseContainsOpExpr((SqlContainsOpExpr) x);
+        } else if (clazz == SqlArrayContainsOpExpr.class) {
+            return this.parseArrayContainsOpExpr((SqlArrayContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.parseBinaryOpExpr((SqlBinaryOpExpr) x);
         } else if (clazz == SqlBinaryOpExprGroup.class) {
@@ -188,11 +190,19 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      */
     private SqlExpr parseContainsOpExpr(SqlContainsOpExpr x) {
         SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
-        sqlX.setLeft(this.parseExpr(x.getLeft()));
-        sqlX.setOperator(x.getOperator());
-        sqlX.setRight(this.parseExpr(x.getRight()));
-        sqlX.setParenthesized(x.isParenthesized());
-        return sqlX;
+        return this.parseBinaryOpExprTo(x, sqlX);
+    }
+
+    /**
+     * 解析 array Contains 表达式
+     *
+     * @param x
+     * @return
+     */
+    private SqlExpr parseArrayContainsOpExpr(SqlArrayContainsOpExpr x) {
+        SqlArrayContainsOpExpr sqlX = new SqlArrayContainsOpExpr();
+        sqlX.setOption(x.getOption());
+        return this.parseBinaryOpExprTo(x, sqlX);
     }
 
     /**

@@ -4,14 +4,10 @@ import net.cf.form.repository.mongo.data.MongoDataConverter;
 import net.cf.form.repository.mongo.data.select.JoinInfo;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
-import net.cf.form.repository.sql.ast.expr.literal.AbstractSqlNumericLiteralExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlDecimalExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
+import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
-import net.cf.form.repository.sql.ast.expr.op.SqlLikeOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,14 +72,6 @@ public class MongoExprVisitor {
         }
 
         // 表达式
-        // like todo
-        if (sqlExpr instanceof SqlLikeOpExpr) {
-            return MongoExpressionVisitor.visitLike((SqlLikeOpExpr) sqlExpr, globalContext);
-        }
-        // in
-        if (sqlExpr instanceof SqlInListExpr) {
-            return MongoExpressionVisitor.visitIn((SqlInListExpr) sqlExpr, globalContext);
-        }
         // 操作符
         if (sqlExpr instanceof SqlBinaryOpExpr) {
             return MongoExpressionVisitor.visitBinary((SqlBinaryOpExpr) sqlExpr, globalContext, visitContext);
@@ -96,6 +84,15 @@ public class MongoExprVisitor {
         if (sqlExpr instanceof SqlPropertyExpr) {
             return visitProperty((SqlPropertyExpr) sqlExpr, globalContext, visitContext);
         }
+
+        if (sqlExpr instanceof SqlListExpr) {
+            return visitList((SqlListExpr) sqlExpr, globalContext, visitContext);
+        }
+
+        if (sqlExpr instanceof SqlJsonArrayExpr) {
+            return visitJsonArray((SqlJsonArrayExpr) sqlExpr, globalContext, visitContext);
+        }
+
 
         // 值相关
         if (sqlExpr instanceof SqlValuableExpr) {
@@ -147,7 +144,10 @@ public class MongoExprVisitor {
             }
         }
 
-        if (sqlExpr instanceof SqlDecimalExpr) {
+        if (sqlExpr instanceof SqlIntegerExpr) {
+            // int类型直接返回
+            return ((SqlIntegerExpr) sqlExpr).getValue();
+        } else if (sqlExpr instanceof SqlDecimalExpr) {
             return MongoDataConverter.convert(((SqlDecimalExpr) sqlExpr).getValue());
         } else if (sqlExpr instanceof AbstractSqlNumericLiteralExpr) {
             return MongoDataConverter.convert(((AbstractSqlNumericLiteralExpr) sqlExpr).getNumber());
@@ -194,6 +194,42 @@ public class MongoExprVisitor {
             }
         }
         return MongoDataConverter.convert(value);
+    }
+
+    private static Object visitList(SqlListExpr sqlListExpr, GlobalContext globalContext, VisitContext visitContext) {
+        List<SqlExpr> targetList = sqlListExpr.getItems();
+        List<Object> rightValues = new ArrayList<>();
+        for (SqlExpr item : targetList) {
+            if (item instanceof SqlVariantRefExpr) {
+                Object val = MongoExprVisitor.visit((SqlVariantRefExpr) item, globalContext, visitContext);
+                if (val instanceof List) {
+                    rightValues.addAll((List) val);
+                } else {
+                    rightValues.add(val);
+                }
+            } else {
+                rightValues.add(MongoExprVisitor.visit(item, globalContext, visitContext));
+            }
+        }
+        return rightValues;
+    }
+
+    private static Object visitJsonArray(SqlJsonArrayExpr sqlJsonArrayExpr, GlobalContext globalContext, VisitContext visitContext) {
+        List<SqlExpr> targetList = sqlJsonArrayExpr.getItems();
+        List<Object> rightValues = new ArrayList<>();
+        for (SqlExpr item : targetList) {
+            if (item instanceof SqlVariantRefExpr) {
+                Object val = MongoExprVisitor.visit((SqlVariantRefExpr) item, globalContext, visitContext);
+                if (val instanceof List) {
+                    rightValues.addAll((List) val);
+                } else {
+                    rightValues.add(val);
+                }
+            } else {
+                rightValues.add(MongoExprVisitor.visit(item, globalContext, visitContext));
+            }
+        }
+        return rightValues;
     }
 
 

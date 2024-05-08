@@ -1,11 +1,11 @@
 package net.cf.form.repository.sql.ast.expr.op;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
 
-public class SqlArrayContainsOpExpr extends SqlBinaryOpExpr{
+public class SqlArrayContainsOpExpr extends SqlBinaryOpExpr {
 
     private SqlContainsOption option = SqlContainsOption.ALL;
+
     public SqlArrayContainsOpExpr() {
     }
 
@@ -13,15 +13,23 @@ public class SqlArrayContainsOpExpr extends SqlBinaryOpExpr{
         super(left, operator, right);
     }
 
-    public SqlJsonArrayExpr getRight(){
-        return (SqlJsonArrayExpr) right;
+    public SqlListExpr getRight() {
+        return (SqlListExpr) right;
     }
 
-    public SqlContainsOption getOption(){
+    public SqlContainsOption getOption() {
         return option;
     }
 
     public void setOption(SqlContainsOption option) {
         this.option = option;
+    }
+
+    @Override
+    public SqlArrayContainsOpExpr cloneMe() {
+        SqlArrayContainsOpExpr x = new SqlArrayContainsOpExpr();
+        x.setOption(option);
+        super.cloneTo(x);
+        return x;
     }
 }

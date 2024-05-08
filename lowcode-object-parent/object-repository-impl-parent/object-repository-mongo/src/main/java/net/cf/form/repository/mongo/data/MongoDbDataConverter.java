@@ -52,7 +52,7 @@ public class MongoDbDataConverter {
      * @return
      */
     private static String getOriginFieldName(String key, DataConvertContext dataConvertContext) {
-        if (dataConvertContext == null || !dataConvertContext.isReplaceField()) {
+        if (dataConvertContext == null || !dataConvertContext.needReplaceField()) {
             return key;
         }
         if (dataConvertContext.getReplaceFields().containsKey(key)) {

@@ -1,0 +1,16 @@
+{
+  "desc": "测试批量更新员工表，测试点，批量更新",
+  "name": "UpdateStaffBatch",
+  "oqls": [
+    {
+      "desc": "批量更新工表",
+      "name": "UpdateStaffBatchVars",
+      "oql": "update Staff set staffName = #{staffName}, joinDate = #{joinDate}, departDate = #{departDate}, descr = #{descr}, status = #{status}, modifier = #{modifier} where staffCode = #{staffCode}",
+      "sql": "update STAFF set STA_NAME = #{staffName}, JOIN_DATE = #{joinDate}, DEPART_DATE = #{departDate}, DESCR = #{descr}, STATUS = #{status}, MODIFIER_NAME = #{modifier.name}, MODIFIER_KEY = #{modifier.key} where STA_CODE = #{staffCode}",
+      "paramMaps": [
+        {"staffCode": "zhangsan", "staffName": "员工1", "joinDate": "2021-01-01", "departDate": null, "descr":  "员工1描述", "status":  "1", "modifier":  {"name": "管理员1", "key":  "XXX"}},
+        {"staffCode": "lisi", "staffName": "员工2", "joinDate": "2021-01-01", "departDate": "2022-01-09", "descr":  "员工2描述", "status":  "2", "modifier":  {"name": "管理员1", "key":  "XXX"}}
+      ]
+    }
+  ]
+}

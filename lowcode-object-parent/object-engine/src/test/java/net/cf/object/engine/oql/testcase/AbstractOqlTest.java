@@ -50,16 +50,12 @@ public abstract class AbstractOqlTest {
             oqlInfo.detailUpdateInsertSql = oqlJson.getString("detailUpdateInsertSql");
             oqlInfo.detailUpdateUpdateSql = oqlJson.getString("detailUpdateUpdateSql");
             oqlInfo.detailUpdateDeleteSql = oqlJson.getString("detailUpdateDeleteSql");
-            String paramMap = oqlJson.getString("paramMap");
-            if (paramMap != null) {
-                oqlInfo.paramMap = JSONObject.parseObject(paramMap, HashMap.class);
-            }
-            String paramMaps = oqlJson.getString("paramMaps");
+            oqlInfo.paramMap = oqlJson.getJSONObject("paramMap");
+            JSONArray paramMaps = oqlJson.getJSONArray("paramMaps");
             if (paramMaps != null) {
                 oqlInfo.paramMaps = new ArrayList<>();
-                JSONArray array = JSONArray.parseArray(paramMaps);
-                for (int j = 0, s = array.size(); j < s; j++) {
-                    oqlInfo.paramMaps.add(array.getJSONObject(j));
+                for (int j = 0, s = paramMaps.size(); j < s; j++) {
+                    oqlInfo.paramMaps.add(paramMaps.getJSONObject(i));
                 }
             }
             String resultMap = oqlJson.getString("resultMap");
