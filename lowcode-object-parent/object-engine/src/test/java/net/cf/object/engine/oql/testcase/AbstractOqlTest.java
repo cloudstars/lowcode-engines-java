@@ -55,19 +55,15 @@ public abstract class AbstractOqlTest {
             if (paramMaps != null) {
                 oqlInfo.paramMaps = new ArrayList<>();
                 for (int j = 0, s = paramMaps.size(); j < s; j++) {
-                    oqlInfo.paramMaps.add(paramMaps.getJSONObject(i));
+                    oqlInfo.paramMaps.add(paramMaps.getJSONObject(j));
                 }
             }
-            String resultMap = oqlJson.getString("resultMap");
-            if (resultMap != null) {
-                oqlInfo.resultMap = JSONObject.parseObject(resultMap, HashMap.class);
-            }
-            String resultMaps = oqlJson.getString("resultMaps");
+            oqlInfo.resultMap = oqlJson.getJSONObject("resultMap");
+            JSONArray resultMaps = oqlJson.getJSONArray("resultMaps");
             if (resultMaps != null) {
                 oqlInfo.resultMaps = new ArrayList<>();
-                JSONArray array = JSONArray.parseArray(resultMaps);
-                for (int j = 0, s = array.size(); j < s; j++) {
-                    oqlInfo.resultMaps.add(array.getJSONObject(j));
+                for (int j = 0, s = resultMaps.size(); j < s; j++) {
+                    oqlInfo.resultMaps.add(resultMaps.getJSONObject(j));
                 }
             }
 

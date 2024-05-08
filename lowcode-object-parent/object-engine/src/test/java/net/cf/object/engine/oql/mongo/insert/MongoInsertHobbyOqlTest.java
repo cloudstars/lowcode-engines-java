@@ -21,4 +21,5 @@ public class MongoInsertHobbyOqlTest extends AbstractInsertHobbyRepoTest {
     public void testInsertHobby() {
         super.testInsertHobby();
     }
+
 }

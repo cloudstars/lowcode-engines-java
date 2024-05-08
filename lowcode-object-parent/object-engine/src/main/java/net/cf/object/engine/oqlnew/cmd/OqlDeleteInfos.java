@@ -3,6 +3,7 @@ package net.cf.object.engine.oqlnew.cmd;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oqlnew.sql.SqlDeleteCmd;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,6 +37,13 @@ public class OqlDeleteInfos extends AbstractOqlInfos {
 
     public void setDetailDeleteCmds(Map<XObject, SqlDeleteCmd> detailDeleteCmds) {
         this.detailDeleteCmds = detailDeleteCmds;
+    }
+
+    public void addDetailDeleteCmd(XObject detailObject, SqlDeleteCmd updateCmd) {
+        if (this.detailDeleteCmds == null) {
+            this.detailDeleteCmds = new HashMap<>();
+        }
+        this.detailDeleteCmds.put(detailObject, updateCmd);
     }
 
 }

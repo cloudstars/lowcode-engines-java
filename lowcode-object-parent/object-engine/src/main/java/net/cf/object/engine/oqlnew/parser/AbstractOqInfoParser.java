@@ -1,6 +1,7 @@
 package net.cf.object.engine.oqlnew.parser;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
@@ -12,6 +13,7 @@ import net.cf.object.engine.oqlnew.cmd.AbstractOqlInfos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -38,6 +40,11 @@ public abstract class AbstractOqInfoParser<O extends OqlStatement, I extends Abs
      * 解析后的主模型
      */
     protected XObject masterObject;
+
+    /**
+     * 解析后的主模型的主键字段的表达式（在where中的）
+     */
+    protected SqlExpr masterPrimaryFieldValueExpr;
 
     /**
      * 子表变量名展开的匹配模式
@@ -87,6 +94,30 @@ public abstract class AbstractOqInfoParser<O extends OqlStatement, I extends Abs
             values.add(this.parsePropertyValue((SqlJsonObjectExpr) arrayExprItem, propName));
         }
         return new SqlJsonArrayExpr(values);
+    }
+
+    /**
+     * 从OQL语句中抽取主表记录ID，where primaryField = #{primaryField} 或者 primaryField in #{primaryField} 或者 primaryField = XXX
+     *
+     * @return
+     */
+    protected Object extractMasterId(Map<String, Object> masterParamMap) {
+        if (this.masterPrimaryFieldValueExpr instanceof SqlVariantRefExpr) {
+            String varName = ((SqlVariantRefExpr) this.masterPrimaryFieldValueExpr).getVarName();
+            return masterParamMap.get(varName);
+        } else if (this.masterPrimaryFieldValueExpr instanceof SqlValuableExpr) {
+            return ((SqlValuableExpr) this.masterPrimaryFieldValueExpr).getValue();
+        }  else if (this.masterPrimaryFieldValueExpr instanceof SqlListExpr) {
+            List<Object> values = new ArrayList<>();
+            for (SqlExpr item : ((SqlListExpr) this.masterPrimaryFieldValueExpr).getItems()) {
+                if (item instanceof SqlValuableExpr) {
+                    values.add(((SqlValuableExpr) item).getValue());
+                }
+            }
+            return values;
+        } else {
+            throw new FastOqlException("不能从OQL语句或参数中解析出主键字段的值");
+        }
     }
 
 }

@@ -1,12 +1,18 @@
 
 package net.cf.object.engine.oqlnew.parser;
 
+import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.oqlnew.cmd.OqlDeleteInfos;
+import net.cf.object.engine.oqlnew.sql.SqlDeleteCmd;
+import net.cf.object.engine.oqlnew.sql.SqlDeleteCmdBuilder;
+import net.cf.object.engine.util.OqlUtils;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +33,12 @@ public class OqlDeleteInfosParser extends AbstractOqInfoParser<OqlDeleteStatemen
      */
     private final List<Map<String, Object>> paramMaps;
 
+    /**
+     * 子模型关联的删除语句
+     * <p>
+     * delete from detailObject where masterPrimaryField = #{masterPrimaryField}
+     */
+    private final Map<XObject, OqlDeleteStatement> detailObjectDeleteStmtMap = new HashMap<>();
 
     public OqlDeleteInfosParser(OqlDeleteStatement stmt, Map<String, Object> paramMap) {
         super(stmt, false);
@@ -48,27 +60,111 @@ public class OqlDeleteInfosParser extends AbstractOqInfoParser<OqlDeleteStatemen
     public OqlDeleteInfos parse() {
         // 解析当前语句的本模型
         this.masterObject = this.stmt.getFrom().getResolvedObject();
+        OqlWhereExprParser whereExprParser = new OqlWhereExprParser(this.masterObject);
+        whereExprParser.parseExpr(this.stmt.getWhere());
+        this.masterPrimaryFieldValueExpr = whereExprParser.getPrimaryFieldValueExpr();
 
-        // 构建本模型信息
-        /*OqlDeleteCmd selfDeleteInfo = new OqlDeleteCmd();
-        selfDeleteInfo.setResolvedObject(this.masterObject);
-        selfDeleteInfo.setBatch(this.isBatch);
-        selfDeleteInfo.setParamMap(this.paramMap);
-        selfDeleteInfo.setParamMaps(this.paramMaps);*/
-
-        //selfDeleteInfo.setFieldMappings();
         List<OqlExprObjectSource> detailObjectSources = stmt.getDetailFroms();
         if (!CollectionUtils.isEmpty(detailObjectSources)) {
             for (OqlExprObjectSource detailObjectSource : detailObjectSources) {
                 XObject detailObject = detailObjectSource.getResolvedObject();
-                // delete from detail where masterField in (#{masterFields})
-                //OqlDeleteCmd detailDeleleInfo = new OqlDeleteCmd();
-                //detailDeleleInfo.setResolvedObject(detailObject);
+                this.buildDetailDeleteStmt(detailObject);
             }
         }
 
+        return this.buildDeleteInfos();
+    }
 
-        return null;
+    /**
+     * 构建删除信息
+     *
+     * @return
+     */
+    private OqlDeleteInfos buildDeleteInfos() {
+        OqlDeleteInfos deleteInfos = new OqlDeleteInfos();
+        deleteInfos.setResolvedMasterObject(this.masterObject);
+
+        SqlDeleteCmdBuilder builder;
+        if (!this.isBatch) {
+            builder = new SqlDeleteCmdBuilder(this.stmt, this.paramMap);
+        } else {
+            builder = new SqlDeleteCmdBuilder(this.stmt, this.paramMaps);
+        }
+        SqlDeleteCmd masterDeleteCmd = builder.build();
+        deleteInfos.setMasterDeleteCmd(masterDeleteCmd);
+
+        if (!detailObjectDeleteStmtMap.isEmpty()) {
+            String masterObjectName = this.masterObject.getName();
+            detailObjectDeleteStmtMap.forEach((detailObject, stmt) -> {
+                deleteInfos.addResolvedDetailObject(detailObject);
+                XField masterRefField = detailObject.getObjectRefField(masterObjectName);
+                String masterRefFieldName = masterRefField.getName();
+
+                SqlDeleteCmdBuilder detailBuilder;
+                if (!this.isBatch) {
+                    Map<String, Object> detailParamMap = this.f(this.paramMap, masterRefFieldName);
+                    detailBuilder = new SqlDeleteCmdBuilder(stmt, detailParamMap);
+                } else {
+                    List<Map<String, Object>> detailParamMaps = new ArrayList<>();
+                    for (Map<String, Object> paramMap : this.paramMaps) {
+                        Object masterRecordId = this.extractMasterId(paramMap);
+                        Map<String, Object> detailParamMap = new HashMap<>();
+                        detailParamMap.put(masterRefFieldName, masterRecordId);
+                        detailParamMaps.add(detailParamMap);
+                    }
+                    detailBuilder = new SqlDeleteCmdBuilder(stmt, detailParamMaps);
+                }
+                SqlDeleteCmd detailCmd = detailBuilder.build();
+                deleteInfos.addDetailDeleteCmd(detailObject, detailCmd);
+            });
+        }
+
+        return deleteInfos;
+    }
+
+    private Map<String, Object> f(Map<String, Object> paramMap, String masterRefFieldName) {
+        Object masterRecordId = this.extractMasterId(paramMap);
+        Map<String, Object> detailParamMap = new HashMap<>();
+        if (masterRecordId instanceof List) {
+            detailParamMap.put(masterRefFieldName + 's', masterRecordId);
+        } else {
+            detailParamMap.put(masterRefFieldName, masterRecordId);
+        }
+        return detailParamMap;
+    }
+
+    /**
+     * 构建子表的删除语句，数据库中的指定主表记录ID的数据全删, where masterField = #{masterField}
+     *
+     * @param detailObject
+     */
+    private void buildDetailDeleteStmt(XObject detailObject) {
+        XField masterRefField = detailObject.getObjectRefField(this.masterObject.getName());
+        OqlDeleteStatement detailStmt = this.getDetailObjectDeleteStmtByObject(detailObject);
+        Map<String, Object> paramMap = !this.isBatch ? this.paramMap : this.paramMaps.get(0);
+        Object masterPrimaryFieldValue = this.extractMasterId(paramMap);
+        if (masterPrimaryFieldValue instanceof List) {
+            detailStmt.setWhere(OqlUtils.buildFieldInListVarRefExpr(masterRefField));
+        } else {
+            detailStmt.setWhere(OqlUtils.buildFieldEqualsVarRefExpr(masterRefField));
+        }
+    }
+
+    /**
+     * 根据子模型获取它对应的单条删除语句
+     *
+     * @param detailObject
+     * @return
+     */
+    private OqlDeleteStatement getDetailObjectDeleteStmtByObject(XObject detailObject) {
+        OqlDeleteStatement stmt = this.detailObjectDeleteStmtMap.get(detailObject);
+        if (stmt == null) {
+            stmt = new OqlDeleteStatement();
+            stmt.setFrom(OqlUtils.defaultObjectSource(detailObject));
+            this.detailObjectDeleteStmtMap.put(detailObject, stmt);
+        }
+
+        return stmt;
     }
 
 }

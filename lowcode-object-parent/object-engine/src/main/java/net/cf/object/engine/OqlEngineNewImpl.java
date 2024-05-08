@@ -482,7 +482,6 @@ public class OqlEngineNewImpl implements OqlEngineNew {
         }
 
         // 循环插入子表
-        //Object masterRecordId = paramMap.get(masterPrimaryFieldName);
         Map<XObject, SqlInsertCmd> detailInsertCmds = insertInfos.getDetailInsertCmds();
         for (XObject detailObject : detailObjects) {
             SqlInsertCmd detailInsertCmd = detailInsertCmds.get(detailObject);

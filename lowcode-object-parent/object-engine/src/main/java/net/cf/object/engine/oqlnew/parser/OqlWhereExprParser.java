@@ -179,6 +179,10 @@ public class OqlWhereExprParser extends AbstractOqlParser {
      */
     private SqlExpr parseInListExpr(SqlInListExpr x) {
         SqlInListExpr sqlX = new SqlInListExpr();
+
+        // 解析主表记录ID
+        this.parsePrimaryFieldValueExpr(x);
+
         return this.parseBinaryOpExprTo(x, sqlX);
     }
 
@@ -229,7 +233,6 @@ public class OqlWhereExprParser extends AbstractOqlParser {
         SqlExpr left = x.getLeft();
         if (left instanceof OqlFieldExpr) {
             XField resolvedField = ((OqlFieldExpr) left).getResolvedField();
-
             if (resolvedField == this.selfObject.getPrimaryField()) {
                 SqlBinaryOperator operator = x.getOperator();
                 if (operator == SqlBinaryOperator.EQUALITY || operator == SqlBinaryOperator.IN) {

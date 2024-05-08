@@ -53,7 +53,7 @@ public class OqlUpdateInfos extends AbstractOqlInfos {
         this.detailDeleteCmds = detailDeleteCmds;
     }
 
-    public void addDetailDeleteCmds(XObject detailObject, SqlDeleteCmd deleteCmd) {
+    public void addDetailDeleteCmd(XObject detailObject, SqlDeleteCmd deleteCmd) {
         if (this.detailDeleteCmds == null) {
             this.detailDeleteCmds = new HashMap<>();
         }
@@ -68,7 +68,7 @@ public class OqlUpdateInfos extends AbstractOqlInfos {
         this.detailInsertCmds = detailInsertCmds;
     }
 
-    public void addDetailInsertCmds(XObject detailObject, SqlInsertCmd insertCmd) {
+    public void addDetailInsertCmd(XObject detailObject, SqlInsertCmd insertCmd) {
         if (this.detailInsertCmds == null) {
             this.detailInsertCmds = new HashMap<>();
         }
@@ -83,7 +83,7 @@ public class OqlUpdateInfos extends AbstractOqlInfos {
         this.detailUpdateCmds = detailUpdateCmds;
     }
 
-    public void addDetailUpdateCmds(XObject detailObject, SqlUpdateCmd updateCmd) {
+    public void addDetailUpdateCmd(XObject detailObject, SqlUpdateCmd updateCmd) {
         if (this.detailUpdateCmds == null) {
             this.detailUpdateCmds = new HashMap<>();
         }

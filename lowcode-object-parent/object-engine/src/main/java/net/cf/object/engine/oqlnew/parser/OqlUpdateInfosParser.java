@@ -38,11 +38,6 @@ public class OqlUpdateInfosParser extends AbstractOqInfoParser<OqlUpdateStatemen
     private final List<Map<String, Object>> paramMaps;
 
     /**
-     * 主表记录主键字段的值的表达式（where中解析得到)
-     */
-    private SqlExpr masterPrimaryFieldValeuExpr;
-
-    /**
      * 主模型关联的更新语句
      */
     private final OqlUpdateStatement masterOqlStmt = new OqlUpdateStatement();
@@ -128,7 +123,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfoParser<OqlUpdateStatemen
         this.masterOqlStmt.setObjectSource(OqlUtils.defaultObjectSource(this.masterObject));
         OqlWhereExprParser whereExprParser = new OqlWhereExprParser(this.masterObject);
         whereExprParser.parseExpr(this.stmt.getWhere());
-        this.masterPrimaryFieldValeuExpr = whereExprParser.getPrimaryFieldValueExpr();
+        this.masterPrimaryFieldValueExpr = whereExprParser.getPrimaryFieldValueExpr();
 
         // 获取本模型对应的SQL语句
         List<OqlUpdateSetItem> setItems = this.stmt.getSetItems();
@@ -190,7 +185,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfoParser<OqlUpdateStatemen
                         detailBuilder = new SqlDeleteCmdBuilder(stmt, paramMaps);
                     }
                     SqlDeleteCmd detailCmd = detailBuilder.build();
-                    updateInfos.addDetailDeleteCmds(detailObject, detailCmd);
+                    updateInfos.addDetailDeleteCmd(detailObject, detailCmd);
                 });
             }
         });
@@ -203,7 +198,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfoParser<OqlUpdateStatemen
                 List<Map<String, Object>> paramMaps = this.getDetailObjectInsertParamMapsByObject(detailObject);
                 SqlInsertCmdBuilder detailBuilder = new SqlInsertCmdBuilder(stmt, paramMaps);
                 SqlInsertCmd detailCmd = detailBuilder.build();
-                updateInfos.addDetailInsertCmds(detailObject, detailCmd);
+                updateInfos.addDetailInsertCmd(detailObject, detailCmd);
             });
         }
 
@@ -215,7 +210,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfoParser<OqlUpdateStatemen
                 List<Map<String, Object>> paramMaps = this.getDetailObjectUpdateParamMapsByObject(detailObject);
                 SqlUpdateCmdBuilder detailBuilder = new SqlUpdateCmdBuilder(stmt, paramMaps);
                 SqlUpdateCmd detailCmd = detailBuilder.build();
-                updateInfos.addDetailUpdateCmds(detailObject, detailCmd);
+                updateInfos.addDetailUpdateCmd(detailObject, detailCmd);
             });
         }
 
@@ -327,22 +322,6 @@ public class OqlUpdateInfosParser extends AbstractOqInfoParser<OqlUpdateStatemen
                 List<Map<String, Object>> detailDeleteNotInMaps = this.getDetailObjectDeleteNotInParamMapsByObject(detailObject);
                 detailDeleteNotInMaps.add(detailDeleteMap);
             }
-        }
-    }
-
-    /**
-     * 从OQL语句中抽取主表记录ID，where primaryField = #{primaryField} 或者 primaryField = XXX
-     *
-     * @return
-     */
-    private Object extractMasterId(Map<String, Object> masterParamMap) {
-        if (this.masterPrimaryFieldValeuExpr instanceof SqlVariantRefExpr) {
-            String varName = ((SqlVariantRefExpr) this.masterPrimaryFieldValeuExpr).getVarName();
-            return masterParamMap.get(varName);
-        } else if (this.masterPrimaryFieldValeuExpr instanceof SqlValuableExpr) {
-            return ((SqlValuableExpr) this.masterPrimaryFieldValeuExpr).getValue();
-        } else {
-            throw new FastOqlException("不能从OQL语句或参数中解析出主键字段的值");
         }
     }
 

@@ -48,7 +48,7 @@
       "APPLY_ID": "111111111-FEL3232-323KLFJFDS-323FDSD",
       "APPLY_NAME": "关于张三3月出差南京的报销单",
       "TRV_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
-      "CASH": "1134.4",
+      "CASH": 1134.4,
       "REMARK": "",
       "CREATOR_KEY": "zhangsan"
     },
@@ -56,7 +56,7 @@
       "APPLY_ID": "222222222-FEL3232-323KLFJFDS-323FDSD",
       "APPLY_NAME": "关于李四5月出差上海的报销单",
       "TRV_ID": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
-      "CASH": "32323.4",
+      "CASH": 32323.4,
       "REMARK": "加急，缺钱...",
       "CREATOR_KEY": "lisi"
     }
