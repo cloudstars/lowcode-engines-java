@@ -46,7 +46,6 @@ public class OqlExprParser extends SqlExprParser {
             throw new FastOqlException("模型" + objectName + "不存在");
         }
 
-        //this.lastResolvedObject = resolvedObject;
         return resolvedObject;
     }
 

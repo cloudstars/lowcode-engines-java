@@ -1,5 +1,6 @@
 package net.cf.form.repository.mysql.util;
 
+import com.alibaba.fastjson.JSON;
 import net.cf.form.repository.mysql.jdbc.AdvancedMapSqlParameterSource;
 import net.cf.form.repository.mysql.visitor.MySqlAstOutputVisitor;
 import net.cf.form.repository.sql.ast.SqlDataType;
@@ -179,7 +180,15 @@ public final class SqlUtils {
             if (sqlDataType == SqlDataType.OBJECT) {
                 // 插入时，将对象转为字符串存会
                 Object paramValue = paramMap.get(varName);
-                paramSource.addValue(varName, paramValue != null ? paramValue.toString() : null, Types.CHAR);
+                if (paramValue != null) {
+                    if (paramValue instanceof String) {
+                        paramSource.addValue(varName, paramValue, Types.CHAR);
+                    } else {
+                        paramSource.addValue(varName, JSON.toJSONString(paramValue) , Types.CHAR);
+                    }
+                } else {
+                    paramSource.addValue(varName, null, Types.CHAR);
+                }
             } else {
                 paramSource.addValue(varName, paramMap.get(varName), sqlDataType.toJdbcType());
             }

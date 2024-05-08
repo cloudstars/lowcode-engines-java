@@ -5,7 +5,6 @@ import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
-import net.cf.object.engine.oql.cmd.OqlDeleteInfos;
 import net.cf.object.engine.sql.SqlDeleteCmd;
 import net.cf.object.engine.sql.SqlDeleteCmdBuilder;
 import net.cf.object.engine.util.OqlUtils;
@@ -21,7 +20,7 @@ import java.util.Map;
  * <p>
  * 职责：用于将一条OQL删除语句解析成本表的删除与子表的删除
  */
-public class OqlDeleteInfosParser extends AbstractOqInfoParser<OqlDeleteStatement, OqlDeleteInfos> {
+public class OqlDeleteInfosParser extends AbstractOqInfosParser<OqlDeleteStatement, OqlDeleteInfos> {
 
     /**
      * 输入的参数

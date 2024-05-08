@@ -7,11 +7,9 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
-import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XProperty;
-import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.sql.SqlDataTypeConvert;
 
 import java.util.Arrays;
@@ -46,18 +44,6 @@ public abstract class AbstractOqlParser {
             return this.toRepoRefExpr(field);
         }
     }
-
-    /**
-     * 构建表源
-     *
-     * @param x
-     */
-    protected SqlExprTableSource toRepoExprTableSource(OqlExprObjectSource x) {
-        SqlExprTableSource tableSource = new SqlExprTableSource();
-        tableSource.setExpr(x.getResolvedObject().getTableName());
-        return tableSource;
-    }
-
 
     /**
      * 将字段属性转换成驱动层的表达式
@@ -137,18 +123,6 @@ public abstract class AbstractOqlParser {
         SqlVariantRefExpr fieldVarRefExpr = new SqlVariantRefExpr("#{" + fieldName + "}");
         return fieldVarRefExpr;
     }
-
-    /**
-     * 构建字段属性的变量引用表达式，即：#{property}
-     *
-     * @param property
-     */
-    protected SqlVariantRefExpr buildPropertyVarRefExpr(XProperty property, String prefix) {
-        String propName = property.getName();
-        SqlVariantRefExpr propVarRefExpr = new SqlVariantRefExpr("#{" + prefix + "." +propName + "}");
-        return propVarRefExpr;
-    }
-
 
     /**
      * 构建字段等于它自身变量的比较表达式，即：field = #{field}

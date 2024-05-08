@@ -10,7 +10,7 @@ import net.cf.object.engine.oql.ast.OqlObjectSource;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.oql.cmd.OqlSelectInfos;
+import net.cf.object.engine.oql.infos.OqlSelectInfos;
 import net.cf.object.engine.oql.infos.OqlSelectInfosParser;
 import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;

@@ -5,7 +5,7 @@ import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.oql.cmd.OqlUpdateInfos;
+import net.cf.object.engine.oql.infos.OqlUpdateInfos;
 import net.cf.object.engine.util.OqlStatementUtils;
 import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;

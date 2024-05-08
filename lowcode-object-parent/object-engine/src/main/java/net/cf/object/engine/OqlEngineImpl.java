@@ -15,11 +15,8 @@ import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
-import net.cf.object.engine.oql.cmd.*;
-import net.cf.object.engine.sql.SqlCmdExecutor;
-import net.cf.object.engine.sql.SqlDeleteCmd;
-import net.cf.object.engine.sql.SqlInsertCmd;
-import net.cf.object.engine.sql.SqlUpdateCmd;
+import net.cf.object.engine.oql.infos.*;
+import net.cf.object.engine.sql.*;
 import net.cf.object.engine.util.OqlStatementUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +59,7 @@ public class OqlEngineImpl implements OqlEngine {
         XObject selfObject = selectInfos.getResolvedMasterObject();
 
         // 查询本表数据
-        OqlSelectInfo selfSelectInfo = selectInfos.getSelfSelectInfo();
+        SqlSelectCmd selfSelectInfo = selectInfos.getSelfSelectInfo();
         SqlSelectStatement selfSqlStmt = selfSelectInfo.getStatement();
         this.addLimitInfo(selfSqlStmt);
         Map<String, Object> selfResultMap = this.repository.selectOne(selfSqlStmt, paramMap);
@@ -76,12 +73,12 @@ public class OqlEngineImpl implements OqlEngine {
         }
 
         // 存在子表的情况下，依次查询子表
-        List<OqlSelectInfo> detailSelectInfos = selectInfos.getDetailSelectInfos();
+        List<SqlSelectCmd> detailSelectInfos = selectInfos.getDetailSelectInfos();
         if (detailSelectInfos != null && detailSelectInfos.size() > 0) {
             // 从主表返回的数据中抽取记录ID
             String selfPrimaryFieldName = selfObject.getPrimaryField().getName();
             String selfRecordId = selfResultMap.get(selfPrimaryFieldName).toString();
-            for (OqlSelectInfo detailSelectInfo : detailSelectInfos) {
+            for (SqlSelectCmd detailSelectInfo : detailSelectInfos) {
                 XObject detailObject = detailSelectInfo.getResolvedObject();
                 // 组装子表的查询条件（where masterField = #{masterField}）所需参数
                 Map<String, Object> detailParamMap = new HashMap<>();
@@ -106,9 +103,9 @@ public class OqlEngineImpl implements OqlEngine {
         }
 
         // 存在相关表的情况下，依次查询相关表
-        List<OqlSelectInfo> lookupSelectInfos = selectInfos.getLookupSelectInfos();
+        List<SqlSelectCmd> lookupSelectInfos = selectInfos.getLookupSelectInfos();
         if (lookupSelectInfos != null && lookupSelectInfos.size() > 0) {
-            for (OqlSelectInfo lookupSelectInfo : lookupSelectInfos) {
+            for (SqlSelectCmd lookupSelectInfo : lookupSelectInfos) {
                 XObject lookupObject = lookupSelectInfo.getResolvedObject();
                 String selfLookupFieldName = lookupSelectInfo.getObjectRefFieldName();
                 Object lookupFieldValue = selfResultMap.get(selfLookupFieldName);
@@ -265,7 +262,7 @@ public class OqlEngineImpl implements OqlEngine {
         XObject selfObject = selfOqlStmt.getResolvedMasterObject();
 
         // 查询本表数据
-        OqlSelectInfo selfSelectInfo = selfOqlStmt.getSelfSelectInfo();
+        SqlSelectCmd selfSelectInfo = selfOqlStmt.getSelfSelectInfo();
         SqlSelectStatement selfSqlStmt = selfSelectInfo.getStatement();
         this.addLimitInfo(selfSqlStmt); // 添加条数限制
         List<Map<String, Object>> selfResultMapList = this.repository.selectList(selfSqlStmt, paramMap);
@@ -279,11 +276,11 @@ public class OqlEngineImpl implements OqlEngine {
         }
 
         // 存在子表的情况下，依次查询子表
-        List<OqlSelectInfo> detailSelectInfos = selfOqlStmt.getDetailSelectInfos();
+        List<SqlSelectCmd> detailSelectInfos = selfOqlStmt.getDetailSelectInfos();
         if (detailSelectInfos != null && detailSelectInfos.size() > 0) {
             String selfPrimaryFieldName = selfObject.getPrimaryField().getName();
             List<String> selfRecordIds = this.extractRecordIdsFromResultMapList(selfResultMapList, selfPrimaryFieldName);
-            for (OqlSelectInfo detailSelectInfo : detailSelectInfos) {
+            for (SqlSelectCmd detailSelectInfo : detailSelectInfos) {
                 XObject detailObject = detailSelectInfo.getResolvedObject();
                 // 组装子表的查询条件（where masterField in (#{masterFields}))所需参数
                 Map<String, Object> detailParamMap = new HashMap<>();
@@ -313,9 +310,9 @@ public class OqlEngineImpl implements OqlEngine {
         }
 
         // 存在相关表的情况下，
-        List<OqlSelectInfo> lookupSelectInfos = selfOqlStmt.getLookupSelectInfos();
+        List<SqlSelectCmd> lookupSelectInfos = selfOqlStmt.getLookupSelectInfos();
         if (lookupSelectInfos != null && lookupSelectInfos.size() > 0) {
-            for (OqlSelectInfo lookupSelectInfo : lookupSelectInfos) {
+            for (SqlSelectCmd lookupSelectInfo : lookupSelectInfos) {
                 XObject lookupObject = lookupSelectInfo.getResolvedObject();
                 String selfLookupFieldName = lookupSelectInfo.getObjectRefFieldName();
                 XObjectRefField selfLookupField = (XObjectRefField) selfObject.getField(selfLookupFieldName);
@@ -608,25 +605,40 @@ public class OqlEngineImpl implements OqlEngine {
 
         // 循环处理子表
         Map<XObject, SqlDeleteCmd> detailDeleteCmds = updateInfos.getDetailDeleteCmds();
+        Map<XObject, SqlDeleteCmd> detailNotInDeleteCmds = updateInfos.getDetailNotInDeleteCmds();
         Map<XObject, SqlInsertCmd> detailInsertCmds = updateInfos.getDetailInsertCmds();
         Map<XObject, SqlUpdateCmd> detailUpdateCmds = updateInfos.getDetailUpdateCmds();
         for (XObject detailObject : detailObjects) {
+            // 先批量删除被删除的记录（不含not in 条件）
+            if (detailDeleteCmds != null) {
+                SqlDeleteCmd deleteCmd = detailDeleteCmds.get(detailObject);
+                if (deleteCmd != null) {
+                    this.executor.batchDelete(deleteCmd);
+                }
+            }
+
             // 先批量删除被删除的记录
-            SqlDeleteCmd deleteCmd = detailDeleteCmds.get(detailObject);
-            if (deleteCmd != null) {
-                this.executor.batchDelete(deleteCmd);
+            if (detailNotInDeleteCmds != null) {
+                SqlDeleteCmd deleteCmd = detailNotInDeleteCmds.get(detailObject);
+                if (deleteCmd != null) {
+                    this.executor.batchDelete(deleteCmd);
+                }
             }
 
             // 再批量插入新添加的记录
-            SqlInsertCmd insertCmd = detailInsertCmds.get(detailObject);
-            if (insertCmd != null) {
-                this.executor.batchInsert(insertCmd);
+            if (detailInsertCmds != null) {
+                SqlInsertCmd insertCmd = detailInsertCmds.get(detailObject);
+                if (insertCmd != null) {
+                    this.executor.batchInsert(insertCmd);
+                }
             }
 
             // 再批量更新有变更的记录
-            SqlUpdateCmd updateCmd = detailUpdateCmds.get(detailObject);
-            if (updateCmd != null) {
-                this.executor.batchUpdate(updateCmd);
+            if (detailUpdateCmds != null) {
+                SqlUpdateCmd updateCmd = detailUpdateCmds.get(detailObject);
+                if (updateCmd != null) {
+                    this.executor.batchUpdate(updateCmd);
+                }
             }
         }
 

@@ -5,8 +5,8 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.oql.cmd.OqlSelectInfo;
-import net.cf.object.engine.oql.cmd.OqlSelectInfos;
+import net.cf.object.engine.sql.SqlSelectCmd;
+import net.cf.object.engine.oql.infos.OqlSelectInfos;
 import net.cf.object.engine.util.OqlStatementUtils;
 import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
@@ -35,9 +35,9 @@ public class SelectExpenseLookupTravelOneRefWhereStmtTest extends AbstractOqlTes
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
         OqlSelectInfos oqlStmt = OqlStatementUtils.parseOqlSelectInfos(stmt, true);
-        OqlSelectInfo selfSelectInfo = oqlStmt.getSelfSelectInfo();
-        List<OqlSelectInfo> detailSelectInfos = oqlStmt.getDetailSelectInfos();
-        List<OqlSelectInfo> lookupSelectInfos = oqlStmt.getLookupSelectInfos();
+        SqlSelectCmd selfSelectInfo = oqlStmt.getSelfSelectInfo();
+        List<SqlSelectCmd> detailSelectInfos = oqlStmt.getDetailSelectInfos();
+        List<SqlSelectCmd> lookupSelectInfos = oqlStmt.getLookupSelectInfos();
         assert (selfSelectInfo != null && selfSelectInfo.getStatement() != null);
         SqlSelectStatement selfSqlStmt = selfSelectInfo.getStatement();
         assert (selfSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(selfSqlStmt.toString(), oqlInfo.sql));

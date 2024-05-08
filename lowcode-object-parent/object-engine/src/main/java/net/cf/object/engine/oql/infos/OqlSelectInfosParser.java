@@ -10,8 +10,7 @@ import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.cmd.OqlSelectInfo;
-import net.cf.object.engine.oql.cmd.OqlSelectInfos;
+import net.cf.object.engine.sql.SqlSelectCmd;
 import net.cf.object.engine.util.OqlUtils;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import java.util.Map;
  * <p>
  * 职责：用于将一条OQL查询语句解析成本表的查询、子表的查询、相关表的查询
  */
-public class OqlSelectInfosParser extends AbstractOqInfoParser<OqlSelectStatement, OqlSelectInfos> {
+public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStatement, OqlSelectInfos> {
 
     /**
      * 模型关联的查询语句
@@ -98,7 +97,7 @@ public class OqlSelectInfosParser extends AbstractOqInfoParser<OqlSelectStatemen
         selectInfos.setResolvedMasterObject(this.masterObject);
         for (Map.Entry<XObject, SqlSelectStatement> entry : stmtMap.entrySet()) {
             XObject thisObject = entry.getKey();
-            OqlSelectInfo selectInfo = new OqlSelectInfo();
+            SqlSelectCmd selectInfo = new SqlSelectCmd();
             selectInfo.setResolvedObject(thisObject);
             SqlSelectStatement stmt = this.stmtMap.get(thisObject);
             if (thisObject == this.masterObject) {

@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.cmd;
+package net.cf.object.engine.oql.infos;
 
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.sql.SqlDeleteCmd;
@@ -25,6 +25,12 @@ public class OqlUpdateInfos extends AbstractOqlInfos {
      */
     private Map<XObject, SqlDeleteCmd> detailDeleteCmds;
 
+    /**
+     * 子表中需要执行not in删除的数据的指令映射
+     *
+     * delete from ... where ... and primaryField not in ()
+     */
+    private Map<XObject, SqlDeleteCmd> detailNotInDeleteCmds;
 
     /**
      * 子表中需要执行插入的数据的指令映射
@@ -58,6 +64,21 @@ public class OqlUpdateInfos extends AbstractOqlInfos {
             this.detailDeleteCmds = new HashMap<>();
         }
         this.detailDeleteCmds.put(detailObject, deleteCmd);
+    }
+
+    public Map<XObject, SqlDeleteCmd> getDetailNotInDeleteCmds() {
+        return detailNotInDeleteCmds;
+    }
+
+    public void setDetailNotInDeleteCmds(Map<XObject, SqlDeleteCmd> detailNotInDeleteCmds) {
+        this.detailNotInDeleteCmds = detailNotInDeleteCmds;
+    }
+
+    public void addDetailNotInDeleteCmd(XObject detailObject, SqlDeleteCmd deleteCmd) {
+        if (this.detailNotInDeleteCmds == null) {
+            this.detailNotInDeleteCmds = new HashMap<>();
+        }
+        this.detailNotInDeleteCmds.put(detailObject, deleteCmd);
     }
 
     public Map<XObject, SqlInsertCmd> getDetailInsertCmds() {

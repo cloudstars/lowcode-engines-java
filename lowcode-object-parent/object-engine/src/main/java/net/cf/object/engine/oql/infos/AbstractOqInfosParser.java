@@ -9,7 +9,6 @@ import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.OqlStatement;
-import net.cf.object.engine.oql.cmd.AbstractOqlInfos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.regex.Pattern;
  * @param <O> OQL语句
  * @param <I> OQL信息
  */
-public abstract class AbstractOqInfoParser<O extends OqlStatement, I extends AbstractOqlInfos> extends AbstractOqlParser {
+public abstract class AbstractOqInfosParser<O extends OqlStatement, I extends AbstractOqlInfos> extends AbstractOqlParser {
 
     /**
      * 待解析的OQL语句
@@ -52,7 +51,7 @@ public abstract class AbstractOqInfoParser<O extends OqlStatement, I extends Abs
     protected final Pattern VAR_EXPAND_PATTERN = Pattern.compile("(\\w+)\\((\\[\\.+)\\)");
 
 
-    public AbstractOqInfoParser(O stmt, boolean isBatch) {
+    public AbstractOqInfosParser(O stmt, boolean isBatch) {
         this.stmt = stmt;
         this.isBatch = isBatch;
     }

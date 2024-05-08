@@ -7,7 +7,7 @@ import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.oql.cmd.OqlInsertInfos;
+import net.cf.object.engine.oql.infos.OqlInsertInfos;
 import net.cf.object.engine.oql.infos.OqlInsertInfosParser;
 import net.cf.object.engine.sql.SqlInsertCmd;
 import net.cf.object.engine.util.OqlUtils;

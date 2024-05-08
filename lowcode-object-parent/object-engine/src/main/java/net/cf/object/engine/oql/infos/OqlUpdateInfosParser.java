@@ -12,7 +12,6 @@ import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.cmd.OqlUpdateInfos;
 import net.cf.object.engine.sql.*;
 import net.cf.object.engine.util.OqlUtils;
 import org.springframework.util.CollectionUtils;
@@ -24,7 +23,7 @@ import java.util.*;
  * <p>
  * 职责：用于将一条OQL更新语句解析成本表的更新与子表的更新
  */
-public class OqlUpdateInfosParser extends AbstractOqInfoParser<OqlUpdateStatement, OqlUpdateInfos> {
+public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStatement, OqlUpdateInfos> {
 
     /**
      * 输入的参数
@@ -179,12 +178,23 @@ public class OqlUpdateInfosParser extends AbstractOqInfoParser<OqlUpdateStatemen
                     if (!this.isBatch) {
                         Map<String, Object> paramMap = this.getDetailObjectDeleteParamMapByObject(detailObject);
                         detailBuilder = new SqlDeleteCmdBuilder(stmt, paramMap);
+                        SqlDeleteCmd detailCmd = detailBuilder.build();
+                        updateInfos.addDetailDeleteCmd(detailObject, detailCmd);
                     } else {
-                        List<Map<String, Object>> paramMaps = this.getDetailObjectDeleteParamMapsByObject(detailObject);
-                        detailBuilder = new SqlDeleteCmdBuilder(stmt, paramMaps);
+                        List<Map<String, Object>> paramMaps1 = this.getDetailObjectDeleteParamMapsByObject(detailObject);
+                        if (!CollectionUtils.isEmpty(paramMaps1)) {
+                            detailBuilder = new SqlDeleteCmdBuilder(stmt, paramMaps1);
+                            SqlDeleteCmd detailCmd = detailBuilder.build();
+                            updateInfos.addDetailDeleteCmd(detailObject, detailCmd);
+                        }
+
+                        List<Map<String, Object>> paramMaps2 = this.getDetailObjectDeleteNotInParamMapsByObject(detailObject);
+                        if (!CollectionUtils.isEmpty(paramMaps2)) {
+                            detailBuilder = new SqlDeleteCmdBuilder(stmt, paramMaps2);
+                            SqlDeleteCmd detailCmd = detailBuilder.build();
+                            updateInfos.addDetailNotInDeleteCmd(detailObject, detailCmd);
+                        }
                     }
-                    SqlDeleteCmd detailCmd = detailBuilder.build();
-                    updateInfos.addDetailDeleteCmd(detailObject, detailCmd);
                 });
             }
         });

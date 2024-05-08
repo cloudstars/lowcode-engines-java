@@ -13,8 +13,6 @@ import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.cmd.AbstractOqlInfos;
-import net.cf.object.engine.oql.cmd.OqlInsertInfos;
 import net.cf.object.engine.sql.SqlInsertCmd;
 import net.cf.object.engine.sql.SqlInsertCmdBuilder;
 import net.cf.object.engine.util.OqlUtils;
@@ -35,7 +33,7 @@ import java.util.regex.Matcher;
  * insert into f1, f2, f3, f4, f5, detail(d1, d2, d3, ...), ... into object values (#{f1}, #{f2}, #{f3}, {单选带属性}, [多选带属性], #{detail'(d1', d2', d3', ...), ...}, ...)
  * 多个values的OQL语句允许有多个values：如：insert into f1, f2, f3, f4, f5, ... into object values 上述两个case的组合
  */
-public class OqlInsertInfosParser extends AbstractOqInfoParser<OqlInsertStatement, OqlInsertInfos> {
+public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStatement, OqlInsertInfos> {
 
     /**
      * 输入的参数

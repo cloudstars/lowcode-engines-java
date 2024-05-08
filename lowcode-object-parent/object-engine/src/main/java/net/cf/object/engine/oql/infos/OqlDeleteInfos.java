@@ -1,4 +1,4 @@
-package net.cf.object.engine.oql.cmd;
+package net.cf.object.engine.oql.infos;
 
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.sql.SqlDeleteCmd;
