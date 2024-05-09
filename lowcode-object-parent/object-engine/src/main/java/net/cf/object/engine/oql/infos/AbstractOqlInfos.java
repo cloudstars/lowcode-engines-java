@@ -1,6 +1,5 @@
 package net.cf.object.engine.oql.infos;
 
-import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.object.engine.object.XObject;
 
 import java.util.ArrayList;
@@ -22,11 +21,6 @@ public abstract class AbstractOqlInfos {
      * 解析后的子表模型列表
      */
     private List<XObject> resolvedDetailObjects;
-
-    /**
-     * 主表的主键字段的值（可能是常量SqlValuableExpr，也可能是变量SqlVariableRefExpr、SqlListExpr)
-     */
-    private SqlExpr mainPrimaryIdExpr;
 
     public XObject getResolvedMasterObject() {
         return resolvedMasterObject;
@@ -58,12 +52,4 @@ public abstract class AbstractOqlInfos {
         this.resolvedDetailObjects.add(resolvedDetailObject);
     }
 
-
-    public SqlExpr getMainPrimaryIdExpr() {
-        return mainPrimaryIdExpr;
-    }
-
-    public void setMainPrimaryIdExpr(SqlExpr mainPrimaryIdExpr) {
-        this.mainPrimaryIdExpr = mainPrimaryIdExpr;
-    }
 }

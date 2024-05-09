@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 public abstract class AbstractOqlRepoTest extends AbstractOqlTest {
 
     @Resource
-    protected OqlEngine engineNew;
+    protected OqlEngine engine;
 
     @Resource
     protected IDataSetOperator dataSetOperator;

@@ -2,13 +2,9 @@ package net.cf.object.engine.sql;
 
 
 import net.cf.form.repository.ObjectRepository;
-import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
-import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
-import net.cf.form.repository.sql.ast.statement.SqlStatement;
-import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
-import net.cf.object.engine.data.DefaultParameterMapper;
-import net.cf.object.engine.data.FieldMapping;
-import net.cf.object.engine.data.ParameterMapper;
+import net.cf.form.repository.sql.ast.SqlLimit;
+import net.cf.form.repository.sql.ast.statement.*;
+import net.cf.object.engine.data.*;
 import net.cf.object.engine.object.XField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +25,123 @@ public final class SqlCmdExecutor {
 
     private final ObjectRepository repository;
 
+    private final Integer defaultLimitSize;
+
     public SqlCmdExecutor(ObjectRepository repository) {
         this.repository = repository;
+        this.defaultLimitSize = null;
     }
+
+
+    public SqlCmdExecutor(ObjectRepository repository, Integer defaultLimitSize) {
+        this.repository = repository;
+        this.defaultLimitSize = defaultLimitSize;
+    }
+
+
+    /**
+     * 执行查询指令
+     *
+     * @param selectCmd
+     * @return
+     */
+    public Object executeSelect(SqlSelectCmd selectCmd) {
+        if (!selectCmd.isBatch()) {
+            return this.selectOne(selectCmd);
+        } else {
+            return this.selectList(selectCmd);
+        }
+    }
+
+    /**
+     * 查询单条记录
+     *
+     * @param selectCmd
+     * @return
+     */
+    public Map<String, Object> selectOne(SqlSelectCmd selectCmd) {
+        assert (!selectCmd.isBatch());
+
+        SqlSelectStatement selfSqlStmt = selectCmd.getStatement();
+        this.addLimitInfo(selfSqlStmt);
+        Map<String, Object> resultMap = this.repository.selectOne(selfSqlStmt, selectCmd.getParamMap());
+        if (resultMap != null) {
+            DefaultResultReducer resultReducer = new DefaultResultReducer(selectCmd.getFieldMappings());
+            resultMap = this.convertResultMap(resultReducer, resultMap);
+            LOGGER.info("成功查询到一条记录！");
+        } else {
+            LOGGER.info("未查询到记录！");
+        }
+
+        return resultMap;
+    }
+
+    /**
+     * 查询单条记录
+     *
+     * @param selectCmd
+     * @return
+     */
+    public List<Map<String, Object>> selectList(SqlSelectCmd selectCmd) {
+        assert (selectCmd.isBatch());
+
+        SqlSelectStatement selfSqlStmt = selectCmd.getStatement();
+        this.addLimitInfo(selfSqlStmt); // 添加条数限制
+        List<Map<String, Object>> resultMapList = this.repository.selectList(selfSqlStmt, selectCmd.getParamMap());
+        if (resultMapList != null && resultMapList.size() > 0) {
+            DefaultResultReducer resultReducer = new DefaultResultReducer(selectCmd.getFieldMappings());
+            resultMapList = this.convertResultMapList(resultReducer, resultMapList);
+            LOGGER.info("成功返回" + resultMapList.size() + "条记录！");
+        } else {
+            LOGGER.info("未查询到记录条！");
+        }
+
+        return resultMapList;
+    }
+
+    /**
+     * 添加分页信息
+     *
+     * @param sqlStmt
+     */
+    private void addLimitInfo(SqlSelectStatement sqlStmt) {
+        if (this.defaultLimitSize != null) {
+            SqlSelect select = sqlStmt.getSelect();
+            SqlLimit limit = select.getLimit();
+            if (limit == null) {
+                limit = new SqlLimit();
+                select.setLimit(limit);
+            }
+            limit.setRowCount(defaultLimitSize);
+        }
+    }
+
+    /**
+     * 转换查询结果，将resultMap中的key（列名）转换为字段名
+     *
+     * @param resultReducer
+     * @param resultMapList
+     * @return 生成新的对象返回
+     */
+    private List<Map<String, Object>> convertResultMapList(ResultReducer resultReducer, List<Map<String, Object>> resultMapList) {
+        List<Map<String, Object>> targetMapList = new ArrayList<>();
+        for (Map<String, Object> resultMap : resultMapList) {
+            targetMapList.add(this.convertResultMap(resultReducer, resultMap));
+        }
+        return targetMapList;
+    }
+
+    /**
+     * 转换查询结果，将resultMap中的key（列名）转换为字段名
+     *
+     * @param resultReducer
+     * @param resultMap
+     * @return 生成新的对象返回
+     */
+    private Map<String, Object> convertResultMap(ResultReducer resultReducer, Map<String, Object> resultMap) {
+        return resultReducer.reduceResult(resultMap);
+    }
+
 
     /**
      * 执行插入指令

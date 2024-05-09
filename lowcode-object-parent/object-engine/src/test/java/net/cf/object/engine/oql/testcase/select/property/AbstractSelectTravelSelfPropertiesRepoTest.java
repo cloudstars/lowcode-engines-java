@@ -2,7 +2,7 @@ package net.cf.object.engine.oql.testcase.select.property;
 
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +22,8 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelCreatorListById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_CREATOR_LIST_BY_ID);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engineNew.queryList(stmt);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        List<Map<String, Object>> dataList = this.engine.queryList(stmt);
         assert (dataList != null && dataList.size() == 1);
         assert (dataList.get(0).containsKey("creator"));
         Object creator = dataList.get(0).get("creator");
@@ -35,8 +35,8 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelSingleCreatorListById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_SINGLE_CREATOR_LIST_BY_ID);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engineNew.queryList(stmt);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        List<Map<String, Object>> dataList = this.engine.queryList(stmt);
         assert (dataList != null && dataList.size() == 1);
         Map<String, Object> resultMap = dataList.get(0);
         assert (resultMap.get("creator") instanceof Map);
@@ -48,19 +48,19 @@ public abstract class AbstractSelectTravelSelfPropertiesRepoTest extends Abstrac
     @Override
     public void testSelectTravelListBySingleCreator() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST_BY_SINGLE_CREATOR);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> dataList = this.engineNew.queryList(stmt);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        List<Map<String, Object>> dataList = this.engine.queryList(stmt);
         assert (dataList != null && dataList.size() == 1);
     }
 
     @Override
     public void testSelectTravelListBySingleCreatorVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_LIST_BY_SINGLE_CREATOR_VARS);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("creator.name", "张三");
         paramMap.put("creator.key", "zhangsan");
-        List<Map<String, Object>> dataList = this.engineNew.queryList(stmt, paramMap);
+        List<Map<String, Object>> dataList = this.engine.queryList(stmt, paramMap);
         assert (dataList != null && dataList.size() == 1);
     }
 }

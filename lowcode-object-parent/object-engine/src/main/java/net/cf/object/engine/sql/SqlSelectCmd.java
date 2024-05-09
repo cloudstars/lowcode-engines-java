@@ -4,6 +4,7 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.data.FieldMapping;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 模型的查询信息
@@ -11,6 +12,11 @@ import java.util.List;
  * @author clouds
  */
 public class SqlSelectCmd extends AbstractSqlCmd<SqlSelectStatement> {
+
+    /**
+     * 查询参数
+     */
+    private Map<String, Object> paramMap;
 
     /**
      * 查询的字段映射关系
@@ -31,6 +37,14 @@ public class SqlSelectCmd extends AbstractSqlCmd<SqlSelectStatement> {
      * 是否是直接查询了子表的字段，如：select detailField from ...，并且不含子表的其它字段查询
      */
     private boolean isDetailFieldDirectQuery;
+
+    public Map<String, Object> getParamMap() {
+        return paramMap;
+    }
+
+    public void setParamMap(Map<String, Object> paramMap) {
+        this.paramMap = paramMap;
+    }
 
     public List<FieldMapping> getFieldMappings() {
         return fieldMappings;

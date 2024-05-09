@@ -176,11 +176,11 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
             SqlInsertStatement.ValuesClause detailValues = new SqlInsertStatement.ValuesClause();
             for (OqlExpr detailField : detailFields) {
                 XField resolvedField = ((OqlFieldExpr) detailField).getResolvedField();
-                detailValues.addValue(this.buildFieldVarRefExpr(resolvedField));
+                detailValues.addValue(OqlUtils.defaultFieldVarExpr(resolvedField));
             }
 
             // 给子表添加masterField字段的值
-            detailValues.addValue(this.buildFieldVarRefExpr(detailMasterField));
+            detailValues.addValue(OqlUtils.defaultFieldVarExpr(detailMasterField));
 
             OqlInsertStatement detailStmt = this.getObjectStmtByObject(detailObject);
             detailStmt.getValuesList().add(detailValues);

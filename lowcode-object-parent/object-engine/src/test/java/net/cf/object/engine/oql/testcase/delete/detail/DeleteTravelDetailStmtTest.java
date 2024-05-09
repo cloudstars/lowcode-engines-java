@@ -9,12 +9,12 @@ import net.cf.object.engine.object.TravelTripObject;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
-import net.cf.object.engine.oql.testcase.AbstractOqlTest;
-import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
 import net.cf.object.engine.oql.infos.OqlDeleteInfos;
 import net.cf.object.engine.oql.infos.OqlDeleteInfosParser;
+import net.cf.object.engine.oql.testcase.AbstractOqlTest;
+import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
 import net.cf.object.engine.sql.SqlDeleteCmd;
-import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,7 +38,7 @@ public class DeleteTravelDetailStmtTest extends AbstractOqlTest implements Delet
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
+        OqlDeleteStatement oqlStmt = OqlStatementUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
@@ -68,7 +68,7 @@ public class DeleteTravelDetailStmtTest extends AbstractOqlTest implements Delet
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
+        OqlDeleteStatement oqlStmt = OqlStatementUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
@@ -98,7 +98,7 @@ public class DeleteTravelDetailStmtTest extends AbstractOqlTest implements Delet
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
+        OqlDeleteStatement oqlStmt = OqlStatementUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的
@@ -128,7 +128,7 @@ public class DeleteTravelDetailStmtTest extends AbstractOqlTest implements Delet
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
-        OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
+        OqlDeleteStatement oqlStmt = OqlStatementUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言解析出来的OQL的一些关键信息是符合预期的

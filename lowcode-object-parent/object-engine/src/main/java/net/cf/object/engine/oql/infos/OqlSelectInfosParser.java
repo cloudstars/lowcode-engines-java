@@ -1,19 +1,17 @@
 package net.cf.object.engine.oql.infos;
 
-import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
-import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
-import net.cf.form.repository.sql.ast.statement.*;
-import net.cf.object.engine.data.FieldMapping;
-import net.cf.object.engine.object.*;
-import net.cf.object.engine.oql.FastOqlException;
+import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.object.engine.object.ObjectRefType;
+import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.sql.SqlSelectCmd;
+import net.cf.object.engine.sql.SqlSelectCmdBuilder;
 import net.cf.object.engine.util.OqlUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,27 +24,29 @@ import java.util.Map;
 public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStatement, OqlSelectInfos> {
 
     /**
-     * 模型关联的查询语句
+     * 查询参数
      */
-    private final Map<XObject, SqlSelectStatement> stmtMap = new HashMap<>();
+    private final Map<String, Object> paramMap;
 
     /**
-     * 模型的字段映射关系
+     * 模型关联的查询语句
      */
-    private final Map<XObject, List<FieldMapping>> fieldMappingsMap = new HashMap<>();
+    private final Map<XObject, OqlSelectStatement> objectSelectStmtMap = new HashMap<>();
 
     /**
      * 模型关联的别名，如select refField(f1, f2) as xxx，xxx就是refField对应模型的别名
      */
-    private final Map<XObject, String> aliasMap = new HashMap<>();
+    private final Map<XObject, String> objectAliasMap = new HashMap<>();
 
-    private final RepoExprBuilder sqlExprBuilder;
 
-    private int nonFieldSelectItemIndex = 0;
+    public OqlSelectInfosParser(OqlSelectStatement stmt, boolean isQueryList) {
+        super(stmt, isQueryList);
+        this.paramMap = null;
+    }
 
-    public OqlSelectInfosParser(OqlSelectStatement stmt, boolean isBatch) {
-        super(stmt, isBatch);
-        this.sqlExprBuilder = new RepoExprBuilder();
+    public OqlSelectInfosParser(OqlSelectStatement stmt, Map<String, Object> paramMap, boolean isQueryList) {
+        super(stmt, isQueryList);
+        this.paramMap = paramMap;
     }
 
     /**
@@ -59,176 +59,119 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
         OqlSelect select = this.stmt.getSelect();
         this.masterObject = select.getFrom().getResolvedObject();
 
-        // 获取本模型对应的SQL语句
-        SqlSelectStatement selfStmt = this.getStmtByObject(this.masterObject);
-        SqlSelect selfSelect = selfStmt.getSelect();
+        // 获取本模型对应的OQL语句
+        OqlSelectStatement masterStmt = this.getStmtByObject(this.masterObject);
+        OqlSelect masterSelect = masterStmt.getSelect();
 
         // 解析查询字段
         List<OqlSelectItem> selectItems = select.getSelectItems();
-        this.parseSelectItems(this.masterObject, selectItems);
+        for (OqlSelectItem selectItem : selectItems) {
+            SqlExpr selectItemExpr = selectItem.getExpr();
+            String alias = selectItem.getAlias();
+            if (selectItemExpr instanceof OqlObjectExpandExpr) {
+                this.parseSelectObjectExpandExpr((OqlObjectExpandExpr) selectItemExpr, alias);
+            } else {
+                masterSelect.addSelectItem(selectItem);
+            }
+        }
 
+        // 解析模型
+        masterSelect.setFrom(select.getFrom());
         // 解析where条件
-        SqlExpr where = select.getWhere();
-        if (where != null) {
-            OqlWhereExprParser whereExprParser = new OqlWhereExprParser(this.masterObject);
-            SqlExpr whereX = whereExprParser.parseExpr(where);
-            selfSelect.setWhere(whereX);
-        }
+        masterSelect.setWhere(select.getWhere());
         // 解析分组
-        SqlSelectGroupByClause groupByClause = select.getGroupBy();
-        if (groupByClause != null) {
-            SqlSelectGroupByClause groupByClauseX = this.parseGroupByClause(groupByClause);
-            selfSelect.setGroupBy(groupByClauseX);
-        }
+        masterSelect.setGroupBy(select.getGroupBy());
         // 解析排序
-        SqlOrderBy orderBy = select.getOrderBy();
-        if (orderBy != null) {
-            SqlOrderBy orderByX = this.parseOrderBy(orderBy);
-            selfSelect.setOrderBy(orderByX);
-        }
+        masterSelect.setOrderBy(select.getOrderBy());
         // 解析限制行数
-        SqlLimit limit = select.getLimit();
-        if (limit != null) {
-            selfSelect.setLimit(limit);
-        }
+        masterSelect.setLimit(select.getLimit());
 
-        // 构建OQL查询语句
+        return this.buildSelectInfos();
+    }
+
+    /**
+     * 构建OQL查询信息
+     */
+    private OqlSelectInfos buildSelectInfos() {
         OqlSelectInfos selectInfos = new OqlSelectInfos();
         selectInfos.setResolvedMasterObject(this.masterObject);
-        for (Map.Entry<XObject, SqlSelectStatement> entry : stmtMap.entrySet()) {
+        for (Map.Entry<XObject, OqlSelectStatement> entry : objectSelectStmtMap.entrySet()) {
             XObject thisObject = entry.getKey();
-            SqlSelectCmd selectInfo = new SqlSelectCmd();
-            selectInfo.setResolvedObject(thisObject);
-            SqlSelectStatement stmt = this.stmtMap.get(thisObject);
+            OqlSelectStatement thisStmt = entry.getValue();
             if (thisObject == this.masterObject) {
-                selectInfos.setSelfSelectInfo(selectInfo);
-            } else {
-                XObjectRefField objectRefField = this.masterObject.getObjectRefField(thisObject.getName());
-                selectInfo.setObjectRefFieldName(objectRefField.getName());
-                selectInfo.setObjectRefFieldAlias(this.aliasMap.get(thisObject));
-                SqlExpr whereExpr;
-                if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
-                    selectInfos.addDetailSelectInfo(selectInfo);
-                    if (stmt.getSelect().getSelectItems().size() == 0) {
-                        selectInfo.setDetailFieldDirectQuery(true);
-                        // 如果只查询了子表字段，默认会返回子表的ID数组
-                        this.addFieldToStmt(thisObject.getPrimaryField(), null);
-                    }
-                    // 默认查询子表的masterField字段
-                    XObjectRefField detailMasterField = thisObject.getObjectRefField(masterObject.getName());
-                    this.addFieldToStmt(detailMasterField, null);
-                    if (this.isBatch) {
-                        // where masterField in (#{masterFields})
-                        whereExpr = this.buildFieldInListVarRefExpr(detailMasterField);
-                    } else {
-                        // where masterField = #{masterField}
-                        whereExpr = this.buildFieldEqualsVarRefExpr(detailMasterField);
-                    }
-                } else {
-                    // 默认查询本表的lookupField字段
-                    this.addFieldToStmt(objectRefField, null);
-                    selectInfos.addLookupSelectInfo(selectInfo);
-                    if (this.isBatch || objectRefField.isMultiRef()) {
-                        // where primaryField in (#{primaryFields})
-                        whereExpr = this.buildFieldInListVarRefExpr(thisObject.getPrimaryField());
-                    } else {
-                        // where primaryField = #{primaryField}
-                        whereExpr = this.buildFieldEqualsVarRefExpr(thisObject.getPrimaryField());
-                    }
-                }
-                stmt.getSelect().setWhere(whereExpr);
+                continue;
             }
-            selectInfo.setStatement(stmt);
-            selectInfo.setFieldMappings(this.fieldMappingsMap.get(thisObject));
+
+            XObjectRefField objectRefField = this.masterObject.getObjectRefField(thisObject.getName());
+            SqlExpr whereExpr;
+            boolean refIsBatch = true;
+            if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
+                // 默认查询子表的masterField字段
+                XObjectRefField detailMasterField = thisObject.getObjectRefField(masterObject.getName());
+                if (thisStmt.getSelect().getSelectItems().size() > 0) {
+                    this.addFieldToStmt(detailMasterField);
+                }
+
+                if (this.isBatch) {
+                    // where masterField in (#{masterFields})
+                    whereExpr = OqlUtils.buildFieldInListVarRefExpr(detailMasterField);
+                } else {
+                    // where masterField = #{masterField}
+                    whereExpr = OqlUtils.buildFieldEqualsVarRefExpr(detailMasterField);
+                }
+            } else {
+                // 默认查询本表的lookupField字段
+                this.addFieldToStmt(objectRefField);
+                if (this.isBatch || objectRefField.isMultiRef()) {
+                    // where primaryField in (#{primaryFields})
+                    whereExpr = OqlUtils.buildFieldInListVarRefExpr(thisObject.getPrimaryField());
+                } else {
+                    refIsBatch = false;
+                    // where primaryField = #{primaryField}
+                    whereExpr = OqlUtils.buildFieldEqualsVarRefExpr(thisObject.getPrimaryField());
+                }
+            }
+            thisStmt.getSelect().setWhere(whereExpr);
+
+            SqlSelectCmdBuilder builder = new SqlSelectCmdBuilder(thisStmt, new HashMap<>(), refIsBatch);
+            SqlSelectCmd selectCmd = builder.build();
+            selectCmd.setObjectRefFieldName(objectRefField.getName());
+            selectCmd.setObjectRefFieldAlias(this.objectAliasMap.get(thisObject));
+            if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
+                selectInfos.addDetailSelectInfo(selectCmd);
+            } else {
+                selectInfos.addLookupSelectCmd(selectCmd);
+            }
         }
+
+        // 在构建相关表时会修改本表的查询字段，故最后再构建主表
+        OqlSelectStatement masterStmt = this.getStmtByObject(this.masterObject);
+        SqlSelectCmdBuilder builder = new SqlSelectCmdBuilder(masterStmt, this.paramMap, this.isBatch);
+        SqlSelectCmd selectCmd = builder.build();
+        selectInfos.setMasterSelectCmd(selectCmd);
 
         return selectInfos;
     }
 
     /**
-     * 解析模型下的一组查询字段
+     * 添加一个字段到查询字段中
      *
-     * @param thisObject
-     * @param selectItems
+     * @param field
      */
-    private void parseSelectItems(XObject thisObject, List<OqlSelectItem> selectItems) {
+    private void addFieldToStmt(XField field) {
+        XObject object = field.getOwner();
+        OqlSelect select = this.getStmtByObject(object).getSelect();
+        List<OqlSelectItem> selectItems = select.getSelectItems();
         for (OqlSelectItem selectItem : selectItems) {
-            this.parseSelectItem(thisObject, selectItem);
-        }
-    }
-
-    /**
-     * 解析模型下的单个查询字段
-     *
-     * @param thisObject
-     * @param selectItem
-     */
-    private void parseSelectItem(XObject thisObject, OqlSelectItem selectItem) {
-        SqlExpr selectItemExpr = selectItem.getExpr();
-        String alias = selectItem.getAlias();
-
-        // OQL语句中不含这两个表达式，如果有的话，一定是程序处理出错了
-        assert (!(selectItemExpr instanceof SqlIdentifierExpr));
-        assert (!(selectItemExpr instanceof SqlPropertyExpr));
-
-        if (selectItemExpr instanceof SqlAllColumnExpr) {
-            this.addObjectAllFieldsToStmt(thisObject);
-        } else if (selectItemExpr instanceof OqlFieldExpr) {
-            this.parseSelectFieldExpr((OqlFieldExpr) selectItemExpr, alias);
-        } else if (selectItemExpr instanceof OqlPropertyExpr) {
-            throw new FastOqlException("查询字段中不允许出现字段属性!");
-        } else if (selectItemExpr instanceof OqlObjectExpandExpr) {
-            this.parseSelectObjectExpandExpr((OqlObjectExpandExpr) selectItemExpr, alias);
-        } else {
-            this.parseExpr(thisObject, selectItemExpr, alias);
-        }
-    }
-
-    /**
-     * 分析分组子句
-     *
-     * @param groupByClause
-     * @return
-     */
-    private SqlSelectGroupByClause parseGroupByClause(SqlSelectGroupByClause groupByClause) {
-        SqlSelectGroupByClause groupByClauseX = new SqlSelectGroupByClause();
-        List<SqlExpr> groupByItems = groupByClause.getItems();
-        for (SqlExpr groupByItem : groupByItems) {
-            SqlExpr groupByItemX = this.sqlExprBuilder.buildSqlExpr(this.masterObject, groupByItem);
-            groupByClauseX.addItem(groupByItemX);
+            SqlExpr itemExpr = selectItem.getExpr();
+            if (itemExpr instanceof OqlFieldExpr) {
+                if (((OqlFieldExpr) itemExpr).getResolvedField().getName().equals(field.getName())) {
+                    return;
+                }
+            }
         }
 
-        return groupByClauseX;
-    }
-
-    /**
-     * 解析orderBy
-     *
-     * @param orderBy
-     * @return
-     */
-    private SqlOrderBy parseOrderBy(SqlOrderBy orderBy) {
-        SqlOrderBy orderByX = new SqlOrderBy();
-        List<SqlSelectOrderByItem> orderByItems = orderBy.getItems();
-        for (SqlSelectOrderByItem orderByItem : orderByItems) {
-            SqlSelectOrderByItem orderByItemX = new SqlSelectOrderByItem();
-            orderByItemX.setExpr(this.sqlExprBuilder.buildSqlExpr(this.masterObject, orderByItem.getExpr()));
-            orderByItemX.setAscending(orderByItem.isAscending());
-            orderByX.addItem(orderByItemX);
-        }
-
-        return orderByX;
-    }
-
-    /**
-     * 解析查询模型的字段，select field from object
-     *
-     * @param fieldExpr
-     * @param alias
-     */
-    private void parseSelectFieldExpr(OqlFieldExpr fieldExpr, String alias) {
-        XField field = fieldExpr.getResolvedField();
-        this.addFieldToStmt(field, alias);
+        select.addSelectItem(new OqlSelectItem(OqlUtils.defaultFieldExpr(field)));
     }
 
     /**
@@ -240,11 +183,10 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
     private void parseSelectObjectExpandExpr(OqlObjectExpandExpr objectExpandExpr, String alias) {
         XObject refObject = objectExpandExpr.getResolvedRefObject();
         List<OqlExpr> expandFields = objectExpandExpr.getFields();
+        OqlSelect select = this.getStmtByObject(refObject).getSelect();
         if (objectExpandExpr.isStarExpanded()) {
-            this.addObjectAllFieldsToStmt(refObject);
+            select.addSelectItem(new OqlSelectItem(new SqlAllColumnExpr()));
         } else {
-            // 通过getStmtByObject来生成引用表的SqlSelectStatement
-            this.getStmtByObject(refObject);
             for (OqlExpr expandField : expandFields) {
                 OqlSelectItem refSelectItem;
                 if (expandField instanceof SqlSelectItem) {
@@ -253,85 +195,11 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
                 } else {
                     refSelectItem = new OqlSelectItem(expandField);
                 }
-                this.parseSelectItem(refObject, refSelectItem);
+                select.addSelectItem(refSelectItem);
             }
             if (alias != null) {
-                this.aliasMap.put(refObject, alias);
+                this.objectAliasMap.put(refObject, alias);
             }
-        }
-    }
-
-    /**
-     * 解析普通的非字段类表达式
-     *
-     * @param thisObject
-     * @param expr
-     * @param alias
-     */
-    private void parseExpr(XObject thisObject, SqlExpr expr, String alias) {
-        SqlExpr exprX = this.sqlExprBuilder.buildSqlExpr(thisObject, expr);
-        SqlSelectStatement stmt = this.getStmtByObject(thisObject);
-        List<FieldMapping> fieldMappings = this.getFieldMappingsByObject(thisObject);
-        SqlSelect select = stmt.getSelect();
-        String itemAlias = "_" + nonFieldSelectItemIndex++;
-        select.addSelectItem(new SqlSelectItem(exprX, itemAlias));
-
-        String columnName = OqlUtils.expr2String(expr);
-        String name = alias != null ? alias : columnName;
-        FieldMapping fieldMapping = new FieldMapping(name, itemAlias);
-        fieldMappings.add(fieldMapping);
-    }
-
-    /**
-     * 将一个模型的全部字段添加到模型对应的查询语句的字段中
-     *
-     * @param object
-     */
-    private void addObjectAllFieldsToStmt(XObject object) {
-        List<XField> fields = object.getFields();
-        for (XField field : fields) {
-            if (field instanceof XObjectRefField && ((XObjectRefField) field).getRefType() == ObjectRefType.DETAIL) {
-                continue;
-            }
-            this.addFieldToStmt(field, null);
-        }
-    }
-
-    /**
-     * 将一个模型的字段添加到模型对应的查询语句的字段中
-     *
-     * @param field
-     * @param alias
-     * @return
-     */
-    private void addFieldToStmt(XField field, String alias) {
-        XObject thisObject = field.getOwner();
-        SqlSelectStatement stmt = this.getStmtByObject(thisObject);
-        List<FieldMapping> fieldMappings = this.getFieldMappingsByObject(thisObject);
-        SqlSelect select = stmt.getSelect();
-
-        String name = alias != null ? alias : field.getName();
-        FieldMapping fieldMapping = new FieldMapping(name, field.getColumnName());
-        fieldMapping.setValueType(new ValueTypeImpl(field.getDataType(), field.isArray()));
-        fieldMappings.add(fieldMapping);
-
-        List<XProperty> properties = field.getProperties();
-        if (properties.size() > 0) {
-            List<FieldMapping> subFieldMappings = new ArrayList<>();
-            for (XProperty property : properties) {
-                SqlIdentifierExpr identExpr = new SqlIdentifierExpr(property.getColumnName());
-                SqlSelectItem selectItem = new SqlSelectItem(identExpr);
-                select.addSelectItem(selectItem);
-                FieldMapping subFieldMapping = new FieldMapping(property.getName(), property.getColumnName());
-                subFieldMapping.setValueType(new ValueTypeImpl(property.getDataType(), property.isArray()));
-                subFieldMappings.add(subFieldMapping);
-            }
-            fieldMapping.addSubFields(subFieldMappings);
-        } else {
-            SqlIdentifierExpr identExpr = new SqlIdentifierExpr(field.getColumnName());
-            identExpr.setAutoGen(field.isAutoGen());
-            SqlSelectItem selectItem = new SqlSelectItem(identExpr);
-            select.addSelectItem(selectItem);
         }
     }
 
@@ -341,30 +209,15 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
      * @param object
      * @return
      */
-    private SqlSelectStatement getStmtByObject(XObject object) {
-        SqlSelectStatement stmt = this.stmtMap.get(object);
+    private OqlSelectStatement getStmtByObject(XObject object) {
+        OqlSelectStatement stmt = this.objectSelectStmtMap.get(object);
         if (stmt == null) {
-            SqlSelect select = new SqlSelect();
-            select.setFrom(new SqlExprTableSource(object.getTableName()));
-            stmt = new SqlSelectStatement(select);
-            this.stmtMap.put(object, stmt);
+            OqlSelect select = new OqlSelect();
+            select.setFrom(OqlUtils.defaultObjectSource(object));
+            stmt = new OqlSelectStatement(select);
+            this.objectSelectStmtMap.put(object, stmt);
         }
         return stmt;
-    }
-
-    /**
-     * 根据模型获取它对应的查询映射表
-     *
-     * @param object
-     * @return
-     */
-    private List<FieldMapping> getFieldMappingsByObject(XObject object) {
-        List<FieldMapping> fieldMappings = this.fieldMappingsMap.get(object);
-        if (fieldMappings == null) {
-            fieldMappings = new ArrayList<>();
-            this.fieldMappingsMap.put(object, fieldMappings);
-        }
-        return fieldMappings;
     }
 
 }

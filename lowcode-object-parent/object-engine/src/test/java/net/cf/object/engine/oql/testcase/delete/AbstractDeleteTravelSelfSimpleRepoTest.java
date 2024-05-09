@@ -4,7 +4,7 @@ import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -32,15 +32,15 @@ public abstract class AbstractDeleteTravelSelfSimpleRepoTest extends AbstractOql
         {
             // 删除数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_DELETE_TRAVEL_BY_ID);
-            OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
-            this.engineNew.remove(oqlStmt);
+            OqlDeleteStatement oqlStmt = OqlStatementUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
+            this.engine.remove(oqlStmt);
         }
 
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
+            OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
         }
     }
@@ -51,17 +51,17 @@ public abstract class AbstractDeleteTravelSelfSimpleRepoTest extends AbstractOql
         {
             // 删除数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_DELETE_TRAVEL_BY_ID_VARS);
-            OqlDeleteStatement oqlStmt = OqlUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
+            OqlDeleteStatement oqlStmt = OqlStatementUtils.parseSingleDeleteStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> dataMap = new HashMap<>();
             dataMap.put("applyId", TravelObject.RECORD1);
-            this.engineNew.remove(oqlStmt, dataMap);
+            this.engine.remove(oqlStmt, dataMap);
         }
 
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'";
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
+            OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 0);
         }
     }

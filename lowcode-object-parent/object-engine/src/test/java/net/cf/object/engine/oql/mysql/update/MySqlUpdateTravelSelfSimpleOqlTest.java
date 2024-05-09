@@ -24,4 +24,5 @@ public class MySqlUpdateTravelSelfSimpleOqlTest extends AbstractUpdateTravelSelf
     public void testUpdateTravelByIdVars() {
         super.testUpdateTravelByIdVars();
     }
+
 }

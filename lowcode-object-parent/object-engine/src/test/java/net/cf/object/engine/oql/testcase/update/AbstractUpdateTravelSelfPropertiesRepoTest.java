@@ -5,7 +5,7 @@ import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 import org.junit.Assert;
 
 import java.util.Arrays;
@@ -34,8 +34,8 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
         {
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_MODIFIER_BY_ID);
-            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
-            int effectedRows = this.engineNew.modify(oqlStmt);
+            OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+            int effectedRows = this.engine.modify(oqlStmt);
             assert (effectedRows == 1);
         }
 
@@ -47,9 +47,9 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
         {
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_MODIFIER_BY_ID_VARS);
-            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+            OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> paramMap = this.getEditParamMap();
-            int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
+            int effectedRows = this.engine.modify(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }
 
@@ -62,10 +62,10 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
     private void assertUpdateRecords() {
         // 重新查出来作断言
         String selectOql = "select applyId, applyName, modifier from Travel where applyId = #{applyId}";
-        OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+        OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyId", TravelObject.RECORD1);
-        List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
+        List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);
         assert (dataList != null && dataList.size() == 1);
         Object modifier = dataList.get(0).get("modifier");
         assert (modifier != null && modifier instanceof Map);
@@ -81,7 +81,7 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
         {
             // 更新数据
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_WITH_ATTACHES_BY_ID_VARS);
-            OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+            OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", TravelObject.RECORD1);
             Map<String, Object> attach1 = new HashMap<>();
@@ -92,17 +92,17 @@ public abstract class AbstractUpdateTravelSelfPropertiesRepoTest extends Abstrac
             attach2.put("key", "attach2-2");
             newAttaches = Arrays.asList(attach1, attach2);
             paramMap.put("attaches", newAttaches);
-            int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
+            int effectedRows = this.engine.modify(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }
 
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName, attaches from Travel where applyId = #{applyId}";
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", TravelObject.RECORD1);
-            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);
             assert (dataList != null && dataList.size() == 1);
             Object attaches = dataList.get(0).get("attaches");
             assert (attaches != null && attaches instanceof List);

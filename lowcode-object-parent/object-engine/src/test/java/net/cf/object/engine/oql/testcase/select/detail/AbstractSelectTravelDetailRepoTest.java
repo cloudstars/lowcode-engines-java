@@ -3,7 +3,7 @@ package net.cf.object.engine.oql.testcase.select.detail;
 import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,8 +26,8 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripIdsById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_IDS_BY_ID);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        Map<String, Object> resultMap = this.engineNew.queryOne(stmt);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        Map<String, Object> resultMap = this.engine.queryOne(stmt);
         assert (resultMap != null && resultMap.containsKey("trips"));
 
         Object trips = resultMap.get("trips");
@@ -39,8 +39,8 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripById() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_BY_ID);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        Map<String, Object> resultMap = this.engineNew.queryOne(stmt);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        Map<String, Object> resultMap = this.engine.queryOne(stmt);
         assert (resultMap != null && resultMap.containsKey("trips"));
 
         Object trips = resultMap.get("trips");
@@ -50,10 +50,10 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripByIdVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_BY_ID_VARS);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyId", TravelObject.RECORD1);
-        Map<String, Object> resultMap = this.engineNew.queryOne(stmt, paramMap);
+        Map<String, Object> resultMap = this.engine.queryOne(stmt, paramMap);
         assert (resultMap != null && resultMap.containsKey("trips"));
         Object trips = resultMap.get("trips");
         assert (trips instanceof List && ((List<?>) trips).size() == 2);
@@ -62,8 +62,8 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripList() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_LIST);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        List<Map<String, Object>> resultList = this.engineNew.queryList(stmt);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        List<Map<String, Object>> resultList = this.engine.queryList(stmt);
         assert (resultList != null && resultList.size() == 2);
 
         Object trips0 = resultList.get(0).get("trips");
@@ -75,10 +75,10 @@ public abstract class AbstractSelectTravelDetailRepoTest
     @Override
     public void testSelectTravelAndTripListVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_TRAVEL_AND_TRIP_LIST_VARS);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("applyIds", Arrays.asList(TravelObject.RECORD1, TravelObject.RECORD2));
-        List<Map<String, Object>> resultList = this.engineNew.queryList(stmt, paramMap);
+        List<Map<String, Object>> resultList = this.engine.queryList(stmt, paramMap);
         assert (resultList != null && resultList.size() == 2);
 
         Object trips0 = resultList.get(0).get("trips");

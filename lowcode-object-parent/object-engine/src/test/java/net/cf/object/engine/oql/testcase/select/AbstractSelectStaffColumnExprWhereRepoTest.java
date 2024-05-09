@@ -2,7 +2,7 @@ package net.cf.object.engine.oql.testcase.select;
 
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 
 import java.util.Map;
 
@@ -22,8 +22,8 @@ public abstract class AbstractSelectStaffColumnExprWhereRepoTest
     @Override
     public void testSelectListWithCreateEqualsOwner() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_LIST_WITH_CREATOR_EQUALS_OWNER);
-        OqlSelectStatement stmt = OqlUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
-        Map<String, Object> resultMap = this.engineNew.queryOne(stmt);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        Map<String, Object> resultMap = this.engine.queryOne(stmt);
         assert (resultMap != null);
     }
 

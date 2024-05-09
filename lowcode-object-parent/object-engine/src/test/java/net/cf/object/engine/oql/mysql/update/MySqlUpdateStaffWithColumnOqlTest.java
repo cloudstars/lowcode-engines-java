@@ -42,4 +42,5 @@ public class MySqlUpdateStaffWithColumnOqlTest extends AbstractUpdateStaffWithCo
     public void testUpdateStaffAgeByIdVars() {
         super.testUpdateStaffAgeByIdVars();
     }
+
 }

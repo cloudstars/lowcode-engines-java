@@ -119,9 +119,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         // 解析当前语句的本模型
         this.masterObject = this.stmt.getObjectSource().getResolvedObject();
         this.masterOqlStmt.setObjectSource(OqlUtils.defaultObjectSource(this.masterObject));
-        OqlWhereExprParser whereExprParser = new OqlWhereExprParser(this.masterObject);
-        whereExprParser.parseExpr(this.stmt.getWhere());
-        this.masterPrimaryFieldValueExpr = whereExprParser.getPrimaryFieldValueExpr();
+        this.masterPrimaryFieldValueExpr = this.extractMasterIdInWhere(this.masterObject, this.stmt.getWhere());
 
         // 获取本模型对应的SQL语句
         List<OqlUpdateSetItem> setItems = this.stmt.getSetItems();
@@ -275,7 +273,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
                 }
             }
         } else { // detail(f1, f2, f3) = [(), (), ...]
-
+            throw new RuntimeException("对不起，暂未实现");
         }
 
         this.buildDetailParamStmts(detailObject, detailRefFieldExpr);
@@ -431,7 +429,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
 
             OqlUpdateSetItem setItem = new OqlUpdateSetItem();
             setItem.setField(detailFieldExpr);
-            setItem.setValue(this.buildFieldVarRefExpr(detailResolvedField));
+            setItem.setValue(OqlUtils.defaultFieldVarExpr(detailResolvedField));
             detailStmt.addSetItem(setItem);
         }
         detailStmt.setWhere(OqlUtils.buildFieldEqualsVarRefExpr(primaryField));
@@ -457,7 +455,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
             }
 
             detailStmt.addField(detailFieldExpr);
-            valuesClause.addValue(this.buildFieldVarRefExpr(detailResolvedField));
+            valuesClause.addValue(OqlUtils.defaultFieldVarExpr(detailResolvedField));
         }
         detailStmt.addValues(valuesClause);
     }

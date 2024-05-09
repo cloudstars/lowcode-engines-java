@@ -1,23 +1,10 @@
 package net.cf.object.engine.util;
 
-import net.cf.form.repository.sql.ast.statement.SqlStatement;
-import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
-import net.cf.form.repository.sql.parser.SqlStatementParser;
-import net.cf.object.engine.oql.ast.OqlDeleteStatement;
-import net.cf.object.engine.oql.ast.OqlInsertStatement;
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
-import net.cf.object.engine.oql.ast.OqlUpdateStatement;
-import net.cf.object.engine.oql.infos.OqlDeleteInfos;
-import net.cf.object.engine.oql.infos.OqlInsertInfos;
-import net.cf.object.engine.oql.infos.OqlSelectInfos;
-import net.cf.object.engine.oql.infos.OqlUpdateInfos;
-import net.cf.object.engine.oql.infos.OqlDeleteInfosParser;
-import net.cf.object.engine.oql.infos.OqlInsertInfosParser;
-import net.cf.object.engine.oql.infos.OqlSelectInfosParser;
-import net.cf.object.engine.oql.infos.OqlUpdateInfosParser;
+import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.oql.parser.OqlStatementParser;
+import net.cf.object.engine.oql.parser.XObjectResolver;
 
 import java.util.List;
-import java.util.Map;
 
 public final class OqlStatementUtils {
 
@@ -25,100 +12,59 @@ public final class OqlStatementUtils {
     }
 
     /**
-     * 解析OQL查询语句并返回OQL查询指令信息
+     * 解析并返回唯一的一条查询 OQL 语句
      *
-     * @param stmt
-     * @param isBatch
+     * @param resolver
+     * @param oql
      * @return
      */
-    public static OqlSelectInfos parseOqlSelectInfos(OqlSelectStatement stmt, boolean isBatch) {
-        OqlSelectInfosParser parser = new OqlSelectInfosParser(stmt, isBatch);
-        return parser.parse();
+    public static OqlSelectStatement parseSingleSelectStatement(XObjectResolver resolver, String oql) {
+        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlSelectStatement);
+        return (OqlSelectStatement) statements.get(0);
     }
 
     /**
-     * 解析OQL插入语句并返回OQL插入指令信息
+     * 解析并返回唯一的一条插入 OQL 语句
      *
-     * @param stmt
-     * @param paramMap
+     * @param resolver
+     * @param oql
      * @return
      */
-    public static OqlInsertInfos parseOqlInsertInfos(OqlInsertStatement stmt, Map<String, Object> paramMap) {
-        OqlInsertInfosParser parser = new OqlInsertInfosParser(stmt, paramMap);
-        return parser.parse();
+    public static OqlInsertStatement parseSingleInsertStatement(XObjectResolver resolver, String oql) {
+        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlInsertStatement);
+        return (OqlInsertStatement) statements.get(0);
     }
 
     /**
-     * 解析OQL插入语句并返回OQL插入指令信息
+     * 解析并返回唯一的一条更新 OQL 语句
      *
-     * @param stmt
-     * @param paramMaps
+     * @param resolver
+     * @param oql
      * @return
      */
-    public static OqlInsertInfos parseOqlInsertInfos(OqlInsertStatement stmt, List<Map<String, Object>> paramMaps) {
-        OqlInsertInfosParser parser = new OqlInsertInfosParser(stmt, paramMaps);
-        return parser.parse();
+    public static OqlUpdateStatement parseSingleUpdateStatement(XObjectResolver resolver, String oql) {
+        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlUpdateStatement);
+        return (OqlUpdateStatement) statements.get(0);
     }
 
     /**
-     * 解析OQL插入语句并返回OQL更新指令信息
+     * 解析并返回唯一的一条删除 OQL 语句
      *
-     * @param stmt
-     * @param paramMap
+     * @param resolver
+     * @param oql
      * @return
      */
-    public static OqlUpdateInfos parseOqlUpdateInfos(OqlUpdateStatement stmt, Map<String, Object> paramMap) {
-        OqlUpdateInfosParser parser = new OqlUpdateInfosParser(stmt, paramMap);
-        return parser.parse();
-    }
-
-    /**
-     * 解析OQL插入语句并返回OQL更新指令信息
-     *
-     * @param stmt
-     * @param paramMaps
-     * @return
-     */
-    public static OqlUpdateInfos parseOqlUpdateInfos(OqlUpdateStatement stmt, List<Map<String, Object>> paramMaps) {
-        OqlUpdateInfosParser parser = new OqlUpdateInfosParser(stmt, paramMaps);
-        return parser.parse();
-    }
-
-    /**
-     * 解析OQL插入语句并返回OQL删除指令信息
-     *
-     * @param stmt
-     * @param paramMap
-     * @return
-     */
-    public static OqlDeleteInfos parseOqlDeleteInfos(OqlDeleteStatement stmt, Map<String, Object> paramMap) {
-        OqlDeleteInfosParser parser = new OqlDeleteInfosParser(stmt, paramMap);
-        return parser.parse();
-    }
-
-    /**
-     * 解析OQL插入语句并返回OQL删除指令信息
-     *
-     * @param stmt
-     * @param paramMaps
-     * @return
-     */
-    public static OqlDeleteInfos parseOqlDeleteInfos(OqlDeleteStatement stmt, List<Map<String, Object>> paramMaps) {
-        OqlDeleteInfosParser parser = new OqlDeleteInfosParser(stmt, paramMaps);
-        return parser.parse();
-    }
-
-    /**
-     * 解析并返回唯一的一条更新 SQL 语句
-     *
-     * @param sql
-     * @return
-     */
-    public static SqlUpdateStatement parseSingleUpdateStatement(String sql) {
-        SqlStatementParser parser = new SqlStatementParser(sql);
-        List<SqlStatement> statements = parser.parseStatementList();
-        assert (statements.size() == 1 && statements.get(0) instanceof SqlUpdateStatement);
-        return (SqlUpdateStatement) statements.get(0);
+    public static OqlDeleteStatement parseSingleDeleteStatement(XObjectResolver resolver, String oql) {
+        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlDeleteStatement);
+        return (OqlDeleteStatement) statements.get(0);
     }
 
 }

@@ -30,4 +30,5 @@ public class MySqlUpdateTravelSelfPropertiesOqlTest extends AbstractUpdateTravel
     public void testUpdateTravelWithAttachesByIdVars() {
         super.testUpdateTravelWithAttachesByIdVars();
     }
+
 }

@@ -2,7 +2,6 @@ package net.cf.object.engine.oql.infos;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonObjectExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
@@ -81,7 +80,7 @@ public abstract class AbstractOqInfosParser<O extends OqlStatement, I extends Ab
      * @param propName
      * @return
      */
-    protected SqlJsonArrayExpr parsePropertyValue(SqlJsonArrayExpr arrayExpr, String propName) {
+    /*protected SqlJsonArrayExpr parsePropertyValue(SqlJsonArrayExpr arrayExpr, String propName) {
         List<SqlExpr> arrayExprItems = arrayExpr.getItems();
         int valuesSize = arrayExprItems.size();
         List<SqlExpr> values = new ArrayList<>();
@@ -93,7 +92,7 @@ public abstract class AbstractOqInfosParser<O extends OqlStatement, I extends Ab
             values.add(this.parsePropertyValue((SqlJsonObjectExpr) arrayExprItem, propName));
         }
         return new SqlJsonArrayExpr(values);
-    }
+    }*/
 
     /**
      * 从OQL语句中抽取主表记录ID，where primaryField = #{primaryField} 或者 primaryField in #{primaryField} 或者 primaryField = XXX

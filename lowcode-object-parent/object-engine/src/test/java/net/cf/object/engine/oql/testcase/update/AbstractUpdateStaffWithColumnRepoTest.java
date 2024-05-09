@@ -3,7 +3,7 @@ package net.cf.object.engine.oql.testcase.update;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +30,8 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
     public void testUpdateStaffModifierWithCreator() {
         // 更新数据
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_STAFF_MODIFIER_WITH_CREATOR);
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
-        int effectedRows = this.engineNew.modify(oqlStmt);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        int effectedRows = this.engine.modify(oqlStmt);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -42,14 +42,14 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
     public void testUpdateStaffModifierWithCreatorVars() {
         // 更新数据
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_STAFF_MODIFIER_WITH_CREATOR_VARS);
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> creator = new HashMap<>();
         creator.put("name", "张三");
         creator.put("key", "zhangsan");
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("creator", creator);
         paramMap.put("staffCode", "zhangsan");
-        int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
+        int effectedRows = this.engine.modify(oqlStmt, paramMap);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -62,10 +62,10 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
     private void assertUpdateRecords() {
         // 重新查出来作断言
         String selectOql = "select * from Staff where staffCode = #{staffCode}";
-        OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+        OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("staffCode", "zhangsan");
-        List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
+        List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);
         assert (dataList != null && dataList.size() == 1);
         Object modifier = dataList.get(0).get("modifier");
         assert (modifier != null && modifier instanceof Map);
@@ -82,8 +82,8 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
     public void testUpdateStaffDescrWithNameRela() {
         // 更新数据
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_STAFF_DESCR_WITH_NAME_RELA);
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
-        int effectedRows = this.engineNew.modify(oqlStmt);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        int effectedRows = this.engine.modify(oqlStmt);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -94,10 +94,10 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
     public void testUpdateStaffDescrWithNameRelaVars() {
         // 更新数据
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_STAFF_DESCR_WITH_NAME_RELA_VARS);
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("staffName", "张三");
-        int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
+        int effectedRows = this.engine.modify(oqlStmt, paramMap);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -110,10 +110,10 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
     private void assertUpdateDescr() {
         // 重新查出来作断言
         String selectOql = "select * from Staff where staffCode = #{staffCode}";
-        OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+        OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("staffCode", "zhangsan");
-        List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
+        List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);
         assert (dataList != null && dataList.size() == 1);
         assert ("这是张三的描述".equals(dataList.get(0).get("descr")));
     }
@@ -123,10 +123,10 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
     public void testUpdateStaffAgeByIdVars() {
         // 更新数据
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_STAFF_AGE_BY_ID_VARS);
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("staffCode", "zhangsan");
-        int effectedRows = this.engineNew.modify(oqlStmt, paramMap);
+        int effectedRows = this.engine.modify(oqlStmt, paramMap);
         assert (effectedRows == 1);
 
         // 重新查询后断言
@@ -139,10 +139,10 @@ AbstractUpdateStaffWithColumnRepoTest extends AbstractOqlRepoTest implements Upd
     private void assertUpdateAge() {
         // 重新查出来作断言
         String selectOql = "select age from Staff where staffCode = #{staffCode}";
-        OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
+        OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("staffCode", "zhangsan");
-        List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt, paramMap);
+        List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt, paramMap);
         assert (dataList != null && dataList.size() == 1);
         assert (31 == (Integer) dataList.get(0).get("age"));
     }

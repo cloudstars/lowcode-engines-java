@@ -13,7 +13,6 @@ import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.OqlFieldExpr;
 import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.oql.ast.OqlPropertyExpr;
-import net.cf.object.engine.oql.infos.AbstractOqlParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +37,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class SqlWhereBuilder extends AbstractOqlParser {
+public class SqlWhereBuilder extends AbstractSqlBuilder {
 
     // 本模型
     private XObject selfObject;
@@ -109,14 +108,14 @@ public class SqlWhereBuilder extends AbstractOqlParser {
         List<XProperty> properties = resolvedField.getProperties();
         if (properties != null && properties.size() > 0) {
             if (properties.size() == 1) {
-                return this.toRepoExpr(this.selfObject, properties.get(0));
+                return this.buildSqlExpr(properties.get(0));
             } else if (resolvedField.getPrimaryProperty() != null) {
-                return this.toRepoExpr(this.selfObject, resolvedField.getPrimaryProperty());
+                return this.buildSqlExpr(resolvedField.getPrimaryProperty());
             } else {
                 throw new FastOqlException("查询条件的字段" + fieldName + "存在多个子属性、并且未设置主属性，请明确指明字段的属性");
             }
         } else {
-            return this.toRepoExpr(this.selfObject, resolvedField);
+            return this.buildSqlExpr(resolvedField);
         }
     }
 
@@ -130,8 +129,7 @@ public class SqlWhereBuilder extends AbstractOqlParser {
         XProperty resolvedProperty = x.getResolvedProperty();
         XField resolvedField = resolvedProperty.getOwner();
         this.lastResolvedObject = resolvedField.getOwner();
-
-        return this.toRepoExpr(this.selfObject, resolvedProperty);
+        return this.buildSqlExpr(resolvedProperty);
     }
 
     /**
@@ -304,15 +302,15 @@ public class SqlWhereBuilder extends AbstractOqlParser {
         if (refType == ObjectRefType.DETAIL) {
             // where detail.masterField = self.primaryField
             XObjectRefField detailMasterField = refObject.getObjectRefField(this.selfObject.getName());
-            joinOpExpr.setLeft(this.toRepoRefExpr(detailMasterField));
+            joinOpExpr.setLeft(this.buildSqlRefExpr(detailMasterField));
             XField selfPrimaryField = this.selfObject.getPrimaryField();
-            joinOpExpr.setRight(this.toRepoRefExpr(selfPrimaryField));
+            joinOpExpr.setRight(this.buildSqlRefExpr(selfPrimaryField));
         } else if (refType == ObjectRefType.LOOKUP) {
             // where lookup.primaryField = self.lookupField
             XField lookupPrimaryField = refObject.getPrimaryField();
-            joinOpExpr.setLeft(this.toRepoRefExpr(lookupPrimaryField));
+            joinOpExpr.setLeft(this.buildSqlRefExpr(lookupPrimaryField));
             XObjectRefField selfLookupField = this.selfObject.getObjectRefField(refObject.getName());
-            joinOpExpr.setRight(this.toRepoRefExpr(selfLookupField));
+            joinOpExpr.setRight(this.buildSqlRefExpr(selfLookupField));
         }
         subQuery.setWhere(SqlExprUtils.and(joinOpExpr, sqlX));
         existsExpr.setSubQuery(subQuery);

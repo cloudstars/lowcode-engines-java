@@ -3,11 +3,11 @@ package net.cf.object.engine.oql.testcase.update;
 import net.cf.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
+import net.cf.object.engine.oql.infos.OqlInfosUtils;
+import net.cf.object.engine.oql.infos.OqlUpdateInfos;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;
-import net.cf.object.engine.oql.infos.OqlUpdateInfos;
 import net.cf.object.engine.util.OqlStatementUtils;
-import net.cf.object.engine.util.OqlUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,11 +29,11 @@ public class UpdateStaffWithColumnStmtTest extends AbstractOqlTest implements Up
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
+        OqlUpdateInfos updateInfos = OqlInfosUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
         SqlUpdateStatement sqlStmt = updateInfos.getMasterUpdateCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
@@ -45,11 +45,11 @@ public class UpdateStaffWithColumnStmtTest extends AbstractOqlTest implements Up
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
+        OqlUpdateInfos updateInfos = OqlInfosUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
         SqlUpdateStatement sqlStmt = updateInfos.getMasterUpdateCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
@@ -61,11 +61,11 @@ public class UpdateStaffWithColumnStmtTest extends AbstractOqlTest implements Up
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
+        OqlUpdateInfos updateInfos = OqlInfosUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
         SqlUpdateStatement sqlStmt = updateInfos.getMasterUpdateCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
@@ -77,11 +77,11 @@ public class UpdateStaffWithColumnStmtTest extends AbstractOqlTest implements Up
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
+        OqlUpdateInfos updateInfos = OqlInfosUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
         SqlUpdateStatement sqlStmt = updateInfos.getMasterUpdateCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
@@ -93,11 +93,11 @@ public class UpdateStaffWithColumnStmtTest extends AbstractOqlTest implements Up
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
 
         // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
-        OqlUpdateStatement oqlStmt = OqlUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
         assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
 
         // 断言OQL能转换成一条SQL语句，并且SQL语句是符合预期的
-        OqlUpdateInfos updateInfos = OqlStatementUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
+        OqlUpdateInfos updateInfos = OqlInfosUtils.parseOqlUpdateInfos(oqlStmt, oqlInfo.paramMap);
         SqlUpdateStatement sqlStmt = updateInfos.getMasterUpdateCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }

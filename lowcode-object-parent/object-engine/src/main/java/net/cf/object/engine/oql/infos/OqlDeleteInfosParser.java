@@ -59,9 +59,7 @@ public class OqlDeleteInfosParser extends AbstractOqInfosParser<OqlDeleteStateme
     public OqlDeleteInfos parse() {
         // 解析当前语句的本模型
         this.masterObject = this.stmt.getFrom().getResolvedObject();
-        OqlWhereExprParser whereExprParser = new OqlWhereExprParser(this.masterObject);
-        whereExprParser.parseExpr(this.stmt.getWhere());
-        this.masterPrimaryFieldValueExpr = whereExprParser.getPrimaryFieldValueExpr();
+        this.masterPrimaryFieldValueExpr = this.extractMasterIdInWhere(this.masterObject, this.stmt.getWhere());
 
         List<OqlExprObjectSource> detailObjectSources = stmt.getDetailFroms();
         if (!CollectionUtils.isEmpty(detailObjectSources)) {

@@ -3,7 +3,7 @@ package net.cf.object.engine.oql.testcase.insert;
 import net.cf.object.engine.oql.ast.OqlInsertStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
-import net.cf.object.engine.util.OqlUtils;
+import net.cf.object.engine.util.OqlStatementUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,16 +29,16 @@ public abstract class AbstractInsertTravelSelfSimpleRepoTest extends AbstractOql
     public void testInsertTravel() {
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL);
-            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
-            int effectedRows = this.engineNew.create(oqlStmt);
+            OqlInsertStatement oqlStmt = OqlStatementUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
+            int effectedRows = this.engine.create(oqlStmt);
             assert (effectedRows == 1);
         }
 
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel";
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
+            OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
         }
     }
@@ -47,19 +47,19 @@ public abstract class AbstractInsertTravelSelfSimpleRepoTest extends AbstractOql
     public void testInsertTravelVars() {
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_VARS);
-            OqlInsertStatement oqlStmt = OqlUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
+            OqlInsertStatement oqlStmt = OqlStatementUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
             paramMap.put("applyName", "测试申请单的名称");
-            int effectedRows = this.engineNew.create(oqlStmt, paramMap);
+            int effectedRows = this.engine.create(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }
 
         {
             // 重新查出来作断言
             String selectOql = "select applyId, applyName from Travel";
-            OqlSelectStatement selectOqlStmt = OqlUtils.parseSingleSelectStatement(this.resolver, selectOql);
-            List<Map<String, Object>> dataList = this.engineNew.queryList(selectOqlStmt);
+            OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
         }
     }

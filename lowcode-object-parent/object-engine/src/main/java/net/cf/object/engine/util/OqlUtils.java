@@ -1,19 +1,19 @@
 package net.cf.object.engine.util;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
-import net.cf.object.engine.object.*;
-import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.parser.OqlStatementParser;
-import net.cf.object.engine.oql.parser.XObjectResolver;
+import net.cf.object.engine.object.XField;
+import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.oql.ast.OqlExpr;
+import net.cf.object.engine.oql.ast.OqlExprObjectSource;
+import net.cf.object.engine.oql.ast.OqlFieldExpr;
 import net.cf.object.engine.oql.visitor.OqlAstOutputVisitor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * OQL工具类
@@ -36,99 +36,16 @@ public class OqlUtils {
     }
 
     /**
-     * 解析并返回唯一的一条插入 OQL 语句
-     *
-     * @param resolver
-     * @param oql
-     * @return
-     */
-    public static OqlInsertStatement parseSingleInsertStatement(XObjectResolver resolver, String oql) {
-        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
-        List<OqlStatement> statements = parser.parseStatementList();
-        assert (statements.size() == 1 && statements.get(0) instanceof OqlInsertStatement);
-        return (OqlInsertStatement) statements.get(0);
-    }
-
-    /**
-     * 解析并返回唯一的一条更新 OQL 语句
-     *
-     * @param resolver
-     * @param oql
-     * @return
-     */
-    public static OqlUpdateStatement parseSingleUpdateStatement(XObjectResolver resolver, String oql) {
-        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
-        List<OqlStatement> statements = parser.parseStatementList();
-        assert (statements.size() == 1 && statements.get(0) instanceof OqlUpdateStatement);
-        return (OqlUpdateStatement) statements.get(0);
-    }
-
-    /**
-     * 解析并返回唯一的一条删除 OQL 语句
-     *
-     * @param resolver
-     * @param oql
-     * @return
-     */
-    public static OqlDeleteStatement parseSingleDeleteStatement(XObjectResolver resolver, String oql) {
-        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
-        List<OqlStatement> statements = parser.parseStatementList();
-        assert (statements.size() == 1 && statements.get(0) instanceof OqlDeleteStatement);
-        return (OqlDeleteStatement) statements.get(0);
-    }
-
-    /**
-     * 解析并返回唯一的一条查询 OQL 语句
-     *
-     * @param resolver
-     * @param oql
-     * @return
-     */
-    public static OqlSelectStatement parseSingleSelectStatement(XObjectResolver resolver, String oql) {
-        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
-        List<OqlStatement> statements = parser.parseStatementList();
-        assert (statements.size() == 1 && statements.get(0) instanceof OqlSelectStatement);
-        return (OqlSelectStatement) statements.get(0);
-    }
-
-    /**
-     * 根据模型构建OQL模型源
+     * 根据模型生成模型源表达式
      *
      * @param object
      * @return
      */
     public static OqlExprObjectSource defaultObjectSource(XObject object) {
-        OqlExprObjectSource objectSource = new OqlExprObjectSource(object.getName());
+        OqlExprObjectSource objectSource = new OqlExprObjectSource();
+        objectSource.setExpr(new SqlIdentifierExpr(object.getName()));
         objectSource.setResolvedObject(object);
         return objectSource;
-    }
-
-    /**
-     * 默认展开模型的全部字段
-     *
-     * @param object 待展开的模型
-     * @return 展开后的字段表达式列表
-     */
-    public static List<OqlExpr> defaultExpandObjectFields(XObject object) {
-        List<OqlExpr> fieldExprs = new ArrayList<>();
-        List<XField> fields = object.getFields();
-        for (XField field : fields) {
-            // 非本表字段不处理
-            if (field instanceof XObjectRefField) {
-                XObjectRefField objectRefField = (XObjectRefField) field;
-                if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
-                    continue;
-                }
-            }
-
-            String fieldName = field.getName();
-            OqlFieldExpr fieldExpr = new OqlFieldExpr();
-            fieldExpr.setName(fieldName);
-            fieldExpr.setResolvedField(field);
-            fieldExprs.add(fieldExpr);
-        }
-
-        return fieldExprs;
     }
 
     /**
@@ -142,6 +59,16 @@ public class OqlUtils {
         OqlFieldExpr fieldExpr = new OqlFieldExpr(fieldName);
         fieldExpr.setResolvedField(field);
         return fieldExpr;
+    }
+
+    /**
+     * 根据字段构建OqlExpr
+     *
+     * @param field
+     * @return
+     */
+    public static SqlVariantRefExpr defaultFieldVarExpr(XField field) {
+        return SqlVariantRefExpr.fromVarName(field.getName());
     }
 
     /**
@@ -183,27 +110,6 @@ public class OqlUtils {
         fieldInListVarRefExpr.setNot(not);
         fieldInListVarRefExpr.setTargetList(Arrays.asList(fieldVarRefExpr));
         return fieldInListVarRefExpr;
-    }
-
-    /**
-     * 表达式列表中是否包含子表
-     *
-     * @param stmt
-     * @return
-     */
-    public static boolean hasDetailSetItems(OqlUpdateStatement stmt) {
-        List<OqlUpdateSetItem> setItems = stmt.getSetItems();
-        for (OqlUpdateSetItem setItem : setItems) {
-            OqlExpr field = setItem.getField();
-            if (field instanceof OqlObjectExpandExpr) {
-                OqlObjectExpandExpr objectExpandExpr = (OqlObjectExpandExpr) field;
-                if (objectExpandExpr.getResolvedObjectRefField().getRefType() == ObjectRefType.DETAIL) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
 }

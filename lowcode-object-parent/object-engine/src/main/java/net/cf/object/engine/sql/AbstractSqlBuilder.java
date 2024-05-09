@@ -55,6 +55,21 @@ public abstract class AbstractSqlBuilder {
         return identExpr;
     }
 
+
+    /**
+     * 将它表字段转换成驱动层的属性表达式
+     *
+     * @param field
+     * @return
+     */
+    protected SqlPropertyExpr buildSqlRefExpr(XField field) {
+        String tableName = field.getOwner().getTableName();
+        SqlPropertyExpr propExpr = new SqlPropertyExpr(tableName);
+        propExpr.setName(field.getColumnName());
+        propExpr.setSqlDataType(SqlDataTypeConvert.toSqlDataType(field));
+        return propExpr;
+    }
+
     /**
      * 将本表字段属性转换成驱动层的标识符表达式
      *
@@ -66,6 +81,21 @@ public abstract class AbstractSqlBuilder {
         identExpr.setSqlDataType(SqlDataTypeConvert.toSqlDataType(property.getOwner()));
         return identExpr;
     }
+
+    /**
+     * 将它表字段属性转换成驱动层的属性表达式
+     *
+     * @param property
+     * @return
+     */
+    protected SqlPropertyExpr buildSqlRefExpr(XProperty property) {
+        String tableName = property.getOwner().getOwner().getTableName();
+        SqlPropertyExpr propExpr = new SqlPropertyExpr(tableName);
+        propExpr.setName(property.getColumnName());
+        propExpr.setSqlDataType(SqlDataTypeConvert.toSqlDataType(property));
+        return propExpr;
+    }
+
 
     /**
      * 构建字段属性的变量引用表达式，即：#{property}

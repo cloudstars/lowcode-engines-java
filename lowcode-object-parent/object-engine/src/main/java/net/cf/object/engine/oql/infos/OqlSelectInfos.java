@@ -13,55 +13,55 @@ import java.util.List;
 public class OqlSelectInfos extends AbstractOqlInfos {
 
     /**
-     * 本表查询信息
+     * 本表查询指令
      */
-    private SqlSelectCmd selfSelectInfo;
+    private SqlSelectCmd masterSelectCmd;
 
     /**
-     * 子表的查询信息
+     * 子表的查询信息（存在子表时，需要在子表的OQL语句上加上主表记录ID字段的查询）
      */
-    private List<SqlSelectCmd> detailSelectInfos;
+    private List<SqlSelectCmd> detailSelectCmds;
 
     /**
-     * 相关表的查询信息
+     * 相关表的查询指令（存在相关表时，需要在主表的OQL语句上加上相关表字段的查询）
      */
-    private List<SqlSelectCmd> lookupSelectInfos;
+    private List<SqlSelectCmd> lookupSelectCmds;
 
-    public SqlSelectCmd getSelfSelectInfo() {
-        return selfSelectInfo;
+    public SqlSelectCmd getMasterSelectCmd() {
+        return masterSelectCmd;
     }
 
-    public void setSelfSelectInfo(SqlSelectCmd selfSelectInfo) {
-        this.selfSelectInfo = selfSelectInfo;
+    public void setMasterSelectCmd(SqlSelectCmd masterSelectCmd) {
+        this.masterSelectCmd = masterSelectCmd;
     }
 
-    public List<SqlSelectCmd> getDetailSelectInfos() {
-        return detailSelectInfos;
+    public List<SqlSelectCmd> getDetailSelectCmds() {
+        return detailSelectCmds;
     }
 
-    public void setDetailSelectInfos(List<SqlSelectCmd> detailSelectInfos) {
-        this.detailSelectInfos = detailSelectInfos;
+    public void setDetailSelectCmds(List<SqlSelectCmd> detailSelectCmds) {
+        this.detailSelectCmds = detailSelectCmds;
     }
 
     public void addDetailSelectInfo(SqlSelectCmd detailSelectInfo) {
-        if (this.detailSelectInfos == null) {
-            this.detailSelectInfos = new ArrayList<>();
+        if (this.detailSelectCmds == null) {
+            this.detailSelectCmds = new ArrayList<>();
         }
-        this.detailSelectInfos.add(detailSelectInfo);
+        this.detailSelectCmds.add(detailSelectInfo);
     }
 
-    public List<SqlSelectCmd> getLookupSelectInfos() {
-        return lookupSelectInfos;
+    public List<SqlSelectCmd> getLookupSelectCmds() {
+        return lookupSelectCmds;
     }
 
-    public void setLookupSelectInfos(List<SqlSelectCmd> lookupSelectInfos) {
-        this.lookupSelectInfos = lookupSelectInfos;
+    public void setLookupSelectCmds(List<SqlSelectCmd> lookupSelectCmds) {
+        this.lookupSelectCmds = lookupSelectCmds;
     }
 
-    public void addLookupSelectInfo(SqlSelectCmd lookupSelectInfo) {
-        if (this.lookupSelectInfos == null) {
-            this.lookupSelectInfos = new ArrayList<>();
+    public void addLookupSelectCmd(SqlSelectCmd lookupSelectInfo) {
+        if (this.lookupSelectCmds == null) {
+            this.lookupSelectCmds = new ArrayList<>();
         }
-        this.lookupSelectInfos.add(lookupSelectInfo);
+        this.lookupSelectCmds.add(lookupSelectInfo);
     }
 }

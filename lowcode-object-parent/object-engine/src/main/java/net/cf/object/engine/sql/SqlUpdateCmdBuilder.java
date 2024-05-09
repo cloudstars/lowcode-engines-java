@@ -13,7 +13,6 @@ import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XProperty;
 import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
-import net.cf.object.engine.oql.infos.OqlWhereExprParser;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -172,7 +171,7 @@ public class SqlUpdateCmdBuilder extends AbstractSqlCmdBuilder<OqlUpdateStatemen
 
         SqlExpr where = this.stmt.getWhere();
         if (where != null) {
-            OqlWhereExprParser whereExprParser = new OqlWhereExprParser(this.resolvedObject);
+            SqlWhereBuilder whereExprParser = new SqlWhereBuilder(this.resolvedObject);
             SqlExpr sqlWhere = whereExprParser.parseExpr(where);
             this.sqlStmt.setWhere(sqlWhere);
         }
