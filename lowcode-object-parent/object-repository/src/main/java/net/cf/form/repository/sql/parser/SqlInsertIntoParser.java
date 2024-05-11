@@ -2,6 +2,7 @@ package net.cf.form.repository.sql.parser;
 
 import net.cf.form.repository.sql.ast.statement.SqlInsertInto;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
+import net.cf.form.repository.sql.ast.statement.SqlSelect;
 
 public class SqlInsertIntoParser extends SqlExprParser {
 
@@ -20,7 +21,13 @@ public class SqlInsertIntoParser extends SqlExprParser {
         SqlInsertInto insert = new SqlInsertInto();
         insert.setTableSource(this.parseExprTableSource());
         this.parseIntoFields(insert);
-        this.parserValuesList(insert);
+        if (this.lexer.token == Token.VALUES) {
+            this.parserValuesList(insert);
+        } else if (this.lexer.token == Token.SELECT) {
+            SqlSelectParser selectParser = new SqlSelectParser(this.lexer);
+            SqlSelect query = selectParser.select();
+            insert.setQuery(query);
+        }
 
         return insert;
     }

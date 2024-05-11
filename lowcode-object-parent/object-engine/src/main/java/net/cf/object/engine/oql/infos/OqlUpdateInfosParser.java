@@ -118,7 +118,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
     public OqlUpdateInfos parse() {
         // 解析当前语句的本模型
         this.masterObject = this.stmt.getObjectSource().getResolvedObject();
-        this.masterOqlStmt.setObjectSource(OqlUtils.defaultObjectSource(this.masterObject));
+        this.masterOqlStmt.setObjectSource(OqlUtils.buildObjectSource(this.masterObject));
         this.masterPrimaryFieldValueExpr = this.extractMasterIdInWhere(this.masterObject, this.stmt.getWhere());
 
         // 获取本模型对应的SQL语句
@@ -234,7 +234,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         // 更新语句中的字段中添加子模型的全部字段，值中添加全部变量
         XObject detailObject = detailRefFieldExpr.getResolvedRefObject();
         String masterObjectName = this.masterObject.getName();
-        List<OqlExpr> detailExprs = detailRefFieldExpr.getFields();
+        List<SqlExpr> detailExprs = detailRefFieldExpr.getFields();
         if (detailExprs.size() == 0) {
             throw new FastOqlException("子表字段未指定");
         }
@@ -242,7 +242,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         // 检查子表的字段中必须包括primaryField、masterField
         boolean hasPrimaryField = false;
         boolean hasMasterField = false;
-        for (OqlExpr detailExpr : detailExprs) {
+        for (SqlExpr detailExpr : detailExprs) {
             if (detailExpr instanceof OqlFieldExpr) {
                 OqlFieldExpr detailFieldExpr = (OqlFieldExpr) detailExpr;
                 XField field = detailFieldExpr.getResolvedField();
@@ -417,10 +417,12 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         OqlUpdateStatement detailStmt = this.getDetailObjectUpdateStmtByObject(detailObject);
         XField masterRefField = detailObject.getObjectRefField(this.masterObject.getName());
         XField primaryField = detailObject.getPrimaryField();
-        List<OqlExpr> detailExprs = detailRefFieldExpr.getFields();
+        List<SqlExpr> detailExprs = detailRefFieldExpr.getFields();
         int detailFieldSize = detailExprs.size();
         for (int i = 0; i < detailFieldSize; i++) {
-            OqlFieldExpr detailFieldExpr = (OqlFieldExpr) detailExprs.get(i);
+            SqlExpr detailExpr = detailExprs.get(i);
+            assert (detailObject instanceof OqlFieldExpr);
+            OqlFieldExpr detailFieldExpr = (OqlFieldExpr) detailExpr;
             XField detailResolvedField = detailFieldExpr.getResolvedField();
             // 更新语句的更新字段中，不需要子表的主键和主表引用字段
             if (detailResolvedField == primaryField || detailResolvedField == masterRefField) {
@@ -429,7 +431,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
 
             OqlUpdateSetItem setItem = new OqlUpdateSetItem();
             setItem.setField(detailFieldExpr);
-            setItem.setValue(OqlUtils.defaultFieldVarExpr(detailResolvedField));
+            setItem.setValue(OqlUtils.buildFieldVarExpr(detailResolvedField));
             detailStmt.addSetItem(setItem);
         }
         detailStmt.setWhere(OqlUtils.buildFieldEqualsVarRefExpr(primaryField));
@@ -444,18 +446,20 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
     private void buildDetailInsertStmt(XObject detailObject, OqlObjectExpandExpr detailRefFieldExpr) {
         OqlInsertStatement detailStmt = this.getDetailObjectInsertStmtByObject(detailObject);
         XField primaryField = detailObject.getPrimaryField();
-        List<OqlExpr> detailExprs = detailRefFieldExpr.getFields();
+        List<SqlExpr> detailExprs = detailRefFieldExpr.getFields();
         int detailFieldSize = detailExprs.size();
         SqlInsertStatement.ValuesClause valuesClause = new SqlInsertStatement.ValuesClause();
         for (int i = 0; i < detailFieldSize; i++) {
-            OqlFieldExpr detailFieldExpr = (OqlFieldExpr) detailExprs.get(i);
+            SqlExpr detailExpr = detailExprs.get(i);
+            assert (detailObject instanceof OqlFieldExpr);
+            OqlFieldExpr detailFieldExpr = (OqlFieldExpr) detailExpr;
             XField detailResolvedField = detailFieldExpr.getResolvedField();
             if (detailResolvedField == primaryField && primaryField.isAutoGen()) {
                 continue;
             }
 
             detailStmt.addField(detailFieldExpr);
-            valuesClause.addValue(OqlUtils.defaultFieldVarExpr(detailResolvedField));
+            valuesClause.addValue(OqlUtils.buildFieldVarExpr(detailResolvedField));
         }
         detailStmt.addValues(valuesClause);
     }
@@ -470,7 +474,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         OqlDeleteStatement stmt = this.detailObjectDeleteStmtMap.get(detailObject);
         if (stmt == null) {
             stmt = new OqlDeleteStatement();
-            stmt.setFrom(OqlUtils.defaultObjectSource(detailObject));
+            stmt.setFrom(OqlUtils.buildObjectSource(detailObject));
             this.detailObjectDeleteStmtMap.put(detailObject, stmt);
         }
 
@@ -488,7 +492,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         OqlDeleteStatement stmt = this.detailObjectDeleteNotInStmtMap.get(detailObject);
         if (stmt == null) {
             stmt = new OqlDeleteStatement();
-            stmt.setFrom(OqlUtils.defaultObjectSource(detailObject));
+            stmt.setFrom(OqlUtils.buildObjectSource(detailObject));
             this.detailObjectDeleteNotInStmtMap.put(detailObject, stmt);
         }
 
@@ -551,7 +555,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         OqlInsertStatement stmt = this.detailObjectInsertStmtMap.get(detailObject);
         if (stmt == null) {
             OqlInsertInto insertInto = new OqlInsertInto();
-            insertInto.setObjectSource(OqlUtils.defaultObjectSource(detailObject));
+            insertInto.setObjectSource(OqlUtils.buildObjectSource(detailObject));
             stmt = new OqlInsertStatement(insertInto);
             this.detailObjectInsertStmtMap.put(detailObject, stmt);
         }
@@ -584,7 +588,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         OqlUpdateStatement stmt = this.detailObjectUpdateStmtMap.get(detailObject);
         if (stmt == null) {
             stmt = new OqlUpdateStatement();
-            stmt.setObjectSource(OqlUtils.defaultObjectSource(detailObject));
+            stmt.setObjectSource(OqlUtils.buildObjectSource(detailObject));
             this.detailObjectUpdateStmtMap.put(detailObject, stmt);
         }
 

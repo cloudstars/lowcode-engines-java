@@ -1,5 +1,6 @@
 package net.cf.object.engine.data;
 
+import net.cf.object.engine.object.DataType;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class DefaultResultReducer implements ResultReducer {
      * "s1": "xx",
      * "s2": "yy"
      * }
-     *
+     * <p>
      * {
      * "id": "xx",
      * "name": "aa",
@@ -60,6 +61,7 @@ public class DefaultResultReducer implements ResultReducer {
      * "name": "yy",
      * "sub": null
      * }
+     *
      * @param value
      * @param subFields
      */
@@ -202,7 +204,19 @@ public class DefaultResultReducer implements ResultReducer {
         boolean isArray = field.getValueType().isArray();
         List<FieldMapping> subItems = field.getSubFields();
         if (isArray) { // 字段展开且是数组的情况
-            targetValue = this.reduceToListValue(resultMap, subItems);
+            if (field.getValueType().getDataType() == DataType.OBJECT) {
+                targetValue = this.reduceToListValue(resultMap, subItems);
+            } else { // 对于区间类组件的特殊处理
+                List<FieldMapping> subFields = field.getSubFields();
+                targetValue = new Object[subFields.size()];
+                for (FieldMapping subField : subFields) {
+                    String fieldName = subField.getFieldName();
+                    if (fieldName.matches("\\_\\d+")) {
+                        int idx = Integer.valueOf(fieldName.substring(1));
+                        ((Object[]) targetValue)[idx] = resultMap.get(subField.getColumnName());
+                    }
+                }
+            }
         } else { // 模型或字段展开且非数组的情况
             targetValue = this.reduceValue(resultMap, subItems);
         }
@@ -212,7 +226,7 @@ public class DefaultResultReducer implements ResultReducer {
 
     /**
      * reduceToListValue函数内部递归调用reduceSubFields后，需要将返回的结果按照子字段的名称并成成一个个Map，形成一个List<Map>
-     *
+     * <p>
      * 比如，递归调用reduceSubFields返回：{ "f321": ["xx321", "xx421"], "f322": [-1, -1], "f323": [1, 1] }
      * 合并后为一个数据：[{"f321":  "xx321", "f322":  -1, "f323": 1}, {"f321":  "xx421", "f322":  -1, "f323": 1}]
      * 每个数组中都包含原来Map中的键，数组的长度等于每个键对应的数组值的长度（正常来说每一个数组长度相等），

@@ -386,6 +386,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
      * @param sqlJoinTableSource
      * @return
      */
+    /*
     private List<Document> buildLookup(SqlJoinTableSource sqlJoinTableSource) {
 
         if (!(sqlJoinTableSource.getLeft() instanceof SqlExprTableSource)) {
@@ -408,7 +409,7 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         } else {
             throw new RuntimeException("not support");
         }
-    }
+    }*/
 
 
     private List<Document> buildSingleLeftJoinLookup(String mainTable, String slaveTable, String slaveTableAs, SqlExpr sqlExpr) {

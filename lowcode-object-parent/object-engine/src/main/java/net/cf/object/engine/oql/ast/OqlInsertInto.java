@@ -18,6 +18,8 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements SqlReplac
 
     protected final List<SqlInsertStatement.ValuesClause> valuesList = new ArrayList();
 
+    protected OqlSelect query;
+
     public OqlInsertInto() {
     }
 
@@ -61,6 +63,14 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements SqlReplac
 
     public void addValuesList(List<SqlInsertStatement.ValuesClause> valuesList) {
         this.valuesList.addAll(valuesList);
+    }
+
+    public OqlSelect getQuery() {
+        return query;
+    }
+
+    public void setQuery(OqlSelect query) {
+        this.query = query;
     }
 
     @Override

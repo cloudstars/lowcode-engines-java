@@ -173,6 +173,27 @@ public interface OqlAstVisitor extends SqlAstVisitor {
     default void endVisit(OqlInsertInto x) {
     }
 
+
+    /**
+     * 是否允许访问 OqlInsertSelectStatement 的儿子节点
+     *
+     * @param x
+     * @return
+     */
+    default boolean visit(OqlInsertSelectStatement x) {
+        return true;
+    }
+
+
+    /**
+     * 结束访问 OqlInsertSelectStatement
+     *
+     * @param x
+     */
+    default void endVisit(OqlInsertSelectStatement x) {
+    }
+
+
     /**
      * 是否允许访问 OqlUpdateStatement 的儿子节点
      *

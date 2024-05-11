@@ -5,14 +5,19 @@
     {
       "desc": "插入出差记录",
       "name": "InsertTravel",
-      "oql": "insert into Travel(applyId, applyName) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称')",
-      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称')"
+      "oql": "insert into Travel(applyId, applyName, dateRange) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', ['2022-10-10', '2022-10-20'])",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME, START_DATE, END_DATE) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', '2022-10-10', '2022-10-20')"
     },
     {
       "desc": "插入出差记录（带变量）",
       "name": "InsertTravelVars",
-      "oql": "insert into Travel(applyId, applyName) values (#{applyId}, #{applyName})",
-      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values (#{applyId}, #{applyName})"
+      "oql": "insert into Travel(applyId, applyName, dateRange) values (#{applyId}, #{applyName}, #{dateRange})",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME, START_DATE, END_DATE) values (#{applyId}, #{applyName}, #{dateRange._0}, #{dateRange._1})",
+      "paramMap": {
+        "applyId": "",
+        "applyName": "",
+        "dateRange": ["2022-10-10", "2022-10-20"]
+      }
     }
   ]
 }

@@ -38,7 +38,6 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
      */
     private final Map<XObject, String> objectAliasMap = new HashMap<>();
 
-
     public OqlSelectInfosParser(OqlSelectStatement stmt, boolean isQueryList) {
         super(stmt, isQueryList);
         this.paramMap = null;
@@ -106,11 +105,12 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
             SqlExpr whereExpr;
             boolean refIsBatch = true;
             if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
-                // 默认查询子表的masterField字段
+                // 当存在子表时，默认查询主表的主键（用于主表归集子表的数据）
+                this.addFieldToStmt(this.masterObject.getPrimaryField());
+
+                // 当存在子表时，默认查询子表的masterField字段（用于主表归集子表的数据）
                 XObjectRefField detailMasterField = thisObject.getObjectRefField(masterObject.getName());
-                if (thisStmt.getSelect().getSelectItems().size() > 0) {
-                    this.addFieldToStmt(detailMasterField);
-                }
+                this.addFieldToStmt(detailMasterField);
 
                 if (this.isBatch) {
                     // where masterField in (#{masterFields})
@@ -171,7 +171,7 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
             }
         }
 
-        select.addSelectItem(new OqlSelectItem(OqlUtils.defaultFieldExpr(field)));
+        select.addSelectItem(new OqlSelectItem(OqlUtils.buildFieldExpr(field)));
     }
 
     /**
@@ -182,12 +182,12 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
      */
     private void parseSelectObjectExpandExpr(OqlObjectExpandExpr objectExpandExpr, String alias) {
         XObject refObject = objectExpandExpr.getResolvedRefObject();
-        List<OqlExpr> expandFields = objectExpandExpr.getFields();
+        List<SqlExpr> expandFields = objectExpandExpr.getFields();
         OqlSelect select = this.getStmtByObject(refObject).getSelect();
         if (objectExpandExpr.isStarExpanded()) {
             select.addSelectItem(new OqlSelectItem(new SqlAllColumnExpr()));
         } else {
-            for (OqlExpr expandField : expandFields) {
+            for (SqlExpr expandField : expandFields) {
                 OqlSelectItem refSelectItem;
                 if (expandField instanceof SqlSelectItem) {
                     SqlSelectItem selectItem = (SqlSelectItem) expandField;
@@ -213,7 +213,7 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
         OqlSelectStatement stmt = this.objectSelectStmtMap.get(object);
         if (stmt == null) {
             OqlSelect select = new OqlSelect();
-            select.setFrom(OqlUtils.defaultObjectSource(object));
+            select.setFrom(OqlUtils.buildObjectSource(object));
             stmt = new OqlSelectStatement(select);
             this.objectSelectStmtMap.put(object, stmt);
         }

@@ -21,6 +21,11 @@ public class SqlInsertInto extends AbstractSqlStatementImpl implements SqlReplac
 
     protected final List<SqlInsertStatement.ValuesClause> valuesList = new ArrayList();
 
+    /**
+     * insert into ... select ... 语法
+     */
+    protected SqlSelect query;
+
     public SqlInsertInto() {
     }
 
@@ -81,6 +86,14 @@ public class SqlInsertInto extends AbstractSqlStatementImpl implements SqlReplac
 
     public void addValuesList(List<SqlInsertStatement.ValuesClause> valuesList) {
         this.valuesList.addAll(valuesList);
+    }
+
+    public SqlSelect getQuery() {
+        return query;
+    }
+
+    public void setQuery(SqlSelect query) {
+        this.query = query;
     }
 
     @Override

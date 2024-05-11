@@ -40,8 +40,13 @@ public class OqlStatementParser extends OqlExprParser {
                 OqlSelect oqlSelect = this.toOqlSelect(((SqlSelectStatement) sqlStmt).getSelect());
                 oqlStmt = new OqlSelectStatement(oqlSelect);
             } else if (sqlStmt instanceof SqlInsertStatement) {
+                SqlSelect query = ((SqlInsertStatement) sqlStmt).getQuery();
                 OqlInsertInto oqlInsertInto = this.toOqlInsertInto((SqlInsertStatement) sqlStmt);
-                oqlStmt = new OqlInsertStatement(oqlInsertInto);
+                if (query == null) {
+                    oqlStmt = new OqlInsertStatement(oqlInsertInto);
+                } else {
+                    oqlStmt = new OqlInsertSelectStatement(oqlInsertInto);
+                }
             } else if (sqlStmt instanceof SqlUpdateStatement) {
                 oqlStmt = this.toOqlUpdateStatement((SqlUpdateStatement) sqlStmt);
             } else if (sqlStmt instanceof SqlDeleteStatement) {
@@ -107,7 +112,13 @@ public class OqlStatementParser extends OqlExprParser {
             }
             oqlInsertInto.addField((OqlExpr) columnX);
         }
-        oqlInsertInto.addValuesList(sqlInsertInto.getValuesList());
+
+        SqlSelect query = sqlInsertInto.getQuery();
+        if (query == null) {
+            oqlInsertInto.addValuesList(sqlInsertInto.getValuesList());
+        } else {
+            oqlInsertInto.setQuery(this.toOqlSelect(query));
+        }
 
         return oqlInsertInto;
     }

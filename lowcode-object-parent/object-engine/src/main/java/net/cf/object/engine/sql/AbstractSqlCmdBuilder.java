@@ -12,7 +12,6 @@ import net.cf.object.engine.oql.ast.OqlStatement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -41,12 +40,6 @@ public abstract class AbstractSqlCmdBuilder<OQL extends OqlStatement, SQLCMD ext
      */
     protected XObject resolvedObject;
 
-    /**
-     * 子表变量名展开的匹配模式
-     */
-    protected final Pattern VAR_EXPAND_PATTERN = Pattern.compile("(\\w+)\\((\\.+)\\)");
-
-
     public AbstractSqlCmdBuilder(OQL stmt, boolean isBatch) {
         this.stmt = stmt;
         this.isBatch = isBatch;
@@ -68,7 +61,18 @@ public abstract class AbstractSqlCmdBuilder<OQL extends OqlStatement, SQLCMD ext
      */
     protected SqlExpr extractPropertyValue(SqlExpr jsonValueExpr, XProperty property) {
         if (!property.isArray()) {
-            return this.extractPropertyValue((SqlJsonObjectExpr) jsonValueExpr, property);
+            if (jsonValueExpr instanceof SqlJsonArrayExpr) {//区间类组件特殊处理
+                String propName = property.getName();
+                if (propName.matches("\\_\\d+")) {
+                    int idx = Integer.valueOf(propName.substring(1));
+                    List<SqlExpr> items = ((SqlJsonArrayExpr) jsonValueExpr).getItems();
+                    return idx <= items.size() - 1 ? items.get(idx) : null;
+                } else {
+                    return null;
+                }
+            } else {
+                return this.extractPropertyValue((SqlJsonObjectExpr) jsonValueExpr, property);
+            }
         } else {
             return this.extractPropertyValue((SqlJsonArrayExpr) jsonValueExpr, property);
         }

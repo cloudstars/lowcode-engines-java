@@ -29,6 +29,8 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
         OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> data = this.engine.queryOne(stmt);
         assert (data != null && TravelObject.RECORD1.equals(data.get("applyId")));
+        Object[] dataRange = (Object[]) data.get("dateRange");
+        assert (dataRange.length == 2);
     }
 
     @Override
@@ -39,6 +41,8 @@ public abstract class AbstractSelectTravelSelfSimpleRepoTest
         paramMap.put("applyId", TravelObject.RECORD1);
         Map<String, Object> data = this.engine.queryOne(stmt, paramMap);
         assert (data != null && TravelObject.RECORD1.equals(data.get("applyId")));
+        Object[] dataRange = (Object[]) data.get("dateRange");
+        assert (dataRange.length == 2);
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.sql.parser.Token;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -423,6 +424,18 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     @Override
     public boolean visit(SqlVariantRefExpr x) {
         this.print(x.getName());
+        List<String> subVarNames = x.getSubVarNames();
+        if (CollectionUtils.isEmpty(subVarNames)) {
+            this.print("(");
+            int l = subVarNames.size();
+            for (int i = 0; i < l; i++) {
+                if (i > 0) {
+                    this.print(", ");
+                }
+                this.print(subVarNames.get(i));
+            }
+        }
+
         return false;
     }
 
@@ -458,31 +471,6 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         if (alias != null) {
             this.print(this.uppercase ? " AS " : " as ");
             this.print(alias);
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean visit(SqlJoinTableSource x) {
-        SqlTableSource leftTableSource = x.getLeft();
-        leftTableSource.accept(this);
-
-        SqlJoinTableSource.JoinType joinType = x.getJoinType();
-        if (joinType != null) {
-            if (joinType != SqlJoinTableSource.JoinType.COMMA) {
-                this.print(' ');
-            }
-            this.print(joinType.name);
-            this.print(' ');
-        }
-
-        SqlTableSource rightTableSource = x.getRight();
-        rightTableSource.accept(this);
-
-        if (x.getCondition() != null) {
-            this.print(this.uppercase ? " ON " : " on ");
-            x.getCondition().accept(this);
         }
 
         return false;

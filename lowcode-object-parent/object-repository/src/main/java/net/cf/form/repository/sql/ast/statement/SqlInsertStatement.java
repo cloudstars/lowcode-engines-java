@@ -19,6 +19,7 @@ public class SqlInsertStatement extends SqlInsertInto implements SqlStatement {
     public SqlInsertStatement(SqlInsertInto insertInto) {
         this.tableSource = insertInto.tableSource;
         this.autoGenColumn = insertInto.autoGenColumn;
+        this.query = insertInto.query;
         super.addColumns(insertInto.columns);
         super.addValuesList(insertInto.valuesList);
     }
@@ -28,7 +29,7 @@ public class SqlInsertStatement extends SqlInsertInto implements SqlStatement {
 
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChildren(visitor, this.tableSource);
+            this.nullSafeAcceptChild(visitor, this.tableSource);
             this.nullSafeAcceptChildren(visitor, this.columns);
             this.nullSafeAcceptChildren(visitor, this.valuesList);
         }

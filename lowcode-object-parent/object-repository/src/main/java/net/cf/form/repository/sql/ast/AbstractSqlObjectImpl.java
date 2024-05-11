@@ -70,7 +70,7 @@ public abstract class AbstractSqlObjectImpl<V extends SqlAstVisitor> implements 
     protected final void nullSafeAcceptChildren(SqlAstVisitor visitor, List<? extends SqlObject> children) {
         if (children != null) {
             for (int i = 0; i < children.size(); ++i) {
-                this.nullSafeAcceptChildren(visitor, children.get(i));
+                this.nullSafeAcceptChild(visitor, children.get(i));
             }
         }
     }
@@ -81,7 +81,7 @@ public abstract class AbstractSqlObjectImpl<V extends SqlAstVisitor> implements 
      * @param visitor
      * @param child
      */
-    protected final void nullSafeAcceptChildren(SqlAstVisitor visitor, SqlObject child) {
+    protected final void nullSafeAcceptChild(SqlAstVisitor visitor, SqlObject child) {
         if (child != null) {
             child.accept(visitor);
         }

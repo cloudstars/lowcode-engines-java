@@ -153,6 +153,23 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
     }
 
     @Override
+    public boolean visit(OqlInsertSelectStatement x) {
+        this.print(this.uppercase ? "INSERT INTO " : "insert into ");
+
+        // 输出数据源
+        x.getObjectSource().accept(this);
+
+        // 输出插入的列
+        this.printParenthesesAndAcceptList(x.getFields(), ", ");
+
+        // 输出查询条件
+        this.println();
+        this.visit(x.getQuery());
+
+        return false;
+    }
+
+    @Override
     public boolean visit(OqlUpdateStatement x) {
         this.print(this.uppercase ? "UPDATE " : "update ");
 

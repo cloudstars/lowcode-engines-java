@@ -124,12 +124,6 @@ public class SqlTypesAstVisitor implements SqlAstVisitor {
     }
 
     @Override
-    public boolean visit(SqlJoinTableSource x) {
-        this.nodes.add(x);
-        return true;
-    }
-
-    @Override
     public boolean visit(SqlSelectGroupByClause x) {
         this.nodes.add(x);
         return true;

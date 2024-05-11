@@ -38,6 +38,11 @@ public class SqlSelectCmd extends AbstractSqlCmd<SqlSelectStatement> {
      */
     private boolean isDetailFieldDirectQuery;
 
+    /**
+     * 可以直接返回的结果，如select [{}, {}] as detailRefField from masterObject where ...，其中[{}, {}]是可以直接作为子表返回的
+     */
+    private Map<String, Object> directResultMap;
+
     public Map<String, Object> getParamMap() {
         return paramMap;
     }
@@ -80,5 +85,13 @@ public class SqlSelectCmd extends AbstractSqlCmd<SqlSelectStatement> {
 
     public void setDetailFieldDirectQuery(boolean detailFieldDirectQuery) {
         isDetailFieldDirectQuery = detailFieldDirectQuery;
+    }
+
+    public Map<String, Object> getDirectResultMap() {
+        return directResultMap;
+    }
+
+    public void setDirectResultMap(Map<String, Object> directResultMap) {
+        this.directResultMap = directResultMap;
     }
 }

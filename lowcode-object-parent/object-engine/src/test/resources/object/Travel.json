@@ -21,20 +21,26 @@
       "dataLength": 64
     },
     {
-      "type": "Date",
-      "desc": "开始日期",
-      "name": "startDate",
-      "columnName": "START_DATE",
+      "type": "DateRange",
+      "desc": "日期范围",
+      "name": "dateRange",
       "dataType": "Date",
-      "dataFormat": "yyyy-MM-dd"
-    },
-    {
-      "type": "Date",
-      "desc": "结束日期",
-      "name": "endDate",
-      "columnName": "END_DATE",
-      "dataType": "Date",
-      "dataFormat": "yyyy-MM-dd"
+      "dataFormat": "yyyy-MM-dd",
+      "isArray": true,
+      "properties": [
+        {
+          "desc": "开始日期",
+          "name": "_0",
+          "columnName": "START_DATE",
+          "dataType": "Date"
+        },
+        {
+          "desc": "结束日期",
+          "name": "_1",
+          "columnName": "END_DATE",
+          "dataType": "Date"
+        }
+      ]
     },
     {
       "type": "Text",

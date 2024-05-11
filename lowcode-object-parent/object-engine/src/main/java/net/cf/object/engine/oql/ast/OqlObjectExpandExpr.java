@@ -1,5 +1,6 @@
 package net.cf.object.engine.oql.ast;
 
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.visitor.OqlAstVisitor;
@@ -22,7 +23,7 @@ public class OqlObjectExpandExpr extends AbstractExpandableOqlExprImpl {
     /**
      *  模型中展开的字段列表（含常量、表达式等）
      */
-    protected final List<OqlExpr> fields = new ArrayList<>();
+    protected final List<SqlExpr> fields = new ArrayList<>();
 
     /**
      * 本模型时展开的字段
@@ -42,18 +43,18 @@ public class OqlObjectExpandExpr extends AbstractExpandableOqlExprImpl {
         return owner;
     }
 
-    public List<OqlExpr> getFields() {
+    public List<SqlExpr> getFields() {
         return fields;
     }
 
-    public void addField(OqlExpr field) {
+    public void addField(SqlExpr field) {
         this.fields.add(field);
     }
 
     @Override
     public final void accept0(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            for (OqlExpr field : this.fields) {
+            for (SqlExpr field : this.fields) {
                 if (field != null) {
                     field.accept(visitor);
                 }
@@ -66,7 +67,7 @@ public class OqlObjectExpandExpr extends AbstractExpandableOqlExprImpl {
     @Override
     public OqlObjectExpandExpr cloneMe() {
         OqlObjectExpandExpr x = new OqlObjectExpandExpr(this.owner);
-        for (OqlExpr field : fields) {
+        for (SqlExpr field : fields) {
             x.addField(field.cloneMe());
         }
         x.setResolvedObjectRefField(this.resolvedObjectRefField);
@@ -76,7 +77,7 @@ public class OqlObjectExpandExpr extends AbstractExpandableOqlExprImpl {
     }
 
     @Override
-    public List<OqlExpr> getChildren() {
+    public List<SqlExpr> getChildren() {
         return this.fields;
     }
 

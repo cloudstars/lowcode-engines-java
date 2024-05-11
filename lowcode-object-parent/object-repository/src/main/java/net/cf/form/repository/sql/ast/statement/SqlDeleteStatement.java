@@ -41,8 +41,8 @@ public class SqlDeleteStatement extends AbstractSqlStatementImpl implements SqlS
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChildren(visitor, this.from);
-            this.nullSafeAcceptChildren(visitor, this.where);
+            this.nullSafeAcceptChild(visitor, this.from);
+            this.nullSafeAcceptChild(visitor, this.where);
         }
 
         visitor.endVisit(this);

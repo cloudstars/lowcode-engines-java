@@ -3,13 +3,14 @@ package net.cf.form.repository.sql.ast.expr.op;
 import net.cf.form.repository.sql.ast.SqlReplaceable;
 import net.cf.form.repository.sql.ast.expr.AbstractSqlExprImpl;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.visitor.SqlAstVisitor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SqlListExpr extends AbstractSqlExprImpl implements SqlReplaceable {
+public class SqlListExpr extends AbstractSqlExprImpl implements SqlReplaceable, SqlValuableExpr {
     private final List<SqlExpr> items;
 
     public SqlListExpr() {
@@ -57,6 +58,17 @@ public class SqlListExpr extends AbstractSqlExprImpl implements SqlReplaceable {
         visitor.endVisit(this);
     }
 
+    @Override
+    public List<Object> getValue() {
+        List<Object> value = new ArrayList<>();
+        for (SqlExpr item : this.items) {
+            if (item instanceof SqlValuableExpr) {
+                value.add(((SqlValuableExpr) item).getValue());
+            }
+        }
+
+        return value;
+    }
 
     @Override
     public List<SqlExpr> getChildren() {

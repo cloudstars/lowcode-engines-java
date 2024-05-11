@@ -126,7 +126,11 @@ public class SqlSelectParser extends SqlExprParser {
                 tExpr = this.parseIdentifierRest((SqlIdentifierExpr) tExpr);
                 break;
             default:
-                printError(token);
+                try {
+                    tExpr = this.primary();
+                } catch (Exception e) {
+                    printError(token);
+                }
         }
 
         return tExpr;

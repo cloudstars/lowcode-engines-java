@@ -344,7 +344,7 @@ public class Lexer {
     }
 
     /**
-     * 扫描一个变量引用：${xxx} 或 #{xxx}
+     * 扫描一个变量引用：${xxx} 或 #{xxx} 或 #{xxx(a, b, c)}
      */
     private void scanVariableRef() {
         this.mark = this.pos;
@@ -352,6 +352,17 @@ public class Lexer {
         if (this.ch == '{') {
             do {
                 this.scanChar(true);
+                if (this.ch == '(') {
+                    do {
+                        this.scanChar(true);
+                    } while(CharTypes.isIdentifierChar(this.ch) || this.ch == '.' || this.ch == ',' || this.ch == ' ');
+
+                    if (this.ch != ')') {
+                        throw new SqlParseException("illegal variable with sub variable, unterminated with ')'. " + this.info());
+                    }
+
+                    this.scanChar(true);
+                }
             } while (CharTypes.isIdentifierChar(this.ch) || this.ch == '.'); // 变量名允许带点
         }
 

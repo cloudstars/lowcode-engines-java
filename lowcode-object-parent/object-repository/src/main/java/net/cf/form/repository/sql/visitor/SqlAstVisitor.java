@@ -531,24 +531,6 @@ public interface SqlAstVisitor {
     }
 
     /**
-     * 开始访问 SqlJoinTableSource 节点
-     *
-     * @param x
-     * @return 是否允许访问当前节点的子节点
-     */
-    default boolean visit(SqlJoinTableSource x) {
-        return true;
-    }
-
-    /**
-     * 结束访问 SqlJoinTableSource 节点
-     *
-     * @param x
-     */
-    default void endVisit(SqlJoinTableSource x) {
-    }
-
-    /**
      * 开始访问 SqlSubQueryTableSource 节点
      *
      * @param x

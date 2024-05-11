@@ -6,6 +6,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.expr.op.SqlInListExpr;
+import net.cf.form.repository.util.SqlUtils;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.oql.ast.OqlExpr;
@@ -21,6 +22,16 @@ import java.util.Arrays;
  * @author clouds
  */
 public class OqlUtils {
+
+    /**
+     * 获取查询字段的别名
+     *
+     * @param selectItemIndex
+     * @return
+     */
+    public static String getSelectItemIndexAlias(int selectItemIndex) {
+        return "_" + selectItemIndex++;
+    }
 
     /**
      * 将AST表达式转为字符串
@@ -41,7 +52,7 @@ public class OqlUtils {
      * @param object
      * @return
      */
-    public static OqlExprObjectSource defaultObjectSource(XObject object) {
+    public static OqlExprObjectSource buildObjectSource(XObject object) {
         OqlExprObjectSource objectSource = new OqlExprObjectSource();
         objectSource.setExpr(new SqlIdentifierExpr(object.getName()));
         objectSource.setResolvedObject(object);
@@ -54,7 +65,7 @@ public class OqlUtils {
      * @param field
      * @return
      */
-    public static OqlFieldExpr defaultFieldExpr(XField field) {
+    public static OqlFieldExpr buildFieldExpr(XField field) {
         String fieldName = field.getName();
         OqlFieldExpr fieldExpr = new OqlFieldExpr(fieldName);
         fieldExpr.setResolvedField(field);
@@ -67,8 +78,8 @@ public class OqlUtils {
      * @param field
      * @return
      */
-    public static SqlVariantRefExpr defaultFieldVarExpr(XField field) {
-        return SqlVariantRefExpr.fromVarName(field.getName());
+    public static SqlVariantRefExpr buildFieldVarExpr(XField field) {
+        return SqlUtils.buildSqlVariantRefExpr(field.getName());
     }
 
     /**
@@ -77,7 +88,7 @@ public class OqlUtils {
      * @param field
      */
     public static SqlBinaryOpExpr buildFieldEqualsVarRefExpr(XField field) {
-        OqlExpr fieldExpr = OqlUtils.defaultFieldExpr(field);
+        OqlExpr fieldExpr = OqlUtils.buildFieldExpr(field);
         String fieldName = field.getName();
         SqlExpr fieldVarRefExpr = new SqlVariantRefExpr("#{" + fieldName + "}");
         SqlBinaryOpExpr fieldEqualsVarRefExpr = new SqlBinaryOpExpr();
@@ -102,7 +113,7 @@ public class OqlUtils {
      * @param field
      */
     public static SqlInListExpr buildFieldInListVarRefExpr(XField field, boolean not) {
-        OqlExpr fieldExpr = OqlUtils.defaultFieldExpr(field);
+        OqlExpr fieldExpr = OqlUtils.buildFieldExpr(field);
         String fieldName = field.getName();
         SqlExpr fieldVarRefExpr = new SqlVariantRefExpr("#{" + fieldName + "s}");
         SqlInListExpr fieldInListVarRefExpr = new SqlInListExpr();

@@ -5,14 +5,14 @@
     {
       "desc": "查询出差记录",
       "name": "SelectTravelOne",
-      "oql": "select applyId, applyName from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
-      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+      "oql": "select applyId, applyName, dateRange from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "select APPLY_ID, APPLY_NAME, START_DATE, END_DATE from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
     },
     {
       "desc": "查询出差记录（带变量）",
       "name": "SelectTravelOneVars",
-      "oql": "select applyId, applyName from Travel where applyId = #{applyId}",
-      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID = #{applyId}"
+      "oql": "select applyId, applyName, dateRange from Travel where applyId = #{applyId}",
+      "sql": "select APPLY_ID, APPLY_NAME, START_DATE, END_DATE from TRAVEL where APPLY_ID = #{applyId}"
     },
     {
       "desc": "查询出差列表",

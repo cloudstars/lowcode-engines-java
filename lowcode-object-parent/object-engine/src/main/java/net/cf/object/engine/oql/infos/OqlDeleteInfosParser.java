@@ -157,7 +157,7 @@ public class OqlDeleteInfosParser extends AbstractOqInfosParser<OqlDeleteStateme
         OqlDeleteStatement stmt = this.detailObjectDeleteStmtMap.get(detailObject);
         if (stmt == null) {
             stmt = new OqlDeleteStatement();
-            stmt.setFrom(OqlUtils.defaultObjectSource(detailObject));
+            stmt.setFrom(OqlUtils.buildObjectSource(detailObject));
             this.detailObjectDeleteStmtMap.put(detailObject, stmt);
         }
 

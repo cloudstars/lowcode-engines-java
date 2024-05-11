@@ -12,7 +12,6 @@ import net.cf.object.engine.oql.ast.OqlStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -43,12 +42,6 @@ public abstract class AbstractOqInfosParser<O extends OqlStatement, I extends Ab
      * 解析后的主模型的主键字段的表达式（在where中的）
      */
     protected SqlExpr masterPrimaryFieldValueExpr;
-
-    /**
-     * 子表变量名展开的匹配模式
-     */
-    protected final Pattern VAR_EXPAND_PATTERN = Pattern.compile("(\\w+)\\((\\[\\.+)\\)");
-
 
     public AbstractOqInfosParser(O stmt, boolean isBatch) {
         this.stmt = stmt;

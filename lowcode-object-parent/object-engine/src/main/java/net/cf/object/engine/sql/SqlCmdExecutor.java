@@ -68,6 +68,10 @@ public final class SqlCmdExecutor {
         if (resultMap != null) {
             DefaultResultReducer resultReducer = new DefaultResultReducer(selectCmd.getFieldMappings());
             resultMap = this.convertResultMap(resultReducer, resultMap);
+            Map<String, Object> directResultMap = selectCmd.getDirectResultMap();
+            if (directResultMap != null) {
+                resultMap.putAll(directResultMap);
+            }
             LOGGER.info("成功查询到一条记录！");
         } else {
             LOGGER.info("未查询到记录！");
@@ -91,6 +95,12 @@ public final class SqlCmdExecutor {
         if (resultMapList != null && resultMapList.size() > 0) {
             DefaultResultReducer resultReducer = new DefaultResultReducer(selectCmd.getFieldMappings());
             resultMapList = this.convertResultMapList(resultReducer, resultMapList);
+            Map<String, Object> directResultMap = selectCmd.getDirectResultMap();
+            if (directResultMap != null) {
+                for (Map<String, Object> resultMap : resultMapList) {
+                    resultMap.putAll(directResultMap);
+                }
+            }
             LOGGER.info("成功返回" + resultMapList.size() + "条记录！");
         } else {
             LOGGER.info("未查询到记录条！");

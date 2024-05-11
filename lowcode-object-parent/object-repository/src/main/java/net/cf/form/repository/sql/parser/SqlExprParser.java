@@ -1,12 +1,14 @@
 package net.cf.form.repository.sql.parser;
 
-import net.cf.form.repository.sql.FastSqlException;
 import net.cf.form.repository.sql.ast.SqlObject;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.*;
-import net.cf.form.repository.sql.ast.statement.*;
+import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
+import net.cf.form.repository.sql.ast.statement.SqlSelect;
+import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
+import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.util.SqlExprUtils;
 
 import java.util.Arrays;
@@ -589,42 +591,7 @@ public class SqlExprParser extends AbstractSqlParser {
      * @return
      */
     protected SqlTableSource parseTableSource() {
-        SqlTableSource tableSource = null;
-        SqlJoinTableSource.JoinType joinType = null;
-        while (this.lexer.token != Token.WHERE && this.lexer.token != Token.EOF) {
-            if (this.lexer.token == Token.LEFT) {
-                joinType = SqlJoinTableSource.JoinType.LEFT_OUTER_JOIN;
-                this.lexer.nextToken();
-                this.accept(Token.JOIN);
-            } else if (this.lexer.token == Token.RIGHT) {
-                joinType = SqlJoinTableSource.JoinType.RIGHT_OUTER_JOIN;
-                this.lexer.nextToken();
-                this.accept(Token.JOIN);
-            } else if (this.lexer.token == Token.JOIN) {
-                joinType = SqlJoinTableSource.JoinType.JOIN;
-                this.accept(Token.JOIN);
-            } else if (this.lexer.token == Token.CROSS) {
-                joinType = SqlJoinTableSource.JoinType.CROSS_JOIN;
-                this.lexer.nextToken();
-                this.accept(Token.JOIN);
-            } else if (this.lexer.token == Token.COMMA) {
-                joinType = SqlJoinTableSource.JoinType.COMMA;
-                this.lexer.nextToken();
-            } else if (this.lexer.token == Token.ON) {
-                if (tableSource == null || !(tableSource instanceof SqlJoinTableSource)) {
-                    throw new FastSqlException("keyword \'on\' is allowed follow table join");
-                }
-                this.accept(Token.ON);
-                ((SqlJoinTableSource) tableSource).setCondition(this.expr());
-            } else {
-                if (tableSource == null) {
-                    tableSource = this.parseExprTableSource();
-                } else {
-                    break;
-                }
-            }
-        }
-
+        SqlTableSource tableSource = this.parseExprTableSource();
         return tableSource;
     }
 

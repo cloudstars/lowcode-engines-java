@@ -1,24 +1,30 @@
 package net.cf.object.engine;
 
 import net.cf.form.repository.ObjectRepository;
+import net.cf.form.repository.sql.FastSqlException;
 import net.cf.form.repository.sql.ast.SqlLimit;
+import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
+import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.form.repository.sql.ast.statement.SqlSelect;
 import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
+import net.cf.form.repository.util.SqlUtils;
 import net.cf.object.engine.data.DataConvert;
 import net.cf.object.engine.data.PageRequest;
 import net.cf.object.engine.data.PageResult;
 import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
 import net.cf.object.engine.object.XObjectRefField;
-import net.cf.object.engine.oql.ast.OqlDeleteStatement;
-import net.cf.object.engine.oql.ast.OqlInsertStatement;
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
-import net.cf.object.engine.oql.ast.OqlUpdateStatement;
+import net.cf.object.engine.oql.FastOqlException;
+import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.oql.infos.*;
 import net.cf.object.engine.sql.*;
+import net.cf.object.engine.util.OqlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -396,6 +402,10 @@ public class OqlEngineImpl implements OqlEngine {
         List<String> columnValues = new ArrayList<>();
         for (Map<String, Object> resultMap : resultMapList) {
             Object columnResult = resultMap.get(fieldName);
+            if (columnResult == null) {
+                continue;
+            }
+
             if (columnResult instanceof String) {
                 columnResult = DataConvert.stringToList((String) columnResult);
             }
@@ -501,6 +511,101 @@ public class OqlEngineImpl implements OqlEngine {
         }
 
         return effectedRowsArray;
+    }
+
+    @Override
+    public int[] createSelect(OqlInsertSelectStatement stmt) {
+        return this.createSelect(stmt, Collections.emptyMap());
+    }
+
+    @Override
+    public int[] createSelect(OqlInsertSelectStatement stmt, Map<String, Object> paramMap) {
+        OqlSelect query = stmt.getQuery();
+        List<SqlExpr> valueExprs = this.parseInsertValues(stmt.getFields(), query.getSelectItems());
+
+        // 先查询出来
+        OqlSelectStatement selectStmt = new OqlSelectStatement(query);
+        List<Map<String, Object>> queryResultList = this.queryList(selectStmt);
+        if (queryResultList.size() == 0) {
+            throw new FastOqlException("插入失败，数据行不存在");
+        }
+
+
+        // 再构建OQL语句
+        OqlInsertInto insertInto = new OqlInsertInto();
+        insertInto.setObjectSource(stmt.getObjectSource());
+        insertInto.addFields(stmt.getFields());
+        insertInto.addValues(new SqlInsertStatement.ValuesClause(valueExprs));
+
+        // 再插入数据
+        OqlInsertStatement insertStmt = new OqlInsertStatement(insertInto);
+        int[] effectedRowsArray = this.createList(insertStmt, queryResultList);
+        return effectedRowsArray;
+    }
+
+    /**
+     * 从 insert ...  select ...中解析values的值
+     *
+     * @param insertItems
+     * @param selectItems
+     * @return
+     */
+    private List<SqlExpr> parseInsertValues(List<OqlExpr> insertItems, List<OqlSelectItem> selectItems) {
+        int insertItemSize = insertItems.size();
+        int selectItemSize = selectItems.size();
+        if (insertItemSize != selectItemSize) {
+            throw new FastOqlException("插入的字段与查询的字段个数不一致");
+        }
+
+        List<SqlExpr> insertValues = new ArrayList<>();
+        for (int i = 0; i < insertItemSize; i++) {
+            OqlExpr insertItem = insertItems.get(i);
+            OqlSelectItem selectItem = selectItems.get(i);
+
+            SqlExpr selectItemExpr = selectItem.getExpr();
+            String alias = selectItem.getAlias();
+            if (insertItem instanceof OqlFieldExpr) {
+                if (alias != null) {
+                    insertValues.add(SqlUtils.buildSqlVariantRefExpr(alias));
+                } else {
+                    if (selectItemExpr instanceof OqlFieldExpr) {
+                        insertValues.add(SqlUtils.buildSqlVariantRefExpr(((OqlFieldExpr) selectItemExpr).getName()));
+                    } else if (selectItemExpr instanceof SqlValuableExpr) { // 非模型字段，如：常量
+                        String resultKey = alias != null ? alias : OqlUtils.getSelectItemIndexAlias(i);
+                        insertValues.add(SqlUtils.buildSqlVariantRefExpr(resultKey));
+                    } else {
+                        throw new FastSqlException("查询字段" + OqlUtils.expr2String(selectItemExpr) + "必须配置as别名");
+                    }
+                }
+            } else if (insertItem instanceof OqlObjectExpandExpr) {
+                if (selectItemExpr instanceof OqlObjectExpandExpr) {
+                    String selectItemFieldName = ((OqlObjectExpandExpr) selectItemExpr).getOwner();
+                    SqlVariantRefExpr varRefExpr = SqlUtils.buildSqlVariantRefExpr(alias != null ? alias : selectItemFieldName);
+                    List<SqlExpr> expandFields = ((OqlObjectExpandExpr) selectItemExpr).getFields();
+                    String subVarName;
+                    for (SqlExpr expandField : expandFields) {
+                        if (expandField instanceof OqlFieldExpr) {
+                            subVarName = ((OqlFieldExpr) expandField).getName();
+                        } else if (expandField instanceof SqlSelectItem) {
+                            subVarName = ((SqlSelectItem) expandField).getAlias();
+                        } else {
+                            subVarName = OqlUtils.expr2String(expandField);
+                        }
+                        varRefExpr.addSubVarName(subVarName);
+                    }
+                    insertValues.add(varRefExpr);
+                } else if (selectItemExpr instanceof SqlJsonArrayExpr) { // 常量会通过OQL查询直接返回
+                    String resultKey = alias != null ? alias : OqlUtils.getSelectItemIndexAlias(i);
+                    insertValues.add(SqlUtils.buildSqlVariantRefExpr(resultKey));
+                } else {
+                    throw new FastSqlException("查询字段" + OqlUtils.expr2String(selectItemExpr) + "语法不支持");
+                }
+            } else {
+                throw new FastSqlException("插入字段" + OqlUtils.expr2String(insertItem) + "语法不支持");
+            }
+        }
+
+        return insertValues;
     }
 
     @Override

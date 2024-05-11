@@ -2,10 +2,7 @@ package net.cf.object.engine;
 
 import net.cf.object.engine.data.PageRequest;
 import net.cf.object.engine.data.PageResult;
-import net.cf.object.engine.oql.ast.OqlDeleteStatement;
-import net.cf.object.engine.oql.ast.OqlInsertStatement;
-import net.cf.object.engine.oql.ast.OqlSelectStatement;
-import net.cf.object.engine.oql.ast.OqlUpdateStatement;
+import net.cf.object.engine.oql.ast.*;
 
 import java.util.List;
 import java.util.Map;
@@ -86,6 +83,20 @@ public interface OqlEngine {
      * @return 影响行数
      */
     int[] createList(OqlInsertStatement stmt, List<Map<String, Object>> paramMaps);
+
+    /**
+     *
+     * @param stmt
+     * @return
+     */
+    int[] createSelect(OqlInsertSelectStatement stmt);
+
+    /**
+     *
+     * @param stmt
+     * @return
+     */
+    int[] createSelect(OqlInsertSelectStatement stmt, Map<String, Object> paramMap);
 
     /**
      * 更新记录

@@ -7,6 +7,8 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.object.*;
@@ -14,10 +16,7 @@ import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.util.OqlUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * SQL 查询指令构建器
@@ -43,12 +42,20 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
      */
     private boolean isDetailFieldDirectQuery;
 
-    private int nonFieldSelectItemIndex = 0;
+    /**
+     * 查询字段的序号（如果没有给非模型字段添加as时，为默认添加as _n, n从0开始）
+     */
+    private int selectItemIndex = 0;
 
     /**
      * 字段映射表
      */
     private final List<FieldMapping> fieldMappings = new ArrayList<>();
+
+    /**
+     * 在查询的字段中直接可以输出的关联表的值
+     */
+    private final Map<String, Object> directResultMap = new HashMap<>();
 
     public SqlSelectCmdBuilder(OqlSelectStatement stmt, Map<String, Object> paramMap) {
         this(stmt, paramMap, false);
@@ -85,7 +92,7 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
         List<OqlSelectItem> selectItems = select.getSelectItems();
         if (selectItems.size() == 0) {
             OqlSelectItem selectItem = new OqlSelectItem();
-            selectItem.setExpr(OqlUtils.defaultFieldExpr(this.resolvedObject.getPrimaryField()));
+            selectItem.setExpr(OqlUtils.buildFieldExpr(this.resolvedObject.getPrimaryField()));
             selectItems = Arrays.asList(selectItem);
             // 特列处理，如果只查询了子表字段，默认会返回子表的ID数组
             this.isDetailFieldDirectQuery = true;
@@ -108,6 +115,12 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
             } else {
                 this.parseExpr(selectItemExpr, alias);
             }
+        }
+
+        // 所有字段都是可以直接返回的，默认select 1
+        if (selectItems.size() == this.directResultMap.size()) {
+            String alias = OqlUtils.getSelectItemIndexAlias(this.selectItemIndex++);
+            sqlStmt.getSelect().addSelectItem(new SqlSelectItem(new SqlIntegerExpr(1), alias));
         }
 
         // 解析表源
@@ -148,7 +161,6 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
 
     /**
      * 将一个模型的全部字段添加到模型对应的查询语句的字段中
-     *
      */
     private void addObjectAllFieldsToStmt() {
         List<XField> fields = this.resolvedObject.getFields();
@@ -216,15 +228,18 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
     private void parseExpr(SqlExpr expr, String alias) {
         SqlExpr exprX = this.buildSqlExpr(expr);
         SqlSelect select = this.sqlStmt.getSelect();
-        String itemAlias = "_" + nonFieldSelectItemIndex++;
-        select.addSelectItem(new SqlSelectItem(exprX, itemAlias));
-
-        String columnName = OqlUtils.expr2String(expr);
-        String name = alias != null ? alias : columnName;
-        FieldMapping fieldMapping = new FieldMapping(name, itemAlias);
-        fieldMappings.add(fieldMapping);
+        String itemAlias = OqlUtils.getSelectItemIndexAlias(this.selectItemIndex++);
+        if (expr instanceof SqlValuableExpr) {
+            // 可以直接返回的值
+            this.directResultMap.put(itemAlias, ((SqlValuableExpr) expr).getValue());
+        } else {
+            select.addSelectItem(new SqlSelectItem(exprX, itemAlias));
+            String columnName = OqlUtils.expr2String(expr);
+            String name = alias != null ? alias : columnName;
+            FieldMapping fieldMapping = new FieldMapping(name, itemAlias);
+            fieldMappings.add(fieldMapping);
+        }
     }
-
 
     /**
      * 分析分组子句
@@ -276,6 +291,7 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
         selectCmd.setParamMap(this.paramMap);
         selectCmd.setFieldMappings(this.fieldMappings);
         selectCmd.setDetailFieldDirectQuery(isDetailFieldDirectQuery);
+        selectCmd.setDirectResultMap(this.directResultMap);
         return selectCmd;
     }
 

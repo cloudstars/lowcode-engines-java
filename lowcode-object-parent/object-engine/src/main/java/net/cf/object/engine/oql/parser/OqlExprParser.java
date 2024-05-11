@@ -441,7 +441,7 @@ public class OqlExprParser extends SqlExprParser {
             } else if (arg instanceof SqlIdentifierExpr) {
                 String fieldName = ((SqlIdentifierExpr) arg).getName();
                 XField field = this.resolveField(refObject, fieldName);
-                objectExpandExpr.addField(OqlUtils.defaultFieldExpr(field));
+                objectExpandExpr.addField(OqlUtils.buildFieldExpr(field));
             } else {
                 SqlExpr argX = this.parseSqlExpr(refObject, arg);
                 if (argX instanceof OqlExpr) {

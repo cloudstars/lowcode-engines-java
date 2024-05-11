@@ -39,6 +39,21 @@ public final class OqlStatementUtils {
         return (OqlInsertStatement) statements.get(0);
     }
 
+
+    /**
+     * 解析并返回唯一的一条插入Select OQL 语句
+     *
+     * @param resolver
+     * @param oql
+     * @return
+     */
+    public static OqlInsertSelectStatement parseSingleInsertSelectStatement(XObjectResolver resolver, String oql) {
+        OqlStatementParser parser = new OqlStatementParser(resolver, oql);
+        List<OqlStatement> statements = parser.parseStatementList();
+        assert (statements.size() == 1 && statements.get(0) instanceof OqlInsertSelectStatement);
+        return (OqlInsertSelectStatement) statements.get(0);
+    }
+
     /**
      * 解析并返回唯一的一条更新 OQL 语句
      *

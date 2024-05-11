@@ -16,12 +16,9 @@ import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.sql.SqlInsertCmd;
 import net.cf.object.engine.sql.SqlInsertCmdBuilder;
 import net.cf.object.engine.util.OqlUtils;
+import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
+import java.util.*;
 
 /**
  * OQL插入语句解析器
@@ -159,8 +156,8 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
             }
 
             // 给子表添加展开的字段
-            List<OqlExpr> detailFields = objectExpandExpr.getFields();
-            for (OqlExpr detailField : detailFields) {
+            List<SqlExpr> detailFields = objectExpandExpr.getFields();
+            for (SqlExpr detailField : detailFields) {
                 if (!(detailField instanceof OqlFieldExpr)) {
                     throw new FastOqlException("插入的子表中必须指定具体的子表");
                 }
@@ -170,17 +167,18 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
             // 给子表添加masterField字段
             XObject detailObject = objectExpandExpr.getResolvedRefObject();
             XField detailMasterField = detailObject.getObjectRefField(this.masterObject.getName());
-            this.addFieldToStmt(OqlUtils.defaultFieldExpr(detailMasterField));
+            this.addFieldToStmt(OqlUtils.buildFieldExpr(detailMasterField));
 
             // 无论子表的值是[(), (), ...]的常量语法，还是#{detail}或#{detail(d1, d3, ...)}的变量语法，最后都转为统一的变量语法
             SqlInsertStatement.ValuesClause detailValues = new SqlInsertStatement.ValuesClause();
-            for (OqlExpr detailField : detailFields) {
+            for (SqlExpr detailField : detailFields) {
+                assert (detailField instanceof OqlFieldExpr);
                 XField resolvedField = ((OqlFieldExpr) detailField).getResolvedField();
-                detailValues.addValue(OqlUtils.defaultFieldVarExpr(resolvedField));
+                detailValues.addValue(OqlUtils.buildFieldVarExpr(resolvedField));
             }
 
             // 给子表添加masterField字段的值
-            detailValues.addValue(OqlUtils.defaultFieldVarExpr(detailMasterField));
+            detailValues.addValue(OqlUtils.buildFieldVarExpr(detailMasterField));
 
             OqlInsertStatement detailStmt = this.getObjectStmtByObject(detailObject);
             detailStmt.getValuesList().add(detailValues);
@@ -196,34 +194,27 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
      */
     private void processDetailValue(OqlObjectExpandExpr detailRefExpr, int valuesIndex, SqlExpr detailFieldValue) {
         XObject detailObject = detailRefExpr.getResolvedRefObject();
-        List<OqlExpr> detailFields = detailRefExpr.getFields();
+        List<SqlExpr> detailFields = detailRefExpr.getFields();
         int detailFieldSize = detailFields.size();
-        String[] detailFieldNames = new String[detailFieldSize];
+        List<String> detailFieldNames = new ArrayList<>();
         for (int i = 0; i < detailFieldSize; i++) {
             String detailFieldName = ((OqlFieldExpr) detailFields.get(i)).getName();
-            detailFieldNames[i] = detailFieldName;
+            detailFieldNames.add(detailFieldName);
         }
 
         if (detailFieldValue instanceof SqlVariantRefExpr) {
-            String detailVarName = ((SqlVariantRefExpr) detailFieldValue).getVarName();
-            Matcher matcher = VAR_EXPAND_PATTERN.matcher(detailVarName);
-            String[] detailVarPropNames = detailFieldNames;
-            if (matcher.matches()) { // #{detail(d1, d2, ...)} 或 #{detail'(d1', d2', ...)}
-                detailVarName = matcher.group(0);
-                String propNamesStr = matcher.group(1);
-                String[] propNamesAry = propNamesStr.split(",");
-                if (propNamesAry.length != detailFieldSize) {
+            SqlVariantRefExpr varRefExpr = (SqlVariantRefExpr) detailFieldValue;
+            String detailVarName = varRefExpr.getVarName();
+            List<String> detailFieldVarNames = varRefExpr.getSubVarNames();
+            if (CollectionUtils.isEmpty(detailFieldVarNames)) {
+                this.extractDetailParamValues(detailObject, detailVarName, detailFieldNames, valuesIndex);
+            } else {
+                if (detailFieldVarNames.size() != detailFieldSize) {
                     throw new FastOqlException("子表字段的个数与子表字段值的个数不匹配");
                 }
-
-                detailVarPropNames = new String[detailFieldSize];
-                for (int i = 0; i < detailFieldSize; i++) {
-                    detailVarPropNames[i] = propNamesAry[i].trim();
-                }
+                // 从入参中抽取子表的值
+                this.extractDetailParamValues(detailObject, detailVarName, detailFieldVarNames, valuesIndex);
             }
-
-            // 从入参中抽取子表的值
-            this.extractDetailParamValues(detailObject, detailVarName, detailVarPropNames, valuesIndex);
         } else if (detailFieldValue instanceof SqlJsonArrayExpr) {
             SqlJsonArrayExpr jsonArrayExpr = (SqlJsonArrayExpr) detailFieldValue;
             this.extractDetailParamValues(detailObject, jsonArrayExpr, detailFieldNames, valuesIndex);
@@ -237,23 +228,23 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
      *
      * @param detailObject
      * @param detailVarName
-     * @param detailVarPropNames
+     * @param detailVarFieldNames
      * @param valuesIndex
      * @return
      */
-    private void extractDetailParamValues(XObject detailObject, String detailVarName, String[] detailVarPropNames, int valuesIndex) {
+    private void extractDetailParamValues(XObject detailObject, String detailVarName, List<String> detailVarFieldNames, int valuesIndex) {
         List<Map<String, Object>> detailParamMaps = this.getDetailObjectParamMapsByObject(detailObject);
 
         if (!this.isBatch) {
             assert (this.paramMap != null);
-            List<Map<String, Object>> detailParamValues = this.extractDetailParamValues(this.paramMap, detailVarName, detailVarPropNames);
+            List<Map<String, Object>> detailParamValues = this.extractDetailParamValues(this.paramMap, detailVarName, detailVarFieldNames);
             this.completeMasterPrimaryFieldLiteralRecordId(detailObject, 0, valuesIndex, detailParamValues);
             detailParamMaps.addAll(detailParamValues);
         } else {
             assert (this.paramMaps != null);
             int paramIndex = 0;
             for (Map<String, Object> paramMap : this.paramMaps) {
-                List<Map<String, Object>> detailParamValues = this.extractDetailParamValues(paramMap, detailVarName, detailVarPropNames);
+                List<Map<String, Object>> detailParamValues = this.extractDetailParamValues(paramMap, detailVarName, detailVarFieldNames);
                 this.completeMasterPrimaryFieldLiteralRecordId(detailObject, paramIndex, valuesIndex, detailParamValues);
                 for (Map<String, Object> detailParamValue : detailParamValues) {
                     detailParamValue.put(AbstractOqlInfos.PARAM_INDEX, paramIndex);
@@ -270,23 +261,27 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
      *
      * @param paramMap
      * @param detailVarName
-     * @param detailVarPropNames
+     * @param detailVarFieldNames
      * @return
      */
-    private List<Map<String, Object>> extractDetailParamValues(Map<String, Object> paramMap, String detailVarName, String[] detailVarPropNames) {
+    private List<Map<String, Object>> extractDetailParamValues(Map<String, Object> paramMap, String detailVarName, List<String> detailVarFieldNames) {
         Object detailParamValues = paramMap.get(detailVarName);
-        assert (detailParamValues instanceof List);
-        for (Object detailParamValue : (List) detailParamValues) {
-            assert (detailParamValue instanceof Map);
+        if (detailParamValues == null) {
+            return Collections.emptyList();
         }
 
-        int detailVarPropSize = detailVarPropNames.length;
+        assert (detailParamValues instanceof List);
+        int detailVarPropSize = detailVarFieldNames.size();
         List<Map<String, Object>> targetDetailParamValues = new ArrayList<>();
-        for (Map detailParamValue : (List<Map>) detailParamValues) {
+        for (Object detailParamValue : (List) detailParamValues) {
             Map<String, Object> targetDetailParamValue = new HashMap<>();
             for (int i = 0; i < detailVarPropSize; i++) {
-                String detailVarPropName = detailVarPropNames[i];
-                targetDetailParamValue.put(detailVarPropName, detailParamValue.get(detailVarPropName));
+                String detailVarPropName = detailVarFieldNames.get(i);
+                if (detailParamValue instanceof Map) {
+                    targetDetailParamValue.put(detailVarPropName, ((Map) detailParamValue).get(detailVarPropName));
+                } else if (detailParamValue instanceof List) { // 对于子表常量的一种特殊处理
+                    targetDetailParamValue.put(detailVarPropName, ((List<?>) detailParamValue).get(i));
+                }
             }
             targetDetailParamValues.add(targetDetailParamValue);
         }
@@ -302,7 +297,7 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
      * @param detailFieldNames
      * @param valuesIndex
      */
-    private void extractDetailParamValues(XObject detailObject, SqlJsonArrayExpr fieldValue, String[] detailFieldNames, int valuesIndex) {
+    private void extractDetailParamValues(XObject detailObject, SqlJsonArrayExpr fieldValue, List<String> detailFieldNames, int valuesIndex) {
         List<Map<String, Object>> detailParamValues = this.extractDetailParamValues(fieldValue, detailFieldNames, valuesIndex);
         this.completeMasterPrimaryFieldLiteralRecordId(detailObject, 0, valuesIndex, detailParamValues);
 
@@ -329,8 +324,8 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
      * @param valuesIndex
      * @return
      */
-    private List<Map<String, Object>> extractDetailParamValues(SqlJsonArrayExpr fieldValue, String[] detailFieldNames, int valuesIndex) {
-        int detailFieldSize = detailFieldNames.length;
+    private List<Map<String, Object>> extractDetailParamValues(SqlJsonArrayExpr fieldValue, List<String> detailFieldNames, int valuesIndex) {
+        int detailFieldSize = detailFieldNames.size();
         List<Map<String, Object>> detailParamMaps = new ArrayList<>();
         List<SqlExpr> fieldValueItems = fieldValue.getItems();
         for (SqlExpr fieldValueItem : fieldValueItems) {
@@ -341,7 +336,7 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
             for (int i = 0; i < detailFieldSize; i++) {
                 SqlExpr listItem = listItems.get(i);
                 assert (listItem instanceof SqlValuableExpr);
-                detailParamMap.put(detailFieldNames[i], ((SqlValuableExpr) listItem).getValue());
+                detailParamMap.put(detailFieldNames.get(i), ((SqlValuableExpr) listItem).getValue());
             }
             detailParamMap.put(OqlInsertInfos.VALUES_INDEX, valuesIndex);
             detailParamMaps.add(detailParamMap);

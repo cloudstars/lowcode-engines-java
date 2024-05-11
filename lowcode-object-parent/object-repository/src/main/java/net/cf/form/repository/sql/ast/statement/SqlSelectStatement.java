@@ -31,7 +31,7 @@ public class SqlSelectStatement extends AbstractSqlStatementImpl {
     @Override
     protected void accept0(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
-            this.nullSafeAcceptChildren(visitor, this.select);
+            this.nullSafeAcceptChild(visitor, this.select);
         }
 
         visitor.endVisit(this);
