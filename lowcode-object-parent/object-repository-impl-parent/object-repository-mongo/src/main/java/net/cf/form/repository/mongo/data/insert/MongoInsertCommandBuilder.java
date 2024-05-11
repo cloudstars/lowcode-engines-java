@@ -109,15 +109,12 @@ public class MongoInsertCommandBuilder extends AbstractMongoCommandBuilder<SqlIn
             VisitContext visitContext = new VisitContext();
             if (insertItem.getColumn().isAutoGen()) {
                 visitContext.setAutoGen(true);
-                autoGenFields.add(insertItem.getColName());
-
-            } else {
-                Object value = MongoExprVisitor.visit(insertItem.getValueExpr(), globalContext, visitContext);
-                document.put(insertItem.getColName(), value);
             }
+            Object value = MongoExprVisitor.visit(insertItem.getValueExpr(), globalContext, visitContext);
+            document.put(insertItem.getColName(), value);
         }
 
-        if (!StringUtils.isEmpty(this.autoGenColumn)) {
+        if (!StringUtils.isEmpty(this.autoGenColumn) && !"_id".equals(this.autoGenColumn)) {
             autoGenFields.add(this.autoGenColumn);
         }
 
