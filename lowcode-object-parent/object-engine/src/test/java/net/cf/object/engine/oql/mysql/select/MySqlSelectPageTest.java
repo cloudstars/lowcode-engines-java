@@ -1,7 +1,7 @@
-package net.cf.object.engine.oql.mysql.update.detail;
+package net.cf.object.engine.oql.mysql.select;
 
 import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
-import net.cf.object.engine.oql.testcase.update.detail.AbstractUpdateTravelDetailRepoTest;
+import net.cf.object.engine.oql.testcase.select.AbstractSelectPageRepoTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,18 +11,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("mysql")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ObjectEngineOqlMySqlTestApplication.class)
-public class MySqlUpdateTravelDetailOqlTest extends AbstractUpdateTravelDetailRepoTest {
+public class MySqlSelectPageTest extends AbstractSelectPageRepoTest {
 
     @Test
     @Override
-    public void testUpdateTravelAndTripById() {
-        super.testUpdateTravelAndTripById();
-    }
-
-    @Test
-    @Override
-    public void testUpdateTravelAndTripByIdVars() {
-        super.testUpdateTravelAndTripByIdVars();
+    public void testSelectStaffPageList() {
+        super.testSelectStaffPageList();
     }
 
 }

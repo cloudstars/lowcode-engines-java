@@ -65,11 +65,19 @@ public final class SqlCmdExecutor {
         SqlSelectStatement selfSqlStmt = selectCmd.getStatement();
         this.addLimitInfo(selfSqlStmt);
         Map<String, Object> resultMap = this.repository.selectOne(selfSqlStmt, selectCmd.getParamMap());
+        // TODO 查不对数据应该Map应该返回null，List应该返回空List
         if (resultMap != null) {
-            DefaultResultReducer resultReducer = new DefaultResultReducer(selectCmd.getFieldMappings());
-            resultMap = this.convertResultMap(resultReducer, resultMap);
+            List<FieldMapping> fieldMappings = selectCmd.getFieldMappings();
+            if (!CollectionUtils.isEmpty(fieldMappings)) {
+                DefaultResultReducer resultReducer = new DefaultResultReducer(selectCmd.getFieldMappings());
+                resultMap = this.convertResultMap(resultReducer, resultMap);
+            }
             Map<String, Object> directResultMap = selectCmd.getDirectResultMap();
-            if (directResultMap != null) {
+            if (directResultMap != null/* && resultMap != null*/) {
+                // 如果所有的字段都是可以直接返回的话，需要忽略返回的值
+                if (selectCmd.isAllColumnsDirectReturned()) {
+                    resultMap.clear();
+                }
                 resultMap.putAll(directResultMap);
             }
             LOGGER.info("成功查询到一条记录！");
@@ -93,11 +101,19 @@ public final class SqlCmdExecutor {
         this.addLimitInfo(selfSqlStmt); // 添加条数限制
         List<Map<String, Object>> resultMapList = this.repository.selectList(selfSqlStmt, selectCmd.getParamMap());
         if (resultMapList != null && resultMapList.size() > 0) {
-            DefaultResultReducer resultReducer = new DefaultResultReducer(selectCmd.getFieldMappings());
-            resultMapList = this.convertResultMapList(resultReducer, resultMapList);
+            List<FieldMapping> fieldMappings = selectCmd.getFieldMappings();
+            if (!CollectionUtils.isEmpty(fieldMappings)) {
+                DefaultResultReducer resultReducer = new DefaultResultReducer(selectCmd.getFieldMappings());
+                resultMapList = this.convertResultMapList(resultReducer, resultMapList);
+            }
             Map<String, Object> directResultMap = selectCmd.getDirectResultMap();
             if (directResultMap != null) {
+                boolean isAllColumnsDirectReturned = selectCmd.isAllColumnsDirectReturned();
                 for (Map<String, Object> resultMap : resultMapList) {
+                    // 如果所有的字段都是可以直接返回的话，需要忽略返回的值
+                    if (isAllColumnsDirectReturned) {
+                        resultMap.clear();
+                    }
                     resultMap.putAll(directResultMap);
                 }
             }

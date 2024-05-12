@@ -12,7 +12,7 @@ public class PageResult<T> {
     /**
      * 总条数
      */
-    private int total;
+    private long total;
 
     /**
      * 当前页的数据
@@ -22,16 +22,16 @@ public class PageResult<T> {
     public PageResult() {
     }
 
-    public PageResult(int total, List<T> list) {
+    public PageResult(long total, List<T> list) {
         this.total = total;
         this.list = list;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(long total) {
         this.total = total;
     }
 

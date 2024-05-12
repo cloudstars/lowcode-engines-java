@@ -20,4 +20,5 @@ public class MongoSelectExpenseLookupTravelOneRefWhereOqlTest extends AbstractSe
     public void testSelectTravelLookupTravelByTravelName() {
         super.testSelectTravelLookupTravelByTravelName();
     }
+
 }

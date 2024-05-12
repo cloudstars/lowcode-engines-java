@@ -50,7 +50,7 @@ public class SqlJsonArrayExpr extends AbstractSqlExprImpl implements SqlValuable
     }
 
     @Override
-    public Object getValue() {
+    public List<Object> getValue() {
         List<Object> value = new ArrayList<>();
         for (SqlExpr item : this.items) {
             if (item instanceof SqlValuableExpr) {

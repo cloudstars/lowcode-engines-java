@@ -38,11 +38,6 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
     private SqlSelectStatement sqlStmt;
 
     /**
-     * 是否通过子表字段直接查询的（比如：select detailField from masterObject
-     */
-    private boolean isDetailFieldDirectQuery;
-
-    /**
      * 查询字段的序号（如果没有给非模型字段添加as时，为默认添加as _n, n从0开始）
      */
     private int selectItemIndex = 0;
@@ -56,6 +51,11 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
      * 在查询的字段中直接可以输出的关联表的值
      */
     private final Map<String, Object> directResultMap = new HashMap<>();
+
+    /**
+     * 是否所有的列都是直接计算的
+     */
+    private boolean isAllColumnsDirectReturned = false;
 
     public SqlSelectCmdBuilder(OqlSelectStatement stmt, Map<String, Object> paramMap) {
         this(stmt, paramMap, false);
@@ -90,13 +90,6 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
         SqlSelect sqlSelect = new SqlSelect();
         this.sqlStmt = new SqlSelectStatement(sqlSelect);
         List<OqlSelectItem> selectItems = select.getSelectItems();
-        if (selectItems.size() == 0) {
-            OqlSelectItem selectItem = new OqlSelectItem();
-            selectItem.setExpr(OqlUtils.buildFieldExpr(this.resolvedObject.getPrimaryField()));
-            selectItems = Arrays.asList(selectItem);
-            // 特列处理，如果只查询了子表字段，默认会返回子表的ID数组
-            this.isDetailFieldDirectQuery = true;
-        }
         for (OqlSelectItem selectItem : selectItems) {
             SqlExpr selectItemExpr = selectItem.getExpr();
             String alias = selectItem.getAlias();
@@ -121,6 +114,7 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
         if (selectItems.size() == this.directResultMap.size()) {
             String alias = OqlUtils.getSelectItemIndexAlias(this.selectItemIndex++);
             sqlStmt.getSelect().addSelectItem(new SqlSelectItem(new SqlIntegerExpr(1), alias));
+            this.isAllColumnsDirectReturned = true;
         }
 
         // 解析表源
@@ -228,15 +222,16 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
     private void parseExpr(SqlExpr expr, String alias) {
         SqlExpr exprX = this.buildSqlExpr(expr);
         SqlSelect select = this.sqlStmt.getSelect();
-        String itemAlias = OqlUtils.getSelectItemIndexAlias(this.selectItemIndex++);
+        String sqlAlias = OqlUtils.getSelectItemIndexAlias(this.selectItemIndex++);
         if (expr instanceof SqlValuableExpr) {
             // 可以直接返回的值
-            this.directResultMap.put(itemAlias, ((SqlValuableExpr) expr).getValue());
+            String name = alias != null ? alias : sqlAlias;
+            this.directResultMap.put(name, ((SqlValuableExpr) expr).getValue());
         } else {
-            select.addSelectItem(new SqlSelectItem(exprX, itemAlias));
+            select.addSelectItem(new SqlSelectItem(exprX, sqlAlias));
             String columnName = OqlUtils.expr2String(expr);
             String name = alias != null ? alias : columnName;
-            FieldMapping fieldMapping = new FieldMapping(name, itemAlias);
+            FieldMapping fieldMapping = new FieldMapping(name, sqlAlias);
             fieldMappings.add(fieldMapping);
         }
     }
@@ -290,8 +285,8 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
         selectCmd.setStatement(this.sqlStmt);
         selectCmd.setParamMap(this.paramMap);
         selectCmd.setFieldMappings(this.fieldMappings);
-        selectCmd.setDetailFieldDirectQuery(isDetailFieldDirectQuery);
         selectCmd.setDirectResultMap(this.directResultMap);
+        selectCmd.setAllColumnsDirectReturned(this.isAllColumnsDirectReturned);
         return selectCmd;
     }
 

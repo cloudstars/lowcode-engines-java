@@ -80,18 +80,22 @@ public class DefaultResultReducer implements ResultReducer {
                 // 列名称拼上前缀
                 subFieldValue = value.get(subFieldColumnName);
             }
-            // 作数据转换（特殊情况的处理，按需）
-            //subFieldValue = DataConvert.convert(subFieldValue, subField.getValueType());
             targetMap.put(subFieldName, subFieldValue);
         }
 
-        if (!CollectionUtils.isEmpty(subFields) && allSubFieldValueIsNull(targetMap)) {
-            // 如果一个字段所有subField的值都为null，将此字段的值设为null
+        // 如果一个字段所有subField的值都为null，将此字段的值设为null
+        if (!CollectionUtils.isEmpty(subFields) && this.allSubFieldValueIsNull(targetMap)) {
             return null;
         }
         return targetMap;
     }
 
+    /**
+     * 判断一个对象的所有属性是否均为null
+     *
+     * @param subFieldValue
+     * @return
+     */
     private boolean allSubFieldValueIsNull(Map<String, Object> subFieldValue) {
         if (!CollectionUtils.isEmpty(subFieldValue)) {
             for (Object value : subFieldValue.values()) {

@@ -17,7 +17,7 @@ public abstract class AbstractInsertSelectRepoTest extends AbstractOqlRepoTest i
 
     @Override
     protected String[] getDataSetFiles() {
-        return new String[]{"dataset/Travel.json", "dataset/TravelTrip.json"};
+        return new String[]{"dataset/Travel.json", "dataset/TravelTrip.json", "dataset/Hobby.json"};
     }
 
     @Override

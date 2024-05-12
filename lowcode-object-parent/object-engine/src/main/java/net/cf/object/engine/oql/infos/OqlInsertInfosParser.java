@@ -169,7 +169,7 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
             XField detailMasterField = detailObject.getObjectRefField(this.masterObject.getName());
             this.addFieldToStmt(OqlUtils.buildFieldExpr(detailMasterField));
 
-            // 无论子表的值是[(), (), ...]的常量语法，还是#{detail}或#{detail(d1, d3, ...)}的变量语法，最后都转为统一的变量语法
+            // 无论子表的值是[{}, {}, ...]的常量语法，还是#{detail}或#{detail(d1, d3, ...)}的变量语法，最后都转为统一的变量语法
             SqlInsertStatement.ValuesClause detailValues = new SqlInsertStatement.ValuesClause();
             for (SqlExpr detailField : detailFields) {
                 assert (detailField instanceof OqlFieldExpr);
@@ -207,13 +207,13 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
             String detailVarName = varRefExpr.getVarName();
             List<String> detailFieldVarNames = varRefExpr.getSubVarNames();
             if (CollectionUtils.isEmpty(detailFieldVarNames)) {
-                this.extractDetailParamValues(detailObject, detailVarName, detailFieldNames, valuesIndex);
+                this.extractDetailParamValues(detailObject, detailVarName, detailFieldNames, detailFieldNames, valuesIndex);
             } else {
                 if (detailFieldVarNames.size() != detailFieldSize) {
                     throw new FastOqlException("子表字段的个数与子表字段值的个数不匹配");
                 }
                 // 从入参中抽取子表的值
-                this.extractDetailParamValues(detailObject, detailVarName, detailFieldVarNames, valuesIndex);
+                this.extractDetailParamValues(detailObject, detailVarName, detailFieldNames, detailFieldVarNames, valuesIndex);
             }
         } else if (detailFieldValue instanceof SqlJsonArrayExpr) {
             SqlJsonArrayExpr jsonArrayExpr = (SqlJsonArrayExpr) detailFieldValue;
@@ -228,23 +228,34 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
      *
      * @param detailObject
      * @param detailVarName
-     * @param detailVarFieldNames
+     * @param detailFieldVarNames
      * @param valuesIndex
      * @return
      */
-    private void extractDetailParamValues(XObject detailObject, String detailVarName, List<String> detailVarFieldNames, int valuesIndex) {
+    private void extractDetailParamValues(XObject detailObject, String detailVarName, List<String> detailFieldNames, List<String> detailFieldVarNames, int valuesIndex) {
+        assert (detailFieldNames.size() == detailFieldVarNames.size());
         List<Map<String, Object>> detailParamMaps = this.getDetailObjectParamMapsByObject(detailObject);
 
         if (!this.isBatch) {
             assert (this.paramMap != null);
-            List<Map<String, Object>> detailParamValues = this.extractDetailParamValues(this.paramMap, detailVarName, detailVarFieldNames);
+            Object detailParamObjectValue = this.paramMap.get(detailVarName);
+            if (detailParamObjectValue instanceof List) {
+                throw new FastOqlException("子表字段的参数值必须是一个列表");
+            }
+
+            List<Map<String, Object>> detailParamValues = this.extractDetailParamValues((List<Map<String, Object>>) detailParamObjectValue, detailFieldNames, detailFieldVarNames);
             this.completeMasterPrimaryFieldLiteralRecordId(detailObject, 0, valuesIndex, detailParamValues);
             detailParamMaps.addAll(detailParamValues);
         } else {
             assert (this.paramMaps != null);
             int paramIndex = 0;
             for (Map<String, Object> paramMap : this.paramMaps) {
-                List<Map<String, Object>> detailParamValues = this.extractDetailParamValues(paramMap, detailVarName, detailVarFieldNames);
+                Object detailParamObjectValue = paramMap.get(detailVarName);
+                if (!(detailParamObjectValue instanceof List)) {
+                    throw new FastOqlException("子表字段的参数值必须是一个列表");
+                }
+
+                List<Map<String, Object>> detailParamValues = this.extractDetailParamValues((List<Map<String, Object>>) detailParamObjectValue, detailFieldNames, detailFieldVarNames);
                 this.completeMasterPrimaryFieldLiteralRecordId(detailObject, paramIndex, valuesIndex, detailParamValues);
                 for (Map<String, Object> detailParamValue : detailParamValues) {
                     detailParamValue.put(AbstractOqlInfos.PARAM_INDEX, paramIndex);
@@ -259,29 +270,25 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
     /**
      * 从paramMap中获取变量detailVarName的列表值，并按照detailFieldNames的字段名依次从detailVarNames变量名中取值形成一个列表
      *
-     * @param paramMap
-     * @param detailVarName
-     * @param detailVarFieldNames
+     * @param detailParamMaps
+     * @param detailFieldNames
+     * @param detailFieldVarNames
      * @return
      */
-    private List<Map<String, Object>> extractDetailParamValues(Map<String, Object> paramMap, String detailVarName, List<String> detailVarFieldNames) {
-        Object detailParamValues = paramMap.get(detailVarName);
-        if (detailParamValues == null) {
-            return Collections.emptyList();
-        }
-
-        assert (detailParamValues instanceof List);
-        int detailVarPropSize = detailVarFieldNames.size();
+    private List<Map<String, Object>> extractDetailParamValues(List<Map<String, Object>> detailParamMaps, List<String> detailFieldNames, List<String> detailFieldVarNames) {
+        int detailVarPropSize = detailFieldVarNames.size();
         List<Map<String, Object>> targetDetailParamValues = new ArrayList<>();
-        for (Object detailParamValue : (List) detailParamValues) {
+        for (Object detailParamMap : detailParamMaps) {
             Map<String, Object> targetDetailParamValue = new HashMap<>();
             for (int i = 0; i < detailVarPropSize; i++) {
-                String detailVarPropName = detailVarFieldNames.get(i);
-                if (detailParamValue instanceof Map) {
-                    targetDetailParamValue.put(detailVarPropName, ((Map) detailParamValue).get(detailVarPropName));
-                } else if (detailParamValue instanceof List) { // 对于子表常量的一种特殊处理
-                    targetDetailParamValue.put(detailVarPropName, ((List<?>) detailParamValue).get(i));
-                }
+                String detailFieldName = detailFieldNames.get(i);
+                String detailFieldVarName = detailFieldVarNames.get(i);
+                //if (detailParamValue instanceof Map) {
+                    targetDetailParamValue.put(detailFieldName, ((Map) detailParamMap).get(detailFieldVarName));
+                //} else if (detailParamValue instanceof List) { // 对于子表常量的一种特殊处理
+                //    throw new RuntimeException("子表常量请使用JsonArrayExpr");
+                    //targetDetailParamValue.put(detailVarPropName, ((List<?>) detailParamValue).get(i));
+                //}
             }
             targetDetailParamValues.add(targetDetailParamValue);
         }

@@ -213,7 +213,7 @@ public class OqlEngineImpl implements OqlEngine {
         selectCmd.setParamMap(paramMap);
 
         Map<String, Object> countResultMap = this.executor.selectOne(selectCmd);
-        int total = (Integer) countResultMap.get("total");
+        long total = (Long) countResultMap.values().stream().findFirst().orElse(0);
 
         // 添加分页信息后查询当前页数据
         this.addPageInfo(selfSqlStmt, pageRequest);
@@ -246,7 +246,7 @@ public class OqlEngineImpl implements OqlEngine {
         SqlSelect countSelect = new SqlSelect();
         SqlAggregateExpr countAgExpr = new SqlAggregateExpr("COUNT");
         countAgExpr.addArgument(new SqlIntegerExpr(1));
-        countSelect.addSelectItem(new SqlSelectItem(countAgExpr, "count"));
+        countSelect.addSelectItem(new SqlSelectItem(countAgExpr));
         countSelect.setFrom(stmt.getSelect().getFrom());
         countSelect.setWhere(stmt.getSelect().getWhere());
         SqlSelectStatement countStmt = new SqlSelectStatement(countSelect);
@@ -524,6 +524,7 @@ public class OqlEngineImpl implements OqlEngine {
         List<SqlExpr> valueExprs = this.parseInsertValues(stmt.getFields(), query.getSelectItems());
 
         // 先查询出来
+
         OqlSelectStatement selectStmt = new OqlSelectStatement(query);
         List<Map<String, Object>> queryResultList = this.queryList(selectStmt);
         if (queryResultList.size() == 0) {

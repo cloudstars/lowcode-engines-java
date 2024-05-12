@@ -28,6 +28,17 @@ public class UpdateTravelDetailStmtTest extends AbstractOqlTest implements Updat
 
     @Test
     @Override
+    public void testUpdateTravelAndTripById() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_VARS);
+        assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
+
+        // 断言解析出一条OQL语句，并且OQL转句输出OQL文本是符合预期的
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
+    }
+
+    @Test
+    @Override
     public void testUpdateTravelAndTripByIdVars() {
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_VARS);
         assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);

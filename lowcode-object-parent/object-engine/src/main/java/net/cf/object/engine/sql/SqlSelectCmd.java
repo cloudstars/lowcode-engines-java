@@ -39,9 +39,14 @@ public class SqlSelectCmd extends AbstractSqlCmd<SqlSelectStatement> {
     private boolean isDetailFieldDirectQuery;
 
     /**
-     * 可以直接返回的结果，如select [{}, {}] as detailRefField from masterObject where ...，其中[{}, {}]是可以直接作为子表返回的
+     * 可以直接返回的结果（即可以计算出来一个值的表达式）
      */
     private Map<String, Object> directResultMap;
+
+    /**
+     * 是否所有的参数
+     */
+    private boolean isAllColumnsDirectReturned;
 
     public Map<String, Object> getParamMap() {
         return paramMap;
@@ -94,4 +99,13 @@ public class SqlSelectCmd extends AbstractSqlCmd<SqlSelectStatement> {
     public void setDirectResultMap(Map<String, Object> directResultMap) {
         this.directResultMap = directResultMap;
     }
+
+    public boolean isAllColumnsDirectReturned() {
+        return isAllColumnsDirectReturned;
+    }
+
+    public void setAllColumnsDirectReturned(boolean allColumnsDirectReturned) {
+        isAllColumnsDirectReturned = allColumnsDirectReturned;
+    }
 }
+

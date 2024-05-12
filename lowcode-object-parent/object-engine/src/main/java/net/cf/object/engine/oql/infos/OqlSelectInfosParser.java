@@ -102,9 +102,16 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
             }
 
             XObjectRefField objectRefField = this.masterObject.getObjectRefField(thisObject.getName());
+            boolean isDetailFieldDirectQuery = false;
             SqlExpr whereExpr;
             boolean refIsBatch = true;
             if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
+                // select detailField from master的detailField只返回子表的ID数组 [xx,yy,...]
+                if (thisStmt.getSelect().getSelectItems().size() == 0) {
+                    isDetailFieldDirectQuery = true;
+                    this.addFieldToStmt(thisObject.getPrimaryField());
+                }
+
                 // 当存在子表时，默认查询主表的主键（用于主表归集子表的数据）
                 this.addFieldToStmt(this.masterObject.getPrimaryField());
 
@@ -137,6 +144,7 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
             SqlSelectCmd selectCmd = builder.build();
             selectCmd.setObjectRefFieldName(objectRefField.getName());
             selectCmd.setObjectRefFieldAlias(this.objectAliasMap.get(thisObject));
+            selectCmd.setDetailFieldDirectQuery(isDetailFieldDirectQuery);
             if (objectRefField.getRefType() == ObjectRefType.DETAIL) {
                 selectInfos.addDetailSelectInfo(selectCmd);
             } else {

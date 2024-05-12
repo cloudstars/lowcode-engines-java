@@ -3,6 +3,7 @@ package net.cf.object.engine.oql.infos;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
@@ -225,7 +226,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
     }
 
     /**
-     * 处理子表, detail(f1, f2, f3) = [(), (), ...] 或 detail(f1, f2, f3) = #{detail'}
+     * 处理子表, detail(f1, f2, f3) = [{}, {}, ...] 或 detail(f1, f2, f3) = #{detail'} 或 detail(f1, f2, f2) = #{detail'(f1', f2', f3')}
      *
      * @param detailRefFieldExpr
      * @param detailRefFieldValue
@@ -235,7 +236,8 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         XObject detailObject = detailRefFieldExpr.getResolvedRefObject();
         String masterObjectName = this.masterObject.getName();
         List<SqlExpr> detailExprs = detailRefFieldExpr.getFields();
-        if (detailExprs.size() == 0) {
+        int detailFieldSize = detailExprs.size();
+        if (detailFieldSize == 0) {
             throw new FastOqlException("子表字段未指定");
         }
 
@@ -243,6 +245,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         boolean hasPrimaryField = false;
         boolean hasMasterField = false;
         for (SqlExpr detailExpr : detailExprs) {
+            assert (detailExpr instanceof OqlFieldExpr);
             if (detailExpr instanceof OqlFieldExpr) {
                 OqlFieldExpr detailFieldExpr = (OqlFieldExpr) detailExpr;
                 XField field = detailFieldExpr.getResolvedField();
@@ -262,21 +265,71 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         }
 
         if (detailRefFieldValue instanceof SqlVariantRefExpr) { // detail(f1, f2, f3) = #{detail'}
-            String varName = ((SqlVariantRefExpr) detailRefFieldValue).getVarName();
+            // TODO // detail(f1, f2, f3) = #{detail'(f1', f2', f3')}不支持
+            SqlVariantRefExpr varRefExpr = (SqlVariantRefExpr) detailRefFieldValue;
+            String varName = varRefExpr.getVarName();
+            Map<String, String> paramNamesMap = null;
+            List<String> subVarNames = varRefExpr.getSubVarNames();
+            if (!CollectionUtils.isEmpty(subVarNames)) {
+                if (subVarNames.size() != detailFieldSize) {
+                    throw new FastOqlException("子表字段的字段数据与更新的字段数量不一致");
+                }
+
+                paramNamesMap = new HashMap<>();
+                for (int i = 0; i < detailFieldSize; i++) {
+                    String detailFieldName = ((OqlFieldExpr) detailExprs).getName();
+                    paramNamesMap.put(detailFieldName, varName);
+                }
+            }
+
             if (!isBatch) {
                 List<Map<String, Object>> detailParamMaps = (List<Map<String, Object>>) this.paramMap.get(varName);
+                if (paramNamesMap != null) {
+                    detailParamMaps = this.convertDetailParamMapsWithKeys(detailParamMaps, paramNamesMap);
+                }
                 this.buildDetailCudParamMaps(detailObject, this.paramMap, detailParamMaps);
             } else {
                 for (Map<String, Object> paramMap : this.paramMaps) {
                     List<Map<String, Object>> detailParamMaps = (List<Map<String, Object>>) paramMap.get(varName);
+                    if (paramNamesMap != null) {
+                        detailParamMaps = this.convertDetailParamMapsWithKeys(detailParamMaps, paramNamesMap);
+                    }
                     this.buildDetailCudParamMaps(detailObject, paramMap, detailParamMaps);
                 }
             }
-        } else { // detail(f1, f2, f3) = [(), (), ...]
-            throw new RuntimeException("对不起，暂未实现");
+        } else if (detailRefFieldValue instanceof SqlJsonArrayExpr){ // detail(f1, f2, f3) = [{}, {}, ...]
+            List<Object> values = ((SqlJsonArrayExpr) detailRefFieldValue).getValue();
+            List<Map<String, Object>> detailParamMaps = new ArrayList<>();
+            for (Object value : values) {
+                detailParamMaps.add((Map<String, Object>) value);
+            }
+            if (!isBatch) {
+                this.buildDetailCudParamMaps(detailObject, this.paramMap, detailParamMaps);
+            } else {
+                throw new FastOqlException("子表不支持用JsonArray批量更新");
+            }
         }
 
         this.buildDetailParamStmts(detailObject, detailRefFieldExpr);
+    }
+
+    /**
+     * 转换子表的参数值，将变量名KEY转换为字段名KEY
+     *
+     * @param paramMaps
+     * @param namesMap 字段名KEY -> 变量名KEY
+     */
+    private List<Map<String, Object>> convertDetailParamMapsWithKeys(List<Map<String, Object>> paramMaps, Map<String, String> namesMap) {
+        List<Map<String, Object>> targetParamMaps = new ArrayList<>();
+        for (Map<String, Object> paramMap : paramMaps) {
+            Map<String, Object> targetParamMap = new HashMap<>();
+            for (Map.Entry<String, String> namesEntry : namesMap.entrySet()) {
+                targetParamMap.put(namesEntry.getKey(), paramMap.get(namesEntry.getValue()));
+            }
+            targetParamMaps.add(targetParamMap);
+        }
+
+        return targetParamMaps;
     }
 
     /**
@@ -421,7 +474,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         int detailFieldSize = detailExprs.size();
         for (int i = 0; i < detailFieldSize; i++) {
             SqlExpr detailExpr = detailExprs.get(i);
-            assert (detailObject instanceof OqlFieldExpr);
+            assert (detailExpr instanceof OqlFieldExpr);
             OqlFieldExpr detailFieldExpr = (OqlFieldExpr) detailExpr;
             XField detailResolvedField = detailFieldExpr.getResolvedField();
             // 更新语句的更新字段中，不需要子表的主键和主表引用字段
@@ -451,7 +504,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         SqlInsertStatement.ValuesClause valuesClause = new SqlInsertStatement.ValuesClause();
         for (int i = 0; i < detailFieldSize; i++) {
             SqlExpr detailExpr = detailExprs.get(i);
-            assert (detailObject instanceof OqlFieldExpr);
+            assert (detailExpr instanceof OqlFieldExpr);
             OqlFieldExpr detailFieldExpr = (OqlFieldExpr) detailExpr;
             XField detailResolvedField = detailFieldExpr.getResolvedField();
             if (detailResolvedField == primaryField && primaryField.isAutoGen()) {

@@ -3,6 +3,11 @@
   "name": "UpdateTravelSelfAndTrip",
   "oqls": [
     {
+      "desc": "更新出差记以及行程（常量）",
+      "name": "UpdateTravelAndTripById",
+      "oql": "update Travel set applyName = '新的APPLY_NAME', trips(tripId, travelApplyId, fromAddr, toAddr) = [{\"tripId\": \"更新的记录，详见代码中设置\", \"travelApplyId\": \"434743DSS-FEL3232-323KLFJFDS-323FDSD\", \"fromAddr\": \"苏州\", \"toAddr\": \"天津\", \"creator\": {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}, \"modifier\": {\"name\": \"测试YYY\", \"key\": \"TEST_YYY\"}}, {\"tripId\": null, \"travelApplyId\": null, \"fromAddr\": \"连云港\", \"toAddr\": \"济南\", \"creator\": {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}, \"modifier\": {\"name\": \"测试YYY\", \"key\": \"TEST_YYY\"}}] where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
       "desc": "更新出差记以及行程（带变量）",
       "name": "UpdateTravelAndTripByIdVars",
       "oql": "update Travel set applyName = #{applyName}, trips(tripId, travelApplyId, fromAddr, toAddr) = #{trips} where applyId = #{applyId}",

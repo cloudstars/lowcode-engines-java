@@ -82,11 +82,11 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
         Matcher matcher = VAR_EXPAND_PATTERN.matcher(name);
         if (matcher.matches()) {
             this.varName = matcher.group(1);
-            int groupCount = matcher.groupCount();
-            if (groupCount == 3) { // #{var(sub1, sub2, ...)}
+            String subVarNamesStr = matcher.group(2);
+            if (subVarNamesStr != null) { // #{var(sub1, sub2, ...)}
                 this.subVarNames = new ArrayList();
-                String subVarNamesStr = matcher.group(2);
-                String[] subVarNamesArr = subVarNamesStr.split(",");
+                int l = subVarNamesStr.length();
+                String[] subVarNamesArr = subVarNamesStr.substring(1, l - 1).split(",");
                 for (int i = 0; i < subVarNamesArr.length; i++) {
                     this.subVarNames.add(subVarNamesArr[i].trim());
                 }

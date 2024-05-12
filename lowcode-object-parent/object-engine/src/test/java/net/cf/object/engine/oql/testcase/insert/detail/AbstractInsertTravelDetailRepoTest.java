@@ -87,6 +87,27 @@ public abstract class AbstractInsertTravelDetailRepoTest extends AbstractOqlRepo
         }
     }
 
+    @Override
+    public void testBatchInsertTravelAndTripExpandedVars() {
+        {
+            OqlInfo oqlInfo = this.oqlInfos.get(OQL_BATCH_INSERT_TRAVEL_AND_TRIPS_EXPAND_VARS);
+            OqlInsertStatement oqlStmt = OqlStatementUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
+            int[] effectedRowsArray = this.engine.createList(oqlStmt, oqlInfo.paramMaps);
+            assert (effectedRowsArray.length == 2);
+        }
+
+        {
+            // 重新查出来作断言
+            String selectOql = "select *, trips.* from Travel";
+            OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
+            Map<String, Object> paramMap = new HashMap<>();
+            List<Map<String, Object>> data = this.engine.queryList(selectOqlStmt, paramMap);
+            assert (data.size() == 4);
+            assert (((List) data.get(2).get("trips")).size() == 2);
+            assert (((List) data.get(3).get("trips")).size() == 3);
+        }
+    }
+
     public void testBatchInsertMultiTravelAndTripVars() {
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_BATCH_INSERT_MULTI_TRAVEL_AND_TRIPS_VARS);

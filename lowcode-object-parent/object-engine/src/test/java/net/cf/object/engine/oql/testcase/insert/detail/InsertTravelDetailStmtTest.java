@@ -88,6 +88,19 @@ public class InsertTravelDetailStmtTest extends AbstractOqlTest implements Inser
         assert (detailSqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(detailSqlStmt.toString(), oqlInfo.detailSql));
     }
 
+
+    @Test
+    @Override
+    public void testBatchInsertTravelAndTripExpandedVars() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_BATCH_INSERT_TRAVEL_AND_TRIPS_EXPAND_VARS);
+        assert (oqlInfo != null && oqlInfo.oql != null && oqlInfo.sql != null);
+
+        // 断言解析出一条OQL语句，并且OQL语句输出OQL文本是符合预期的
+        OqlInsertStatement oqlStmt = OqlStatementUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
+        assert (oqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(oqlStmt.toString(), oqlInfo.oql));
+
+    }
+
     @Test
     @Override
     public void testBatchInsertMultiTravelAndTripVars() {

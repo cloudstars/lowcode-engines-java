@@ -10,7 +10,7 @@
     {
       "desc": "插入出差行程表From出差行程表",
       "name": "InsertTravelTripSelectFromTravelTripLiteral",
-      "oql": "insert into Travel(applyId, applyName, trips(fromAddr, toAddr, creator)) select 'UNIT_TEST001', '单元测试001的名称', [('杭州', '上海', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}), ('上海', '杭州', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"})] from Travel limit 1"
+      "oql": "insert into Travel(applyId, applyName, trips(fromAddr, toAddr, creator)) select 'UNIT_TEST001', '单元测试001的名称', [{\"fromAddr\": \"杭州\", \"toAddr\": \"上海\", \"creator\": {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}}, {\"fromAddr\": \"上海\", \"toAddr\": \"北京\", \"creator\": {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}}] from Travel limit 1"
     },
     {
       "desc": "插入出差行程表From出差行程表（带子表）",

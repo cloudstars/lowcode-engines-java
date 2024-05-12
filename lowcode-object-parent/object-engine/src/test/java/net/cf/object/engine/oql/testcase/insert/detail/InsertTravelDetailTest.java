@@ -15,6 +15,8 @@ public interface InsertTravelDetailTest {
 
     String OQL_BATCH_INSERT_TRAVEL_AND_TRIPS_VARS = "BatchInsertTravelAndTripVars";
 
+    String OQL_BATCH_INSERT_TRAVEL_AND_TRIPS_EXPAND_VARS = "BatchInsertTravelAndTripExpandedVars";
+
     String OQL_BATCH_INSERT_MULTI_TRAVEL_AND_TRIPS_VARS = "BatchInsertMultiTravelAndTripVars";
 
     void testInsertTravelAndTrip();
@@ -22,6 +24,8 @@ public interface InsertTravelDetailTest {
     void testInsertMultiTravelAndTrip();
 
     void testBatchInsertTravelAndTripVars();
+
+    void testBatchInsertTravelAndTripExpandedVars();
 
     void testBatchInsertMultiTravelAndTripVars();
 
