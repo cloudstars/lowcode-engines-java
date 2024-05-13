@@ -184,7 +184,7 @@ public final class SqlUtils {
                     if (paramValue instanceof String) {
                         paramSource.addValue(varName, paramValue, Types.CHAR);
                     } else {
-                        paramSource.addValue(varName, JSON.toJSONString(paramValue) , Types.CHAR);
+                        paramSource.addValue(varName, JSON.toJSONString(paramValue), Types.CHAR);
                     }
                 } else {
                     paramSource.addValue(varName, null, Types.CHAR);

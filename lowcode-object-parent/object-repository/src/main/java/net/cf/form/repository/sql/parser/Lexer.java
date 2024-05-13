@@ -352,10 +352,10 @@ public class Lexer {
         if (this.ch == '{') {
             do {
                 this.scanChar(true);
-                if (this.ch == '(') {
+                if (this.ch == '(') { // #{var(subVar1, subVar2, ...)}
                     do {
                         this.scanChar(true);
-                    } while(CharTypes.isIdentifierChar(this.ch) || this.ch == '.' || this.ch == ',' || this.ch == ' ');
+                    } while (CharTypes.isIdentifierChar(this.ch) || this.ch == ',' || this.ch == ' ');
 
                     if (this.ch != ')') {
                         throw new SqlParseException("illegal variable with sub variable, unterminated with ')'. " + this.info());

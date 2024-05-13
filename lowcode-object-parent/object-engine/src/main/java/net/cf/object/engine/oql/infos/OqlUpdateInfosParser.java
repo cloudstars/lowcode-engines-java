@@ -351,7 +351,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
             // 判断如果有masterFieldId，则为存量数据，否则为新数据
             Object detailMasterRecordId = detailParamMap.get(masterRefFieldName);
             if (detailMasterRecordId != null) { // 存量数据需要更新
-                if(!detailMasterRecordId.equals((masterRecordId))) {
+                if (!detailMasterRecordId.equals((masterRecordId))) {
                     throw new FastOqlException("子表中的主表记录ID的值与主表的记不匹配");
                 }
 

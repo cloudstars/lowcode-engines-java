@@ -20,7 +20,7 @@ public class SqlVariantRefExpr extends AbstractSqlExprImpl implements SqlName {
     /**
      * 变量含子变量（即变量展开）的匹配模式
      */
-    protected final Pattern VAR_EXPAND_PATTERN = Pattern.compile("^#\\{([\\w\\d\\._]+)(\\(.+\\))?\\}$");
+    private final static Pattern VAR_EXPAND_PATTERN = Pattern.compile("^#\\{([\\w\\d\\._]+)(\\(.+\\))?\\}$");
 
     /**
      * 变量引用的名称，如#{id}、${id}

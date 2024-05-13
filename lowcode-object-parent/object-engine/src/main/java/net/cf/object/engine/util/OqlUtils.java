@@ -30,7 +30,7 @@ public class OqlUtils {
      * @return
      */
     public static String getSelectItemIndexAlias(int selectItemIndex) {
-        return "_" + selectItemIndex++;
+        return "_" + selectItemIndex;
     }
 
     /**

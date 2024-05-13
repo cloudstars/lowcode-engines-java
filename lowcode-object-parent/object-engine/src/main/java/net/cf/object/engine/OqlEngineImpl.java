@@ -529,7 +529,7 @@ public class OqlEngineImpl implements OqlEngine {
     @Override
     public int[] createSelect(OqlInsertSelectStatement stmt, Map<String, Object> paramMap) {
         OqlSelect query = stmt.getQuery();
-        List<SqlExpr> valueExprs = this.parseInsertValues(stmt.getFields(), query.getSelectItems());
+        List<SqlExpr> valueExprs = this.parseSelectInsertValues(stmt.getFields(), query.getSelectItems());
 
         // 先查询出来
 
@@ -559,7 +559,7 @@ public class OqlEngineImpl implements OqlEngine {
      * @param selectItems
      * @return
      */
-    private List<SqlExpr> parseInsertValues(List<OqlExpr> insertItems, List<OqlSelectItem> selectItems) {
+    private List<SqlExpr> parseSelectInsertValues(List<OqlExpr> insertItems, List<OqlSelectItem> selectItems) {
         int insertItemSize = insertItems.size();
         int selectItemSize = selectItems.size();
         if (insertItemSize != selectItemSize) {
@@ -587,34 +587,46 @@ public class OqlEngineImpl implements OqlEngine {
                     }
                 }
             } else if (insertItem instanceof OqlObjectExpandExpr) {
-                if (selectItemExpr instanceof OqlObjectExpandExpr) {
-                    String selectItemFieldName = ((OqlObjectExpandExpr) selectItemExpr).getOwner();
-                    SqlVariantRefExpr varRefExpr = SqlUtils.buildSqlVariantRefExpr(alias != null ? alias : selectItemFieldName);
-                    List<SqlExpr> expandFields = ((OqlObjectExpandExpr) selectItemExpr).getFields();
-                    String subVarName;
-                    for (SqlExpr expandField : expandFields) {
-                        if (expandField instanceof OqlFieldExpr) {
-                            subVarName = ((OqlFieldExpr) expandField).getName();
-                        } else if (expandField instanceof SqlSelectItem) {
-                            subVarName = ((SqlSelectItem) expandField).getAlias();
-                        } else {
-                            subVarName = OqlUtils.expr2String(expandField);
-                        }
-                        varRefExpr.addSubVarName(subVarName);
-                    }
-                    insertValues.add(varRefExpr);
-                } else if (selectItemExpr instanceof SqlJsonArrayExpr) { // 常量会通过OQL查询直接返回
-                    String resultKey = alias != null ? alias : OqlUtils.getSelectItemIndexAlias(i);
-                    insertValues.add(SqlUtils.buildSqlVariantRefExpr(resultKey));
-                } else {
-                    throw new FastSqlException("查询字段" + OqlUtils.expr2String(selectItemExpr) + "语法不支持");
-                }
+                SqlExpr detailVarExpr = this.parseDetailSelectInsertValues(selectItemExpr, i, alias);
+                insertValues.add(detailVarExpr);
             } else {
                 throw new FastSqlException("插入字段" + OqlUtils.expr2String(insertItem) + "语法不支持");
             }
         }
 
         return insertValues;
+    }
+
+    /**
+     * 解析子表Select插入的值
+     *
+     * @param selectItemExpr
+     * @param selectItemIndex
+     * @param selectItemAlias
+     */
+    private SqlExpr parseDetailSelectInsertValues(SqlExpr selectItemExpr, int selectItemIndex, String selectItemAlias) {
+        if (selectItemExpr instanceof OqlObjectExpandExpr) {
+            String selectItemFieldName = ((OqlObjectExpandExpr) selectItemExpr).getOwner();
+            SqlVariantRefExpr varRefExpr = SqlUtils.buildSqlVariantRefExpr(selectItemAlias != null ? selectItemAlias : selectItemFieldName);
+            List<SqlExpr> expandFields = ((OqlObjectExpandExpr) selectItemExpr).getFields();
+            String subVarName;
+            for (SqlExpr expandField : expandFields) {
+                if (expandField instanceof OqlFieldExpr) {
+                    subVarName = ((OqlFieldExpr) expandField).getName();
+                } else if (expandField instanceof SqlSelectItem) {
+                    subVarName = ((SqlSelectItem) expandField).getAlias();
+                } else {
+                    subVarName = OqlUtils.expr2String(expandField);
+                }
+                varRefExpr.addSubVarName(subVarName);
+            }
+            return varRefExpr;
+        } else if (selectItemExpr instanceof SqlJsonArrayExpr) { // 常量会通过OQL查询直接返回
+            String resultKey = selectItemAlias != null ? selectItemAlias : OqlUtils.getSelectItemIndexAlias(selectItemIndex);
+            return SqlUtils.buildSqlVariantRefExpr(resultKey);
+        } else {
+            throw new FastSqlException("查询字段" + OqlUtils.expr2String(selectItemExpr) + "语法不支持");
+        }
     }
 
     @Override
