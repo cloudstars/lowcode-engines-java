@@ -213,7 +213,15 @@ public class OqlEngineImpl implements OqlEngine {
         selectCmd.setParamMap(paramMap);
 
         Map<String, Object> countResultMap = this.executor.selectOne(selectCmd);
-        long total = (Long) countResultMap.values().stream().findFirst().orElse(0);
+        Object res = countResultMap.values().stream().findFirst().orElse(0L);
+
+        long total = 0L;
+        // 查询total时， 各类返回类型都需要转为long类型
+        if (res instanceof Long) {
+            total = (Long) res;
+        } else {
+            total = Long.parseLong(String.valueOf(res));
+        }
 
         // 添加分页信息后查询当前页数据
         this.addPageInfo(selfSqlStmt, pageRequest);

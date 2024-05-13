@@ -33,7 +33,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class MongoObjectRepositoryImpl implements ObjectRepository {
 
@@ -177,18 +180,26 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
     public Map<String, Object> selectOne(SqlSelectStatement statement) {
         List<Map<String, Object>> res = selectList(statement);
         if (CollectionUtils.isEmpty(res)) {
-            return new HashMap<>();
+            return null;
         }
-        return res.get(0);
+        Map<String, Object> result = res.get(0);
+        if (result == null || result.isEmpty()) {
+            return null;
+        }
+        return result;
     }
 
     @Override
     public Map<String, Object> selectOne(SqlSelectStatement statement, Map<String, Object> paramMap) {
         List<Map<String, Object>> res = selectList(statement, paramMap);
         if (CollectionUtils.isEmpty(res)) {
-            return new HashMap<>();
+            return null;
         }
-        return res.get(0);
+        Map<String, Object> result = res.get(0);
+        if (result == null || result.isEmpty()) {
+            return null;
+        }
+        return result;
     }
 
     @Override

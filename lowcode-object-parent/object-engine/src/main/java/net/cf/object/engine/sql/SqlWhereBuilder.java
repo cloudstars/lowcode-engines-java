@@ -115,7 +115,11 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
                 throw new FastOqlException("查询条件的字段" + fieldName + "存在多个子属性、并且未设置主属性，请明确指明字段的属性");
             }
         } else {
-            return this.buildSqlExpr(resolvedField);
+            if (resolvedField.getOwner() != this.selfObject) {
+                return this.buildSqlRefExpr(resolvedField);
+            } else {
+                return this.buildSqlExpr(resolvedField);
+            }
         }
     }
 
