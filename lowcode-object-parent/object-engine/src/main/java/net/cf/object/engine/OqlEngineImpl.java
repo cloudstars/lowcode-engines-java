@@ -145,6 +145,9 @@ public class OqlEngineImpl implements OqlEngine {
      * @return
      */
     private String convertToLookupRecordId(Object lookupFieldValue) {
+        if (lookupFieldValue == null) {
+            return null;
+        }
         Object recordId = lookupFieldValue;
         if (lookupFieldValue instanceof List) {
             // 如果值是列表的话，仅取第一条
@@ -165,6 +168,9 @@ public class OqlEngineImpl implements OqlEngine {
      * @return
      */
     private List<String> convertToLookupRecordIds(final Object lookupFieldValue) {
+        if (lookupFieldValue == null) {
+            return null;
+        }
         Object lookupFieldValueX = lookupFieldValue;
         if (lookupFieldValueX instanceof String) {
             lookupFieldValueX = DataConvert.stringToList((String) lookupFieldValueX);
@@ -372,6 +378,9 @@ public class OqlEngineImpl implements OqlEngine {
      * @return
      */
     private Map<String, Object> extractLookupRecordMapByField(List<Map<String, Object>> resultMapList, String fieldName, String fieldValue) {
+        if (fieldValue == null) {
+            return null;
+        }
         for (Map<String, Object> resultMap : resultMapList) {
             if (fieldValue.equals(resultMap.get(fieldName).toString())) {
                 return resultMap;
@@ -390,6 +399,9 @@ public class OqlEngineImpl implements OqlEngine {
      * @return
      */
     private List<Map<String, Object>> extractLookupRecordMapListByField(List<Map<String, Object>> resultMapList, String fieldName, List<String> fieldValues) {
+        if (CollectionUtils.isEmpty(fieldValues)) {
+            return null;
+        }
         List<Map<String, Object>> targetList = new ArrayList<>();
         for (Map<String, Object> resultMap : resultMapList) {
             if (fieldValues.contains(resultMap.get(fieldName).toString())) {
