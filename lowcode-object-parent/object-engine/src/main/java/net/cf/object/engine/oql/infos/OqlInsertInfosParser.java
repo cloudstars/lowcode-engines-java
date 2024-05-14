@@ -18,7 +18,10 @@ import net.cf.object.engine.sql.SqlInsertCmdBuilder;
 import net.cf.object.engine.util.OqlUtils;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * OQL插入语句解析器
@@ -239,7 +242,7 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
         if (!this.isBatch) {
             assert (this.paramMap != null);
             Object detailParamObjectValue = this.paramMap.get(detailVarName);
-            if (detailParamObjectValue instanceof List) {
+            if (!(detailParamObjectValue instanceof List)) {
                 throw new FastOqlException("子表字段的参数值必须是一个列表");
             }
 
@@ -284,10 +287,10 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
                 String detailFieldName = detailFieldNames.get(i);
                 String detailFieldVarName = detailFieldVarNames.get(i);
                 //if (detailParamValue instanceof Map) {
-                    targetDetailParamValue.put(detailFieldName, ((Map) detailParamMap).get(detailFieldVarName));
+                targetDetailParamValue.put(detailFieldName, ((Map) detailParamMap).get(detailFieldVarName));
                 //} else if (detailParamValue instanceof List) { // 对于子表常量的一种特殊处理
                 //    throw new RuntimeException("子表常量请使用JsonArrayExpr");
-                    //targetDetailParamValue.put(detailVarPropName, ((List<?>) detailParamValue).get(i));
+                //targetDetailParamValue.put(detailVarPropName, ((List<?>) detailParamValue).get(i));
                 //}
             }
             targetDetailParamValues.add(targetDetailParamValue);
