@@ -655,21 +655,27 @@ public class OqlEngineImpl implements OqlEngine {
         Map<XObject, SqlUpdateCmd> detailUpdateCmds = updateInfos.getDetailUpdateCmds();
         for (XObject detailObject : detailObjects) {
             // 先删除被删除的记录
-            SqlDeleteCmd deleteCmd = detailDeleteCmds.get(detailObject);
-            if (deleteCmd != null) {
-                this.executor.delete(deleteCmd);
+            if (detailDeleteCmds != null) {
+                SqlDeleteCmd deleteCmd = detailDeleteCmds.get(detailObject);
+                if (deleteCmd != null) {
+                    this.executor.delete(deleteCmd);
+                }
             }
 
             // 再批量插入新添加的记录
-            SqlInsertCmd insertCmd = detailInsertCmds.get(detailObject);
-            if (insertCmd != null) {
-                this.executor.batchInsert(insertCmd);
+            if (detailInsertCmds != null) {
+                SqlInsertCmd insertCmd = detailInsertCmds.get(detailObject);
+                if (insertCmd != null) {
+                    this.executor.batchInsert(insertCmd);
+                }
             }
 
             // 再批量更新有变更的记录
-            SqlUpdateCmd updateCmd = detailUpdateCmds.get(detailObject);
-            if (updateCmd != null) {
-                this.executor.batchUpdate(updateCmd);
+            if (detailUpdateCmds != null) {
+                SqlUpdateCmd updateCmd = detailUpdateCmds.get(detailObject);
+                if (updateCmd != null) {
+                    this.executor.batchUpdate(updateCmd);
+                }
             }
         }
 
