@@ -40,48 +40,7 @@ public class MongoMethodExprVisitor {
     }
 
 
-    /**
-     * @param sqlMethodInvokeExpr
-     * @param globalContext
-     * @return
-     */
-    private static Object buildCommon(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
-        String methodName = sqlMethodInvokeExpr.getMethodName();
-
-        switch (methodName.toUpperCase()) {
-            case "SUBSTRING":
-                //
-                return buildSubString(sqlMethodInvokeExpr, globalContext);
-            case "CONCAT":
-                //
-                return buildConcat(sqlMethodInvokeExpr, globalContext);
-            case "LENGTH":
-                //
-                return buildLength(sqlMethodInvokeExpr, globalContext);
-            case "YEAR":
-            case "MONTH":
-            case "DAY":
-                //
-                return buildDateSelect(sqlMethodInvokeExpr, globalContext);
-            case "TRIM":
-            case "LTRIM":
-            case "RTRIM":
-                //
-                return buildTrim(sqlMethodInvokeExpr, globalContext);
-            case "NOW":
-                // now
-                return buildNow(sqlMethodInvokeExpr, globalContext);
-            case "TIMESTAMP":
-                // 转为时间戳
-                return buildTimeStamp(sqlMethodInvokeExpr, globalContext);
-            case "DATE_FORMAT":
-                // 时间格式化字符串
-                return buildDateFormat(sqlMethodInvokeExpr, globalContext);
-            default:
-                throw new RuntimeException("unknown method");
-        }
-
-    }
+    private static final String DATETIME_FORMAT = "%Y-%m-%d";
 
     /**
      * @param sqlMethodInvokeExpr
@@ -258,6 +217,74 @@ public class MongoMethodExprVisitor {
         } else {
             return MongoExprVisitor.visit(sqlExpr, globalContext);
         }
+    }
+
+    /**
+     * @param sqlMethodInvokeExpr
+     * @param globalContext
+     * @return
+     */
+    private static Object buildCommon(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
+        String methodName = sqlMethodInvokeExpr.getMethodName();
+
+        switch (methodName.toUpperCase()) {
+            case "SUBSTRING":
+                //
+                return buildSubString(sqlMethodInvokeExpr, globalContext);
+            case "CONCAT":
+                //
+                return buildConcat(sqlMethodInvokeExpr, globalContext);
+            case "LENGTH":
+                //
+                return buildLength(sqlMethodInvokeExpr, globalContext);
+            case "YEAR":
+            case "MONTH":
+            case "DAY":
+                //
+                return buildDateSelect(sqlMethodInvokeExpr, globalContext);
+            case "TRIM":
+            case "LTRIM":
+            case "RTRIM":
+                //
+                return buildTrim(sqlMethodInvokeExpr, globalContext);
+            case "NOW":
+                // now
+                return buildNow(sqlMethodInvokeExpr, globalContext);
+            case "TIMESTAMP":
+                // 转为时间戳
+                return buildTimeStamp(sqlMethodInvokeExpr, globalContext);
+            case "DATE_FORMAT":
+                // 时间格式化字符串
+                return buildDateFormat(sqlMethodInvokeExpr, globalContext);
+            case "DATE":
+                return buildDateConvert(sqlMethodInvokeExpr, globalContext);
+            default:
+                throw new RuntimeException("unknown method");
+        }
+
+    }
+
+    private static Object buildDateConvert(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
+        Document document = new Document();
+        SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
+        Object val = getTagVal(sqlExpr, globalContext);
+
+        // 时间转日期字符串
+        Document dateToString = new Document();
+        dateToString.put("date", val);
+        dateToString.put("format", DATETIME_FORMAT);
+        dateToString.put("timezone", "+0800");
+        document.put("$dateToString", dateToString);
+
+//        // 重新转时间
+//        Document op = new Document();
+//        Document stringToDate = new Document();
+//        stringToDate.put("dateString", document);
+//        stringToDate.put("format", DATETIME_FORMAT);
+//        stringToDate.put("timezone", "+0800");
+//        op.put("$dateFromString", stringToDate);
+
+        return document;
     }
 
 }
