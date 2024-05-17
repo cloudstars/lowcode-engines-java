@@ -17,8 +17,14 @@ public class MongoSelectStaffMethodOqlTest extends AbstractSelectStaffSelfMethod
 
     @Test
     @Override
-    public void testSelectStaffSelfMethod() {
-        super.testSelectStaffSelfMethod();
+    public void testSelectStaffTextMethods() {
+        super.testSelectStaffTextMethods();
+    }
+
+    @Test
+    @Override
+    public void testSelectStaffDateMethods() {
+        super.testSelectStaffDateMethods();
     }
 
 }

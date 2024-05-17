@@ -13,6 +13,7 @@ import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.OqlFieldExpr;
 import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.oql.ast.OqlPropertyExpr;
+import net.cf.object.engine.util.OqlUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -342,7 +343,7 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
      */
     private SqlExpr parseMethodInvokeExpr(SqlMethodInvokeExpr x) {
         String methodName = x.getMethodName();
-        if (!METHOD_NAMES.contains(methodName)) {
+        if (OqlUtils.isValidMethodName(methodName)) {
             throw new FastOqlException("方法：" + methodName + "不支持！");
         }
 

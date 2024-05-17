@@ -12,10 +12,7 @@ import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.util.OqlUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * OQL 表达式解析器
@@ -26,12 +23,9 @@ public class OqlExprParser extends SqlExprParser {
 
     protected CachedObjectResolverProxy resolver;
 
-    protected Set<String> supportedMethodNames = new HashSet<>();
-
     public OqlExprParser(XObjectResolver resolver, String oql) {
         super(oql);
         this.resolver = new CachedObjectResolverProxy(resolver);
-        this.supportedMethodNames.addAll(Arrays.asList("NOW", "LTRIM", "CONCAT", "SUBSTRING", "TRIM", "RTRIM", "YEAR", "MONTH", "DAY", "LENGTH"));
     }
 
     /**
@@ -399,7 +393,7 @@ public class OqlExprParser extends SqlExprParser {
      */
     private SqlExpr parseMethodInvokeExpr(XObject selfObject, SqlMethodInvokeExpr x) {
         String methodName = x.getMethodName();
-        if (this.supportedMethodNames.contains(methodName.toUpperCase())) {
+        if (OqlUtils.isValidMethodName(methodName)) {
             SqlMethodInvokeExpr sqlX = new SqlMethodInvokeExpr();
             sqlX.setMethodName(x.getMethodName());
             List<SqlExpr> args = x.getArguments();

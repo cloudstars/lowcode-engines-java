@@ -3,19 +3,30 @@
   "name": "SelectStaffSelfMethod",
   "oqls": [
     {
-      "desc": "查询常量",
-      "name": "SelectStaffSelfMethod",
-      "oql": "select NOW() as now, LTRIM(staffName), RTRIM(staffName), TRIM(staffName), CONCAT(staffName, '/', staffCode) as staff, LENGTH(staffName), YEAR(joinDate), MONTH(joinDate), DAY(joinDate) as day from Staff where staffName = '张三'",
-      "sql": "select NOW(), LTRIM(STA_NAME), RTRIM(STA_NAME), TRIM(STA_NAME), CONCAT(STA_NAME, '/', STA_CODE), LENGTH(STA_NAME), YEAR(JOIN_DATE), MONTH(JOIN_DATE), DAY(JOIN_DATE) from STAFF where STA_NAME = '张三'",
+      "desc": "文本方法",
+      "name": "SelectStaffSelfTextMethods",
+      "oql": "select LTRIM(staffName), RTRIM(staffName), TRIM(staffName), SUBSTRING(staffName, 1, 2) as subStaff, CONCAT(staffName, '/', staffCode) as staff, LENGTH(staffName) from Staff where staffName = '张三'",
+      "sql": "select LTRIM(STA_NAME), RTRIM(STA_NAME), TRIM(STA_NAME), CONCAT(STA_NAME, '/', STA_CODE), LENGTH(STA_NAME) from STAFF where STA_NAME = '张三'",
       "resultMap": {
         "LTRIM(staffName)": "张三",
         "RTRIM(staffName)": "张三",
         "TRIM(staffName)": "张三",
         "staff": "张三/zhangsan",
-        "LENGTH(staffName)": 2,
+        "subStaff": "张三",
+        "LENGTH(staffName)": 2
+      }
+    },
+    {
+      "desc": "日期方法",
+      "name": "SelectStaffSelfDateMethods",
+      "oql": "select NOW() as now, YEAR(joinDate), MONTH(joinDate), DAY(joinDate) as day, DATE(joinDate) as date, TIMESTAMP(joinDate) as ts, DATE_FORMAT(joinDate, '%Y-%m-%d') as df from Staff where staffName = '张三'",
+      "sql": "select NOW(), YEAR(JOIN_DATE), MONTH(JOIN_DATE), DAY(JOIN_DATE) from STAFF, DATE(JOIN_DATE), TIMESTAMP(JOIN_DAE), DATE_FORMAT(JOIN_DATE, '%Y-%m-%d') fro STAFF where STA_NAME = '张三'",
+      "resultMap": {
         "YEAR(joinDate)": 2020,
         "MONTH(joinDate)": 10,
-        "day": 10
+        "day": 10,
+        "date": "2020-10-10",
+        "df": "2020-10-10"
       }
     }
   ]

@@ -12,7 +12,6 @@ import net.cf.object.engine.oql.ast.OqlFieldExpr;
 import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
 import net.cf.object.engine.oql.ast.OqlPropertyExpr;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,11 +20,6 @@ import java.util.List;
  * @author clouds
  */
 public abstract class AbstractSqlBuilder {
-
-    /**
-     * 支持的方法名称
-     */
-    protected static final List<String> METHOD_NAMES = Arrays.asList("NOW", "LTRIM", "RTRIM", "TRIM", "CONCAT", "SUBSTRING", "LENGTH", "YEAR", "MONTH", "DAY");
 
     public AbstractSqlBuilder() {
     }

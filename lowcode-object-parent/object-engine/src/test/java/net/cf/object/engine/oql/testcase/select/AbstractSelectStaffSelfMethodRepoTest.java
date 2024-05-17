@@ -21,8 +21,17 @@ public abstract class AbstractSelectStaffSelfMethodRepoTest
     }
 
     @Override
-    public void testSelectStaffSelfMethod() {
-        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_SELF_METHOD);
+    public void testSelectStaffTextMethods() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_TEXT_METHODS);
+        OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
+        Map<String, Object> resultMap = this.engine.queryOne(stmt);
+        assert (DataCompareTestUtils.isAssignableFromMap(oqlInfo.resultMap, resultMap));
+    }
+
+
+    @Override
+    public void testSelectStaffDateMethods() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_DATE_METHODS);
         OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> resultMap = this.engine.queryOne(stmt);
         assert (DataCompareTestUtils.isAssignableFromMap(oqlInfo.resultMap, resultMap));

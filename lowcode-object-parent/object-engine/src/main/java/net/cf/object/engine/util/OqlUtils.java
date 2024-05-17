@@ -15,6 +15,7 @@ import net.cf.object.engine.oql.ast.OqlFieldExpr;
 import net.cf.object.engine.oql.visitor.OqlAstOutputVisitor;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * OQL工具类
@@ -22,6 +23,18 @@ import java.util.Arrays;
  * @author clouds
  */
 public class OqlUtils {
+
+   private static List<String> SQL_METHOD_NAMES = Arrays.asList("NOW", "LTRIM", "CONCAT", "SUBSTRING", "TRIM", "RTRIM", "YEAR", "MONTH", "DAY", "LENGTH", "DATE", "TIMESTAMP", "DATE_FORMAT");
+
+    /**
+     * 判断一个方法的名称是否合法的
+     *
+     * @param methodName
+     * @return
+     */
+   public static boolean isValidMethodName(String methodName) {
+       return SQL_METHOD_NAMES.contains(methodName.toUpperCase());
+   }
 
     /**
      * 获取查询字段的别名
