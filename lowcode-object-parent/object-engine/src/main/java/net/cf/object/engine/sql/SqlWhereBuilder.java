@@ -343,7 +343,7 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
      */
     private SqlExpr parseMethodInvokeExpr(SqlMethodInvokeExpr x) {
         String methodName = x.getMethodName();
-        if (OqlUtils.isValidMethodName(methodName)) {
+        if (!OqlUtils.isValidMethodName(methodName)) {
             throw new FastOqlException("方法：" + methodName + "不支持！");
         }
 
