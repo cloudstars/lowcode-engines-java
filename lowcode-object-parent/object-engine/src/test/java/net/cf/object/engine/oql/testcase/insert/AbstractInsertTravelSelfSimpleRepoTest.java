@@ -36,7 +36,7 @@ public abstract class AbstractInsertTravelSelfSimpleRepoTest extends AbstractOql
 
         {
             // 重新查出来作断言
-            String selectOql = "select applyId, applyName from Travel";
+            String selectOql = "select applyId, applyName,dateRange from Travel";
             OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
             List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
@@ -51,13 +51,15 @@ public abstract class AbstractInsertTravelSelfSimpleRepoTest extends AbstractOql
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
             paramMap.put("applyName", "测试申请单的名称");
+            String[] dateRange = {"2024-10-11", "2024-10-12"};
+            paramMap.put("dateRange", dateRange);
             int effectedRows = this.engine.create(oqlStmt, paramMap);
             assert (effectedRows == 1);
         }
 
         {
             // 重新查出来作断言
-            String selectOql = "select applyId, applyName from Travel";
+            String selectOql = "select applyId, applyName, dateRange from Travel";
             OqlSelectStatement selectOqlStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, selectOql);
             List<Map<String, Object>> dataList = this.engine.queryList(selectOqlStmt);
             assert (dataList != null && dataList.size() == 3);
