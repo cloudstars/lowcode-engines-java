@@ -5,7 +5,6 @@ import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.util.OqlStatementUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,12 +47,7 @@ public abstract class AbstractInsertTravelSelfSimpleRepoTest extends AbstractOql
         {
             OqlInfo oqlInfo = this.oqlInfos.get(OQL_INSERT_TRAVEL_VARS);
             OqlInsertStatement oqlStmt = OqlStatementUtils.parseSingleInsertStatement(this.resolver, oqlInfo.oql);
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("applyId", "434743DSS#FEL3232-323KLFJFDS-323FDSD");
-            paramMap.put("applyName", "测试申请单的名称");
-            String[] dateRange = {"2024-10-11", "2024-10-12"};
-            paramMap.put("dateRange", dateRange);
-            int effectedRows = this.engine.create(oqlStmt, paramMap);
+            int effectedRows = this.engine.create(oqlStmt, oqlInfo.paramMap);
             assert (effectedRows == 1);
         }
 

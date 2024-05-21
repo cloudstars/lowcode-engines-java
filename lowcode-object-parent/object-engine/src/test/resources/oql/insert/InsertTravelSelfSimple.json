@@ -14,8 +14,8 @@
       "oql": "insert into Travel(applyId, applyName, dateRange) values (#{applyId}, #{applyName}, #{dateRange})",
       "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME, START_DATE, END_DATE) values (#{applyId}, #{applyName}, #{dateRange._0}, #{dateRange._1})",
       "paramMap": {
-        "applyId": "",
-        "applyName": "",
+        "applyId": "434743DSS#FEL3232-323KLFJFDS-323FDSD",
+        "applyName": "测试申请单的名称",
         "dateRange": ["2022-10-10", "2022-10-20"]
       }
     }

@@ -1,5 +1,6 @@
 package net.cf.object.engine.data;
 
+import net.cf.object.engine.object.DataType;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -166,6 +167,31 @@ public class DefaultParameterMapper implements ParameterMapper {
     }
 
     /**
+     * 映射一个数组的值
+     *
+     * @param value
+     * @param subFields
+     * @return
+     */
+    private Map mapArrayValue(List<Object> value, List<FieldMapping> subFields) {
+        Map<String, Object> targetMap = new HashMap<>();
+        for (FieldMapping subField : subFields) {
+            String subFieldName = subField.getFieldName();
+            if (subFieldName.startsWith("_")) {// _0, _1, ...
+                String indexStr = subFieldName.substring(1);
+                int index = Integer.parseInt(indexStr);
+                if (index < value.size()) {
+                    targetMap.put(subFieldName, value.get(index));
+                } else {
+                    targetMap.put(subFieldName, null);
+                }
+            }
+        }
+
+        return targetMap;
+    }
+
+    /**
      * 处理一个子段的子字段
      *
      * @param field 当前字段的定义
@@ -177,8 +203,14 @@ public class DefaultParameterMapper implements ParameterMapper {
         boolean isArray = field.getValueType().isArray();
         List<FieldMapping> subFields = field.getSubFields();
         if (isArray) {
-            List<Map<String, Object>> listSubValueItem = (List<Map<String, Object>>) value;
-            resultMap = this.mapListValue(listSubValueItem, subFields);
+            if (field.getValueType().getDataType() == DataType.OBJECT) {
+                List<Map<String, Object>> listSubValueItem = (List<Map<String, Object>>) value;
+                resultMap = this.mapListValue(listSubValueItem, subFields);
+            } else {
+                // 征对数组格式的数据的特殊处理，如时间区间：['2010-10-10', '2010-11-12'];
+                List<Object> listSubValueItem = (List<Object>) value;
+                resultMap = this.mapArrayValue(listSubValueItem, subFields);
+            }
         } else {
             Map<String, Object> mapSubValueItem = (Map<String, Object>) value;
             resultMap = this.mapValue(mapSubValueItem, subFields);

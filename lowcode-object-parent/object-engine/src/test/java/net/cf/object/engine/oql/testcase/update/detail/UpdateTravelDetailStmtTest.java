@@ -82,4 +82,23 @@ public class UpdateTravelDetailStmtTest extends AbstractOqlTest implements Updat
         */
     }
 
+    @Override
+    public void testUpdateTravelAndTripByIdWithNull() {
+
+    }
+
+    @Override
+    public void testUpdateTravelAndTripByIdWithNullVars() {
+
+    }
+
+    @Override
+    public void testUpdateTravelAndTripByIdWithEmpty() {
+
+    }
+
+    @Override
+    public void testUpdateTravelAndTripByIdWithEmptyVars() {
+
+    }
 }

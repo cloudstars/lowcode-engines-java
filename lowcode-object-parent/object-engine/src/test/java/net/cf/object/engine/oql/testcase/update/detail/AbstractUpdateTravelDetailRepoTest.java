@@ -103,4 +103,56 @@ public abstract class AbstractUpdateTravelDetailRepoTest
             assert (tripId0Exist && !tripId1Exist);
         }
     }
+
+    @Override
+    public void testUpdateTravelAndTripByIdWithNull() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_WITH_NULL);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        int effectedRows = this.engine.modify(oqlStmt);
+        assert (effectedRows == 1);
+
+        this.assertUpdateDetailNullEmpty();
+    }
+
+    @Override
+    public void testUpdateTravelAndTripByIdWithNullVars() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_WITH_NULL_VARS);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        int effectedRows = this.engine.modify(oqlStmt, oqlInfo.paramMap);
+        assert (effectedRows == 1);
+
+        this.assertUpdateDetailNullEmpty();
+    }
+
+    @Override
+    public void testUpdateTravelAndTripByIdWithEmpty() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_WITH_EMPTY);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        int effectedRows = this.engine.modify(oqlStmt);
+        assert (effectedRows == 1);
+
+        this.assertUpdateDetailNullEmpty();
+    }
+
+    @Override
+    public void testUpdateTravelAndTripByIdWithEmptyVars() {
+        OqlInfo oqlInfo = this.oqlInfos.get(OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_WITH_EMPTY_VARS);
+        OqlUpdateStatement oqlStmt = OqlStatementUtils.parseSingleUpdateStatement(this.resolver, oqlInfo.oql);
+        int effectedRows = this.engine.modify(oqlStmt, oqlInfo.paramMap);
+        assert (effectedRows == 1);
+
+        this.assertUpdateDetailNullEmpty();
+    }
+
+    /**
+     * 断言update子表为null或空数组时，子表被清空
+     */
+    private void assertUpdateDetailNullEmpty() {
+        String detailOqlSelect = "select * from TravelTrip where travelApplyId = '" + TravelObject.RECORD1 + "'";
+        OqlSelectStatement detailOqlSelectStmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, detailOqlSelect);
+        List<Map<String, Object>> subRecords = this.engine.queryList(detailOqlSelectStmt);
+        assert (subRecords.size() == 0);
+    }
+
+
 }

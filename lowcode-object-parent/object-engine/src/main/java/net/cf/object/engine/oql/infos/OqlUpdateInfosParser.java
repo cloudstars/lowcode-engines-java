@@ -4,6 +4,7 @@ package net.cf.object.engine.oql.infos;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
+import net.cf.form.repository.sql.ast.expr.literal.SqlNullExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOperator;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
@@ -136,7 +137,12 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
                 assert (objectRefField.getRefType() == ObjectRefType.DETAIL);
                 assert (!objectExpandExpr.isStarExpanded());
 
-                this.processDetail(objectExpandExpr, fieldValue);
+                int detailFieldSize = objectExpandExpr.getFields().size();
+                if (detailFieldSize > 0) {
+                    this.processDetail(objectExpandExpr, fieldValue);
+                } else{
+                    this.processNullAndEmptyDetail(objectExpandExpr, fieldValue);
+                }
             } else if (field instanceof OqlFieldExpr) {
                 masterSetItems.add(setItem);
             }
@@ -237,9 +243,6 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         String masterObjectName = this.masterObject.getName();
         List<SqlExpr> detailExprs = detailRefFieldExpr.getFields();
         int detailFieldSize = detailExprs.size();
-        if (detailFieldSize == 0) {
-            throw new FastOqlException("子表字段未指定");
-        }
 
         // 检查子表的字段中必须包括primaryField、masterField
         boolean hasPrimaryField = false;
@@ -265,7 +268,6 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         }
 
         if (detailRefFieldValue instanceof SqlVariantRefExpr) { // detail(f1, f2, f3) = #{detail'}
-            // TODO // detail(f1, f2, f3) = #{detail'(f1', f2', f3')}不支持
             SqlVariantRefExpr varRefExpr = (SqlVariantRefExpr) detailRefFieldValue;
             String varName = varRefExpr.getVarName();
             Map<String, String> paramNamesMap = null;
@@ -297,7 +299,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
                     this.buildDetailCudParamMaps(detailObject, paramMap, detailParamMaps);
                 }
             }
-        } else if (detailRefFieldValue instanceof SqlJsonArrayExpr){ // detail(f1, f2, f3) = [{}, {}, ...]
+        } else if (detailRefFieldValue instanceof SqlJsonArrayExpr) { // detail(f1, f2, f3) = [{}, {}, ...]
             List<Object> values = ((SqlJsonArrayExpr) detailRefFieldValue).getValue();
             List<Map<String, Object>> detailParamMaps = new ArrayList<>();
             for (Object value : values) {
@@ -314,10 +316,59 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
     }
 
     /**
+     * 处理子表的字段是空的情况，只有更新为NULL或空LIST才允许
+     *
+     * @param detailRefFieldExpr
+     * @param detailRefFieldValue
+     */
+    private void processNullAndEmptyDetail(OqlObjectExpandExpr detailRefFieldExpr, SqlExpr detailRefFieldValue) {
+        XObject detailObject = detailRefFieldExpr.getResolvedRefObject();
+        boolean doEmptyDetail = false;
+        if (detailRefFieldValue instanceof SqlNullExpr) { // update detail = null
+            doEmptyDetail = true;
+        } else if (detailRefFieldValue instanceof SqlJsonArrayExpr) { // update detail = []
+            if (((SqlJsonArrayExpr) detailRefFieldValue).getValue().size() == 0) {
+                doEmptyDetail = true;
+            }
+        } else if (detailRefFieldValue instanceof SqlVariantRefExpr) {
+            String varName = ((SqlVariantRefExpr) detailRefFieldValue).getVarName();
+            if (!isBatch) {
+                List<Map<String, Object>> detailParamMaps = (List<Map<String, Object>>) this.paramMap.get(varName);
+                if (detailParamMaps == null || detailParamMaps.size() == 0) {
+                    doEmptyDetail = true;
+                }
+            } else {
+                boolean allDetailIsNull = true;
+                for (Map<String, Object> paramMap : this.paramMaps) {
+                    List<Map<String, Object>> detailParamMaps = (List<Map<String, Object>>) paramMap.get(varName);
+                    if (!(detailParamMaps == null || detailParamMaps.size() == 0)) {
+                        allDetailIsNull = false;
+                    }
+                }
+                doEmptyDetail = allDetailIsNull;
+            }
+        }
+
+        if (doEmptyDetail) {
+            if (!isBatch) {
+                this.buildDetailCudParamMaps(detailObject, this.paramMap, null);
+            } else {
+                for (Map<String, Object> paramMap : this.paramMaps) {
+                    this.buildDetailCudParamMaps(detailObject, paramMap, null);
+                }
+            }
+
+            this.buildDetailParamStmts(detailObject, detailRefFieldExpr);
+        } else {
+            throw new FastOqlException("子表字段未指定");
+        }
+    }
+
+    /**
      * 转换子表的参数值，将变量名KEY转换为字段名KEY
      *
      * @param paramMaps
-     * @param namesMap 字段名KEY -> 变量名KEY
+     * @param namesMap  字段名KEY -> 变量名KEY
      */
     private List<Map<String, Object>> convertDetailParamMapsWithKeys(List<Map<String, Object>> paramMaps, Map<String, String> namesMap) {
         List<Map<String, Object>> targetParamMaps = new ArrayList<>();
@@ -347,21 +398,23 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
         XField primaryField = detailObject.getPrimaryField();
         String primaryFieldName = primaryField.getName();
         List<Object> detailRecordIds = new ArrayList<>();
-        for (Map<String, Object> detailParamMap : detailParamMaps) {
-            // 判断如果有masterFieldId，则为存量数据，否则为新数据
-            Object detailMasterRecordId = detailParamMap.get(masterRefFieldName);
-            if (detailMasterRecordId != null) { // 存量数据需要更新
-                if (!detailMasterRecordId.equals((masterRecordId))) {
-                    throw new FastOqlException("子表中的主表记录ID的值与主表的记不匹配");
-                }
+        if (detailParamMaps != null) { // detailParamMaps为null的情况，是直接更新为null的情况，如：update detailField = null | [] | #{nullValueField}
+            for (Map<String, Object> detailParamMap : detailParamMaps) {
+                // 判断如果有masterFieldId，则为存量数据，否则为新数据
+                Object detailMasterRecordId = detailParamMap.get(masterRefFieldName);
+                if (detailMasterRecordId != null) { // 存量数据需要更新
+                    if (!detailMasterRecordId.equals((masterRecordId))) {
+                        throw new FastOqlException("子表中的主表记录ID的值与主表的记不匹配");
+                    }
 
-                detailRecordIds.add(detailParamMap.get(primaryFieldName));
-                List<Map<String, Object>> detailUpdateMaps = this.getDetailObjectUpdateParamMapsByObject(detailObject);
-                detailUpdateMaps.add(detailParamMap);
-            } else { // 新增数据
-                detailParamMap.put(masterRefFieldName, masterRecordId);
-                List<Map<String, Object>> detailInsertMaps = this.getDetailObjectInsertParamMapsByObject(detailObject);
-                detailInsertMaps.add(detailParamMap);
+                    detailRecordIds.add(detailParamMap.get(primaryFieldName));
+                    List<Map<String, Object>> detailUpdateMaps = this.getDetailObjectUpdateParamMapsByObject(detailObject);
+                    detailUpdateMaps.add(detailParamMap);
+                } else { // 新增数据
+                    detailParamMap.put(masterRefFieldName, masterRecordId);
+                    List<Map<String, Object>> detailInsertMaps = this.getDetailObjectInsertParamMapsByObject(detailObject);
+                    detailInsertMaps.add(detailParamMap);
+                }
             }
         }
 

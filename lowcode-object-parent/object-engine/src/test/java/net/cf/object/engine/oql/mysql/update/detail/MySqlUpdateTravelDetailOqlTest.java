@@ -25,4 +25,28 @@ public class MySqlUpdateTravelDetailOqlTest extends AbstractUpdateTravelDetailRe
         super.testUpdateTravelAndTripByIdVars();
     }
 
+    @Test
+    @Override
+    public void testUpdateTravelAndTripByIdWithNull() {
+        super.testUpdateTravelAndTripByIdWithNull();
+    }
+
+    @Test
+    @Override
+    public void testUpdateTravelAndTripByIdWithNullVars() {
+        super.testUpdateTravelAndTripByIdWithNullVars();
+    }
+
+    @Test
+    @Override
+    public void testUpdateTravelAndTripByIdWithEmpty() {
+        super.testUpdateTravelAndTripByIdWithEmpty();
+    }
+
+    @Test
+    @Override
+    public void testUpdateTravelAndTripByIdWithEmptyVars() {
+        super.testUpdateTravelAndTripByIdWithEmptyVars();
+    }
+
 }

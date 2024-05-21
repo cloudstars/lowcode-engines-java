@@ -8,6 +8,16 @@
       "oql": "update Travel set applyName = '新的APPLY_NAME', trips(tripId, travelApplyId, fromAddr, toAddr) = [{\"tripId\": \"更新的记录，详见代码中设置\", \"travelApplyId\": \"434743DSS-FEL3232-323KLFJFDS-323FDSD\", \"fromAddr\": \"苏州\", \"toAddr\": \"天津\", \"creator\": {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}, \"modifier\": {\"name\": \"测试YYY\", \"key\": \"TEST_YYY\"}}, {\"tripId\": null, \"travelApplyId\": null, \"fromAddr\": \"连云港\", \"toAddr\": \"济南\", \"creator\": {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}, \"modifier\": {\"name\": \"测试YYY\", \"key\": \"TEST_YYY\"}}] where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
     },
     {
+      "desc": "更新出差记以及行程，更新子表为空，CASE4",
+      "name": "UpdateTravelAndTripByIdWithNull4",
+      "oql": "update Travel set applyName = '新的APPLY_NAME', trips = #{trips} where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "paramMap": {
+        "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+        "applyName": "新的APPLY_NAME",
+        "trips": []
+      }
+    },
+    {
       "desc": "更新出差记以及行程（带变量）",
       "name": "UpdateTravelAndTripByIdVars",
       "oql": "update Travel set applyName = #{applyName}, trips(tripId, travelApplyId, fromAddr, toAddr) = #{trips} where applyId = #{applyId}",
@@ -49,6 +59,36 @@
       "detailUpdateInsertSql": "insert into TRAVEL_TRIP(APPLY_ID, FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY) values (#{applyId}, #{fromAddr}, #{toAddr}, #{creator.name}, #{creator.key})",
       "detailUpdateUpdateSql": "update TRAVEL_TRIP set FROM_ADDR = #{fromAddr}, TO_ADDR = #{toAddr}, MODIFIER_NAME = #{modifier.name}, MODIFIER_KEY = #{modifier.key} where TRIP_ID = #{tripId}",
       "detailUpdateDeleteSql": "delete from TRAVEL_TRIP where APPLY_ID = #{applyId} and TRIP_ID not in (#{remainedRecordIds})"
+    },
+    {
+      "desc": "更新出差记以及行程，更新子表为空，CASE1",
+      "name": "UpdateTravelAndTripByIdWithNull",
+      "oql": "update Travel set applyName = '新的APPLY_NAME', trips = null where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "更新出差记以及行程，更新子表为空，CASE2",
+      "name": "UpdateTravelAndTripByIdWithNullVars",
+      "oql": "update Travel set applyName = '新的APPLY_NAME', trips = #{trips} where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "paramMap": {
+        "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+        "applyName": "新的APPLY_NAME",
+        "trips": null
+      }
+    },
+    {
+      "desc": "更新出差记以及行程，更新子表为空，CASE3",
+      "name": "UpdateTravelAndTripByIdWithEmpty",
+      "oql": "update Travel set applyName = '新的APPLY_NAME', trips = [] where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "更新出差记以及行程，更新子表为空，CASE4",
+      "name": "UpdateTravelAndTripByIdWithEmptyVars",
+      "oql": "update Travel set applyName = '新的APPLY_NAME', trips = #{trips} where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "paramMap": {
+        "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+        "applyName": "新的APPLY_NAME",
+        "trips": []
+      }
     }
   ]
 }

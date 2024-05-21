@@ -13,8 +13,24 @@ public interface UpdateTravelDetailTest {
 
     String OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_VARS = "UpdateTravelAndTripByIdVars";
 
+    String OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_WITH_NULL = "UpdateTravelAndTripByIdWithNull";
+
+    String OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_WITH_NULL_VARS = "UpdateTravelAndTripByIdWithNullVars";
+
+    String OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_WITH_EMPTY = "UpdateTravelAndTripByIdWithEmpty";
+
+    String OQL_UPDATE_TRAVEL_AND_TRIP_BY_ID_WITH_EMPTY_VARS = "UpdateTravelAndTripByIdWithEmptyVars";
+
     void testUpdateTravelAndTripById();
 
     void testUpdateTravelAndTripByIdVars();
+
+    void testUpdateTravelAndTripByIdWithNull();
+
+    void testUpdateTravelAndTripByIdWithNullVars();
+
+    void testUpdateTravelAndTripByIdWithEmpty();
+
+    void testUpdateTravelAndTripByIdWithEmptyVars();
 
 }
