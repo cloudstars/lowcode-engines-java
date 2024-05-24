@@ -137,10 +137,9 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
                 assert (objectRefField.getRefType() == ObjectRefType.DETAIL);
                 assert (!objectExpandExpr.isStarExpanded());
 
-                int detailFieldSize = objectExpandExpr.getFields().size();
-                if (detailFieldSize > 0) {
+                if (objectExpandExpr.getFields().size() > 0) {
                     this.processDetail(objectExpandExpr, fieldValue);
-                } else{
+                } else {
                     this.processNullAndEmptyDetail(objectExpandExpr, fieldValue);
                 }
             } else if (field instanceof OqlFieldExpr) {

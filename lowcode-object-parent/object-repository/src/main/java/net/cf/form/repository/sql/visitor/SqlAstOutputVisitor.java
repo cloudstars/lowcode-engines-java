@@ -425,7 +425,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     public boolean visit(SqlVariantRefExpr x) {
         this.print(x.getName());
         List<String> subVarNames = x.getSubVarNames();
-        if (CollectionUtils.isEmpty(subVarNames)) {
+        if (!CollectionUtils.isEmpty(subVarNames)) {
             this.print("(");
             int l = subVarNames.size();
             for (int i = 0; i < l; i++) {
