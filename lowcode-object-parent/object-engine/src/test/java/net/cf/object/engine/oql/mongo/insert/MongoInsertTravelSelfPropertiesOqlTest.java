@@ -21,4 +21,16 @@ public class MongoInsertTravelSelfPropertiesOqlTest extends AbstractInsertTravel
         super.testInsertTravelWithCreatorVars();
     }
 
+    @Test
+    @Override
+    public void testInsertTravelWithCreator() {
+        super.testInsertTravelWithCreator();
+    }
+
+    @Test
+    @Override
+    public void testInsertTravelWithAttachesVars() {
+        super.testInsertTravelWithAttachesVars();
+    }
+
 }

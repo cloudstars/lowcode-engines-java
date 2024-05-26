@@ -1,0 +1,12 @@
+
+{
+  "name": "SELECT_DISTINCT",
+  "desc": "查询时使用DISTINCT去重",
+  "sqls": [
+    {
+      "name": "SELECT_DISTINCT",
+      "desc": "查询使用DISTINCT",
+      "sql": "select DISTINCT column FROM tableA"
+    }
+  ]
+}

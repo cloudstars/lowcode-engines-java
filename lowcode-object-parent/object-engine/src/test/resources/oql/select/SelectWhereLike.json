@@ -1,0 +1,26 @@
+{
+  "desc": "测试 where 条件 like",
+  "name": "SelectWhereLike",
+  "oqls": [
+    {
+      "desc": "测试 where like",
+      "name": "SelectWhereLike",
+      "oql": "select staffCode, staffName from Staff where staffName like '张%'",
+      "sql": "select STA_CODE, case STA_CODE from STAFF where STA_NAME like '张%'",
+      "resultMaps": [{
+        "staffCode": "zhangsan",
+        "staffName": "张三"
+      }]
+    },
+    {
+      "desc": "测试 where not in",
+      "name": "SelectWhereNotLike",
+      "oql": "select staffCode, staffName from Staff where staffName not like '张%'",
+      "sql": "select STA_CODE, case STA_CODE from STAFF where STA_NAME not like '张%'",
+      "resultMaps": [{
+        "staffCode": "lisi",
+        "staffName": "李四"
+      }]
+    }
+  ]
+}

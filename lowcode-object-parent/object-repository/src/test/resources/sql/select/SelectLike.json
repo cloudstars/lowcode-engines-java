@@ -1,0 +1,12 @@
+
+{
+  "name": "SELECT_LIKE",
+  "desc": "查询条件LIKE",
+  "sqls": [
+    {
+      "name": "SELECT_LIKE",
+      "desc": "查询条件LIKE",
+      "sql": "select column FROM tableA where c1 like 'xxxx%' escape '_' and c2 not like '%yyy%'"
+    }
+  ]
+}

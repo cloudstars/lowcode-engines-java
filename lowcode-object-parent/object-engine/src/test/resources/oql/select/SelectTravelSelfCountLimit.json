@@ -5,20 +5,20 @@
     {
       "desc": "Count1查询出差记录数量",
       "name": "SelectCountOneTravel",
-      "oql": "select count(1) from Travel",
-      "sql": "select count(1) from TRAVEL"
+      "oql": "select count(1) as c from Travel",
+      "sql": "select count(1) as c from TRAVEL"
     },
     {
       "desc": "Count*查询出差记录数量",
       "name": "SelectCountStarTravel",
-      "oql": "select count(*) from Travel",
-      "sql": "select count(*) from TRAVEL"
+      "oql": "select count(*) as c from Travel",
+      "sql": "select count(*) as c from TRAVEL"
     },
     {
       "desc": "Count*查询出差记录数量",
       "name": "SelectCountFieldTravel",
-      "oql": "select count(applyId) from Travel",
-      "sql": "select count(APPLY_ID) from TRAVEL"
+      "oql": "select count(applyId) as c from Travel",
+      "sql": "select count(APPLY_ID) as c from TRAVEL"
     },
     {
       "desc": "Limit限制返回条数",

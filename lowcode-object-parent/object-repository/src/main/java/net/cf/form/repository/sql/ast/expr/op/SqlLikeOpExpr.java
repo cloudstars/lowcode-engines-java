@@ -35,7 +35,8 @@ public class SqlLikeOpExpr extends AbstractNotableBinaryOpExpr {
 
     @Override
     protected void accept0(SqlAstVisitor visitor) {
-        super.accept0(visitor);
+        visitor.visit(this);
+        visitor.endVisit(this);
     }
 
     @Override

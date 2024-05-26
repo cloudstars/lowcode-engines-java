@@ -45,4 +45,5 @@ public class MongoSelectExpenseAggregateOqlTest extends AbstractSelectExpenseAgg
     public void testSelectExpenseMin() {
         super.testSelectExpenseMin();
     }
+
 }

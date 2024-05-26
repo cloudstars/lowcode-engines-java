@@ -38,4 +38,5 @@ public class MongoDeleteTravelDetailOqlTest extends AbstractDeleteTravelDetailRe
     public void testDeleteTravelAndTripInIdsVars() {
         super.testDeleteTravelAndTripInIdsVars();
     }
+
 }

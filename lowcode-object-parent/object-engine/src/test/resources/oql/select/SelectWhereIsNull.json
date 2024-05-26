@@ -1,0 +1,26 @@
+{
+  "desc": "测试where条件null",
+  "name": "SelectWhereIsNull",
+  "oqls": [
+    {
+      "desc": "测试where is null",
+      "name": "SelectWhereIsNull",
+      "oql": "select staffCode, staffName from Staff where departDate is null",
+      "sql": "select STA_CODE, STA_NAME from STAFF where DEPART_DATE is null",
+      "resultMaps": [{
+        "staffCode": "lisi",
+        "staffName": "李四"
+      }]
+    },
+    {
+      "desc": "测试where is not null",
+      "name": "SelectWhereIsNotNull",
+      "oql": "select staffCode, staffName from Staff where departDate is not null",
+      "sql": "select STA_CODE, STA_NAME from STAFF where DEPART_DATE is not null",
+      "resultMaps": [{
+        "staffCode": "zhangsan",
+        "staffName": "张三"
+      }]
+    }
+  ]
+}

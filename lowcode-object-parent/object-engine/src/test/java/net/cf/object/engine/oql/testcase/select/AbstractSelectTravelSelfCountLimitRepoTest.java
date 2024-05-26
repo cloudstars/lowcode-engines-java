@@ -25,7 +25,7 @@ public abstract class AbstractSelectTravelSelfCountLimitRepoTest
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_COUNT_ONE_TRAVEL);
         OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> data = this.engine.queryOne(stmt);
-        Object count = data.get("COUNT(1)");
+        Object count = data.get("c");
         assert (count != null && count instanceof Number && ((Number) count).intValue() == 2);
     }
 
@@ -34,7 +34,7 @@ public abstract class AbstractSelectTravelSelfCountLimitRepoTest
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_COUNT_STAR_TRAVEL);
         OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> data = this.engine.queryOne(stmt);
-        Object count = data.get("COUNT(*)");
+        Object count = data.get("c");
         assert (count != null && count instanceof Number && ((Number) count).intValue() == 2);
     }
 
@@ -43,7 +43,7 @@ public abstract class AbstractSelectTravelSelfCountLimitRepoTest
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_COUNT_FIELD_TRAVEL);
         OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         Map<String, Object> data = this.engine.queryOne(stmt);
-        Object count = data.get("COUNT(applyId)");
+        Object count = data.get("c");
         assert (count != null && count instanceof Number && ((Number) count).intValue() == 2);
     }
 

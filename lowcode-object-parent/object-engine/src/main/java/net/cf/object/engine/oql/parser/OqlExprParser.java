@@ -157,6 +157,8 @@ public class OqlExprParser extends SqlExprParser {
             return this.parseAggregateExpr(selfObject, (SqlAggregateExpr) x);
         } else if (clazz == SqlMethodInvokeExpr.class) {
             return this.parseMethodInvokeExpr(selfObject, (SqlMethodInvokeExpr) x);
+        } else if (clazz == SqlCaseExpr.class) {
+            return this.parseCaseExpr(selfObject, (SqlCaseExpr) x);
         } else {
             return x;
         }
@@ -275,6 +277,7 @@ public class OqlExprParser extends SqlExprParser {
      */
     private SqlExpr parseLikeExpr(XObject selfObject, SqlLikeOpExpr x) {
         SqlLikeOpExpr sqlX = new SqlLikeOpExpr();
+        sqlX.setNot(x.isNot());
         sqlX.setLeft(this.parseSqlExpr(selfObject, x.getLeft()));
         sqlX.setRight(this.parseSqlExpr(selfObject, x.getRight()));
         return sqlX;
@@ -289,6 +292,7 @@ public class OqlExprParser extends SqlExprParser {
      */
     private SqlExpr parseInListExpr(XObject selfObject, SqlInListExpr x) {
         SqlInListExpr sqlX = new SqlInListExpr();
+        sqlX.setNot(x.isNot());
         sqlX.setLeft(this.parseSqlExpr(selfObject, x.getLeft()));
         List<SqlExpr> targetList = x.getTargetList();
         for (SqlExpr targetItem : targetList) {
@@ -306,6 +310,7 @@ public class OqlExprParser extends SqlExprParser {
      */
     private SqlExpr parseContainsOpExpr(XObject selfObject, SqlContainsOpExpr x) {
         SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
+        // sqlX.setNot(x.isNot()); 暂不支持 not contains
         sqlX.setLeft(this.parseSqlExpr(selfObject, x.getLeft()));
         sqlX.setOperator(x.getOperator());
         sqlX.setRight(this.parseSqlExpr(selfObject, x.getRight()));
@@ -409,6 +414,20 @@ public class OqlExprParser extends SqlExprParser {
     }
 
     /**
+     * 解析 case when表达式
+
+     * @param selfObject
+     * @param x
+     * @return
+     */
+    private SqlCaseExpr parseCaseExpr(XObject selfObject, SqlCaseExpr x) {
+        SqlExpr oqlValueExpr = this.parseSqlExpr(selfObject, x.getValueExpr());
+        x.setValueExpr(oqlValueExpr);
+        return x;
+    }
+
+    /**
+     *
      * 展开模型
      *
      * @param objectRefField 本表中展开的字段

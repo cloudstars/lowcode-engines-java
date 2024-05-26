@@ -134,6 +134,8 @@ public abstract class AbstractSqlBuilder {
             return this.buildSqlExpr((SqlAggregateExpr) x);
         } else if (clazz == SqlMethodInvokeExpr.class) {
             return this.buildSqlExpr((SqlMethodInvokeExpr) x);
+        } else if (clazz == SqlCaseExpr.class) {
+            return this.buildSqlExpr((SqlCaseExpr) x);
         } else {
             return x;
         }
@@ -239,6 +241,11 @@ public abstract class AbstractSqlBuilder {
         SqlMethodInvokeExpr sqlX = new SqlMethodInvokeExpr();
         this.copyMethodSqlExpr(x, sqlX);
         return sqlX;
+    }
+
+    private SqlExpr buildSqlExpr(final SqlCaseExpr x) {
+        x.setValueExpr(this.buildSqlExpr(x.getValueExpr()));
+        return x;
     }
 
     /**

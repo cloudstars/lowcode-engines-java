@@ -81,11 +81,25 @@ public class OqlStatementParser extends OqlExprParser {
             oqlSelectItem.setAlias(selectItem.getAlias());
             oqlSelect.addSelectItem(oqlSelectItem);
         }
+
         SqlExpr sqlWhere = sqlSelect.getWhere();
-        SqlExpr oqlWhere = this.toOqlWhere(resolvedObject, sqlWhere);
-        oqlSelect.setWhere(oqlWhere);
-        oqlSelect.setGroupBy(sqlSelect.getGroupBy());
-        oqlSelect.setOrderBy(sqlSelect.getOrderBy());
+        if (sqlWhere != null) {
+            SqlExpr oqlWhere = this.toOqlWhere(resolvedObject, sqlWhere);
+            oqlSelect.setWhere(oqlWhere);
+        }
+
+        SqlSelectGroupByClause groupByClause = sqlSelect.getGroupBy();
+        if (groupByClause != null) {
+            SqlSelectGroupByClause oqlGroupByClause = this.toOqlGroupByClause(resolvedObject, groupByClause);
+            oqlSelect.setGroupBy(oqlGroupByClause);
+        }
+
+        SqlOrderBy orderBy = sqlSelect.getOrderBy();
+        if (orderBy != null) {
+            SqlOrderBy oqlOrderBy = this.toOqlOrderBy(resolvedObject, orderBy);
+            oqlSelect.setOrderBy(oqlOrderBy);
+        }
+
         oqlSelect.setLimit(sqlSelect.getLimit());
 
         return oqlSelect;
@@ -212,6 +226,42 @@ public class OqlStatementParser extends OqlExprParser {
         }
 
         return oqlWhere;
+    }
+
+
+    /**
+     * 将 SQL group by 转换为 oql group by
+     *
+     * @param resolvedObject
+     * @param groupByClause
+     * @return
+     */
+    private SqlSelectGroupByClause toOqlGroupByClause(XObject resolvedObject, SqlSelectGroupByClause groupByClause) {
+        SqlSelectGroupByClause oqlGroupBy = new SqlSelectGroupByClause();
+        List<SqlExpr> groupItems = groupByClause.getItems();
+        for (SqlExpr groupItem : groupItems) {
+            oqlGroupBy.addItem(this.parseSqlExpr(resolvedObject, groupItem));
+        }
+        return oqlGroupBy;
+    }
+
+    /**
+     * 将 SQL order by 转换为 oql order by
+     *
+     * @param resolvedObject
+     * @param orderBy
+     * @return
+     */
+    private SqlOrderBy toOqlOrderBy(XObject resolvedObject, SqlOrderBy orderBy) {
+        SqlOrderBy oqlOrderBy = new SqlOrderBy();
+        List<SqlSelectOrderByItem> orderByItems = orderBy.getItems();
+        for (SqlSelectOrderByItem orderByItem : orderByItems) {
+            SqlSelectOrderByItem oqlOrderByItem = new SqlSelectOrderByItem();
+            oqlOrderByItem.setExpr(this.parseSqlExpr(resolvedObject, orderByItem.getExpr()));
+            oqlOrderByItem.setAscending(orderByItem.isAscending());
+            oqlOrderBy.addItem(oqlOrderByItem);
+        }
+        return oqlOrderBy;
     }
 
 }

@@ -38,4 +38,10 @@ public class MongoSelectTravelSelfCountLimitOqlTest extends AbstractSelectTravel
     public void testSelectTravelWithLimitOffset() {
         super.testSelectTravelWithLimitOffset();
     }
+
+    @Test
+    @Override
+    public void testSelectCountFieldTravel() {
+        super.testSelectCountFieldTravel();
+    }
 }

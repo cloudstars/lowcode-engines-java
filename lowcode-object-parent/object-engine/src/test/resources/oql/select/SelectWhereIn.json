@@ -1,0 +1,26 @@
+{
+  "desc": "测试 where 条件 in",
+  "name": "SelectWhereIn",
+  "oqls": [
+    {
+      "desc": "测试 where in",
+      "name": "SelectWhereIn",
+      "oql": "select staffCode, staffName from Staff where staffCode in ('zhangsan')",
+      "sql": "select STA_CODE, case STA_CODE from STAFF where STA_CODE in ('zhangsan')",
+      "resultMaps": [{
+        "staffCode": "zhangsan",
+        "staffName": "张三"
+      }]
+    },
+    {
+      "desc": "测试 where not in",
+      "name": "SelectWhereNotIn",
+      "oql": "select staffCode, staffName from Staff where staffCode not in ('zhangsan')",
+      "sql": "select STA_CODE, case STA_CODE from STAFF where STA_CODE not in ('zhangsan')",
+      "resultMaps": [{
+        "staffCode": "lisi",
+        "staffName": "李四"
+      }]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+
+{
+  "name": "SELECT_CONTAINS",
+  "desc": "查询条件Contains",
+  "sqls": [
+    {
+      "name": "SELECT_CONTAINS",
+      "desc": "查询条件CONTAINS",
+      "sql": "select column FROM tableA where c1 contains 'xxxx%' and c2 not contains #{xx}"
+    }
+  ]
+}

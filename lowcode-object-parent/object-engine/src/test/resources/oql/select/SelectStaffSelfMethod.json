@@ -5,7 +5,7 @@
     {
       "desc": "文本方法",
       "name": "SelectStaffSelfTextMethods",
-      "oql": "select LTRIM(staffName), RTRIM(staffName), TRIM(staffName), SUBSTRING(staffName, 1, 2) as subStaff, CONCAT(staffName, '/', staffCode) as staff, LENGTH(staffName) from Staff where staffName = '张三'",
+      "oql": "select LTRIM(staffName), RTRIM(staffName), TRIM(staffName), SUBSTRING(staffName, 1, 2) as subStaff, CONCAT(staffName, '/', staffCode) as staff, LENGTH(staffName), NVL(departDate, '2010-20-20') as departDate from Staff where staffName = '张三'",
       "sql": "select LTRIM(STA_NAME), RTRIM(STA_NAME), TRIM(STA_NAME), CONCAT(STA_NAME, '/', STA_CODE), LENGTH(STA_NAME) from STAFF where STA_NAME = '张三'",
       "resultMap": {
         "LTRIM(staffName)": "张三",

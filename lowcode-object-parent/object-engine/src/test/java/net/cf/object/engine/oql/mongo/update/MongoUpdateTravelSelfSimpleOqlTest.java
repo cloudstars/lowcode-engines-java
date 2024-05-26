@@ -21,7 +21,6 @@ public class MongoUpdateTravelSelfSimpleOqlTest extends AbstractUpdateTravelSelf
         super.testUpdateTravelById();
     }
 
-
     @Test
     @Override
     public void testUpdateTravelByIdVars() {

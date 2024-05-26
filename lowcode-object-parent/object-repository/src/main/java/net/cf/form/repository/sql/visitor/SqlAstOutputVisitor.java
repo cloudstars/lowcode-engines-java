@@ -36,7 +36,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     /**
      * 是否大写输出
      */
-    protected boolean uppercase = true;
+    protected boolean uppercase = false;
 
     /**
      * 是否参数化
@@ -278,16 +278,19 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         this.printChars(x.getText());
         return false;
     }
+
     @Override
     public boolean visit(SqlNullExpr x) {
         this.print(this.uppercase ? "NULL" : "null");
         return false;
     }
+
     @Override
     public boolean visit(SqlListExpr x) {
         this.printParenthesesAndAcceptList(x.getItems(), ", ");
         return false;
     }
+
     @Override
     public boolean visit(SqlJsonObjectExpr x) {
         this.print("{");
@@ -363,8 +366,18 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     @Override
     public boolean visit(SqlLikeOpExpr x) {
         x.getLeft().accept(this);
+        if (x.isNot()) {
+            this.print(this.uppercase ? " NOT " : " not ");
+        }
         this.print(this.uppercase ? " LIKE " : " like ");
         x.getRight().accept(this);
+
+        String escape = x.getEscape();
+        if (escape != null) {
+            this.print(this.uppercase ? " ESCAPE " : " escape ");
+            this.printChars(escape);
+        }
+
         return false;
     }
 
@@ -394,6 +407,9 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     @Override
     public boolean visit(SqlContainsOpExpr x) {
         x.getLeft().accept(this);
+        if (x.isNot()) {
+            this.print(this.uppercase ? "NOT " : "not ");
+        }
         this.print(this.uppercase ? " CONTAINS " : " contains ");
         x.getRight().accept(this);
         return false;
@@ -556,18 +572,87 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     }
 
     @Override
+    public boolean visit(SqlCaseExpr x) {
+        ++this.indentCount;
+        this.print(this.uppercase ? "CASE " : "case ");
+        SqlExpr valueExpr = x.getValueExpr();
+        if (valueExpr != null) {
+            valueExpr.accept(this);
+        }
+
+        List<SqlCaseExpr.Item> items = x.getItems();
+        for (int i = 0, size = items.size(); i < size; ++i) {
+            this.println();
+            this.visit(items.get(i));
+        }
+
+        SqlExpr elExpr = x.getElseExpr();
+        if (elExpr != null) {
+            this.println();
+            this.print(this.uppercase ? "ELSE " : "else ");
+            if (elExpr instanceof SqlCaseExpr) {
+                ++this.indentCount;
+                this.println();
+                this.visit((SqlCaseExpr) elExpr);
+                --this.indentCount;
+            } else {
+                elExpr.accept(this);
+            }
+        }
+
+        --this.indentCount;
+        this.println();
+        this.print(this.uppercase ? "END" : "end");
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlCaseExpr.Item x) {
+        this.print(this.uppercase ? "WHEN " : "when ");
+        SqlExpr conditionExpr = x.getConditionExpr();
+        ++this.indentCount;
+        conditionExpr.accept(this);
+        --this.indentCount;
+        this.print(' ');
+
+        this.print(this.uppercase ? "THEN " : "then ");
+        SqlExpr valueExpr = x.getValueExpr();
+        if (valueExpr instanceof SqlCaseExpr) {
+            ++this.indentCount;
+            this.println();
+            this.visit((SqlCaseExpr) valueExpr);
+            --this.indentCount;
+        } else {
+            ++this.indentCount;
+            valueExpr.accept(this);
+            --this.indentCount;
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean visit(SqlSelectGroupByClause x) {
-        return super.visit(x);
+        this.print(this.uppercase ? "GROUP BY " : "group by ");
+        this.printAndAcceptList(x.getItems(), ", ");
+        return false;
     }
 
     @Override
     public boolean visit(SqlOrderBy x) {
-        return super.visit(x);
+        this.print(this.uppercase ? "ORDER BY " : "order by ");
+        return true;
     }
 
     @Override
     public boolean visit(SqlSelectOrderByItem x) {
-        return super.visit(x);
+        x.getExpr().accept(this);
+        if (x.isAscending()) {
+            this.print(this.uppercase ? " ASC" : " asc");
+        } else {
+            this.print(this.uppercase ? " DESC" : " desc");
+        }
+        return false;
     }
 
     @Override

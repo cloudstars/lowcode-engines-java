@@ -20,4 +20,5 @@ public class MongoSelectStaffLiteralOqlTest extends AbstractSelectStaffSelfLiter
     public void testSelectStaffSelfLiteral() {
         super.testSelectStaffSelfLiteral();
     }
+    
 }

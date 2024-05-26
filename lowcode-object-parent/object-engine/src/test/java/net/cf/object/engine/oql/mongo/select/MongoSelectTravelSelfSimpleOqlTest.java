@@ -62,4 +62,5 @@ public class MongoSelectTravelSelfSimpleOqlTest extends AbstractSelectTravelSelf
     public void testSelectTravelLikeListVars() {
         super.testSelectTravelLikeListVars();
     }
+
 }

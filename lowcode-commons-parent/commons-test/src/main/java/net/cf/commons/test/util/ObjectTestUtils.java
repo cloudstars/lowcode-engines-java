@@ -30,13 +30,49 @@ public final class ObjectTestUtils {
      */
     public static boolean equals(Object source, Object target) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
-            List<String> sourceFieldNames = ObjectTestUtils.getDeclaredFieldNames(source);
-            List<String> targetFieldNames = ObjectTestUtils.getDeclaredFieldNames(target);
-            if (sourceFieldNames.size() != targetFieldNames.size()) {
+            boolean isSGV = ObjectTestUtils.isGeneralValue(s);
+            boolean isTGV = ObjectTestUtils.isGeneralValue(t);
+            if (isSGV && isTGV) { // 两个都是原子类型时，直接equals比较
+                Date date = null;
+                String dateStr = null;
+                if (s instanceof Date && t instanceof String) {
+                    date = (Date) s;
+                    dateStr = (String) t;
+                } else if (s instanceof String && t instanceof Date) {
+                    date = (Date) t;
+                    dateStr = (String) s;
+                }
+
+                if (s instanceof Number && t instanceof Number) {
+                    return s.toString().equals(t.toString());
+                }
+
+                if (date != null && dateStr != null) {
+                    int dateStrLen = dateStr.length();
+                    String dateFormatStr = null;
+                    if (dateStrLen == 10) {
+                        dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd")).format((Date) s);
+                    } else if (dateStrLen == 8) {
+                        dateFormatStr = (new SimpleDateFormat("hh:mm:ss")).format((Date) s);
+                    } else if (dateStrLen == 19) {
+                        dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format((Date) s);
+                    }
+
+                    return dateStr.equals(dateFormatStr);
+                }
+
+                return s.equals(t);
+            } else if (!isSGV && !isTGV) { // 两个都是非原子类型
+                List<String> sourceFieldNames = ObjectTestUtils.getDeclaredFieldNames(s);
+                List<String> targetFieldNames = ObjectTestUtils.getDeclaredFieldNames(t);
+                if (sourceFieldNames.size() != targetFieldNames.size()) {
+                    return false;
+                }
+
+                return ObjectTestUtils.isAssignableFromWithProperties(s, t, sourceFieldNames);
+            } else { // 有一个是原子类型，一个不是原子类型
                 return false;
             }
-
-            return ObjectTestUtils.isAssignableFromWithProperties(source, target, sourceFieldNames);
         });
     }
 
@@ -65,44 +101,9 @@ public final class ObjectTestUtils {
     public static boolean isAssignableFromWithProperties(Object source, Object target, List<String> properties) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
             for (String property : properties) {
-                Object spv = ObjectTestUtils.getFieldValue(source, property);
-                Object tpv = ObjectTestUtils.getFieldValue(target, property);
-                boolean isSGV = ObjectTestUtils.isGeneralValue(spv);
-                boolean isTGV = ObjectTestUtils.isGeneralValue(tpv);
-                if (isSGV && isTGV) {
-                    // 两个都是原子类型时，直接equals比较
-                    if (!ObjectTestUtils.compareObjectNullSafe(spv, tpv, (sf, tf) -> {
-                        Date date = null;
-                        String dateStr = null;
-                        if (sf instanceof Date && tf instanceof String) {
-                            date = (Date) sf;
-                            dateStr = (String) tf;
-                        } else if (sf instanceof String && tf instanceof Date) {
-                            date = (Date) tf;
-                            dateStr = (String) sf;
-                        }
-
-                        if (date != null && dateStr != null) {
-                            int dateStrLen = dateStr.length();
-                            String dateFormatStr = null;
-                            if (dateStrLen == 10) {
-                                dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd")).format((Date) sf);
-                            } else if (dateStrLen == 8) {
-                                dateFormatStr = (new SimpleDateFormat("hh:mm:ss")).format((Date) sf);
-                            } else if (dateStrLen == 19) {
-                                dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format((Date) sf);
-                            }
-
-                            return dateStr.equals(dateFormatStr);
-                        } else {
-                            return sf.equals(tf);
-                        }
-                    })) {
-                        return false;
-                    }
-                } else if (!isSGV && !isTGV) {
-                    return ObjectTestUtils.isAssignableFromWithProperties(spv, tpv, properties);
-                } else {
+                Object sv = ObjectTestUtils.getFieldValue(s, property);
+                Object tv = ObjectTestUtils.getFieldValue(t, property);
+                if (!ObjectTestUtils.equals(sv, tv)) {
                     return false;
                 }
             }

@@ -44,4 +44,5 @@ public class MongoUpdateStaffWithColumnOqlTest extends AbstractUpdateStaffWithCo
     public void testUpdateStaffAgeByIdVars() {
         super.testUpdateStaffAgeByIdVars();
     }
+
 }

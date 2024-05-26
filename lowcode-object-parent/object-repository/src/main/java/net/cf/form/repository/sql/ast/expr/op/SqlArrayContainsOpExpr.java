@@ -2,7 +2,7 @@ package net.cf.form.repository.sql.ast.expr.op;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 
-public class SqlArrayContainsOpExpr extends SqlBinaryOpExpr {
+public class SqlArrayContainsOpExpr extends AbstractNotableBinaryOpExpr {
 
     private SqlContainsOption option = SqlContainsOption.ALL;
 
@@ -10,7 +10,9 @@ public class SqlArrayContainsOpExpr extends SqlBinaryOpExpr {
     }
 
     public SqlArrayContainsOpExpr(SqlExpr left, SqlBinaryOperator operator, SqlExpr right) {
-        super(left, operator, right);
+        this.left = left;
+        this.operator = operator;
+        this.right = right;
     }
 
     public SqlListExpr getRight() {

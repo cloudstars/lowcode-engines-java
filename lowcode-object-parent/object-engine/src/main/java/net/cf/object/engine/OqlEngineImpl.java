@@ -203,7 +203,7 @@ public class OqlEngineImpl implements OqlEngine {
     @Override
     public List<Map<String, Object>> queryList(OqlSelectStatement stmt, Map<String, Object> paramMap) {
         OqlSelectInfos thisOqlStmt = OqlInfosUtils.parseOqlSelectInfos(stmt, paramMap, true);
-        return this.queryList(thisOqlStmt, paramMap);
+        return this.queryList(thisOqlStmt);
     }
 
     @Override
@@ -231,7 +231,7 @@ public class OqlEngineImpl implements OqlEngine {
 
         // 添加分页信息后查询当前页数据
         this.addPageInfo(selfSqlStmt, pageRequest);
-        List<Map<String, Object>> list = this.queryList(selectInfos, paramMap);
+        List<Map<String, Object>> list = this.queryList(selectInfos);
 
         return new PageResult<>(total, list);
     }
@@ -273,7 +273,7 @@ public class OqlEngineImpl implements OqlEngine {
      * @param selectInfos
      * @return
      */
-    private List<Map<String, Object>> queryList(OqlSelectInfos selectInfos, Map<String, Object> paramMap) {
+    private List<Map<String, Object>> queryList(OqlSelectInfos selectInfos) {
         // 当前模型
         XObject selfObject = selectInfos.getResolvedMasterObject();
 

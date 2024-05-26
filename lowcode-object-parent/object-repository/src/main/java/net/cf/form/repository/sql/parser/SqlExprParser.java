@@ -246,6 +246,12 @@ public class SqlExprParser extends AbstractSqlParser {
     private SqlExpr relationalRest(final SqlExpr expr) {
         SqlExpr targetExpr = expr;
         SqlExpr rightExp;
+        boolean isNot = false;
+        if (this.lexer.token == Token.NOT) {
+            isNot = true;
+            this.lexer.nextToken();
+        }
+
         Token token = this.lexer.token;
         switch (token) {
             case EQ:
@@ -283,43 +289,58 @@ public class SqlExprParser extends AbstractSqlParser {
             case LIKE:
                 this.lexer.nextToken();
                 rightExp = this.expr();
-                targetExpr = new SqlLikeOpExpr(targetExpr, rightExp);
-
+                SqlLikeOpExpr likeOpExpr = new SqlLikeOpExpr(targetExpr, rightExp);
+                likeOpExpr.setNot(isNot);
                 if (this.lexer.token == Token.ESCAPE) {
                     this.lexer.nextToken();
-                    ((SqlLikeOpExpr) targetExpr).setEscape(this.lexer.stringVal());
+                    likeOpExpr.setEscape(this.lexer.stringVal());
                     this.lexer.nextToken();
                 }
+                targetExpr = likeOpExpr;
 
                 break;
             case IN:
                 this.lexer.nextToken();
                 this.accept(Token.LPAREN);
-                targetExpr = new SqlInListExpr(targetExpr);
+                SqlInListExpr inListExpr = new SqlInListExpr(targetExpr);
+                inListExpr.setNot(isNot);
+                targetExpr = inListExpr;
                 this.exprList(((SqlInListExpr) targetExpr).getTargetList(), targetExpr);
                 this.accept(Token.RPAREN);
+
+                break;
+            case IS:
+                this.lexer.nextToken();
+                SqlBinaryOperator binaryOp;
+                if (this.lexer.token == Token.NOT) {
+                    binaryOp = SqlBinaryOperator.IS_NOT;
+                    this.lexer.nextToken();
+                } else {
+                    binaryOp = SqlBinaryOperator.IS;
+                }
+                this.accept(Token.NULL);
+                targetExpr = new SqlBinaryOpExpr(targetExpr, binaryOp, new SqlNullExpr());
 
                 break;
             case CONTAINS:
                 this.lexer.nextToken();
                 Token nextToken = this.lexer.token;
                 if (nextToken == Token.ALL || nextToken == Token.ANY) {
+                    SqlBinaryOperator bop = this.lexer.token == Token.ANY ? SqlBinaryOperator.CONTAINS_ANY : SqlBinaryOperator.CONTAINS_ALL;
                     SqlListExpr array = new SqlListExpr();
-                    if (this.lexer.token == Token.ANY) {
-                        targetExpr = new SqlArrayContainsOpExpr(targetExpr, SqlBinaryOperator.CONTAINS_ANY, array);
-                        ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlContainsOption.ANY);
-                        this.lexer.nextToken();
-                    } else if (this.lexer.token == Token.ALL) {
-                        targetExpr = new SqlArrayContainsOpExpr(targetExpr, SqlBinaryOperator.CONTAINS_ALL, array);
-                        ((SqlArrayContainsOpExpr) targetExpr).setOption(SqlContainsOption.ALL);
-                        this.lexer.nextToken();
-                    }
+                    SqlArrayContainsOpExpr arrayContainsOpExpr = new SqlArrayContainsOpExpr(targetExpr, bop, array);
+                    arrayContainsOpExpr.setNot(isNot);
+                    this.lexer.nextToken();
                     this.accept(Token.LPAREN);
                     this.exprList(array.getItems(), targetExpr);
                     this.accept(Token.RPAREN);
+
+                    targetExpr = arrayContainsOpExpr;
                 } else {
                     rightExp = this.additive();
-                    targetExpr = new SqlContainsOpExpr(targetExpr, rightExp);
+                    SqlContainsOpExpr containsOpExpr = new SqlContainsOpExpr(targetExpr, rightExp);
+                    containsOpExpr.setNot(isNot);
+                    targetExpr = containsOpExpr;
                 }
                 break;
             default:
@@ -336,8 +357,14 @@ public class SqlExprParser extends AbstractSqlParser {
      * @return
      */
     public final SqlExpr primary() {
-        Token token = this.lexer.token;
+        boolean isNot = false;
+        if (this.lexer.token == Token.NOT) {
+            isNot = true;
+            this.lexer.nextToken();
+        }
+
         SqlExpr expr = null;
+        Token token = this.lexer.token;
         switch (token) {
             case STAR:
                 expr = new SqlAllColumnExpr();
@@ -428,6 +455,7 @@ public class SqlExprParser extends AbstractSqlParser {
                 SqlSelectParser subQuerySelectParser = new SqlSelectParser(this.lexer);
                 SqlSelect subQuery = subQuerySelectParser.select();
                 SqlExistsExpr existsExpr = new SqlExistsExpr();
+                existsExpr.setNot(isNot);
                 existsExpr.setSubQuery(subQuery);
                 expr = existsExpr;
 

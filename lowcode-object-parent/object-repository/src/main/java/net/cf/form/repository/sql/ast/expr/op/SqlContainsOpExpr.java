@@ -13,28 +13,30 @@ import net.cf.form.repository.sql.visitor.SqlAstVisitor;
  *
  * @author clouds
  */
-public final class SqlContainsOpExpr extends SqlBinaryOpExpr {
+public final class SqlContainsOpExpr extends AbstractNotableBinaryOpExpr {
+
+    private SqlContainsOption containsOption;
 
     public SqlContainsOpExpr() {
-
     }
 
     public SqlContainsOpExpr(SqlExpr left, SqlExpr right) {
-        super(left, SqlBinaryOperator.CONTAINS, right);
+        this.left = left;
+        this.operator = SqlBinaryOperator.CONTAINS;
+        this.right = right;
+    }
+
+    public SqlContainsOption getContainsOption() {
+        return containsOption;
+    }
+
+    public void setContainsOption(SqlContainsOption containsOption) {
+        this.containsOption = containsOption;
     }
 
     @Override
     protected void accept0(SqlAstVisitor visitor) {
-        if (visitor.visit(this)) {
-            if (this.left != null) {
-                this.left.accept(visitor);
-            }
-
-            if (this.right != null) {
-                this.right.accept(visitor);
-            }
-        }
-
+        visitor.visit(this);
         visitor.endVisit(this);
     }
 

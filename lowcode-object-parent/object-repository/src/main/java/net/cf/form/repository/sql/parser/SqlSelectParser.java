@@ -6,6 +6,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlAllColumnExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlCaseExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 
 import java.util.ArrayList;
@@ -41,6 +42,11 @@ public class SqlSelectParser extends SqlExprParser {
         this.accept(Token.SELECT);
 
         SqlSelect select = new SqlSelect();
+        if (this.lexer.token == Token.DISTINCT) {
+            select.setDistinctOption(DistinctOption.DISTINCT);
+            this.lexer.nextToken();
+        }
+
         select.addSelectItems(this.parseSelectItems());
         select.setFrom(this.parseFrom());
         if (this.lexer.token == Token.WHERE) {
@@ -124,6 +130,39 @@ public class SqlSelectParser extends SqlExprParser {
                 this.lexer.nextToken();
                 tExpr = new SqlIdentifierExpr(identifier);
                 tExpr = this.parseIdentifierRest((SqlIdentifierExpr) tExpr);
+
+                break;
+            case CASE:
+                SqlCaseExpr caseExpr = new SqlCaseExpr();
+                this.lexer.nextToken();
+                if (this.lexer.token != Token.WHEN) {
+                    caseExpr.setValueExpr(this.expr());
+                }
+
+                this.accept(Token.WHEN);
+                SqlExpr testExpr = this.expr();
+                this.accept(Token.THEN);
+                SqlExpr valueExpr = this.expr();
+                SqlCaseExpr.Item caseItem = new SqlCaseExpr.Item(testExpr, valueExpr);
+                caseExpr.addItem(caseItem);
+
+                while (this.lexer.token == Token.WHEN) {
+                    this.lexer.nextToken();
+                    testExpr = this.expr();
+                    this.accept(Token.THEN);
+                    valueExpr = this.expr();
+                    caseItem = new SqlCaseExpr.Item(testExpr, valueExpr);
+                    caseExpr.addItem(caseItem);
+                }
+
+                if (this.lexer.token == Token.ELSE) {
+                    this.lexer.nextToken();
+                    caseExpr.setElseExpr(this.expr());
+                }
+
+                this.accept(Token.END);
+                tExpr = caseExpr;
+
                 break;
             default:
                 try {

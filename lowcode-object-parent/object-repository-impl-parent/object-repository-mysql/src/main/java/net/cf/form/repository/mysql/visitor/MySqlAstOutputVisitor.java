@@ -1,6 +1,9 @@
 package net.cf.form.repository.mysql.visitor;
 
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlName;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlPropertyExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlCharExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlContainsOpExpr;
@@ -16,6 +19,28 @@ public class MySqlAstOutputVisitor extends SqlAstOutputVisitor {
         super(builder, parameterized);
     }
 
+    @Override
+    public boolean visit(SqlPropertyExpr x) {
+        SqlName owner = x.getOwner();
+        this.print('`');
+        if (owner != null) {
+            owner.accept(this);
+            this.print('.');
+        }
+        this.print(x.getName());
+        this.print('`');
+
+        return false;
+    }
+
+    @Override
+    public boolean visit(SqlIdentifierExpr x) {
+        this.print('`');
+        this.print(x.getName());
+        this.print('`');
+
+        return false;
+    }
 
     @Override
     public boolean visit(SqlVariantRefExpr x) {

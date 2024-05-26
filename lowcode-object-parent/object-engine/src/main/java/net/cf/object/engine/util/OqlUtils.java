@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class OqlUtils {
 
-   private static List<String> SQL_METHOD_NAMES = Arrays.asList("NOW", "LTRIM", "CONCAT", "SUBSTRING", "TRIM", "RTRIM", "YEAR", "MONTH", "DAY", "LENGTH", "DATE", "TIMESTAMP", "DATE_FORMAT");
+   private static List<String> SQL_METHOD_NAMES = Arrays.asList("NOW", "LTRIM", "CONCAT", "SUBSTRING", "TRIM", "RTRIM", "YEAR", "MONTH", "DAY", "LENGTH", "DATE", "TIMESTAMP", "DATE_FORMAT", "NVL");
 
     /**
      * 判断一个方法的名称是否合法的

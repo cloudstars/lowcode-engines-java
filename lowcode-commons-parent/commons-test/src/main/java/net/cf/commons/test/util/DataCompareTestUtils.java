@@ -73,7 +73,7 @@ public final class DataCompareTestUtils {
                 Object source = entry.getValue();
                 Object target = t.get(entry.getKey());
                 if (!DataCompareTestUtils.equalsObject(source, target)) {
-                    logger.warn("对象的属性{}比较失败，源对象值：{}，目标对象值：{}", entry.getKey(), source, target);
+                    logger.warn("对象的属性{} equals 比较失败，源对象值：{}，目标对象值：{}", entry.getKey(), source, target);
                     return false;
                 }
             }
@@ -275,7 +275,7 @@ public final class DataCompareTestUtils {
                 Object source = sourceMap.get(property);
                 Object target = targetMap.get(property);
                 if (!DataCompareTestUtils.isAssignableFromObjectWithProperties(source, target, properties)) {
-                    logger.warn("对象的属性{}比较失败，源对象值：{}，目标对象值：{}", property, source, target);
+                    logger.warn("对象的属性{} assignableFrom 比较失败，源对象值：{}，目标对象值：{}", property, source, target);
                     return false;
                 }
             }

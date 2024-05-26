@@ -22,4 +22,9 @@ public class MongoInsertHobbyOqlTest extends AbstractInsertHobbyRepoTest {
         super.testInsertHobby();
     }
 
+    @Test
+    @Override
+    public void testInsertHobbyVars() {
+        super.testInsertHobbyVars();
+    }
 }
