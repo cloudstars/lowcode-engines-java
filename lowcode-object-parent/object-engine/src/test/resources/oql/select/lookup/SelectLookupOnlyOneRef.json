@@ -1,0 +1,72 @@
+{
+  "desc": "测试仅查询1对1的相关表，不含本表字段",
+  "name": "SelectOnly1v1LookupFields",
+  "oqls": [
+    {
+      "desc": "查询相关表的*",
+      "name": "SelectAllFields",
+      "oql": "select travel.* from Expense where applyId in (#{applyIds})",
+      "paramMap": {
+        "applyIds": ["111111111-FEL3232-323KLFJFDS-323FDSD", "222222222-FEL3232-323KLFJFDS-323FDSD"]
+      },
+      "resultMaps": [
+        {
+          "travel": {
+            "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单1"
+          }
+        },
+        {
+          "travel": {
+            "applyId": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单2"
+          }
+        }
+      ]
+    },
+    {
+      "desc": "查询相关表的多个独立字段",
+      "name": "SelectMultiFields",
+      "oql": "select travel.applyId as aid, travel.applyName from Expense where applyId in (#{applyIds})",
+      "paramMap": {
+        "applyIds": ["111111111-FEL3232-323KLFJFDS-323FDSD", "222222222-FEL3232-323KLFJFDS-323FDSD"]
+      },
+      "resultMaps": [
+        {
+          "travel": {
+            "aid": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单1"
+          }
+        },
+        {
+          "travel": {
+            "aid": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单2"
+          }
+        }
+      ]
+    },
+    {
+      "desc": "查询相关表的多个展开字段",
+      "name": "SelectExpandFields",
+      "oql": "select travel(applyId, applyName) from Expense where applyId in (#{applyIds})",
+      "paramMap": {
+        "applyIds": ["111111111-FEL3232-323KLFJFDS-323FDSD", "222222222-FEL3232-323KLFJFDS-323FDSD"]
+      },
+      "resultMaps": [
+        {
+          "travel": {
+            "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单1"
+          }
+        },
+        {
+          "travel": {
+            "applyId": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单2"
+          }
+        }
+      ]
+    }
+  ]
+}

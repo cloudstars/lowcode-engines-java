@@ -68,6 +68,7 @@ public class OqlStatementParser extends OqlExprParser {
      */
     private OqlSelect toOqlSelect(SqlSelect sqlSelect) {
         OqlSelect oqlSelect = new OqlSelect();
+        oqlSelect.setDistinctOption(sqlSelect.getDistinctOption());
         SqlTableSource tableSource = sqlSelect.getFrom();
         OqlObjectSource objectSource = this.parseObjectSource(tableSource);
         oqlSelect.setFrom(objectSource);

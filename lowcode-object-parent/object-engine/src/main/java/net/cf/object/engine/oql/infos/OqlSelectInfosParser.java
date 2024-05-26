@@ -61,6 +61,7 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
         // 获取本模型对应的OQL语句
         OqlSelectStatement masterStmt = this.getStmtByObject(this.masterObject);
         OqlSelect masterSelect = masterStmt.getSelect();
+        masterSelect.setDistinctOption(select.getDistinctOption());
 
         // 解析查询字段
         List<OqlSelectItem> selectItems = select.getSelectItems();
@@ -69,6 +70,12 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
             String alias = selectItem.getAlias();
             if (selectItemExpr instanceof OqlObjectExpandExpr) {
                 this.parseSelectObjectExpandExpr((OqlObjectExpandExpr) selectItemExpr, alias);
+            } else if (selectItemExpr instanceof OqlFieldExpr && ((OqlFieldExpr) selectItemExpr).getResolvedField().getOwner() != this.masterObject) {
+                XField refField = ((OqlFieldExpr) selectItemExpr).getResolvedField();
+                OqlSelectItem refSelectItem = new OqlSelectItem(OqlUtils.buildFieldExpr(refField));
+                refSelectItem.setAlias(alias);
+                OqlSelect refSelect = this.getStmtByObject(refField.getOwner()).getSelect();
+                refSelect.addSelectItem(refSelectItem);
             } else {
                 masterSelect.addSelectItem(selectItem);
             }

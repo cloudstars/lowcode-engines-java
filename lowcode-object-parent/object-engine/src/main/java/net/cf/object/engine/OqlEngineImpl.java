@@ -5,16 +5,15 @@ import net.cf.form.repository.sql.FastSqlException;
 import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlVariantRefExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlIntegerExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlJsonArrayExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
-import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
-import net.cf.form.repository.sql.ast.statement.SqlSelect;
-import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
-import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
+import net.cf.form.repository.sql.ast.statement.*;
 import net.cf.form.repository.util.SqlUtils;
 import net.cf.object.engine.data.DataConvert;
+import net.cf.object.engine.data.FieldMapping;
 import net.cf.object.engine.data.PageRequest;
 import net.cf.object.engine.data.PageResult;
 import net.cf.object.engine.object.XField;
@@ -330,18 +329,31 @@ public class OqlEngineImpl implements OqlEngine {
 
                 // 将相关表归并后的数据按主表中相关表的记录ID分组追加到主表返回结果中
                 String lookupResultKey = lookupSelectCmd.getObjectRefResultKey();
+                String lookupPrimaryFieldInResult = lookupPrimaryFieldName;
+                List<FieldMapping> fieldMappings = lookupSelectCmd.getFieldMappings();
+                if (!CollectionUtils.isEmpty(fieldMappings)) {
+                    // 检测相关表字段是否有被设置了别名
+                    String lookupPrimaryFieldColumnName = lookupObject.getPrimaryField().getColumnName();
+                    for (FieldMapping fieldMapping : fieldMappings) {
+                        if (fieldMapping.getColumnName().equals(lookupPrimaryFieldColumnName)) {
+                            lookupPrimaryFieldInResult = fieldMapping.getFieldName();
+                            break;
+                        }
+                    }
+                }
+
                 if (selfLookupField.isMultiRef()) {
                     for (Map<String, Object> selfResultMap : masterResultMapList) {
                         Object lookupFieldValue = selfResultMap.get(selfLookupFieldName);
                         List<String> recordIds = this.convertToLookupRecordIds(lookupFieldValue);
-                        Object lookupResultValue = this.extractLookupRecordMapListByField(lookupResultMapList, lookupPrimaryFieldName, recordIds);
+                        Object lookupResultValue = this.extractLookupRecordMapListByField(lookupResultMapList, lookupPrimaryFieldInResult, recordIds);
                         selfResultMap.put(lookupResultKey, lookupResultValue);
                     }
                 } else {
                     for (Map<String, Object> selfResultMap : masterResultMapList) {
                         Object lookupFieldValue = selfResultMap.get(selfLookupFieldName);
                         String recordId = this.convertToLookupRecordId(lookupFieldValue);
-                        Object lookupResultValue = this.extractLookupRecordMapByField(lookupResultMapList, lookupPrimaryFieldName, recordId);
+                        Object lookupResultValue = this.extractLookupRecordMapByField(lookupResultMapList, lookupPrimaryFieldInResult, recordId);
                         selfResultMap.put(lookupResultKey, lookupResultValue);
                     }
                 }
@@ -650,9 +662,17 @@ public class OqlEngineImpl implements OqlEngine {
     public int modify(OqlUpdateStatement stmt, Map<String, Object> paramMap) {
         // OQL语句解析
         OqlUpdateInfos updateInfos = OqlInfosUtils.parseOqlUpdateInfos(stmt, paramMap);
+        XObject masterObject = stmt.getObjectSource().getResolvedObject();
 
         // 更新本表
         SqlUpdateCmd masterUpdateCmd = updateInfos.getMasterUpdateCmd();
+        // 如果仅更新子表的情况下，主表的字段列表为空，添加一个主键ID更新为自己 setItem
+        List<SqlUpdateSetItem> masterSetItems = masterUpdateCmd.getStatement().getSetItems();
+        if (masterSetItems.size() == 0) {
+            String masterPrimaryColumnName = masterObject.getPrimaryField().getColumnName();
+            SqlExpr masterPrimaryColumnExpr = new SqlIdentifierExpr(masterPrimaryColumnName);
+            masterSetItems.add(new SqlUpdateSetItem(masterPrimaryColumnExpr, masterPrimaryColumnExpr));
+        }
         int effectedRows = this.executor.update(masterUpdateCmd);
 
         // 不存在子表时直接返回

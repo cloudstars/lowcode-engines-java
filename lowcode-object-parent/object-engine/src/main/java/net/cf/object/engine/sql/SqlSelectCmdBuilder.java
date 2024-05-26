@@ -88,6 +88,7 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
 
         // 初始化 SQL 查询语句
         SqlSelect sqlSelect = new SqlSelect();
+        sqlSelect.setDistinctOption(select.getDistinctOption());
         this.sqlStmt = new SqlSelectStatement(sqlSelect);
         List<OqlSelectItem> selectItems = select.getSelectItems();
         for (OqlSelectItem selectItem : selectItems) {

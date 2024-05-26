@@ -1,0 +1,16 @@
+{
+  "desc": "测试distinct",
+  "name": "SelectDistinct",
+  "oqls": [
+    {
+      "desc": "查询Distinct",
+      "name": "SelectDistinctList",
+      "oql": "select distinct joinDate from Staff",
+      "resultMaps": [
+        {
+          "joinDate": "2020-10-10"
+        }
+      ]
+    }
+  ]
+}
