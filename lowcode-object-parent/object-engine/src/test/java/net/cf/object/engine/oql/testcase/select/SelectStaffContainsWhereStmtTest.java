@@ -48,4 +48,9 @@ public class SelectStaffContainsWhereStmtTest extends AbstractOqlTest implements
         SqlSelectStatement sqlStmt = selectInfos.getMasterSelectCmd().getStatement();
         assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));assert (sqlStmt != null && StringTestUtils.equalsIgnoreWhiteSpace(sqlStmt.toString(), oqlInfo.sql));
     }
+
+    @Override
+    public void testSelectStaffByNotHobby() {
+
+    }
 }

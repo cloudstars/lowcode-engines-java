@@ -272,10 +272,10 @@ public final class DataCompareTestUtils {
     public static boolean isAssignableFromMapWithProperties(Map<String, Object> sourceMap, Map<String, Object> targetMap, List<String> properties) {
         return ObjectTestUtils.compareObjectNullSafe(sourceMap, targetMap, (s, t) -> {
             for (String property : properties) {
-                Object source = sourceMap.get(property);
-                Object target = targetMap.get(property);
-                if (!DataCompareTestUtils.isAssignableFromObjectWithProperties(source, target, properties)) {
-                    logger.warn("对象的属性{} assignableFrom 比较失败，源对象值：{}，目标对象值：{}", property, source, target);
+                Object spv = s.get(property);
+                Object tpv = t.get(property);
+                if (!DataCompareTestUtils.equalsObject(spv, tpv)) {
+                    logger.warn("对象的属性{} assignableFrom 比较失败，源对象值：{}，目标对象值：{}", property, spv, tpv);
                     return false;
                 }
             }

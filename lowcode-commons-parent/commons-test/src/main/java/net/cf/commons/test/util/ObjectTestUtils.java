@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,22 +44,28 @@ public final class ObjectTestUtils {
                     dateStr = (String) s;
                 }
 
-                if (s instanceof Number && t instanceof Number) {
-                    return s.toString().equals(t.toString());
-                }
-
                 if (date != null && dateStr != null) {
                     int dateStrLen = dateStr.length();
                     String dateFormatStr = null;
                     if (dateStrLen == 10) {
-                        dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd")).format((Date) s);
+                        dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
                     } else if (dateStrLen == 8) {
-                        dateFormatStr = (new SimpleDateFormat("hh:mm:ss")).format((Date) s);
+                        dateFormatStr = (new SimpleDateFormat("hh:mm:ss")).format(date);
                     } else if (dateStrLen == 19) {
-                        dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format((Date) s);
+                        dateFormatStr = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(date);
                     }
 
                     return dateStr.equals(dateFormatStr);
+                }
+
+                if (s instanceof Number && t instanceof Number) {
+                    if (s instanceof BigDecimal && t instanceof BigDecimal) {
+                         return ((BigDecimal) s).compareTo((BigDecimal) t) == 0;
+                    }
+
+                    if ((s instanceof Long && t instanceof Integer) || (s instanceof Integer && t instanceof Long)) {
+                        return s.toString().equals(t.toString());
+                    }
                 }
 
                 return s.equals(t);

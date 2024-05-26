@@ -22,11 +22,12 @@ public class MySqlAstOutputVisitor extends SqlAstOutputVisitor {
     @Override
     public boolean visit(SqlPropertyExpr x) {
         SqlName owner = x.getOwner();
-        this.print('`');
         if (owner != null) {
             owner.accept(this);
             this.print('.');
         }
+
+        this.print('`');
         this.print(x.getName());
         this.print('`');
 
@@ -53,11 +54,8 @@ public class MySqlAstOutputVisitor extends SqlAstOutputVisitor {
 
     @Override
     public boolean visit(SqlContainsOpExpr x) {
-        visitContains(x.getLeft(), x.getRight());
-        return false;
-    }
-
-    private void visitContains(SqlExpr left, SqlExpr right) {
+        SqlExpr left = x.getLeft();
+        SqlExpr right = x.getRight();
         this.print("JSON_CONTAINS(");
         left.accept(this);
         this.print(",");
@@ -69,8 +67,15 @@ public class MySqlAstOutputVisitor extends SqlAstOutputVisitor {
             this.print(":");
             this.print(((SqlVariantRefExpr) right).getVarName());
         } else {
-            //todo
+            throw new RuntimeException("不支持的contains右值表达式" + right.toString());
         }
-        this.print(") = 1");
+
+        if (x.isNot()) {
+            this.print(") = 0");
+        } else {
+            this.print(") = 1");
+        }
+
+        return false;
     }
 }

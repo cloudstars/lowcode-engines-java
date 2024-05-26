@@ -5,8 +5,24 @@
     {
       "desc": "查询员工记录",
       "name": "SelectStaffByHobby",
-      "oql": "select staffId, staffCode, staffName, joinDate from Staff where hobbies contains '663b6e868cb215763ccfbd9e'",
-      "sql": "select STA_ID, STA_CODE, STA_NAME, JOIN_DATE from STAFF where HOBBIES contains '663b6e868cb215763ccfbd9e'"
+      "oql": "select staffCode  from Staff where hobbies contains '663b6e868cb215763ccfbd9e'",
+      "sql": "select STA_CODE from STAFF where HOBBIES contains '663b6e868cb215763ccfbd9e'",
+      "resultMaps": [
+        {
+          "staffCode": "zhangsan"
+        }
+      ]
+    },
+    {
+      "desc": "查询员工记录not contains",
+      "name": "SelectStaffByNotHobby",
+      "oql": "select staffCode from Staff where hobbies not contains '663b6e868cb215763ccfbd9e'",
+      "sql": "select STA_CODE from STAFF where HOBBIES not contains '663b6e868cb215763ccfbd9e'",
+      "resultMaps": [
+        {
+          "staffCode": "lisi"
+        }
+      ]
     }
   ]
 }

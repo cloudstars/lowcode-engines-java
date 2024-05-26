@@ -33,6 +33,7 @@ public abstract class AbstractInsertStaffSelfBatchRepoTest extends AbstractOqlRe
             assert (oqlInfo.paramMaps.size() == 2);
             int[] effectedRowsArray = this.engine.createList(oqlStmt, oqlInfo.paramMaps);
             assert (effectedRowsArray.length == 2);
+            // TODO 自增主键没有生成
             assert (oqlInfo.paramMaps.get(0).get("staffId") != null);
             assert (oqlInfo.paramMaps.get(1).get("staffId") != null);
         }

@@ -47,8 +47,14 @@ public class BatchInsertJdbcTemplate {
         int[] effectedRowArray = jdbcTemplate.execute(conn -> conn.prepareStatement(targetSql, Statement.RETURN_GENERATED_KEYS), callback);
         // 将返回的主键添加到入参中
         List<Map<String, Object>> keys = callback.getGeneratedKeys();
+        String autoGenColumn = stmt.getAutoGenColumn();
         for (int i = 0, l = paramMaps.size(); i < l; i++) {
-            paramMaps.get(i).putAll(keys.get(i));
+            Map<String, Object> key = keys.get(i);
+            if (key.containsKey("GENERATED_KEY")) {// MYSQL特殊，H2是列名
+                paramMaps.get(i).put(autoGenColumn, key.get("GENERATED_KEY"));
+            } else {
+                paramMaps.get(i).put(autoGenColumn, key.get(autoGenColumn));
+            }
         }
         return effectedRowArray;
     }

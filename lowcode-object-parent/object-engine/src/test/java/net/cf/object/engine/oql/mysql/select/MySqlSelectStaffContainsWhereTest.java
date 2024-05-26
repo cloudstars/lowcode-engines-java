@@ -19,4 +19,10 @@ public class MySqlSelectStaffContainsWhereTest extends AbstractSelectStaffContai
         super.testSelectStaffByHobby();
     }
 
+    @Test
+    @Override
+    public void testSelectStaffByNotHobby() {
+        super.testSelectStaffByNotHobby();
+    }
+
 }

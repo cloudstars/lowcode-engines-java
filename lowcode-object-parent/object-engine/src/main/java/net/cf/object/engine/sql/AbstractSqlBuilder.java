@@ -206,6 +206,7 @@ public abstract class AbstractSqlBuilder {
     private SqlExpr buildSqlExpr(final SqlContainsOpExpr x) {
         SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
         sqlX.setLeft(this.buildSqlExpr(x.getLeft()));
+        sqlX.setNot(x.isNot());
         sqlX.setOperator(x.getOperator());
         sqlX.setRight(this.buildSqlExpr(x.getRight()));
         sqlX.setParenthesized(x.isParenthesized());

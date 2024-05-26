@@ -189,6 +189,7 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
     private SqlExpr parseContainsOpExpr(SqlContainsOpExpr x) {
         SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
         sqlX.setLeft(this.parseExpr(x.getLeft()));
+        sqlX.setNot(x.isNot());
         sqlX.setOperator(x.getOperator());
         sqlX.setRight(this.parseExpr(x.getRight()));
         sqlX.setParenthesized(x.isParenthesized());

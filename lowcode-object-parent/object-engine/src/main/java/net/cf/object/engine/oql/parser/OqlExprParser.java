@@ -310,7 +310,7 @@ public class OqlExprParser extends SqlExprParser {
      */
     private SqlExpr parseContainsOpExpr(XObject selfObject, SqlContainsOpExpr x) {
         SqlContainsOpExpr sqlX = new SqlContainsOpExpr();
-        // sqlX.setNot(x.isNot()); 暂不支持 not contains
+        sqlX.setNot(x.isNot());
         sqlX.setLeft(this.parseSqlExpr(selfObject, x.getLeft()));
         sqlX.setOperator(x.getOperator());
         sqlX.setRight(this.parseSqlExpr(selfObject, x.getRight()));

@@ -11,7 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("mysql")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ObjectEngineOqlMySqlTestApplication.class)
-public class MySqlDeleteTravelSelfSimpleOqlTest extends AbstractDeleteTravelSelfSimpleRepoTest {
+public class
+MySqlDeleteTravelSelfSimpleOqlTest extends AbstractDeleteTravelSelfSimpleRepoTest {
 
     @Test
     @Override
