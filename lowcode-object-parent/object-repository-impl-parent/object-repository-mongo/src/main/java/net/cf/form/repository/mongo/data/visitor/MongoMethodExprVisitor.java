@@ -258,6 +258,8 @@ public class MongoMethodExprVisitor {
                 return buildDateFormat(sqlMethodInvokeExpr, globalContext);
             case "DATE":
                 return buildDateConvert(sqlMethodInvokeExpr, globalContext);
+            case "IFNULL":
+                return buildIfNull(sqlMethodInvokeExpr, globalContext);
             default:
                 throw new RuntimeException("unknown method");
         }
@@ -287,4 +289,20 @@ public class MongoMethodExprVisitor {
         return document;
     }
 
+
+    /**
+     * @param sqlMethodInvokeExpr
+     * @param globalContext
+     * @return
+     */
+    private static Object buildIfNull(SqlMethodInvokeExpr sqlMethodInvokeExpr, GlobalContext globalContext) {
+        Document document = new Document();
+        SqlExpr sqlExpr = sqlMethodInvokeExpr.getArguments().get(0);
+        Object item = getTagVal(sqlExpr, globalContext);
+
+        SqlExpr formatSqlExpr = sqlMethodInvokeExpr.getArguments().get(1);
+        Object val = MongoExprVisitor.visit(formatSqlExpr, globalContext);
+        document.put("$ifNull", Arrays.asList(item, val));
+        return document;
+    }
 }

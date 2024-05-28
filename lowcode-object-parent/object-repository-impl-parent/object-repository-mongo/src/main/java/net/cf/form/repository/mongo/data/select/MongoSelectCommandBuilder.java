@@ -12,6 +12,7 @@ import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
 import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlCaseExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
 import net.cf.form.repository.sql.ast.statement.*;
 import org.bson.Document;
@@ -146,6 +147,9 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
                 break;
             case ORDER:
                 buildOrderBy();
+                break;
+            case DISTINCT:
+                buildDistinct();
                 break;
             case LIMIT:
                 buildLimit();
@@ -349,7 +353,10 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
         for (MongoSelectItem selectItem : this.selectItems) {
             SqlExpr sqlExpr = selectItem.getSqlExpr();
-            if (sqlExpr instanceof SqlValuableExpr || selectItem.getExprEnum() == ExprTypeEnum.METHOD || selectItem.getExprEnum() == ExprTypeEnum.EXPRESSION) {
+            if (sqlExpr instanceof SqlValuableExpr
+                    || sqlExpr instanceof SqlCaseExpr
+                    || selectItem.getExprEnum() == ExprTypeEnum.METHOD
+                    || selectItem.getExprEnum() == ExprTypeEnum.EXPRESSION) {
                 Object value = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.PARAM));
                 // 添加常量数据,因为在语句中，所以必须使用mongo格式
                 addFields.put(selectItem.getFieldName(), value);
@@ -359,6 +366,11 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             AggregationOperation aggregationOperation = new DocumentAggregationOperation(new Document("$addFields", addFields));
             this.aggregationOperations.add(aggregationOperation);
         }
+    }
+
+
+    private void buildDistinct() {
+
     }
 
 
@@ -381,36 +393,6 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
         }
 
     }
-
-    /**
-     * @param sqlJoinTableSource
-     * @return
-     */
-    /*
-    private List<Document> buildLookup(SqlJoinTableSource sqlJoinTableSource) {
-
-        if (!(sqlJoinTableSource.getLeft() instanceof SqlExprTableSource)) {
-            throw new RuntimeException("not support");
-        }
-        SqlExprTableSource leftTableSource = (SqlExprTableSource) sqlJoinTableSource.getLeft();
-        SqlTableSource rightTableSource = sqlJoinTableSource.getRight();
-        if (rightTableSource instanceof SqlJoinTableSource) {
-            // 先不支持嵌套
-            throw new RuntimeException("not support");
-        } else if (rightTableSource instanceof SqlExprTableSource) {
-            String mainTable = leftTableSource.getTableName();
-            String slaveTable = ((SqlExprTableSource) rightTableSource).getTableName();
-            SqlJoinTableSource.JoinType joinType = sqlJoinTableSource.getJoinType();
-            if (joinType == SqlJoinTableSource.JoinType.JOIN || joinType == SqlJoinTableSource.JoinType.LEFT_OUTER_JOIN) {
-                return buildSingleLeftJoinLookup(mainTable, slaveTable, slaveTable, sqlJoinTableSource.getCondition());
-            } else {
-                throw new RuntimeException("not support");
-            }
-        } else {
-            throw new RuntimeException("not support");
-        }
-    }*/
-
 
     private List<Document> buildSingleLeftJoinLookup(String mainTable, String slaveTable, String slaveTableAs, SqlExpr sqlExpr) {
         Map<String, List<String>> table2JoinParam = JoinConditionBuilder.getJoinParam((SqlBinaryOpExpr) sqlExpr);
@@ -515,13 +497,11 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
             for (MongoSelectItem selectItem : groupByFields) {
                 addProjectFieldForAggregateId(selectItem, fieldProject);
             }
-
             for (MongoSelectItem selectItem : selectItems) {
                 if (selectItem.isAggr()) {
                     addProjectField(selectItem, fieldProject);
                 }
             }
-
         } else {
             for (MongoSelectItem mongoSelectItem : selectItems) {
                 addProjectField(mongoSelectItem, fieldProject);

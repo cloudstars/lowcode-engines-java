@@ -16,8 +16,8 @@ public enum ExprTypeEnum {
     EXPRESSION,
     METHOD,
     PARAM,
-    COMMON,
-    AGGR;
+    AGGR,
+    OHTER;
 
 
     public static ExprTypeEnum match(SqlExpr sqlExpr) {
@@ -33,16 +33,6 @@ public enum ExprTypeEnum {
         if (sqlExpr instanceof SqlBinaryOpExpr) {
             return EXPRESSION;
         }
-        return COMMON;
+        return OHTER;
     }
-
-
-    public boolean isMethod() {
-        return this == AGGR || this == METHOD;
-    }
-
-    public boolean shouldGetOriginExpression() {
-        return this != PARAM;
-    }
-
 }

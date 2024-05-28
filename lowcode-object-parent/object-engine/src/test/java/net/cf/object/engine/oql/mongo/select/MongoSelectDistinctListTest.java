@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
+//@MXY todo
 @RunWith(SpringRunner.class)
 @ActiveProfiles("mongo")
 @Import(value = {ObjectEngineOqlMongoTestApplication.class})

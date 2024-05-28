@@ -12,6 +12,7 @@ public enum AggregationOpEnum {
     GROUP_BY,
     ORDER,
     LIMIT,
+    DISTINCT,
     PROJECT;
 
     /**
@@ -24,6 +25,7 @@ public enum AggregationOpEnum {
         operations.add(LOOKUP);
         operations.add(GROUP_BY);
         operations.add(ORDER);
+        operations.add(DISTINCT);
         operations.add(LIMIT);
         operations.add(PROJECT);
         return operations;

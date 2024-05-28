@@ -38,6 +38,11 @@ public class MongoExpressionVisitor {
 
         SqlBinaryOperator sqlBinaryOperator = sqlExpr.getOperator();
         MongoOperator mongoOperator = MongoOperator.match(sqlBinaryOperator);
+
+        // 特殊处理is
+        if (mongoOperator == MongoOperator.IS || mongoOperator == MongoOperator.IS_NOT) {
+            return buildIsNull(mongoOperator, sqlExpr, globalContext);
+        }
         if (mongoOperator.isLogical()) {
             // 逻辑
             return visitLogical(mongoOperator, sqlExpr, globalContext);
@@ -132,6 +137,32 @@ public class MongoExpressionVisitor {
         return escapedValue;
     }
 
+
+    private static Object buildIsNull(MongoOperator mongoOperator, SqlBinaryOpExpr sqlExpr, GlobalContext globalContext) {
+        // 不能加$
+        Object left = MongoExprVisitor.visit(sqlExpr.getLeft(), globalContext);
+
+        String field = String.valueOf(left);
+        Document document = new Document();
+        List<Document> documents = new ArrayList<>();
+        if (mongoOperator == MongoOperator.IS) {
+            // is null
+            // 字段不存在或者字段的值为null
+            Document existDoc = new Document(field, new Document("$exists", false));
+            Document nullDoc = new Document("$expr", new Document("$eq", Arrays.asList("$" + field, null)));
+            documents.add(existDoc);
+            documents.add(nullDoc);
+            document.put("$or", documents);
+        } else {
+            // is not null
+            Document existDoc = new Document(field, new Document("$exists", true));
+            Document nullDoc = new Document("$expr", new Document("$ne", Arrays.asList("$" + field, null)));
+            documents.add(existDoc);
+            documents.add(nullDoc);
+            document.put("$and", documents);
+        }
+        return document;
+    }
 
     /**
      * @param mongoOperator
@@ -262,14 +293,14 @@ public class MongoExpressionVisitor {
         Object right = pair.getRight();
 
         if (sqlExpr instanceof SqlContainsOpExpr) {
-            return buildContainsSingle(sqlExpr, left, right, globalContext);
+            return buildContainsSingle((SqlContainsOpExpr) sqlExpr, left, right, globalContext);
         }
 
         SqlArrayContainsOpExpr sqlArrayContainsOpExpr = (SqlArrayContainsOpExpr) sqlExpr;
         if (sqlArrayContainsOpExpr.getOption() == SqlContainsOption.ALL) {
-            return buildContainsAll(sqlExpr, left, right, globalContext);
+            return buildContainsAll((SqlArrayContainsOpExpr) sqlExpr, left, right, globalContext);
         } else {
-            return buildContainsAny(sqlExpr, left, right, globalContext);
+            return buildContainsAny((SqlArrayContainsOpExpr) sqlExpr, left, right, globalContext);
         }
     }
 
@@ -280,8 +311,14 @@ public class MongoExpressionVisitor {
      * @param globalContext
      * @return
      */
-    private static Document buildContainsAll(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
-        return new Document(String.valueOf(left), new Document("$all", right));
+    private static Document buildContainsAll(SqlArrayContainsOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
+        Document document = new Document(String.valueOf(left), new Document("$all", right));
+
+        if (sqlExpr.not) {
+            // {$nor:[{param:{$all:[]}}]} 来实现not
+            return new Document("$nor", Arrays.asList(document));
+        }
+        return document;
     }
 
     /**
@@ -291,8 +328,14 @@ public class MongoExpressionVisitor {
      * @param globalContext
      * @return
      */
-    private static Document buildContainsAny(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
-        return new Document(String.valueOf(left), new Document("$elemMatch", new Document("$in", right)));
+    private static Document buildContainsAny(SqlArrayContainsOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
+        Document document = new Document(String.valueOf(left), new Document("$elemMatch", new Document("$in", right)));
+        if (sqlExpr.not) {
+            // {$nor:[{param:{$elemMatch:{$in:[]}}}]} 来实现not
+            return new Document("$nor", Arrays.asList(document));
+        }
+        return document;
+
     }
 
     /**
@@ -302,8 +345,13 @@ public class MongoExpressionVisitor {
      * @param globalContext
      * @return
      */
-    private static Document buildContainsSingle(SqlBinaryOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
-        return new Document(String.valueOf(left), new Document("$all", Arrays.asList(right)));
+    private static Document buildContainsSingle(SqlContainsOpExpr sqlExpr, Object left, Object right, GlobalContext globalContext) {
+        Document document = new Document(String.valueOf(left), new Document("$all", Arrays.asList(right)));
+        if (sqlExpr.not) {
+            // {$nor:[{param:{$all:[]}}]} 来实现not
+            return new Document("$nor", Arrays.asList(document));
+        }
+        return document;
     }
 
 

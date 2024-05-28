@@ -6,6 +6,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.literal.*;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
+import net.cf.form.repository.sql.ast.expr.op.SqlCaseExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlListExpr;
 import org.bson.Document;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -100,6 +102,10 @@ public class MongoExprVisitor {
         }
         if (sqlExpr instanceof SqlVariantRefExpr) {
             return visitVariable((SqlVariantRefExpr) sqlExpr, globalContext, visitContext);
+        }
+
+        if (sqlExpr instanceof SqlCaseExpr) {
+            return visitCaseWhen((SqlCaseExpr) sqlExpr, globalContext, visitContext);
         }
 
         // 子查询
@@ -282,5 +288,41 @@ public class MongoExprVisitor {
         return document;
     }
 
+
+    private static Object visitCaseWhen(SqlCaseExpr sqlCaseExpr, GlobalContext globalContext, VisitContext context) {
+        Object param = null;
+        if (sqlCaseExpr.getValueExpr() instanceof SqlIdentifierExpr) {
+            param = visit(sqlCaseExpr.getValueExpr(), globalContext, VisitContext.getFieldTagContext());
+        } else {
+            param = visit(sqlCaseExpr.getValueExpr(), globalContext);
+        }
+
+        Document document = new Document();
+        List<Document> branches = new ArrayList<>();
+        for (SqlCaseExpr.Item item : sqlCaseExpr.getItems()) {
+            Document branch = new Document();
+            Document caseDoc = new Document();
+            if (item.getConditionExpr() instanceof SqlValuableExpr) {
+                Object condVal = visit(item.getConditionExpr(), globalContext, context);
+                caseDoc.put("$eq", Arrays.asList(param, condVal));
+            } else {
+                throw new RuntimeException("case when不支持其他类型");
+            }
+            branch.put("case", caseDoc);
+            Object thenVal = visit(item.getValueExpr(), globalContext, context);
+            branch.put("then", thenVal);
+            branches.add(branch);
+        }
+        document.put("branches", branches);
+
+        Object elseVal;
+        if (sqlCaseExpr.getElseExpr() instanceof SqlValuableExpr) {
+            elseVal = visit(sqlCaseExpr.getElseExpr(), globalContext, context);
+        } else {
+            throw new RuntimeException("case when中else不支持其他类型");
+        }
+        document.put("default", elseVal);
+        return new Document("$switch", document);
+    }
 
 }
