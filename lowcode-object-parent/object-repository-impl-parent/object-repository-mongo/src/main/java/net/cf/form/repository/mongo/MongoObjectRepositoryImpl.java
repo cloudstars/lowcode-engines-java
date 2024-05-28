@@ -19,10 +19,8 @@ import net.cf.form.repository.mongo.data.select.MongoSelectSqlAstVisitor;
 import net.cf.form.repository.mongo.data.update.MongoUpdateCommand;
 import net.cf.form.repository.mongo.data.update.MongoUpdateCommandBuilder;
 import net.cf.form.repository.mongo.data.update.MongoUpdateSqlAstVisitor;
-import net.cf.form.repository.sql.ast.statement.SqlDeleteStatement;
-import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
-import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
-import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
+import net.cf.form.repository.sql.ast.expr.identifier.SqlAggregateExpr;
+import net.cf.form.repository.sql.ast.statement.*;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -33,10 +31,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MongoObjectRepositoryImpl implements ObjectRepository {
 
@@ -208,13 +203,52 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
     }
 
 
-    private List<Map<String, Object>> convert(List<Document> documents, DataConvertContext convertContext) {
+    private List<Map<String, Object>> convert(SqlSelectStatement statement, List<Document> documents, DataConvertContext convertContext) {
+        if (CollectionUtils.isEmpty(documents)) {
+            return handleEmpty(statement);
+        }
         List<Map<String, Object>> res = new ArrayList<>();
         for (Document document : documents) {
             res.add(convert(document, convertContext));
         }
         return res;
     }
+
+
+    /**
+     * 处理没有数据的情况下，统计返回为空
+     *
+     * @param statement
+     * @return
+     */
+    private List<Map<String, Object>> handleEmpty(SqlSelectStatement statement) {
+        boolean isAllAggr = true;
+
+        List<String> fieldNames = new ArrayList<>();
+        for (SqlSelectItem selectItem : statement.getSelect().getSelectItems()) {
+            if (!(selectItem.getExpr() instanceof SqlAggregateExpr)) {
+                isAllAggr = false;
+            } else {
+                SqlAggregateExpr sqlAggregateExpr = (SqlAggregateExpr) selectItem.getExpr();
+                if (!StringUtils.isEmpty(selectItem.getAlias())) {
+                    fieldNames.add(selectItem.getAlias());
+                } else {
+                    fieldNames.add(sqlAggregateExpr.toString());
+                }
+            }
+
+        }
+        List<Map<String, Object>> res = new ArrayList<>();
+        if (isAllAggr) {
+            Map<String, Object> data = new HashMap<>();
+            for (String fieldName : fieldNames) {
+                data.put(fieldName, 0);
+            }
+            res.add(data);
+        }
+        return res;
+    }
+
 
     private Map<String, Object> convert(Document document, DataConvertContext convertContext) {
         return MongoDbDataConverter.convertDoc(document, convertContext);
@@ -231,7 +265,7 @@ public class MongoObjectRepositoryImpl implements ObjectRepository {
         AggregationResults<Document> results = this.template.aggregate(command.getAggregation(), command.getCollectionName(), Document.class);
 
         DataConvertContext convertContext = new DataConvertContext(command.getReplaceFields());
-        List<Map<String, Object>> res = convert(results.getMappedResults(), convertContext);
+        List<Map<String, Object>> res = convert(statement, results.getMappedResults(), convertContext);
         return res;
     }
 }

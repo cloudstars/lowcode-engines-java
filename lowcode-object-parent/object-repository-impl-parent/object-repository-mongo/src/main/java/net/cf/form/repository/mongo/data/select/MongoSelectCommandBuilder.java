@@ -10,7 +10,6 @@ import net.cf.form.repository.sql.ast.SqlLimit;
 import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlIdentifierExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.SqlMethodInvokeExpr;
-import net.cf.form.repository.sql.ast.expr.literal.SqlValuableExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlBinaryOpExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlCaseExpr;
 import net.cf.form.repository.sql.ast.expr.op.SqlExistsExpr;
@@ -31,6 +30,9 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
     private static final Logger log = LoggerFactory.getLogger(MongoSelectCommandBuilder.class);
 
     private boolean enableVariable = false;
+
+    // distinct 默认false
+    private boolean distinct = false;
 
     private SequenceNameGenerator sequenceNameGenerator;
 
@@ -73,6 +75,10 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
     public void addLimit(SqlLimit sqlLimit) {
         this.limit = sqlLimit;
+    }
+
+    public void setDistinct() {
+        this.distinct = true;
     }
 
     public void addOrderBy(SqlOrderBy sqlOrderBy) {
@@ -353,8 +359,8 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
         for (MongoSelectItem selectItem : this.selectItems) {
             SqlExpr sqlExpr = selectItem.getSqlExpr();
-            if (sqlExpr instanceof SqlValuableExpr
-                    || sqlExpr instanceof SqlCaseExpr
+            if (sqlExpr instanceof SqlCaseExpr
+                    || selectItem.getExprEnum() == ExprTypeEnum.VALUE
                     || selectItem.getExprEnum() == ExprTypeEnum.METHOD
                     || selectItem.getExprEnum() == ExprTypeEnum.EXPRESSION) {
                 Object value = MongoExprVisitor.visit(sqlExpr, new GlobalContext(paramMap, PositionEnum.PARAM));
@@ -370,7 +376,30 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
 
     private void buildDistinct() {
+        if (!distinct) {
+            return;
+        }
+        Document groupIdDocInfo = new Document();
+        for (MongoSelectItem selectItem : this.selectItems) {
+            if (selectItem.getExprEnum() == ExprTypeEnum.PARAM) {
+                // 字段
+                groupIdDocInfo.put(selectItem.getFieldName(), "$" + selectItem.getFieldName());
 
+            } else {
+                throw new RuntimeException("distinct 只支持字段");
+            }
+//            else if (selectItem.getExprEnum() == ExprTypeEnum.METHOD) {
+//                // 函数
+//                groupIdDocInfo.put(selectItem.getFieldName(), "$" + selectItem.getFieldName());
+//
+//            } else if (selectItem.getExprEnum() == ExprTypeEnum.VALUE) {
+//                // 常量
+//                groupIdDocInfo.put(selectItem.getFieldName(), "$" + selectItem.getFieldName());
+//            }
+        }
+
+        AggregationOperation groupOperation = new DocumentAggregationOperation(new Document("$group", new Document("_id", groupIdDocInfo)));
+        this.aggregationOperations.add(groupOperation);
     }
 
 
@@ -493,10 +522,23 @@ public class MongoSelectCommandBuilder extends AbstractMongoCommandBuilder<SqlSe
 
     private void buildReturn() {
         Document fieldProject = new Document();
-        if (shouldGroupBy) {
-            for (MongoSelectItem selectItem : groupByFields) {
-                addProjectFieldForAggregateId(selectItem, fieldProject);
+        if (shouldGroupBy || distinct) {
+            if (shouldGroupBy) {
+                for (MongoSelectItem selectItem : groupByFields) {
+                    addProjectFieldForAggregateId(selectItem, fieldProject);
+                }
             }
+
+            // 处理distinct
+            if (distinct) {
+                for (MongoSelectItem selectItem : selectItems) {
+                    if (selectItem.isAggr()) {
+                        continue;
+                    }
+                    addProjectFieldForAggregateId(selectItem, fieldProject);
+                }
+            }
+
             for (MongoSelectItem selectItem : selectItems) {
                 if (selectItem.isAggr()) {
                     addProjectField(selectItem, fieldProject);

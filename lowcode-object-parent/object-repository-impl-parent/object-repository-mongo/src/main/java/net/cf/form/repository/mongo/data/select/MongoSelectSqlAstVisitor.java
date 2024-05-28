@@ -25,6 +25,9 @@ public class MongoSelectSqlAstVisitor implements SqlAstVisitor {
 
     @Override
     public boolean visit(SqlSelect x) {
+        if (x.getDistinctOption() != null) {
+            builder.setDistinct();
+        }
 
         if (x.getWhere() != null) {
             builder.addWhere(x.getWhere());
