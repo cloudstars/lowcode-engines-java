@@ -75,9 +75,9 @@ public class MapListBatchPreparedStatementSetter implements BatchPreparedStateme
                 } else if (columnDataType == SqlDataType.BOOLEAN) {
                     ps.setBoolean(pi, (Boolean) javaValue);
                 } else if (columnDataType == SqlDataType.DATE) {
-                    if (value instanceof Date) {
+                    if (javaValue instanceof Date) {
                         ps.setDate(pi, (Date) javaValue);
-                    } else if (value instanceof java.util.Date) {
+                    } else if (javaValue instanceof java.util.Date) {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime((java.util.Date) javaValue);
                         ps.setDate(pi, new Date(calendar.getTimeInMillis()));
