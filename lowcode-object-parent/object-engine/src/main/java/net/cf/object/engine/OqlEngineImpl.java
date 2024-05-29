@@ -67,8 +67,8 @@ public class OqlEngineImpl implements OqlEngine {
 
         // 查询本表数据
         SqlSelectCmd masterSelectInfo = selectInfos.getMasterSelectCmd();
-        Map<String, Object> selfResultMap = this.executor.selectOne(masterSelectInfo);
-        if (selfResultMap == null) {
+        Map<String, Object> masterResultMap = this.executor.selectOne(masterSelectInfo);
+        if (masterResultMap == null) {
             LOGGER.debug("未查询到记录，返回NULL！");
             return null;
         }
@@ -78,7 +78,7 @@ public class OqlEngineImpl implements OqlEngine {
         if (detailSelectCmds != null && detailSelectCmds.size() > 0) {
             // 从主表返回的数据中抽取记录ID
             String masterPrimaryFieldName = masterObject.getPrimaryField().getName();
-            String masterRecordId = selfResultMap.get(masterPrimaryFieldName).toString();
+            String masterRecordId = masterResultMap.get(masterPrimaryFieldName).toString();
             for (SqlSelectCmd detailSelectCmd : detailSelectCmds) {
                 XObject detailObject = detailSelectCmd.getResolvedObject();
                 // 组装子表的查询条件（where masterField = #{masterField}）所需参数
@@ -93,9 +93,9 @@ public class OqlEngineImpl implements OqlEngine {
                 if (detailSelectCmd.isDetailFieldDirectQuery()) {
                     String detailPrimaryFieldName = detailObject.getPrimaryField().getName();
                     List<String> detailRecordIds = this.extractRecordIdsFromResultMapList(detailResultMapList, detailPrimaryFieldName);
-                    selfResultMap.put(detailResultKey, detailRecordIds);
+                    masterResultMap.put(detailResultKey, detailRecordIds);
                 } else {
-                    selfResultMap.put(detailResultKey, detailResultMapList);
+                    masterResultMap.put(detailResultKey, detailResultMapList);
                 }
             }
         }
@@ -105,14 +105,14 @@ public class OqlEngineImpl implements OqlEngine {
         if (lookupSelectCmds != null && lookupSelectCmds.size() > 0) {
             for (SqlSelectCmd lookupSelectCmd : lookupSelectCmds) {
                 XObject lookupObject = lookupSelectCmd.getResolvedObject();
-                String selfLookupFieldName = lookupSelectCmd.getObjectRefFieldName();
-                Object lookupFieldValue = selfResultMap.get(selfLookupFieldName);
-                XObjectRefField selfLookupField = (XObjectRefField) masterObject.getField(selfLookupFieldName);
+                String masterLookupFieldName = lookupSelectCmd.getObjectRefFieldName();
+                Object lookupFieldValue = masterResultMap.get(masterLookupFieldName);
+                XObjectRefField masterLookupField = (XObjectRefField) masterObject.getField(masterLookupFieldName);
                 // 组装子表的查询参数并独立查询子表数据
                 Map<String, Object> lookupParamMap = lookupSelectCmd.getParamMap();
                 String lookupPrimaryFieldName = lookupObject.getPrimaryField().getName();
                 Object lookupResultValue;
-                if (selfLookupField.isMultiRef()) {
+                if (masterLookupField.isMultiRef()) {
                     //  where lookupPrimaryField in (#{lookupPrimaryFields})
                     List<String> lookupRecordIds = this.convertToLookupRecordIds(lookupFieldValue);
                     lookupParamMap.put(lookupPrimaryFieldName + 's', lookupRecordIds);
@@ -130,11 +130,11 @@ public class OqlEngineImpl implements OqlEngine {
 
                 // 将相关表归并后的数据追加到主表返回结果中
                 String lookupResultKey = lookupSelectCmd.getObjectRefResultKey();
-                selfResultMap.put(lookupResultKey, lookupResultValue);
+                masterResultMap.put(lookupResultKey, lookupResultValue);
             }
         }
 
-        return selfResultMap;
+        return masterResultMap;
     }
 
     /**
@@ -208,10 +208,10 @@ public class OqlEngineImpl implements OqlEngine {
     @Override
     public PageResult<Map<String, Object>> queryPage(OqlSelectStatement stmt, Map<String, Object> paramMap, PageRequest pageRequest) {
         OqlSelectInfos selectInfos = OqlInfosUtils.parseOqlSelectInfos(stmt, true);
-        SqlSelectStatement selfSqlStmt = selectInfos.getMasterSelectCmd().getStatement();
+        SqlSelectStatement masterSqlStmt = selectInfos.getMasterSelectCmd().getStatement();
 
         // 生成count语句
-        SqlSelectStatement countSqlStmt = this.getCountSqlStmt(selfSqlStmt);
+        SqlSelectStatement countSqlStmt = this.getCountSqlStmt(masterSqlStmt);
         SqlSelectCmd selectCmd = new SqlSelectCmd();
         selectCmd.setResolvedObject(selectInfos.getResolvedMasterObject());
         selectCmd.setStatement(countSqlStmt);
@@ -229,7 +229,7 @@ public class OqlEngineImpl implements OqlEngine {
         }
 
         // 添加分页信息后查询当前页数据
-        this.addPageInfo(selfSqlStmt, pageRequest);
+        this.addPageInfo(masterSqlStmt, pageRequest);
         List<Map<String, Object>> list = this.queryList(selectInfos);
 
         return new PageResult<>(total, list);
@@ -274,7 +274,7 @@ public class OqlEngineImpl implements OqlEngine {
      */
     private List<Map<String, Object>> queryList(OqlSelectInfos selectInfos) {
         // 当前模型
-        XObject selfObject = selectInfos.getResolvedMasterObject();
+        XObject masterObject = selectInfos.getResolvedMasterObject();
 
         // 查询主表数据
         List<Map<String, Object>> masterResultMapList = this.executor.selectList(selectInfos.getMasterSelectCmd());
@@ -282,28 +282,28 @@ public class OqlEngineImpl implements OqlEngine {
         // 存在子表的情况下，依次查询子表
         List<SqlSelectCmd> detailSelectCmds = selectInfos.getDetailSelectCmds();
         if (detailSelectCmds != null && detailSelectCmds.size() > 0) {
-            String selfPrimaryFieldName = selfObject.getPrimaryField().getName();
-            List<String> selfRecordIds = this.extractRecordIdsFromResultMapList(masterResultMapList, selfPrimaryFieldName);
+            String masterPrimaryFieldName = masterObject.getPrimaryField().getName();
+            List<String> masterRecordIds = this.extractRecordIdsFromResultMapList(masterResultMapList, masterPrimaryFieldName);
             for (SqlSelectCmd detailSelectCmd : detailSelectCmds) {
                 XObject detailObject = detailSelectCmd.getResolvedObject();
                 // 组装子表的查询条件（where masterField in (#{masterFields}))所需参数
                 Map<String, Object> detailParamMap = detailSelectCmd.getParamMap();
-                XObjectRefField detailMasterField = detailObject.getObjectRefField(selfObject.getName());
+                XObjectRefField detailMasterField = detailObject.getObjectRefField(masterObject.getName());
                 String detailPrimaryFieldName = detailObject.getPrimaryField().getName();
                 String detailMasterFieldName = detailMasterField.getName();
-                detailParamMap.put(detailMasterFieldName + 's', selfRecordIds);
+                detailParamMap.put(detailMasterFieldName + 's', masterRecordIds);
                 // 查询子表的数据并作归并
                 List<Map<String, Object>> detailResultMapList = this.executor.selectList(detailSelectCmd);
                 // 将子表归并后的数据按主表记录ID分组追加到主表返回结果中
                 String detailResultKey = detailSelectCmd.getObjectRefResultKey();
-                for (Map<String, Object> selfResultMap : masterResultMapList) {
-                    String masterId = selfResultMap.get(selfPrimaryFieldName).toString();
+                for (Map<String, Object> masterResultMap : masterResultMapList) {
+                    String masterId = masterResultMap.get(masterPrimaryFieldName).toString();
                     if (detailSelectCmd.isDetailFieldDirectQuery()) {
                         List<String> detailRecordIds = this.extractRecordIdsFromResultMapList(detailResultMapList, detailPrimaryFieldName);
-                        selfResultMap.put(detailResultKey, detailRecordIds);
+                        masterResultMap.put(detailResultKey, detailRecordIds);
                     } else {
                         List<Map<String, Object>> detailRecordList = this.extractDetailRecordListByField(detailResultMapList, detailMasterFieldName, masterId);
-                        selfResultMap.put(detailResultKey, detailRecordList);
+                        masterResultMap.put(detailResultKey, detailRecordList);
                     }
                 }
             }
@@ -312,55 +312,66 @@ public class OqlEngineImpl implements OqlEngine {
         // 存在相关表的情况下，
         List<SqlSelectCmd> lookupSelectCmds = selectInfos.getLookupSelectCmds();
         if (lookupSelectCmds != null && lookupSelectCmds.size() > 0) {
-            for (SqlSelectCmd lookupSelectCmd : lookupSelectCmds) {
-                XObject lookupObject = lookupSelectCmd.getResolvedObject();
-                String selfLookupFieldName = lookupSelectCmd.getObjectRefFieldName();
-                XObjectRefField selfLookupField = (XObjectRefField) selfObject.getField(selfLookupFieldName);
-
-                // 组装子表的查询参数并独立查询子表数据并作归并
-                Map<String, Object> lookupParamMap = lookupSelectCmd.getParamMap();
-                List<String> lookupRecordIds = this.extractRecordIdsFromResultMapList(masterResultMapList, selfLookupFieldName);
-                String lookupPrimaryFieldName = lookupObject.getPrimaryField().getName();
-                lookupParamMap.put(lookupPrimaryFieldName + "s", lookupRecordIds);
-                List<Map<String, Object>> lookupResultMapList = this.executor.selectList(lookupSelectCmd);
-                if (CollectionUtils.isEmpty(lookupResultMapList)) {
-                    continue;
-                }
-
-                // 将相关表归并后的数据按主表中相关表的记录ID分组追加到主表返回结果中
-                String lookupResultKey = lookupSelectCmd.getObjectRefResultKey();
-                String lookupPrimaryFieldInResult = lookupPrimaryFieldName;
-                List<FieldMapping> fieldMappings = lookupSelectCmd.getFieldMappings();
-                if (!CollectionUtils.isEmpty(fieldMappings)) {
-                    // 检测相关表字段是否有被设置了别名
-                    String lookupPrimaryFieldColumnName = lookupObject.getPrimaryField().getColumnName();
-                    for (FieldMapping fieldMapping : fieldMappings) {
-                        if (fieldMapping.getColumnName().equals(lookupPrimaryFieldColumnName)) {
-                            lookupPrimaryFieldInResult = fieldMapping.getFieldName();
-                            break;
-                        }
-                    }
-                }
-
-                if (selfLookupField.isMultiRef()) {
-                    for (Map<String, Object> selfResultMap : masterResultMapList) {
-                        Object lookupFieldValue = selfResultMap.get(selfLookupFieldName);
-                        List<String> recordIds = this.convertToLookupRecordIds(lookupFieldValue);
-                        Object lookupResultValue = this.extractLookupRecordMapListByField(lookupResultMapList, lookupPrimaryFieldInResult, recordIds);
-                        selfResultMap.put(lookupResultKey, lookupResultValue);
-                    }
-                } else {
-                    for (Map<String, Object> selfResultMap : masterResultMapList) {
-                        Object lookupFieldValue = selfResultMap.get(selfLookupFieldName);
-                        String recordId = this.convertToLookupRecordId(lookupFieldValue);
-                        Object lookupResultValue = this.extractLookupRecordMapByField(lookupResultMapList, lookupPrimaryFieldInResult, recordId);
-                        selfResultMap.put(lookupResultKey, lookupResultValue);
-                    }
-                }
-            }
+            this.execLookupSelectCmds(masterObject, masterResultMapList, lookupSelectCmds);
         }
 
         return masterResultMapList;
+    }
+
+    /**
+     * 执行相关表的指令
+     *
+     * @param masterObject
+     * @param masterResultMapList
+     * @param lookupSelectCmds
+     */
+    private void execLookupSelectCmds(XObject masterObject, List<Map<String, Object>> masterResultMapList, List<SqlSelectCmd> lookupSelectCmds) {
+        for (SqlSelectCmd lookupSelectCmd : lookupSelectCmds) {
+            XObject lookupObject = lookupSelectCmd.getResolvedObject();
+            String masterLookupFieldName = lookupSelectCmd.getObjectRefFieldName();
+            XObjectRefField masterLookupField = (XObjectRefField) masterObject.getField(masterLookupFieldName);
+
+            // 组装子表的查询参数并独立查询子表数据并作归并
+            Map<String, Object> lookupParamMap = lookupSelectCmd.getParamMap();
+            List<String> lookupRecordIds = this.extractRecordIdsFromResultMapList(masterResultMapList, masterLookupFieldName);
+            String lookupPrimaryFieldName = lookupObject.getPrimaryField().getName();
+            lookupParamMap.put(lookupPrimaryFieldName + "s", lookupRecordIds);
+            List<Map<String, Object>> lookupResultMapList = this.executor.selectList(lookupSelectCmd);
+            if (CollectionUtils.isEmpty(lookupResultMapList)) {
+                continue;
+            }
+
+            // 将相关表归并后的数据按主表中相关表的记录ID分组追加到主表返回结果中
+            String lookupResultKey = lookupSelectCmd.getObjectRefResultKey();
+            String lookupPrimaryFieldInResult = lookupPrimaryFieldName;
+            List<FieldMapping> fieldMappings = lookupSelectCmd.getFieldMappings();
+            if (!CollectionUtils.isEmpty(fieldMappings)) {
+                // 检测相关表字段是否有被设置了别名
+                String lookupPrimaryFieldColumnName = lookupObject.getPrimaryField().getColumnName();
+                for (FieldMapping fieldMapping : fieldMappings) {
+                    if (fieldMapping.getColumnName().equals(lookupPrimaryFieldColumnName)) {
+                        lookupPrimaryFieldInResult = fieldMapping.getFieldName();
+                        break;
+                    }
+                }
+            }
+
+            if (masterLookupField.isMultiRef()) {
+                for (Map<String, Object> masterResultMap : masterResultMapList) {
+                    Object lookupFieldValue = masterResultMap.get(masterLookupFieldName);
+                    List<String> recordIds = this.convertToLookupRecordIds(lookupFieldValue);
+                    Object lookupResultValue = this.extractLookupRecordMapListByField(lookupResultMapList, lookupPrimaryFieldInResult, recordIds);
+                    masterResultMap.put(lookupResultKey, lookupResultValue);
+                }
+            } else {
+                for (Map<String, Object> masterResultMap : masterResultMapList) {
+                    Object lookupFieldValue = masterResultMap.get(masterLookupFieldName);
+                    String recordId = this.convertToLookupRecordId(lookupFieldValue);
+                    Object lookupResultValue = this.extractLookupRecordMapByField(lookupResultMapList, lookupPrimaryFieldInResult, recordId);
+                    masterResultMap.put(lookupResultKey, lookupResultValue);
+                }
+            }
+        }
     }
 
     /**
