@@ -82,11 +82,6 @@ public class DefaultResultReducer implements ResultReducer {
             }
             targetMap.put(subFieldName, subFieldValue);
         }
-
-        // 如果一个字段所有subField的值都为null，将此字段的值设为null
-        if (!CollectionUtils.isEmpty(subFields) && this.allSubFieldValueIsNull(targetMap)) {
-            return null;
-        }
         return targetMap;
     }
 
@@ -223,6 +218,10 @@ public class DefaultResultReducer implements ResultReducer {
             }
         } else { // 模型或字段展开且非数组的情况
             targetValue = this.reduceValue(resultMap, subItems);
+            // 如果一个字段的所有subField的值都为null， 将此字段的值设为null
+            if (allSubFieldValueIsNull((Map<String, Object>) targetValue)) {
+                targetValue = null;
+            }
         }
 
         return targetValue;
