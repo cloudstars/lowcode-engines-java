@@ -215,6 +215,10 @@ public class DefaultResultReducer implements ResultReducer {
                         ((Object[]) targetValue)[idx] = resultMap.get(subField.getColumnName());
                     }
                 }
+                // 区间类组件如果两个值都为null，字段值直接设置为null
+                if (((Object[]) targetValue)[0] == null && ((Object[]) targetValue)[1] == null) {
+                    targetValue = null;
+                }
             }
         } else { // 模型或字段展开且非数组的情况
             targetValue = this.reduceValue(resultMap, subItems);
