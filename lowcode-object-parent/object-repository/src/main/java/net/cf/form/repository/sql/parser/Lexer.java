@@ -614,7 +614,7 @@ public class Lexer {
             this.bufPos++;
         }
 
-        this.strVal = this.subStr(this.mark, this.bufPos);
+        this.strVal = this.subStr(this.mark, this.bufPos - 2);
         this.token = Token.LINE_COMMENT;
     }
 
