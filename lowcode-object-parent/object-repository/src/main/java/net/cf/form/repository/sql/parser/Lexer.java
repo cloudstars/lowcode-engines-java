@@ -355,7 +355,7 @@ public class Lexer {
                 if (this.ch == '(') { // #{var(subVar1, subVar2, ...)}
                     do {
                         this.scanChar(true);
-                    } while (CharTypes.isIdentifierChar(this.ch) || this.ch == ',' || this.ch == ' ');
+                    } while (CharTypes.isIdentifierChar(this.ch) || this.ch == ',' || this.ch == ' ' || this.ch == '\r' || this.ch == '\n');
 
                     if (this.ch != ')') {
                         throw new SqlParseException("illegal variable with sub variable, unterminated with ')'. " + this.info());
@@ -369,14 +369,15 @@ public class Lexer {
         if (this.ch != '}') {
             throw new SqlParseException("illegal variable, unterminated with '}'. " + this.info());
         } else {
+            // 扫描过变量引用结束符："}"
+            this.scanChar(true);
             // 变量长度至少是4，如：${v}
             if (this.bufPos < 4) {
                 throw new SqlParseException("illegal variable. " + this.info());
             }
-
-            // 扫描过变量引用结束符："}"
-            this.scanChar(true);
             this.strVal = this.subStr(this.mark, this.bufPos);
+            // 删除空格回车换行等无效字符
+            this.strVal = strVal.replaceAll("\\r\\n|\\r|\\n", "").replaceAll(" ", "");
         }
     }
 
