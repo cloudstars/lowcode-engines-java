@@ -178,12 +178,16 @@ public class DefaultParameterMapper implements ParameterMapper {
         for (FieldMapping subField : subFields) {
             String subFieldName = subField.getFieldName();
             if (subFieldName.startsWith("_")) {// _0, _1, ...
-                String indexStr = subFieldName.substring(1);
-                int index = Integer.parseInt(indexStr);
-                if (index < value.size()) {
-                    targetMap.put(subFieldName, value.get(index));
-                } else {
+                if (CollectionUtils.isEmpty(value)) {
                     targetMap.put(subFieldName, null);
+                } else {
+                    String indexStr = subFieldName.substring(1);
+                    int index = Integer.parseInt(indexStr);
+                    if (index < value.size()) {
+                        targetMap.put(subFieldName, value.get(index));
+                    } else {
+                        targetMap.put(subFieldName, null);
+                    }
                 }
             }
         }
