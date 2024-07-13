@@ -16,6 +16,7 @@
     </properties>
 
     <modules>
+        <module>commons-cache</module>
         <module>commons-test</module>
         <module>commons-test-db</module>
     </modules>

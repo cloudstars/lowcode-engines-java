@@ -77,6 +77,11 @@
       "desc": "更新时间",
       "name": "MODIFIED_AT",
       "dataType": "DATETIME"
+    },
+    {
+      "desc": "是否已删除",
+      "name": "DELETED",
+      "dataType": "INTEGER"
     }
   ],
   "valuesList": [
@@ -93,7 +98,8 @@
       "AGE": 30,
       "OWNER_KEY": "zhangsan",
       "CREATOR_NAME": "张三",
-      "CREATOR_KEY": "zhangsan"
+      "CREATOR_KEY": "zhangsan",
+      "DELETED": 0
     },
     {
       "STA_ID": "663b71b25deba92149b80763",
@@ -108,7 +114,8 @@
       "AGE": 20,
       "OWNER_KEY": "zhangsan",
       "CREATOR_NAME": "李四",
-      "CREATOR_KEY": "lisi"
+      "CREATOR_KEY": "lisi",
+      "DELETED": 1
     }
   ]
 }
