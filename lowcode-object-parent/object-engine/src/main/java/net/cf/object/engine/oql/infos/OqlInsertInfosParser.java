@@ -169,7 +169,7 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
 
             // 给子表添加masterField字段
             XObject detailObject = objectExpandExpr.getResolvedRefObject();
-            XField detailMasterField = detailObject.getObjectRefField(this.masterObject.getName());
+            XField detailMasterField = detailObject.getMasterField();
             this.addFieldToStmt(OqlUtils.buildFieldExpr(detailMasterField));
 
             // 无论子表的值是[{}, {}, ...]的常量语法，还是#{detail}或#{detail(d1, d3, ...)}的变量语法，最后都转为统一的变量语法
@@ -366,7 +366,7 @@ public class OqlInsertInfosParser extends AbstractOqInfosParser<OqlInsertStateme
         // 如果主表具有主键列并且值是常量或变量的话，则添加主键变量对应的常量或变量值
         if (masterPrimaryFieldIndex >= 0) {
             Object masterPrimaryFieldParseValue = null;
-            String detailMasterFieldName = detailObject.getObjectRefField(this.masterObject.getName()).getName();
+            String detailMasterFieldName = detailObject.getMasterField().getName();
 
             SqlExpr masterPrimaryFieldValue = this.stmt.getValuesList().get(valuesIndex).getValue(masterPrimaryFieldIndex);
             if (masterPrimaryFieldValue instanceof SqlValuableExpr) {

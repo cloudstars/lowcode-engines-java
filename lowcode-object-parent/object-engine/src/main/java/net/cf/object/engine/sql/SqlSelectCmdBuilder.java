@@ -57,8 +57,34 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
      */
     private boolean isAllColumnsDirectReturned = false;
 
+    /**
+     * 主查询的语名的模型
+     */
+    private XObject mainObject = null;
+
+    /**
+     * 主查询的语名的模型的别名
+     */
+    private String mainObjectAlias = null;
+
     public SqlSelectCmdBuilder(OqlSelectStatement stmt, Map<String, Object> paramMap) {
         this(stmt, paramMap, false);
+    }
+
+    public SqlSelectCmdBuilder(OqlSelectStatement stmt, XObject mainObject, String mainObjectAlias) {
+        this(stmt, null, mainObject, mainObjectAlias);
+    }
+
+    /**
+     *
+     * @param stmt
+     * @param mainObject 当解析子查询时，可以传入主查询的模型
+     * @param mainObject
+     */
+    public SqlSelectCmdBuilder(OqlSelectStatement stmt, Map<String, Object> paramMap, XObject mainObject, String mainObjectAlias) {
+        this(stmt, paramMap, false);
+        this.mainObject = mainObject;
+        this.mainObjectAlias = mainObjectAlias;
     }
 
     public SqlSelectCmdBuilder(OqlSelectStatement stmt, Map<String, Object> paramMap, boolean isQueryList) {
@@ -86,8 +112,15 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
         OqlObjectSource objectSource = select.getFrom();
         this.resolvedObject = objectSource.getResolvedObject();
 
+        // 特殊处理，如果存在别名时，主查询当作子查询对待，设置mainObject和mainObjectAlias，用于给exists传递参数（SqlWhereBuilder时，最终传递给了parseExistsExpr），有点hardcode，今后可优化
+        if (objectSource.getAlias() != null && this.mainObject == null) {
+            this.mainObject = objectSource.getResolvedObject();
+            this.mainObjectAlias = objectSource.getAlias();
+        }
+
         // 初始化 SQL 查询语句
         SqlSelect sqlSelect = new SqlSelect();
+        sqlSelect.setParenthesized(select.isParenthesized());
         sqlSelect.setDistinctOption(select.getDistinctOption());
         this.sqlStmt = new SqlSelectStatement(sqlSelect);
         List<OqlSelectItem> selectItems = select.getSelectItems();
@@ -124,7 +157,7 @@ public class SqlSelectCmdBuilder extends AbstractSqlCmdBuilder<OqlSelectStatemen
         // 解析条询条件
         SqlExpr where = select.getWhere();
         if (where != null) {
-            SqlWhereBuilder whereBuilder = new SqlWhereBuilder(this.resolvedObject);
+            SqlWhereBuilder whereBuilder = new SqlWhereBuilder(this.resolvedObject, this.mainObject, this.mainObjectAlias);
             SqlExpr sqlWhere = whereBuilder.parseExpr(where);
             sqlSelect.setWhere(sqlWhere);
         }

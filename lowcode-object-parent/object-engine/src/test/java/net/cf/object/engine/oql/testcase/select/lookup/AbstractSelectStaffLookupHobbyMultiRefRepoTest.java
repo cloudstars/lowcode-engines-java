@@ -1,6 +1,6 @@
 package net.cf.object.engine.oql.testcase.select.lookup;
 
-import net.cf.commons.test.util.DataCompareTestUtils;
+import net.cf.commons.test.util.JsonTestUtils;
 import net.cf.object.engine.OqlEngine;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
@@ -31,7 +31,7 @@ public abstract class AbstractSelectStaffLookupHobbyMultiRefRepoTest
         OqlInfo oqlInfo = this.oqlInfos.get(OQL_SELECT_STAFF_LOOKUP_HOBBY);
         OqlSelectStatement stmt = OqlStatementUtils.parseSingleSelectStatement(this.resolver, oqlInfo.oql);
         List<Map<String, Object>> resultMaps = this.engineNew.queryList(stmt);
-        assert (DataCompareTestUtils.equalsList(resultMaps, oqlInfo.resultMaps));
+        JsonTestUtils.assertObjectEquals(oqlInfo.resultMaps, resultMaps);
     }
 
 }

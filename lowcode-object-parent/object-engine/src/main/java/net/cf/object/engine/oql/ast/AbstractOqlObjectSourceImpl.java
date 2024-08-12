@@ -16,6 +16,11 @@ import java.util.List;
 public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl implements OqlObjectSource {
 
     /**
+     * 是否有"alias"关键字
+     */
+    protected boolean hasAliasKeyword;
+
+    /**
      * 别名
      */
     protected String alias;
@@ -39,6 +44,16 @@ public abstract class AbstractOqlObjectSourceImpl extends AbstractOqlObjectImpl 
 
     public AbstractOqlObjectSourceImpl(SqlExpr flashback, String alias) {
         this.alias = alias;
+    }
+
+    @Override
+    public boolean isHasAliasKeyword() {
+        return hasAliasKeyword;
+    }
+
+    @Override
+    public void setHasAliasKeyword(boolean hasAliasKeyword) {
+        this.hasAliasKeyword = hasAliasKeyword;
     }
 
     @Override

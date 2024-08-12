@@ -29,23 +29,46 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
     private final Map<String, Object> paramMap;
 
     /**
+     * 主模型对应的查询语句
+     */
+    private OqlSelectStatement masterObjectSelectStmt = null;
+
+    /**
      * 模型关联的查询语句
      */
-    private final Map<XObject, OqlSelectStatement> objectSelectStmtMap = new HashMap<>();
+    private final Map<XObjectRefField, OqlSelectStatement> objectSelectStmtMap = new HashMap<>();
 
     /**
      * 模型关联的别名，如select refField(f1, f2) as xxx，xxx就是refField对应模型的别名
      */
     private final Map<XObject, String> objectAliasMap = new HashMap<>();
 
+    /**
+     * 当解析一个子查询时，mainObject为主查询的模型
+     */
+    private final XObject mainObject;
+
+    /**
+     * mainObject的别名
+     */
+    private final String mainObjectAlias;
+
     public OqlSelectInfosParser(OqlSelectStatement stmt, boolean isQueryList) {
-        super(stmt, isQueryList);
+        this(stmt, null, isQueryList);
+    }
+
+    public OqlSelectInfosParser(OqlSelectStatement stmt, XObject mainObject, String mainObjectAlias) {
+        super(stmt, false);
         this.paramMap = null;
+        this.mainObject = mainObject;
+        this.mainObjectAlias = mainObjectAlias;
     }
 
     public OqlSelectInfosParser(OqlSelectStatement stmt, Map<String, Object> paramMap, boolean isQueryList) {
         super(stmt, isQueryList);
         this.paramMap = paramMap;
+        this.mainObject = null;
+        this.mainObjectAlias = null;
     }
 
     /**
@@ -59,8 +82,9 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
         this.masterObject = select.getFrom().getResolvedObject();
 
         // 获取本模型对应的OQL语句
-        OqlSelectStatement masterStmt = this.getStmtByObject(this.masterObject);
+        OqlSelectStatement masterStmt = this.getMasterStmt();
         OqlSelect masterSelect = masterStmt.getSelect();
+        masterSelect.setParenthesized(select.isParenthesized());
         masterSelect.setDistinctOption(select.getDistinctOption());
 
         // 解析查询字段
@@ -70,12 +94,19 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
             String alias = selectItem.getAlias();
             if (selectItemExpr instanceof OqlObjectExpandExpr) {
                 this.parseSelectObjectExpandExpr((OqlObjectExpandExpr) selectItemExpr, alias);
-            } else if (selectItemExpr instanceof OqlFieldExpr && ((OqlFieldExpr) selectItemExpr).getResolvedField().getOwner() != this.masterObject) {
-                XField refField = ((OqlFieldExpr) selectItemExpr).getResolvedField();
-                OqlSelectItem refSelectItem = new OqlSelectItem(OqlUtils.buildFieldExpr(refField));
-                refSelectItem.setAlias(alias);
-                OqlSelect refSelect = this.getStmtByObject(refField.getOwner()).getSelect();
-                refSelect.addSelectItem(refSelectItem);
+            } else if (selectItemExpr instanceof OqlFieldExpr) {
+                OqlFieldExpr fieldExpr = (OqlFieldExpr) selectItemExpr;
+                XField resolvedField = fieldExpr.getResolvedField();
+                XObject ownerObject = resolvedField.getOwner();
+                if (ownerObject != this.masterObject) {
+                    OqlSelectItem refSelectItem = new OqlSelectItem(OqlUtils.buildFieldExpr(resolvedField));
+                    refSelectItem.setAlias(alias);
+                    XObjectRefField objectRefField = this.masterObject.getObjectRefField2(fieldExpr.getOwner());
+                    OqlSelect refSelect = this.getStmtByObjectRefField(objectRefField, ownerObject).getSelect();
+                    refSelect.addSelectItem(refSelectItem);
+                } else {
+                    masterSelect.addSelectItem(selectItem);
+                }
             } else {
                 masterSelect.addSelectItem(selectItem);
             }
@@ -101,14 +132,13 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
     private OqlSelectInfos buildSelectInfos() {
         OqlSelectInfos selectInfos = new OqlSelectInfos();
         selectInfos.setResolvedMasterObject(this.masterObject);
-        for (Map.Entry<XObject, OqlSelectStatement> entry : objectSelectStmtMap.entrySet()) {
-            XObject thisObject = entry.getKey();
+        for (Map.Entry<XObjectRefField, OqlSelectStatement> entry : objectSelectStmtMap.entrySet()) {
+            XObjectRefField objectRefField = entry.getKey();
             OqlSelectStatement thisStmt = entry.getValue();
-            if (thisObject == this.masterObject) {
-                continue;
-            }
+            XObject thisObject = thisStmt.getSelect().getFrom().getResolvedObject();
+            assert (thisObject != this.masterObject);
 
-            XObjectRefField objectRefField = this.masterObject.getObjectRefField(thisObject.getName());
+            // 从主表中判断当前表thisObject是主表的子表|主表|查找表
             boolean isDetailFieldDirectQuery = false;
             SqlExpr whereExpr;
             boolean refIsBatch = true;
@@ -116,15 +146,15 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
                 // select detailField from master的detailField只返回子表的ID数组 [xx,yy,...]
                 if (thisStmt.getSelect().getSelectItems().size() == 0) {
                     isDetailFieldDirectQuery = true;
-                    this.addFieldToStmt(thisObject.getPrimaryField());
+                    this.addFieldToStmt(thisObject.getPrimaryField(), objectRefField);
                 }
 
                 // 当存在子表时，默认查询主表的主键（用于主表归集子表的数据）
-                this.addFieldToStmt(this.masterObject.getPrimaryField());
+                this.addFieldToStmt(this.masterObject.getPrimaryField(), objectRefField);
 
                 // 当存在子表时，默认查询子表的masterField字段（用于主表归集子表的数据）
-                XObjectRefField detailMasterField = thisObject.getObjectRefField(masterObject.getName());
-                this.addFieldToStmt(detailMasterField);
+                XObjectRefField detailMasterField = thisObject.getMasterField();
+                this.addFieldToStmt(detailMasterField, objectRefField);
 
                 if (this.isBatch) {
                     // where masterField in (#{masterFields})
@@ -133,9 +163,9 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
                     // where masterField = #{masterField}
                     whereExpr = OqlUtils.buildFieldEqualsVarRefExpr(detailMasterField);
                 }
-            } else {
+            } else { // 主表 或 相关表
                 // 默认查询本表的lookupField字段
-                this.addFieldToStmt(objectRefField);
+                this.addFieldToStmt(objectRefField, objectRefField);
                 if (this.isBatch || objectRefField.isMultiRef()) {
                     // where primaryField in (#{primaryFields})
                     whereExpr = OqlUtils.buildFieldInListVarRefExpr(thisObject.getPrimaryField());
@@ -160,8 +190,13 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
         }
 
         // 在构建相关表时会修改本表的查询字段，故最后再构建主表
-        OqlSelectStatement masterStmt = this.getStmtByObject(this.masterObject);
-        SqlSelectCmdBuilder builder = new SqlSelectCmdBuilder(masterStmt, this.paramMap, this.isBatch);
+        OqlSelectStatement masterStmt = this.getMasterStmt();
+        SqlSelectCmdBuilder builder;
+        if (this.mainObject == null) {
+            builder = new SqlSelectCmdBuilder(masterStmt, this.paramMap, this.isBatch);
+        } else {
+            builder = new SqlSelectCmdBuilder(masterStmt, this.mainObject, this.mainObjectAlias);
+        }
         SqlSelectCmd selectCmd = builder.build();
         selectInfos.setMasterSelectCmd(selectCmd);
 
@@ -173,9 +208,15 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
      *
      * @param field
      */
-    private void addFieldToStmt(XField field) {
-        XObject object = field.getOwner();
-        OqlSelect select = this.getStmtByObject(object).getSelect();
+    private void addFieldToStmt(XField field, XObjectRefField objectRefField) {
+        XObject ownerObject = field.getOwner();
+        OqlSelect select;
+        if (ownerObject == this.masterObject) {
+            select = this.getMasterStmt().getSelect();
+        } else {
+            select = this.getStmtByObjectRefField(objectRefField, ownerObject).getSelect();
+        }
+
         List<OqlSelectItem> selectItems = select.getSelectItems();
         for (OqlSelectItem selectItem : selectItems) {
             SqlExpr itemExpr = selectItem.getExpr();
@@ -196,9 +237,10 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
      * @param alias
      */
     private void parseSelectObjectExpandExpr(OqlObjectExpandExpr objectExpandExpr, String alias) {
+        XObjectRefField objectRefField = objectExpandExpr.getResolvedObjectRefField();
         XObject refObject = objectExpandExpr.getResolvedRefObject();
         List<SqlExpr> expandFields = objectExpandExpr.getFields();
-        OqlSelect select = this.getStmtByObject(refObject).getSelect();
+        OqlSelect select = this.getStmtByObjectRefField(objectRefField, refObject).getSelect();
         if (objectExpandExpr.isStarExpanded()) {
             select.addSelectItem(new OqlSelectItem(new SqlAllColumnExpr()));
         } else {
@@ -219,18 +261,34 @@ public class OqlSelectInfosParser extends AbstractOqInfosParser<OqlSelectStateme
     }
 
     /**
-     * 根据模型获取它对应的查询语句
+     * 根据主模型对应用查询语句
      *
-     * @param object
      * @return
      */
-    private OqlSelectStatement getStmtByObject(XObject object) {
-        OqlSelectStatement stmt = this.objectSelectStmtMap.get(object);
+    private OqlSelectStatement getMasterStmt() {
+        if (this.masterObjectSelectStmt == null) {
+            OqlSelect select = new OqlSelect();
+            select.setFrom(OqlUtils.buildObjectSource(this.masterObject));
+            this.masterObjectSelectStmt = new OqlSelectStatement(select);
+        }
+
+        return this.masterObjectSelectStmt;
+    }
+
+
+    /**
+     * 根据模型引用字段获取它对应的查询语句
+     *
+     * @param objectRefField
+     * @return
+     */
+    private OqlSelectStatement getStmtByObjectRefField(XObjectRefField objectRefField, XObject refObject) {
+        OqlSelectStatement stmt = this.objectSelectStmtMap.get(objectRefField);
         if (stmt == null) {
             OqlSelect select = new OqlSelect();
-            select.setFrom(OqlUtils.buildObjectSource(object));
+            select.setFrom(OqlUtils.buildObjectSource(refObject));
             stmt = new OqlSelectStatement(select);
-            this.objectSelectStmtMap.put(object, stmt);
+            this.objectSelectStmtMap.put(objectRefField, stmt);
         }
         return stmt;
     }

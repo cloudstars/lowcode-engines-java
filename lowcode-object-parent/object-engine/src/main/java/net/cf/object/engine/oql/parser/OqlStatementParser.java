@@ -11,6 +11,7 @@ import net.cf.object.engine.util.XObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OQL语句解析器，解析的过程中会将识别到的模型、字段、属性保存下来
@@ -23,6 +24,11 @@ public class OqlStatementParser extends OqlExprParser {
 
     public OqlStatementParser(XObjectResolver resolver, String oql) {
         super(resolver, oql);
+        this.sqlStmtParser = new SqlStatementParser(oql);
+    }
+
+    public OqlStatementParser(XObjectResolver resolver, String oql, Map<String, XObject> objectAliasMap) {
+        super(resolver, oql, objectAliasMap);
         this.sqlStmtParser = new SqlStatementParser(oql);
     }
 
@@ -68,6 +74,7 @@ public class OqlStatementParser extends OqlExprParser {
      */
     private OqlSelect toOqlSelect(SqlSelect sqlSelect) {
         OqlSelect oqlSelect = new OqlSelect();
+        oqlSelect.setParenthesized(sqlSelect.isParenthesized());
         oqlSelect.setDistinctOption(sqlSelect.getDistinctOption());
         SqlTableSource tableSource = sqlSelect.getFrom();
         OqlObjectSource objectSource = this.parseObjectSource(tableSource);

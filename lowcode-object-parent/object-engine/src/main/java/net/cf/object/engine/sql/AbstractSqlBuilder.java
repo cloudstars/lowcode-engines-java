@@ -32,6 +32,12 @@ public abstract class AbstractSqlBuilder {
     protected SqlExprTableSource buildSqlTableSource(OqlExprObjectSource x) {
         SqlExprTableSource tableSource = new SqlExprTableSource();
         tableSource.setExpr(x.getResolvedObject().getTableName());
+        String alias = x.getAlias();
+        if (alias != null) {
+            tableSource.setHasAliasKeyword(x.isHasAliasKeyword());
+            tableSource.setAlias(alias);
+        }
+
         return tableSource;
     }
 
@@ -49,6 +55,18 @@ public abstract class AbstractSqlBuilder {
         return identExpr;
     }
 
+    /**
+     * 将本表字段转换成驱动层的标识符表达式
+     *
+     * @param field
+     * @param tableAlias 表的别名
+     * @return
+     */
+    protected SqlIdentifierExpr buildSqlExpr(XField field, String tableAlias) {
+        SqlIdentifierExpr identExpr = this.buildSqlExpr(field);
+        identExpr.setResolvedOwnerTable(tableAlias);
+        return identExpr;
+    }
 
     /**
      * 将它表字段转换成驱动层的属性表达式

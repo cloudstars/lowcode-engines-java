@@ -85,7 +85,7 @@ public class SqlStatementParser extends SqlExprParser {
      */
     private SqlSelectStatement parseSelectStatement() {
         SqlSelectParser selectParser = new SqlSelectParser(this.lexer);
-        SqlSelect select = selectParser.select();
+        SqlSelect select = selectParser.select(false);
         return new SqlSelectStatement(select);
     }
 

@@ -5,6 +5,14 @@ import net.cf.form.repository.sql.util.SqlUtils;
 
 public abstract class AbstractSqlTableSourceImpl extends AbstractSqlObjectImpl implements SqlTableSource {
 
+    /**
+     * 是否有"alias"关键字
+     */
+    protected boolean hasAliasKeyword;
+
+    /**
+     * 表的别名
+     */
     protected String alias;
 
     public AbstractSqlTableSourceImpl() {
@@ -12,6 +20,16 @@ public abstract class AbstractSqlTableSourceImpl extends AbstractSqlObjectImpl i
 
     public AbstractSqlTableSourceImpl(String alias) {
         this.alias = alias;
+    }
+
+    @Override
+    public boolean isHasAliasKeyword() {
+        return hasAliasKeyword;
+    }
+
+    @Override
+    public void setHasAliasKeyword(boolean hasAliasKeyword) {
+        this.hasAliasKeyword = hasAliasKeyword;
     }
 
     @Override

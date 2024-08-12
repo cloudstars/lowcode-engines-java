@@ -20,6 +20,11 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
      */
     private boolean autoGen;
 
+    /**
+     * 归属的表名或表的别名
+     */
+    private String resolvedOwnerTable;
+
     public SqlIdentifierExpr() {
     }
 
@@ -55,6 +60,7 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
     public void setResolvedColumn(String resolvedColumn) {
         this.resolvedColumn = resolvedColumn;
     }
+    */
 
     public String getResolvedOwnerTable() {
         return resolvedOwnerTable;
@@ -62,7 +68,7 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
 
     public void setResolvedOwnerTable(String resolvedOwnerTable) {
         this.resolvedOwnerTable = resolvedOwnerTable;
-    }*/
+    }
 
     @Override
     protected void accept0(SqlAstVisitor visitor) {

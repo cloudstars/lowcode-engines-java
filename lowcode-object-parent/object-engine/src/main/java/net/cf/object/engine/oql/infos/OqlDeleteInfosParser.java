@@ -1,8 +1,8 @@
 
 package net.cf.object.engine.oql.infos;
 
-import net.cf.object.engine.object.XField;
 import net.cf.object.engine.object.XObject;
+import net.cf.object.engine.object.XObjectRefField;
 import net.cf.object.engine.oql.ast.OqlDeleteStatement;
 import net.cf.object.engine.oql.ast.OqlExprObjectSource;
 import net.cf.object.engine.sql.SqlDeleteCmd;
@@ -91,10 +91,9 @@ public class OqlDeleteInfosParser extends AbstractOqInfosParser<OqlDeleteStateme
         deleteInfos.setMasterDeleteCmd(masterDeleteCmd);
 
         if (!detailObjectDeleteStmtMap.isEmpty()) {
-            String masterObjectName = this.masterObject.getName();
             detailObjectDeleteStmtMap.forEach((detailObject, stmt) -> {
                 deleteInfos.addResolvedDetailObject(detailObject);
-                XField masterRefField = detailObject.getObjectRefField(masterObjectName);
+                XObjectRefField masterRefField = detailObject.getMasterField();
                 String masterRefFieldName = masterRefField.getName();
 
                 SqlDeleteCmdBuilder detailBuilder;
@@ -136,7 +135,7 @@ public class OqlDeleteInfosParser extends AbstractOqInfosParser<OqlDeleteStateme
      * @param detailObject
      */
     private void buildDetailDeleteStmt(XObject detailObject) {
-        XField masterRefField = detailObject.getObjectRefField(this.masterObject.getName());
+        XObjectRefField masterRefField = detailObject.getMasterField();
         OqlDeleteStatement detailStmt = this.getDetailObjectDeleteStmtByObject(detailObject);
         Map<String, Object> paramMap = !this.isBatch ? this.paramMap : this.paramMaps.get(0);
         Object masterPrimaryFieldValue = this.extractMasterId(paramMap);

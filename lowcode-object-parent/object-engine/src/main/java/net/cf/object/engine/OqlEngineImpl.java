@@ -83,7 +83,7 @@ public class OqlEngineImpl implements OqlEngine {
                 XObject detailObject = detailSelectCmd.getResolvedObject();
                 // 组装子表的查询条件（where masterField = #{masterField}）所需参数
                 Map<String, Object> detailParamMap = detailSelectCmd.getParamMap();
-                XObjectRefField detailMasterField = detailObject.getObjectRefField(masterObject.getName());
+                XObjectRefField detailMasterField = detailObject.getMasterField();
                 String detailMasterFieldName = detailMasterField.getName();
                 detailParamMap.put(detailMasterFieldName, masterRecordId);
                 // 查询子表的数据并作并归并
@@ -288,7 +288,7 @@ public class OqlEngineImpl implements OqlEngine {
                 XObject detailObject = detailSelectCmd.getResolvedObject();
                 // 组装子表的查询条件（where masterField in (#{masterFields}))所需参数
                 Map<String, Object> detailParamMap = detailSelectCmd.getParamMap();
-                XObjectRefField detailMasterField = detailObject.getObjectRefField(masterObject.getName());
+                XObjectRefField detailMasterField = detailObject.getMasterField();
                 String detailPrimaryFieldName = detailObject.getPrimaryField().getName();
                 String detailMasterFieldName = detailMasterField.getName();
                 detailParamMap.put(detailMasterFieldName + 's', masterRecordIds);
@@ -501,7 +501,7 @@ public class OqlEngineImpl implements OqlEngine {
             // 如果存在自动生成主键的情况下，将主表插入时返回的自增主键的值添加到每一个子表参数中
             if (masterPrimaryField.isAutoGen()) {
                 List<Map<String, Object>> detailParamMapList = detailInsertCmd.getParamMaps();
-                String detailObjectMasterFieldName = detailObject.getObjectRefField(masterObjectName).getName();
+                String detailObjectMasterFieldName = detailObject.getMasterField().getName();
                 for (Map<String, Object> subParamMap : detailParamMapList) {
                     subParamMap.put(detailObjectMasterFieldName, masterAutoFieldValue);
                 }
@@ -541,7 +541,7 @@ public class OqlEngineImpl implements OqlEngine {
             // 如果存在自增主键的情况下，将主表插入时返回的自增主键的值按参数的顺序添加到每一个子表参数中
             List<Map<String, Object>> detailParamMapList = detailInsertCmd.getParamMaps();
             if (masterPrimaryField.isAutoGen()) {
-                String detailObjectMasterFieldName = detailObject.getObjectRefField(masterObjectName).getName();
+                String detailObjectMasterFieldName = detailObject.getMasterField().getName();
                 for (Map<String, Object> subParamMap : detailParamMapList) {
                     int paramIndex = (Integer) subParamMap.get(AbstractOqlInfos.PARAM_INDEX);
                     Object masterAutoId = paramMaps.get(paramIndex).get(masterPrimaryFieldName);

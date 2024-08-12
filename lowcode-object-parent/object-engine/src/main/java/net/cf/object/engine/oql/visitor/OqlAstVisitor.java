@@ -83,6 +83,24 @@ public interface OqlAstVisitor extends SqlAstVisitor {
     }
 
     /**
+     * 是否允许访问 OqlExistsExpr 的儿子节点
+     *
+     * @param x
+     * @return
+     */
+    default boolean visit(OqlExistsExpr x) {
+        return true;
+    }
+
+    /**
+     * 结束访问 OqlExistsExpr
+     *
+     * @param x
+     */
+    default void endVisit(OqlExistsExpr x) {
+    }
+
+    /**
      * 是否允许访问 OqlSelect 的儿子节点
      *
      * @param x
@@ -90,6 +108,14 @@ public interface OqlAstVisitor extends SqlAstVisitor {
      */
     default boolean visit(OqlSelect x) {
         return true;
+    }
+
+    /**
+     * 结束访问 OqlSelect
+     *
+     * @param x
+     */
+    default void endVisit(OqlSelect x) {
     }
 
     /**
@@ -108,14 +134,6 @@ public interface OqlAstVisitor extends SqlAstVisitor {
      */
     default boolean visit(OqlSelectItem x) {
         return true;
-    }
-
-    /**
-     * 结束访问 OqlSelect
-     *
-     * @param x
-     */
-    default void endVisit(OqlSelect x) {
     }
 
     /**

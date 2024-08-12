@@ -33,6 +33,16 @@ public interface XObject<F extends XField, R extends XObjectRefField> {
     F getField(String fieldName);
 
     /**
+     * 根据关联模型的编号获取对应的字段
+     *
+     * @param refFieldName
+     * @return
+     */
+    R getObjectRefField2(String refFieldName);
+    // 备注：设计存在缺陷，一个模型可能Lookup同一个模型多次，如“员工”引用“兴趣爱好”，有喜欢的引用和不喜欢的引用，没办法通过引用模型的名称查找到唯一的一个
+    // R getObjectRefField(String refObjectName);
+
+    /**
      * 获取主键字段
      *
      * @return
@@ -40,19 +50,11 @@ public interface XObject<F extends XField, R extends XObjectRefField> {
     F getPrimaryField();
 
     /**
-     * 如果是一个子模型的话，返回主模型列
+     * 如果是一个子模型的话，返回引用的主模型字段
      *
      * @return
      */
-    //R getMasterField();
-
-    /**
-     * 根据关联模型的编号获取对应的字段
-     *
-     * @param refObjectName
-     * @return
-     */
-    R getObjectRefField(String refObjectName);
+    R getMasterField();
 
     /**
      * 校验函数

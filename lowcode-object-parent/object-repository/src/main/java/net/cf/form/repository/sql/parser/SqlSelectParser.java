@@ -32,9 +32,11 @@ public class SqlSelectParser extends SqlExprParser {
      *
      * @return
      */
-    public SqlSelect select() {
+    public SqlSelect select(boolean isSubQuery) {
         boolean isParenthesized = false;
-        if (this.lexer.token == Token.LPAREN) {
+        if (isSubQuery) {
+            this.accept(Token.LPAREN);
+        } else if (this.lexer.token == Token.LPAREN) {
             isParenthesized = true;
             this.lexer.nextToken();
         }
@@ -62,7 +64,7 @@ public class SqlSelectParser extends SqlExprParser {
             select.setLimit(this.parseLimit());
         }
 
-        if (isParenthesized) {
+        if (isSubQuery || isParenthesized) {
             this.accept(Token.RPAREN);
             select.setParenthesized(true);
         }

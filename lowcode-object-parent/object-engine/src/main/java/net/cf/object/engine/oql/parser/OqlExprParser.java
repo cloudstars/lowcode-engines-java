@@ -4,6 +4,7 @@ import net.cf.form.repository.sql.ast.expr.SqlExpr;
 import net.cf.form.repository.sql.ast.expr.identifier.*;
 import net.cf.form.repository.sql.ast.expr.op.*;
 import net.cf.form.repository.sql.ast.statement.SqlExprTableSource;
+import net.cf.form.repository.sql.ast.statement.SqlSelect;
 import net.cf.form.repository.sql.ast.statement.SqlTableSource;
 import net.cf.form.repository.sql.parser.SqlExprParser;
 import net.cf.form.repository.sql.parser.Token;
@@ -12,7 +13,9 @@ import net.cf.object.engine.oql.FastOqlException;
 import net.cf.object.engine.oql.ast.*;
 import net.cf.object.engine.util.OqlUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OQL 表达式解析器
@@ -21,11 +24,26 @@ import java.util.List;
  */
 public class OqlExprParser extends SqlExprParser {
 
+    /**
+     * 本地缓存的模型解析器
+     */
     protected CachedObjectResolverProxy resolver;
 
+    /**
+     * 模型别名映射表，key为别名，value为模型的名称，如from T as xx, 那么xx -> T
+     */
+    protected final Map<String, XObject> objectAliasMap = new HashMap<>();
+
     public OqlExprParser(XObjectResolver resolver, String oql) {
+        this(resolver, oql, null);
+    }
+
+    public OqlExprParser(XObjectResolver resolver, String oql, Map<String, XObject> objectAliasMap) {
         super(oql);
         this.resolver = new CachedObjectResolverProxy(resolver);
+        if (objectAliasMap != null) {
+            this.objectAliasMap.putAll(objectAliasMap);
+        }
     }
 
     /**
@@ -107,6 +125,13 @@ public class OqlExprParser extends SqlExprParser {
         OqlObjectSource objectSource = null;
         if (tableSource instanceof SqlExprTableSource) {
             objectSource = this.parseExprObjectSource((SqlExprTableSource) tableSource);
+        } else {
+            throw new FastOqlException("暂不支持的Sql数据表类型：" + tableSource.getClass().getName());
+        }
+
+        String alias = tableSource.getAlias();
+        if (alias != null && !this.objectAliasMap.containsKey(alias)) {
+            this.objectAliasMap.put(alias, objectSource.getResolvedObject());
         }
 
         return objectSource;
@@ -123,6 +148,11 @@ public class OqlExprParser extends SqlExprParser {
         XObject resolvedObject = this.resolveObject(objectName);
         OqlExprObjectSource exprObjectSource = new OqlExprObjectSource(objectName);
         exprObjectSource.setResolvedObject(resolvedObject);
+        String alias = exprTableSource.getAlias();
+        if (alias != null) {
+            exprObjectSource.setHasAliasKeyword(exprObjectSource.isHasAliasKeyword());
+            exprObjectSource.setAlias(alias);
+        }
         return exprObjectSource;
     }
 
@@ -138,7 +168,7 @@ public class OqlExprParser extends SqlExprParser {
     protected SqlExpr parseSqlExpr(final XObject selfObject, final SqlExpr x) {
         Class<?> clazz = x.getClass();
         if (clazz == SqlIdentifierExpr.class) {
-            return this.parseIdentifierExpr(selfObject, (SqlIdentifierExpr) x);
+            return this.parseIdentifierExpr(selfObject, null, (SqlIdentifierExpr) x);
         } else if (clazz == SqlPropertyExpr.class) {
             return this.parsePropertyExpr(selfObject, (SqlPropertyExpr) x);
         } else if (clazz == SqlLikeOpExpr.class) {
@@ -159,6 +189,8 @@ public class OqlExprParser extends SqlExprParser {
             return this.parseMethodInvokeExpr(selfObject, (SqlMethodInvokeExpr) x);
         } else if (clazz == SqlCaseExpr.class) {
             return this.parseCaseExpr(selfObject, (SqlCaseExpr) x);
+        } else if (clazz == SqlExistsExpr.class) {
+            return this.parseExistsExpr(selfObject, (SqlExistsExpr) x);
         } else {
             return x;
         }
@@ -168,10 +200,11 @@ public class OqlExprParser extends SqlExprParser {
      * 解析标识符表达式
      *
      * @param selfObject
+     * @param owner
      * @param expr
      * @return
      */
-    private SqlExpr parseIdentifierExpr(XObject selfObject, SqlIdentifierExpr expr) {
+    private SqlExpr parseIdentifierExpr(XObject selfObject, String owner, SqlIdentifierExpr expr) {
         String fieldName = expr.getName();
         XField resolvedField = this.resolveField(selfObject, fieldName);
         if (resolvedField instanceof XObjectRefField) {
@@ -190,6 +223,7 @@ public class OqlExprParser extends SqlExprParser {
 
         // 如果字段下存在子属性的话，那么转换为字段展开表达式（默认展开）
         OqlFieldExpr fieldExpr = new OqlFieldExpr(fieldName);
+        fieldExpr.setOwner(owner);
         fieldExpr.setResolvedField(resolvedField);
         return fieldExpr;
     }
@@ -239,6 +273,11 @@ public class OqlExprParser extends SqlExprParser {
         SqlIdentifierExpr owner = x.getOwner();
         String ownerName = owner.getName();
         String propName = x.getName();
+        if (this.objectAliasMap.containsKey(ownerName)) {
+            XObject thisObject = this.objectAliasMap.get(ownerName);
+            return this.parseIdentifierExpr(thisObject, ownerName, new SqlIdentifierExpr(propName));
+        }
+
         XField ownerField = this.resolveField(selfObject, ownerName);
         if (!(ownerField instanceof XObjectRefField)) { // 非引用模型（它表）的字段
             XProperty property = this.resolveProperty(ownerField, propName);
@@ -427,6 +466,27 @@ public class OqlExprParser extends SqlExprParser {
     }
 
     /**
+     * 解析 exists 子查询表达式
+     *
+     * @param selfObject
+     * @param x
+     * @return
+     */
+    private OqlExistsExpr parseExistsExpr(XObject selfObject, SqlExistsExpr x) {
+        SqlSelect subQuery = x.getSubQuery();
+        String subQueryOql = subQuery.toString();
+        subQueryOql = subQueryOql.substring(1, subQueryOql.length() - 1); // 去除前后的"("、")"
+        OqlStatementParser oqlStatementParser = new OqlStatementParser(resolver, subQueryOql, this.objectAliasMap);
+        OqlSelectStatement subQueryStmt = (OqlSelectStatement) oqlStatementParser.parseStatementList().get(0);
+        subQueryStmt.getSelect().setParenthesized(true);
+
+        OqlExistsExpr sqlX = new OqlExistsExpr();
+        sqlX.setNot(x.isNot());
+        sqlX.setSubQuery(subQueryStmt.getSelect());
+        return sqlX;
+    }
+
+    /**
      *
      * 展开模型
      *
@@ -435,8 +495,6 @@ public class OqlExprParser extends SqlExprParser {
      */
     private OqlObjectExpandExpr expandObject(XObjectRefField objectRefField, SqlMethodInvokeExpr x) {
         XObject refObject = this.resolver.resolve(objectRefField.getRefObjectName());
-        String refObjectName = refObject.getName();
-
         String refObjectFieldName = x.getMethodName();
         OqlObjectExpandExpr objectExpandExpr = new OqlObjectExpandExpr(refObjectFieldName);
         objectExpandExpr.setResolvedObjectRefField(objectRefField);

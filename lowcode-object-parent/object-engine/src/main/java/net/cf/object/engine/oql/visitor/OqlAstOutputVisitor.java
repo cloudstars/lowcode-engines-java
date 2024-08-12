@@ -62,15 +62,34 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
     @Override
     public boolean visit(OqlExprObjectSource x) {
         x.getExpr().accept(this);
-        if (x.getAlias() != null) {
-            this.print(" as " + x.getAlias());
+        String alias = x.getAlias();
+        if (alias != null) {
+            if (x.isHasAliasKeyword()) {
+                this.print(this.uppercase ? " AS" : " as");
+            }
+            this.print(" " + alias);
         }
 
         return false;
     }
 
     @Override
+    public boolean visit(OqlExistsExpr x) {
+        if (x.isNot()) {
+            this.print(this.uppercase ? "NOT " : "not ");
+        }
+        this.print(this.uppercase ? "EXISTS " : "exists ");
+        this.visit(x.getSubQuery());
+
+        return false;
+    }
+
+    @Override
     public boolean visit(OqlSelect x) {
+        if (x.isParenthesized()) {
+            this.print("(");
+        }
+
         this.print(this.uppercase ? "SELECT " : "select ");
 
         DistinctOption distinctOption = x.getDistinctOption();
@@ -91,8 +110,7 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         // 输出查询的模型
         OqlObjectSource from = x.getFrom();
         if (from != null) {
-            this.println();
-            this.print(this.uppercase ? "FROM " : "from ");
+            this.print(this.uppercase ? " FROM" : " from ");
             from.accept(this);
         }
 
@@ -102,20 +120,22 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         // 输出groupBy子句
         SqlSelectGroupByClause groupBy = x.getGroupBy();
         if (groupBy != null) {
-            this.println();
             groupBy.accept(this);
         }
 
         // 输出orderBy
         SqlOrderBy orderBy = x.getOrderBy();
         if (orderBy != null) {
-            this.println();
             orderBy.accept(this);
         }
 
         SqlLimit limit = x.getLimit();
         if (limit != null) {
             limit.accept(this);
+        }
+
+        if (x.isParenthesized()) {
+            this.print(")");
         }
 
         return false;
@@ -144,7 +164,6 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         // 输出插入的列列表
         List<SqlInsertStatement.ValuesClause> valuesClauses = x.getValuesList();
         if (!valuesClauses.isEmpty()) {
-            this.println();
             this.print(this.uppercase ? "VALUES " : "values ");
             this.printAndAcceptList(valuesClauses, ", ");
         }
@@ -163,7 +182,6 @@ public class OqlAstOutputVisitor extends SqlAstOutputVisitor implements OqlAstVi
         this.printParenthesesAndAcceptList(x.getFields(), ", ");
 
         // 输出查询条件
-        this.println();
         this.visit(x.getQuery());
 
         return false;

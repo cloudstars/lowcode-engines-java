@@ -6,6 +6,7 @@ package net.cf.object.engine.object;
  * @author clouds
  */
 public enum ObjectRefType {
-    DETAIL, /* 子表引用 */
-    LOOKUP; /* 查找表引用 */
+    MASTER, /* 主模型引用，1对1 */
+    DETAIL, /* 子模型引用，1对多 */
+    LOOKUP; /* 查找模型引用，1对1或1对多 */
 }

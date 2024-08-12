@@ -25,7 +25,7 @@ public class SqlInsertIntoParser extends SqlExprParser {
             this.parserValuesList(insert);
         } else if (this.lexer.token == Token.SELECT) {
             SqlSelectParser selectParser = new SqlSelectParser(this.lexer);
-            SqlSelect query = selectParser.select();
+            SqlSelect query = selectParser.select(false);
             insert.setQuery(query);
         }
 

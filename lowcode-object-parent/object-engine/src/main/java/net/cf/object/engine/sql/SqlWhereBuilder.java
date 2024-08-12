@@ -10,9 +10,8 @@ import net.cf.form.repository.sql.ast.statement.SqlSelectItem;
 import net.cf.form.repository.sql.util.SqlExprUtils;
 import net.cf.object.engine.object.*;
 import net.cf.object.engine.oql.FastOqlException;
-import net.cf.object.engine.oql.ast.OqlFieldExpr;
-import net.cf.object.engine.oql.ast.OqlObjectExpandExpr;
-import net.cf.object.engine.oql.ast.OqlPropertyExpr;
+import net.cf.object.engine.oql.ast.*;
+import net.cf.object.engine.oql.infos.OqlSelectInfosParser;
 import net.cf.object.engine.util.OqlUtils;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import java.util.Map;
 
 /**
  * SQL 语句中的 where 子句构建器
- *
+ * <p>
  * 职责：将select、update、delete OQL语句的where子句构建成 SQL 的 where 子句
  *
  * <p>
@@ -33,8 +32,6 @@ import java.util.Map;
  * 优化：
  * 1、同一个最底层分组里的标识符，属于同一个模型的表达式组合在一起, a = 1 and b = 2 and refField.a = 1 and refField.b = 2, a = 1 and b = 2 and (refField.a = 1 or refField.b = 2)
  * 2、对于非本表的二元操作表达式，转换为exists子查询
- *
- *
  *
  * @author clouds
  */
@@ -52,9 +49,26 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
     // 最后一次解析到的模型
     private XObject lastResolvedObject;
 
+    /**
+     * 主查询的模型，当构建子查询时，子查询有select 1 from t where t.id = m.id此类的需求
+     */
+    private XObject mainObject;
+
+    /**
+     * 主查询的模型的别名
+     */
+    private String mainObjectAlias;
+
     public SqlWhereBuilder(XObject selfObject) {
+        this(selfObject, null, null);
+    }
+
+
+    public SqlWhereBuilder(XObject selfObject, XObject mainObject, String mainObjectAlias) {
         this.selfObject = selfObject;
         this.lastResolvedObject = selfObject;
+        this.mainObject = mainObject;
+        this.mainObjectAlias = mainObjectAlias;
     }
 
     /**
@@ -74,7 +88,9 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
         } else if (clazz == OqlPropertyExpr.class) {
             return this.parsePropertyExpr((OqlPropertyExpr) x);
         } else if (clazz == OqlObjectExpandExpr.class) {
-            throw new RuntimeException("模型展开字段不能作为查询条件");
+            throw new FastOqlException("模型展开字段不能作为查询条件");
+        } else if (clazz == OqlExistsExpr.class) {
+            return this.parseExistsExpr((OqlExistsExpr) x, this.mainObject, this.mainObjectAlias);
         } else if (clazz == SqlLikeOpExpr.class) {
             return this.parseLikeExpr((SqlLikeOpExpr) x);
         } else if (clazz == SqlInListExpr.class) {
@@ -83,7 +99,7 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
             return this.parseContainsOpExpr((SqlContainsOpExpr) x);
         } else if (clazz == SqlBinaryOpExpr.class) {
             return this.parseBinaryOpExpr((SqlBinaryOpExpr) x);
-        }  else if (clazz == SqlBinaryOpExprGroup.class) {
+        } else if (clazz == SqlBinaryOpExprGroup.class) {
             return this.parseBinaryOpExprGroup((SqlBinaryOpExprGroup) x);
         } else if (clazz == SqlAggregateExpr.class) {
             return this.parseAggregateExpr((SqlAggregateExpr) x);
@@ -116,10 +132,19 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
                 throw new FastOqlException("查询条件的字段" + fieldName + "存在多个子属性、并且未设置主属性，请明确指明字段的属性");
             }
         } else {
+            String owner = expr.getOwner();
             if (resolvedField.getOwner() != this.selfObject) {
-                return this.buildSqlRefExpr(resolvedField);
+                if (owner == null) {
+                    return this.buildSqlRefExpr(resolvedField);
+                } else {
+                    return this.buildSqlExpr(resolvedField, owner);
+                }
             } else {
-                return this.buildSqlExpr(resolvedField);
+                if (owner == null) {
+                    return this.buildSqlExpr(resolvedField);
+                } else {
+                    return this.buildSqlExpr(resolvedField, owner);
+                }
             }
         }
     }
@@ -183,6 +208,7 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
 
     /**
      * 解析 Contains 表达式
+     *
      * @param x
      * @return
      */
@@ -209,19 +235,36 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
 
     private SqlExpr parseBinaryOpExprTo(SqlBinaryOpExpr x, SqlBinaryOpExpr sqlX) {
         SqlBinaryOperator op = x.getOperator();
-        sqlX.setLeft(this.parseExpr(x.getLeft()));
+        SqlExpr leftExpr = x.getLeft();
+        sqlX.setLeft(this.parseExpr(leftExpr));
         XObject leftObject = this.lastResolvedObject;
         sqlX.setOperator(op);
-        sqlX.setRight(this.parseExpr(x.getRight()));
+        SqlExpr rightExpr = x.getRight();
+        sqlX.setRight(this.parseExpr(rightExpr));
         XObject rightObject = this.lastResolvedObject;
         sqlX.setParenthesized(x.isParenthesized());
 
         if (leftObject != rightObject && op != SqlBinaryOperator.BOOLEAN_AND && op != SqlBinaryOperator.BOOLEAN_OR && op != SqlBinaryOperator.BOOLEAN_XOR) {
-            throw new FastOqlException("非逻辑的二元操作表达式的左值与右值必须是必一个模型，请检查：" + x);
+            if (!(mainObject != null && (leftObject == mainObject || rightObject == mainObject))) { // 说明在子查询中，允许和主查询的字段比较
+                throw new FastOqlException("非逻辑的二元操作表达式的左值与右值必须是必一个模型，请检查：" + x);
+            }
         }
 
-        if (!isInGroup && leftObject != selfObject) {
-            return this.toExistsSubQueryExpr(leftObject, sqlX);
+        // 如果mainObject不为null则本身已经是一个子查询了，不需要再转换一次了
+        if (mainObject == null && !isInGroup && leftObject != selfObject) {
+            String objectRefFieldName = null;
+            if (leftExpr instanceof OqlFieldExpr) {
+                objectRefFieldName = ((OqlFieldExpr) leftExpr).getOwner();
+            } else if (rightExpr instanceof OqlFieldExpr) {
+                objectRefFieldName = ((OqlFieldExpr) rightExpr).getOwner();
+            }
+
+            XObjectRefField objectRefField = selfObject.getObjectRefField2(objectRefFieldName);
+            if (objectRefField == null) {
+                throw new FastOqlException("二元操作的左值或右值是至少有一个模型引用字段");
+            }
+
+            return this.toExistsSubQueryExpr(objectRefField, leftObject, sqlX);
         } else {
             return sqlX;
         }
@@ -236,7 +279,7 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
     private SqlExpr parseBinaryOpExprGroup(SqlBinaryOpExprGroup x) {
         this.enterGroup();
 
-        //个分组中按模型映射的表达式
+        // 个分组中按模型映射的表达式
         Map<XObject, List<SqlExpr>> objectExprsInGroupMap = new HashMap<>();
 
         // 按模型聚合条件
@@ -268,7 +311,19 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
             }
             // 如果不是本表的查询条件，则转为exists子查询
             if (object != selfObject) {
-                groupsX.add(this.toExistsSubQueryExpr(object, groupX));
+                String objectRefFieldName = null;
+                for (SqlExpr groupExpr : groupExprs) {
+                    if (groupExpr instanceof OqlFieldExpr) {
+                        objectRefFieldName = ((OqlFieldExpr) groupExpr).getOwner();
+                        break;
+                    }
+                }
+
+                XObjectRefField objectRefField = this.selfObject.getObjectRefField2(objectRefFieldName);
+                if (objectRefField == null) {
+                    throw new FastOqlException("二元操作的左值或右值是至少有一个模型引用字段");
+                }
+                groupsX.add(this.toExistsSubQueryExpr(objectRefField, object, groupX));
             } else {
                 groupsX.add(groupX);
             }
@@ -293,30 +348,35 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
      * 将非本模型的查询条件转换为驱动层的exists子查询
      *
      * @param refObject 引用的模型
-     * @param sqlX 引用模型的查询条件
+     * @param sqlX      引用模型的查询条件
      */
-    private SqlExistsExpr toExistsSubQueryExpr(XObject refObject, SqlExpr sqlX) {
+    private SqlExistsExpr toExistsSubQueryExpr(XObjectRefField objectRefField, XObject refObject, SqlExpr sqlX) {
         SqlExistsExpr existsExpr = new SqlExistsExpr();
         SqlSelect subQuery = new SqlSelect();
         subQuery.getSelectItems().add(new SqlSelectItem(new SqlIntegerExpr(1)));
         subQuery.setFrom(new SqlExprTableSource(refObject.getTableName()));
-        XObjectRefField objectRefField = this.selfObject.getObjectRefField(refObject.getName());
         ObjectRefType refType = objectRefField.getRefType();
         SqlBinaryOpExpr joinOpExpr = new SqlBinaryOpExpr();
         joinOpExpr.setOperator(SqlBinaryOperator.EQUALITY);
         // 设置关联条件
         if (refType == ObjectRefType.DETAIL) {
             // where detail.masterField = self.primaryField
-            XObjectRefField detailMasterField = refObject.getObjectRefField(this.selfObject.getName());
+            XObjectRefField detailMasterField = refObject.getMasterField();
             joinOpExpr.setLeft(this.buildSqlRefExpr(detailMasterField));
             XField selfPrimaryField = this.selfObject.getPrimaryField();
             joinOpExpr.setRight(this.buildSqlRefExpr(selfPrimaryField));
+        } else if (refType == ObjectRefType.MASTER) {
+            // where master.primaryField = self.masterField
+            XField masterPrimaryField = refObject.getPrimaryField();
+            joinOpExpr.setLeft(this.buildSqlRefExpr(masterPrimaryField));
+            XObjectRefField selfMasterField = this.selfObject.getMasterField();
+            joinOpExpr.setRight(this.buildSqlRefExpr(selfMasterField));
         } else if (refType == ObjectRefType.LOOKUP) {
             // where lookup.primaryField = self.lookupField
             XField lookupPrimaryField = refObject.getPrimaryField();
             joinOpExpr.setLeft(this.buildSqlRefExpr(lookupPrimaryField));
-            XObjectRefField selfLookupField = this.selfObject.getObjectRefField(refObject.getName());
-            joinOpExpr.setRight(this.buildSqlRefExpr(selfLookupField));
+            //XObjectRefField selfLookupField = this.selfObject.getObjectRefField2(refObject.getName());
+            joinOpExpr.setRight(this.buildSqlRefExpr(objectRefField));
         }
         subQuery.setWhere(SqlExprUtils.and(joinOpExpr, sqlX));
         existsExpr.setSubQuery(subQuery);
@@ -350,6 +410,25 @@ public class SqlWhereBuilder extends AbstractSqlBuilder {
 
         SqlMethodInvokeExpr sqlX = new SqlMethodInvokeExpr();
         this.cloneTo(x, sqlX);
+        return sqlX;
+    }
+
+    /**
+     * 解析exists表达式
+     *
+     * @param x
+     * @return
+     */
+    private SqlExpr parseExistsExpr(OqlExistsExpr x, XObject mainObject, String mainObjectAlias) {
+        OqlSelect subQuery = x.getSubQuery();
+
+        OqlSelectStatement subQueryStmt = new OqlSelectStatement(subQuery);
+        OqlSelectInfosParser subQueryParser = new OqlSelectInfosParser(subQueryStmt, mainObject, mainObjectAlias);
+        SqlSelect sqlSubQuery = subQueryParser.parse().getMasterSelectCmd().getStatement().getSelect();
+
+        SqlExistsExpr sqlX = new SqlExistsExpr();
+        sqlX.setNot(x.isNot());
+        sqlX.setSubQuery(sqlSubQuery);
         return sqlX;
     }
 

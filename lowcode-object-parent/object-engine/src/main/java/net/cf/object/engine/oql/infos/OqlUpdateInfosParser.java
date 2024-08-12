@@ -390,9 +390,8 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
      * @param detailParamMaps
      */
     private void buildDetailCudParamMaps(XObject detailObject, Map<String, Object> masterParamMap, List<Map<String, Object>> detailParamMaps) {
-        String masterObjectName = this.masterObject.getName();
         Object masterRecordId = this.extractMasterId(masterParamMap);
-        XField masterRefField = detailObject.getObjectRefField(masterObjectName);
+        XObjectRefField masterRefField = detailObject.getMasterField();
         String masterRefFieldName = masterRefField.getName();
         XField primaryField = detailObject.getPrimaryField();
         String primaryFieldName = primaryField.getName();
@@ -493,7 +492,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
      * @param detailObject
      */
     private void buildDetailDeleteStmt(XObject detailObject) {
-        XField masterRefField = detailObject.getObjectRefField(this.masterObject.getName());
+        XObjectRefField masterRefField = detailObject.getMasterField();
         OqlDeleteStatement detailStmt = this.getDetailObjectDeleteStmtByObject(detailObject);
         detailStmt.setWhere(OqlUtils.buildFieldEqualsVarRefExpr(masterRefField));
     }
@@ -505,7 +504,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
      */
     private void buildDetailDeleteNotInStmt(XObject detailObject) {
         XField primaryField = detailObject.getPrimaryField();
-        XField masterRefField = detailObject.getObjectRefField(this.masterObject.getName());
+        XField masterRefField = detailObject.getMasterField();
         SqlExpr left = OqlUtils.buildFieldEqualsVarRefExpr(masterRefField);
         SqlExpr right = OqlUtils.buildFieldInListVarRefExpr(primaryField, true);
         OqlDeleteStatement detailStmt = this.getDetailObjectDeleteNotInStmtByObject(detailObject);
@@ -520,7 +519,7 @@ public class OqlUpdateInfosParser extends AbstractOqInfosParser<OqlUpdateStateme
      */
     private void buildDetailUpdateStmt(XObject detailObject, OqlObjectExpandExpr detailRefFieldExpr) {
         OqlUpdateStatement detailStmt = this.getDetailObjectUpdateStmtByObject(detailObject);
-        XField masterRefField = detailObject.getObjectRefField(this.masterObject.getName());
+        XObjectRefField masterRefField = detailObject.getMasterField();
         XField primaryField = detailObject.getPrimaryField();
         List<SqlExpr> detailExprs = detailRefFieldExpr.getFields();
         int detailFieldSize = detailExprs.size();

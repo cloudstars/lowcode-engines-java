@@ -367,9 +367,9 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     public boolean visit(SqlLikeOpExpr x) {
         x.getLeft().accept(this);
         if (x.isNot()) {
-            this.print(this.uppercase ? " NOT " : " not ");
+            this.print(this.uppercase ? "NOT " : "not ");
         }
-        this.print(this.uppercase ? " LIKE " : " like ");
+        this.print(this.uppercase ? "LIKE " : "like ");
         x.getRight().accept(this);
 
         String escape = x.getEscape();
@@ -385,9 +385,9 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
     public boolean visit(SqlInListExpr x) {
         x.getLeft().accept(this);
         if (x.isNot()) {
-            this.print(this.uppercase ? " NOT " : " not ");
+            this.print(this.uppercase ? "NOT " : "not ");
         }
-        this.print(this.uppercase ? " IN " : " in ");
+        this.print(this.uppercase ? "IN " : "in ");
         this.printParenthesesAndAcceptList(x.getTargetList(), LIST_ITEM_SEPARATOR);
         return false;
     }
@@ -397,9 +397,8 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         if (x.isNot()) {
             this.print(this.uppercase ? "NOT " : "not ");
         }
-        this.print(this.uppercase ? "EXISTS (" : "exists (");
+        this.print(this.uppercase ? "EXISTS " : "exists ");
         this.visit(x.getSubQuery());
-        this.print(")");
 
         return false;
     }
@@ -410,7 +409,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         if (x.isNot()) {
             this.print(this.uppercase ? "NOT " : "not ");
         }
-        this.print(this.uppercase ? " CONTAINS " : " contains ");
+        this.print(this.uppercase ? "CONTAINS " : "contains ");
         x.getRight().accept(this);
         return false;
     }
@@ -433,6 +432,9 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
     @Override
     public boolean visit(SqlIdentifierExpr x) {
+        if (x.getResolvedOwnerTable() != null) {
+            this.print(x.getResolvedOwnerTable() + ".");
+        }
         this.print(x.getName());
         return false;
     }
@@ -485,8 +487,10 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         x.getExpr().accept(this);
         String alias = x.getAlias();
         if (alias != null) {
-            this.print(this.uppercase ? " AS " : " as ");
-            this.print(alias);
+            if (x.isHasAliasKeyword()) {
+                this.print(this.uppercase ? " AS" : " as");
+            }
+            this.print(" " + alias);
         }
 
         return false;
@@ -527,8 +531,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         // 输出查询的表
         SqlTableSource from = x.getFrom();
         if (from != null) {
-            this.println();
-            this.print(this.uppercase ? "FROM " : "from ");
+            this.print(this.uppercase ? " FROM " : " from ");
             from.accept(this);
         }
 
@@ -538,14 +541,12 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         // 输出groupBy子句
         SqlSelectGroupByClause groupBy = x.getGroupBy();
         if (groupBy != null) {
-            this.println();
             groupBy.accept(this);
         }
 
         // 输出orderBy
         SqlOrderBy orderBy = x.getOrderBy();
         if (orderBy != null) {
-            this.println();
             orderBy.accept(this);
         }
 
@@ -582,17 +583,14 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
 
         List<SqlCaseExpr.Item> items = x.getItems();
         for (int i = 0, size = items.size(); i < size; ++i) {
-            this.println();
             this.visit(items.get(i));
         }
 
         SqlExpr elExpr = x.getElseExpr();
         if (elExpr != null) {
-            this.println();
             this.print(this.uppercase ? "ELSE " : "else ");
             if (elExpr instanceof SqlCaseExpr) {
                 ++this.indentCount;
-                this.println();
                 this.visit((SqlCaseExpr) elExpr);
                 --this.indentCount;
             } else {
@@ -601,7 +599,6 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         }
 
         --this.indentCount;
-        this.println();
         this.print(this.uppercase ? "END" : "end");
         return false;
     }
@@ -619,7 +616,6 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         SqlExpr valueExpr = x.getValueExpr();
         if (valueExpr instanceof SqlCaseExpr) {
             ++this.indentCount;
-            this.println();
             this.visit((SqlCaseExpr) valueExpr);
             --this.indentCount;
         } else {
@@ -685,7 +681,6 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
         // 输出插入的列列表
         List<SqlInsertStatement.ValuesClause> valuesClauses = x.getValuesList();
         if (!valuesClauses.isEmpty()) {
-            this.println();
             this.print(this.uppercase ? "VALUES " : "values ");
             this.printAndAcceptList(valuesClauses, LIST_ITEM_SEPARATOR);
         }
@@ -777,8 +772,7 @@ public class SqlAstOutputVisitor extends SqlAstVisitorAdaptor implements Paramet
      */
     protected void printWhere(SqlExpr where) {
         if (where != null) {
-            this.println();
-            this.print(this.uppercase ? "WHERE " : "where ");
+            this.print(this.uppercase ? " WHERE " : " where ");
             where.accept(this);
         }
     }

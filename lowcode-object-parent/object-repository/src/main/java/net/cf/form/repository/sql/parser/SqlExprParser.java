@@ -453,7 +453,7 @@ public class SqlExprParser extends AbstractSqlParser {
                 this.lexer.nextToken();
 
                 SqlSelectParser subQuerySelectParser = new SqlSelectParser(this.lexer);
-                SqlSelect subQuery = subQuerySelectParser.select();
+                SqlSelect subQuery = subQuerySelectParser.select(true);
                 SqlExistsExpr existsExpr = new SqlExistsExpr();
                 existsExpr.setNot(isNot);
                 existsExpr.setSubQuery(subQuery);
@@ -627,11 +627,20 @@ public class SqlExprParser extends AbstractSqlParser {
         String tableName = this.lexer.stringVal();
         SqlExprTableSource tableSource = new SqlExprTableSource(tableName);
         this.lexer.nextToken();
+
+        String alias = null;
         if (this.lexer.token == Token.AS) {
+            tableSource.setHasAliasKeyword(true);
             this.lexer.nextToken();
-            String alias = this.lexer.stringVal();
+            alias = this.lexer.stringVal();
+            this.accept(Token.IDENTIFIER);
+        } else if (this.lexer.token == Token.IDENTIFIER) {
+            alias = this.lexer.stringVal();
+            this.lexer.nextToken();
+        }
+
+        if (alias != null) {
             tableSource.setAlias(alias);
-            this.lexer.nextToken();
         }
 
         return tableSource;

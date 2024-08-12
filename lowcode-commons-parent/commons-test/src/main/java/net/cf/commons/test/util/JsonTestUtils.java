@@ -2,6 +2,8 @@ package net.cf.commons.test.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +85,20 @@ public final class JsonTestUtils {
         }
 
         return dataMap;
+    }
+
+    /**
+     * 通过JSON格式对比两个对象是否相等
+     *
+     * @param expected
+     * @param actual
+     */
+    public static void assertObjectEquals(Object expected, Object actual) {
+        Assert.assertFalse(expected == null && actual != null);
+        Assert.assertFalse(expected != null && actual == null);
+        String expectedJsonString = JSONObject.toJSONString(expected, SerializerFeature.PrettyFormat);
+        String actualJsonString = JSONObject.toJSONString(expected, SerializerFeature.PrettyFormat);
+        Assert.assertEquals(expectedJsonString, actualJsonString);
     }
 
 }

@@ -10,6 +10,18 @@ import net.cf.form.repository.sql.ast.SqlObject;
 public interface SqlTableSource extends SqlObject {
 
     /**
+     * 是否有"alias"关键字
+     */
+    boolean isHasAliasKeyword();
+
+    /**
+     * 设置是否有alias关键字
+     *
+     * @param hasAliasKeyword
+     */
+    void setHasAliasKeyword(boolean hasAliasKeyword);
+
+    /**
      * 获取别名
      *
      * @return
