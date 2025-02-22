@@ -31,7 +31,7 @@ import java.util.Map;
  * 3、二元操作符的左值和右值对应的模型必须是同一个，如这样不允许：refField.b = a，refField.b是引用表的字段，a是本表的字段
  * 优化：
  * 1、同一个最底层分组里的标识符，属于同一个模型的表达式组合在一起, a = 1 and b = 2 and refField.a = 1 and refField.b = 2, a = 1 and b = 2 and (refField.a = 1 or refField.b = 2)
- * 2、对于非本表的二元操作表达式，转换为exists子查询
+ * 2、对于非本表的二元操作表达式，转换为 exists 子查询
  *
  * @author clouds
  */

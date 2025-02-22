@@ -150,7 +150,7 @@ public class OqlExprParser extends SqlExprParser {
         exprObjectSource.setResolvedObject(resolvedObject);
         String alias = exprTableSource.getAlias();
         if (alias != null) {
-            exprObjectSource.setHasAliasKeyword(exprObjectSource.isHasAliasKeyword());
+            exprObjectSource.setHasAliasKeyword(exprTableSource.isHasAliasKeyword());
             exprObjectSource.setAlias(alias);
         }
         return exprObjectSource;
@@ -479,7 +479,6 @@ public class OqlExprParser extends SqlExprParser {
         OqlStatementParser oqlStatementParser = new OqlStatementParser(resolver, subQueryOql, this.objectAliasMap);
         OqlSelectStatement subQueryStmt = (OqlSelectStatement) oqlStatementParser.parseStatementList().get(0);
         subQueryStmt.getSelect().setParenthesized(true);
-
         OqlExistsExpr sqlX = new OqlExistsExpr();
         sqlX.setNot(x.isNot());
         sqlX.setSubQuery(subQueryStmt.getSelect());

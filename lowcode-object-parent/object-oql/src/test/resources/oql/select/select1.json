@@ -1,0 +1,9 @@
+{
+  "name": "simple oqls",
+  "desc": "简单的OQL语句测试",
+  "oqls": [
+    {
+      "oql": "select * from object"
+    }
+  ]
+}

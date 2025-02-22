@@ -20,7 +20,7 @@ public abstract class AbstractOqlParser {
      * @return
      */
     public SqlExpr extractMasterIdInWhere(XObject object, SqlExpr where) {
-        WhereAstVisitor visitor = new WhereAstVisitor(object);
+        PrimaryFieldWhereAstVisitor visitor = new PrimaryFieldWhereAstVisitor(object);
         where.accept(visitor);
         return visitor.getPrimaryFieldValueExpr();
     }

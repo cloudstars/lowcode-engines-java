@@ -51,7 +51,7 @@
     <modules>
         <module>lowcode-commons-parent</module>
         <module>lowcode-object-parent</module>
-        <module>lowcode-function-parent</module>
+        <module>lowcode-script-parent</module>
         <!--<module>lowcode-excel-parent</module>
         <module>lowcode-bpm-parent</module>
         <module>lowcode-api-parent</module>
