@@ -1,0 +1,18 @@
+{
+  "desc": "测试删除出差本表，不含子表的案例，测试点：简单的删除，不含子表",
+  "name": "DeleteTravelSelf",
+  "oqls": [
+    {
+      "desc": "根据记录ID删除出差记录",
+      "name": "DeleteTravelById",
+      "oql": "delete from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "delete from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据记录ID删除出差记录（带变量）",
+      "name": "DeleteTravelByIdVars",
+      "oql": "delete from Travel where applyId = #{applyId}",
+      "sql": "delete from TRAVEL where APPLY_ID = #{applyId}"
+    }
+  ]
+}

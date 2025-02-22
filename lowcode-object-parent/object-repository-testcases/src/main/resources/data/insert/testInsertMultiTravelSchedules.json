@@ -1,0 +1,52 @@
+{
+  "userId0": "wangwu",
+  "startDate0": "2023-06-07",
+  "endDate0": "2023-06-10",
+  "reason0": "出差培训",
+  "attach0": {
+    "id": 123,
+    "name": "这是一个文件名"
+  },
+  "schedules0": [
+    {
+      "startDate": "2023-06-07",
+      "endDate": "2023-06-08",
+      "destination": "北京",
+      "todo": "项目会议"
+    },
+    {
+      "startDate": "2023-06-09",
+      "endDate": "2023-06-10",
+      "destination": "南京",
+      "todo": "学术研讨"
+    }
+  ],
+  "userId1": "wangwu",
+  "startDate1": "2023-06-07",
+  "endDate1": "2023-06-10",
+  "reason1": "出差培训",
+  "attach1": {
+    "id": 124,
+    "name": "这是另一个文件名"
+  },
+  "schedules1": [
+    {
+      "startDate": "2023-06-07",
+      "endDate": "2023-06-08",
+      "destination": "北京",
+      "todo": "项目会议"
+    },
+    {
+      "startDate": "2023-06-09",
+      "endDate": "2023-06-10",
+      "destination": "南京",
+      "todo": "学术研讨"
+    },
+    {
+      "startDate": "2023-06-09",
+      "endDate": "2023-06-10",
+      "destination": "天津",
+      "todo": "公费旅游"
+    }
+  ]
+}

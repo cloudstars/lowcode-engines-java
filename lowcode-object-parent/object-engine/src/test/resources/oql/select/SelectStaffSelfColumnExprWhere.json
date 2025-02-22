@@ -1,0 +1,12 @@
+{
+  "desc": "测试查询条件带列的表达式，如：c1 = c2 + 1",
+  "name": "SelectColumnExprWhere",
+  "oqls": [
+    {
+      "desc": "查询记录创建人等于本人的列表",
+      "name": "SelectListWithCreateEqualsOwner",
+      "oql": "select staffId, staffCode, staffName from Staff where creator.key = ownerKey",
+      "sql": "select STA_ID, STA_CODE, STA_NAME from STAFF where CREATOR_KEY = OWNER_KEY"
+    }
+  ]
+}

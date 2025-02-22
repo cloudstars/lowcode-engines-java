@@ -1,0 +1,192 @@
+{
+  "desc": "员工",
+  "name": "Staff",
+  "tableName": "STAFF",
+  "primaryFieldName": "staffId",
+  "fields": [
+    {
+      "type": "Text",
+      "desc": "员工ID",
+      "name": "staffId",
+      "columnName": "STA_ID",
+      "dataType": "String",
+      "dataLength": 36,
+      "autoGen": true
+    },
+    {
+      "type": "Text",
+      "desc": "员工编号",
+      "name": "staffCode",
+      "columnName": "STA_CODE",
+      "dataType": "String",
+      "dataLength": 20
+    },
+    {
+      "type": "Text",
+      "desc": "员工姓名",
+      "name": "staffName",
+      "columnName": "STA_NAME",
+      "dataType": "String",
+      "dataLength": 32
+    },
+    {
+      "type": "Date",
+      "desc": "入职日期",
+      "name": "joinDate",
+      "columnName": "JOIN_DATE",
+      "dataType": "Date",
+      "dataFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Date",
+      "desc": "离职日期",
+      "name": "departDate",
+      "columnName": "DEPART_DATE",
+      "dataType": "Date",
+      "dataFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Number",
+      "desc": "年龄",
+      "name": "age",
+      "columnName": "AGE",
+      "dataType": "Number"
+    },
+    {
+      "type": "Text",
+      "desc": "个人简介",
+      "name": "descr",
+      "columnName": "DESCR",
+      "dataType": "String",
+      "dataLength": 1024
+    },
+    {
+      "type": "Options",
+      "desc": "状态",
+      "name": "status",
+      "columnName": "STATUS",
+      "dataType": "String",
+      "sourceType": "Static",
+      "options": [
+        {
+          "label": "试用",
+          "value": "SY"
+        },
+        {
+          "label": "已转正",
+          "value": "ZZ"
+        },
+        {
+          "label": "临时",
+          "value": "LS"
+        },
+        {
+          "label": "已离职",
+          "value": "LZ"
+        }
+      ]
+    },
+    {
+      "type": "ObjectRef",
+      "refObjectName": "Hobby",
+      "refType": "LOOKUP",
+      "isMultiRef": true,
+      "desc": "兴趣爱友",
+      "name": "hobbies",
+      "columnName": "HOBBIES",
+      "isArray": true,
+      "dataType": "String"
+    },
+    {
+      "type": "User",
+      "desc": "创建人",
+      "name": "creator",
+      "dataType": "Object",
+      "defaultValue": {
+        "desc": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "desc": "名称",
+          "name": "name",
+          "columnName": "CREATOR_NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "desc": "编号",
+          "name": "key",
+          "columnName": "CREATOR_KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "desc": "更新时间",
+      "name": "createdAt",
+      "columnName": "CREATED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "User",
+      "desc": "更新人",
+      "name": "modifier",
+      "dataType": "Object",
+      "defaultValue": {
+        "desc": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "desc": "名称",
+          "name": "name",
+          "columnName": "MODIFIER_NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "desc": "编号",
+          "name": "key",
+          "columnName": "MODIFIER_KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "desc": "更新时间",
+      "name": "modifiedAt",
+      "columnName": "MODIFIED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Text",
+      "desc": "拥有者",
+      "name": "ownerKey",
+      "columnName": "OWNER_KEY",
+      "dataType": "String",
+      "dataLength": 20
+    },
+    {
+      "type": "Number",
+      "desc": "版本号",
+      "name": "revision",
+      "columnName": "REVISION",
+      "dataType": "Number",
+      "dataPrecision": 0
+    },
+    {
+      "type": "Boolean",
+      "desc": "是否已删除",
+      "name": "deleted",
+      "columnName": "DELETED",
+      "dataType": "Boolean"
+    }
+  ]
+}

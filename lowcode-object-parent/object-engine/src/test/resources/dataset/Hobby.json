@@ -1,0 +1,54 @@
+{
+  "desc": "兴趣爱好表",
+  "name": "HOBBY",
+  "columns": [
+    {
+      "desc": "id",
+      "name": "RECORD_ID",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "名称",
+      "name": "NAME",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "代码",
+      "name": "CODE",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "描述",
+      "name": "DESCR",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人姓名",
+      "name": "CREATOR_NAME",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人编号",
+      "name": "CREATOR_KEY",
+      "dataType": "CHAR"
+    }
+  ],
+  "valuesList": [
+    {
+      "RECORD_ID": "663b6e868cb215763ccfbd9e",
+      "NAME": "抽烟",
+      "CODE": "CY",
+      "DESCR": "喜欢叼个大烟",
+      "CREATOR_NAME": "张三",
+      "CREATOR_KEY": "zhangsan"
+    },
+    {
+      "RECORD_ID": "663b6e868cb215763ccfbd9f",
+      "NAME": "喝酒",
+      "CODE": "HJ",
+      "DESCR": "喜欢喝老酒一",
+      "CREATOR_NAME": "李四",
+      "CREATOR_KEY": "lisi"
+    }
+  ]
+}

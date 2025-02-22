@@ -1,0 +1,24 @@
+{
+  "desc": "测试更新出差本表，不含子表的案例",
+  "name": "UpdateTravelSelfSimple",
+  "desc": "测试点：简单的更新，不含子表",
+  "oqls": [
+    {
+      "desc": "根据记录ID更新出差记录",
+      "name": "UpdateTravelById",
+      "oql": "update Travel set applyName = '测试申请单1（变更）', dateRange = ['2022-10-10', '2022-10-20'] where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "update TRAVEL set APPLY_NAME = '测试申请单1（变更）', START_DATE = '2022-10-10', END_DATE = '2022-10-20' where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "根据记录ID更新出差记录（带变量）",
+      "name": "UpdateTravelByIdVars",
+      "oql": "update Travel set applyName = #{applyName} where applyId = #{applyId}",
+      "sql": "update TRAVEL set APPLY_NAME = #{applyName}, START_DATE = '#{dateRange._0}', END_DATE = #{dateRange._1} where APPLY_ID = #{applyId}",
+      "paramMap": {
+        "applyName": "测试申请单1（变更）",
+        "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+        "dateRange": ["2022-10-10", "2022-10-20"]
+      }
+    }
+  ]
+}

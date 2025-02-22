@@ -1,0 +1,18 @@
+{
+  "userId0": "zhangsan",
+  "startDate0": "2023-06-07",
+  "endDate0": "2023-06-10",
+  "reason0": "参加培训",
+  "attach0": {
+    "id": 123,
+    "name": "这是一个文件名"
+  },
+  "userId1": "zhangsan",
+  "startDate1": "2023-06-07",
+  "endDate1": "2023-06-10",
+  "reason1": "出差培训",
+  "attach1": {
+    "id": 124,
+    "name": "这是另一个文件名"
+  }
+}

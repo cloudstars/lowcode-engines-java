@@ -1,0 +1,19 @@
+{
+  "desc": "测试case when",
+  "name": "SelectCaseWhen",
+  "oqls": [
+    {
+      "desc": "测试case when",
+      "name": "SelectCaseWhen",
+      "oql": "select staffCode, case staffCode when 'zhangsan' then '张三' else '非张三' end as name from Staff order by staffCode desc",
+      "sql": "select STA_CODE, case STA_CODE when 'zhangsan' then '张三' else '非张三' end as name from STAFF",
+      "resultMaps": [{
+        "staffCode": "zhangsan",
+        "name": "张三"
+      }, {
+        "staffCode": "lisi",
+        "name": "非张三"
+      }]
+    }
+  ]
+}

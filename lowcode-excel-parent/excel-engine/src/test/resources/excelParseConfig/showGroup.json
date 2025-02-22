@@ -1,0 +1,41 @@
+{
+  "excelTitles": [
+    {
+      "code": "peopleName",
+      "dataFormatter": {
+        "dataFormatterCode": "text",
+        "dataFormatterName": "文本"
+      },
+      "name": "姓名",
+      "required": false
+    },
+    {
+      "code": "message",
+      "collection": false,
+      "name": "个人信息",
+      "required": false,
+      "subTitles": [
+        {
+          "code": "gender",
+          "dataFormatter": {
+            "dataFormatterCode": "text",
+            "dataFormatterName": "文本"
+          },
+          "name": "性别",
+          "required": false
+        },
+        {
+          "code": "age",
+          "dataFormatter": {
+            "dataFormatterCode": "number",
+            "dataFormatterName": "数字"
+          },
+          "name": "年龄",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "titleStartRow": 0,
+  "titleEndRow": 1
+}

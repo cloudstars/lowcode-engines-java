@@ -1,0 +1,11 @@
+{
+  "name": "SELECT_CASE_WHEN",
+  "desc": "查询时使用CASE WHEN",
+  "sqls": [
+    {
+      "name": "SELECT_CASE_WHEN",
+      "desc": "查询使用CASE WHEN",
+      "sql": "select case when sex = '1' then '男' when sex = '2' then '女' else '未知' end as x from tableA"
+    }
+  ]
+}

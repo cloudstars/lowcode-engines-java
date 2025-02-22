@@ -1,0 +1,35 @@
+{
+  "desc": "测试报销申请关联出差申请，1对1",
+  "name": "SelectExpenseLookupTravel",
+  "oqls": [
+    {
+      "desc": "查询报销申请关联出差申请",
+      "name": "SelectTravelLookupTravel",
+      "oql": "select applyId, applyName, travel(applyId, applyName), cash, remark from Expense",
+      "selfSql": "select APPLY_ID, CASH, REMARK, TRV_ID from EXPENSE",
+      "lookupSql": "select APPLY_ID, APPLY_NAME from EXPENSE where APPLY_ID in (#{applyIds})",
+      "resultMaps": [
+        {
+          "applyId": "111111111-FEL3232-323KLFJFDS-323FDSD",
+          "applyName": "关于张三3月出差南京的报销单",
+          "travel": {
+            "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单1"
+          },
+          "cash": 1134.4,
+          "remark": ""
+        },
+        {
+          "applyId": "222222222-FEL3232-323KLFJFDS-323FDSD",
+          "applyName": "关于李四5月出差上海的报销单",
+          "travel": {
+            "applyId": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
+            "applyName": "测试申请单2"
+          },
+          "cash": 32323.4,
+          "remark": "加急，缺钱..."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "desc": "测试删除出差本表、子表的案例",
+  "name": "SelectTravelDetail",
+  "oqls": [
+    {
+      "desc": "删除出差（含行程记录）记录",
+      "name": "DeleteTravelAndTripById",
+      "oql": "delete from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "delete from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "detailSql": "delete from TRAVEL_TRIP where TRAVEL_APPLY_ID in (#{travelApplyIds})"
+    },
+    {
+      "desc": "删除出差（含行程记录）记录",
+      "name": "DeleteTravelAndTripByIdVars",
+      "oql": "delete from Travel where applyId = #{applyId}",
+      "sql": "delete from TRAVEL where APPLY_ID = #{applyId}",
+      "detailSql": "delete from TRAVEL_TRIP where TRAVEL_APPLY_ID in (#{travelApplyIds})"
+    },
+    {
+      "desc": "删除出差（含行程记录）记录",
+      "name": "DeleteTravelAndTripInIds",
+      "oql": "delete from Travel where applyId in ('434743DSS-FEL3232-323KLFJFDS-323FDSD', '534743DSS-FEL2232-323KLFJFDS-323FDSD')",
+      "sql": "delete from TRAVEL where APPLY_ID in ('434743DSS-FEL3232-323KLFJFDS-323FDSD', '534743DSS-FEL2232-323KLFJFDS-323FDSD')",
+      "detailSql": "delete from TRAVEL_TRIP where TRAVEL_APPLY_ID in (#{travelApplyIds})"
+    },
+    {
+      "desc": "删除出差（含行程记录）记录",
+      "name": "DeleteTravelAndTripInIdsVars",
+      "oql": "delete from Travel where applyId in (#{applyIds})",
+      "sql": "delete from TRAVEL where APPLY_ID in (#{applyIds})",
+      "detailSql": "delete from TRAVEL_TRIP where TRAVEL_APPLY_ID in (#{travelApplyIds})"
+    }
+  ]
+}

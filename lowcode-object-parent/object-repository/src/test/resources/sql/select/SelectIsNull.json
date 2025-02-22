@@ -1,0 +1,12 @@
+
+{
+  "name": "SELECT_IS_NULL",
+  "desc": "查询条件IS NULL",
+  "sqls": [
+    {
+      "name": "SELECT_IS_NULL",
+      "desc": "查询条件IS NULL",
+      "sql": "select column FROM tableA where c1 is null and c2 is not null"
+    }
+  ]
+}

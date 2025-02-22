@@ -1,0 +1,62 @@
+{
+  "name": "A表",
+  "code": "A",
+  "columns": [
+    {
+      "name": "记录名称",
+      "code": "NAME",
+      "dataType": "String"
+    },
+    {
+      "name": "记录日期",
+      "code": "DATE",
+      "dataType": "Date"
+    },
+    {
+      "name": "记录时间",
+      "code": "TIME",
+      "dataType": "Time"
+    },
+    {
+      "name": "记录描述",
+      "code": "DESC",
+      "dataType": "String"
+    },
+    {
+      "name": "记录单价",
+      "code": "PRICE",
+      "dataType": "Decimal"
+    },
+    {
+      "name": "记录数量",
+      "code": "NUMBER",
+      "dataType": "Integer"
+    },
+    {
+      "name": "记录结构",
+      "code": "SCHEMA",
+      "dataType": "Object"
+    }
+  ],
+  "valuesList": [
+    {
+      "NAME": "记录名称",
+      "DATE": "2024-02-24",
+      "TIME": "12:12:12",
+      "DESC": "这是记录的描述",
+      "PRICE": "2.5",
+      "NUMBER": 10,
+      "SCHEMA": {
+        "a": "a",
+        "b": 1,
+        "list": [
+          {
+            "c": "c",
+            "d": 1.2,
+            "e": "2020-12-12"
+          }
+        ]
+      }
+    }
+  ]
+}

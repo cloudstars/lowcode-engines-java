@@ -3,7 +3,7 @@
 
 指定模块编译示例：
 mvn -pl lowcode-api-parent/api-engine,lowcode-metadata-parent/metadata-engine -am clean install -DskipTests
-
+mvn -pl lowcode-object-parent/api-engine -am clean test
 
 ## 公共依赖
 定义低代码引擎公共的依赖，如日志框架、异常处理等

@@ -1,0 +1,36 @@
+{
+  "name": "SELECT_ITEMS",
+  "desc": "查询不同的列",
+  "sqls": [
+    {
+      "name": "SELECT_ALL_COLUMNS",
+      "desc": "仅查询一列",
+      "sql": "select * from table where 1 = 1"
+    },
+    {
+      "name": "SELECT_ONE_COLUMN",
+      "desc": "仅查询一列",
+      "sql": "select c from table where 1 = 1"
+    },
+    {
+      "name": "SELECT_MULTIPLE_COLUMNS",
+      "desc": "查询多列，列名带as，表名带ass",
+      "sql": "select c1 as a1, c2 as a2, 1 as a3 from table as tableA where 1 = 1"
+    },
+    {
+      "name": "select-number-started-columns",
+      "desc": "查询列名是数字开头的列",
+      "sql": "select 1a, d2, 2d, 2dd from table where 1 = 1"
+    },
+    {
+      "name": "select-literal-columns",
+      "desc": "查询常量，并且带as",
+      "sql": "select 1, -1.1 as aa, '2' as b from table where 1 = 1"
+    },
+    {
+      "name": "select-method-column",
+      "desc": "查询方法调用的列，并且带as",
+      "sql": "select now() as t from table where 1 = 1"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "desc": "测试exists",
+  "name": "SelectExists",
+  "oqls": [
+    {
+      "desc": "测试exists",
+      "name": "SelectExists",
+      "oql": "select applyId, applyName from Expense e where exists (select 1 from TravelTrip tt where tt.travelApplyId = e.travel AND tt.toAddr = '南京')",
+      "sql": "select APPLY_ID, APPLY_NAME from EXPENSE e where exists (select 1 as _1 from TRAVEL_TRIP tt where tt.TRAVEL_APPLY_ID = e.TRV_ID AND tt.TO_ADDR = '南京')",
+      "resultMaps": [{
+        "staffCode": "zhangsan",
+        "name": "张三"
+      }, {
+        "staffCode": "lisi",
+        "name": "非张三"
+      }]
+    }
+  ]
+}

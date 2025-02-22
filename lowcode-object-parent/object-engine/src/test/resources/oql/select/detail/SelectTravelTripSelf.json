@@ -1,0 +1,12 @@
+{
+  "desc": "测试查询出差行程本表的案例",
+  "name": "SelectTravelTripSelf",
+  "oqls": [
+    {
+      "desc": "查询 * 出差行程记录数量",
+      "name": "SelectStarTravelTrip",
+      "oql": "select * from TravelTrip",
+      "sql": "select TRIP_ID, APPLY_ID, FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY, MODIFIER_NAME, MODIFIER_KEY from TRAVEL_TRIP"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "desc": "测试简单的查询出差申请本表的案例，测试点：不测试复杂查询条件（分组、聚合、子查询），包含指定列、常量列，不含子表字段、相关表中的字段",
+  "name": "SelectTravelSelfSimpleWhere",
+  "oqls": [
+    {
+      "desc": "查询出差记录",
+      "name": "SelectTravelOne",
+      "oql": "select applyId, applyName, dateRange from Travel where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "sql": "select APPLY_ID, APPLY_NAME, START_DATE, END_DATE from TRAVEL where APPLY_ID = '434743DSS-FEL3232-323KLFJFDS-323FDSD'"
+    },
+    {
+      "desc": "查询出差记录（带变量）",
+      "name": "SelectTravelOneVars",
+      "oql": "select applyId, applyName, dateRange from Travel where applyId = #{applyId}",
+      "sql": "select APPLY_ID, APPLY_NAME, START_DATE, END_DATE from TRAVEL where APPLY_ID = #{applyId}"
+    },
+    {
+      "desc": "查询出差列表",
+      "name": "SelectTravelList",
+      "oql": "select applyId, applyName from Travel",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL"
+    },
+    {
+      "desc": "查询出差列表（带变量）",
+      "name": "SelectTravelListVars",
+      "oql": "select applyId, applyName from Travel where applyId = #{applyId}",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID = #{applyId}"
+    },
+    {
+      "desc": "查询出差列表-IN",
+      "name": "SelectTravelInList",
+      "oql": "select applyId, applyName from Travel where applyId in ('434743DSS-FEL3232-323KLFJFDS-323FDSD', '534743DSS-FEL2232-323KLFJFDS-323FDSD')",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID in ('434743DSS-FEL3232-323KLFJFDS-323FDSD', '534743DSS-FEL2232-323KLFJFDS-323FDSD')"
+    },
+    {
+      "desc": "查询出差列表-IN（带变量）",
+      "name": "SelectTravelInListVars",
+      "oql": "select applyId, applyName from Travel where applyId in (#{applyIds})",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_ID in (#{applyIds})"
+    },
+    {
+      "desc": "查询出差列表-LIKE",
+      "name": "SelectTravelLikeList",
+      "oql": "select applyId, applyName from Travel where applyName like '%测试申请单%'",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_NAME like '%测试申请单%'"
+    },
+    {
+      "desc": "查询出差列表-LIKE（带变量）",
+      "name": "SelectTravelLikeListVars",
+      "oql": "select applyId, applyName from Travel where applyName like #{applyName}",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL where APPLY_NAME like #{applyName}"
+    }
+  ]
+}

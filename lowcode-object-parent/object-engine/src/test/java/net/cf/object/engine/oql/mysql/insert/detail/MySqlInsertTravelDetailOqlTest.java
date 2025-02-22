@@ -1,0 +1,46 @@
+package net.cf.object.engine.oql.mysql.insert.detail;
+
+import net.cf.object.engine.oql.mysql.ObjectEngineOqlMySqlTestApplication;
+import net.cf.object.engine.oql.testcase.insert.detail.AbstractInsertTravelDetailRepoTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+
+@ActiveProfiles("mysql")
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ObjectEngineOqlMySqlTestApplication.class)
+public class MySqlInsertTravelDetailOqlTest extends AbstractInsertTravelDetailRepoTest {
+
+    @Test
+    @Override
+    public void testInsertTravelAndTrip() {
+        super.testInsertTravelAndTrip();
+    }
+
+    @Test
+    @Override
+    public void testInsertMultiTravelAndTrip() {
+        super.testInsertMultiTravelAndTrip();
+    }
+
+    @Test
+    @Override
+    public void testBatchInsertTravelAndTripVars() {
+        super.testBatchInsertTravelAndTripVars();
+    }
+
+    @Test
+    @Override
+    public void testBatchInsertTravelAndTripExpandedVars() {
+        super.testBatchInsertTravelAndTripExpandedVars();
+    }
+
+    @Test
+    @Override
+    public void testBatchInsertMultiTravelAndTripVars() {
+        super.testBatchInsertMultiTravelAndTripVars();
+    }
+
+}

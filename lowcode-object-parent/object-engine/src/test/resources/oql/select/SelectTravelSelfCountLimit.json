@@ -1,0 +1,36 @@
+{
+  "desc": "测试分页查询出差申请本表的案例，测试点：count、limit用于分页的查询，不含子表字段、相关表中的字段",
+  "name": "SelectPageTravelSelfWhere",
+  "oqls": [
+    {
+      "desc": "Count1查询出差记录数量",
+      "name": "SelectCountOneTravel",
+      "oql": "select count(1) as c from Travel",
+      "sql": "select count(1) as c from TRAVEL"
+    },
+    {
+      "desc": "Count*查询出差记录数量",
+      "name": "SelectCountStarTravel",
+      "oql": "select count(*) as c from Travel",
+      "sql": "select count(*) as c from TRAVEL"
+    },
+    {
+      "desc": "Count*查询出差记录数量",
+      "name": "SelectCountFieldTravel",
+      "oql": "select count(applyId) as c from Travel",
+      "sql": "select count(APPLY_ID) as c from TRAVEL"
+    },
+    {
+      "desc": "Limit限制返回条数",
+      "name": "SelectTravelWithLimit",
+      "oql": "select applyId, applyName from Travel limit 10",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL limit 10"
+    },
+    {
+      "desc": "Limit限制返回起始行、条数",
+      "name": "SelectTravelWithLimitOffset",
+      "oql": "select applyId, applyName from Travel limit 0, 10",
+      "sql": "select APPLY_ID, APPLY_NAME from TRAVEL limit 0, 10"
+    }
+  ]
+}

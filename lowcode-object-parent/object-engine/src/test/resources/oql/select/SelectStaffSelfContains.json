@@ -1,0 +1,28 @@
+{
+  "desc": "测试contains的查询员工表的案例，测试点：contains",
+  "name": "SelectContainsWhere",
+  "oqls": [
+    {
+      "desc": "查询员工记录",
+      "name": "SelectStaffByHobby",
+      "oql": "select staffCode  from Staff where hobbies contains '663b6e868cb215763ccfbd9e'",
+      "sql": "select STA_CODE from STAFF where HOBBIES contains '663b6e868cb215763ccfbd9e'",
+      "resultMaps": [
+        {
+          "staffCode": "zhangsan"
+        }
+      ]
+    },
+    {
+      "desc": "查询员工记录not contains",
+      "name": "SelectStaffByNotHobby",
+      "oql": "select staffCode from Staff where hobbies not contains '663b6e868cb215763ccfbd9e'",
+      "sql": "select STA_CODE from STAFF where HOBBIES not contains '663b6e868cb215763ccfbd9e'",
+      "resultMaps": [
+        {
+          "staffCode": "lisi"
+        }
+      ]
+    }
+  ]
+}

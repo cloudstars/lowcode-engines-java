@@ -1,0 +1,31 @@
+{
+  "name": "SELECT_USE_ORDER",
+  "desc": "查询时使用order",
+  "sqls": [
+    {
+    "name": "SIMPLE_FIELD_ASC_ORDER",
+    "desc": "单表单字段asc排序",
+    "sql": "select * from tableA order by userId asc"
+    },
+    {
+      "name": "SIMPLE_FIELD_DESC_ORDER",
+      "desc": "单表单字段desc排序",
+      "sql": "select * from tableA order by userId desc"
+    },
+    {
+      "name": "MULTI_FIELD_ASC_ORDER",
+      "desc": "单表多字段asc排序",
+      "sql": "select * from tableA order by userId, startDate asc"
+    },
+    {
+      "name": "MULTI_FIELD_DESC_ORDER",
+      "desc": "单表多字段desc排序",
+      "sql": "select * from tableA order by userId, startDate desc"
+    },
+    {
+      "name": "MULTI_FIELD_ORDER",
+      "desc": "单表多字段asc + desc排序",
+      "sql": "select * from tableA order by userId asc, startDate desc"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "desc": "测试插入出差本表简单案例，不含子表的案例，测试点：简单的插入，不带子属性，不含子表",
+  "name": "InsertTravelSelfSimple",
+  "oqls": [
+    {
+      "desc": "插入出差记录",
+      "name": "InsertTravel",
+      "oql": "insert into Travel(applyId, applyName, dateRange) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', ['2022-10-10', '2022-10-20'])",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME, START_DATE, END_DATE) values ('434743DSS#FEL3232-323KLFJFDS-323FDSD', '测试申请单的名称', '2022-10-10', '2022-10-20')"
+    },
+    {
+      "desc": "插入出差记录（带变量）",
+      "name": "InsertTravelVars",
+      "oql": "insert into Travel(applyId, applyName, dateRange) values (#{applyId}, #{applyName}, #{dateRange})",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME, START_DATE, END_DATE) values (#{applyId}, #{applyName}, #{dateRange._0}, #{dateRange._1})",
+      "paramMap": {
+        "applyId": "434743DSS#FEL3232-323KLFJFDS-323FDSD",
+        "applyName": "测试申请单的名称",
+        "dateRange": ["2022-10-10", "2022-10-20"]
+      }
+    }
+  ]
+}

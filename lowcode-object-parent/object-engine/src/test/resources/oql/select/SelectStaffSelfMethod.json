@@ -1,0 +1,34 @@
+{
+  "desc": "测试查询员工表方法调用的案例, NOW, LTRIM, RTRIM, TRIM, CONCAT, SUBSTRING, LENGTH, YEAR, MONTH, DAY",
+  "name": "SelectStaffSelfMethod",
+  "oqls": [
+    {
+      "desc": "文本方法",
+      "name": "SelectStaffSelfTextMethods",
+      "oql": "select LTRIM(staffName) as _0, RTRIM(staffName) as _1, TRIM(staffName) as _2, SUBSTRING(staffName, 1, 2) as subStaff, CONCAT(staffName, '/', staffCode) as staff, LENGTH(staffName) as _5, IFNULL(departDate, '2010-01-01') as departDate from Staff where staffName = '张三'",
+      "sql": "select LTRIM(STA_NAME), RTRIM(STA_NAME), TRIM(STA_NAME), CONCAT(STA_NAME, '/', STA_CODE), LENGTH(STA_NAME) from STAFF where STA_NAME = '张三'",
+      "resultMap": {
+        "_0": "张三",
+        "_1": "张三",
+        "_2": "张三",
+        "subStaff": "张三",
+        "staff": "张三/zhangsan",
+        "_5": 6,
+        "departDate": "2021-10-01"
+      }
+    },
+    {
+      "desc": "日期方法",
+      "name": "SelectStaffSelfDateMethods",
+      "oql": "select NOW() as now, YEAR(joinDate) as _1, MONTH(joinDate) as _2, DAY(joinDate) as day, DATE(joinDate) as date, TIMESTAMP(joinDate) as ts, DATE_FORMAT(joinDate, '%Y-%m-%d') as df from Staff where staffName = '张三'",
+      "sql": "select NOW(), YEAR(JOIN_DATE), MONTH(JOIN_DATE), DAY(JOIN_DATE) from STAFF, DATE(JOIN_DATE), TIMESTAMP(JOIN_DAE), DATE_FORMAT(JOIN_DATE, '%Y-%m-%d') fro STAFF where STA_NAME = '张三'",
+      "resultMap": {
+        "_1": 2020,
+        "_2": 10,
+        "day": 10,
+        "date": "2020-10-10",
+        "df": "2020-10-10"
+      }
+    }
+  ]
+}

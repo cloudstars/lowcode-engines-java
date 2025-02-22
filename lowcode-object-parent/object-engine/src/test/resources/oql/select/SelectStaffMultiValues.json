@@ -1,0 +1,28 @@
+{
+  "desc": "测试查询多选的值",
+  "name": "SelectMultiValues",
+  "oqls": [
+    {
+      "desc": "查询员工的兴趣爱好多选字段",
+      "name": "SelectStaffHobbiesMultiValueList",
+      "oql": "select staffCode, staffName, hobbies from Staff",
+      "resultMaps": [
+        {
+          "staffCode": "lisi",
+          "staffName": "李四",
+          "hobbies": [
+            "663b6e868cb215763ccfbd9e",
+            "663b6e868cb215763ccfbd9f"
+          ]
+        },
+        {
+          "staffCode": "zhangsan",
+          "staffName": "张三",
+          "hobbies": [
+            "663b6e868cb215763ccfbd9f"
+          ]
+        }
+      ]
+    }
+  ]
+}

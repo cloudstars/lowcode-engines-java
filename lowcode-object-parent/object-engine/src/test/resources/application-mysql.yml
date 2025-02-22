@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=MySQL;IGNORECASE=TRUE
+    username: sa
+    password:
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    # url: jdbc:mysql://localhost:3306/cf?serverTimezone=Asia/Shanghai
+    # username: root
+    # password: clouds1984
+  sql:
+    init:
+      mode: embedded
+      schema-locations: mysql-schema.sql
+  h2:
+    console:
+      enabled: true
+      path: /h2-console

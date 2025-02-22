@@ -1,0 +1,21 @@
+{
+  "name": "test-insert-complex-sqls",
+  "desc": "测试复杂的的SQL插入语句",
+  "sqls": [
+    {
+      "name": "insert-a-from-b",
+      "desc": "从B表查询数据插入A表",
+      "sql": "insert into A(a1, a2, a3) select b1, b2, b3 from B where 1 = 1"
+    },
+    {
+      "name": "insert-a-from-b-detail",
+      "desc": "从B表查询数据插入A表,含子表",
+      "sql": "insert into A(a1, a2, a3, detail(d1, d2, d3)) select b1, b2, b3, detail(d1, d2, d3) from B where 1 = 1"
+    },
+    {
+      "name": "insert-a-with-detail-var-expand",
+      "desc": "从B表查询数据插入A表,含子表变量展表",
+      "sql": "insert into A(a1, a2, a3, detail(d1, d2, d3)) values (#{a1}, '1', -1, #{detail(f1, f2, f3)})"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "SELECT_AGGREGATE",
+  "desc": "查询时使用聚合函数",
+  "sqls": [
+    {
+      "name": "SELECT_COUNT",
+      "desc": "查询使用count",
+      "sql": "select count(*) as a, count(1) as b, count(0) as c from tableA"
+    },
+    {
+      "name": "SELECT_MAX_MIN",
+      "desc": "查询使用max和min",
+      "sql": "select userId, max(startDate) as maxStartDate, min(endDate) as minEndDate from tableA group by userId"
+    },
+    {
+      "name": "SELECT_SUM_AVG",
+      "desc": "查询使用sum和avg",
+      "sql": "select userId, sum(workTime) as s, avg(workTime) as a from tableA group by userId"
+    }
+  ]
+}

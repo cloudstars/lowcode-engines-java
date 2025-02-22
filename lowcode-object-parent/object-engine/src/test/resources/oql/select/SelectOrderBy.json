@@ -1,0 +1,38 @@
+{
+  "desc": "测试 order by",
+  "name": "SelectOrderBy",
+  "oqls": [
+    {
+      "desc": "测试 order by 升序",
+      "name": "SelectOrderByStaffCodeAsc",
+      "oql": "select staffCode, staffName from Staff order by staffCode asc",
+      "sql": "select STA_CODE, STA_NAME from STAFF order by STA_CODE asc",
+      "resultMaps": [
+        {
+          "staffCode": "lisi",
+          "staffName": "李四"
+        },
+        {
+          "staffCode": "zhangsan",
+          "staffName": "张三"
+        }
+      ]
+    },
+    {
+      "desc": "测试 order by 降序",
+      "name": "SelectOrderByStaffCodeDesc",
+      "oql": "select staffCode, staffName from Staff order by staffCode desc",
+      "sql": "select STA_CODE, STA_NAME from STAFF order by STA_CODE desc",
+      "resultMaps": [
+        {
+          "staffCode": "zhangsan",
+          "staffName": "张三"
+        },
+        {
+          "staffCode": "lisi",
+          "staffName": "李四"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.cloudstars</groupId>
+        <artifactId>lowcode-object-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lowcode-object-formula-parent</artifactId>
+    <packaging>pom</packaging>
+    <description>低代码模型公式parent</description>
+
+    <properties>
+        <juel.version>2.2.7</juel.version>
+    </properties>
+
+    <modules>
+        <module>object-formula-parser</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>de.odysseus.juel</groupId>
+                <artifactId>juel-api</artifactId>
+                <version>${juel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.odysseus.juel</groupId>
+                <artifactId>juel-impl</artifactId>
+                <version>${juel.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

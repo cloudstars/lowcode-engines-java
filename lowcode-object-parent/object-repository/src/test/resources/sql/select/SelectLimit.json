@@ -1,0 +1,26 @@
+{
+  "name": "SELECT_USE_LIMIT",
+  "desc": "查询时使用limit",
+  "sqls": [
+    {
+      "name": "SELECT_LIMIT",
+      "desc": "查询使用limit",
+      "sql": "select * from tableA where 1=1 limit 10"
+    },
+    {
+      "name": "SELECT_LIMIT_OFFSET",
+      "desc": "查询使用limit和offset",
+      "sql": "select * from tableA where 1=1 limit 100, 10"
+    },
+    {
+      "name": "SELECT_LIMIT_VAR",
+      "desc": "查询时以变量形式使用limit",
+      "sql": "select * from tableA where 1=1 limit #{count}"
+    },
+    {
+      "name": "SELECT_LIMIT_OFFSET_VAR",
+      "desc": "查询时以变量形式使用limit和offset",
+      "sql": "select * from tableA where 1=1 limit #{skip}, #{count}"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "applyId": 1,
+  "userId": "zhangsan",
+  "startDate": "2023-06-07",
+  "endDate": "2023-06-10",
+  "reason": "出差培训",
+  "attach": {
+    "id": 123,
+    "name": "这是一个文件名"
+  },
+  "schedules": [
+    {
+      "scheduleId": null,
+      "startDate": "2023-06-07",
+      "endDate": "2023-06-08",
+      "destination": "北京",
+      "todo": "项目会议"
+    },
+    {
+      "scheduleId": 1,
+      "startDate": "2023-06-07",
+      "endDate": "2023-06-08",
+      "destination": "南京",
+      "todo": "学术会议"
+    }
+  ]
+}

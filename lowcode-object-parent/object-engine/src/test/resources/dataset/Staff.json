@@ -1,0 +1,121 @@
+{
+  "desc": " 员工表",
+  "name": "STAFF",
+  "columns": [
+    {
+      "desc": "员工ID",
+      "name": "STA_ID",
+      "dataType": "INTEGER",
+      "autoGen": true
+    },
+    {
+      "desc": "员工编号",
+      "name": "STA_CODE",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "员工姓名",
+      "name": "STA_NAME",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "入职日期",
+      "name": "JOIN_DATE",
+      "dataType": "DATE"
+    },
+    {
+      "desc": "离职日期",
+      "name": "DEPART_DATE",
+      "dataType": "DATE"
+    },
+    {
+      "desc": "个人简介",
+      "name": "DESCR",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "举趣爱好",
+      "name": "HOBBIES",
+      "dataType": "JSON"
+    },
+    {
+      "desc": "年龄",
+      "name": "AGE",
+      "dataType": "INTEGER"
+    },
+    {
+      "desc": "拥有者",
+      "name": "OWNER_KEY",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人姓名",
+      "name": "CREATOR_NAME",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人编号",
+      "name": "CREATOR_KEY",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建时间",
+      "name": "CREATED_AT",
+      "dataType": "DATETIME"
+    },
+    {
+      "desc": "更新人姓名",
+      "name": "MODIFIER_NAME",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "更新人编号",
+      "name": "MODIFIER_KEY",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "更新时间",
+      "name": "MODIFIED_AT",
+      "dataType": "DATETIME"
+    },
+    {
+      "desc": "是否已删除",
+      "name": "DELETED",
+      "dataType": "INTEGER"
+    }
+  ],
+  "valuesList": [
+    {
+      "STA_CODE": "zhangsan",
+      "STA_NAME": "张三",
+      "JOIN_DATE": "2020-10-10",
+      "DEPART_DATE": "2021-10-01",
+      "DESCR": "此人名叫张三，爱好抽烟、喝酒",
+      "HOBBIES": [
+        "663b6e868cb215763ccfbd9e",
+        "663b6e868cb215763ccfbd9f"
+      ],
+      "AGE": 30,
+      "OWNER_KEY": "zhangsan",
+      "CREATOR_NAME": "张三",
+      "CREATOR_KEY": "zhangsan",
+      "DELETED": 0
+    },
+    {
+      "STA_ID": "663b71b25deba92149b80763",
+      "STA_CODE": "lisi",
+      "STA_NAME": "李四",
+      "JOIN_DATE": "2020-10-10",
+      "DEPART_DATE": null,
+      "DESCR": "我叫李四，小李的李，小四的四，爱好唱歌、跳舞",
+      "HOBBIES": [
+        "663b6e868cb215763ccfbd9f"
+      ],
+      "AGE": 20,
+      "OWNER_KEY": "zhangsan",
+      "CREATOR_NAME": "李四",
+      "CREATOR_KEY": "lisi",
+      "DELETED": 1
+    }
+  ]
+}

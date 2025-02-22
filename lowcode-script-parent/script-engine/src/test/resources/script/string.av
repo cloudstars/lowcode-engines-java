@@ -1,0 +1,15 @@
+let a = "hello world";
+println(a); // hello world
+println(string.length(a)); // 11
+
+let a = "hello world";
+let b = 'AviatorScript';
+println(a);
+println(string.length(a));
+println(a + ',' + b + 5); // hello world,AviatorScript5
+
+## 转义
+println('Dennis\'s car');
+println('AviatorScript is great.\r\nLet\'s try it!'); // Dennis's car // AviatorScript is great. // Let's try it!
+
+return a + ',' + b + 5;

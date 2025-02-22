@@ -1,0 +1,19 @@
+{
+  "desc": "测试 group by",
+  "name": "SelectGroupBy",
+  "oqls": [
+    {
+      "desc": "测试 group by",
+      "name": "SelectGroupByStaffCode",
+      "oql": "select staffCode, count(staffName) as cs from Staff group by staffCode order by staffCode desc",
+      "sql": "select STA_CODE, count(STA_NAME) as cs from STAFF group by STA_CODE order by STA_CODE desc",
+      "resultMaps": [{
+        "staffCode": "zhangsan",
+        "cs": 1
+      }, {
+        "staffCode": "lisi",
+        "cs": 1
+      }]
+    }
+  ]
+}

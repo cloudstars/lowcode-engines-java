@@ -1,0 +1,233 @@
+{
+  "desc": "测试插入出差本表以及行程子表",
+  "name": "InsertTravelAndTrip",
+  "oqls": [
+    {
+      "name": "InsertTravelAndTrip",
+      "oql": "insert into Travel(applyId, applyName, trips(fromAddr, toAddr, creator)) values ('UNIT_TEST001', '单元测试001的名称', [('杭州', '上海', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}), ('上海', '杭州', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"})])",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values ('UNIT_TEST001', '单元测试001的名称', [('杭州', '上海', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}), ('上海', '杭州', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"})])",
+      "detailSql": "insert into TRAVEL_TRIP(FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY, TRAVEL_APPLY_ID) values (#{fromAddr}, #{toAddr}, #{creator.name}, #{creator.key}, #{travelApplyId})"
+    },
+    {
+      "name": "InsertMultiTravelAndTrip",
+      "oql": "insert into Travel(applyId, applyName, trips(fromAddr, toAddr, creator)) values ('UNIT_TEST001', '单元测试001的名称', [('杭州', '上海', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}), ('上海', '杭州', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"})]), ('UNIT_TEST002', '单元测试002的名称', [('北京', '天津', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}), ('天津', '上海', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}), ('上海', '北京', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"})])",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values ('UNIT_TEST001', '单元测试001的名称', [('杭州', '上海', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"}), ('上海', '杭州', {\"name\": \"测试XXX\", \"key\": \"TEST_XXX\"})])",
+      "detailSql": "insert into TRAVEL_TRIP(FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY, TRAVEL_APPLY_ID) values (#{fromAddr}, #{toAddr}, #{creator.name}, #{creator.key}, #{travelApplyId})"
+    },
+    {
+      "desc": "批量插入出差记以及行程（带变量）",
+      "name": "BatchInsertTravelAndTripVars",
+      "oql": "insert into Travel(applyId, applyName, trips(fromAddr, toAddr, creator)) values (#{applyId}, #{applyName}, #{trips})",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values (#{applyId}, #{applyName})",
+      "detailSql": "insert into TRAVEL_TRIP(FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY, TRAVEL_APPLY_ID) values (#{fromAddr}, #{toAddr}, #{creator.name}, #{creator.key}, #{travelApplyId})",
+      "paramMaps": [
+        {
+          "applyId": "UNIT_TEST001",
+          "applyName": "单元测试001的名称",
+          "trips": [
+            {
+              "fromAddr": "杭州",
+              "toAddr": "上海",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr": "上海",
+              "toAddr": "杭州",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            }
+          ]
+        },
+        {
+          "applyId": "UNIT_TEST002",
+          "applyName": "单元测试002的名称",
+          "trips": [
+            {
+              "fromAddr": "北京",
+              "toAddr": "南京",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr": "南京",
+              "toAddr": "上海",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr": "上海",
+              "toAddr": "北京",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "desc": "批量插入出差记以及行程（带变量展开）",
+      "name": "BatchInsertTravelAndTripExpandedVars",
+      "oql": "insert into Travel(applyId, applyName, trips(fromAddr, toAddr, creator)) values (#{applyId}, #{applyName}, #{trips1(fromAddr1, toAddr1, creator1)})",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values (#{applyId}, #{applyName})",
+      "detailSql": "insert into TRAVEL_TRIP(FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY, TRAVEL_APPLY_ID) values (#{fromAddr}, #{toAddr}, #{creator.name}, #{creator.key}, #{travelApplyId})",
+      "paramMaps": [
+        {
+          "applyId": "UNIT_TEST001",
+          "applyName": "单元测试001的名称",
+          "trips1": [
+            {
+              "fromAddr1": "杭州",
+              "toAddr1": "上海",
+              "creator1": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr1": "上海",
+              "toAddr1": "杭州",
+              "creator1": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            }
+          ]
+        },
+        {
+          "applyId": "UNIT_TEST002",
+          "applyName": "单元测试002的名称",
+          "trips1": [
+            {
+              "fromAddr1": "北京",
+              "toAddr1": "南京",
+              "creator1": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr1": "南京",
+              "toAddr1": "上海",
+              "creator1": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr1": "上海",
+              "toAddr1": "北京",
+              "creator1": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "desc": "插入出差记以及行程（带变量&展开）",
+      "name": "BatchInsertMultiTravelAndTripVars",
+      "oql": "insert into Travel(applyId, applyName, trips(fromAddr, toAddr, creator)) values (#{applyId1}, #{applyName1}, #{trips1}), (#{applyId2}, #{applyName2}, #{trips2})",
+      "sql": "insert into TRAVEL(APPLY_ID, APPLY_NAME) values (#{applyId}, #{applyName})",
+      "detailSql": "insert into TRAVEL_TRIP(FROM_ADDR, TO_ADDR, CREATOR_NAME, CREATOR_KEY, TRAVEL_APPLY_ID) values (#{fromAddr}, #{toAddr}, #{creator.name}, #{creator.key}, #{travelApplyId})",
+      "paramMaps": [
+        {
+          "applyId1": "UNIT_TEST001",
+          "applyName1": "单元测试001的名称",
+          "trips1": [
+            {
+              "fromAddr": "杭州",
+              "toAddr": "上海",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr": "上海",
+              "toAddr": "杭州",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            }
+          ],
+          "applyId2": "UNIT_TEST002",
+          "applyName2": "单元测试002的名称",
+          "trips2": [
+            {
+              "fromAddr": "南京",
+              "toAddr": "天津",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr": "天津",
+              "toAddr": "杭州",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr": "杭州",
+              "toAddr": "南京",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            }
+          ]
+        },
+        {
+          "applyId1": "UNIT_TEST003",
+          "applyName1": "单元测试003的名称",
+          "trips1": [
+            {
+              "fromAddr": "杭州",
+              "toAddr": "上海",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            }
+          ],
+          "applyId2": "UNIT_TEST004",
+          "applyName2": "单元测试004的名称",
+          "trips2": [
+            {
+              "fromAddr": "南京",
+              "toAddr": "天津",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            },
+            {
+              "fromAddr": "天津",
+              "toAddr": "杭州",
+              "creator": {
+                "name": "测试XXX",
+                "key": "TEST_XXX"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

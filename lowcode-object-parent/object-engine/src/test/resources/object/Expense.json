@@ -1,0 +1,142 @@
+{
+  "desc": "报销",
+  "name": "Expense",
+  "tableName": "EXPENSE",
+  "primaryFieldName": "applyId",
+  "fields": [
+    {
+      "type": "Sequence",
+      "desc": "报销单ID",
+      "name": "applyId",
+      "columnName": "APPLY_ID",
+      "dataType": "String",
+      "dataLength": 36
+    },
+    {
+      "type": "Text",
+      "desc": "报销单名称",
+      "name": "applyName",
+      "columnName": "APPLY_NAME",
+      "dataType": "String",
+      "dataLength": 64
+    },
+    {
+      "type": "ObjectRef",
+      "refObjectName": "Travel",
+      "refType": "LOOKUP",
+      "desc": "关联申请单",
+      "name": "travel",
+      "columnName": "TRV_ID",
+      "dataType": "String",
+      "dataLength": 64
+    },
+    {
+      "type": "Number",
+      "desc": "报销金额",
+      "name": "cash",
+      "columnName": "CASH",
+      "dataType": "Number",
+      "dataLength": 10,
+      "dataPrecision": 2
+    },
+    {
+      "type": "Text",
+      "desc": "报销说明",
+      "name": "remark",
+      "columnName": "REMARK",
+      "dataType": "String",
+      "dataLength": 512
+    },
+    {
+      "type": "User",
+      "desc": "创建人",
+      "name": "creator",
+      "columnName": "CREATOR",
+      "dataType": "Object",
+      "defaultValue": {
+        "desc": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "desc": "名称",
+          "name": "name",
+          "columnName": "CREATOR_NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "desc": "编号",
+          "name": "key",
+          "columnName": "CREATOR_KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "desc": "更新时间",
+      "name": "createdAt",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "User",
+      "desc": "更新人",
+      "name": "modifier",
+      "dataType": "Object",
+      "defaultValue": {
+        "desc": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "desc": "名称",
+          "name": "name",
+          "columnName": "MODIFIER_NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "desc": "编号",
+          "name": "key",
+          "columnName": "MODIFIER_KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "desc": "更新时间",
+      "name": "modifiedAt",
+      "columnName": "MODIFIED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "Text",
+      "desc": "拥有者",
+      "name": "ownerKey",
+      "columnName": "OWNER_KEY",
+      "dataType": "String",
+      "dataLength": 20
+    },
+    {
+      "type": "Number",
+      "desc": "版本号",
+      "name": "revision",
+      "columnName": "REVISION",
+      "dataType": "Number",
+      "dataPrecision": 0
+    },
+    {
+      "type": "Boolean",
+      "desc": "是否已删除",
+      "name": "deleted",
+      "columnName": "DELETED",
+      "dataType": "Boolean"
+    }
+  ]
+}

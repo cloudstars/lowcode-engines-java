@@ -1,0 +1,24 @@
+{
+  "desc": "测试*查询出差申请本表的案例",
+  "name": "SelectTravelSelfStar",
+  "oqls": [
+    {
+      "desc": "查询 * 出差记录数量",
+      "name": "SelectStarTravel",
+      "oql": "select * from Travel",
+      "sql": "select APPLY_ID, APPLY_NAME, START_DATE, END_DATE, REASON, ATTACH_NAME, ATTACH_KEY, CREATOR_NAME, CREATOR_KEY, CREATED_AT, MODIFIER_NAME, MODIFIER_KEY, MODIFIED_AT, OWNER_KEY, REVISION, DELETED from TRAVEL"
+    },
+    {
+      "desc": "查询字段 * 出差记录数量",
+      "name": "SelectFieldStarTravel",
+      "oql": "select creator.* from Travel",
+      "sql": "select CREATOR_NAME, CREATOR_KEY from TRAVEL"
+    },
+    {
+      "desc": "查询混合 * 出差记录数量",
+      "name": "SelectMixedStarTravel",
+      "oql": "select applyId, *, creator.* from Travel",
+      "sql": "select APPLY_ID, APPLY_NAME, START_DATE, END_DATE, REASON, CREATOR_NAME, CREATOR_KEY, CREATED_AT, MODIFIER_NAME, MODIFIER_KEY, MODIFIED, OWNER_KEY, REVISION, DELETED from TRAVEL"
+    }
+  ]
+}

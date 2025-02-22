@@ -1,0 +1,18 @@
+{
+  "desc": "测试仅更新子表，不更新主表",
+  "name": "UpdateDetailOnly",
+  "oqls": [
+    {
+      "desc": "仅更新子表， 带变量，并且变量带点",
+      "name": "UpdateDetailOnlyWithDotVars",
+      "oql": "update Travel set trips(tripId, travelApplyId, fromAddr, toAddr) = #{input.trips} where applyId = '434743DSS-FEL3232-323KLFJFDS-323FDSD'",
+      "paramMap": {
+        "input": {
+          "applyId": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+          "applyName": "新的APPLY_NAME",
+          "trips": []
+        }
+      }
+    }
+  ]
+}

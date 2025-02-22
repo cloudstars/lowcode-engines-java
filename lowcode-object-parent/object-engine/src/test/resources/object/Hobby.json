@@ -1,0 +1,107 @@
+{
+  "desc": "兴趣爱好",
+  "name": "Hobby",
+  "tableName": "HOBBY",
+  "primaryFieldName": "id",
+  "fields": [
+    {
+      "type": "Text",
+      "desc": "记录ID",
+      "name": "id",
+      "columnName": "RECORD_ID",
+      "dataType": "String"
+    },
+    {
+      "type": "Text",
+      "desc": "爱好名称",
+      "name": "name",
+      "columnName": "NAME",
+      "dataType": "String",
+      "dataLength": 32
+    },
+    {
+      "type": "Text",
+      "desc": "爱好代码",
+      "name": "code",
+      "columnName": "CODE",
+      "dataType": "String",
+      "dataLength": 10
+    },
+    {
+      "type": "Text",
+      "desc": "描述",
+      "name": "descr",
+      "columnName": "DESCR",
+      "dataType": "String",
+      "dataLength": 1024
+    },
+    {
+      "type": "User",
+      "desc": "创建人",
+      "name": "creator",
+      "dataType": "Object",
+      "defaultValue": {
+        "desc": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "desc": "名称",
+          "name": "name",
+          "columnName": "CREATOR_NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "desc": "编号",
+          "name": "key",
+          "columnName": "CREATOR_KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "desc": "更新时间",
+      "name": "createdAt",
+      "columnName": "CREATED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    },
+    {
+      "type": "User",
+      "desc": "更新人",
+      "name": "modifier",
+      "dataType": "Object",
+      "defaultValue": {
+        "desc": "系统管理员",
+        "key": "admin"
+      },
+      "properties": [
+        {
+          "desc": "名称",
+          "name": "name",
+          "columnName": "MODIFIER_NAME",
+          "dataType": "String",
+          "dataLength": 32
+        },
+        {
+          "desc": "编号",
+          "name": "key",
+          "columnName": "MODIFIER_KEY",
+          "dataType": "String",
+          "dataLength": 20
+        }
+      ]
+    },
+    {
+      "type": "Date",
+      "desc": "更新时间",
+      "name": "modifiedAt",
+      "columnName": "MODIFIED_AT",
+      "dataType": "Date",
+      "dateFormat": "yyyy-MM-dd"
+    }
+  ]
+}

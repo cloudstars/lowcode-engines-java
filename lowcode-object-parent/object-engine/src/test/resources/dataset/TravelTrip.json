@@ -1,0 +1,60 @@
+{
+  "desc": "出差行程表",
+  "name": "TRAVEL_TRIP",
+  "columns": [
+    {
+      "desc": "行程ID",
+      "name": "TRIP_ID",
+      "dataType": "CHAR",
+      "autoGen": true
+    },
+    {
+      "desc": "申请单号",
+      "name": "TRAVEL_APPLY_ID",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "出发地",
+      "name": "FROM_ADDR",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "目的地",
+      "name": "TO_ADDR",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人姓名",
+      "name": "CREATOR_NAME",
+      "dataType": "CHAR"
+    },
+    {
+      "desc": "创建人编号",
+      "name": "CREATOR_KEY",
+      "dataType": "CHAR"
+    }
+  ],
+  "valuesList": [
+    {
+      "TRAVEL_APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+      "FROM_ADDR": "上海",
+      "TO_ADDR": "北京",
+      "CREATOR_NAME": "张三",
+      "CREATOR_KEY": "zhangsan"
+    },
+    {
+      "TRAVEL_APPLY_ID": "434743DSS-FEL3232-323KLFJFDS-323FDSD",
+      "FROM_ADDR": "天津",
+      "TO_ADDR": "杭州",
+      "CREATOR_NAME": "张三",
+      "CREATOR_KEY": "zhangsan"
+    },
+    {
+      "TRAVEL_APPLY_ID": "534743DSS-FEL2232-323KLFJFDS-323FDSD",
+      "FROM_ADDR": "杭州",
+      "TO_ADDR": "南京",
+      "CREATOR_NAME": "李四",
+      "CREATOR_KEY": "lisi"
+    }
+  ]
+}

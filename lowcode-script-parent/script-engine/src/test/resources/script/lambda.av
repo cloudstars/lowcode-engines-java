@@ -1,0 +1,4 @@
+let add = lambda (x,y) -> x + y end;
+let three = add(1, 2);
+println(three); ## 3
+return three;
