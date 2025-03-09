@@ -1,0 +1,6 @@
+{
+  "columns": [
+    {"name":  "a", "title":  "标题a"},
+    {"name":  "b", "title":  "标题b"}
+  ]
+}

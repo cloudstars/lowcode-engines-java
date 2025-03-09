@@ -2,7 +2,7 @@ package net.cf.object.engine.oql.testcase;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import net.cf.commons.test.util.FileTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
 import net.cf.object.engine.oql.parser.XObjectResolver;
 
 import javax.annotation.Resource;

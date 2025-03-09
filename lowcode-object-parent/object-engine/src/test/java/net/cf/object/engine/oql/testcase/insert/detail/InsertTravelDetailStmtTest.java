@@ -1,6 +1,6 @@
 package net.cf.object.engine.oql.testcase.insert.detail;
 
-import net.cf.commons.test.util.StringTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.statement.SqlInsertStatement;
 import net.cf.object.engine.object.TravelTripObject;
 import net.cf.object.engine.object.XObject;

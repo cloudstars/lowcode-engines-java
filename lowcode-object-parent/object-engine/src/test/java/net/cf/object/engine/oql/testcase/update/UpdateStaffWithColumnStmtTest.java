@@ -1,6 +1,6 @@
 package net.cf.object.engine.oql.testcase.update;
 
-import net.cf.commons.test.util.StringTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.statement.SqlUpdateStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;
 import net.cf.object.engine.oql.infos.OqlInfosUtils;

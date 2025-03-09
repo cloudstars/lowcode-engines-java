@@ -1,6 +1,6 @@
 package net.cf.object.engine.oql.testcase.select;
 
-import net.cf.commons.test.util.JsonTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlRepoTest;
 import net.cf.object.engine.util.OqlStatementUtils;

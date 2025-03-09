@@ -1,0 +1,20 @@
+{
+  "name": "TextFieldDescriptor",
+  "title": "文本字段规范",
+  "extends": "FieldDescriptor",
+  "attributes": [
+    {
+      "name": "minLength",
+      "title": "最小长度",
+      "description": "",
+      "defaultValue": null,
+      "setter": "number"
+    },{
+      "name": "maxLength",
+      "title": "最大长度",
+      "description": "",
+      "defaultValue": null,
+      "setter": "number"
+    }
+  ]
+}

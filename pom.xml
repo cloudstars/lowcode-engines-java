@@ -52,8 +52,8 @@
         <module>lowcode-commons-parent</module>
         <module>lowcode-object-parent</module>
         <module>lowcode-script-parent</module>
-        <!--<module>lowcode-excel-parent</module>
-        <module>lowcode-bpm-parent</module>
+        <module>lowcode-excel-parent</module>
+        <!--<module>lowcode-bpm-parent</module>
         <module>lowcode-api-parent</module>
         <module>lowcode-api-proxy-parent</module>
         <module>lowcode-api-flow-parent</module>
@@ -62,6 +62,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-commons-lang</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-test</artifactId>

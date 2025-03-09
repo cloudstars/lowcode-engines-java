@@ -1,6 +1,6 @@
 package net.cf.object.engine.oql.testcase.update;
 
-import net.cf.commons.test.util.DataCompareTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.DataCompareTestUtils;
 import net.cf.object.engine.object.TravelObject;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlUpdateStatement;

@@ -1,6 +1,6 @@
 package net.cf.object.engine.oql.testcase.insert;
 
-import net.cf.commons.test.util.StringTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.StringTestUtils;
 import net.cf.object.engine.oql.ast.OqlInsertSelectStatement;
 import net.cf.object.engine.oql.testcase.AbstractOqlTest;
 import net.cf.object.engine.oql.testcase.ObjectEngineStatementTestApplication;

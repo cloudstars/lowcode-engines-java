@@ -16,9 +16,10 @@
     </properties>
 
     <modules>
-        <module>commons-lang</module>
+        <module>lowcode-commons-lang</module>
+        <module>lowcode-commons-editor</module>
         <module>commons-cache</module>
-        <module>commons-test</module>
+        <module>lowcode-commons-test</module>
         <module>commons-test-db</module>
     </modules>
 

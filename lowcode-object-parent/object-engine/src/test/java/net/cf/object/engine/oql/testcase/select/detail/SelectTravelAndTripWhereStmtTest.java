@@ -1,6 +1,6 @@
 package net.cf.object.engine.oql.testcase.select.detail;
 
-import net.cf.commons.test.util.StringTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.StringTestUtils;
 import net.cf.form.repository.sql.ast.statement.SqlSelectStatement;
 import net.cf.object.engine.oql.ast.OqlSelectStatement;
 import net.cf.object.engine.oql.infos.OqlInfosUtils;

@@ -5,7 +5,7 @@ import com.mongodb.client.MongoCollection;
 import net.cf.commons.test.db.dataset.IDataSet;
 import net.cf.commons.test.db.dataset.JsonDataSetLoader;
 import net.cf.commons.test.db.dataset.MongoDataSetOperator;
-import net.cf.commons.test.util.JsonTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
 import org.bson.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;

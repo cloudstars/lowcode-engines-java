@@ -16,7 +16,9 @@
     </properties>
 
     <modules>
-        <module>excel-engine</module>
+        <module>lowcode-excel-engine</module>
+        <module>lowcode-excel-engine2</module>
+        <module>lowcode-excel-provider-parent</module>
     </modules>
 
     <dependencyManagement>
@@ -24,6 +26,11 @@
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-excel-commons</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-excel-provider</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

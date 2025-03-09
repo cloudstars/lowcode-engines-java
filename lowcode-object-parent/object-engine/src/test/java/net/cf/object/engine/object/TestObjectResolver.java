@@ -1,7 +1,7 @@
 package net.cf.object.engine.object;
 
 import com.alibaba.fastjson.JSONObject;
-import net.cf.commons.test.util.FileTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
 import net.cf.object.engine.def.ObjectDef;
 import net.cf.object.engine.def.TestObjectImpl;
 import net.cf.object.engine.oql.parser.XObjectResolver;

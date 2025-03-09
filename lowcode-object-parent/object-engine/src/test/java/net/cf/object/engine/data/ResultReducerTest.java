@@ -1,7 +1,7 @@
 package net.cf.object.engine.data;
 
-import net.cf.commons.test.util.DataCompareTestUtils;
-import net.cf.commons.test.util.JsonTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.DataCompareTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
