@@ -152,7 +152,7 @@ public final class SqlUtils {
      * 将 List<Map> 参数转换为JDBC-TEMPLATE批量更新的参数格式
      *
      * @param paramMaps
-     * @return
+     * @return SQL参数
      */
     public static SqlParameterSource[] convertParamMaps(List<Map<String, Object>> paramMaps) {
         int paramSize = paramMaps.size();

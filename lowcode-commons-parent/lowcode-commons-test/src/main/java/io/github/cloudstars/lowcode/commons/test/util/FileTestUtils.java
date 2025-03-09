@@ -27,7 +27,7 @@ public final class FileTestUtils {
     /**
      * 从类路径下加载JSON对象
      *
-     * @param filePath
+     * @param filePath 文件路径
      * @return
      */
     public static String loadTextFromClasspath(String filePath) {
@@ -43,7 +43,7 @@ public final class FileTestUtils {
     /**
      * 根据路径匹配加载多个文件内容
      *
-     * @param filePattern
+     * @param filePattern 文件匹配格式
      * @return
      */
     public static Map<String, String> loadTextsFromClasspath(String filePattern) {
@@ -66,7 +66,7 @@ public final class FileTestUtils {
     /**
      * 读取本地文本文件
      *
-     * @param filePath
+     * @param filePath 文件路径
      */
     public static String loadTextFromLocalPath(String filePath) {
         File file = new File(filePath);
@@ -83,8 +83,8 @@ public final class FileTestUtils {
     /**
      * 把内容写入本地文件
      *
-     * @param filePath
-     * @param content
+     * @param filePath 文件路径
+     * @param content 内容
      */
     public static void writeTextToLocalPath(String filePath, String content) {
         File file = new File(filePath);
@@ -106,7 +106,7 @@ public final class FileTestUtils {
     /**
      * 读取流
      *
-     * @param inStream
+     * @param inStream 输入流
      * @return 字节数组
      * @throws Exception
      */

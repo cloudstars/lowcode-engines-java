@@ -27,7 +27,7 @@ public final class ObjectTestUtils {
      *
      * @param source
      * @param target
-     * @return
+     * @return 是否相等
      */
     public static boolean equals(Object source, Object target) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
@@ -88,7 +88,7 @@ public final class ObjectTestUtils {
      *
      * @param source
      * @param target
-     * @return
+     * @return 是否相等
      */
     public static boolean isAssignableFrom(Object source, Object target) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
@@ -103,7 +103,7 @@ public final class ObjectTestUtils {
      * @param source
      * @param target
      * @param properties
-     * @return
+     * @return 是否相等
      */
     public static boolean isAssignableFromWithProperties(Object source, Object target, List<String> properties) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
@@ -125,7 +125,7 @@ public final class ObjectTestUtils {
      * @param source
      * @param target
      * @param comparator
-     * @return
+     * @return 是否相等
      */
     public static <S extends Object, T extends Object> boolean compareObjectNullSafe(S source, T target, Comparator<S, T> comparator) {
         if (source == null && target == null) {
@@ -147,7 +147,7 @@ public final class ObjectTestUtils {
          *
          * @param source
          * @param target
-         * @return
+         * @return 是否相等
          */
         boolean compareNullSafe(S source, T target);
 
@@ -157,7 +157,8 @@ public final class ObjectTestUtils {
     /**
      * 是否基础类型的值
      *
-     * @param value
+     * @param value 值
+     * @return 是否相等
      */
     public static boolean isGeneralValue(Object value) {
         if (value == null) {
@@ -170,8 +171,8 @@ public final class ObjectTestUtils {
     /**
      * 获取对象的属性名称列表
      *
-     * @param object
-     * @return
+     * @param object 对象
+     * @return List
      */
     public static List<String> getDeclaredFieldNames(Object object) {
         if (object == null) {
@@ -196,8 +197,8 @@ public final class ObjectTestUtils {
     /**
      * 获取对象的属性的值
      *
-     * @param object
-     * @return
+     * @param object 对象
+     * @return 对象
      */
     public static Object getFieldValue(Object object, String fieldName) {
         if (object == null) {

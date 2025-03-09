@@ -24,7 +24,7 @@ public final class JsonTestUtils {
      * 从类路径加载JSON文件并反序列化成Map
      *
      * @param filePath
-     * @return
+     * @return Map
      */
     public static Map<String, Object> loadMapFromClasspath(String filePath) {
         String content = FileTestUtils.loadTextFromClasspath(filePath);
@@ -35,7 +35,7 @@ public final class JsonTestUtils {
      * 从类路径加载JSON文件并反序列化成Map
      *
      * @param filePath
-     * @return
+     * @return List
      */
     public static List<Map<String, Object>> loadListFromClasspath(String filePath) {
         String content = FileTestUtils.loadTextFromClasspath(filePath);
@@ -53,7 +53,7 @@ public final class JsonTestUtils {
      * 解析JSON数组
      *
      * @param arrayValue
-     * @return
+     * @return List
      */
     public static List<Map<String, Object>> toMapList(JSONArray arrayValue) {
         List<Map<String, Object>> dataMapList = new ArrayList<>();
@@ -69,7 +69,7 @@ public final class JsonTestUtils {
      * 解析JSON对象
      *
      * @param jsonData
-     * @return
+     * @return Map
      */
     private static Map<String, Object> toMap(JSONObject jsonData) {
         Map<String, Object> dataMap = new HashMap<>();

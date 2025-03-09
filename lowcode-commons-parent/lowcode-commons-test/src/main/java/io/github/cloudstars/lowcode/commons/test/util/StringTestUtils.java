@@ -18,9 +18,9 @@ public final class StringTestUtils {
     /**
      * 判断两个字符串在忽略空白字符时是否相等
      *
-     * @param s1
-     * @param s2
-     * @return
+     * @param s1 字符串1
+     * @param s2 字符串2
+     * @return 是否相等
      */
     public static boolean equalsIgnoreWhiteSpace(final String s1, final String s2) {
         String ts1 = s1.replaceAll("\\s", "");
@@ -32,9 +32,8 @@ public final class StringTestUtils {
     /**
      * 断言两个字符串在忽略空白字符时相等
      *
-     * @param s1
-     * @param s2
-     * @return
+     * @param s1 字符串1
+     * @param s2 字符串2
      */
     public static void assertEqualsIgnoreWhiteSpace(final String s1, final String s2) {
         String ts1 = s1.replaceAll("\\s", "");

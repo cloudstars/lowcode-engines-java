@@ -27,9 +27,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源对象中的属性是否与目标对象中的属性完全相等
      *
-     * @param source
-     * @param target
-     * @return
+     * @param source 源
+     * @param target 目标
+     * @return 是否相等
      */
     public static boolean equalsObject(Object source, Object target) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
@@ -57,9 +57,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源Map对象中的属性与目标Map对象中的属性是否完成相等
      *
-     * @param sourceMap
-     * @param targetMap
-     * @return
+     * @param sourceMap 源
+     * @param targetMap 目标
+     * @return 是否相等
      */
     public static boolean equalsMap(Map<String, Object> sourceMap, Map<String, Object> targetMap) {
         return ObjectTestUtils.compareObjectNullSafe(sourceMap, targetMap, (s, t) -> {
@@ -85,9 +85,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源List对象中的属性与目标List对象中的属性完全相等，并且数量一致
      *
-     * @param sourceList
-     * @param targetList
-     * @return
+     * @param sourceList 源
+     * @param targetList 目标
+     * @return 是否相等
      */
     public static <S extends Object, T extends Object> boolean equalsList(List<S> sourceList, List<T> targetList) {
         return ObjectTestUtils.compareObjectNullSafe(sourceList, targetList, (s, t) -> {
@@ -113,9 +113,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源JSONObject对象中的属性与目标JSONObject对象中的属性完全相等
      *
-     * @param source
-     * @param target
-     * @return
+     * @param source 源
+     * @param target 目标
+     * @return 是否相等
      */
     public static boolean equalsJsonObject(JSONObject source, JSONObject target) {
         return DataCompareTestUtils.equalsMap(source, target);
@@ -124,9 +124,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源JSONArray对象中的属性是否与目标JSONArray对象中的属性完全相等，并且数量一致
      *
-     * @param sourceArray
-     * @param targetArray
-     * @return
+     * @param sourceArray 源
+     * @param targetArray 目标
+     * @return 是否相等
      */
     public static boolean equalsJsonArray(JSONArray sourceArray, JSONArray targetArray) {
         return DataCompareTestUtils.equalsList(sourceArray, targetArray);
@@ -135,9 +135,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源对象中的属性是否在目标对象中都存在，并且值相等
      *
-     * @param source
-     * @param target
-     * @return
+     * @param source 源
+     * @param target 目标
+     * @return 是否相等
      */
     public static boolean isAssignableFromObject(Object source, Object target) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
@@ -164,9 +164,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源Map对象中的属性是否在目标Map对象中都存在，并且值相等
      *
-     * @param sourceMap
-     * @param targetMap
-     * @return
+     * @param sourceMap 源
+     * @param targetMap 目标
+     * @return 是否相等
      */
     public static boolean isAssignableFromMap(Map<String, Object> sourceMap, Map<String, Object> targetMap) {
         return ObjectTestUtils.compareObjectNullSafe(sourceMap, targetMap, (s, v) -> {
@@ -178,9 +178,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源List对象中的属性是否在目标List对象中都存在，并且值相等，并且数量一致
      *
-     * @param sourceList
-     * @param targetList
-     * @return
+     * @param sourceList 源
+     * @param targetList 目标
+     * @return 是否相等
      */
     public static <S extends Object, T extends Object> boolean isAssignableFromList(List<S> sourceList, List<T> targetList) {
         return ObjectTestUtils.compareObjectNullSafe(sourceList, targetList, (s, v) -> {
@@ -192,9 +192,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源对象JSONObject中的属性是否在目标JSONObject对象中都存在，并且值相等
      *
-     * @param source
-     * @param target
-     * @return
+     * @param source 源
+     * @param target 目标
+     * @return 是否相等
      */
     public static boolean isAssignableFromJsonObject(JSONObject source, JSONObject target) {
         return DataCompareTestUtils.isAssignableFromMap(source, target);
@@ -203,9 +203,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源JSONArray对象中的属性是否在目标JSONArray对象中都存在，并且值相等
      *
-     * @param source
-     * @param target
-     * @return
+     * @param source 源
+     * @param target 目标
+     * @return 是否相等
      */
     public static boolean isAssignableFromJsonArray(JSONArray source, JSONArray target) {
         return DataCompareTestUtils.isAssignableFromList(source, target);
@@ -215,9 +215,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源对象中的指定属性是否在目标对象中都存在，并且值相等
      *
-     * @param source
-     * @param target
-     * @return
+     * @param source 源
+     * @param target 目标
+     * @return 是否相等
      */
     public static boolean isAssignableFromObjectWithProperties(Object source, Object target, List<String> properties) {
         return ObjectTestUtils.compareObjectNullSafe(source, target, (s, t) -> {
@@ -265,9 +265,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源Map对象中指定的属性是否在目标Map对象中都存在，并且值相等
      *
-     * @param sourceMap
-     * @param targetMap
-     * @return
+     * @param sourceMap 源
+     * @param targetMap 目标
+     * @return 是否相等
      */
     public static boolean isAssignableFromMapWithProperties(Map<String, Object> sourceMap, Map<String, Object> targetMap, List<String> properties) {
         return ObjectTestUtils.compareObjectNullSafe(sourceMap, targetMap, (s, t) -> {
@@ -288,9 +288,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源对象中指定的属性是否在目标对象中都存在，并且值相等
      *
-     * @param sourceList
-     * @param targetList
-     * @return
+     * @param sourceList 源
+     * @param targetList 目标
+     * @return 是否相等
      */
     public static <S extends Object, T extends Object> boolean isAssignableFromListWithProperties(List<S> sourceList, List<T> targetList, List<String> properties) {
         return ObjectTestUtils.compareObjectNullSafe(sourceList, targetList, (s, t) -> {
@@ -314,9 +314,9 @@ public final class DataCompareTestUtils {
     /**
      * 判断源对象中指定的属性是否在目标对象中都存在，并且值相等
      *
-     * @param source
-     * @param target
-     * @return
+     * @param source 源
+     * @param target 目标
+     * @return 是否相等
      */
     public static boolean isAssignableFromJsonObjectWithProperties(JSONObject source, JSONObject target, List<String> properties) {
         return DataCompareTestUtils.isAssignableFromObjectWithProperties(source, target, properties);
@@ -328,7 +328,7 @@ public final class DataCompareTestUtils {
      *
      * @param sourceArray
      * @param targetArray
-     * @return
+     * @return 是否相等
      */
     public static boolean isAssignableFromJsonArrayWithProperties(JSONArray sourceArray, JSONArray targetArray, List<String> properties) {
         return DataCompareTestUtils.isAssignableFromListWithProperties(sourceArray, targetArray, properties);
