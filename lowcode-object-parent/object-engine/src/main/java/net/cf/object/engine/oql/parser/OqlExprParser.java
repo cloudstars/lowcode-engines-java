@@ -30,7 +30,9 @@ public class OqlExprParser extends SqlExprParser {
     protected CachedObjectResolverProxy resolver;
 
     /**
+     * <p>
      * 模型别名映射表，key为别名，value为模型的名称，如from T as xx, 那么xx -> T
+     * </p>
      */
     protected final Map<String, XObject> objectAliasMap = new HashMap<>();
 

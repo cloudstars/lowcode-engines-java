@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.test.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -68,13 +69,13 @@ public final class JsonTestUtils {
     /**
      * 解析JSON对象
      *
-     * @param jsonData
+     * @param jsonObject
      * @return Map
      */
-    private static Map<String, Object> toMap(JSONObject jsonData) {
+    private static Map<String, Object> toMap(JSONObject jsonObject) {
         Map<String, Object> dataMap = new HashMap<>();
-        for (String key : jsonData.keySet()) {
-            Object value = jsonData.get(key);
+        for (String key : jsonObject.keySet()) {
+            Object value = jsonObject.get(key);
             if (value instanceof JSONArray) {
                 JSONArray arrayValue = (JSONArray) value;
                 value = JsonTestUtils.toMapList(arrayValue);
@@ -93,12 +94,70 @@ public final class JsonTestUtils {
      * @param expected
      * @param actual
      */
+    @Deprecated
     public static void assertObjectEquals(Object expected, Object actual) {
         Assert.assertFalse(expected == null && actual != null);
         Assert.assertFalse(expected != null && actual == null);
         String expectedJsonString = JSONObject.toJSONString(expected, SerializerFeature.PrettyFormat);
-        String actualJsonString = JSONObject.toJSONString(expected, SerializerFeature.PrettyFormat);
+        String actualJsonString = JSONObject.toJSONString(actual, SerializerFeature.PrettyFormat);
         Assert.assertEquals(expectedJsonString, actualJsonString);
+    }
+
+    /**
+     * 判断源对象是否由目标对象派生的
+     *
+     * @param expectedJsonString 预期的JSON字符串
+     * @param actualJsonString   事实的JSON字符串
+     */
+    public static void assertDerivedFrom(String expectedJsonString, String actualJsonString) {
+        Assert.assertFalse(expectedJsonString == null && actualJsonString != null);
+        Assert.assertFalse(expectedJsonString != null && actualJsonString == null);
+
+        assertDerivedFrom(JSON.parse(expectedJsonString), JSON.parse(actualJsonString));
+    }
+
+    /**
+     * 判断源对象是否由目标对象派生的
+     *
+     * @param expected 预期对象
+     * @param actual   事实对象
+     */
+    private static void assertDerivedFrom(Object expected, Object actual) {
+        if (expected instanceof JSONObject && actual instanceof JSONObject) {
+            assertDerivedFromObject((JSONObject) expected, (JSONObject) actual);
+        } else if (expected instanceof JSONArray && actual instanceof JSONArray) {
+            assertDerivedFromArray((JSONArray) expected, (JSONArray) actual);
+        } else {
+            Assert.assertEquals(expected, actual);
+        }
+    }
+
+    /**
+     * 断言预期的对象是否从事实的对象中派生
+     *
+     * @param expectedObject 预期对象
+     * @param actualObject   事实对象
+     */
+    private static void assertDerivedFromObject(JSONObject expectedObject, JSONObject actualObject) {
+        expectedObject.forEach((k, v) -> {
+            assertDerivedFrom(v, actualObject.get(k));
+        });
+    }
+
+    /**
+     * 断言预期的列表是否从事实的列表中派生
+     *
+     * @param expectedArray 预期列表
+     * @param actualArray   事实列表
+     */
+    private static void assertDerivedFromArray(JSONArray expectedArray, JSONArray actualArray) {
+        int el = expectedArray.size();
+        int al = actualArray.size();
+        Assert.assertFalse(el > al);
+
+        for (int i = 0; i < el; i++) {
+            assertDerivedFrom(expectedArray.get(i), actualArray.get(i));
+        }
     }
 
 }

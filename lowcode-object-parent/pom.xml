@@ -13,11 +13,11 @@
     <description>低代码模型引擎parent</description>
 
     <modules>
-        <module>object-commons</module>
-        <module>object-editor</module>
-        <module>object-engine</module>
+        <module>lowcode-object-commons</module>
+        <module>lowcode-object-editor</module>
+        <!--<module>object-engine</module>
         <module>object-engine-starter-mysql</module>
-        <module>object-engine-starter-mongo</module>
+        <module>object-engine-starter-mongo</module>-->
         <module>object-repository</module>
         <module>object-repository-testcases</module>
         <module>object-repository-impl-parent</module>

@@ -30,9 +30,9 @@ public class BatchInsertJdbcTemplate {
     /**
      * 批量插入
      *
-     * @param stmt
-     * @param paramMaps
-     * @return
+     * @param stmt 插入语句
+     * @param paramMaps 插入参数
+     * @return 影响行数
      */
     public int[] batchInsert(SqlInsertStatement stmt, List<Map<String, Object>> paramMaps) {
         assert (!CollectionUtils.isEmpty(paramMaps));
@@ -58,4 +58,5 @@ public class BatchInsertJdbcTemplate {
         }
         return effectedRowArray;
     }
+
 }

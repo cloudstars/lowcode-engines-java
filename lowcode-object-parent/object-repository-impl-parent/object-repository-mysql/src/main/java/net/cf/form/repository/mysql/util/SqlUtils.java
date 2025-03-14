@@ -30,8 +30,8 @@ public final class SqlUtils {
     /**
      * 将SQL语句转为SQL文本
      *
-     * @param stmt
-     * @return
+     * @param stmt SQL语句
+     * @return SQL文本
      */
     public static String toSqlText(SqlStatement stmt) {
         StringBuilder builder = new StringBuilder();
@@ -43,9 +43,9 @@ public final class SqlUtils {
     /**
      * 根据字段的数据类型生成JdbcTemplate插入时的参数格式(批量)
      *
-     * @param stmt
-     * @param paramMaps
-     * @return
+     * @param stmt SQL语句
+     * @param paramMaps SQL参数
+     * @return SQL参数源
      */
     public static SqlParameterSource[] convertInsertParamMaps(SqlInsertStatement stmt, List<Map<String, Object>> paramMaps) {
         int size = paramMaps.size();
@@ -60,9 +60,9 @@ public final class SqlUtils {
     /**
      * 根据字段的数据类型生成JdbcTemplate插入时的参数格式
      *
-     * @param stmt
-     * @param paramMap
-     * @return
+     * @param stmt SQL语句
+     * @param paramMap SQL参数
+     * @return SQL数据源
      */
     public static SqlParameterSource convertInsertParamMap(SqlInsertStatement stmt, Map<String, Object> paramMap) {
         if (paramMap == null) {
@@ -99,9 +99,9 @@ public final class SqlUtils {
     /**
      * 根据字段的数据类型生成JdbcTemplate更新时的参数格式(批量)
      *
-     * @param stmt
-     * @param paramMaps
-     * @return
+     * @param stmt SQL语句
+     * @param paramMaps SQL参数
+     * @return SQL参数源数组
      */
     public static SqlParameterSource[] convertUpdateParamMaps(SqlUpdateStatement stmt, List<Map<String, Object>> paramMaps) {
         int size = paramMaps.size();
@@ -116,9 +116,9 @@ public final class SqlUtils {
     /**
      * 根据字段的数据类型生成JdbcTemplate更新时的参数格式
      *
-     * @param stmt
-     * @param paramMap
-     * @return
+     * @param stmt SQL语句
+     * @param paramMap SQL参数
+     * @return SQL参数源
      */
     public static SqlParameterSource convertUpdateParamMap(SqlUpdateStatement stmt, Map<String, Object> paramMap) {
         if (paramMap == null) {
@@ -149,9 +149,9 @@ public final class SqlUtils {
     }
 
     /**
-     * 将 List<Map> 参数转换为JDBC-TEMPLATE批量更新的参数格式
+     * 将 List 参数转换为JDBC-TEMPLATE批量更新的参数格式
      *
-     * @param paramMaps
+     * @param paramMaps SQL参数
      * @return SQL参数
      */
     public static SqlParameterSource[] convertParamMaps(List<Map<String, Object>> paramMaps) {

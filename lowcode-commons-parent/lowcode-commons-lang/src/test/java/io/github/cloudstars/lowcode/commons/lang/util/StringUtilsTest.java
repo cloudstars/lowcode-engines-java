@@ -19,7 +19,6 @@ public class StringUtilsTest {
         Assert.assertTrue(StringUtils.isEmpty(""));
         Assert.assertFalse(StringUtils.isEmpty(" "));
         Assert.assertFalse(StringUtils.isEmpty(" *"));
-
     }
 
     @Test

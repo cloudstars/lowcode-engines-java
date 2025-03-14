@@ -86,8 +86,8 @@ public final class ObjectTestUtils {
     /**
      * 判断源对象是否可以从目标对象派生出来（不考虑嵌套属性）
      *
-     * @param source
-     * @param target
+     * @param source 源
+     * @param target 目标
      * @return 是否相等
      */
     public static boolean isAssignableFrom(Object source, Object target) {
@@ -100,9 +100,9 @@ public final class ObjectTestUtils {
     /**
      * 判断源对象指定的属性是否可以从目标对象派生出来（不考虑嵌套属性）
      *
-     * @param source
-     * @param target
-     * @param properties
+     * @param source 源
+     * @param target 目标
+     * @param properties 属性列表
      * @return 是否相等
      */
     public static boolean isAssignableFromWithProperties(Object source, Object target, List<String> properties) {
@@ -122,9 +122,9 @@ public final class ObjectTestUtils {
     /**
      * 比较两个对象，并且自动判断Null值的情况
      *
-     * @param source
-     * @param target
-     * @param comparator
+     * @param source 源
+     * @param target 目标
+     * @param comparator 比较器
      * @return 是否相等
      */
     public static <S extends Object, T extends Object> boolean compareObjectNullSafe(S source, T target, Comparator<S, T> comparator) {
@@ -145,8 +145,8 @@ public final class ObjectTestUtils {
         /**
          * 比较两个对象的值是否相等，前提是两个对象都非空
          *
-         * @param source
-         * @param target
+         * @param source 源
+         * @param target 目标
          * @return 是否相等
          */
         boolean compareNullSafe(S source, T target);
@@ -198,6 +198,7 @@ public final class ObjectTestUtils {
      * 获取对象的属性的值
      *
      * @param object 对象
+     * @param fieldName 字段名称
      * @return 对象
      */
     public static Object getFieldValue(Object object, String fieldName) {

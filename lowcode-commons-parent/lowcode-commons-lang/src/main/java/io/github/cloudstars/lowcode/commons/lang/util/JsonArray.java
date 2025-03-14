@@ -23,111 +23,111 @@ public class JsonArray implements List<Object> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.proxy.isEmpty();
     }
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        return this.proxy.contains(o);
     }
 
     @Override
     public Iterator<Object> iterator() {
-        return null;
+        return this.proxy.iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return this.proxy.toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        return this.proxy.toArray(a);
     }
 
     @Override
     public boolean add(Object o) {
-        return false;
+        return this.proxy.add(o);
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        return this.proxy.remove(o);
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        return this.proxy.containsAll(c);
     }
 
     @Override
     public boolean addAll(Collection<?> c) {
-        return false;
+        return this.proxy.addAll(c);
     }
 
     @Override
     public boolean addAll(int index, Collection<?> c) {
-        return false;
+        return this.proxy.addAll(index, c);
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        return this.proxy.removeAll(c);
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        return this.proxy.retainAll(c);
     }
 
     @Override
     public void clear() {
-
+        this.proxy.clear();
     }
 
     @Override
     public Object get(int index) {
-        return null;
+        return this.proxy.get(index);
     }
 
     @Override
     public Object set(int index, Object element) {
-        return null;
+        return this.proxy.set(index, element);
     }
 
     @Override
     public void add(int index, Object element) {
-
+        this.proxy.add(index, element);
     }
 
     @Override
     public Object remove(int index) {
-        return null;
+        return this.proxy.remove(index);
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        return this.proxy.indexOf(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        return this.proxy.lastIndexOf(o);
     }
 
     @Override
     public ListIterator<Object> listIterator() {
-        return null;
+        return this.proxy.listIterator();
     }
 
     @Override
     public ListIterator<Object> listIterator(int index) {
-        return null;
+        return this.proxy.listIterator();
     }
 
     @Override
     public List<Object> subList(int fromIndex, int toIndex) {
-        return null;
+        return this.proxy.subList(fromIndex, toIndex);
     }
 }

@@ -11,8 +11,13 @@
     <artifactId>lowcode-commons-lang</artifactId>
     <description>公共基础定义</description>
 
+
     <dependencies>
         <!-- 编译时依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -20,8 +25,8 @@
 
         <!-- 测试时依赖 -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-test</artifactId>
         </dependency>
     </dependencies>
 

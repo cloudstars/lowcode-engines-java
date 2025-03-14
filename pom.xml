@@ -19,17 +19,18 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <springboot.version>2.7.2</springboot.version>
         <spring.core.version>5.3.22</spring.core.version>
-        <revision>1.0-SNAPSHOT</revision>
-        <gpg.keyname>722ADF29D554D3EB</gpg.keyname>
         <mybatis-spring.version>2.3.0</mybatis-spring.version>
+        <revision>0.1.1-SNAPSHOT</revision>
     </properties>
+
 
     <modules>
         <module>lowcode-commons-parent</module>
-        <!--<module>lowcode-object-parent</module>
-        <module>lowcode-script-parent</module>
-        <module>lowcode-excel-parent</module>
+        <module>lowcode-object-parent</module>
         <module>lowcode-bpm-parent</module>
+        <!--<module>lowcode-script-parent</module>
+        <module>lowcode-excel-parent</module>
+
         <module>lowcode-api-parent</module>
         <module>lowcode-api-proxy-parent</module>
         <module>lowcode-api-flow-parent</module>
@@ -41,6 +42,11 @@
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-lang</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-commons-editor</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -239,6 +245,32 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- revision版本号识别插件 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.2.5</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- gpg插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -246,7 +278,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <!-- 改成你自己的路径 -->
-                    <executable>D:\ProgramFiles\GnuPG\bin\gpg.exe</executable>
+                    <executable>C:\Program Files (x86)\GnuPG\bin\gpg.exe</executable>
                 </configuration>
                 <executions>
                     <execution>
@@ -278,16 +310,16 @@
 
     <!-- 版本控制 -->
     <scm>
-        <url>https://github.com/xxx/abc/tree/master</url>
-        <connection>scm:git:https://github.com/xxx/abc.git</connection>
-        <developerConnection>scm:git:https://github.com/xxx/abc.git</developerConnection>
+        <url>https://github.com/cloudstars/lowcode-engines-java</url>
+        <connection>scm:git:https://github.com/cloudstars/lowcode-engines-java.git</connection>
+        <developerConnection>scm:git:ssh://github.com:cloudstars/lowcode-engines-java.git</developerConnection>
     </scm>
 
     <!-- 开发者信息 -->
     <developers>
         <developer>
-            <name>xxx</name>
-            <email>xxx@gmail.com</email>
+            <name>cloudstars</name>
+            <email>cloudstars@zju.edu.cn</email>
         </developer>
     </developers>
 

@@ -1,11 +1,17 @@
 package io.github.cloudstars.lowcode.commons.lang.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * JSON对象，封装了FastJson的对象，避免直接让用户依赖FASTJSON对象
+ *
+ * @author clouds
+ */
 public class JsonObject implements Map {
 
     private JSONObject proxy;
@@ -32,56 +38,61 @@ public class JsonObject implements Map {
 
     @Override
     public boolean containsValue(Object value) {
-        return false;
+        return this.proxy.containsValue(value);
     }
 
     @Override
     public Object get(Object key) {
-        return null;
+        Object value = this.proxy.get(key);
+        if (value instanceof JSONArray) {
+            return new JsonArray((JSONArray) value);
+        }
+
+        return value;
     }
 
     @Override
     public Object put(Object key, Object value) {
-        return null;
+        return this.proxy.put(key.toString(), value);
     }
 
     @Override
     public Object remove(Object key) {
-        return null;
+        return this.proxy.remove(key);
     }
 
     @Override
     public void putAll(Map m) {
-
+        this.proxy.putAll(m);
     }
 
     @Override
     public void clear() {
-
+        this.proxy.clear();
     }
 
     @Override
     public Set keySet() {
-        return null;
+        return this.proxy.keySet();
     }
 
     @Override
     public Collection values() {
-        return null;
+        return this.proxy.values();
     }
 
     @Override
-    public Set<Entry> entrySet() {
-        return null;
+    public Set<Entry<String, Object>> entrySet() {
+        return this.proxy.entrySet();
     }
 
     @Override
     public boolean equals(Object o) {
-        return false;
+        return this.proxy.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        return this.proxy.hashCode();
     }
 }

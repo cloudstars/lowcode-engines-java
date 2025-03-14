@@ -1,10 +1,44 @@
 package io.github.cloudstars.lowcode.commons.editor;
 
+import io.github.cloudstars.lowcode.commons.lang.util.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.util.JsonUtils;
+import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
+
+import java.util.List;
+
 public class ConfigParser {
 
-    public static <T extends XConfig> T parse(Class<T> tClass, String jsonString) {
+    /**
+     * 从JSON字符串解析配置
+     *
+     * @param descriptor 规范描述器
+     * @param jsonString JSON字符串配置
+     * @return 配置对象
+     * @param <T> 配置对象的类型
+     */
+    public static <T extends XConfig> T fromJsonString(XDescriptor descriptor, String jsonString) {
+        JsonObject configJson = JsonUtils.parseObject(jsonString);
+
         return null;
 
+    }
+
+    /**
+     * 将一个配置对象转为JSON字符串
+     *
+     * @param descriptor 规范描述器
+     * @param config 配置对象
+     * @return JSON字符串
+     * @param <T> 配置对象的类型
+     */
+    public static <T extends XConfig> String toJsonString(XDescriptor descriptor, T config) {
+        assert (config.getClass().getName().equals(descriptor.getConfigClassName()));
+
+        List<XDescriptor.Attribute> attributes = descriptor.getAttributes();
+        for (XDescriptor.Attribute attribute : attributes) {
+            ObjectUtils.getFieldValue(config, attribute.name);
+        }
+        return null;
     }
 
     /*

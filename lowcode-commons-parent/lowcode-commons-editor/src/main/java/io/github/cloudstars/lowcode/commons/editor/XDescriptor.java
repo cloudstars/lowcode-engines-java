@@ -17,6 +17,12 @@ public interface XDescriptor {
     String getName();
 
     /**
+     * 获取配置对象的类型
+     * @return
+     */
+    String getConfigClassName();
+
+    /**
      * 获取规范的属性列表
      *
      * @return
@@ -48,7 +54,7 @@ public interface XDescriptor {
         /**
          * 属性设置器（在界面配置的时候用于配置这个属性的值）
          */
-        String setter;
+        SetterEnum setter;
 
         /**
          * 属性的默认配置
@@ -56,5 +62,6 @@ public interface XDescriptor {
         Object defaultConfig;
 
     }
+
 }
 

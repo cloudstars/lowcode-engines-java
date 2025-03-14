@@ -1,0 +1,4 @@
+# 打印sql日志
+logging:
+  level:
+    root: debug

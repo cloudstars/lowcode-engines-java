@@ -1,0 +1,15 @@
+{
+  "key": "e432kjejijk3",
+  "code": "simple1",
+  "name": "简单流程1",
+  "node": [
+    {
+      "key": "iujkl3l2",
+      "type": "USER"
+    },
+    {
+      "key": "i%%@ujku",
+      "type": "END"
+    }
+  ]
+}
