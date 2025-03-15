@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.cloudstars</groupId>
-        <artifactId>lowcode-bpm-parent</artifactId>
+        <artifactId>lowcode-bpm-provider-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-bpm-engine</artifactId>
-    <description>低代码BPM运行时流程引擎，不负责表单的存储</description>
+    <artifactId>lowcode-bpm-provider-flowable</artifactId>
+    <description>低代码BPM引擎flowable实现</description>
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-repository</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-bpm-provider</artifactId>
         </dependency>
 
-        
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-test</artifactId>
+            <artifactId>lowcode-bpm-engine-test</artifactId>
         </dependency>
     </dependencies>
 

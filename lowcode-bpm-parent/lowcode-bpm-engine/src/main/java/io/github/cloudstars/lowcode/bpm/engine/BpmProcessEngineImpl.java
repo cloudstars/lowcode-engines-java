@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.engine;
 
 import io.github.cloudstars.lowcode.bpm.editor.config.ProcessConfig;
-import io.github.cloudstars.lowcode.bpm.engine.provider.BpmEngineProvider;
+import io.github.cloudstars.lowcode.bpm.engine.provider.BpmProvider;
 
 import java.util.Map;
 
@@ -15,15 +15,15 @@ public class BpmProcessEngineImpl implements BpmProcessEngine {
     /**
      * 流程引擎提供方
      */
-    private BpmEngineProvider bpmEngineProvider;
+    private BpmProvider bpmProvider;
 
-    public BpmProcessEngineImpl(BpmEngineProvider bpmEngineProvider) {
-        this.bpmEngineProvider = bpmEngineProvider;
+    public BpmProcessEngineImpl(BpmProvider bpmProvider) {
+        this.bpmProvider = bpmProvider;
     }
 
     @Override
     public String deploy(ProcessConfig config) {
-        String deployId = this.bpmEngineProvider.deploy(config);
+        String deployId = this.bpmProvider.deploy(config);
         return deployId;
     }
 

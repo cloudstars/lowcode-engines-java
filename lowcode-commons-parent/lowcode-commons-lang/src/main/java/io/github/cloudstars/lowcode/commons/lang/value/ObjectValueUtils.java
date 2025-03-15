@@ -64,9 +64,9 @@ public final class ObjectValueUtils {
     /**
      * 设置对象的属性值
      *
-     * @param o
-     * @param fieldName
-     * @return
+     * @param o 设值的对象
+     * @param fieldName 对象的属性名
+     * @param fieldValue 对象的属性值
      */
     public static void setFieldValue(Object o, String fieldName, Object fieldValue) {
         if (o == null) {
@@ -94,8 +94,8 @@ public final class ObjectValueUtils {
     /**
      * 克隆一个对象
      *
-     * @param o
-     * @return
+     * @param o 被克隆的对象
+     * @return 克隆后的对象
      */
     public static Object clone(Object o) {
         return clone(o, null);
@@ -104,9 +104,9 @@ public final class ObjectValueUtils {
     /**
      * 克隆一个对象，并给新对象赋值
      *
-     * @param o
-     * @param fieldValues
-     * @return
+     * @param o 被克隆的对象
+     * @param fieldValues 给新对象赋的值
+     * @return 克隆后的对象
      */
     public static Object clone(Object o, Map<String, Object> fieldValues) {
         if (o == null) {

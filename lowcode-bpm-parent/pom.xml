@@ -20,7 +20,7 @@
         <module>lowcode-bpm-editor</module>
         <module>lowcode-bpm-engine</module>
         <module>lowcode-bpm-engine-test</module>
-        <module>lowcode-bpm-engine-provider-parent</module>
+        <module>lowcode-bpm-provider-parent</module>
     </modules>
 
     <dependencyManagement>
@@ -37,7 +37,7 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-bpm-engine-provider</artifactId>
+                <artifactId>lowcode-bpm-provider</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

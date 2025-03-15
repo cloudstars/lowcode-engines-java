@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.bpm.engine.test;
 
 import io.github.cloudstars.lowcode.bpm.editor.config.ProcessConfig;
 import io.github.cloudstars.lowcode.bpm.editor.visit.ProcessConfigParser;
-import io.github.cloudstars.lowcode.bpm.engine.provider.BpmEngineProvider;
+import io.github.cloudstars.lowcode.bpm.engine.provider.BpmProvider;
 import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
 import org.junit.Assert;
 
@@ -19,7 +19,7 @@ public abstract class AbstractProcessEngineTest {
     private ProcessConfigParser parser;
 
     @Resource
-    private BpmEngineProvider provider;
+    private BpmProvider provider;
 
     /**
      * 测试部署流程定义
