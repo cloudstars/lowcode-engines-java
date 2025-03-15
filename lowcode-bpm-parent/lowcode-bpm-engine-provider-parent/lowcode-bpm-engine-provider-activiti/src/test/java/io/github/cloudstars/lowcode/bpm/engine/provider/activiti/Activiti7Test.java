@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ActivitiBpmEngineProviderTestApplication.class)
 public class Activiti7Test {
@@ -39,7 +41,7 @@ public class Activiti7Test {
         Deployment deployment = repositoryService.createDeployment()
                 .name("测试流程文件部署")
                 .key("leave")
-                .addClasspathResource("processes/leave.bpmn")
+                .addClasspathResource("process/leave.bpmn")
                 //.addClasspathResource("processes/leave.jpg")
                 .deploy();
 

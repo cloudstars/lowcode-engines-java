@@ -2,14 +2,12 @@ spring:
   datasource:
     username: root
     password: clouds1984
-    url: jdbc:mysql://localhost:3306/activiti7
+    url: jdbc:mysql://localhost:3306/activiti7?serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
   activiti:
-    database-schema-update: true
+    database-schema-update: false
     db-history-used: true
-    history-level: full
+    history-level: audit
   devtools:
     restart:
       enable: true
-
-debug: true

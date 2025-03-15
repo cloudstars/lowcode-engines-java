@@ -5,11 +5,8 @@ import io.github.cloudstars.lowcode.bpm.engine.provider.BpmEngineProvider;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.*;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.ProcessDefinition;
 
 import javax.annotation.Resource;
-import java.util.UUID;
 
 /**
  * 基于Activiti的BPM引擎实现类
@@ -44,10 +41,11 @@ public class ActivitiBpmEngineProviderImpl implements BpmEngineProvider {
         model.addProcess(process);
 
         // 部署流程
-        Deployment deploy = this.repositoryService.createDeployment().addBpmnModel(String.format("%s.bpmn20.xml", UUID.randomUUID()), model).deploy();
+        /*Deployment deploy = this.repositoryService.createDeployment().addBpmnModel(String.format("%s.bpmn20.xml", UUID.randomUUID()), model).deploy();
         String deployId = deploy.getId();
         ProcessDefinition processDefinition = this.repositoryService.createProcessDefinitionQuery().deploymentId(deployId).singleResult();
-        return processDefinition.getId();
+        return processDefinition.getId();*/
+        return "xxx";
     }
 
     // 创建task
