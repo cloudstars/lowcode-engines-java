@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.commons.lang.value;
 
 import io.github.cloudstars.lowcode.commons.lang.DataType;
-import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +47,7 @@ public class ObjectValueType extends AbstractValueType implements ValueType {
     protected void validateNonNullValue(Object value) throws InvalidDataFormatException {
         if (this.properties != null) {
             for (ObjectProperty property : properties) {
-                Object kv = ObjectUtils.getFieldValue(value, property.getName());
+                Object kv = ObjectValueUtils.getFieldValue(value, property.getName());
                 property.getValueType().validate(kv);
             }
         }
@@ -60,7 +59,7 @@ public class ObjectValueType extends AbstractValueType implements ValueType {
             final Map<String, Object> newFieldValues = new HashMap<>();
             for (ObjectProperty property : properties) {
                 String pn = property.getName();
-                Object kv = ObjectUtils.getFieldValue(value, pn);
+                Object kv = ObjectValueUtils.getFieldValue(value, pn);
                 Object ckv = property.getValueType().getCorrectValue(kv);
                 if (kv != ckv) { // 说明被调整了
                     newFieldValues.put(pn, ckv);
@@ -68,7 +67,7 @@ public class ObjectValueType extends AbstractValueType implements ValueType {
             }
 
             if (!newFieldValues.isEmpty()) { // 说明value需要调整
-                return ObjectUtils.clone(value, newFieldValues);
+                return ObjectValueUtils.clone(value, newFieldValues);
             }
         }
 

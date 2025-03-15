@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.Date;
 import java.util.List;
 
 @RunWith(JUnit4.class)
@@ -20,68 +19,4 @@ public class ObjectUtilsTest {
         }
     }
 
-    private class TestClass {
-        private String s;
-
-        private Boolean b;
-
-        private boolean pb;
-
-        private Integer iI;
-
-        private int ii;
-
-        private Date d;
-
-        private class Ti {
-        }
-
-        public String getS() {
-            return s;
-        }
-
-        public void setS(String s) {
-            this.s = s;
-        }
-
-        public Boolean getB() {
-            return b;
-        }
-
-        public void setB(Boolean b) {
-            this.b = b;
-        }
-
-        public boolean isPb() {
-            return pb;
-        }
-
-        public void setPb(boolean pb) {
-            this.pb = pb;
-        }
-
-        public Integer getiI() {
-            return iI;
-        }
-
-        public void setiI(Integer iI) {
-            this.iI = iI;
-        }
-
-        public int getIi() {
-            return ii;
-        }
-
-        public void setIi(int ii) {
-            this.ii = ii;
-        }
-
-        public Date getD() {
-            return d;
-        }
-
-        public void setD(Date d) {
-            this.d = d;
-        }
-    }
 }

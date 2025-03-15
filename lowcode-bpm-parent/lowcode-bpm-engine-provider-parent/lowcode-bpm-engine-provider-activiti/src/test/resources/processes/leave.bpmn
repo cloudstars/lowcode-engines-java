@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+        xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+        xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+        xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+        xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0"
+        xmlns:activiti="http://activiti.org/bpmn"
+        id="sample-diagram"
+        targetNamespace="http://activiti.org/bpmn"
+        xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+    >
+    <bpmn2:process id="leave" isExecutable="true">
+        <bpmn2:startEvent id="StartEvent_1" name="开始">
+            <bpmn2:outgoing>Flow_1jbxdia</bpmn2:outgoing>
+        </bpmn2:startEvent>
+        <bpmn2:userTask id="Activity_0uoi4rj" name="部门审核" activiti:assignee="clouds">
+            <bpmn2:incoming>Flow_1jbxdia</bpmn2:incoming>
+            <bpmn2:outgoing>Flow_0fay43k</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:userTask id="Activity_0uo5u5x" name="人事审核" activiti:assignee="clouds">
+            <bpmn2:incoming>Flow_0fay43k</bpmn2:incoming>
+            <bpmn2:outgoing>Flow_19f31xq</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:endEvent id="Event_0jf7yel" name="结束">
+            <bpmn2:incoming>Flow_19f31xq</bpmn2:incoming>
+        </bpmn2:endEvent>
+        <bpmn2:sequenceFlow id="Flow_1jbxdia" sourceRef="StartEvent_1" targetRef="Activity_0uoi4rj" />
+        <bpmn2:sequenceFlow id="Flow_0fay43k" sourceRef="Activity_0uoi4rj" targetRef="Activity_0uo5u5x" />
+        <bpmn2:sequenceFlow id="Flow_19f31xq" sourceRef="Activity_0uo5u5x" targetRef="Event_0jf7yel" />
+    </bpmn2:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="leave">
+            <bpmndi:BPMNEdge id="Flow_19f31xq_di" bpmnElement="Flow_19f31xq">
+                <di:waypoint x="830" y="258" />
+                <di:waypoint x="942" y="258" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0fay43k_di" bpmnElement="Flow_0fay43k">
+                <di:waypoint x="630" y="258" />
+                <di:waypoint x="730" y="258" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1jbxdia_di" bpmnElement="Flow_1jbxdia" bioc:stroke="green" bioc:fill="green">
+                <di:waypoint x="448" y="258" />
+                <di:waypoint x="530" y="258" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1" bioc:stroke="gray" bioc:fill="#eae9e9">
+                <dc:Bounds x="412" y="240" width="36" height="36" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="419" y="283" width="22" height="14" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0uoi4rj_di" bpmnElement="Activity_0uoi4rj" bioc:stroke="green" bioc:fill="yellow">
+                <dc:Bounds x="530" y="218" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0uo5u5x_di" bpmnElement="Activity_0uo5u5x">
+                <dc:Bounds x="730" y="218" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_0jf7yel_di" bpmnElement="Event_0jf7yel">
+                <dc:Bounds x="942" y="240" width="36" height="36" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="949" y="283" width="22" height="14" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

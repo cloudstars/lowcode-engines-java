@@ -17,12 +17,12 @@
         <module>lowcode-object-editor</module>
         <!--<module>object-engine</module>
         <module>object-engine-starter-mysql</module>
-        <module>object-engine-starter-mongo</module>-->
+        <module>object-engine-starter-mongo</module>
         <module>object-repository</module>
         <module>object-repository-testcases</module>
         <module>object-repository-impl-parent</module>
         <module>object-oql</module>
-        <module>object-formula-parent</module>
+        <module>object-formula-parent</module>-->
     </modules>
 
     <dependencyManagement>

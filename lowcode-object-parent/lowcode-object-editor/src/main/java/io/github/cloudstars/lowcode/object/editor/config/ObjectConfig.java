@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.editor.config;
 
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
-import io.github.cloudstars.lowcode.commons.lang.util.JsonUtils;
+import io.github.cloudstars.lowcode.commons.utils.json.JsonUtils;
 
 import java.util.HashMap;
 import java.util.List;

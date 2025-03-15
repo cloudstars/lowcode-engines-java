@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="repository.io.github.cloudstars.lowcode.commons.cache.StudentMapper">
+
+    <resultMap id="StudentResultMap" type="service.io.github.cloudstars.lowcode.commons.cache.Student">
+        <result property="key" column="key" />
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+    </resultMap>
+
+    <sql id="selectColumns">
+        `key`,
+        name,
+        age
+    </sql>
+
+    <select id="selectList" parameterType="repository.io.github.cloudstars.lowcode.commons.cache.StudentCriteria" resultMap="StudentResultMap">
+        <bind name = "nameLike" value = "'%' + name + '%'" />
+        select <include refid="selectColumns" />
+        from stu
+        where name like #{nameLike}
+    </select>
+
+    <select id="selectByKey" parameterType="string" resultMap="StudentResultMap">
+        select <include refid="selectColumns" />
+        from stu
+        where `key` = #{key}
+    </select>
+
+    <insert id="insert" parameterType="service.io.github.cloudstars.lowcode.commons.cache.Student">
+        insert into stu (
+            `key`,
+            name,
+            age
+        ) values (
+            #{key},
+            #{name},
+            #{age}
+        )
+    </insert>
+
+    <update id="updateByKey" parameterType="service.io.github.cloudstars.lowcode.commons.cache.Student">
+        update stu
+        set name = #{name},
+            age = #{age}
+        where `key` = #{key}
+    </update>
+
+    <delete id="deleteByKey" parameterType="string">
+        delete from stu
+        where `key` = #{key}
+    </delete>
+</mapper>

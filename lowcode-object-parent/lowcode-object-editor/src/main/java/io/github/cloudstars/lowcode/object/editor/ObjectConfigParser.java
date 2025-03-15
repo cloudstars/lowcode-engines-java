@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.editor;
 
-import io.github.cloudstars.lowcode.commons.lang.util.JsonObject;
-import io.github.cloudstars.lowcode.commons.lang.util.JsonUtils;
+import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.utils.json.JsonUtils;
 import io.github.cloudstars.lowcode.object.editor.config.ObjectConfig;
 
 import java.util.ArrayList;

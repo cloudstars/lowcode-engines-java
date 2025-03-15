@@ -1,6 +1,6 @@
 package net.cf.form.repository.mysql;
 
-import net.cf.commons.test.db.dataset.MySqlDataSetOperator;
+import io.github.cloudstars.lowcode.commons.test.db.dataset.MySqlDataSetOperator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
