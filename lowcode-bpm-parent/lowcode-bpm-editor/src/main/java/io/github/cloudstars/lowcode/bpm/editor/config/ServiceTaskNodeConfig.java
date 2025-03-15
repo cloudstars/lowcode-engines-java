@@ -1,29 +1,15 @@
 package io.github.cloudstars.lowcode.bpm.editor.config;
 
 /**
- * 服务节点配置
+ * 抽象的程序节点配置
  *
  * @author clouds
  */
-public abstract class ServiceTaskNodeConfig {
+public abstract class ServiceTaskNodeConfig extends AbstractNodeConfig {
 
-    private String key;
-
-    private String name;
-
-    public String getKey() {
-        return key;
+    @Override
+    protected NodeType getType() {
+        return NodeType.SERVICE;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

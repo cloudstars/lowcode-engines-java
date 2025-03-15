@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.object.editor.config;
 
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
+import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
 
 public class AbstractFieldConfig implements XConfig {
 
@@ -35,7 +36,7 @@ public class AbstractFieldConfig implements XConfig {
     }
 
     @Override
-    public String toJsonString() {
+    public JsonObject toJson() {
         return null;
     }
 

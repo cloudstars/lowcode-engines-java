@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.bpm.editor.visit.ProcessConfigParser;
+import io.github.cloudstars.lowcode.bpm.editor.parser.ProcessConfigParser;
 import io.github.cloudstars.lowcode.commons.editor.DescriptorFactory;
 import io.github.cloudstars.lowcode.commons.editor.JsFunctionDescriptorLoader;
 import io.github.cloudstars.lowcode.commons.editor.XDescriptor;

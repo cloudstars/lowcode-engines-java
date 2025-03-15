@@ -2,8 +2,9 @@ package io.github.cloudstars.lowcode.bpm.editor;
 
 import io.github.cloudstars.lowcode.BpmEditorTestApplication;
 import io.github.cloudstars.lowcode.bpm.editor.config.ProcessConfig;
-import io.github.cloudstars.lowcode.bpm.editor.visit.ProcessConfigParser;
+import io.github.cloudstars.lowcode.bpm.editor.parser.ProcessConfigParser;
 import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
+import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +23,11 @@ public class ProcessConfigParserTest {
     private ProcessConfigParser parser;
 
     @Test
-    public void test1() {
-        String configJson = FileTestUtils.loadTextFromClasspath("simple1.json");
+    public void testSimple1() {
+        String configJson = FileTestUtils.loadTextFromClasspath("process/simple1.json");
         ProcessConfig processConfig = this.parser.fromJsonString(configJson);
         Assert.assertNotNull(processConfig);
+        JsonTestUtils.assertDerivedFrom(configJson, processConfig.toJson().toJsonString());
     }
 
 }

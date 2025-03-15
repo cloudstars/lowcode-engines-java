@@ -11,9 +11,7 @@ import java.util.Set;
  *
  * @author clouds
  */
-public class JsonObject implements Map {
-
-    private JSONObject proxy;
+public class JsonObject extends Json<JSONObject> implements Map {
 
     public JsonObject() {
         this.proxy = new JSONObject();
@@ -94,4 +92,9 @@ public class JsonObject implements Map {
     public int hashCode() {
         return this.proxy.hashCode();
     }
+
+    public String toJsonString() {
+        return this.proxy.toString();
+    }
+
 }

@@ -20,7 +20,7 @@ public class ObjectConfigParserTest {
     public void test1() {
         String configJsonString = FileTestUtils.loadTextFromClasspath("config/object1.json");
         ObjectConfig config = ObjectConfigParser.parse(configJsonString);
-        JsonTestUtils.assertDerivedFrom(configJsonString, config.toJsonString());
+        JsonTestUtils.assertDerivedFrom(configJsonString, config.toJson().toJsonString());
     }
 
 }

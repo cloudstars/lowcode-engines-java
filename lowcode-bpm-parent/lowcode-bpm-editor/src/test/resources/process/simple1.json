@@ -1,0 +1,22 @@
+{
+  "key": "e432kjejijk3",
+  "code": "simple1",
+  "name": "简单流程1，不含分支，只有一个审批节点",
+  "nodes": [
+    {
+      "key": "start",
+      "type": "START",
+      "name": "员工填写"
+    },
+    {
+      "key": "user-task1",
+      "type": "USER_APPROVE",
+      "name": "领导审批"
+    },
+    {
+      "key": "end",
+      "type": "END",
+      "name": "结束"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.bpm.editor.config;
+package io.github.cloudstars.lowcode.bpm.editor.config.gateway;
 
 /**
  * 条件配置

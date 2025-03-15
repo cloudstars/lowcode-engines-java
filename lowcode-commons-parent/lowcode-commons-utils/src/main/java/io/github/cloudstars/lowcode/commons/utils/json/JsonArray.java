@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class JsonArray implements List<Object> {
+public class JsonArray extends Json<JSONArray> implements List<Object> {
 
-    private JSONArray proxy;
+    public JsonArray() {
+        this.proxy = new JSONArray();
+    }
 
-    public JsonArray(JSONArray jsonArray) {
+    JsonArray(JSONArray jsonArray) {
         assert (jsonArray != null);
         this.proxy = jsonArray;
     }

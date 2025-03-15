@@ -1,11 +1,9 @@
 package io.github.cloudstars.lowcode.object.editor.config;
 
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonUtils;
+import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 模型配置
@@ -67,13 +65,13 @@ public class ObjectConfig implements XConfig {
     }
 
     @Override
-    public String toJsonString() {
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("key", this.key);
-        dataMap.put("code", this.code);
-        dataMap.put("name", this.name);
-        dataMap.put("fields", this.fields);
-        return JsonUtils.toJsonString(dataMap);
+    public JsonObject toJson() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put("key", this.key);
+        jsonObject.put("code", this.code);
+        jsonObject.put("name", this.name);
+        jsonObject.put("fields", this.fields);
+        return jsonObject;
     }
 
 }

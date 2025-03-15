@@ -1,5 +1,7 @@
 package io.github.cloudstars.lowcode.commons.editor;
 
+import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+
 /**
  * 配置接口，表示某个概念的配置
  *
@@ -12,6 +14,6 @@ public interface XConfig {
      *
      * @return
      */
-    String toJsonString();
+    JsonObject toJson();
 
 }
