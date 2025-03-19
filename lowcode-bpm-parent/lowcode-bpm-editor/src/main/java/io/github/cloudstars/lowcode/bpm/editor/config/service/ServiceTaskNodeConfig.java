@@ -1,4 +1,7 @@
-package io.github.cloudstars.lowcode.bpm.editor.config;
+package io.github.cloudstars.lowcode.bpm.editor.config.service;
+
+import io.github.cloudstars.lowcode.bpm.editor.config.AbstractNodeConfig;
+import io.github.cloudstars.lowcode.bpm.editor.config.NodeType;
 
 /**
  * 抽象的程序节点配置

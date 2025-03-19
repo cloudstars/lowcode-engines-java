@@ -1,6 +1,7 @@
 
 package io.github.cloudstars.lowcode.bpm.editor.config;
 
+import io.github.cloudstars.lowcode.bpm.editor.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
 import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
 
@@ -36,6 +37,26 @@ public abstract class AbstractNodeConfig implements XConfig {
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * 接受一个访问器的访问
+     *
+     * @param visitor BPM节点访问器
+     */
+    public void accept(BpmNodeVisitor visitor) {
+        if (visitor == null) {
+            throw new IllegalArgumentException("visitor is null.");
+        } else {
+            this.accept0(visitor);
+        }
+    }
+
+    /**
+     * 接受一个visitor
+     *
+     * @param visitor BPM节点访问器
+     */
+    protected abstract void accept0(BpmNodeVisitor visitor);
 
     /**
      * 获取节点的类型

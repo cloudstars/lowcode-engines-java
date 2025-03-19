@@ -11,10 +11,14 @@ import java.util.Set;
  *
  * @author clouds
  */
-public class JsonObject extends Json<JSONObject> implements Map {
+public class JsonObject<K, V> extends Json<JSONObject> implements Map<String, Object> {
 
     public JsonObject() {
         this.proxy = new JSONObject();
+    }
+
+    public JsonObject(Map<String, Object> dataMap) {
+        this.proxy = new JSONObject(dataMap);
     }
 
     JsonObject(JSONObject jsonObject) {
@@ -49,11 +53,18 @@ public class JsonObject extends Json<JSONObject> implements Map {
     }
 
     @Override
-    public Object put(Object key, Object value) {
-        return this.proxy.put(key.toString(), value);
+    public Object getOrDefault(Object key, Object defaultValue) {
+        Object value = this.proxy.getOrDefault(key, defaultValue);
+        return FastJsonUtils.wrap(value);
     }
 
     @Override
+    public Object put(String key, Object value) {
+        return this.proxy.put(key, value);
+    }
+
+    @Override
+
     public Object remove(Object key) {
         return this.proxy.remove(key);
     }

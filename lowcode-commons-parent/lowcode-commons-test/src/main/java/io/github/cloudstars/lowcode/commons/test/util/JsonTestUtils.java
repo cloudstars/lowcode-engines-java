@@ -27,6 +27,7 @@ public final class JsonTestUtils {
      * @param filePath
      * @return Map
      */
+    @Deprecated
     public static Map<String, Object> loadMapFromClasspath(String filePath) {
         String content = FileTestUtils.loadTextFromClasspath(filePath);
         return JSONObject.parseObject(content, HashMap.class);

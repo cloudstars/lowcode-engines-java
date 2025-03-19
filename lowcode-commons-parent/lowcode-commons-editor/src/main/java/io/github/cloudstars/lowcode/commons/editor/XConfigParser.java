@@ -1,18 +1,20 @@
 package io.github.cloudstars.lowcode.commons.editor;
 
+import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+
 /**
- * 配置解析器
+ * 配置对象解析器
  *
  * @param <T> 配置对象的类型
  */
 public interface XConfigParser<T extends XConfig> {
 
     /**
-     * 从JSON字符串解析配置
+     * 从JSON解析配置对象
      *
-     * @param jsonString JSON字符串配置
+     * @param configJson JSON配置
      * @return 配置对象
      */
-    T fromJsonString(String jsonString);
+    T fromJson(JsonObject configJson);
 
 }

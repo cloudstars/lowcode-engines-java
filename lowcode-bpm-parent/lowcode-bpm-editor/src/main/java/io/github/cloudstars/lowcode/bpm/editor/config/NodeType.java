@@ -12,9 +12,10 @@ public enum NodeType {
     USER_APPROVE,
     USER_WRITE,
     SERVICE,
-    GATEWAY_XOR,
-    GATEWAY_OR,
-    GATEWAY_AND,
+    GATEWAY,
+    BRANCH,
+    BRANCH_CONDITION,
+    BRANCH_ITERATOR,
     CONDITION;
 
 }

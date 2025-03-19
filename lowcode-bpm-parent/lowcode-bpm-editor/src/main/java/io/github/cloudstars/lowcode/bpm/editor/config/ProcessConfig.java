@@ -1,10 +1,8 @@
 package io.github.cloudstars.lowcode.bpm.editor.config;
 
+import io.github.cloudstars.lowcode.bpm.editor.config.branch.BranchNodeConfig;
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
-
-import java.util.List;
 
 /**
  * 流程定义
@@ -29,9 +27,9 @@ public class ProcessConfig implements XConfig {
     private String name;
 
     /**
-     * 流程的节点
+     * 主分支
      */
-    private List<? extends AbstractNodeConfig> nodes;
+    private BranchNodeConfig mainBranch;
 
     public String getKey() {
         return key;
@@ -57,12 +55,12 @@ public class ProcessConfig implements XConfig {
         this.name = name;
     }
 
-    public List<? extends AbstractNodeConfig> getNodes() {
-        return nodes;
+    public BranchNodeConfig getMainBranch() {
+        return mainBranch;
     }
 
-    public void setNodes(List<? extends AbstractNodeConfig> nodes) {
-        this.nodes = nodes;
+    public void setMainBranch(BranchNodeConfig mainBranch) {
+        this.mainBranch = mainBranch;
     }
 
     @Override
@@ -71,12 +69,7 @@ public class ProcessConfig implements XConfig {
         jsonObject.put("key", this.key);
         jsonObject.put("code", this.code);
         jsonObject.put("name", this.name);
-
-        JsonArray nodeJsonArray = new JsonArray();
-        this.nodes.forEach(node -> {
-            nodeJsonArray.add(node.toJson());
-        });
-        jsonObject.put("nodes", nodeJsonArray);
+        jsonObject.put("mainBranch", this.mainBranch.toJson());
 
         return jsonObject;
     }
