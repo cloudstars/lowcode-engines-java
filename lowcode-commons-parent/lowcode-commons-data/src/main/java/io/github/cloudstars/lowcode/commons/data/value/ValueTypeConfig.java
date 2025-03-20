@@ -1,6 +1,5 @@
 package io.github.cloudstars.lowcode.commons.data.value;
 
-import io.github.cloudstars.lowcode.commons.data.type.StoreValueType;
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
 import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
 

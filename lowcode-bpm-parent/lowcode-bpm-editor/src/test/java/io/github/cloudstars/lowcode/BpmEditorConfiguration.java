@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode;
 
 import io.github.cloudstars.lowcode.bpm.editor.parser.ProcessConfigParser;
 import io.github.cloudstars.lowcode.commons.editor.DescriptorFactory;
-import io.github.cloudstars.lowcode.commons.editor.JsFunctionDescriptorLoader;
+import io.github.cloudstars.lowcode.commons.editor.JsConfigDescriptorLoader;
 import io.github.cloudstars.lowcode.commons.editor.XDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class BpmEditorConfiguration implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        XDescriptor descriptor = JsFunctionDescriptorLoader.loadFromClassPath("bpm-descriptor.js");
+        XDescriptor descriptor = JsConfigDescriptorLoader.loadFromClassPath("bpm-descriptor.js");
         DescriptorFactory.register(descriptor);
         logger.info("BPM规范注册成功");
     }

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.commons.data.type.custom.FileValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.value.custom.FileValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.data.value.*;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

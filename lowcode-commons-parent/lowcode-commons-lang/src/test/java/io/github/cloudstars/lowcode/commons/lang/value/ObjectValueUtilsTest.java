@@ -57,7 +57,7 @@ public class ObjectValueUtilsTest {
     @Test
     public void testGetFieldValueFromObject() {
         Date now = new Date();
-        TestClass testObject = new TestClass();
+        ObjectValueTestClass testObject = new ObjectValueTestClass();
         testObject.setStr("文本");
         testObject.setInteger(123);
         testObject.setDate(now);
@@ -105,15 +105,15 @@ public class ObjectValueUtilsTest {
     @Test
     public void testCloneObject() {
         Date now = new Date();
-        TestClass fromObject = new TestClass();
+        ObjectValueTestClass fromObject = new ObjectValueTestClass();
         fromObject.setStr("abc");
         fromObject.setInteger(1);
         fromObject.setaBoolean(true);
         fromObject.setDate(now);
 
         Object toObject = ObjectValueUtils.clone(fromObject);
-        Assert.assertTrue(toObject instanceof TestClass);
-        TestClass toTestObject = (TestClass) toObject;
+        Assert.assertTrue(toObject instanceof ObjectValueTestClass);
+        ObjectValueTestClass toTestObject = (ObjectValueTestClass) toObject;
         Assert.assertEquals("abc", toTestObject.getStr());
         Assert.assertEquals(Integer.valueOf(1), toTestObject.getInteger());
         Assert.assertEquals(Boolean.TRUE, toTestObject.getaBoolean());
@@ -123,7 +123,7 @@ public class ObjectValueUtilsTest {
     @Test
     public void testCloneObjectWithProps() {
         Date now = new Date();
-        TestClass fromObject = new TestClass();
+        ObjectValueTestClass fromObject = new ObjectValueTestClass();
         fromObject.setStr("abc");
         fromObject.setInteger(1);
         fromObject.setaBoolean(true);
@@ -134,8 +134,8 @@ public class ObjectValueUtilsTest {
         propMap.put("c", 1); // 不存在的属性忽略
 
         Object toObject = ObjectValueUtils.clone(fromObject, propMap);
-        Assert.assertTrue(toObject instanceof TestClass);
-        TestClass toTestObject = (TestClass) toObject;
+        Assert.assertTrue(toObject instanceof ObjectValueTestClass);
+        ObjectValueTestClass toTestObject = (ObjectValueTestClass) toObject;
         Assert.assertEquals("efg", toTestObject.getStr());
         Assert.assertEquals(Integer.valueOf(1), toTestObject.getInteger());
         Assert.assertEquals(Boolean.TRUE, toTestObject.getaBoolean());

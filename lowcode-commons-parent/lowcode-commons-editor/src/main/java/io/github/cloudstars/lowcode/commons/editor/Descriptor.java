@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.commons.editor;
 import java.util.List;
 
 /**
- * 规范对象
+ * 规范对象（先有规范，通过规范实例化为配置）
  *
  * @author clouds
  */

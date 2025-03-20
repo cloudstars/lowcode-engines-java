@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data.value;
 
-import io.github.cloudstars.lowcode.commons.data.type.StoreValueType;
-import io.github.cloudstars.lowcode.commons.lang.value.InvalidDataFormatException;
+import io.github.cloudstars.lowcode.commons.lang.value.InvalidValueFormatException;
 import io.github.cloudstars.lowcode.commons.utils.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.utils.json.JsonUtils;
@@ -64,7 +63,7 @@ public class ObjectValueTypeConfig extends AbstractValueTypeConfig<JsonObject> {
         } else if (defaultValueConfig instanceof Map) {
             defaultValue = new JsonObject((Map<String, Object>) defaultValueConfig);
         } else {
-            throw new InvalidDataFormatException("对象数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
+            throw new InvalidValueFormatException("对象数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
         }
 
         return defaultValue;
@@ -78,7 +77,7 @@ public class ObjectValueTypeConfig extends AbstractValueTypeConfig<JsonObject> {
         } else if (nonNullValue instanceof Map) {
             value = new JsonObject((Map<String, Object>) value);
         } else {
-            throw new InvalidDataFormatException("对象数据格式的值不正确，请检查您的数据：" + JsonUtils.toJsonString(nonNullValue));
+            throw new InvalidValueFormatException("对象数据格式的值不正确，请检查您的数据：" + JsonUtils.toJsonString(nonNullValue));
         }
 
         return value;

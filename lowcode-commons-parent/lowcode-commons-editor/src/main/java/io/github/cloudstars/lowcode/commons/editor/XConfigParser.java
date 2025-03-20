@@ -10,10 +10,10 @@ import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
 public interface XConfigParser<T extends XConfig> {
 
     /**
-     * 从JSON解析配置对象
+     * 从JsonObject解析配置对象
      *
-     * @param configJson JSON配置
-     * @return 配置对象
+     * @param configJson JsonObject配置
+     * @return 配置对象的实例
      */
     T fromJson(JsonObject configJson);
 

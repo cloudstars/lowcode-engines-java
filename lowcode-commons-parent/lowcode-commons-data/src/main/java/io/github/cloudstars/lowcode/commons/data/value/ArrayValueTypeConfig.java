@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data.value;
 
-import io.github.cloudstars.lowcode.commons.data.type.StoreValueType;
-import io.github.cloudstars.lowcode.commons.lang.value.InvalidDataFormatException;
+import io.github.cloudstars.lowcode.commons.lang.value.InvalidValueFormatException;
 import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.utils.json.JsonUtils;
 
@@ -50,7 +49,7 @@ public class ArrayValueTypeConfig<V> extends AbstractValueTypeConfig<List<V>> {
                 }
                 return itemValues;
             } else {
-                throw new InvalidDataFormatException("数组数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
+                throw new InvalidValueFormatException("数组数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
             }
         }
 
@@ -76,7 +75,7 @@ public class ArrayValueTypeConfig<V> extends AbstractValueTypeConfig<List<V>> {
 
     @Override
     public StoreValueType getStoreDataType() {
-        return StoreValueType.LIST;
+        return StoreValueType.ARRAY;
     }
 
     @Override

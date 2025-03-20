@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.commons.editor;
 import java.util.List;
 
 /**
- * 规范接口，用于代表某个概念的规范定义
+ * 规范接口，用于对某个配置进行规范性描述
  *
  * @author clouds
  */
@@ -60,8 +60,26 @@ public interface XDescriptor {
          * 属性的默认配置
          */
         Object defaultConfig;
+    }
+
+
+    /**
+     * 属性设置器的类型
+     *
+     * @author clouds
+     */
+    enum SetterEnum {
+
+        STRING,
+        NUMBER,
+        DATE,
+        TIME,
+        BOOLEAN,
+        JSON,
+        SCRIPT
 
     }
+
 
 }
 
