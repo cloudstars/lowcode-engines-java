@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.bpm.editor.config;
 
 import io.github.cloudstars.lowcode.bpm.editor.config.branch.BranchNodeConfig;
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 流程定义

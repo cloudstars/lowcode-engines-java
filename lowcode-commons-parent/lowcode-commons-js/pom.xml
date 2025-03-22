@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.cloudstars</groupId>
+        <artifactId>lowcode-commons-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lowcode-commons-js</artifactId>
+    <description>公共JS工具类</description>
+
+    <properties>
+        <graalvm.version>21.1.0</graalvm.version>
+    </properties>
+
+    <dependencies>
+        <!-- 编译时依赖 -->
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js</artifactId>
+            <version>${graalvm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js-scriptengine</artifactId>
+            <version>${graalvm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
+        <!-- 测试时依赖 -->
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-test</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

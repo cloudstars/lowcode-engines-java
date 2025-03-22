@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.data.value;
 
 import io.github.cloudstars.lowcode.CommonsDataTestApplication;
-import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 
 @RunWith(SpringRunner.class)
@@ -25,8 +24,7 @@ public class TextArrayValueTypeParserTest {
      */
     @Test
     public void testArray() {
-        Map<String, Object> configMap = JsonTestUtils.loadMapFromClasspath("value/array/text-array.json");
-        JsonObject configJson = new JsonObject(configMap);
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/array/text-array.json");
         ValueTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(ArrayValueTypeConfig.class, valueType.getClass());
         ArrayValueTypeConfig arrayValueType = (ArrayValueTypeConfig) valueType;

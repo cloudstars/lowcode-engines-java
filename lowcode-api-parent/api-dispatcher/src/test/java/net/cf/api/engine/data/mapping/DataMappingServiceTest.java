@@ -36,8 +36,7 @@ public class DataMappingServiceTest {
     @Test
     public void convertTest() {
         String schema = FileTestUtils.loadTextFromClasspath("data/mapping/schema/convertTestJsonSchema.json");
-        Map<String, Object> map = JsonTestUtils.loadMapFromClasspath("data/mapping/input/convertTestJsonInput.json");
-        JSONObject input = new JSONObject(map);
+        JSONObject input = new JsonUtils.loadJsonObjectFromClasspath("data/mapping/input/convertTestJsonInput.json");
         Object convert = dataMappingService.convert(JSON.parseObject(schema), input);
         Assert.assertNotNull(convert);
     }

@@ -3,8 +3,8 @@ package io.github.cloudstars.lowcode.bpm.editor.parser;
 import io.github.cloudstars.lowcode.bpm.editor.config.AbstractNodeConfig;
 import io.github.cloudstars.lowcode.bpm.editor.config.branch.BranchNodeConfig;
 import io.github.cloudstars.lowcode.commons.editor.XConfigParser;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonArray;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.bpm.editor.config.start;
 import io.github.cloudstars.lowcode.bpm.editor.config.AbstractNodeConfig;
 import io.github.cloudstars.lowcode.bpm.editor.config.NodeType;
 import io.github.cloudstars.lowcode.bpm.editor.visitor.BpmNodeVisitor;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 开始节点定义

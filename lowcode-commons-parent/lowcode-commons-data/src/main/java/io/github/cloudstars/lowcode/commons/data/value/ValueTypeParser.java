@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.data.value;
 
 import io.github.cloudstars.lowcode.commons.editor.XConfigParser;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 数值类型解析器

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.editor.descriptor;
 
-import io.github.cloudstars.lowcode.commons.editor.XDescriptor;
+import io.github.cloudstars.lowcode.commons.lang.config.ConfigAttribute;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public abstract class TextFieldDescriptor extends AbstractFieldDescriptor {
     }
 
     @Override
-    public List<XDescriptor.Attribute> getAttributes() {
+    public List<ConfigAttribute> getAttributes() {
         return null;
     }
 }

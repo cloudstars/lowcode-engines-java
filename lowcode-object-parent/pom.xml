@@ -15,6 +15,12 @@
     <modules>
         <module>lowcode-object-commons</module>
         <module>lowcode-object-editor</module>
+        <module>lowcode-object-view</module>
+        <module>lowcode-object-excel</module>
+        <module>lowcode-object-bpm</module>
+        <module>lowcode-object-oql</module>
+        <module>lowcode-object-engine-parent</module>
+        <module>lowcode-object-repository-parent</module>
         <!--<module>object-engine</module>
         <module>object-engine-starter-mysql</module>
         <module>object-engine-starter-mongo</module>

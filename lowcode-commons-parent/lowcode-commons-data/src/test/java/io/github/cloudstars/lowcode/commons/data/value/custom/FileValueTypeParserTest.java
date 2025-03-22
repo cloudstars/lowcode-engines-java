@@ -3,10 +3,9 @@ package io.github.cloudstars.lowcode.commons.data.value.custom;
 import io.github.cloudstars.lowcode.CommonsDataTestApplication;
 import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.data.value.ValueTypeParser;
-import io.github.cloudstars.lowcode.commons.data.value.custom.FileValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 
 @RunWith(SpringRunner.class)
@@ -29,8 +27,7 @@ public class FileValueTypeParserTest {
      */
     @Test
     public void testSimple() {
-        Map<String, Object> configMap = JsonTestUtils.loadMapFromClasspath("value/file/file-simple.json");
-        JsonObject configJson = new JsonObject(configMap);
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/file/file-simple.json");
         ValueTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(FileValueTypeConfig.class, valueType.getClass());
         FileValueTypeConfig fileValueType = (FileValueTypeConfig) valueType;

@@ -3,8 +3,8 @@ package io.github.cloudstars.lowcode.bpm.editor.visitor;
 import io.github.cloudstars.lowcode.BpmEditorTestApplication;
 import io.github.cloudstars.lowcode.bpm.editor.config.ProcessConfig;
 import io.github.cloudstars.lowcode.bpm.editor.parser.ProcessConfigParser;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ public class ProcessConfigOutputVisitorTest {
     @Test
     public void test1() {
         String configJsonString = FileTestUtils.loadTextFromClasspath("process/simple1.json");
-        ProcessConfig config = this.parser.fromJson(JsonUtils.parseObject(configJsonString));
+        ProcessConfig config = this.parser.fromJson(JsonUtils.toJsonObject(configJsonString));
         StringBuilder builder = new StringBuilder();
         ProcessConfigOutputVisitor visitor = new ProcessConfigOutputVisitor(builder);
         config.getMainBranch().accept(visitor);

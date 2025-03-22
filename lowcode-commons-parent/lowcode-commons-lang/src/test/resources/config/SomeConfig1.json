@@ -1,0 +1,13 @@
+{
+  "x": "abc",
+  "items": [
+    {
+      "attr1": "xxx1",
+      "attr2": "yyy1"
+    },
+    {
+      "attr1": "xxx2",
+      "attr2": "yyy2"
+    }
+  ]
+}

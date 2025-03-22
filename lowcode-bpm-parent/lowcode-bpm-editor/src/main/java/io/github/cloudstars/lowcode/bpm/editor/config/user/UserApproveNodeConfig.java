@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.bpm.editor.config.user;
 
 import io.github.cloudstars.lowcode.bpm.editor.config.NodeType;
 import io.github.cloudstars.lowcode.bpm.editor.visitor.BpmNodeVisitor;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 用户审批节点配置

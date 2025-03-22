@@ -1,8 +1,12 @@
 package io.github.cloudstars.lowcode.commons.editor;
 
-import io.github.cloudstars.lowcode.commons.editor.XDescriptor.Attribute;
-import io.github.cloudstars.lowcode.commons.utils.io.FileUtils;
-import io.github.cloudstars.lowcode.commons.utils.js.JsScriptUtils;
+import io.github.cloudstars.lowcode.commons.js.JsFunction;
+import io.github.cloudstars.lowcode.commons.js.JsScriptUtils;
+import io.github.cloudstars.lowcode.commons.lang.config.AttributeDataTypeEnum;
+import io.github.cloudstars.lowcode.commons.lang.config.ConfigAttribute;
+import io.github.cloudstars.lowcode.commons.lang.config.Descriptor;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.util.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,34 +31,53 @@ public final class JsConfigDescriptorLoader {
     public static Descriptor loadFromClassPath(String filePath) {
         String content = FileUtils.loadTextFromClasspath(filePath);
         Object jsEvalResult = JsScriptUtils.eval(content);
-        /*if (!(jsEvalResult instanceof JsFunction)) {
-            throw new RuntimeException("规范定义文件必须是一个JS函数，请检查JS文件内容：" + content);
-        }
-        Object descriptorValue = ((JsFunction) jsEvalResult).execute(new JsonObject());
-        */if (!(jsEvalResult instanceof Map)) {
-            throw new RuntimeException("规范定义文件必须返回一个JSON对象，请检查JS文件内容：" + content);
+        if (!(jsEvalResult instanceof JsFunction)) {
+            throw new RuntimeException("规范定义文件必须返回一个JS函数并返回Json对象，请检查JS文件内容：" + content);
         }
 
         // 生成基本信息
-        Map<String, Object> descriptorMap = (Map<String, Object>) jsEvalResult;
+        JsFunction jsFunction = (JsFunction) jsEvalResult;
+        JsonObject descriptorJson = (JsonObject) jsFunction.executeOnce();
         Descriptor descriptor = new Descriptor();
-        descriptor.setName(descriptorMap.get("name").toString());
-        descriptor.setConfigClassName(descriptorMap.get("configClassName").toString());
+        descriptor.setName(descriptorJson.get("name").toString());
+        descriptor.setConfigClassName(descriptorJson.get("configClassName").toString());
 
         // 生成属性列表
-        Object attributesValue = descriptorMap.get("attributes");
+        Object attributesValue = descriptorJson.get("attributes");
         if (!(attributesValue instanceof List)) {
             throw new RuntimeException("规范定义文件必须包含数组格式的attributes属性列表定义，请检查JS文件内容：" + content);
         }
-        List<Attribute> attributes = new ArrayList<>();
-        ((List) attributesValue).forEach(item -> {
-            if (!(item instanceof Map)) {
+        List<ConfigAttribute> attributes = new ArrayList<>();
+        ((List) attributesValue).forEach(attributeValue -> {
+            if (!(attributeValue instanceof JsonObject)) {
                 throw new RuntimeException("规范定义文件中attributes下的每一个属性必须是一个对象格式，请检查JS文件内容：" + content);
             }
 
-            Map<String, Object> itemMap = (Map<String, Object>) item;
-            Attribute attribute = new Attribute();
-            attribute.name = itemMap.get("name").toString();
+            Map<String, Object> attributeValueMap = (Map<String, Object>) attributeValue;
+            ConfigAttribute attribute = new ConfigAttribute();
+            attribute.setName(attributeValueMap.get("name").toString());
+            Object dataType = attributeValueMap.get("dataType");
+            if (dataType != null) {
+                attribute.setDataType(AttributeDataTypeEnum.valueOf(dataType.toString().toUpperCase()));
+            }
+
+            // 当数据格式是数组时，需要解析数据下的子项描述
+            if (attribute.getDataType() == AttributeDataTypeEnum.ARRAY) {
+                Map<String, Object> arrayItemMap = (Map<String, Object>) attributeValueMap.get("items");
+                ConfigAttribute.ArrayItem arrayItem = new ConfigAttribute.ArrayItem();
+                attribute.setItems(arrayItem);
+                Object itemDataType = arrayItemMap.get("dataType");
+                if (itemDataType != null) {
+                    arrayItem.setDataType(AttributeDataTypeEnum.valueOf(itemDataType.toString().toUpperCase()));
+                    String refDescriptor = (String) arrayItemMap.get("descriptor");
+                    if (refDescriptor == null) {
+                        throw new RuntimeException("数据的子项数据格式是DESCRIPTOR时，必须指定descriptor属性来指明子项的配置规范");
+                    }
+
+                    arrayItem.setDescriptor(refDescriptor);
+                }
+            }
+
             attributes.add(attribute);
         });
         descriptor.setAttributes(attributes);

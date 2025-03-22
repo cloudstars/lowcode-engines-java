@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data.value;
 
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 抽象的数据格式配置

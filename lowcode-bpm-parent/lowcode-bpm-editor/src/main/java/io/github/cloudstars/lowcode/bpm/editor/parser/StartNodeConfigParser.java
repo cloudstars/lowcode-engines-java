@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.editor.parser;
 
 import io.github.cloudstars.lowcode.bpm.editor.config.start.StartNodeConfig;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 开始节点配置解析器

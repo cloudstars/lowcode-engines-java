@@ -1,0 +1,15 @@
+{
+  "name": "descriptorRef",
+  "description": "这是规范Ref",
+  "configClassName": "io.github.cloudstars.lowcode.commons.lang.config.SomeAttribute",
+  "attributes": [
+    {
+      "name": "attr1",
+      "dataType": "STRING"
+    },
+    {
+      "name": "attr2",
+      "dataType": "STRING"
+    }
+  ]
+}

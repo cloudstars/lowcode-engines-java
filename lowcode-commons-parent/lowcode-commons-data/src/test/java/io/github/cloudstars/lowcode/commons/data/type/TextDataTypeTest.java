@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.data.type;
 
 import io.github.cloudstars.lowcode.CommonsDataTestApplication;
-import io.github.cloudstars.lowcode.commons.editor.DescriptorFactory;
+import io.github.cloudstars.lowcode.commons.editor.XDescriptorFactory;
 import io.github.cloudstars.lowcode.commons.editor.JsConfigDescriptorLoader;
 import io.github.cloudstars.lowcode.commons.editor.XDescriptor;
 import org.junit.Test;
@@ -17,8 +17,8 @@ public class TextDataTypeTest {
     public void test1() {
         XDescriptor commonsDescriptor = JsConfigDescriptorLoader.loadFromClassPath("type/common.js");
         XDescriptor textDescriptor = JsConfigDescriptorLoader.loadFromClassPath("type/text.js");
-        DescriptorFactory.register(commonsDescriptor);
-        DescriptorFactory.register(textDescriptor);
+        XDescriptorFactory.register(commonsDescriptor);
+        XDescriptorFactory.register(textDescriptor);
 
     }
 

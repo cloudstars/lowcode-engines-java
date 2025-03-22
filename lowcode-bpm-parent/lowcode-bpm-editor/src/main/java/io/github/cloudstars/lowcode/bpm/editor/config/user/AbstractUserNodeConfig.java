@@ -2,7 +2,7 @@
 package io.github.cloudstars.lowcode.bpm.editor.config.user;
 
 import io.github.cloudstars.lowcode.bpm.editor.config.AbstractNodeConfig;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 抽象流程用户节点定义

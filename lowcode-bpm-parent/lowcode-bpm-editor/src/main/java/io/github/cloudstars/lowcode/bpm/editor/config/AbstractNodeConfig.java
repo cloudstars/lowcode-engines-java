@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.bpm.editor.config;
 
 import io.github.cloudstars.lowcode.bpm.editor.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 抽象流程节点定义

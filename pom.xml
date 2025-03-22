@@ -48,7 +48,7 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-utils</artifactId>
+                <artifactId>lowcode-commons-js</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

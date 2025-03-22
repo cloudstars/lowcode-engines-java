@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.data.value;
 
 import io.github.cloudstars.lowcode.commons.editor.XConfig;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 数据格式配置接口

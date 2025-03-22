@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.bpm.editor.parser;
 import io.github.cloudstars.lowcode.bpm.editor.config.ProcessConfig;
 import io.github.cloudstars.lowcode.bpm.editor.config.branch.BranchNodeConfig;
 import io.github.cloudstars.lowcode.commons.editor.XConfigParser;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 流程配置解析器

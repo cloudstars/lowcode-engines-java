@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.data.value;
 
 import io.github.cloudstars.lowcode.CommonsDataTestApplication;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
-import io.github.cloudstars.lowcode.commons.utils.json.JsonObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
