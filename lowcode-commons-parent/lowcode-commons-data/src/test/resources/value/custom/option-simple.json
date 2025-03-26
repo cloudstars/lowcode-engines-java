@@ -1,0 +1,21 @@
+{
+  "dataType": "OPTION",
+  "required": false,
+  "remark": "这是一个选项数据，有缺省值",
+  "properties": [
+    {
+      "name": "label",
+      "dataType": "TEXT",
+      "required": false,
+      "defaultValue": "lll",
+      "remark": "这是一个文本数据，缺省值为label"
+    },
+    {
+      "name": "value",
+      "dataType": "TEXT",
+      "required": false,
+      "defaultValue": "vvv",
+      "remark": "这是一个文本数据，缺省值为vvv"
+    }
+  ]
+}

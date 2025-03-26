@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ObjectEditorTestApplication {
+public class ObjectViewTestApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ObjectEditorTestApplication.class, args);
+        SpringApplication.run(ObjectViewTestApplication.class, args);
     }
 
 }

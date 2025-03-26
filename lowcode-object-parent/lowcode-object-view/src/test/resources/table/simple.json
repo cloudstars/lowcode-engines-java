@@ -1,0 +1,21 @@
+{
+  "name": "这是一个普通的表格视图",
+  "type": "ordinary",
+  "objectName": "xxx",
+  "query": {
+    "selectFields": [
+
+    ],
+    "filter": {
+      "type": "oql",
+      "oql": "xxx"
+    },
+    "orderBy": [],
+    "pagination": {
+    }
+  },
+  "actions": {
+    "toolbar": [],
+    "row": []
+  }
+}

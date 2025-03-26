@@ -1,7 +1,8 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.commons.data.value.custom.FileValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.value.*;
+import io.github.cloudstars.lowcode.commons.data.valuetype.custom.FileValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.*;
+import io.github.cloudstars.lowcode.commons.data.valuetype.custom.OptionValueTypeConfig;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ public class CommonsDataTestConfiguration implements ApplicationRunner {
 
         // 注册自定义的数据类型时，如：文件、选项
         ValueTypeClassFactory.register(FileValueTypeConfig.class);
+        ValueTypeClassFactory.register(OptionValueTypeConfig.class);
     }
 
     @Bean
