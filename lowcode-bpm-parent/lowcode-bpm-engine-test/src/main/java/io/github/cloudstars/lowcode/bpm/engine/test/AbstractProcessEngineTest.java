@@ -1,11 +1,10 @@
 package io.github.cloudstars.lowcode.bpm.engine.test;
 
-import io.github.cloudstars.lowcode.bpm.editor.config.ProcessConfig;
-import io.github.cloudstars.lowcode.bpm.editor.parser.ProcessConfigParser;
+import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
+import io.github.cloudstars.lowcode.bpm.commons.parser.ProcessConfigParser;
 import io.github.cloudstars.lowcode.bpm.engine.provider.BpmProvider;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
 import org.junit.Assert;
 
 import javax.annotation.Resource;
@@ -27,8 +26,7 @@ public abstract class AbstractProcessEngineTest {
      * 测试部署流程定义
      */
     protected void testDeploy() {
-        String configJsonString = FileTestUtils.loadTextFromClasspath("process/process1.json");
-        JsonObject configJson = JsonUtils.toJsonObject(configJsonString);
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/process1.json");
         ProcessConfig config = this.parser.fromJson(configJson);
         String deployId = this.provider.deploy(config);
         // 此次简单断言部署ID不为NULL

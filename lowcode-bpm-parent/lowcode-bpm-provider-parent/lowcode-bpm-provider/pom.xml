@@ -16,7 +16,7 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-bpm-editor</artifactId>
+            <artifactId>lowcode-bpm-commons</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

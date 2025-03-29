@@ -1,0 +1,6 @@
+{
+  "dataType": "STRING",
+  "required": false,
+  "defaultValue": "abc",
+  "remark": "这是一个文本数据，缺省值为abc"
+}

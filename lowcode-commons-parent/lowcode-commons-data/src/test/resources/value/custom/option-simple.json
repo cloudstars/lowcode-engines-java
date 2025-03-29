@@ -5,14 +5,14 @@
   "properties": [
     {
       "name": "label",
-      "dataType": "TEXT",
+      "dataType": "STRING",
       "required": false,
       "defaultValue": "lll",
       "remark": "这是一个文本数据，缺省值为label"
     },
     {
       "name": "value",
-      "dataType": "TEXT",
+      "dataType": "STRING",
       "required": false,
       "defaultValue": "vvv",
       "remark": "这是一个文本数据，缺省值为vvv"

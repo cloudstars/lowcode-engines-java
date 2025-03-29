@@ -9,13 +9,13 @@
   "properties": [
     {
       "name": "a",
-      "dataType": "TEXT",
+      "dataType": "STRING",
       "required": false,
       "remark": "这是一个文本数据，缺省值为a"
     },
     {
       "name": "b",
-      "dataType": "TEXT",
+      "dataType": "STRING",
       "required": false,
       "remark": "这是一个文本数据，缺省值为b"
     }

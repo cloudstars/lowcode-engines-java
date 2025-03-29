@@ -1,0 +1,36 @@
+{
+  "input": {
+    "dataType": "ARRAY",
+    "required": false,
+    "remark": "入参是可选的",
+    "items": {
+      "dataType": "STRING",
+      "required": true,
+      "remark": "value值不能是null"
+    }
+  },
+  "output": {
+    "dataType": "ARRAY",
+    "required": true,
+    "remark": "入参是可选的",
+    "items": {
+      "dataType": "OBJECT",
+      "required": true,
+      "remark": "value值不能是null",
+      "properties": [
+        {
+          "name": "a",
+          "dataType": "STRING",
+          "required": true,
+          "remark": "这是一个label，数据格式是文本"
+        },
+        {
+          "name": "b",
+          "dataType": "NUMBER",
+          "required": true,
+          "remark": "这是一个value，数据格式是数字"
+        }
+      ]
+    }
+  }
+}

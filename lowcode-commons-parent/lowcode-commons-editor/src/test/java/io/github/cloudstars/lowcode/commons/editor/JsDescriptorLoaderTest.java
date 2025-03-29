@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.commons.editor;
 
 import io.github.cloudstars.lowcode.CommonsEditorTestApplication;
-import io.github.cloudstars.lowcode.commons.lang.config.ConfigParserUtils;
 import io.github.cloudstars.lowcode.commons.lang.config.XDescriptor;
 import io.github.cloudstars.lowcode.commons.lang.config.XDescriptorFactory;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;

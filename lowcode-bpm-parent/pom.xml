@@ -17,7 +17,6 @@
 
     <modules>
         <module>lowcode-bpm-commons</module>
-        <module>lowcode-bpm-editor</module>
         <module>lowcode-bpm-engine</module>
         <module>lowcode-bpm-engine-test</module>
         <module>lowcode-bpm-provider-parent</module>
@@ -28,11 +27,6 @@
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-bpm-commons</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-bpm-editor</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

@@ -114,7 +114,7 @@ public final class JsonTestUtils {
         Assert.assertFalse(expectedJsonString == null && actualJsonString != null);
         Assert.assertFalse(expectedJsonString != null && actualJsonString == null);
 
-        assertDerivedFrom(JSON.parse(expectedJsonString), JSON.parse(actualJsonString));
+        assertDerivedFrom(JSON.parse(expectedJsonString), JSON.parse(actualJsonString), "root");
     }
 
     /**
@@ -123,13 +123,14 @@ public final class JsonTestUtils {
      * @param expected 预期对象
      * @param actual   事实对象
      */
-    private static void assertDerivedFrom(Object expected, Object actual) {
+    private static void assertDerivedFrom(Object expected, Object actual, String jsonPath) {
         if (expected instanceof JSONObject && actual instanceof JSONObject) {
-            assertDerivedFromObject((JSONObject) expected, (JSONObject) actual);
+            assertDerivedFromObject((JSONObject) expected, (JSONObject) actual, jsonPath);
         } else if (expected instanceof JSONArray && actual instanceof JSONArray) {
-            assertDerivedFromArray((JSONArray) expected, (JSONArray) actual);
+            assertDerivedFromArray((JSONArray) expected, (JSONArray) actual, jsonPath);
         } else {
-            Assert.assertEquals(expected, actual);
+            String prefix = jsonPath + ":";
+            Assert.assertEquals(prefix + expected, prefix + actual);
         }
     }
 
@@ -139,9 +140,9 @@ public final class JsonTestUtils {
      * @param expectedObject 预期对象
      * @param actualObject   事实对象
      */
-    private static void assertDerivedFromObject(JSONObject expectedObject, JSONObject actualObject) {
+    private static void assertDerivedFromObject(JSONObject expectedObject, JSONObject actualObject, String jsonPath) {
         expectedObject.forEach((k, v) -> {
-            assertDerivedFrom(v, actualObject.get(k));
+            assertDerivedFrom(v, actualObject.get(k), jsonPath + "->" + k);
         });
     }
 
@@ -151,13 +152,13 @@ public final class JsonTestUtils {
      * @param expectedArray 预期列表
      * @param actualArray   事实列表
      */
-    private static void assertDerivedFromArray(JSONArray expectedArray, JSONArray actualArray) {
+    private static void assertDerivedFromArray(JSONArray expectedArray, JSONArray actualArray, String jsonPath) {
         int el = expectedArray.size();
         int al = actualArray.size();
         Assert.assertFalse(el > al);
 
         for (int i = 0; i < el; i++) {
-            assertDerivedFrom(expectedArray.get(i), actualArray.get(i));
+            assertDerivedFrom(expectedArray.get(i), actualArray.get(i), jsonPath + "->[" + i + "]");
         }
     }
 

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.bpm.engine.provider;
 
-import io.github.cloudstars.lowcode.bpm.editor.config.ProcessConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
 
 /**
  * Bpm提供方接口

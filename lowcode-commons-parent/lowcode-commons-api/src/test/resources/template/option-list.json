@@ -1,0 +1,38 @@
+{
+  "input": {
+    "dataType": "OBJECT",
+    "required": false,
+    "properties": [
+      {
+        "dataType": "ARRAY",
+        "name": "values",
+        "items": {
+          "dataType": "STRING",
+          "required": false
+        },
+        "required": false
+      }
+    ]
+  },
+  "output": {
+    "dataType": "ARRAY",
+    "items": {
+      "dataType": "OBJECT",
+      "required": false,
+      "properties": [
+        {
+          "dataType": "STRING",
+          "name": "a",
+          "required": false
+        },
+        {
+          "dataType": "NUMBER",
+          "precision": 0,
+          "name": "b",
+          "required": false
+        }
+      ]
+    },
+    "required": false
+  }
+}

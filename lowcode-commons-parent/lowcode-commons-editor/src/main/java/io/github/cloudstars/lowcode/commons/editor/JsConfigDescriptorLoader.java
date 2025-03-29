@@ -4,7 +4,6 @@ import io.github.cloudstars.lowcode.commons.js.JsFunction;
 import io.github.cloudstars.lowcode.commons.js.JsScriptUtils;
 import io.github.cloudstars.lowcode.commons.lang.config.AttributeDataTypeEnum;
 import io.github.cloudstars.lowcode.commons.lang.config.ConfigAttribute;
-import io.github.cloudstars.lowcode.commons.lang.config.Descriptor;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.util.FileUtils;
 

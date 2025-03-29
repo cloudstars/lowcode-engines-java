@@ -4,7 +4,7 @@
   "defaultValue": ["abc", "efg"],
   "remark": "这是一个文本数据，缺省值为abc",
   "items": {
-    "dataType": "TEXT",
+    "dataType": "STRING",
     "required": false,
     "remark": "这是一个文本数据，缺省值为abc"
   }

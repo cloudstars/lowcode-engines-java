@@ -10,10 +10,19 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public class AbstractFieldConfig implements XConfig {
 
+    /**
+     * 字段的编号
+     */
     private String key;
 
+    /**
+     * 字段的代码
+     */
     private String code;
 
+    /**
+     * 字段的名称
+     */
     private String name;
 
     public String getKey() {

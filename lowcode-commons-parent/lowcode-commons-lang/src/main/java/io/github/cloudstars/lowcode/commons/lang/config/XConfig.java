@@ -10,6 +10,20 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 public interface XConfig {
 
     /**
+     * 获取配置的类型
+     *
+     * @return
+     */
+    //String getType();
+
+    /**
+     * 获取配置的名称
+     *
+     * @return
+     */
+    //String getName();
+
+    /**
      * 将配置转为 JSON 字符串
      *
      * @return

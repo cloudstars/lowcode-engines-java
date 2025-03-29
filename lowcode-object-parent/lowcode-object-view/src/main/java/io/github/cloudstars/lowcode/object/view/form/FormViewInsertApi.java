@@ -1,14 +1,14 @@
 package io.github.cloudstars.lowcode.object.view.form;
 
-import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfig;
-import io.github.cloudstars.lowcode.object.view.ViewApi;
+import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
+import io.github.cloudstars.lowcode.object.view.ObjectViewApi;
 
 /**
  * 表单视图插入接口
  *
  * @author clouds
  */
-public class FormViewInsertApi implements ViewApi {
+public class FormViewInsertApi implements ObjectViewApi {
 
     @Override
     public String getName() {
@@ -16,12 +16,7 @@ public class FormViewInsertApi implements ViewApi {
     }
 
     @Override
-    public ValueTypeConfig getInputDataType() {
-        return null;
-    }
-
-    @Override
-    public ValueTypeConfig getOutputDataType() {
+    public ApiConfig getApiConfig() {
         return null;
     }
 

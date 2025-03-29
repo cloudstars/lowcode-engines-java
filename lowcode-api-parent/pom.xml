@@ -16,9 +16,9 @@
     </properties>
 
     <modules>
-        <module>api-commons</module>
+        <!--<module>api-commons</module>
         <module>api-dispatcher</module>
-        <module>api-provider</module>
+        <module>api-provider</module>-->
     </modules>
 
     <dependencyManagement>

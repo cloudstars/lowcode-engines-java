@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.view.table.config;
 
-import io.github.cloudstars.lowcode.object.commons.config.ObjectConfig;
-import io.github.cloudstars.lowcode.object.view.AbstractViewConfig;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.object.view.config.AbstractViewConfig;
 import io.github.cloudstars.lowcode.object.view.table.TableViewActionConfig;
 import io.github.cloudstars.lowcode.object.view.table.config.query.QueryConfig;
 
@@ -15,9 +15,9 @@ import java.util.List;
 public class TableViewConfig extends AbstractViewConfig {
 
     /**
-     * 模型的配置
+     * 表单视图配置的类型
      */
-    private ObjectConfig objectConfig;
+    public static String CONFIG_TYPE = "TABLE.VIEW";
 
     /**
      * 查询配置
@@ -34,5 +34,47 @@ public class TableViewConfig extends AbstractViewConfig {
      */
     private List<TableViewActionConfig> rowActions;
 
+    public TableViewConfig() {
+    }
 
+    public TableViewConfig(JsonObject configJson) {
+        super(configJson);
+
+        Object queryConfig = configJson.get("query");
+        if (queryConfig != null) {
+            this.setQueryConfig(new QueryConfig((JsonObject) queryConfig));
+        }
+    }
+
+
+    public QueryConfig getQueryConfig() {
+        return queryConfig;
+    }
+
+    public void setQueryConfig(QueryConfig queryConfig) {
+        this.queryConfig = queryConfig;
+    }
+
+    public List<TableViewActionConfig> getToolbarActions() {
+        return toolbarActions;
+    }
+
+    public void setToolbarActions(List<TableViewActionConfig> toolbarActions) {
+        this.toolbarActions = toolbarActions;
+    }
+
+    public List<TableViewActionConfig> getRowActions() {
+        return rowActions;
+    }
+
+    public void setRowActions(List<TableViewActionConfig> rowActions) {
+        this.rowActions = rowActions;
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject configJson = super.toJson();
+        configJson.put("query", this.queryConfig.toJson());
+        return configJson;
+    }
 }

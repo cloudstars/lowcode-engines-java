@@ -7,4 +7,12 @@ package io.github.cloudstars.lowcode.object.view;
  */
 public interface ObjectView {
 
+    /**
+     * 执行视图API
+     *
+     * @param viewApi
+     * @return
+     */
+    Object execute(ObjectViewApi viewApi);
+
 }

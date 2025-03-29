@@ -10,6 +10,11 @@ import io.github.cloudstars.lowcode.object.view.ObjectView;
  */
 public interface ObjectFormView extends ObjectView {
 
+    /**
+     * 转换成表单视图的渲染Schema
+     *
+     * @return
+     */
     JsonObject toRenderSchema();
 
 }

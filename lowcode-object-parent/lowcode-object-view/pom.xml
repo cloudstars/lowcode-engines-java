@@ -22,6 +22,10 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-commons-data</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-api</artifactId>
+        </dependency>
 
 
         <!-- 测试时依赖 -->

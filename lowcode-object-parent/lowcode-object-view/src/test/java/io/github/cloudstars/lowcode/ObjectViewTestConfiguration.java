@@ -2,8 +2,9 @@ package io.github.cloudstars.lowcode;
 
 import io.github.cloudstars.lowcode.object.view.form.ObjectFormView;
 import io.github.cloudstars.lowcode.object.view.form.ObjectFormViewImpl;
-import io.github.cloudstars.lowcode.object.view.table.ObjectTableView;
-import io.github.cloudstars.lowcode.object.view.table.ObjectTableViewImpl;
+import io.github.cloudstars.lowcode.object.view.table.TableView;
+import io.github.cloudstars.lowcode.object.view.table.TableViewConfigParser;
+import io.github.cloudstars.lowcode.object.view.table.TableViewImpl;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -17,13 +18,18 @@ public class ObjectViewTestConfiguration implements ApplicationRunner {
     }
 
     @Bean
+    public TableViewConfigParser tableViewConfigParser() {
+        return new TableViewConfigParser();
+    }
+
+    @Bean
     public ObjectFormView objectFormView() {
         return new ObjectFormViewImpl();
     }
 
     @Bean
-    public ObjectTableView objectTableView() {
-        return new ObjectTableViewImpl();
+    public TableView objectTableView() {
+        return new TableViewImpl();
     }
 
 }

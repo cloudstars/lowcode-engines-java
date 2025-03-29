@@ -19,6 +19,7 @@
         <module>lowcode-commons-test</module>
         <module>lowcode-commons-lang</module>
         <module>lowcode-commons-data</module>
+        <module>lowcode-commons-api</module>
         <module>lowcode-commons-js</module>
         <module>lowcode-commons-editor</module>
         <module>lowcode-commons-repository</module>

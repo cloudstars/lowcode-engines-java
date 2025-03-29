@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.view.form.config;
 
-import io.github.cloudstars.lowcode.object.view.AbstractViewConfig;
+import io.github.cloudstars.lowcode.object.view.config.AbstractViewConfig;
 
 /**
  * 表单视图配置
