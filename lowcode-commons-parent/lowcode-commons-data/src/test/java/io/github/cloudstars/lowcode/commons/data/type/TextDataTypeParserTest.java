@@ -25,7 +25,7 @@ public class TextDataTypeParserTest {
      */
     @Test
     public void testSimple() {
-        Map<String, Object> configMap = JsonTestUtils.loadMapFromClasspath("value/text/string-simple.json");
+        Map<String, Object> configMap = JsonTestUtils.loadMapFromClasspath("datatype/string/string-simple.json");
         JsonObject configJson = new JsonObject(configMap);
         DataTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(StringDataTypeConfig.class, valueType.getClass());

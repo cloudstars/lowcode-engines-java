@@ -27,7 +27,7 @@ public class FileDataTypeParserTest {
      */
     @Test
     public void testSimple() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/custom/file-simple.json");
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datatype/custom/file-simple.json");
         DataTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(FileDataTypeConfig.class, valueType.getClass());
         FileDataTypeConfig fileValueType = (FileDataTypeConfig) valueType;

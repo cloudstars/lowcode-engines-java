@@ -24,7 +24,7 @@ public class TextArrayDataTypeParserTest {
      */
     @Test
     public void testArray() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/array/text-array.json");
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datatype/array/text-array.json");
         DataTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(ArrayDataTypeConfig.class, valueType.getClass());
         ArrayDataTypeConfig arrayValueType = (ArrayDataTypeConfig) valueType;

@@ -49,7 +49,7 @@ public final class JsonDataSetLoader {
                 String columnName = columnJson.getString("name");
                 String dataType = columnJson.getString("dataType");
                 if (dataType == null) {
-                    dataType = DataType.CHAR.name();
+                    dataType = DataType.STRING.name();
                 }
                 Column column = new Column(columnName, DataType.valueOf(dataType.toUpperCase()));
                 if (columnJson.containsKey("autoGen")) {
@@ -85,7 +85,7 @@ public final class JsonDataSetLoader {
 
 
                     DataType dataType = column.getDataType();
-                    if (dataType == DataType.CHAR) {
+                    if (dataType == DataType.STRING) {
                         values.put(columnName, value);
                     } else if (dataType == DataType.BOOLEAN) {
                         values.put(columnName, Boolean.parseBoolean(String.valueOf(value)));

@@ -6,12 +6,14 @@ package io.github.cloudstars.lowcode.commons.test.db.dataset;
  * @author clouds
  */
 public enum DataType {
-    CHAR,
+    STRING,
     INTEGER,
     LONG,
     DECIMAL,
     DATETIME,
     DATE,
+    TIME,
     BOOLEAN,
+    OBJECT,
     JSON;
 }

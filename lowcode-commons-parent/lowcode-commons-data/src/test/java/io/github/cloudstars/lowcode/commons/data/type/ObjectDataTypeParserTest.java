@@ -27,7 +27,7 @@ public class ObjectDataTypeParserTest {
      */
     @Test
     public void testTextObjectValueType() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/object/object-simple.json");
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datatype/object/object-simple.json");
         DataTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(ObjectDataTypeConfig.class, valueType.getClass());
         ObjectDataTypeConfig objectValueType = (ObjectDataTypeConfig) valueType;

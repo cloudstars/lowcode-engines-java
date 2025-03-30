@@ -29,7 +29,7 @@ public class OptionsDataTypeParserTest {
      */
     @Test
     public void testSimple() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/custom/option-simple.json");
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datatype/custom/option-simple.json");
         DataTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(OptionDataTypeConfig.class, valueType.getClass());
         OptionDataTypeConfig optionValueType = (OptionDataTypeConfig) valueType;

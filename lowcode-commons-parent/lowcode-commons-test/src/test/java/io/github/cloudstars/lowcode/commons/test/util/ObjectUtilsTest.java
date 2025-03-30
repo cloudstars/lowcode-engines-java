@@ -13,7 +13,7 @@ public class ObjectUtilsTest {
     public void testGetFieldNames() {
         TestClass tc = new TestClass();
         List<String> fieldNames = ObjectTestUtils.getDeclaredFieldNames(tc);
-        String[] fns = new String[]{"s", "b", "pb", "iI", "ii", "d"};
+        String[] fns = new String[]{"str", "integer", "date", "aBoolean"};
         for (int i = 0, l = fns.length; i < l; i++) {
             assert (fieldNames.contains(fns[i]));
         }
