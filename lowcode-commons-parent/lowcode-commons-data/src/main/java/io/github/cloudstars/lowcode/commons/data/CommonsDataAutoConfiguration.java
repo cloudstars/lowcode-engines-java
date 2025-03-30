@@ -9,10 +9,10 @@ public class CommonsDataAutoConfiguration  implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // 注册内置的数据类型
-        DataTypeClassFactory.register(StringDataTypeConfig.class);
-        DataTypeClassFactory.register(NumberDataTypeConfig.class);
-        DataTypeClassFactory.register(ObjectDataTypeConfig.class);
-        DataTypeClassFactory.register(ArrayDataTypeConfig.class);
+        DataTypeConfigClassFactory.register(StringDataTypeConfig.class);
+        DataTypeConfigClassFactory.register(NumberDataTypeConfig.class);
+        DataTypeConfigClassFactory.register(ObjectDataTypeConfig.class);
+        DataTypeConfigClassFactory.register(ArrayDataTypeConfig.class);
     }
 
 }

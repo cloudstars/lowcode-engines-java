@@ -4,7 +4,7 @@ import io.github.cloudstars.lowcode.bpm.engine.BpmProcessEngine;
 import io.github.cloudstars.lowcode.bpm.engine.BpmProcessEngineImpl;
 import io.github.cloudstars.lowcode.bpm.engine.provider.BpmProvider;
 import io.github.cloudstars.lowcode.bpm.provider.activiti.ActivitiBpmProviderImpl;
-import io.github.cloudstars.lowcode.bpm.provider.activiti.ActivitiEventListenerImpl;
+import io.github.cloudstars.lowcode.bpm.provider.activiti.vendor.ActivitiEventListenerImpl;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.activiti.spring.SpringProcessEngineConfiguration;

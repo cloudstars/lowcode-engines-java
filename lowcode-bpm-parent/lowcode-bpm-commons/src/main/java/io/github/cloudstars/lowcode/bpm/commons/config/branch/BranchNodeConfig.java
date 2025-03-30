@@ -1,11 +1,12 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.branch;
 
-import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.NodeType;
+import io.github.cloudstars.lowcode.bpm.commons.config.*;
+import io.github.cloudstars.lowcode.bpm.commons.parser.NodeConfigParser;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,23 +14,45 @@ import java.util.List;
  *
  * @author clouds
  */
+@NodeConfigClass(name = "BRANCH")
 public class BranchNodeConfig extends AbstractNodeConfig {
 
     /**
-     * 分支所以层级（从0开始）
+     * 分支下面的节点列表
      */
-    private int level = 0;
+    private List<NodeConfig> nodes;
 
-    /**
-     * 分支下面的节点
-     */
-    private List<AbstractNodeConfig> nodes;
+    public BranchNodeConfig() {
+    }
 
-    public List<AbstractNodeConfig> getNodes() {
+    public BranchNodeConfig(JsonObject configJson) {
+        super(configJson);
+
+        Object nodesValue = configJson.get("nodes");
+        if (nodesValue == null || !(nodesValue instanceof JsonArray)) {
+            throw new RuntimeException("节点信息nodes不存在或不是数组格式，请检查：" + configJson);
+        }
+
+        List<NodeConfig> nodeConfigs = new ArrayList<>();
+        this.setNodes(nodeConfigs);
+
+        JsonArray nodes = (JsonArray) nodesValue;
+
+        NodeConfigParser nodeConfigParser = new NodeConfigParser();
+        nodes.forEach((node) -> {
+            JsonObject nodeConfigJson = (JsonObject) node;
+            NodeConfig nodeConfig = NodeConfigFactory.newInstance(nodeConfigJson);
+            if (nodeConfig != null) {
+                nodeConfigs.add(nodeConfig);
+            }
+        });
+    }
+
+    public List<NodeConfig> getNodes() {
         return nodes;
     }
 
-    public void setNodes(List<AbstractNodeConfig> nodes) {
+    public void setNodes(List<NodeConfig> nodes) {
         this.nodes = nodes;
     }
 
@@ -45,8 +68,8 @@ public class BranchNodeConfig extends AbstractNodeConfig {
     }
 
     @Override
-    protected NodeType getType() {
-        return NodeType.BRANCH;
+    protected NodeTypeEnum getType() {
+        return NodeTypeEnum.BRANCH;
     }
 
     @Override

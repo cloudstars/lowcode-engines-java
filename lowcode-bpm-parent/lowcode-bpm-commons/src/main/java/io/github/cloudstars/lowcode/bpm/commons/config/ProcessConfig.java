@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.branch.BranchNodeConfig;
+import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -9,7 +10,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public class ProcessConfig implements XConfig {
+public class ProcessConfig extends AbstractConfig implements XConfig {
 
     /**
      * 流程编号（自动生成）
@@ -30,6 +31,23 @@ public class ProcessConfig implements XConfig {
      * 主分支
      */
     private BranchNodeConfig mainBranch;
+
+    public ProcessConfig() {
+    }
+
+    public ProcessConfig(JsonObject configJson) {
+        super(configJson);
+
+        // 解析流程基本信息
+        this.setKey((String) configJson.get("key"));
+        this.setCode((String) configJson.get("code"));
+        this.setName((String) configJson.get("name"));
+
+        // 解析主分支
+        JsonObject mainBranchJson = (JsonObject) configJson.get("mainBranch");
+        BranchNodeConfig mainBranch = new BranchNodeConfig(mainBranchJson);
+        this.setMainBranch(mainBranch);
+    }
 
     public String getKey() {
         return key;

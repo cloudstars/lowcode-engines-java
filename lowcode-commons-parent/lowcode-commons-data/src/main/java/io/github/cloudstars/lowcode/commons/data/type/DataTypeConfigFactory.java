@@ -9,27 +9,27 @@ import java.lang.reflect.Constructor;
  *
  * @author clouds
  */
-public class DataTypeFactory {
+public class DataTypeConfigFactory {
 
-    private DataTypeFactory() {
+    private DataTypeConfigFactory() {
     }
 
     /**
-     * 根据数据格式的名称获取数据格式定义
+     * 根据数据格式的Json配置实例化一个数据格式配置
      *
-     * @param valueTypeConfig
+     * @param dataTypeConfig
      * @return
      */
-    public static DataTypeConfig newInstance(JsonObject valueTypeConfig) {
-        Object dataTypeValue = valueTypeConfig.get("dataType");
+    public static DataTypeConfig newInstance(JsonObject dataTypeConfig) {
+        Object dataTypeValue = dataTypeConfig.get("dataType");
         if (dataTypeValue == null) {
-            throw new RuntimeException("数据格式" + dataTypeValue + "不存在！");
+            throw new RuntimeException("数据格式[type]不存在！");
         }
 
-        Class<? extends DataTypeConfig> dataTypeClass = DataTypeClassFactory.get(dataTypeValue.toString());
+        Class<? extends DataTypeConfig> dataTypeClass = DataTypeConfigClassFactory.get(dataTypeValue.toString());
         try {
             Constructor<? extends DataTypeConfig> constructor = dataTypeClass.getConstructor(JsonObject.class);
-            return constructor.newInstance(valueTypeConfig);
+            return constructor.newInstance(dataTypeConfig);
         } catch (Exception e) {
             throw new RuntimeException("实例化数据格式" + dataTypeValue + "出错！", e);
         }

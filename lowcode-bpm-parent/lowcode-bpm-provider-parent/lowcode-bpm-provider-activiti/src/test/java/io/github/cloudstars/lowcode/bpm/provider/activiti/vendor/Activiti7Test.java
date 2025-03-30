@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.bpm.provider.activiti;
+package io.github.cloudstars.lowcode.bpm.provider.activiti.vendor;
 
 import io.github.cloudstars.lowcode.ActivitiBpmProviderTestApplication;
 import org.activiti.engine.RepositoryService;

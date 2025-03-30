@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.parser;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.NodeType;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfigParser;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -15,7 +15,7 @@ public class NodeConfigParser implements XConfigParser<AbstractNodeConfig> {
     @Override
     public AbstractNodeConfig fromJson(JsonObject nodeConfigJson) {
         AbstractNodeConfig nodeConfig = null;
-        NodeType nodeType = this.parseNodeType(nodeConfigJson);
+        NodeTypeEnum nodeType = this.parseNodeType(nodeConfigJson);
         AbstractNodeConfigParser<? extends AbstractNodeConfig> nodeConfigParser = null;
         switch (nodeType) {
             case START:
@@ -47,13 +47,13 @@ public class NodeConfigParser implements XConfigParser<AbstractNodeConfig> {
      * @param nodeConfigJson
      * @return
      */
-    private NodeType parseNodeType(JsonObject nodeConfigJson) {
+    private NodeTypeEnum parseNodeType(JsonObject nodeConfigJson) {
         Object typeValue = nodeConfigJson.get("type");
         if (typeValue == null) {
             throw new RuntimeException("节点类型信息[type]不存在，请检查：" + nodeConfigJson);
         }
 
-        NodeType nodeType = NodeType.valueOf(typeValue.toString());
+        NodeTypeEnum nodeType = NodeTypeEnum.valueOf(typeValue.toString());
         if (nodeType == null) {
             throw new RuntimeException("节点类型时不正确，请检查：" + typeValue);
         }

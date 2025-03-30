@@ -32,7 +32,7 @@ public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionVal
             for (Object propertyConfig : propertiesConfigJson) {
                 JsonObject propertyConfigJson = (JsonObject) propertyConfig;
                 String propertyName = (String) propertyConfigJson.get("name");
-                DataTypeConfig propertyValueType = DataTypeFactory.newInstance(propertyConfigJson);
+                DataTypeConfig propertyValueType = DataTypeConfigFactory.newInstance(propertyConfigJson);
                 ObjectProperty objectProperty = new ObjectProperty(propertyName, propertyValueType);
                 this.properties.add(objectProperty);
             }

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.branch;
 
-import io.github.cloudstars.lowcode.bpm.commons.config.NodeType;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 
 /**
@@ -21,8 +21,8 @@ public class ConditionalBranchNodeConfig extends BranchNodeConfig {
     }
 
     @Override
-    protected NodeType getType() {
-        return NodeType.BRANCH_CONDITION;
+    protected NodeTypeEnum getType() {
+        return NodeTypeEnum.BRANCH_CONDITION;
     }
 
 }

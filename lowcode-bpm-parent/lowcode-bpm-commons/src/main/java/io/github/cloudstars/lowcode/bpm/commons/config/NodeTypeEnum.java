@@ -1,11 +1,11 @@
 package io.github.cloudstars.lowcode.bpm.commons.config;
 
 /**
- * BPM节点类型
+ * BPM节点类型枚举
  *
  * @author clouds
  */
-public enum NodeType {
+public enum NodeTypeEnum {
 
     START,
     END,

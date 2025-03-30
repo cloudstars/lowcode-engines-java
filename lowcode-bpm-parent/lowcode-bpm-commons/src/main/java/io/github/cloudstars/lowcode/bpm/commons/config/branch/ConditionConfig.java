@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.branch;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.NodeType;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 
 /**
@@ -22,8 +22,8 @@ public class ConditionConfig extends AbstractNodeConfig {
     }
 
     @Override
-    protected NodeType getType() {
-        return NodeType.CONDITION;
+    protected NodeTypeEnum getType() {
+        return NodeTypeEnum.CONDITION;
     }
 
 }

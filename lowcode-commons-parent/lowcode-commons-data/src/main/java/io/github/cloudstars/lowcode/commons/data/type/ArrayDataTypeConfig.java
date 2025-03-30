@@ -36,7 +36,7 @@ public class ArrayDataTypeConfig<V> extends AbstractDataTypeConfig<List<V>> {
             throw new RuntimeException("数组数据类型必须定义" + ITEMS + "，并且是一个JSON对象");
         }
 
-        this.itemsDataType = DataTypeFactory.newInstance((JsonObject) itemsValueType);
+        this.itemsDataType = DataTypeConfigFactory.newInstance((JsonObject) itemsValueType);
 
         // 默认值需要在所有属性解析完之后再解析
         this.parseDefaultValue(configJson);

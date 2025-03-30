@@ -26,7 +26,7 @@ public abstract class AbstractProcessEngineTest {
      * 测试部署流程定义
      */
     protected void testDeploy() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/process1.json");
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple1.json");
         ProcessConfig config = this.parser.fromJson(configJson);
         String deployId = this.provider.deploy(config);
         // 此次简单断言部署ID不为NULL

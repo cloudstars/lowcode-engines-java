@@ -10,6 +10,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
+@Deprecated
 public class ProcessConfigParser implements XConfigParser<ProcessConfig> {
 
     @Override

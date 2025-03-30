@@ -29,7 +29,7 @@ public class ObjectDataTypeConfig extends AbstractObjectDataTypeConfig<Object> {
                 JsonObject propertyConfigJson = (JsonObject) propertyConfig;
                 ObjectProperty objectProperty = new ObjectProperty();
                 objectProperty.setName(propertyConfigJson.get("name").toString());
-                objectProperty.setDataType(DataTypeFactory.newInstance(propertyConfigJson));
+                objectProperty.setDataType(DataTypeConfigFactory.newInstance(propertyConfigJson));
                 this.properties.add(objectProperty);
             });
         }

@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
 import io.github.cloudstars.lowcode.commons.data.type.DataTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.type.DataTypeFactory;
+import io.github.cloudstars.lowcode.commons.data.type.DataTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
@@ -30,10 +30,10 @@ public class ApiConfig extends AbstractConfig implements XConfig {
         super(configJson);
 
         JsonObject inputJson = (JsonObject) configJson.get("input");
-        this.setInput(DataTypeFactory.newInstance(inputJson));
+        this.setInput(DataTypeConfigFactory.newInstance(inputJson));
         JsonObject outputJson = (JsonObject) configJson.get("output");
         if (outputJson != null) {
-            this.setOutput(DataTypeFactory.newInstance(outputJson));
+            this.setOutput(DataTypeConfigFactory.newInstance(outputJson));
         }
     }
 

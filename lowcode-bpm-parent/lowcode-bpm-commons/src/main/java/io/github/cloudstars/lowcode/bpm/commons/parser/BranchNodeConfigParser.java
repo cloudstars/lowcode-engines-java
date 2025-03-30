@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.parser;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.branch.BranchNodeConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfigParser;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
@@ -14,6 +15,7 @@ import java.util.List;
  *
  * @author clouds
  */
+@Deprecated
 public class BranchNodeConfigParser implements XConfigParser<BranchNodeConfig> {
 
     @Override
@@ -24,7 +26,7 @@ public class BranchNodeConfigParser implements XConfigParser<BranchNodeConfig> {
             throw new RuntimeException("节点信息nodes不存在或不是数组格式，请检查：" + configJson);
         }
 
-        List<AbstractNodeConfig> nodeConfigs = new ArrayList<>();
+        List<NodeConfig> nodeConfigs = new ArrayList<>();
         branchConfig.setNodes(nodeConfigs);
 
         JsonArray nodes = (JsonArray) nodesValue;

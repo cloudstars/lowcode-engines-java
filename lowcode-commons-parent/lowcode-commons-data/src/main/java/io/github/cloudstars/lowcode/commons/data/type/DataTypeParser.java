@@ -17,7 +17,7 @@ public class DataTypeParser implements XConfigParser<DataTypeConfig> {
             throw new RuntimeException("数据类型定义中dataType不能为空，请检查您的配置：" + configJson);
         }
 
-        DataTypeConfig valueType = DataTypeFactory.newInstance(configJson);
+        DataTypeConfig valueType = DataTypeConfigFactory.newInstance(configJson);
         return valueType;
     }
 

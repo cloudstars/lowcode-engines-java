@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.bpm.commons.visitor;
 
+import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.end.EndNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.start.StartNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.user.UserApproveNodeConfig;

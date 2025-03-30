@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.bpm.provider.activiti;
+package io.github.cloudstars.lowcode.bpm.provider.activiti.vendor;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.event.ActivitiEvent;

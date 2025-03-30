@@ -1,0 +1,34 @@
+package io.github.cloudstars.lowcode.bpm.commons.config;
+
+import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
+import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+
+/**
+ * 节点类型配置接口
+ *
+ * @author clouds 
+ */
+public interface NodeConfig<V> extends XConfig {
+
+    /**
+     * 获取节点编号
+     *
+     * @return
+     */
+    String getKey();
+
+    /**
+     * 获取节点名称
+     *
+     * @return
+     */
+    String getName();
+
+    /**
+     * 接受一个BPM节点访问器
+     *
+     * @param visitor BPM节点访问器
+     */
+    void accept(BpmNodeVisitor visitor);
+
+}

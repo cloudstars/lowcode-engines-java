@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.user;
 
-import io.github.cloudstars.lowcode.bpm.commons.config.NodeType;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeConfigClass;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -9,11 +10,19 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
+@NodeConfigClass(name = "DEFAULT.USER.APPROVE")
 public class UserApproveNodeConfig extends AbstractUserNodeConfig {
 
+    public UserApproveNodeConfig() {
+    }
+
+    public UserApproveNodeConfig(JsonObject configJson) {
+        super(configJson);
+    }
+
     @Override
-    protected NodeType getType() {
-        return NodeType.USER_APPROVE;
+    protected NodeTypeEnum getType() {
+        return NodeTypeEnum.USER_APPROVE;
     }
 
     @Override

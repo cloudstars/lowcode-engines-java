@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.gateway;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.NodeType;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.bpm.commons.config.branch.BranchNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 
@@ -40,8 +40,8 @@ public class GatewayNodeConfig extends AbstractNodeConfig {
     }
 
     @Override
-    protected NodeType getType() {
-        return NodeType.GATEWAY;
+    protected NodeTypeEnum getType() {
+        return NodeTypeEnum.GATEWAY;
     }
 
 }

@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config;
 
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -9,7 +9,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public abstract class AbstractNodeConfig implements XConfig {
+public abstract class AbstractNodeConfig extends AbstractConfig implements NodeConfig {
 
     /**
      * 节点编号（自动生成）
@@ -37,11 +37,22 @@ public abstract class AbstractNodeConfig implements XConfig {
         this.name = name;
     }
 
+    public AbstractNodeConfig() {
+    }
+
+    public AbstractNodeConfig(JsonObject configJson) {
+        super(configJson);
+
+        this.setKey((String) configJson.get("key"));
+        this.setName((String) configJson.get("name"));
+    }
+
     /**
      * 接受一个访问器的访问
      *
      * @param visitor BPM节点访问器
      */
+    @Override
     public void accept(BpmNodeVisitor visitor) {
         if (visitor == null) {
             throw new IllegalArgumentException("visitor is null.");
@@ -62,7 +73,7 @@ public abstract class AbstractNodeConfig implements XConfig {
      *
      * @return
      */
-    protected abstract NodeType getType();
+    protected abstract NodeTypeEnum getType();
 
     @Override
     public JsonObject toJson() {

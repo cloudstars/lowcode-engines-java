@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.service;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.NodeType;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 
 /**
  * 抽象的程序节点配置
@@ -11,8 +11,8 @@ import io.github.cloudstars.lowcode.bpm.commons.config.NodeType;
 public abstract class ServiceTaskNodeConfig extends AbstractNodeConfig {
 
     @Override
-    protected NodeType getType() {
-        return NodeType.SERVICE;
+    protected NodeTypeEnum getType() {
+        return NodeTypeEnum.SERVICE;
     }
 
 }
