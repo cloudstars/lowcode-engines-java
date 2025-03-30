@@ -2,10 +2,8 @@ package io.github.cloudstars.lowcode.object.view.table.config;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.object.view.config.AbstractViewConfig;
-import io.github.cloudstars.lowcode.object.view.table.TableViewActionConfig;
+import io.github.cloudstars.lowcode.object.view.table.config.action.ActionsConfig;
 import io.github.cloudstars.lowcode.object.view.table.config.query.QueryConfig;
-
-import java.util.List;
 
 /**
  * 表格视图配置
@@ -22,17 +20,12 @@ public class TableViewConfig extends AbstractViewConfig {
     /**
      * 查询配置
      */
-    private QueryConfig queryConfig;
+    private QueryConfig query;
 
     /**
-     * 表头工具栏操作配置
+     * 操作配置
      */
-    private List<TableViewActionConfig> toolbarActions;
-
-    /**
-     * 行操作配置
-     */
-    private List<TableViewActionConfig> rowActions;
+    private ActionsConfig actions;
 
     public TableViewConfig() {
     }
@@ -40,41 +33,39 @@ public class TableViewConfig extends AbstractViewConfig {
     public TableViewConfig(JsonObject configJson) {
         super(configJson);
 
-        Object queryConfig = configJson.get("query");
-        if (queryConfig != null) {
-            this.setQueryConfig(new QueryConfig((JsonObject) queryConfig));
+        Object queryValue = configJson.get("query");
+        if (queryValue != null) {
+            this.setQuery(new QueryConfig((JsonObject) queryValue));
+        }
+
+        Object actionsValue = configJson.get("actions");
+        if (actionsValue != null) {
+            this.setActions(new ActionsConfig((JsonObject) actionsValue));
         }
     }
 
-
-    public QueryConfig getQueryConfig() {
-        return queryConfig;
+    public QueryConfig getQuery() {
+        return query;
     }
 
-    public void setQueryConfig(QueryConfig queryConfig) {
-        this.queryConfig = queryConfig;
+    public void setQuery(QueryConfig query) {
+        this.query = query;
     }
 
-    public List<TableViewActionConfig> getToolbarActions() {
-        return toolbarActions;
+    public ActionsConfig getActions() {
+        return actions;
     }
 
-    public void setToolbarActions(List<TableViewActionConfig> toolbarActions) {
-        this.toolbarActions = toolbarActions;
-    }
-
-    public List<TableViewActionConfig> getRowActions() {
-        return rowActions;
-    }
-
-    public void setRowActions(List<TableViewActionConfig> rowActions) {
-        this.rowActions = rowActions;
+    public void setActions(ActionsConfig actions) {
+        this.actions = actions;
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put("query", this.queryConfig.toJson());
+        configJson.put("query", this.query.toJson());
+        configJson.put("actions", this.actions.toJson());
+
         return configJson;
     }
 }

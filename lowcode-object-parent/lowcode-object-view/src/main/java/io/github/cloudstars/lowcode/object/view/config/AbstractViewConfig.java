@@ -62,8 +62,8 @@ public abstract class AbstractViewConfig extends AbstractConfig implements XConf
     @Override
     public JsonObject toJson() {
         JsonObject jsonObject = super.toJson();
-        jsonObject.put("type", this.viewType);
-        jsonObject.put("name", this.viewName);
+        jsonObject.put("viewType", this.viewType);
+        jsonObject.put("viewName", this.viewName);
         jsonObject.put("objectName", this.objectName);
 
         return jsonObject;

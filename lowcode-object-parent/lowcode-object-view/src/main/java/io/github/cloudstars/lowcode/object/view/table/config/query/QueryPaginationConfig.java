@@ -4,17 +4,16 @@ import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
- * 排序规则配置
+ * 分页规则配置
  *
  * @author clouds
  */
-public class QueryOrderConfig extends AbstractConfig {
+public class QueryPaginationConfig extends AbstractConfig {
 
-    public QueryOrderConfig() {
-        super();
+    public QueryPaginationConfig() {
     }
 
-    public QueryOrderConfig(JsonObject configJson) {
+    public QueryPaginationConfig(JsonObject configJson) {
         super(configJson);
     }
 
@@ -23,5 +22,4 @@ public class QueryOrderConfig extends AbstractConfig {
         JsonObject configJson = super.toJson();
         return configJson;
     }
-
 }

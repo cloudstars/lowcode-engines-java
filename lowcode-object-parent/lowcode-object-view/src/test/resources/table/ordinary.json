@@ -8,12 +8,11 @@
       {"key": "k2", "code": "c2", "name": "n2"}
     ],
     "filter": {
-      "type": "oql",
-      "oql": "xxx"
+      "type": "OQL",
+      "oqlText": "xxx"
     },
-    "orderBy": [],
-    "pagination": {
-    }
+    "order": {},
+    "pagination": {}
   },
   "actions": {
     "toolbar": [],

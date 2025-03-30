@@ -28,10 +28,12 @@ public class QuerySelectFieldConfig extends AbstractConfig {
     public QuerySelectFieldConfig() {
     }
 
-    public QuerySelectFieldConfig(JsonObject jsonObject) {
-        this.key = (String) jsonObject.get("key");
-        this.code = (String) jsonObject.get("code");
-        this.name = (String) jsonObject.get("name");
+    public QuerySelectFieldConfig(JsonObject configJson) {
+        super(configJson);
+
+        this.key = (String) configJson.get("key");
+        this.code = (String) configJson.get("code");
+        this.name = (String) configJson.get("name");
     }
 
     public String getKey() {
@@ -56,5 +58,14 @@ public class QuerySelectFieldConfig extends AbstractConfig {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject configJson = super.toJson();
+        configJson.put("key", this.key);
+        configJson.put("code", this.code);
+        configJson.put("name", this.name);
+        return configJson;
     }
 }

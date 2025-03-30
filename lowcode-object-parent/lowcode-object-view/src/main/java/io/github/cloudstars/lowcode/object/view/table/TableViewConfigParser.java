@@ -9,6 +9,7 @@ import io.github.cloudstars.lowcode.object.view.table.config.TableViewConfig;
  *
  * @author clouds
  */
+@Deprecated
 public class TableViewConfigParser implements XConfigParser<TableViewConfig> {
 
     @Override
