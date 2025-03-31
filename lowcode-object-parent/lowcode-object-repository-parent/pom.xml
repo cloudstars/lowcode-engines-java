@@ -14,7 +14,11 @@
     <packaging>pom</packaging>
 
     <modules>
-
+        <module>lowcode-object-repository</module>
+        <module>lowcode-object-repository-testcases</module>
+        <module>lowcode-object-repository-mysql</module>
+        <module>lowcode-object-repository-mongodb</module>
+        <module>lowcode-object-repository-cfdata</module>
     </modules>
 
     <dependencyManagement>

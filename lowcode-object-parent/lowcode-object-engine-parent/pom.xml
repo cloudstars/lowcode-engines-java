@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-
+        <module>lowcode-object-engine</module>
     </modules>
 
     <dependencyManagement>
