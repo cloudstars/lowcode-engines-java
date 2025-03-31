@@ -4,7 +4,6 @@ import io.github.cloudstars.lowcode.commons.data.DataValidationUtils;
 import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-import io.github.cloudstars.lowcode.commons.lang.value.InvalidValueFormatException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +61,7 @@ public class ArrayDataTypeConfig<V> extends AbstractDataTypeConfig<List<V>> {
                 }
                 return itemValues;
             } else {
-                throw new InvalidValueFormatException("数组数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
+                throw new InvalidDataException("数组数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
             }
         }
 

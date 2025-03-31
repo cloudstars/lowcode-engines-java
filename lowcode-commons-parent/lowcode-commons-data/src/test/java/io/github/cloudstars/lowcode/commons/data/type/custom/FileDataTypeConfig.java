@@ -5,7 +5,6 @@ import io.github.cloudstars.lowcode.commons.data.type.AbstractObjectDataTypeConf
 import io.github.cloudstars.lowcode.commons.data.type.DataTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-import io.github.cloudstars.lowcode.commons.lang.value.InvalidValueFormatException;
 
 import java.util.Map;
 
@@ -44,7 +43,7 @@ public class FileDataTypeConfig extends AbstractObjectDataTypeConfig<FileValue> 
                 defaultValue.setKey((String) valueMap.get(KEY_ATTR));
                 defaultValue.setName((String) valueMap.get(NAME_ATTR));
             } else {
-                throw new InvalidValueFormatException("文件数据格式不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
+                throw new InvalidDataException("文件数据格式不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
             }
         }
 
@@ -54,7 +53,7 @@ public class FileDataTypeConfig extends AbstractObjectDataTypeConfig<FileValue> 
     @Override
     public FileValue parseNonNullValue(Object nonNullValue) {
         if (!(nonNullValue instanceof Map)) {
-            throw new InvalidValueFormatException("文件类型的数据格式不正确，必须是包括key、name属性的对象");
+            throw new InvalidDataException("文件类型的数据格式不正确，必须是包括key、name属性的对象");
         }
 
         Map<String, Object> fileValueMap = (Map<String, Object>) nonNullValue;

@@ -5,7 +5,6 @@ import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-import io.github.cloudstars.lowcode.commons.lang.value.InvalidValueFormatException;
 
 import java.util.List;
 import java.util.Map;
@@ -61,7 +60,7 @@ public class JsonObjectDataTypeConfig extends AbstractObjectDataTypeConfig<JsonO
         } else if (defaultValueConfig instanceof Map) {
             defaultValue = new JsonObject((Map<String, Object>) defaultValueConfig);
         } else {
-            throw new InvalidValueFormatException("对象数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
+            throw new InvalidDataException("对象数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
         }
 
         return defaultValue;
@@ -75,7 +74,7 @@ public class JsonObjectDataTypeConfig extends AbstractObjectDataTypeConfig<JsonO
         } else if (nonNullValue instanceof Map) {
             value = new JsonObject((Map<String, Object>) value);
         } else {
-            throw new InvalidValueFormatException("对象数据格式的值不正确，请检查您的数据：" + JsonUtils.toJsonString(nonNullValue));
+            throw new InvalidDataException("对象数据格式的值不正确，请检查您的数据：" + JsonUtils.toJsonString(nonNullValue));
         }
 
         return value;

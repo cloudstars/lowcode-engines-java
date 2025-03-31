@@ -71,7 +71,7 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
     /**
      * 获取节点的类型
      *
-     * @return
+     * @return 节点类型枚举
      */
     protected abstract NodeTypeEnum getType();
 

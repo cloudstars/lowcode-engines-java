@@ -49,7 +49,7 @@ public class NodeConfigClassFactory {
     /**
      * 根据节点类型的名称获取节点配置Java的类
      *
-     * @param nodeConfigClassName 节点配置Java类名
+     * @param nodeType 节点类型
      * @return 节点配置的Java类
      */
     public static Class<? extends NodeConfig> get(String nodeType) {

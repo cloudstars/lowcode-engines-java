@@ -13,14 +13,14 @@ public interface NodeConfig<V> extends XConfig {
     /**
      * 获取节点编号
      *
-     * @return
+     * @return 节点编号
      */
     String getKey();
 
     /**
      * 获取节点名称
      *
-     * @return
+     * @return 节点名称
      */
     String getName();
 

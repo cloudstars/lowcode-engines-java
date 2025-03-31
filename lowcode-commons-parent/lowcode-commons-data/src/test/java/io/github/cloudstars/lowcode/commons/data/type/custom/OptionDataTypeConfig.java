@@ -5,7 +5,6 @@ import io.github.cloudstars.lowcode.commons.data.type.*;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-import io.github.cloudstars.lowcode.commons.lang.value.InvalidValueFormatException;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -62,7 +61,7 @@ public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionVal
                 defaultValue.setLabel((String) valueMap.get(this.labelField));
                 defaultValue.setValue((String) valueMap.get(this.valueField));
             } else {
-                throw new InvalidValueFormatException("选项数据格式不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
+                throw new InvalidDataException("选项数据格式不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
             }
         } else {
             Object labelDefaultValue = this.properties.get(0).getDataType().getDefaultValue();
