@@ -40,7 +40,7 @@ public class GatewayNodeConfig extends AbstractNodeConfig {
     }
 
     @Override
-    protected NodeTypeEnum getType() {
+    public NodeTypeEnum getType() {
         return NodeTypeEnum.GATEWAY;
     }
 

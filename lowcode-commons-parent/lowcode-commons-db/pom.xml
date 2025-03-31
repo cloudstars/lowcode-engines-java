@@ -8,8 +8,8 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-commons-repository</artifactId>
-    <description>仓储公共依赖</description>
+    <artifactId>lowcode-commons-db</artifactId>
+    <description>数据库公共依赖</description>
 
     <dependencies>
         <!-- 编译时依赖 -->

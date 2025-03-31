@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  *
  * @author clouds
  */
+@Deprecated /* json 比较请采用JsonTestUtils */
 public final class DataCompareTestUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(DataCompareTestUtils.class);

@@ -62,7 +62,7 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-repository</artifactId>
+                <artifactId>lowcode-commons-db</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

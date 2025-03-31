@@ -18,10 +18,6 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-object-commons</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-editor</artifactId>
-        </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>

@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.branch;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.*;
-import io.github.cloudstars.lowcode.bpm.commons.parser.NodeConfigParser;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
@@ -37,8 +36,6 @@ public class BranchNodeConfig extends AbstractNodeConfig {
         this.setNodes(nodeConfigs);
 
         JsonArray nodes = (JsonArray) nodesValue;
-
-        NodeConfigParser nodeConfigParser = new NodeConfigParser();
         nodes.forEach((node) -> {
             JsonObject nodeConfigJson = (JsonObject) node;
             NodeConfig nodeConfig = NodeConfigFactory.newInstance(nodeConfigJson);
@@ -68,7 +65,7 @@ public class BranchNodeConfig extends AbstractNodeConfig {
     }
 
     @Override
-    protected NodeTypeEnum getType() {
+    public NodeTypeEnum getType() {
         return NodeTypeEnum.BRANCH;
     }
 

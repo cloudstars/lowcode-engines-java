@@ -21,7 +21,7 @@ public class UserApproveNodeConfig extends AbstractUserNodeConfig {
     }
 
     @Override
-    protected NodeTypeEnum getType() {
+    public NodeTypeEnum getType() {
         return NodeTypeEnum.USER_APPROVE;
     }
 

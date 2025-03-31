@@ -7,16 +7,19 @@
       {
         "key": "start",
         "type": "START",
+        "subType": "DEFAULT.START",
         "name": "员工填写"
       },
       {
         "key": "user-task1",
         "type": "USER_APPROVE",
+        "subType": "DEFAULT.USER.APPROVE",
         "name": "领导审批"
       },
       {
         "key": "end",
         "type": "END",
+        "subType": "DEFAULT.END",
         "name": "结束"
       }
     ]

@@ -1,10 +1,10 @@
 package io.github.cloudstars.lowcode.commons.lang.util;
 
-public class ObjectReference<T> {
+public class ObjectRef<T> {
 
     private T ref;
 
-    public ObjectReference(T ref) {
+    public ObjectRef(T ref) {
         this.ref = ref;
     }
 

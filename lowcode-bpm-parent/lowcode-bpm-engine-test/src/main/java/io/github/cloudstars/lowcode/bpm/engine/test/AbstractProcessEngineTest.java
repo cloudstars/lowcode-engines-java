@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.bpm.engine.test;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
-import io.github.cloudstars.lowcode.bpm.commons.parser.ProcessConfigParser;
 import io.github.cloudstars.lowcode.bpm.engine.provider.BpmProvider;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
@@ -17,9 +16,6 @@ import javax.annotation.Resource;
 public abstract class AbstractProcessEngineTest {
 
     @Resource
-    private ProcessConfigParser parser;
-
-    @Resource
     private BpmProvider provider;
 
     /**
@@ -27,7 +23,7 @@ public abstract class AbstractProcessEngineTest {
      */
     protected void testDeploy() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple1.json");
-        ProcessConfig config = this.parser.fromJson(configJson);
+        ProcessConfig config = new ProcessConfig(configJson);
         String deployId = this.provider.deploy(config);
         // 此次简单断言部署ID不为NULL
         Assert.assertNotNull(deployId);

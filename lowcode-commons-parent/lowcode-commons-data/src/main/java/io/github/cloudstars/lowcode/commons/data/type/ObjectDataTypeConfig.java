@@ -2,9 +2,9 @@ package io.github.cloudstars.lowcode.commons.data.type;
 
 import io.github.cloudstars.lowcode.commons.data.DataValidationUtils;
 import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
-import io.github.cloudstars.lowcode.commons.data.ObjectValueUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class ObjectDataTypeConfig extends AbstractObjectDataTypeConfig<Object> {
         List<ObjectProperty> properties = this.properties;
         for (ObjectProperty property : properties) {
             String propertyName = property.getName();
-            Object propertyValue = ObjectValueUtils.getFieldValue(objectValue, propertyName);
+            Object propertyValue = ObjectUtils.getFieldValue(objectValue, propertyName);
             DataTypeConfig propertyDataType = property.getDataType();
             DataValidationUtils.validate(propertyValue, propertyDataType);
         }

@@ -1,13 +1,19 @@
-package io.github.cloudstars.lowcode.commons.lang.value;
+package io.github.cloudstars.lowcode.commons.lang.util;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.Date;
 
+
 /**
- * 测试Object工具的类
+ * ObjectValue工具测试类
  *
  * @author clouds
  */
-public class ObjectValueTestClass {
+@RunWith(JUnit4.class)
+public class ObjectUtilsTestClass2 {
+
 
     private String str;
 
@@ -48,4 +54,5 @@ public class ObjectValueTestClass {
     public void setaBoolean(Boolean aBoolean) {
         this.aBoolean = aBoolean;
     }
+
 }

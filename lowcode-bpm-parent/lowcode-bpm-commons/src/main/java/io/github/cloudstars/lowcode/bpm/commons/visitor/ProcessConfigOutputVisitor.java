@@ -6,7 +6,7 @@ import io.github.cloudstars.lowcode.bpm.commons.config.user.UserApproveNodeConfi
 import io.github.cloudstars.lowcode.bpm.commons.config.user.UserWriteNodeConfig;
 
 /**
- * 流程打印访问器
+ * 流程配置打印访问器
  *
  * @author clouds
  */

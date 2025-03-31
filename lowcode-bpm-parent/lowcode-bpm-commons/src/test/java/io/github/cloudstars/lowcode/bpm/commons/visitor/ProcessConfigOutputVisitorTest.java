@@ -1,17 +1,14 @@
 package io.github.cloudstars.lowcode.bpm.commons.visitor;
 
-import io.github.cloudstars.lowcode.BpmEditorTestApplication;
+import io.github.cloudstars.lowcode.BpmCommonsTestApplication;
 import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
-import io.github.cloudstars.lowcode.bpm.commons.parser.ProcessConfigParser;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.annotation.Resource;
 
 /**
  * 流程配置打印访问器测试类
@@ -19,16 +16,13 @@ import javax.annotation.Resource;
  * @author clouds
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = BpmEditorTestApplication.class)
+@SpringBootTest(classes = BpmCommonsTestApplication.class)
 public class ProcessConfigOutputVisitorTest {
-
-    @Resource
-    private ProcessConfigParser parser;
 
     @Test
     public void test1() {
-        String configJsonString = FileTestUtils.loadTextFromClasspath("process/simple1.json");
-        ProcessConfig config = this.parser.fromJson(JsonUtils.toJsonObject(configJsonString));
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple1.json");
+        ProcessConfig config = new ProcessConfig(configJson);
         StringBuilder builder = new StringBuilder();
         ProcessConfigOutputVisitor visitor = new ProcessConfigOutputVisitor(builder);
         config.getMainBranch().accept(visitor);

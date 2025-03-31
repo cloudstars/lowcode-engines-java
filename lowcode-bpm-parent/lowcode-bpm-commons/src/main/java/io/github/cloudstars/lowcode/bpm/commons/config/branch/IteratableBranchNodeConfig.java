@@ -21,7 +21,7 @@ public class IteratableBranchNodeConfig extends BranchNodeConfig {
     }
 
     @Override
-    protected NodeTypeEnum getType() {
+    public NodeTypeEnum getType() {
         return NodeTypeEnum.BRANCH_ITERATOR;
     }
 

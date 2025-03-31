@@ -21,7 +21,7 @@ public class ConditionalBranchNodeConfig extends BranchNodeConfig {
     }
 
     @Override
-    protected NodeTypeEnum getType() {
+    public NodeTypeEnum getType() {
         return NodeTypeEnum.BRANCH_CONDITION;
     }
 

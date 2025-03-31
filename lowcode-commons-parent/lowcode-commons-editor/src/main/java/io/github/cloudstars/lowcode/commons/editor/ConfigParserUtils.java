@@ -4,7 +4,6 @@ import io.github.cloudstars.lowcode.commons.lang.config.*;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
-import io.github.cloudstars.lowcode.commons.lang.value.ObjectValueUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,10 +56,10 @@ public class ConfigParserUtils {
                         itemConfigs.add(itemConfig);
                     }
 
-                    ObjectValueUtils.setFieldValue(config, attrName, itemConfigs);
+                    ObjectUtils.setFieldValue(config, attrName, itemConfigs);
                 }
             } else {
-                ObjectValueUtils.setFieldValue(config, attrName, attrValue);
+                ObjectUtils.setFieldValue(config, attrName, attrValue);
             }
         }
 

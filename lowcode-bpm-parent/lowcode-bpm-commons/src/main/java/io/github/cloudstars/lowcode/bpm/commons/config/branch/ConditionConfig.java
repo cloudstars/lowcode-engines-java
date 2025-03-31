@@ -22,7 +22,7 @@ public class ConditionConfig extends AbstractNodeConfig {
     }
 
     @Override
-    protected NodeTypeEnum getType() {
+    public NodeTypeEnum getType() {
         return NodeTypeEnum.CONDITION;
     }
 

@@ -16,7 +16,7 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-repository</artifactId>
+            <artifactId>lowcode-commons-db</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>

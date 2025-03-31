@@ -40,11 +40,6 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-editor</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-object-repository</artifactId>
                 <version>${revision}</version>
             </dependency>

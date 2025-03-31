@@ -76,7 +76,7 @@ public class StringDataTypeConfig extends AbstractDataTypeConfig<String> {
     @Override
     public void validate(String nonNullValue) throws InvalidDataException {
         int valueLength = nonNullValue.length();
-        if (this.minLength != null && valueLength < maxLength) {
+        if (this.minLength != null && valueLength < minLength) {
             throw new InvalidDataException("数据[" + nonNullValue + "]不足设定的最小长度:" + this.minLength);
         }
         if (this.maxLength != null && valueLength > maxLength) {

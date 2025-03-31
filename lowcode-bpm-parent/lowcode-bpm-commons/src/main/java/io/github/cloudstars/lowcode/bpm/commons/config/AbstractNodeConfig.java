@@ -12,6 +12,11 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 public abstract class AbstractNodeConfig extends AbstractConfig implements NodeConfig {
 
     /**
+     * 子类型
+     */
+    private String subType;
+
+    /**
      * 节点编号（自动生成）
      */
     private String key;
@@ -21,6 +26,28 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
      */
     private String name;
 
+    public AbstractNodeConfig() {
+    }
+
+    public AbstractNodeConfig(JsonObject configJson) {
+        super(configJson);
+
+        this.setSubType((String) configJson.get("subType"));
+        this.setKey((String) configJson.get("key"));
+        this.setName((String) configJson.get("name"));
+    }
+
+
+    @Override
+    public String getSubType() {
+        return subType;
+    }
+
+    public void setSubType(String subType) {
+        this.subType = subType;
+    }
+
+    @Override
     public String getKey() {
         return key;
     }
@@ -29,22 +56,13 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
         this.key = key;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public AbstractNodeConfig() {
-    }
-
-    public AbstractNodeConfig(JsonObject configJson) {
-        super(configJson);
-
-        this.setKey((String) configJson.get("key"));
-        this.setName((String) configJson.get("name"));
     }
 
     /**
@@ -68,19 +86,13 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
      */
     protected abstract void accept0(BpmNodeVisitor visitor);
 
-    /**
-     * 获取节点的类型
-     *
-     * @return 节点类型枚举
-     */
-    protected abstract NodeTypeEnum getType();
-
     @Override
     public JsonObject toJson() {
         JsonObject jsonObject = new JsonObject();
+        jsonObject.put("type", this.getType().name());
+        jsonObject.put("subType", this.getSubType());
         jsonObject.put("key", this.key);
         jsonObject.put("name", this.name);
-        jsonObject.put("type", this.getType());
 
         return jsonObject;
     }

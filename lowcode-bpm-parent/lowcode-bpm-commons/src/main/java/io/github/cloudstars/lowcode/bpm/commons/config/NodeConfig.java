@@ -11,6 +11,19 @@ import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 public interface NodeConfig<V> extends XConfig {
 
     /**
+     * 获取节点的类型（SDK定义）
+     * @return
+     */
+    NodeTypeEnum getType();
+
+    /**
+     * 获取节点的子类型（用户定义）
+     *
+     * @return
+     */
+    String getSubType();
+
+    /**
      * 获取节点编号
      *
      * @return 节点编号
