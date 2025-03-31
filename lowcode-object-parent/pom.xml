@@ -57,7 +57,7 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-object-repository-mongo</artifactId>
+                <artifactId>lowcode-object-repository-mongodb</artifactId>
                 <version>${revision}</version>
                 <scope>runtime</scope>
             </dependency>

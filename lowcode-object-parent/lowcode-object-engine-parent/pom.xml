@@ -15,11 +15,12 @@
 
     <modules>
         <module>lowcode-object-engine</module>
+        <module>lowcode-object-engine-starter-mysql</module>
+        <module>lowcode-object-engine-starter-mongodb</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-
         </dependencies>
     </dependencyManagement>
 

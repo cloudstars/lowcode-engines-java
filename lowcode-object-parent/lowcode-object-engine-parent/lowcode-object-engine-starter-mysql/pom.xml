@@ -9,14 +9,14 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-object-engine</artifactId>
-    <description>低代码模型引擎</description>
+    <artifactId>lowcode-object-engine-starter-mysql</artifactId>
+    <description>低代码模型引擎MySql starter</description>
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-repository</artifactId>
+            <artifactId>lowcode-object-repository-mysql</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->
