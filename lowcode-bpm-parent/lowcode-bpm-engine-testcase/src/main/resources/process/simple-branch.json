@@ -9,26 +9,24 @@
     "nodes": [
       {
         "key": "f832k4k8fds89",
-        "type": "START",
-        "subType": "DEFAULT.START",
+        "type": "DEFAULT.START",
         "name": "开始"
       },
       {
         "key": "f832k4k8fds33",
-        "type": "USER_WRITE",
-        "subType": "DEFAULT.USER.WRITE",
+        "type": "DEFAULT.USER.WRITE",
         "name": "用户填写"
       },
       {
         "key": "u932k4k8fds11",
-        "type": "GATEWAY",
-        "gatewayType": "OR",
-        "subType": "DEFAULT.GATEWAY.EXCLUSIVE",
+        "type": "DEFAULT.GATEWAY.EXCLUSIVE",
         "name": "网关节点",
+        "gatewayType": "OR",
         "branches": [
           {
             "key": "b632k4k8fd01",
             "type": "BRANCH",
+            "name": "分支1",
             "condition": {
               "type": "EXPR",
               "expression": "a > 10"
@@ -36,8 +34,7 @@
             "nodes": [
               {
                 "key": "g632k4k8fd14",
-                "type": "USER_APPROVE",
-                "subType": "DEFAULT.USER.APPROVE",
+                "type": "DEFAULT.USER.APPROVE",
                 "name":  "领导A审批"
               }
             ]
@@ -45,6 +42,7 @@
           {
             "key": "b632k4k8fd02",
             "type": "BRANCH",
+            "name": "分支2",
             "condition": {
               "type": "JSON",
               "value": {
@@ -53,8 +51,7 @@
             "nodes": [
               {
                 "key": "g632k4k8fd21",
-                "type": "USER_APPROVE",
-                "subType": "DEFAULT.USER.APPROVE",
+                "type": "DEFAULT.USER.APPROVE",
                 "name":  "领导B审批"
               }
             ]
@@ -63,14 +60,12 @@
       },
       {
         "key": "f832k4k8fds44",
-        "type": "USER_APPROVE",
-        "subType": "DEFAULT.USER.APPROVE",
+        "type": "DEFAULT.USER.APPROVE",
         "name": "领导终审"
       },
       {
         "key": "f832k4k8fds45",
-        "type": "END",
-        "subType": "DEFAULT.END",
+        "type": "DEFAULT.END",
         "name": "结束"
       }
     ]

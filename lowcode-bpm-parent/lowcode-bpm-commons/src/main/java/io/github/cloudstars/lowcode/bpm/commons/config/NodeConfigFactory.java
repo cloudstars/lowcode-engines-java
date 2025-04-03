@@ -25,23 +25,14 @@ public class NodeConfigFactory {
         if (typeValue == null) {
             throw new RuntimeException("节点类型[type]不存在！");
         }
-        String bpmNodeType = typeValue.toString();
-        if (NodeTypeEnum.valueOf(typeValue.toString().toUpperCase()) == null) {
-            throw new RuntimeException("不支持的节点类型：" + bpmNodeType);
-        }
 
-        Object subTypeValue = nodeConfig.get("subType");
-        if (subTypeValue == null) {
-            throw new RuntimeException("节点子类型[subType]不存在！");
-        }
-
-        String userNodeType = subTypeValue.toString();
-        Class<? extends AbstractNodeConfig> nodeConfigClass = NodeConfigClassFactory.get(userNodeType);
+        String type = typeValue.toString();
+        Class<? extends AbstractNodeConfig> nodeConfigClass = NodeConfigClassFactory.get(type);
         try {
             Constructor<? extends AbstractNodeConfig> constructor = nodeConfigClass.getConstructor(JsonObject.class);
             return constructor.newInstance(nodeConfig);
         } catch (Exception e) {
-            throw new RuntimeException("实例化节点配置，类型为[" + userNodeType + "]出错！", e);
+            throw new RuntimeException("实例化节点配置，类型为[" + type + "]出错！", e);
         }
     }
 

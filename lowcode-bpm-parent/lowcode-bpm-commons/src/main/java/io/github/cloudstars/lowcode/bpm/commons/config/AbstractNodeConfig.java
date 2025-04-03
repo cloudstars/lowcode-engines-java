@@ -14,9 +14,9 @@ import java.util.List;
 public abstract class AbstractNodeConfig extends AbstractConfig implements NodeConfig {
 
     /**
-     * 子类型
+     * 类型
      */
-    private String subType;
+    private String type;
 
     /**
      * 节点编号（自动生成）
@@ -44,7 +44,7 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
     public AbstractNodeConfig(JsonObject configJson) {
         super(configJson);
 
-        this.setSubType((String) configJson.get("subType"));
+        this.setType((String) configJson.get("type"));
         this.setKey((String) configJson.get("key"));
         this.setName((String) configJson.get("name"));
     }
@@ -52,11 +52,11 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
 
     @Override
     public String getType() {
-        return subType;
+        return type;
     }
 
-    public void setSubType(String subType) {
-        this.subType = subType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -106,7 +106,7 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
      * @param visitor
      * @param nodes
      */
-    protected void listAccept(List<AbstractNodeConfig> nodes, BpmNodeVisitor visitor) {
+    protected void visitList(BpmNodeVisitor visitor, List<AbstractNodeConfig> nodes) {
         for (AbstractNodeConfig node : nodes) {
             node.accept(visitor);
         }
@@ -115,8 +115,8 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
     @Override
     public JsonObject toJson() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.put("type", this.getNodeType().name());
-        jsonObject.put("subType", this.subType);
+        jsonObject.put("nodeType", this.getNodeType().name());
+        jsonObject.put("type", this.type);
         jsonObject.put("key", this.key);
         jsonObject.put("name", this.name);
 

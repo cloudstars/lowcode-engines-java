@@ -48,4 +48,12 @@ public class GatewayBranchNodeConfig extends BranchNodeConfig {
         return NodeTypeEnum.GATEWAY;
     }
 
+    @Override
+    public JsonObject toJson() {
+        JsonObject jsonObject = super.toJson();
+        jsonObject.put("condition", this.condition);
+
+        return jsonObject;
+    }
+
 }
