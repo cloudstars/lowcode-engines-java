@@ -116,7 +116,7 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
         List<GatewayBranchNodeConfig> branches = nodeConfig.getBranches();
         List<SequenceFlow> outgoingFlows = new ArrayList<>();
         for (GatewayBranchNodeConfig branch : branches) {
-            List<NodeConfig> branchNodes = branch.getNodes();
+            List<AbstractNodeConfig> branchNodes = branch.getNodes();
             if (branchNodes.size() > 0) { // 可能存在一些没有节点的分支
                 String firstNodeKey = branchNodes.get(0).getKey();
                 SequenceFlow outgoingFlow = this.createSequenceFlow(startGatewayKey, firstNodeKey);
@@ -140,7 +140,7 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
         List<GatewayBranchNodeConfig> branches = nodeConfig.getBranches();
         List<SequenceFlow> ingoingFlows = new ArrayList<>();
         for (GatewayBranchNodeConfig branch : branches) {
-            List<NodeConfig> branchNodes = branch.getNodes();
+            List<AbstractNodeConfig> branchNodes = branch.getNodes();
             if (branchNodes.size() > 0) { // 可能存在一些没有节点的分支
                 String lastNodeKey = branchNodes.get(branchNodes.size() - 1).getKey();
                 SequenceFlow ingoingFlow = this.createSequenceFlow(lastNodeKey, endGatewayKey);

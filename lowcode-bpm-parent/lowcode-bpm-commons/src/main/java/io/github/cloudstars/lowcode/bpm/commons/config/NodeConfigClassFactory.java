@@ -16,7 +16,7 @@ public class NodeConfigClassFactory {
     /**
      * key是节点类型名称，值是节点配置Java类的映射表
      */
-    private static final Map<String, Class<? extends NodeConfig>> nodeConfigClassMap = new HashMap<>();
+    private static final Map<String, Class<? extends AbstractNodeConfig>> nodeConfigClassMap = new HashMap<>();
 
     private NodeConfigClassFactory() {
     }
@@ -26,7 +26,7 @@ public class NodeConfigClassFactory {
      *
      * @param nodeConfigClass 节点配置Java类
      */
-    public static void register(Class<? extends NodeConfig> nodeConfigClass) {
+    public static void register(Class<? extends AbstractNodeConfig> nodeConfigClass) {
         String nodeType = nodeConfigClass.getName();
         if (nodeConfigClassMap.containsKey(nodeType)) {
             throw new RuntimeException("节点类型" + nodeType + "已存在，注册失败！");
@@ -52,8 +52,8 @@ public class NodeConfigClassFactory {
      * @param nodeType 节点类型
      * @return 节点配置的Java类
      */
-    public static Class<? extends NodeConfig> get(String nodeType) {
-        Class<? extends NodeConfig> nodeConfigClass = nodeConfigClassMap.get(nodeType);
+    public static Class<? extends AbstractNodeConfig> get(String nodeType) {
+        Class<? extends AbstractNodeConfig> nodeConfigClass = nodeConfigClassMap.get(nodeType);
         if (nodeConfigClass == null) {
             throw new RuntimeException("节点类型" + nodeType + "不存在！");
         }

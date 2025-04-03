@@ -20,7 +20,7 @@ public class NodeConfigFactory {
      * @param nodeConfig
      * @return
      */
-    public static NodeConfig newInstance(JsonObject nodeConfig) {
+    public static AbstractNodeConfig newInstance(JsonObject nodeConfig) {
         Object typeValue = nodeConfig.get("type");
         if (typeValue == null) {
             throw new RuntimeException("节点类型[type]不存在！");
@@ -36,9 +36,9 @@ public class NodeConfigFactory {
         }
 
         String userNodeType = subTypeValue.toString();
-        Class<? extends NodeConfig> nodeConfigClass = NodeConfigClassFactory.get(userNodeType);
+        Class<? extends AbstractNodeConfig> nodeConfigClass = NodeConfigClassFactory.get(userNodeType);
         try {
-            Constructor<? extends NodeConfig> constructor = nodeConfigClass.getConstructor(JsonObject.class);
+            Constructor<? extends AbstractNodeConfig> constructor = nodeConfigClass.getConstructor(JsonObject.class);
             return constructor.newInstance(nodeConfig);
         } catch (Exception e) {
             throw new RuntimeException("实例化节点配置，类型为[" + userNodeType + "]出错！", e);

@@ -19,7 +19,7 @@ public class BranchNodeConfig extends AbstractNodeConfig {
     /**
      * 分支下面的节点列表
      */
-    private List<NodeConfig> nodes;
+    private List<AbstractNodeConfig> nodes;
 
     public BranchNodeConfig() {
     }
@@ -32,11 +32,11 @@ public class BranchNodeConfig extends AbstractNodeConfig {
             throw new RuntimeException("节点信息nodes不存在或不是数组格式，请检查：" + configJson);
         }
 
-        List<NodeConfig> nodeConfigs = new ArrayList<>();
+        List<AbstractNodeConfig> nodeConfigs = new ArrayList<>();
         JsonArray nodes = (JsonArray) nodesValue;
         nodes.forEach((node) -> {
             JsonObject nodeConfigJson = (JsonObject) node;
-            NodeConfig nodeConfig = NodeConfigFactory.newInstance(nodeConfigJson);
+            AbstractNodeConfig nodeConfig = NodeConfigFactory.newInstance(nodeConfigJson);
             if (nodeConfig != null) {
                 nodeConfigs.add(nodeConfig);
             }
@@ -44,26 +44,26 @@ public class BranchNodeConfig extends AbstractNodeConfig {
         this.setNodes(nodeConfigs);
     }
 
-    public List<NodeConfig> getNodes() {
+    public List<AbstractNodeConfig> getNodes() {
         return nodes;
     }
 
-    public void setNodes(List<NodeConfig> nodes) {
+    public void setNodes(List<AbstractNodeConfig> nodes) {
         this.nodes = nodes;
 
         // 建立前后节点关系
         int nodeSize = nodes.size();
         if (nodeSize > 0) {
             // 第一个节点的前一个节点和最后一个节点的下一个节点都是当前分支节点
-            AbstractNodeConfig firstNode = (AbstractNodeConfig) nodes.get(0);
+            AbstractNodeConfig firstNode = nodes.get(0);
             firstNode.setPrevNode(this);
-            AbstractNodeConfig lastNode = (AbstractNodeConfig) nodes.get(nodeSize - 1);
+            AbstractNodeConfig lastNode = nodes.get(nodeSize - 1);
             lastNode.setNextNode(this);
 
             // 每一个节点的前后端按位置顺序建立前后关联
             AbstractNodeConfig prev = firstNode;
             for (int i = 1; i < nodeSize; i++) {
-                AbstractNodeConfig anode = ((AbstractNodeConfig) nodes.get(i));
+                AbstractNodeConfig anode = nodes.get(i);
                 prev.setNextNode(anode);
                 anode.setPrevNode(prev);
                 prev = anode;
