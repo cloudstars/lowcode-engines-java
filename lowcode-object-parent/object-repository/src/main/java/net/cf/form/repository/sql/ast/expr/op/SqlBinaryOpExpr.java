@@ -86,7 +86,7 @@ public class SqlBinaryOpExpr extends AbstractSqlExprImpl implements SqlReplaceab
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.left != null) {
                 this.left.accept(visitor);

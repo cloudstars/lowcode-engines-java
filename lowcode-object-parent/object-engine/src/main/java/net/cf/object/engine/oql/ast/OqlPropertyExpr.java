@@ -58,7 +58,7 @@ public class OqlPropertyExpr extends AbstractOqlExprImpl implements SqlName {
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.owner != null) {
                 this.owner.accept(visitor);

@@ -56,7 +56,7 @@ public class FxPropertyExpr extends AbstractFxExprImpl implements FxNameExpr {
     }
 
     @Override
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.owner != null) {
                 this.owner.accept(visitor);

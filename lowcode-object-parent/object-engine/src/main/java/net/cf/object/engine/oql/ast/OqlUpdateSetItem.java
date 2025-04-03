@@ -43,7 +43,7 @@ public class OqlUpdateSetItem extends AbstractOqlObjectImpl {
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChild(visitor, this.field);
             this.nullSafeAcceptChild(visitor, this.value);

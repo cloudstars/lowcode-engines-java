@@ -61,7 +61,7 @@ public class OqlFieldExpr extends AbstractOqlExprImpl implements SqlName {
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

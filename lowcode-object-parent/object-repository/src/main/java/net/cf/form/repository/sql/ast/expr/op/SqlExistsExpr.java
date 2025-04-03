@@ -59,7 +59,7 @@ public final class SqlExistsExpr extends AbstractSqlExprImpl {
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChild(visitor, this.subQuery);
         }

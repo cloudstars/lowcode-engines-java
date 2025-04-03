@@ -11,7 +11,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@NodeConfigClass(name = "DEFAULT.END")
+@NodeConfigClass(type = "DEFAULT.END")
 public class EndNodeConfig extends AbstractNodeConfig {
 
     public EndNodeConfig() {
@@ -22,12 +22,12 @@ public class EndNodeConfig extends AbstractNodeConfig {
     }
 
     @Override
-    public NodeTypeEnum getType() {
+    public NodeTypeEnum getNodeType() {
         return NodeTypeEnum.END;
     }
 
     @Override
-    protected void accept0(BpmNodeVisitor visitor) {
+    public void accept(BpmNodeVisitor visitor) {
         if (visitor.visit(this)) {
             visitor.endVisit(this);
         }

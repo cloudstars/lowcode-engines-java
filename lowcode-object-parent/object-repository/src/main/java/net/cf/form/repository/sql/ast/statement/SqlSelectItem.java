@@ -59,7 +59,7 @@ public class SqlSelectItem extends AbstractSqlObjectImpl implements SqlReplaceab
     }
 
     @Override
-    protected void accept0(SqlAstVisitor v) {
+    public void accept(SqlAstVisitor v) {
         if (v.visit(this)) {
             if (this.expr != null) {
                 this.expr.accept(v);

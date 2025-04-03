@@ -52,7 +52,7 @@ public final class SqlSelectOrderByItem extends AbstractSqlObjectImpl implements
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this) && this.expr != null) {
             this.expr.accept(visitor);
         }

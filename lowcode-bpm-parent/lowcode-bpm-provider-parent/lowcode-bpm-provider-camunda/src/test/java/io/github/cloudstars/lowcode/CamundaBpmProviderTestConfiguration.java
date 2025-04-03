@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode;
 import io.github.cloudstars.lowcode.bpm.engine.BpmProcessEngine;
 import io.github.cloudstars.lowcode.bpm.engine.BpmProcessEngineImpl;
 import io.github.cloudstars.lowcode.bpm.engine.provider.BpmProvider;
-import io.github.cloudstars.lowcode.bpm.provider.camunda.CanumdaBpmProviderImpl;
+import io.github.cloudstars.lowcode.bpm.provider.camunda.CamundaBpmProviderImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +12,7 @@ public class CamundaBpmProviderTestConfiguration extends AbstractBpmEngineTestCo
 
     @Bean
     public BpmProvider bpmEngineProvider() {
-        return new CanumdaBpmProviderImpl();
+        return new CamundaBpmProviderImpl();
     }
 
     @Bean

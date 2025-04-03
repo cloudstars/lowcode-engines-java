@@ -54,7 +54,7 @@ public class OqlDeleteStatement extends AbstractOqlStatementImpl implements OqlS
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChild(visitor, this.from);
             this.nullSafeAcceptChild(visitor, this.where);

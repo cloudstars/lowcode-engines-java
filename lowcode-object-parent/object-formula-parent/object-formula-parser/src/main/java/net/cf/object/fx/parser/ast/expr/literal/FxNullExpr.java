@@ -11,7 +11,7 @@ public final class FxNullExpr extends AbstractFxExprImpl implements FxLiteralExp
     }
 
     @Override
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

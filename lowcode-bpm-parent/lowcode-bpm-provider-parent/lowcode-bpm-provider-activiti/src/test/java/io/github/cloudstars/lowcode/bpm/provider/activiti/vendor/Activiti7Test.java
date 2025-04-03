@@ -41,7 +41,7 @@ public class Activiti7Test {
         Deployment deployment = repositoryService.createDeployment()
                 .name("测试流程文件部署")
                 .key("leave")
-                .addClasspathResource("process/leave.bpmn")
+                .addClasspathResource("processes/leave.bpmn")
                 //.addClasspathResource("processes/leave.jpg")
                 .deploy();
 

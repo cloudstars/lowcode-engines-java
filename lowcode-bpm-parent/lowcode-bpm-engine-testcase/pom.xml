@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-bpm-engine-test</artifactId>
+    <artifactId>lowcode-bpm-engine-testcase</artifactId>
     <description>低代码BPM引擎测试</description>
 
     <dependencies>

@@ -39,7 +39,7 @@ public class SqlJsonObjectExpr extends AbstractSqlExprImpl implements SqlValuabl
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.items != null) {
                 this.nullSafeAcceptChildren(visitor, this.getChildren());

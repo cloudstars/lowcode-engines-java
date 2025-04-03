@@ -11,12 +11,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ActivitiBpmProviderTestApplication.class)
-public class ActivitiBpmProviderTest extends AbstractProcessEngineTest {
+public class ActivitiProcessEngineImplTest extends AbstractProcessEngineTest {
 
-    @Override
     @Test
-    public void testDeploy() {
-        super.testDeploy();
+    @Override
+    public void testDeploySimple1() {
+        super.testDeploySimple1();
+    }
+
+    @Test
+    @Override
+    public void testDeploySimpleBranch() {
+        super.testDeploySimpleBranch();
     }
 
 }

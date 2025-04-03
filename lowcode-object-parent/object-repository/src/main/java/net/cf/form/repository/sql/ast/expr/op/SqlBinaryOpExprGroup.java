@@ -32,7 +32,7 @@ public class SqlBinaryOpExprGroup extends AbstractSqlExprImpl implements SqlRepl
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             for (SqlExpr item : this.items) {
                 item.accept(visitor);

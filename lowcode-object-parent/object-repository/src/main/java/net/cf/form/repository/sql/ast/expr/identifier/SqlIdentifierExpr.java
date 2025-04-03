@@ -71,7 +71,7 @@ public class SqlIdentifierExpr extends AbstractSqlExprImpl implements SqlName {
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

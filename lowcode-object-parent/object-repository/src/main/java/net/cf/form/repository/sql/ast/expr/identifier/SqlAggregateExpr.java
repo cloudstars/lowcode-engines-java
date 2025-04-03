@@ -45,7 +45,7 @@ public class SqlAggregateExpr extends SqlMethodInvokeExpr implements SqlReplacea
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             for (SqlExpr arg : this.arguments) {
                 if (arg != null) {

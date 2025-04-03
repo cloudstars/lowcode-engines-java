@@ -35,7 +35,7 @@ public class OqlSelectStatement extends AbstractOqlStatementImpl {
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChild(visitor, this.select);
         }

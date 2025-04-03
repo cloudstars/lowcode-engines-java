@@ -85,7 +85,7 @@ public class FxBinaryOpExpr extends AbstractFxExprImpl {
     }
 
     @Override
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.left != null) {
                 this.left.accept(visitor);

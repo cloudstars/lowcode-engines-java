@@ -26,7 +26,7 @@ public class SqlCommentHint extends AbstractSqlObjectImpl implements SqlHint {
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

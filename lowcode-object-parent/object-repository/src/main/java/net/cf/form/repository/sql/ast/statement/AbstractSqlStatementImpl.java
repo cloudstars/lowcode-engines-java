@@ -36,7 +36,7 @@ public abstract class AbstractSqlStatementImpl extends AbstractSqlObjectImpl imp
         this.afterSemi = afterSemi;
     }
 
-    protected void accept0(SqlAstVisitor v) {
+    public void accept(SqlAstVisitor v) {
         throw new UnsupportedOperationException(this.getClass().getName());
     }
 

@@ -55,7 +55,7 @@ public class SqlUpdateStatement extends AbstractSqlStatementImpl implements SqlS
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChild(visitor, this.tableSource);
             this.nullSafeAcceptChildren(visitor, this.setItems);

@@ -25,7 +25,7 @@ public final class FxBooleanExpr extends AbstractFxExprImpl implements FxExpr, F
         this.value = value;
     }
 
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

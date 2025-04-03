@@ -28,7 +28,7 @@ public class SqlTimestampExpr extends AbstractSqlTextLiteralExpr implements SqlV
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

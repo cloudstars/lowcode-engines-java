@@ -23,7 +23,7 @@ public class SqlSelectGroupByClause extends AbstractSqlObjectImpl implements Sql
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChildren(visitor, this.items);
             if (this.having != null) {

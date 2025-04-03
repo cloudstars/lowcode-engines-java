@@ -46,7 +46,7 @@
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-bpm-engine-test</artifactId>
+            <artifactId>lowcode-bpm-engine-testcase</artifactId>
         </dependency>
     </dependencies>
 

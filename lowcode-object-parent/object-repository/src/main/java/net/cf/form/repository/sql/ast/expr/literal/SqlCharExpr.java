@@ -14,7 +14,7 @@ public class SqlCharExpr extends AbstractSqlTextLiteralExpr implements SqlValuab
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

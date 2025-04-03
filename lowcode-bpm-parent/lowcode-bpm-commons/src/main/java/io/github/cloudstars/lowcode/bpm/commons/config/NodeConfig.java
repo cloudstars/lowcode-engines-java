@@ -12,16 +12,17 @@ public interface NodeConfig<V> extends XConfig {
 
     /**
      * 获取节点的类型（SDK定义）
+     *
      * @return
      */
-    NodeTypeEnum getType();
+    NodeTypeEnum getNodeType();
 
     /**
      * 获取节点的子类型（用户定义）
      *
      * @return
      */
-    String getSubType();
+    String getType();
 
     /**
      * 获取节点编号

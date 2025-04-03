@@ -11,7 +11,7 @@ import net.cf.object.engine.oql.visitor.OqlAstVisitor;
 public class OqlSubQueryObjectSource extends AbstractOqlObjectSourceImpl {
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
 
     }
 

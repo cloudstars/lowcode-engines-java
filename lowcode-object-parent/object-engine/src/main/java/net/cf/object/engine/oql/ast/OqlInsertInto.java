@@ -74,7 +74,7 @@ public class OqlInsertInto extends AbstractOqlStatementImpl implements SqlReplac
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.objectSource.accept(visitor);
             this.nullSafeAcceptChildren(visitor, this.fields);

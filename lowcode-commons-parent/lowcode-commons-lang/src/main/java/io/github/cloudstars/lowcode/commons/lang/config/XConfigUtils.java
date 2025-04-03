@@ -34,12 +34,12 @@ public final class XConfigUtils {
     /**
      * 将JSON数组配置转为对为的配置列表
      *
-     * @param configsArray
+     * @param configsJson
      * @param configClass
      * @param <T>
      * @return
      */
-    public static <T extends XConfig> List<T> toList(JsonArray configsArray, Class<T> configClass) {
+    public static <T extends XConfig> List<T> toList(JsonArray configsJson, Class<T> configClass) {
         List<T> configs = new ArrayList<>();
         Constructor<T> constructor = null;
         try {
@@ -48,10 +48,10 @@ public final class XConfigUtils {
             throw new RuntimeException("类：" + configClass.getName() + "必须包含参数为JsonObject的构造函数");
         }
 
-        for (Object configItem : configsArray) {
+        for (Object configJson : configsJson) {
             T config = null;
             try {
-                config = constructor.newInstance(configItem);
+                config = constructor.newInstance(configJson);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

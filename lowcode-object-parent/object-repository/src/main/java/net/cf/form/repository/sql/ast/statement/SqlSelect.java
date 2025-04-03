@@ -166,7 +166,7 @@ public class SqlSelect extends AbstractSqlObjectImpl {
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.selectItems != null) {
                 this.nullSafeAcceptChildren(visitor, this.selectItems);

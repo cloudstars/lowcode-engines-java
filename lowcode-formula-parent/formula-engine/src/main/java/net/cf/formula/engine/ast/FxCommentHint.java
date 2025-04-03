@@ -25,7 +25,7 @@ public class FxCommentHint extends AbstractFxObjectImpl implements FxHint {
         this.text = text;
     }
 
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

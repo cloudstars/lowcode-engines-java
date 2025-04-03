@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author clouds 
  */
-@DataTypeConfigClass(name = "FILE")
+@DataTypeConfigClass(type = "FILE")
 public class FileDataTypeConfig extends AbstractObjectDataTypeConfig<FileValue> {
 
     /**

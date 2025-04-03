@@ -29,7 +29,7 @@ public class SqlJsonArrayExpr extends AbstractSqlExprImpl implements SqlValuable
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.items != null) {
                 this.nullSafeAcceptChildren(visitor, this.items);

@@ -69,7 +69,7 @@ public class SqlExprTableSource extends AbstractSqlTableSourceImpl implements Sq
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.expr != null) {
                 this.expr.accept(visitor);

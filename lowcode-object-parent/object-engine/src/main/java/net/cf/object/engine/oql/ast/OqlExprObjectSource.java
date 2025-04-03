@@ -47,7 +47,7 @@ public class OqlExprObjectSource extends AbstractOqlObjectSourceImpl implements 
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.expr != null) {
                 this.expr.accept(visitor);

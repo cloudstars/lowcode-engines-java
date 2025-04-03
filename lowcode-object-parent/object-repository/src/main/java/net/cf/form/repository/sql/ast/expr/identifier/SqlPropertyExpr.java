@@ -89,7 +89,7 @@ public class SqlPropertyExpr extends AbstractSqlExprImpl implements SqlName {
     }*/
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.owner != null) {
                 this.owner.accept(visitor);

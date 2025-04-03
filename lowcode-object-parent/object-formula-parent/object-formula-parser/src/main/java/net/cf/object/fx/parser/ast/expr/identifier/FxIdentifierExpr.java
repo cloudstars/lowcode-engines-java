@@ -29,7 +29,7 @@ public class FxIdentifierExpr extends AbstractFxExprImpl implements FxNameExpr {
         this.name = name;
     }
 
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

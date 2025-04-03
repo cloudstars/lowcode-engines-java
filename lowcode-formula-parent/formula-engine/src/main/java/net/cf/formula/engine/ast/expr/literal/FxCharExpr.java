@@ -15,7 +15,7 @@ public class FxCharExpr extends AbstractFxTextLiteralExpr implements FxValuableE
     }
 
     @Override
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

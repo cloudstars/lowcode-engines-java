@@ -59,7 +59,7 @@ public final class SqlLimit extends AbstractSqlObjectImpl implements SqlReplacea
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.offset != null) {
                 this.offset.accept(visitor);

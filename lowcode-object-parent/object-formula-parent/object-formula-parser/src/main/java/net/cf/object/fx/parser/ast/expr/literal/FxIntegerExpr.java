@@ -17,7 +17,7 @@ public class FxIntegerExpr extends AbstractFxNumericLiteralExpr implements FxVal
     }
 
     @Override
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         visitor.visit(this);
         visitor.endVisit(this);
     }

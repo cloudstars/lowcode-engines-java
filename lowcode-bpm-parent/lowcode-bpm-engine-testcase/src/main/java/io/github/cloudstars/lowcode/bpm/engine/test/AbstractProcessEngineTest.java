@@ -19,10 +19,21 @@ public abstract class AbstractProcessEngineTest {
     private BpmProvider provider;
 
     /**
-     * 测试部署流程定义
+     * 测试部署流程定义（简单不含分支的流程）
      */
-    protected void testDeploy() {
+    protected void testDeploySimple1() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple1.json");
+        ProcessConfig config = new ProcessConfig(configJson);
+        String deployId = this.provider.deploy(config);
+        // 此次简单断言部署ID不为NULL
+        Assert.assertNotNull(deployId);
+    }
+
+    /**
+     * 测试部署流程定义（简单的含分支的流程）
+     */
+    protected void testDeploySimpleBranch() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple-branch.json");
         ProcessConfig config = new ProcessConfig(configJson);
         String deployId = this.provider.deploy(config);
         // 此次简单断言部署ID不为NULL

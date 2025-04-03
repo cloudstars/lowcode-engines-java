@@ -18,7 +18,7 @@
     <modules>
         <module>lowcode-bpm-commons</module>
         <module>lowcode-bpm-engine</module>
-        <module>lowcode-bpm-engine-test</module>
+        <module>lowcode-bpm-engine-testcase</module>
         <module>lowcode-bpm-provider-parent</module>
     </modules>
 
@@ -41,7 +41,7 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-bpm-engine-test</artifactId>
+                <artifactId>lowcode-bpm-engine-testcase</artifactId>
                 <version>${revision}</version>
                 <scope>test</scope>
             </dependency>

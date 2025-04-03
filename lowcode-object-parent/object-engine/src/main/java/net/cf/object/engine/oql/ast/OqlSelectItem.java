@@ -56,7 +56,7 @@ public class OqlSelectItem extends AbstractOqlExprImpl {
     }
 
     @Override
-    protected void accept0(OqlAstVisitor v) {
+    public void accept(OqlAstVisitor v) {
         if (v.visit(this)) {
             if (this.expr != null) {
                 this.expr.accept(v);

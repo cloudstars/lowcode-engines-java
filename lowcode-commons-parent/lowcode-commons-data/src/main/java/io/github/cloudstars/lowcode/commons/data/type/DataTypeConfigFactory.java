@@ -23,7 +23,7 @@ public class DataTypeConfigFactory {
     public static DataTypeConfig newInstance(JsonObject dataTypeConfig) {
         Object dataTypeValue = dataTypeConfig.get("dataType");
         if (dataTypeValue == null) {
-            throw new RuntimeException("数据格式[type]不存在！");
+            throw new RuntimeException("数据格式[dataType]不存在！");
         }
 
         Class<? extends DataTypeConfig> dataTypeClass = DataTypeConfigClassFactory.get(dataTypeValue.toString());

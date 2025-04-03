@@ -2,6 +2,8 @@ package io.github.cloudstars.lowcode.bpm.engine;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
 import io.github.cloudstars.lowcode.bpm.engine.provider.BpmProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -11,6 +13,8 @@ import java.util.Map;
  * @author clouds 
  */
 public class BpmProcessEngineImpl implements BpmProcessEngine {
+
+    private final static Logger logger = LoggerFactory.getLogger(BpmProcessEngineImpl.class);
 
     /**
      * 流程引擎提供方
@@ -29,7 +33,9 @@ public class BpmProcessEngineImpl implements BpmProcessEngine {
 
     @Override
     public String start(String processKey, Map<String, Object> dataMap) {
-        return null;
+        String processInstId = this.bpmProvider.start(processKey, dataMap);
+        logger.info("流程启动调用成功，返回流程实例ID：{}", processInstId);
+        return processInstId;
     }
 
     @Override

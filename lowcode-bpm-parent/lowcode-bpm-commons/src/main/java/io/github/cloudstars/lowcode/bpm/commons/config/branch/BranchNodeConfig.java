@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author clouds
  */
-@NodeConfigClass(name = "BRANCH")
+@NodeConfigClass(type = "BRANCH")
 public class BranchNodeConfig extends AbstractNodeConfig {
 
     /**
@@ -33,8 +33,6 @@ public class BranchNodeConfig extends AbstractNodeConfig {
         }
 
         List<NodeConfig> nodeConfigs = new ArrayList<>();
-        this.setNodes(nodeConfigs);
-
         JsonArray nodes = (JsonArray) nodesValue;
         nodes.forEach((node) -> {
             JsonObject nodeConfigJson = (JsonObject) node;
@@ -43,6 +41,7 @@ public class BranchNodeConfig extends AbstractNodeConfig {
                 nodeConfigs.add(nodeConfig);
             }
         });
+        this.setNodes(nodeConfigs);
     }
 
     public List<NodeConfig> getNodes() {
@@ -51,11 +50,30 @@ public class BranchNodeConfig extends AbstractNodeConfig {
 
     public void setNodes(List<NodeConfig> nodes) {
         this.nodes = nodes;
+
+        // 建立前后节点关系
+        int nodeSize = nodes.size();
+        if (nodeSize > 0) {
+            // 第一个节点的前一个节点和最后一个节点的下一个节点都是当前分支节点
+            AbstractNodeConfig firstNode = (AbstractNodeConfig) nodes.get(0);
+            firstNode.setPrevNode(this);
+            AbstractNodeConfig lastNode = (AbstractNodeConfig) nodes.get(nodeSize - 1);
+            lastNode.setNextNode(this);
+
+            // 每一个节点的前后端按位置顺序建立前后关联
+            AbstractNodeConfig prev = firstNode;
+            for (int i = 1; i < nodeSize; i++) {
+                AbstractNodeConfig anode = ((AbstractNodeConfig) nodes.get(i));
+                prev.setNextNode(anode);
+                anode.setPrevNode(prev);
+                prev = anode;
+            }
+        }
     }
 
 
     @Override
-    protected void accept0(BpmNodeVisitor visitor) {
+    public void accept(BpmNodeVisitor visitor) {
         if (this.nodes != null) {
             // 循环访问每一个子节点
             this.nodes.forEach((node) -> {
@@ -65,7 +83,7 @@ public class BranchNodeConfig extends AbstractNodeConfig {
     }
 
     @Override
-    public NodeTypeEnum getType() {
+    public NodeTypeEnum getNodeType() {
         return NodeTypeEnum.BRANCH;
     }
 

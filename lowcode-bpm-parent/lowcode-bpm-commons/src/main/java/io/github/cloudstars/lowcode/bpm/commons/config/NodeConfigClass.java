@@ -13,6 +13,6 @@ public @interface NodeConfigClass {
      *
      * @return 节点类型的名称
      */
-    String name();
+    String type();
 
 }

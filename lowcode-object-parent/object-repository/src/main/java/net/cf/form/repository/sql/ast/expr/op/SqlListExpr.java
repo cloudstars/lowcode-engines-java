@@ -44,7 +44,7 @@ public class SqlListExpr extends AbstractSqlExprImpl implements SqlReplaceable/*
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             for (int i = 0; i < this.items.size(); ++i) {
                 SqlExpr item = (SqlExpr) this.items.get(i);

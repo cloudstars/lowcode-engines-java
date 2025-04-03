@@ -41,7 +41,7 @@ public class SqlSubQueryTableSource extends AbstractSqlTableSourceImpl {
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.select != null) {
                 this.select.accept(visitor);

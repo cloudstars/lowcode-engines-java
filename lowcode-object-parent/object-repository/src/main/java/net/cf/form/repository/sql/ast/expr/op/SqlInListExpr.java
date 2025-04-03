@@ -67,7 +67,7 @@ public final class SqlInListExpr extends AbstractNotableBinaryOpExpr {
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.left != null) {
                 this.left.accept(visitor);

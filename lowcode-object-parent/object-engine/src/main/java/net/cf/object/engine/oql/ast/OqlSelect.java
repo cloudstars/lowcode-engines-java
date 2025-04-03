@@ -134,7 +134,7 @@ public class OqlSelect extends AbstractOqlObjectImpl {
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.selectItems != null) {
                 this.nullSafeAcceptChildren(visitor, this.selectItems);

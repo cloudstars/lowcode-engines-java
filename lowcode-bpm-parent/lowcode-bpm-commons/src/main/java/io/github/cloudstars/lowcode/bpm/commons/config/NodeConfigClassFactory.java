@@ -32,9 +32,9 @@ public class NodeConfigClassFactory {
             throw new RuntimeException("节点类型" + nodeType + "已存在，注册失败！");
         }
 
-        NodeConfigClass annos[] = nodeConfigClass.getAnnotationsByType(NodeConfigClass.class);
-        if (annos.length <= 0) {
-            throw new RuntimeException("节点类型" + nodeType + "必须添加注解@NodeTypeConfigClass，注册失败！");
+        NodeConfigClass[] annos = nodeConfigClass.getAnnotationsByType(NodeConfigClass.class);
+        if (annos.length == 0) {
+            throw new RuntimeException("节点类型" + nodeType + "必须添加注解@NodeConfigClass，注册失败！");
         }
 
         try {
@@ -43,7 +43,7 @@ public class NodeConfigClassFactory {
             throw new RuntimeException("节点类型" + nodeType + "必须有一个带JsonObject参数的public构造函数！");
         }
 
-        nodeConfigClassMap.put(annos[0].name(), nodeConfigClass);
+        nodeConfigClassMap.put(annos[0].type(), nodeConfigClass);
     }
 
     /**

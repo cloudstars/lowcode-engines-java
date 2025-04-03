@@ -56,7 +56,7 @@ public class FxJsonObjectExpr extends AbstractFxExprImpl {
     }
 
     @Override
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.items != null) {
                 this.acceptChild(visitor, this.getChildren());

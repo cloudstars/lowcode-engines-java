@@ -62,7 +62,7 @@ public class FxMethodInvokeExpr extends AbstractFxExprImpl {
     }
 
     @Override
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         if (visitor.visit(this)) {
             for (FxExpr arg : this.arguments) {
                 if (arg != null) {

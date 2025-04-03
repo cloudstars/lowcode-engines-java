@@ -57,7 +57,7 @@ public final class OqlExistsExpr extends AbstractOqlExprImpl {
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.nullSafeAcceptChild(visitor, this.subQuery);
         }

@@ -10,7 +10,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@NodeConfigClass(name = "DEFAULT.USER.WRITE")
+@NodeConfigClass(type = "DEFAULT.USER.WRITE")
 public class UserWriteNodeConfig extends AbstractUserNodeConfig {
 
     public UserWriteNodeConfig() {
@@ -21,12 +21,12 @@ public class UserWriteNodeConfig extends AbstractUserNodeConfig {
     }
 
     @Override
-    public NodeTypeEnum getType() {
+    public NodeTypeEnum getNodeType() {
         return NodeTypeEnum.USER_WRITE;
     }
 
     @Override
-    protected void accept0(BpmNodeVisitor visitor) {
+    public void accept(BpmNodeVisitor visitor) {
         if (visitor.visit(this)) {
             visitor.endVisit(this);
         }

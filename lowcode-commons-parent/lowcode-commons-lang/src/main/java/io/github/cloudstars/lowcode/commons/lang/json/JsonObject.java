@@ -103,4 +103,27 @@ public class JsonObject<K, V> extends JsonProxy<JSONObject> implements Map<Strin
         return this.proxy.toString();
     }
 
+
+    /**
+     * 从JSON对象中获取一个key的值，如果key存在，则调用转换函数转换成正确的格式，否则返回默认值
+     *
+     * @param key 属性名
+     * @param getter 取值函数
+     * @param defaultValue 默认值
+     * @return 期望的值
+     * @param <T> 期望的类型
+     */
+    public <T extends Object> T getNonNullOrDefault(String key, GetterFunction<T> getter, T defaultValue) {
+        Object value = this.get(key);
+        if (value != null) {
+            return getter.get(value);
+        } else {
+            return defaultValue;
+        }
+    }
+
+    public interface GetterFunction<T extends Object> {
+        T get(Object nonNullValue);
+    }
+
 }

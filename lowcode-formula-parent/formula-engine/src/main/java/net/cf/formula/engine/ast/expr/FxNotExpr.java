@@ -39,7 +39,7 @@ public final class FxNotExpr extends AbstractFxExprImpl {
     }
 
     @Override
-    protected void accept0(FxAstVisitor visitor) {
+    public void accept(FxAstVisitor visitor) {
         if (visitor.visit(this) && this.expr != null) {
             this.expr.accept(visitor);
         }

@@ -64,7 +64,7 @@ public class SqlCaseExpr extends AbstractSqlExprImpl implements SqlReplaceable {
     }
 
     @Override
-    protected void accept0(SqlAstVisitor visitor) {
+    public void accept(SqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             if (this.valueExpr != null) {
                 this.valueExpr.accept(visitor);
@@ -170,7 +170,7 @@ public class SqlCaseExpr extends AbstractSqlExprImpl implements SqlReplaceable {
             this.valueExpr = valueExpr;
         }
 
-        protected void accept0(SqlAstVisitor visitor) {
+        public void accept(SqlAstVisitor visitor) {
             if (visitor.visit(this)) {
                 if (this.conditionExpr != null) {
                     this.conditionExpr.accept(visitor);

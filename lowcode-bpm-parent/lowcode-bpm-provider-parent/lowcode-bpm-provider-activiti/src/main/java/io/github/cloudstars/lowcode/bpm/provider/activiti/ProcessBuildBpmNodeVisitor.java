@@ -2,7 +2,10 @@ package io.github.cloudstars.lowcode.bpm.provider.activiti;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.NodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.bpm.commons.config.end.EndNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.gateway.GatewayBranchNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.gateway.GatewayNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.start.StartNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.user.AbstractUserNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.user.UserApproveNodeConfig;
@@ -10,6 +13,9 @@ import io.github.cloudstars.lowcode.bpm.commons.config.user.UserWriteNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activiti模型构建的BPM节点访问器
@@ -22,11 +28,6 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
      * Activiti模型
      */
     private Process process;
-
-    /**
-     * 前一个访问的节点配置
-     */
-    private AbstractNodeConfig prevNodeConfig;
 
 
     public ProcessBuildBpmNodeVisitor(Process process) {
@@ -43,7 +44,6 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
         startEvent.setId(nodeConfig.getKey());
         startEvent.setName(nodeConfig.getName());
         this.process.addFlowElement(startEvent);
-        this.prevNodeConfig = nodeConfig;
 
         return false;
     }
@@ -55,9 +55,7 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
         process.addFlowElement(userTask);
 
         // 创建前一个节点到当前用户审批节点的边
-        SequenceFlow sequenceFlow = this.createSequenceFlowFromPrev(nodeConfig);
-        process.addFlowElement(sequenceFlow);
-        this.prevNodeConfig = nodeConfig;
+        this.createSequenceFlowFromPrev(nodeConfig);
 
         return false;
     }
@@ -69,27 +67,23 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
         process.addFlowElement(userTask);
 
         // 创建前一个节点到当前用户填写节点的边
-        SequenceFlow sequenceFlow = this.createSequenceFlowFromPrev(nodeConfig);
-        process.addFlowElement(sequenceFlow);
-        this.prevNodeConfig = nodeConfig;
+        this.createSequenceFlowFromPrev(nodeConfig);
 
         return false;
     }
 
     @Override
     public boolean visit(EndNodeConfig nodeConfig) {
+        String nodeKey = nodeConfig.getKey();
+
         // 创建结束事件
         EndEvent endEvent = new EndEvent();
-        String nodeKey = nodeConfig.getKey();
         endEvent.setId(nodeKey);
         endEvent.setName(nodeConfig.getName());
         this.process.addFlowElement(endEvent);
-        this.prevNodeConfig = nodeConfig;
 
-        // 创建前一个节点到结束事件的边
-        String prevNodeKey = this.prevNodeConfig.getKey();
-        SequenceFlow sequenceFlow = this.createSequenceFlow(prevNodeKey, nodeKey);
-        process.addFlowElement(sequenceFlow);
+        // 创建前一个节点到当前用户审批节点的边
+        this.createSequenceFlowFromPrev(nodeConfig);
 
         return false;
     }
@@ -109,19 +103,99 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
         return userTask;
     }
 
+    @Override
+    public boolean visit(GatewayNodeConfig nodeConfig) {
+        // 生成开始网关
+        ExclusiveGateway startGateway = new ExclusiveGateway();
+        String startGatewayKey = this.getStartGatewayId(nodeConfig);
+        startGateway.setId(startGatewayKey);
+        startGateway.setName(nodeConfig.getName() + "_start");
+        List<SequenceFlow> incomingFlows = new ArrayList<>();
+        incomingFlows.add(this.createSequenceFlow(nodeConfig.getPrevNode().getKey(), startGatewayKey));
+        startGateway.setIncomingFlows(incomingFlows);
+        List<GatewayBranchNodeConfig> branches = nodeConfig.getBranches();
+        List<SequenceFlow> outgoingFlows = new ArrayList<>();
+        for (GatewayBranchNodeConfig branch : branches) {
+            List<NodeConfig> branchNodes = branch.getNodes();
+            if (branchNodes.size() > 0) { // 可能存在一些没有节点的分支
+                String firstNodeKey = branchNodes.get(0).getKey();
+                SequenceFlow outgoingFlow = this.createSequenceFlow(startGatewayKey, firstNodeKey);
+                outgoingFlow.setConditionExpression(branch.getCondition().getExpression());
+                outgoingFlows.add(outgoingFlow);
+            }
+        }
+        startGateway.setOutgoingFlows(outgoingFlows);
+        process.addFlowElement(startGateway);
+
+        return true;
+    }
+
+    @Override
+    public void endVisit(GatewayNodeConfig nodeConfig) {
+        // 生成结束网关
+        ExclusiveGateway endGateway = new ExclusiveGateway();
+        String endGatewayKey = this.getEndGatewayKey(nodeConfig);
+        endGateway.setId(endGatewayKey);
+        endGateway.setName(nodeConfig.getName() + "_end");
+        List<GatewayBranchNodeConfig> branches = nodeConfig.getBranches();
+        List<SequenceFlow> ingoingFlows = new ArrayList<>();
+        for (GatewayBranchNodeConfig branch : branches) {
+            List<NodeConfig> branchNodes = branch.getNodes();
+            if (branchNodes.size() > 0) { // 可能存在一些没有节点的分支
+                String lastNodeKey = branchNodes.get(branchNodes.size() - 1).getKey();
+                SequenceFlow ingoingFlow = this.createSequenceFlow(lastNodeKey, endGatewayKey);
+                ingoingFlows.add(ingoingFlow);
+            } else {
+                // 分支不存在节点时，直接开始网关连接结束网关
+                String startGatewayKey = this.getStartGatewayId(nodeConfig);
+                SequenceFlow ingoingFlow = this.createSequenceFlow(startGatewayKey, endGatewayKey);
+                ingoingFlows.add(ingoingFlow);
+            }
+        }
+        endGateway.setIncomingFlows(ingoingFlows);
+        List<SequenceFlow> outgoingFlows = new ArrayList<>();
+        outgoingFlows.add(this.createSequenceFlow(endGatewayKey, nodeConfig.getNextNode().getKey()));
+        endGateway.setOutgoingFlows(outgoingFlows);
+        process.addFlowElement(endGateway);
+    }
+
+    /**
+     * 获取开始网关的ID
+     *
+     * @param nodeConfig
+     * @return
+     */
+    private String getStartGatewayId(GatewayNodeConfig nodeConfig) {
+        return nodeConfig.getKey() + "_start";
+    }
+
+    /**
+     * 获取结束网关的ID
+     *
+     * @param nodeConfig
+     * @return
+     */
+    private String getEndGatewayKey(GatewayNodeConfig nodeConfig) {
+        return nodeConfig.getKey() + "_end";
+    }
+
     /**
      * 创建前一个节点到指定节点的边
      *
      * @param nodeConfig
      * @return
      */
-    protected SequenceFlow createSequenceFlowFromPrev(NodeConfig nodeConfig) {
-        String nodeKey = nodeConfig.getKey();
-        String prevNodeKey = prevNodeConfig.getKey();
-        SequenceFlow sequenceFlow = new SequenceFlow();
-        sequenceFlow.setSourceRef(prevNodeKey);
-        sequenceFlow.setTargetRef(nodeKey);
-        return sequenceFlow;
+    protected void createSequenceFlowFromPrev(NodeConfig nodeConfig) {
+        AbstractNodeConfig aNodeConfig = (AbstractNodeConfig) nodeConfig;
+        AbstractNodeConfig prevNodeConfig = (AbstractNodeConfig) aNodeConfig.getPrevNode();
+        if (prevNodeConfig != null) {
+            // 网关节点已经由结束网关拉出边，不需要再拉边
+            if (prevNodeConfig.getNodeType() != NodeTypeEnum.GATEWAY) {
+                String nodeKey = nodeConfig.getKey();
+                String prevNodeKey = prevNodeConfig.getKey();
+                this.createSequenceFlow(prevNodeKey, nodeKey);
+            }
+        }
     }
 
     /**
@@ -133,8 +207,10 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
      */
     protected SequenceFlow createSequenceFlow(String from, String to) {
         SequenceFlow flow = new SequenceFlow();
+        flow.setId(from + "_" + to);
         flow.setSourceRef(from);
         flow.setTargetRef(to);
+        this.process.addFlowElement(flow);
         return flow;
     }
 

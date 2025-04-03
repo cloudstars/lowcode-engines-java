@@ -11,7 +11,7 @@ import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 public abstract class ServiceTaskNodeConfig extends AbstractNodeConfig {
 
     @Override
-    public NodeTypeEnum getType() {
+    public NodeTypeEnum getNodeType() {
         return NodeTypeEnum.SERVICE;
     }
 

@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@DataTypeConfigClass(name = "NUMBER")
+@DataTypeConfigClass(type = "NUMBER")
 public class NumberDataTypeConfig extends AbstractDataTypeConfig<Number> {
 
     /**
@@ -134,8 +134,9 @@ public class NumberDataTypeConfig extends AbstractDataTypeConfig<Number> {
             return n1.intValue() - n2.intValue();
         }
 
+        double mistake = 1 / Math.pow(10, this.precision + 1);
         double d = n1.doubleValue() - n2.doubleValue();
-        return d == 0 ? 0 : ((d < 0) ? - 1 : 1);
+        return (Math.abs(d) < mistake) ? 0 : ((d < 0) ? - 1 : 1);
     }
 
 }

@@ -10,7 +10,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@NodeConfigClass(name = "DEFAULT.USER.APPROVE")
+@NodeConfigClass(type = "DEFAULT.USER.APPROVE")
 public class UserApproveNodeConfig extends AbstractUserNodeConfig {
 
     public UserApproveNodeConfig() {
@@ -21,12 +21,12 @@ public class UserApproveNodeConfig extends AbstractUserNodeConfig {
     }
 
     @Override
-    public NodeTypeEnum getType() {
+    public NodeTypeEnum getNodeType() {
         return NodeTypeEnum.USER_APPROVE;
     }
 
     @Override
-    protected void accept0(BpmNodeVisitor visitor) {
+    public void accept(BpmNodeVisitor visitor) {
         if (visitor.visit(this)) {
             visitor.endVisit(this);
         }

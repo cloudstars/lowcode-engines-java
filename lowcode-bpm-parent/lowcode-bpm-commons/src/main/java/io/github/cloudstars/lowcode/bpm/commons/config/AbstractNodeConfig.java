@@ -4,6 +4,8 @@ import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
+import java.util.List;
+
 /**
  * 抽象流程节点定义
  *
@@ -26,6 +28,16 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
      */
     private String name;
 
+    /**
+     * 前一个节点
+     */
+    private NodeConfig prevNode;
+
+    /**
+     * 后一个节点
+     */
+    private NodeConfig nextNode;
+
     public AbstractNodeConfig() {
     }
 
@@ -39,7 +51,7 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
 
 
     @Override
-    public String getSubType() {
+    public String getType() {
         return subType;
     }
 
@@ -65,32 +77,46 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
         this.name = name;
     }
 
-    /**
-     * 接受一个访问器的访问
-     *
-     * @param visitor BPM节点访问器
-     */
+    public NodeConfig getPrevNode() {
+        return prevNode;
+    }
+
+    public void setPrevNode(NodeConfig prevNode) {
+        this.prevNode = prevNode;
+    }
+
+    public NodeConfig getNextNode() {
+        return nextNode;
+    }
+
+    public void setNextNode(NodeConfig nextNode) {
+        this.nextNode = nextNode;
+    }
+
     @Override
     public void accept(BpmNodeVisitor visitor) {
-        if (visitor == null) {
-            throw new IllegalArgumentException("visitor is null.");
-        } else {
-            this.accept0(visitor);
+        if (visitor.visit(this)) {
+            visitor.endVisit(this);
         }
     }
 
     /**
-     * 接受一个visitor
+     * 列表接受一个Visitor
      *
-     * @param visitor BPM节点访问器
+     * @param visitor
+     * @param nodes
      */
-    protected abstract void accept0(BpmNodeVisitor visitor);
+    protected void listAccept(List<AbstractNodeConfig> nodes, BpmNodeVisitor visitor) {
+        for (AbstractNodeConfig node : nodes) {
+            node.accept(visitor);
+        }
+    }
 
     @Override
     public JsonObject toJson() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.put("type", this.getType().name());
-        jsonObject.put("subType", this.getSubType());
+        jsonObject.put("type", this.getNodeType().name());
+        jsonObject.put("subType", this.subType);
         jsonObject.put("key", this.key);
         jsonObject.put("name", this.name);
 

@@ -44,7 +44,7 @@ public class OqlInsertSelectStatement extends AbstractOqlStatementImpl implement
     }
 
     @Override
-    protected void accept0(OqlAstVisitor visitor) {
+    public void accept(OqlAstVisitor visitor) {
         if (visitor.visit(this)) {
             this.objectSource.accept(visitor);
             this.nullSafeAcceptChildren(visitor, this.fields);
