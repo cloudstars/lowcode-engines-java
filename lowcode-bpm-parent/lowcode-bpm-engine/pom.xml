@@ -15,7 +15,7 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-bpm-provider</artifactId>
+            <artifactId>lowcode-bpm-vendor</artifactId>
         </dependency>
 
         

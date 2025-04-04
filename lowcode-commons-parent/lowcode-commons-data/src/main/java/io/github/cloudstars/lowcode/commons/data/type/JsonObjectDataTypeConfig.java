@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-@DataTypeConfigClass(type = "JSON_OBJECT")
+@DataTypeConfigClass(name = "JSON_OBJECT")
 public class JsonObjectDataTypeConfig extends AbstractObjectDataTypeConfig<JsonObject> {
 
     public JsonObjectDataTypeConfig() {

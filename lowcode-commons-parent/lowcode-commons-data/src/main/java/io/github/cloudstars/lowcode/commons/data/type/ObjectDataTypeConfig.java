@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author clouds
  */
-@DataTypeConfigClass(type = "OBJECT")
+@DataTypeConfigClass(name = "OBJECT")
 public class ObjectDataTypeConfig extends AbstractObjectDataTypeConfig<Object> {
 
     public ObjectDataTypeConfig() {

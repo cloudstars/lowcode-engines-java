@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-@DataTypeConfigClass(type = "OPTION")
+@DataTypeConfigClass(name = "OPTION")
 public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionValue> {
 
     private String labelField = "label";

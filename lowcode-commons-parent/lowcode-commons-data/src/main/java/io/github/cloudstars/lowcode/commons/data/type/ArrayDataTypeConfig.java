@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @param <V>
  */
-@DataTypeConfigClass(type = "ARRAY")
+@DataTypeConfigClass(name = "ARRAY")
 public class ArrayDataTypeConfig<V> extends AbstractDataTypeConfig<List<V>> {
 
     /**

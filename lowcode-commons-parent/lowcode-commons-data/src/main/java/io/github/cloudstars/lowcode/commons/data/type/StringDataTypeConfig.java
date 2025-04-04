@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@DataTypeConfigClass(type = "STRING")
+@DataTypeConfigClass(name = "STRING")
 public class StringDataTypeConfig extends AbstractDataTypeConfig<String> {
 
     /**

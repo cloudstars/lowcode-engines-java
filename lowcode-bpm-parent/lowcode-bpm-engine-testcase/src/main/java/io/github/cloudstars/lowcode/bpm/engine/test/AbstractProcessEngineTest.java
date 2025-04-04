@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.engine.test;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
-import io.github.cloudstars.lowcode.bpm.engine.provider.BpmProvider;
+import io.github.cloudstars.lowcode.bpm.engine.vendor.BpmDeployProvider;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import org.junit.Assert;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 public abstract class AbstractProcessEngineTest {
 
     @Resource
-    private BpmProvider provider;
+    private BpmDeployProvider provider;
 
     /**
      * 测试部署流程定义（简单不含分支的流程）
