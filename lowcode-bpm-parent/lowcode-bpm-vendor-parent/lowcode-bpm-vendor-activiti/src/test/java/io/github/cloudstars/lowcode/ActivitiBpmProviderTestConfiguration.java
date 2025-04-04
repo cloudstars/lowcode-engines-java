@@ -4,11 +4,11 @@ import io.github.cloudstars.lowcode.bpm.engine.service.BpmDeployService;
 import io.github.cloudstars.lowcode.bpm.engine.service.BpmDeployServiceImpl;
 import io.github.cloudstars.lowcode.bpm.engine.service.BpmProcessService;
 import io.github.cloudstars.lowcode.bpm.engine.service.BpmProcessServiceImpl;
-import io.github.cloudstars.lowcode.bpm.engine.vendor.BpmDeployProvider;
-import io.github.cloudstars.lowcode.bpm.engine.vendor.BpmProcessProvider;
-import io.github.cloudstars.lowcode.bpm.provider.activiti.ActivitiBpmDeployProviderImpl;
-import io.github.cloudstars.lowcode.bpm.provider.activiti.ActivitiBpmProcessProviderImpl;
-import io.github.cloudstars.lowcode.bpm.provider.activiti.vendor.ActivitiEventListenerImpl;
+import io.github.cloudstars.lowcode.bpm.vendor.BpmDeployProvider;
+import io.github.cloudstars.lowcode.bpm.vendor.BpmProcessProvider;
+import io.github.cloudstars.lowcode.bpm.vendor.activiti.ActivitiBpmDeployProviderImpl;
+import io.github.cloudstars.lowcode.bpm.vendor.activiti.ActivitiBpmProcessProviderImpl;
+import io.github.cloudstars.lowcode.bpm.vendor.activiti.vendor.ActivitiEventListenerImpl;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.activiti.spring.SpringProcessEngineConfiguration;
@@ -48,7 +48,7 @@ public class ActivitiBpmProviderTestConfiguration extends AbstractBpmEngineTestC
     }
 
     @Bean
-    public BpmProcessService processEngine(BpmProcessProvider processProvider) {
+    public BpmProcessService processService(BpmProcessProvider processProvider) {
         return new BpmProcessServiceImpl(processProvider);
     }
 

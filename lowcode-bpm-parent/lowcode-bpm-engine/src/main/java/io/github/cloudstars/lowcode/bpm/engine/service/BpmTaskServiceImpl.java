@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.bpm.engine.service;
 
-import io.github.cloudstars.lowcode.bpm.engine.vendor.BpmDeployProvider;
+import io.github.cloudstars.lowcode.bpm.vendor.BpmDeployProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

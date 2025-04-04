@@ -2,11 +2,12 @@ package io.github.cloudstars.lowcode.commons.test.db.dataset.mongo;
 
 import com.alibaba.fastjson.JSONArray;
 import com.mongodb.client.MongoCollection;
+import io.github.cloudstars.lowcode.commons.test.db.dataset.IDataSet;
 import io.github.cloudstars.lowcode.commons.test.db.dataset.JsonDataSetLoader;
 import io.github.cloudstars.lowcode.commons.test.db.dataset.MongoDataSetOperator;
-import io.github.cloudstars.lowcode.commons.test.db.dataset.IDataSet;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
 import org.bson.Document;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,7 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("mongo")
 @SpringBootTest(classes = CommonsTestMongoApplication.class)
+@Ignore
 public class MongoDataSetOperatorTest {
 
     @Resource

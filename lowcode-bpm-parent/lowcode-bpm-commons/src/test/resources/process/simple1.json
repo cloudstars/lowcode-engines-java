@@ -6,20 +6,17 @@
     "nodes": [
       {
         "key": "start",
-        "type": "START",
-        "subType": "DEFAULT.START",
+        "type": "DEFAULT.START",
         "name": "员工填写"
       },
       {
         "key": "user-task1",
-        "type": "USER_APPROVE",
-        "subType": "DEFAULT.USER.APPROVE",
+        "type": "DEFAULT.USER.APPROVE",
         "name": "领导审批"
       },
       {
         "key": "end",
-        "type": "END",
-        "subType": "DEFAULT.END",
+        "type": "DEFAULT.END",
         "name": "结束"
       }
     ]

@@ -1,40 +1,40 @@
 {
-  "name": "B表",
-  "code": "B",
+  "name": "B",
+  "title": "B表",
   "columns": [
     {
-      "name": "记录名称",
-      "code": "NAME",
+      "title": "记录名称",
+      "name": "NAME",
       "dataType": "String"
     },
     {
-      "name": "记录日期",
-      "code": "DATE",
+      "title": "记录日期",
+      "name": "DATE",
       "dataType": "Date"
     },
     {
-      "name": "记录时间",
-      "code": "TIME",
+      "title": "记录时间",
+      "name": "TIME",
       "dataType": "Time"
     },
     {
-      "name": "记录描述",
-      "code": "DESC",
+      "title": "记录描述",
+      "name": "DESC",
       "dataType": "String"
     },
     {
-      "name": "记录单价",
-      "code": "PRICE",
+      "title": "记录单价",
+      "name": "PRICE",
       "dataType": "Decimal"
     },
     {
-      "name": "记录数量",
-      "code": "NUMBER",
+      "title": "记录数量",
+      "name": "NUMBER",
       "dataType": "Integer"
     },
     {
-      "name": "记录结构",
-      "code": "SCHEMA",
+      "title": "记录结构",
+      "name": "SCHEMA",
       "dataType": "Object"
     }
   ],

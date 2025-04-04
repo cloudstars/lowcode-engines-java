@@ -4,10 +4,10 @@ import io.github.cloudstars.lowcode.bpm.engine.service.BpmDeployService;
 import io.github.cloudstars.lowcode.bpm.engine.service.BpmDeployServiceImpl;
 import io.github.cloudstars.lowcode.bpm.engine.service.BpmProcessService;
 import io.github.cloudstars.lowcode.bpm.engine.service.BpmProcessServiceImpl;
-import io.github.cloudstars.lowcode.bpm.engine.vendor.BpmDeployProvider;
-import io.github.cloudstars.lowcode.bpm.engine.vendor.BpmProcessProvider;
-import io.github.cloudstars.lowcode.bpm.provider.camunda.CamundaBpmDeployProviderImpl;
-import io.github.cloudstars.lowcode.bpm.provider.camunda.CamundaBpmProcessProviderImpl;
+import io.github.cloudstars.lowcode.bpm.vendor.BpmDeployProvider;
+import io.github.cloudstars.lowcode.bpm.vendor.BpmProcessProvider;
+import io.github.cloudstars.lowcode.bpm.vendor.camunda.CamundaBpmDeployProviderImpl;
+import io.github.cloudstars.lowcode.bpm.vendor.camunda.CamundaBpmProcessProviderImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
