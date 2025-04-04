@@ -1,0 +1,27 @@
+{
+  "type": "FormView",
+  "key": "xxx-form-view",
+  "name": "XXX表单视图",
+  "fields": [
+    {
+      "objectKey": "object1",
+      "fieldKey": "f-xxx1",
+      "mode": "editable"
+    },
+    {
+      "objectKey": "object1",
+      "fieldKey": "f-xxx2",
+      "mode": "readonly"
+    }
+  ],
+  "actions": [
+    {
+      "type": "insert",
+      "name": "新增"
+    },
+    {
+      "type": "update",
+      "name": "更新"
+    }
+  ]
+}

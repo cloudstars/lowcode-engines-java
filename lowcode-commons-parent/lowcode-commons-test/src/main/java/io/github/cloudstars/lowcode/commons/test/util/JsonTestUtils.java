@@ -120,6 +120,18 @@ public final class JsonTestUtils {
     /**
      * 判断源对象是否由目标对象派生的
      *
+     * @param expectedJson 预期的JSON对象
+     * @param actualJson   事实的JSON对象
+     */
+    public static void assertDerivedFrom(Object expectedJson, Object actualJson) {
+        String expectedJsonString = JSON.toJSONString(expectedJson);
+        String actualJsonString = JSON.toJSONString(actualJson);
+        assertDerivedFrom(expectedJsonString, actualJsonString);
+    }
+
+    /**
+     * 判断源对象是否由目标对象派生的
+     *
      * @param expected 预期对象
      * @param actual   事实对象
      */

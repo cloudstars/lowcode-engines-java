@@ -1,0 +1,21 @@
+{
+  "viewType": "ordinary",
+  "viewName": "这是一个普通的表格视图",
+  "objectName": "xxx",
+  "query": {
+    "selectFields": [
+      {"key": "k1", "code": "c1", "name": "n1"},
+      {"key": "k2", "code": "c2", "name": "n2"}
+    ],
+    "filter": {
+      "type": "OQL",
+      "oqlText": "xxx"
+    },
+    "order": {},
+    "pagination": {}
+  },
+  "actions": {
+    "toolbar": [],
+    "row": []
+  }
+}

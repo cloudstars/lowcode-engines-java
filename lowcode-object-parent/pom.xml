@@ -14,21 +14,11 @@
 
     <modules>
         <module>lowcode-object-commons</module>
-        <module>lowcode-object-editor</module>
-        <module>lowcode-object-view</module>
+        <module>lowcode-object-view-parent</module>
+        <module>lowcode-object-engine-parent</module>
+        <module>lowcode-object-oql-parent</module>
         <module>lowcode-object-excel</module>
         <module>lowcode-object-bpm</module>
-        <module>lowcode-object-oql</module>
-        <module>lowcode-object-engine-parent</module>
-        <module>lowcode-object-repository-parent</module>
-        <!--<module>object-engine</module>
-        <module>object-engine-starter-mysql</module>
-        <module>object-engine-starter-mongo</module>
-        <module>object-repository</module>
-        <module>object-repository-testcases</module>
-        <module>object-repository-impl-parent</module>
-        <module>object-oql</module>
-        <module>object-formula-parent</module>-->
     </modules>
 
     <dependencyManagement>
@@ -36,6 +26,11 @@
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-object-commons</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-object-editor</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

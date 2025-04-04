@@ -1,6 +1,5 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.condition;
 
-import io.github.cloudstars.lowcode.bpm.commons.config.NodeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -9,9 +8,21 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@NodeConfigClass(type = "DEFAULT.CONDITION")
 public class ConditionConfig extends AbstractConfig {
 
+    /**
+     * 条件类型属性的名称
+     */
+    private static final String ATTR_TYPE = "type";
+
+    /**
+     * 条件类型属性的名称
+     */
+    private static final String ATTR_VALUE = "value";
+
+    /**
+     * 条件类型
+     */
     private ConditionType type;
 
     /**
@@ -25,7 +36,7 @@ public class ConditionConfig extends AbstractConfig {
     public ConditionConfig(JsonObject configJson) {
         super(configJson);
 
-        Object typeValue = configJson.get("type");
+        Object typeValue = configJson.get(ATTR_TYPE);
         if (typeValue == null) {
             this.type = ConditionType.EXPR;
         } else {
@@ -53,5 +64,18 @@ public class ConditionConfig extends AbstractConfig {
 
     public void setExpression(String expression) {
         this.expression = expression;
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject configJson = super.toJson();
+        configJson.put(ATTR_TYPE, this.type);
+        if (this.type == ConditionType.EXPR) {
+            configJson.put(ATTR_VALUE, this.expression);
+        } else {
+            // TODO
+        }
+
+        return configJson;
     }
 }
