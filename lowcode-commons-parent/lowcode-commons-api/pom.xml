@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>lowcode-commons-api</artifactId>
-    <description>API公共部分</description>
+    <description>低代码公共部分API</description>
 
     <dependencies>
         <!-- 编译时依赖 -->

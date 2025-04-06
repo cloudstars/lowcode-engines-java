@@ -89,16 +89,16 @@ public class BranchNodeConfig extends AbstractNodeConfig {
 
     @Override
     public JsonObject toJson() {
-        JsonObject jsonObject = super.toJson();
+        JsonObject configJson = super.toJson();
 
         // 添加节点配置
         JsonArray nodeJsonArray = new JsonArray();
         this.nodes.forEach(node -> {
             nodeJsonArray.add(node.toJson());
         });
-        jsonObject.put("nodes", nodeJsonArray);
+        configJson.put("nodes", nodeJsonArray);
 
-        return jsonObject;
+        return configJson;
     }
 
 }

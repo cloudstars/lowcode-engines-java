@@ -13,11 +13,10 @@
     <description>低代码脚本引擎parent</description>
 
     <properties>
-        <juel.version>2.2.7</juel.version>
     </properties>
 
     <modules>
-        <module>script-engine</module>
+        <module>lowcode-script-engine</module>
     </modules>
 
     <dependencyManagement>

@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>lowcode-commons-cache</artifactId>
-    <description>缓存公共依赖</description>
+    <description>低代码公共部分缓存</description>
 
     <properties>
         <jedis.version>5.1.3</jedis.version>

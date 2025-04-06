@@ -1,0 +1,26 @@
+{
+  "key": "simple-service-process",
+  "name": "简单程序流程",
+  "mainBranch": {
+    "key": "k7j839fd98lfd00",
+    "name": "主分支",
+    "nodes": [
+      {
+        "key": "f832k4k8fds89",
+        "type": "DEFAULT.START",
+        "name": "开始"
+      },
+      {
+        "key": "f832k4k8fds33",
+        "type": "DEFAULT.SERVICE",
+        "name": "程序节点1",
+        "className": "io.github.cloudstars.lowcode.bpm.engine.starter.activiti.serivce.ServiceTask1"
+      },
+      {
+        "key": "f832k4k8fds45",
+        "type": "DEFAULT.END",
+        "name": "结束"
+      }
+    ]
+  }
+}

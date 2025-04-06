@@ -9,26 +9,18 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
  *
  * @author clouds
  */
-public class ProcessConfigUtils {
+public final class ProcessConfigUtils {
+
+    private ProcessConfigUtils() {
+    }
 
     /**
      * 加载简单的流程
      *
      * @return 流程配置
      */
-    public static ProcessConfig loadSimpleConfig() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple1.json");
-        ProcessConfig config = new ProcessConfig(configJson);
-        return config;
-    }
-
-    /**
-     * 加载简单带分支的流程
-     *
-     * @return 流程配置
-     */
-    public static ProcessConfig loadSimpleBranchConfig() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple-branch.json");
+    public static ProcessConfig loadFromClassPath(String classpath) {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath(classpath);
         ProcessConfig config = new ProcessConfig(configJson);
         return config;
     }

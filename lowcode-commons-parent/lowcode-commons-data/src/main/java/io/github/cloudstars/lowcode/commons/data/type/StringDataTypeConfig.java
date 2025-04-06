@@ -69,8 +69,8 @@ public class StringDataTypeConfig extends AbstractDataTypeConfig<String> {
 
     @Override
     public JsonObject toJson() {
-        JsonObject jsonObject = super.toJson();
-        return jsonObject;
+        JsonObject configJson = super.toJson();
+        return configJson;
     }
 
     @Override

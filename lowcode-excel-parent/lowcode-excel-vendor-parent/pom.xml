@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.cloudstars</groupId>
+        <artifactId>lowcode-excel-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lowcode-excel-vendor-parent</artifactId>
+    <packaging>pom</packaging>
+    <description>低代码Excel实现提供器parent</description>
+
+    <properties>
+    </properties>
+
+    <modules>
+        <module>lowcode-excel-vendor</module>
+        <module>lowcode-excel-vendor-poi</module>
+        <module>lowcode-excel-vendor-fastexcel</module>
+    </modules>
+
+
+</project>

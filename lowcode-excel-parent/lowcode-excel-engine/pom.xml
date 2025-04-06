@@ -9,35 +9,14 @@
     </parent>
 
     <artifactId>lowcode-excel-engine</artifactId>
-    <description>低代码Excel运行时引擎</description>
+    <description>低代码Excel运行时引擎（新）</description>
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-excel-provider</artifactId>
+            <artifactId>lowcode-excel-vendor</artifactId>
             <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-engine</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

@@ -6,6 +6,7 @@ import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.bpm.commons.config.end.EndNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.gateway.GatewayBranchNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.gateway.GatewayNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.service.ServiceTaskNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.start.StartNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.user.AbstractUserNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.user.UserApproveNodeConfig;
@@ -39,41 +40,44 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
     }
 
     @Override
-    public boolean visit(StartNodeConfig nodeConfig) {
+    public void endVisit(StartNodeConfig nodeConfig) {
         StartEvent startEvent = new StartEvent();
         startEvent.setId(nodeConfig.getKey());
         startEvent.setName(nodeConfig.getName());
         this.process.addFlowElement(startEvent);
-
-        return false;
     }
 
     @Override
-    public boolean visit(UserApproveNodeConfig nodeConfig) {
+    public void endVisit(UserApproveNodeConfig nodeConfig) {
         // 创建用户审批任务
         UserTask userTask = this.createUserTask(nodeConfig);
         process.addFlowElement(userTask);
 
         // 创建前一个节点到当前用户审批节点的边
         this.createSequenceFlowFromPrev(nodeConfig);
-
-        return false;
     }
 
     @Override
-    public boolean visit(UserWriteNodeConfig nodeConfig) {
+    public void endVisit(UserWriteNodeConfig nodeConfig) {
         // 创建用户填写任务
         UserTask userTask = this.createUserTask(nodeConfig);
         process.addFlowElement(userTask);
 
         // 创建前一个节点到当前用户填写节点的边
         this.createSequenceFlowFromPrev(nodeConfig);
-
-        return false;
     }
 
     @Override
-    public boolean visit(EndNodeConfig nodeConfig) {
+    public void endVisit(ServiceTaskNodeConfig nodeConfig) {
+        ServiceTask serviceTask = this.createServiceTask(nodeConfig);
+        process.addFlowElement(serviceTask);
+
+        // 创建前一个节点到当前程序节点的边
+        this.createSequenceFlowFromPrev(nodeConfig);
+    }
+
+    @Override
+    public void endVisit(EndNodeConfig nodeConfig) {
         String nodeKey = nodeConfig.getKey();
 
         // 创建结束事件
@@ -84,23 +88,6 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
 
         // 创建前一个节点到当前用户审批节点的边
         this.createSequenceFlowFromPrev(nodeConfig);
-
-        return false;
-    }
-
-    /**
-     * 创建用户任务
-     *
-     * @param nodeConfig 用户节点配置
-     * @return 用户任务
-     */
-    protected UserTask createUserTask(AbstractUserNodeConfig nodeConfig) {
-        UserTask userTask = new UserTask();
-        String nodeKey = nodeConfig.getKey();
-        userTask.setId(nodeKey);
-        userTask.setName(nodeConfig.getName());
-        userTask.setAssignee("XXX");
-        return userTask;
     }
 
     @Override
@@ -180,6 +167,33 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
     }
 
     /**
+     * 创建用户任务
+     *
+     * @param nodeConfig 用户节点配置
+     * @return 用户任务
+     */
+    protected UserTask createUserTask(AbstractUserNodeConfig nodeConfig) {
+        UserTask userTask = new UserTask();
+        this.initCommonInfos(userTask, nodeConfig);
+        userTask.setAssignee(nodeConfig.getAssignee().getValue().toString());
+        return userTask;
+    }
+
+    /**
+     * 创建程序任务
+     *
+     * @param nodeConfig 用户节点配置
+     * @return 用户任务
+     */
+    protected ServiceTask createServiceTask(ServiceTaskNodeConfig nodeConfig) {
+        ServiceTask serviceTask = new ServiceTask();
+        this.initCommonInfos(serviceTask, nodeConfig);
+        serviceTask.setImplementationType("class");
+        serviceTask.setImplementation(nodeConfig.getClassName());
+        return serviceTask;
+    }
+
+    /**
      * 创建前一个节点到指定节点的边
      *
      * @param nodeConfig
@@ -211,6 +225,17 @@ public class ProcessBuildBpmNodeVisitor implements BpmNodeVisitor {
         flow.setTargetRef(toId);
         this.process.addFlowElement(flow);
         return flow;
+    }
+
+    /**
+     * 初始化工具的信息
+     *
+     * @param flowElement
+     * @param nodeConfig
+     */
+    private void initCommonInfos(FlowElement flowElement, AbstractNodeConfig nodeConfig) {
+        flowElement.setId(nodeConfig.getKey());
+        flowElement.setName(nodeConfig.getName());
     }
 
 }

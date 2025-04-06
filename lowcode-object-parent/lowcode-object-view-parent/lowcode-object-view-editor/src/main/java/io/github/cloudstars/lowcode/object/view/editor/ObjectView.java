@@ -15,15 +15,15 @@ public interface ObjectView<V extends AbstractViewConfig, C extends AbstractConf
     /**
      * 根据模型的配置更新视图的配置
      *
-     * @param objectConfig
-     * @return
+     * @param objectConfig 模型配置
+     * @return 视图配置
      */
     V updateByObject(ObjectConfig objectConfig);
 
     /**
      * 将视图配置转换为组件配置
      *
-     * @return
+     * @return 组件配置
      */
     C toComponentConfig();
 }

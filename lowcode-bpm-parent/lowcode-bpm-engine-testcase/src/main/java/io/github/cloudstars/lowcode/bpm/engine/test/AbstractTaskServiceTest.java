@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.bpm.engine.test;
 
-import io.github.cloudstars.lowcode.bpm.engine.service.BpmTaskService;
+import io.github.cloudstars.lowcode.bpm.engine.service.task.BpmTaskService;
 
 import javax.annotation.Resource;
 

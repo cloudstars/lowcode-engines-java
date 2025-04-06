@@ -17,6 +17,7 @@
 
     <modules>
         <module>lowcode-commons-test</module>
+        <module>lowcode-commons-test-db</module>
         <module>lowcode-commons-lang</module>
         <module>lowcode-commons-data</module>
         <module>lowcode-commons-api</module>
@@ -24,9 +25,7 @@
         <module>lowcode-commons-editor</module>
         <module>lowcode-commons-db</module>
         <module>lowcode-commons-event</module>
-        <!--<module>lowcode-commons-cache</module>
-        -->
-        <module>lowcode-commons-test-db</module>
+        <module>lowcode-commons-cache</module>
     </modules>
 
     <dependencyManagement>

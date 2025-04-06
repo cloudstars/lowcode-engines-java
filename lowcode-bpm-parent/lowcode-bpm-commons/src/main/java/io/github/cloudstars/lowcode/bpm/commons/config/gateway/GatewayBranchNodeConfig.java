@@ -50,10 +50,10 @@ public class GatewayBranchNodeConfig extends BranchNodeConfig {
 
     @Override
     public JsonObject toJson() {
-        JsonObject jsonObject = super.toJson();
-        jsonObject.put("condition", this.condition);
+        JsonObject configJson = super.toJson();
+        configJson.put("condition", this.condition);
 
-        return jsonObject;
+        return configJson;
     }
 
 }

@@ -95,9 +95,9 @@ public class ArrayDataTypeConfig<V> extends AbstractDataTypeConfig<List<V>> {
 
     @Override
     public JsonObject toJson() {
-        JsonObject jsonObject = super.toJson();
-        jsonObject.put(ITEMS, itemsDataType.toJson());
-        return jsonObject;
+        JsonObject configJson = super.toJson();
+        configJson.put(ITEMS, itemsDataType.toJson());
+        return configJson;
     }
 
 }

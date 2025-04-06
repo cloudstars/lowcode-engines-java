@@ -20,7 +20,7 @@ public abstract class AbstractDeployServiceTest {
      * 测试部署流程定义（简单不含分支的流程）
      */
     protected void testDeploySimple1() {
-        ProcessConfig config = ProcessConfigUtils.loadSimpleConfig();
+        ProcessConfig config = ProcessConfigUtils.loadFromClassPath(ProcessClassPaths.USER_SIMPLE1);
         String deployId = this.deployService.deploy(config);
         // 此次简单断言部署ID不为NULL
         Assert.assertNotNull(deployId);
@@ -30,7 +30,7 @@ public abstract class AbstractDeployServiceTest {
      * 测试部署流程定义（简单的含分支的流程）
      */
     protected void testDeploySimpleBranch() {
-        ProcessConfig config = ProcessConfigUtils.loadSimpleBranchConfig();
+        ProcessConfig config = ProcessConfigUtils.loadFromClassPath(ProcessClassPaths.USER_SIMPLE_BRANCH);
         String deployId = this.deployService.deploy(config);
         // 此次简单断言部署ID不为NULL
         Assert.assertNotNull(deployId);

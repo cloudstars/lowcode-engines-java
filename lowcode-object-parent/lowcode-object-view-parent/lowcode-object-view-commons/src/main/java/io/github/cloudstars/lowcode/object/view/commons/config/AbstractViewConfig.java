@@ -48,11 +48,11 @@ public abstract class AbstractViewConfig extends AbstractTypedConfig {
 
     @Override
     public JsonObject toJson() {
-        JsonObject jsonObject = super.toJson();
-        jsonObject.put("key", this.key);
-        jsonObject.put("objectName", this.objectName);
+        JsonObject configJson = super.toJson();
+        configJson.put("key", this.key);
+        configJson.put("objectName", this.objectName);
 
-        return jsonObject;
+        return configJson;
     }
 
 }

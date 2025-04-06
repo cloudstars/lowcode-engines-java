@@ -18,6 +18,11 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-object-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-excel-engine</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>

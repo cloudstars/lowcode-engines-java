@@ -101,15 +101,15 @@ public class NumberDataTypeConfig extends AbstractDataTypeConfig<Number> {
 
     @Override
     public JsonObject toJson() {
-        JsonObject jsonObject = super.toJson();
-        jsonObject.put("precision", this.precision);
+        JsonObject configJson = super.toJson();
+        configJson.put("precision", this.precision);
         if (this.minValue != null) {
-            jsonObject.put("minValue", this.minValue);
+            configJson.put("minValue", this.minValue);
         }
         if (this.maxValue != null) {
-            jsonObject.put("maxValue", this.maxValue);
+            configJson.put("maxValue", this.maxValue);
         }
-        return jsonObject;
+        return configJson;
     }
 
     @Override

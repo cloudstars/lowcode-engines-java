@@ -19,6 +19,9 @@
         <module>lowcode-bpm-commons</module>
         <module>lowcode-bpm-engine</module>
         <module>lowcode-bpm-engine-testcase</module>
+        <module>lowcode-bpm-engine-starter-activiti</module>
+        <module>lowcode-bpm-engine-starter-flowable</module>
+        <module>lowcode-bpm-engine-starter-camunda</module>
         <module>lowcode-bpm-vendor-parent</module>
     </modules>
 
@@ -44,6 +47,24 @@
                 <artifactId>lowcode-bpm-engine-testcase</artifactId>
                 <version>${revision}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-bpm-vendor-activiti</artifactId>
+                <version>${revision}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-bpm-vendor-flowable</artifactId>
+                <version>${revision}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-bpm-vendor-camunda</artifactId>
+                <version>${revision}</version>
+                <scope>runtime</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

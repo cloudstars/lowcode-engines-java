@@ -13,6 +13,8 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 @NodeConfigClass(type = "DEFAULT.SERVICE")
 public class ServiceTaskNodeConfig extends AbstractNodeConfig {
 
+    private static final String ATTR_CLASSNAME = "className";
+
     /**
      * 程序的类名
      */
@@ -24,9 +26,16 @@ public class ServiceTaskNodeConfig extends AbstractNodeConfig {
     public ServiceTaskNodeConfig(JsonObject configJson) {
         super(configJson);
 
-        this.className = (String) configJson.get("className");
+        this.className = (String) configJson.get(ATTR_CLASSNAME);
     }
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
     @Override
     public NodeTypeEnum getNodeType() {
@@ -35,10 +44,10 @@ public class ServiceTaskNodeConfig extends AbstractNodeConfig {
 
     @Override
     public JsonObject toJson() {
-        JsonObject jsonObject = super.toJson();
-        jsonObject.put("className", this.className);
+        JsonObject configJson = super.toJson();
+        configJson.put(ATTR_CLASSNAME, this.className);
 
-        return jsonObject;
+        return configJson;
     }
 
 }

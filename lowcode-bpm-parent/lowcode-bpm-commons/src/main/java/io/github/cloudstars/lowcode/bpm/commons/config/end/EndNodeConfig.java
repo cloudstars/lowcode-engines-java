@@ -35,9 +35,9 @@ public class EndNodeConfig extends AbstractNodeConfig {
 
     @Override
     public JsonObject toJson() {
-        JsonObject jsonObject = super.toJson();
+        JsonObject configJson = super.toJson();
         //
-        return jsonObject;
+        return configJson;
     }
 
 }

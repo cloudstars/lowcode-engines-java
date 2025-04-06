@@ -12,6 +12,7 @@ public enum NodeTypeEnum {
     USER_APPROVE,
     USER_WRITE,
     SERVICE,
+    LOOP,
     GATEWAY,
     BRANCH,
     BRANCH_CONDITION,
