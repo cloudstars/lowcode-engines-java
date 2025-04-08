@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author clouds
  */
-@NodeConfigClass(type = "BRANCH")
+@NodeConfigClass(type = "DEFAULT.BRANCH")
 public class BranchNodeConfig extends AbstractNodeConfig {
 
     /**
@@ -76,9 +76,7 @@ public class BranchNodeConfig extends AbstractNodeConfig {
     public void accept(BpmNodeVisitor visitor) {
         if (this.nodes != null) {
             // 循环访问每一个子节点
-            this.nodes.forEach((node) -> {
-                node.accept(visitor);
-            });
+            this.visitList(visitor, this.nodes);
         }
     }
 

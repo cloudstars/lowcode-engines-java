@@ -1,0 +1,41 @@
+{
+  "key": "simple-loop-process",
+  "name": "简单循环流程",
+  "mainBranch": {
+    "key": "k7j839fd98lfd00",
+    "name": "主分支",
+    "nodes": [
+      {
+        "key": "f832k4k8fds11",
+        "type": "DEFAULT.START",
+        "name": "开始"
+      },
+      {
+        "key": "f832k4k8fds22",
+        "type": "DEFAULT.LOOP",
+        "name": "循环处理",
+        "items": "xxxItems",
+        "item": "xxxItem",
+        "nodes": [
+          {
+            "key": "f832k4k8fds33",
+            "type": "DEFAULT.SERVICE",
+            "name": "程序节点1",
+            "className": "io.github.cloudstars.lowcode.bpm.engine.starter.activiti.serivce.BpmServiceTask1"
+          },
+          {
+            "key": "f832k4k8fds44",
+            "type": "DEFAULT.SERVICE",
+            "name": "程序节点2",
+            "className": "io.github.cloudstars.lowcode.bpm.engine.starter.activiti.serivce.BpmServiceTask2"
+          }
+        ]
+      },
+      {
+        "key": "f832k4k8fds55",
+        "type": "DEFAULT.END",
+        "name": "结束"
+      }
+    ]
+  }
+}

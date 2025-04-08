@@ -1,13 +1,13 @@
 package io.github.cloudstars.lowcode.bpm.commons.visitor;
 
-import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.end.EndNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.gateway.GatewayBranchNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.gateway.ConditionBranchNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.gateway.GatewayNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.loop.LoopBranchNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.service.ServiceTaskNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.start.StartNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.user.UserApproveNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.user.UserWriteNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.user.UserApproveTaskNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.user.UserWriteTaskNodeConfig;
 
 /**
  * BPM节点访问器
@@ -22,17 +22,17 @@ public interface BpmNodeVisitor {
      * @param nodeConfig 抽象节点配置
      * @return 是否允许访问
      */
-    default boolean visit(AbstractNodeConfig nodeConfig) {
+    /*default boolean visit(NodeConfig nodeConfig) {
         return true;
-    }
+    }*/
 
     /**
      * 结束访问 抽象节点
      *
      * @param nodeConfig 抽象节点配置
      */
-    default void endVisit(AbstractNodeConfig nodeConfig) {
-    }
+    /*default void endVisit(NodeConfig nodeConfig) {
+    }*/
 
     /**
      * 是否允许访问 开始节点
@@ -76,7 +76,7 @@ public interface BpmNodeVisitor {
      * @param nodeConfig 用户审批节点配置
      * @return 是否允许访问
      */
-    default boolean visit(UserApproveNodeConfig nodeConfig) {
+    default boolean visit(UserApproveTaskNodeConfig nodeConfig) {
         return true;
     }
 
@@ -85,7 +85,7 @@ public interface BpmNodeVisitor {
      *
      * @param nodeConfig 用户审批节点配置
      */
-    default void endVisit(UserApproveNodeConfig nodeConfig) {
+    default void endVisit(UserApproveTaskNodeConfig nodeConfig) {
     }
 
     /**
@@ -94,7 +94,7 @@ public interface BpmNodeVisitor {
      * @param nodeConfig 用户填写节点配置
      * @return 是否允许访问
      */
-    default boolean visit(UserWriteNodeConfig nodeConfig) {
+    default boolean visit(UserWriteTaskNodeConfig nodeConfig) {
         return true;
     }
 
@@ -103,7 +103,7 @@ public interface BpmNodeVisitor {
      *
      * @param nodeConfig 用户填写节点配置
      */
-    default void endVisit(UserWriteNodeConfig nodeConfig) {
+    default void endVisit(UserWriteTaskNodeConfig nodeConfig) {
     }
 
     /**
@@ -122,6 +122,24 @@ public interface BpmNodeVisitor {
      * @param nodeConfig 用户填写节点配置
      */
     default void endVisit(ServiceTaskNodeConfig nodeConfig) {
+    }
+
+    /**
+     * 是否允许访问 循环分支节点
+     *
+     * @param nodeConfig 循环分支节点配置
+     * @return 是否允许访问
+     */
+    default boolean visit(LoopBranchNodeConfig nodeConfig) {
+        return true;
+    }
+
+    /**
+     * 结束访问 循环分支节点
+     *
+     * @param nodeConfig 循环分支节点配置
+     */
+    default void endVisit(LoopBranchNodeConfig nodeConfig) {
     }
     
     /**
@@ -148,7 +166,7 @@ public interface BpmNodeVisitor {
      * @param nodeConfig 网关分支节点配置
      * @return 是否允许访问
      */
-    default boolean visit(GatewayBranchNodeConfig nodeConfig) {
+    default boolean visit(ConditionBranchNodeConfig nodeConfig) {
         return true;
     }
 
@@ -157,7 +175,7 @@ public interface BpmNodeVisitor {
      *
      * @param nodeConfig 网关分支节点配置
      */
-    default void endVisit(GatewayBranchNodeConfig nodeConfig) {
+    default void endVisit(ConditionBranchNodeConfig nodeConfig) {
     }
 
 }

@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.bpm.engine.starter.activiti.serivce;
+package io.github.cloudstars.lowcode.bpm.engine.starter.activiti;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
 import io.github.cloudstars.lowcode.bpm.vendor.activiti.ProcessBuildBpmNodeVisitor;
@@ -11,9 +11,9 @@ import org.activiti.bpmn.model.Process;
  *
  * @author clouds
  */
-public final class ProcessLoadUtils {
+public final class ProcessLoader {
 
-    private ProcessLoadUtils() {
+    private ProcessLoader() {
     }
 
     /**

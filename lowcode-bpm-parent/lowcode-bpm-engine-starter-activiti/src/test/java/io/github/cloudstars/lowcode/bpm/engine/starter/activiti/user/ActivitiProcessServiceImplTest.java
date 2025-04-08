@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.engine.starter.activiti.user;
 
 import io.github.cloudstars.lowcode.ActivitiBpmEngineStarterTestApplication;
-import io.github.cloudstars.lowcode.bpm.engine.test.AbstractProcessServiceTest;
+import io.github.cloudstars.lowcode.bpm.engine.test.user.AbstractProcessServiceTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -8,10 +8,10 @@ package io.github.cloudstars.lowcode.bpm.vendor.service;
 public interface BpmServiceTask {
 
     /**
-     * 执行程序
+     * 执行任务
      *
      * @param execution 执行流上下文
      */
-    void execute(DelegateExecution execution);
+    void executeTask(BpmDelegateExecution execution);
 
 }

@@ -6,9 +6,9 @@ import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 /**
  * 节点类型配置接口
  *
- * @author clouds 
+ * @author clouds
  */
-public interface NodeConfig<V> extends XConfig {
+public interface NodeConfig extends XConfig {
 
     /**
      * 获取节点的类型（SDK定义）

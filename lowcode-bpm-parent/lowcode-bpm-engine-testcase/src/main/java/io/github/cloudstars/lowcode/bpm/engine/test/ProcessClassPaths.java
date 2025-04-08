@@ -23,4 +23,10 @@ public interface ProcessClassPaths {
      */
     String SERVICE_SIMPLE1 = "process/service/service-simple1.json";
 
+
+    /**
+     * 简单的不含嵌套循环的流程配置
+     */
+    String LOOP_SIMPLE1 = "process/loop/loop-simple1.json";
+
 }

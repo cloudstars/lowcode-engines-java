@@ -1,6 +1,8 @@
 package io.github.cloudstars.lowcode.bpm.vendor.activiti;
 
 import io.github.cloudstars.lowcode.bpm.vendor.BpmProcessProvider;
+import io.github.cloudstars.lowcode.bpm.vendor.activiti.query.ProcessInstInfoQueryImpl;
+import io.github.cloudstars.lowcode.bpm.vendor.query.ProcessInstanceInfoQuery;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
@@ -20,6 +22,11 @@ public class ActivitiBpmProcessProviderImpl implements BpmProcessProvider {
 
     @Resource
     private RuntimeService runtimeService;
+
+    @Override
+    public ProcessInstanceInfoQuery createProcessQuery() {
+        return new ProcessInstInfoQueryImpl(this.runtimeService);
+    }
 
     @Override
     public String start(String processKey, Map<String, Object> dataMap) {

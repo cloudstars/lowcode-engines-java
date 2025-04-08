@@ -8,22 +8,22 @@ import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
- * 网关分支节点配置
+ * 条件分支节点配置
  *
  * @author clouds
  */
-@NodeConfigClass(type = "DEFAULT.GATEWAY.BRANCH")
-public class GatewayBranchNodeConfig extends BranchNodeConfig {
+@NodeConfigClass(type = "DEFAULT.CONDITION.BRANCH")
+public class ConditionBranchNodeConfig extends BranchNodeConfig {
 
     /**
      * 分支条件
      */
     private ConditionConfig condition;
 
-    public GatewayBranchNodeConfig() {
+    public ConditionBranchNodeConfig() {
     }
 
-    public GatewayBranchNodeConfig(JsonObject configJson) {
+    public ConditionBranchNodeConfig(JsonObject configJson) {
         super(configJson);
 
         JsonObject conditionJson = (JsonObject) configJson.get("condition");
@@ -40,7 +40,10 @@ public class GatewayBranchNodeConfig extends BranchNodeConfig {
 
     @Override
     public void accept(BpmNodeVisitor visitor) {
-        super.accept(visitor);
+        if (visitor.visit(this)) {
+            super.accept(visitor);
+            visitor.endVisit(this);
+        }
     }
 
     @Override

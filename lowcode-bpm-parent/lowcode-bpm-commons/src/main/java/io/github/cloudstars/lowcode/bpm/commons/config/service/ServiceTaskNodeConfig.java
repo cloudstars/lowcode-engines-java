@@ -3,6 +3,7 @@ package io.github.cloudstars.lowcode.bpm.commons.config.service;
 import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.NodeConfigClass;
 import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
+import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -40,6 +41,13 @@ public class ServiceTaskNodeConfig extends AbstractNodeConfig {
     @Override
     public NodeTypeEnum getNodeType() {
         return NodeTypeEnum.SERVICE;
+    }
+
+    @Override
+    public void accept(BpmNodeVisitor visitor) {
+        if (visitor.visit(this)) {
+            visitor.endVisit(this);
+        }
     }
 
     @Override

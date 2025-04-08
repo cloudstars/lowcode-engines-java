@@ -2,8 +2,8 @@ package io.github.cloudstars.lowcode.bpm.commons.visitor;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.end.EndNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.start.StartNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.user.UserApproveNodeConfig;
-import io.github.cloudstars.lowcode.bpm.commons.config.user.UserWriteNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.user.UserApproveTaskNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.user.UserWriteTaskNodeConfig;
 
 /**
  * 流程配置打印访问器
@@ -39,23 +39,23 @@ public class ProcessConfigOutputVisitor implements BpmNodeVisitor {
     }
 
     @Override
-    public boolean visit(UserApproveNodeConfig nodeConfig) {
+    public boolean visit(UserApproveTaskNodeConfig nodeConfig) {
         this.builder.append("User Approve: ").append(nodeConfig.getKey());
         return true;
     }
 
     @Override
-    public void endVisit(UserApproveNodeConfig nodeConfig) {
+    public void endVisit(UserApproveTaskNodeConfig nodeConfig) {
     }
 
     @Override
-    public boolean visit(UserWriteNodeConfig nodeConfig) {
+    public boolean visit(UserWriteTaskNodeConfig nodeConfig) {
         this.builder.append("User Write: ").append(nodeConfig.getKey());
         return true;
     }
 
     @Override
-    public void endVisit(UserWriteNodeConfig nodeConfig) {
+    public void endVisit(UserWriteTaskNodeConfig nodeConfig) {
     }
 
 }

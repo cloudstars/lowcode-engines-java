@@ -10,7 +10,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public abstract class AbstractUserNodeConfig extends AbstractNodeConfig {
+public abstract class AbstractUserTaskNodeConfig extends AbstractNodeConfig {
 
     /**
      * 任务处理人属性名称
@@ -23,10 +23,10 @@ public abstract class AbstractUserNodeConfig extends AbstractNodeConfig {
     private AssigneeConfig assignee;
 
 
-    public AbstractUserNodeConfig() {
+    public AbstractUserTaskNodeConfig() {
     }
 
-    public AbstractUserNodeConfig(JsonObject configJson) {
+    public AbstractUserTaskNodeConfig(JsonObject configJson) {
         super(configJson);
 
         JsonObject assigneeConfigJson = (JsonObject) configJson.get(ATTR_ASSIGNEE);

@@ -1,9 +1,11 @@
-package io.github.cloudstars.lowcode.bpm.engine.test;
+package io.github.cloudstars.lowcode.bpm.engine.test.user;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
 import io.github.cloudstars.lowcode.bpm.engine.service.BpmDeployService;
 import io.github.cloudstars.lowcode.bpm.engine.service.BpmProcessService;
 import io.github.cloudstars.lowcode.bpm.engine.service.task.BpmTaskService;
+import io.github.cloudstars.lowcode.bpm.engine.test.ProcessClassPaths;
+import io.github.cloudstars.lowcode.bpm.engine.test.ProcessConfigLoader;
 import io.github.cloudstars.lowcode.bpm.vendor.query.TaskInfo;
 import io.github.cloudstars.lowcode.bpm.vendor.query.TaskInfoQuery;
 import org.junit.Assert;
@@ -34,7 +36,7 @@ public abstract class AbstractProcessServiceTest {
      * 测试启动流程定义（简单不含分支的流程）
      */
     protected void testStartSimple1() {
-        ProcessConfig config = ProcessConfigUtils.loadFromClassPath(ProcessClassPaths.USER_SIMPLE1);
+        ProcessConfig config = ProcessConfigLoader.loadFromClassPath(ProcessClassPaths.USER_SIMPLE1);
         String processKey = config.getKey();
 
         // 先部署再启动流程

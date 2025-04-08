@@ -9,9 +9,9 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
  *
  * @author clouds
  */
-public final class ProcessConfigUtils {
+public final class ProcessConfigLoader {
 
-    private ProcessConfigUtils() {
+    private ProcessConfigLoader() {
     }
 
     /**

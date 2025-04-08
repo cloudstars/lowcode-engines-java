@@ -27,7 +27,7 @@ public class GatewayNodeConfig extends AbstractNodeConfig {
     /**
      * 网关下的分支列表
      */
-    private List<GatewayBranchNodeConfig> branches;
+    private List<ConditionBranchNodeConfig> branches;
 
     public GatewayNodeConfig() {
     }
@@ -43,10 +43,10 @@ public class GatewayNodeConfig extends AbstractNodeConfig {
         }
 
         JsonArray branchesConfig = (JsonArray) configJson.get("branches");
-        this.branches = XConfigUtils.toList(branchesConfig, GatewayBranchNodeConfig.class);
+        this.branches = XConfigUtils.toList(branchesConfig, ConditionBranchNodeConfig.class);
 
         // 建立网关与分支的前后关系，网关分支节点的前后节点都是网关节点
-        for (GatewayBranchNodeConfig branch : this.branches) {
+        for (ConditionBranchNodeConfig branch : this.branches) {
             branch.setPrevNode(this);
             branch.setNextNode(this);
         }
@@ -57,7 +57,7 @@ public class GatewayNodeConfig extends AbstractNodeConfig {
         return gatewayType;
     }
 
-    public List<GatewayBranchNodeConfig> getBranches() {
+    public List<ConditionBranchNodeConfig> getBranches() {
         return branches;
     }
 

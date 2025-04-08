@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.engine.service;
 
 import io.github.cloudstars.lowcode.bpm.vendor.BpmProcessProvider;
+import io.github.cloudstars.lowcode.bpm.vendor.query.ProcessInstanceInfoQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,11 @@ public class BpmProcessServiceImpl implements BpmProcessService {
 
     public BpmProcessServiceImpl(BpmProcessProvider processProvider) {
         this.processProvider = processProvider;
+    }
+
+    @Override
+    public ProcessInstanceInfoQuery createQuery() {
+        return this.processProvider.createProcessQuery();
     }
 
     @Override

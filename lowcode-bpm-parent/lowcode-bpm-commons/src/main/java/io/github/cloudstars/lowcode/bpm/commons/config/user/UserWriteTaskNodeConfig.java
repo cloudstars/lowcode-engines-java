@@ -11,12 +11,12 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  * @author clouds
  */
 @NodeConfigClass(type = "DEFAULT.USER.WRITE")
-public class UserWriteNodeConfig extends AbstractUserNodeConfig {
+public class UserWriteTaskNodeConfig extends AbstractUserTaskNodeConfig {
 
-    public UserWriteNodeConfig() {
+    public UserWriteTaskNodeConfig() {
     }
 
-    public UserWriteNodeConfig(JsonObject configJson) {
+    public UserWriteTaskNodeConfig(JsonObject configJson) {
         super(configJson);
     }
 

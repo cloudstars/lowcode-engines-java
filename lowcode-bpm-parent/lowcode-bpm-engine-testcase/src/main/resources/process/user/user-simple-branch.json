@@ -3,8 +3,7 @@
   "name": "简单流程",
   "mainBranch": {
     "key": "k7j839fd98lfd00",
-    "type": "BRANCH",
-    "subType": "DEFAULT.BRANCH",
+    "type": "DEFAULT.BRANCH",
     "name": "主分支",
     "nodes": [
       {
@@ -29,7 +28,7 @@
         "branches": [
           {
             "key": "b632k4k8fd01",
-            "type": "BRANCH",
+            "type": "DEFAULT.CONDITION.BRANCH",
             "name": "分支1",
             "condition": {
               "type": "EXPR",
@@ -49,7 +48,7 @@
           },
           {
             "key": "b632k4k8fd02",
-            "type": "BRANCH",
+            "type": "DEFAULT.CONDITION.BRANCH",
             "name": "分支2",
             "condition": {
               "type": "JSON",

@@ -13,7 +13,6 @@ import java.util.List;
  */
 public abstract class AbstractNodeConfig extends AbstractConfig implements NodeConfig {
 
-
     protected static final String ATTR_CONDITION = "condition";
     protected static final String ATTR_BRANCHES = "branches";
     protected static final String ATTR_BRANCH = "branch";
@@ -36,12 +35,12 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
     /**
      * 前一个节点
      */
-    private NodeConfig prevNode;
+    private AbstractNodeConfig prevNode;
 
     /**
      * 后一个节点
      */
-    private NodeConfig nextNode;
+    private AbstractNodeConfig nextNode;
 
     public AbstractNodeConfig() {
     }
@@ -82,27 +81,20 @@ public abstract class AbstractNodeConfig extends AbstractConfig implements NodeC
         this.name = name;
     }
 
-    public NodeConfig getPrevNode() {
+    public AbstractNodeConfig getPrevNode() {
         return prevNode;
     }
 
-    public void setPrevNode(NodeConfig prevNode) {
+    public void setPrevNode(AbstractNodeConfig prevNode) {
         this.prevNode = prevNode;
     }
 
-    public NodeConfig getNextNode() {
+    public AbstractNodeConfig getNextNode() {
         return nextNode;
     }
 
-    public void setNextNode(NodeConfig nextNode) {
+    public void setNextNode(AbstractNodeConfig nextNode) {
         this.nextNode = nextNode;
-    }
-
-    @Override
-    public void accept(BpmNodeVisitor visitor) {
-        if (visitor.visit(this)) {
-            visitor.endVisit(this);
-        }
     }
 
     /**

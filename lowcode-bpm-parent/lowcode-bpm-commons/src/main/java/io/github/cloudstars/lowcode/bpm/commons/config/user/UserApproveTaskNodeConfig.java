@@ -11,12 +11,12 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  * @author clouds
  */
 @NodeConfigClass(type = "DEFAULT.USER.APPROVE")
-public class UserApproveNodeConfig extends AbstractUserNodeConfig {
+public class UserApproveTaskNodeConfig extends AbstractUserTaskNodeConfig {
 
-    public UserApproveNodeConfig() {
+    public UserApproveTaskNodeConfig() {
     }
 
-    public UserApproveNodeConfig(JsonObject configJson) {
+    public UserApproveTaskNodeConfig(JsonObject configJson) {
         super(configJson);
     }
 

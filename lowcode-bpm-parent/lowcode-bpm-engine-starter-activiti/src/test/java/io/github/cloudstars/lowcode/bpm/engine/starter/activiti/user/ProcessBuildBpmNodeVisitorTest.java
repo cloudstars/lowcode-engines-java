@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.engine.starter.activiti.user;
 
 import io.github.cloudstars.lowcode.ActivitiBpmEngineStarterTestApplication;
-import io.github.cloudstars.lowcode.bpm.engine.starter.activiti.serivce.ProcessLoadUtils;
+import io.github.cloudstars.lowcode.bpm.engine.starter.activiti.ProcessLoader;
 import io.github.cloudstars.lowcode.bpm.engine.test.ProcessClassPaths;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.*;
@@ -21,7 +21,7 @@ public class ProcessBuildBpmNodeVisitorTest {
 
     @Test
     public void testSimple1() {
-        Process process = ProcessLoadUtils.loadFromClassPath(ProcessClassPaths.USER_SIMPLE1);
+        Process process = ProcessLoader.loadFromClassPath(ProcessClassPaths.USER_SIMPLE1);
         Collection<FlowElement> flowElements = process.getFlowElements();
         // 1个开始、1个结束、2个人工、3条边
         Assert.assertEquals(1, flowElements.stream().filter((f) -> f instanceof StartEvent).count());
@@ -33,7 +33,7 @@ public class ProcessBuildBpmNodeVisitorTest {
 
     @Test
     public void testSimpleBranch() {
-        Process process = ProcessLoadUtils.loadFromClassPath(ProcessClassPaths.USER_SIMPLE_BRANCH);
+        Process process = ProcessLoader.loadFromClassPath(ProcessClassPaths.USER_SIMPLE_BRANCH);
         Collection<FlowElement> flowElements = process.getFlowElements();
         // 1个开始、1个结束、2个网关、4个人工、8条边（网关的出入边不计入边）
         Assert.assertEquals(1, flowElements.stream().filter((f) -> f instanceof StartEvent).count());

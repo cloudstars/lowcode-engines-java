@@ -1,5 +1,5 @@
 
-package io.github.cloudstars.lowcode.bpm.engine.starter.activiti.serivce;
+package io.github.cloudstars.lowcode.bpm.engine.starter.activiti.loop;
 
 import io.github.cloudstars.lowcode.ActivitiBpmEngineStarterTestApplication;
 import io.github.cloudstars.lowcode.bpm.engine.starter.activiti.ProcessLoader;
@@ -18,18 +18,19 @@ import java.util.Collection;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ActivitiBpmEngineStarterTestApplication.class)
-public class ProcessBuildBpmServiceNodeVisitorTest {
+public class ProcessBuildBpmLoopNodeVisitorTest {
 
     @Test
     public void testSimple1() {
-        Process process = ProcessLoader.loadFromClassPath(ProcessClassPaths.SERVICE_SIMPLE1);
+        Process process = ProcessLoader.loadFromClassPath(ProcessClassPaths.LOOP_SIMPLE1);
         Collection<FlowElement> flowElements = process.getFlowElements();
-        // 1个开始、1个结束、2个程序、3条边
+        // 1个开始、1个结束、3个程序、8条边、2个网关
         Assert.assertEquals(1, flowElements.stream().filter((f) -> f instanceof StartEvent).count());
         Assert.assertEquals(1, flowElements.stream().filter((f) -> f instanceof EndEvent).count());
-        Assert.assertEquals(2, flowElements.stream().filter((f) -> f instanceof ServiceTask).count());
-        Assert.assertEquals(3, flowElements.stream().filter((f) -> f instanceof SequenceFlow).count());
-        Assert.assertEquals(7, flowElements.size());
+        Assert.assertEquals(3, flowElements.stream().filter((f) -> f instanceof ServiceTask).count());
+        Assert.assertEquals(8, flowElements.stream().filter((f) -> f instanceof SequenceFlow).count());
+        Assert.assertEquals(2, flowElements.stream().filter((f) -> f instanceof Gateway).count());
+        Assert.assertEquals(15, flowElements.size());
     }
 
 }
