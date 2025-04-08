@@ -1,8 +1,8 @@
 package net.cf.excel.provider.fastexcel;
 
-import cn.idev.excel.EasyExcel;
-import cn.idev.excel.ExcelWriter;
-import cn.idev.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import net.cf.excel.provider.ExcelGenerator;
 import net.cf.excel.provider.config.ExcelGeneratorConfig;
 
