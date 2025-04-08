@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration
  * @author 80274507
  */
 @SpringBootApplication(exclude = JdbcTemplateAutoConfiguration.class)
-public class ExcelVendorFastExcelTestApplication {
+public class ExcelVendorEasyExcelTestApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ExcelVendorFastExcelTestApplication.class, args);
+        SpringApplication.run(ExcelVendorEasyExcelTestApplication.class, args);
     }
 }

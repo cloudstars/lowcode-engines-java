@@ -23,7 +23,7 @@ import java.util.Map;
  *
  * @author clouds
  */
-@ActiveProfiles("fastexcel")
+@ActiveProfiles("easyexcel")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ExcelEngineTestApplication.class)
 public class SimpleExcelGeneratorTest {

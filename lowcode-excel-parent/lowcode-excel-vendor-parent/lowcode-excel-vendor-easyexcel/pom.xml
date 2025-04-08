@@ -8,8 +8,8 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-excel-vendor-fastexcel</artifactId>
-    <description>低代码Excel工具提供器FastExcel实现</description>
+    <artifactId>lowcode-excel-vendor-easyexcel</artifactId>
+    <description>低代码Excel工具提供器EasyExcel实现</description>
 
     <dependencies>
         <!-- 编译时依赖 -->

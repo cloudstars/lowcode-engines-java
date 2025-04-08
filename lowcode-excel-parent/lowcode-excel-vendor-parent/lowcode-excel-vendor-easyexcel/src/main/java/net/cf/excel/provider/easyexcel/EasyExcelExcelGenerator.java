@@ -1,4 +1,4 @@
-package net.cf.excel.provider.fastexcel;
+package net.cf.excel.provider.easyexcel;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class FastExcelExcelGenerator<T extends Object> implements ExcelGenerator<T> {
+public class EasyExcelExcelGenerator<T extends Object> implements ExcelGenerator<T> {
 
     /**
      * Excel生成配置
@@ -33,7 +33,7 @@ public class FastExcelExcelGenerator<T extends Object> implements ExcelGenerator
 
     private WriteSheet writeSheet;
 
-    public FastExcelExcelGenerator(ExcelGeneratorConfig config, OutputStream os) {
+    public EasyExcelExcelGenerator(ExcelGeneratorConfig config, OutputStream os) {
         this.config = config;
         this.os = os;
 
