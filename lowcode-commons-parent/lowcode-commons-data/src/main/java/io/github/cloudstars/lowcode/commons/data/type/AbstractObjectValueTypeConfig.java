@@ -10,24 +10,24 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class AbstractObjectDataTypeConfig<V extends Object> extends AbstractDataTypeConfig<V> {
+public abstract class AbstractObjectValueTypeConfig<V extends Object> extends AbstractValueTypeConfig<V> {
 
-    protected AbstractObjectDataTypeConfig() {}
+    protected AbstractObjectValueTypeConfig() {}
 
     /**
      * 对象值下面的属性列表
      */
-    protected List<ObjectProperty> properties = new ArrayList<>();
+    protected List<ObjectValueProperty> properties = new ArrayList<>();
 
-    public AbstractObjectDataTypeConfig(JsonObject configJson) {
+    public AbstractObjectValueTypeConfig(JsonObject configJson) {
         super(configJson);
     }
 
-    public List<ObjectProperty> getProperties() {
+    public List<ObjectValueProperty> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<ObjectProperty> properties) {
+    public void setProperties(List<ObjectValueProperty> properties) {
         this.properties = properties;
     }
 
@@ -35,8 +35,8 @@ public abstract class AbstractObjectDataTypeConfig<V extends Object> extends Abs
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
         List<JsonObject> propertiesJson = new ArrayList<>();
-        for (ObjectProperty property : this.properties) {
-            JsonObject propertyJson = property.getDataType().toJson();
+        for (ObjectValueProperty property : this.properties) {
+            JsonObject propertyJson = property.getValueType().toJson();
             propertyJson.put("name", property.getName());
             propertiesJson.add(propertyJson);
         }

@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.file.commons;
 
 import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
-import io.github.cloudstars.lowcode.commons.data.type.AbstractObjectDataTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.type.DataTypeConfigClass;
+import io.github.cloudstars.lowcode.commons.data.type.AbstractObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.type.ValueTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 
@@ -13,8 +13,8 @@ import java.util.Map;
  *
  * @author clouds 
  */
-@DataTypeConfigClass(name = "FILE")
-public class FileDataTypeConfig extends AbstractObjectDataTypeConfig<FileObject> {
+@ValueTypeConfigClass(name = "FILE")
+public class FileValueTypeConfig extends AbstractObjectValueTypeConfig<FileObject> {
 
     /**
      * 数据中的文件标识属性名
@@ -26,7 +26,7 @@ public class FileDataTypeConfig extends AbstractObjectDataTypeConfig<FileObject>
      */
     private final static String ATTR_NAME = "name";
 
-    public FileDataTypeConfig(JsonObject configJson) {
+    public FileValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
         // 默认值需要在所有属性解析完之后再解析

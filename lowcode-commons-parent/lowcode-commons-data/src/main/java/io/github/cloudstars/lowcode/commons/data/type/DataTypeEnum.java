@@ -1,11 +1,11 @@
-package io.github.cloudstars.lowcode.commons.data;
+package io.github.cloudstars.lowcode.commons.data.type;
 
 /**
- * 内置的数据格式枚举类
+ * 数据类型枚举类
  *
  * @author clouds
  */
-public enum BuiltinDataTypeEnum {
+public enum DataTypeEnum {
 
     STRING,
     NUMBER,

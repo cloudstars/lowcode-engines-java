@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CommonsDataTestApplication.class)
-public class TextDataTypeParserTest {
+public class TextValueTypeParserTest {
 
     @Resource
     private DataTypeParser parser;
@@ -27,9 +27,9 @@ public class TextDataTypeParserTest {
     public void testSimple() {
         Map<String, Object> configMap = JsonTestUtils.loadMapFromClasspath("datatype/string/string-simple.json");
         JsonObject configJson = new JsonObject(configMap);
-        DataTypeConfig valueType = this.parser.fromJson(configJson);
-        Assert.assertEquals(StringDataTypeConfig.class, valueType.getClass());
-        StringDataTypeConfig textValueType = (StringDataTypeConfig) valueType;
+        ValueTypeConfig valueType = this.parser.fromJson(configJson);
+        Assert.assertEquals(StringValueTypeConfig.class, valueType.getClass());
+        StringValueTypeConfig textValueType = (StringValueTypeConfig) valueType;
         Assert.assertEquals(false, textValueType.isRequired());
         Assert.assertEquals("这是一个文本数据，缺省值为abc", textValueType.getRemark());
         Assert.assertEquals("abc", textValueType.getDefaultValue());

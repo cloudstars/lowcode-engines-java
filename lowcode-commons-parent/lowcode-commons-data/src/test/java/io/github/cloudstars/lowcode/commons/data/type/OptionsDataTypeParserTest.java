@@ -30,9 +30,9 @@ public class OptionsDataTypeParserTest {
     @Test
     public void testSimple() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datatype/custom/option-simple.json");
-        DataTypeConfig valueType = this.parser.fromJson(configJson);
-        Assert.assertEquals(OptionDataTypeConfig.class, valueType.getClass());
-        OptionDataTypeConfig optionValueType = (OptionDataTypeConfig) valueType;
+        ValueTypeConfig valueType = this.parser.fromJson(configJson);
+        Assert.assertEquals(OptionValueTypeConfig.class, valueType.getClass());
+        OptionValueTypeConfig optionValueType = (OptionValueTypeConfig) valueType;
         Assert.assertEquals(false, optionValueType.isRequired());
         Assert.assertEquals("这是一个选项数据，有缺省值", optionValueType.getRemark());
         String expectedDefaultValueString = "{\"label\":  \"lll\", \"value\": \"vvv\"}";

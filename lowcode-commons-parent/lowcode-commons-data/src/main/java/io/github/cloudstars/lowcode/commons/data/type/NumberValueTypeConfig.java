@@ -8,8 +8,8 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@DataTypeConfigClass(name = "NUMBER")
-public class NumberDataTypeConfig extends AbstractDataTypeConfig<Number> {
+@ValueTypeConfigClass(name = "NUMBER")
+public class NumberValueTypeConfig extends AbstractValueTypeConfig<Number> {
 
     /**
      * 精度
@@ -26,10 +26,10 @@ public class NumberDataTypeConfig extends AbstractDataTypeConfig<Number> {
      */
     private Number maxValue;
 
-    public NumberDataTypeConfig() {
+    public NumberValueTypeConfig() {
     }
 
-    public NumberDataTypeConfig(JsonObject configJson) {
+    public NumberValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
         Object minValueValue = configJson.get("minValue");

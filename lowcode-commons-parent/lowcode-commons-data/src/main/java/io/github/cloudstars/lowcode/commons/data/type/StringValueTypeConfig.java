@@ -8,8 +8,8 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@DataTypeConfigClass(name = "STRING")
-public class StringDataTypeConfig extends AbstractDataTypeConfig<String> {
+@ValueTypeConfigClass(name = "STRING")
+public class StringValueTypeConfig extends AbstractValueTypeConfig<String> {
 
     /**
      * 最小长度
@@ -21,10 +21,10 @@ public class StringDataTypeConfig extends AbstractDataTypeConfig<String> {
      */
     private Integer maxLength;
 
-    public StringDataTypeConfig() {
+    public StringValueTypeConfig() {
     }
 
-    public StringDataTypeConfig(JsonObject configJson) {
+    public StringValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
         Object minLengthValue = configJson.get("minLength");

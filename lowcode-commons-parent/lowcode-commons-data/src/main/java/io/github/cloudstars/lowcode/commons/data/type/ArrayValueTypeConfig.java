@@ -14,20 +14,20 @@ import java.util.List;
  *
  * @param <V>
  */
-@DataTypeConfigClass(name = "ARRAY")
-public class ArrayDataTypeConfig<V> extends AbstractDataTypeConfig<List<V>> {
+@ValueTypeConfigClass(name = "ARRAY")
+public class ArrayValueTypeConfig<V> extends AbstractValueTypeConfig<List<V>> {
 
     /**
      * 配置中的ITEMS属性名称
      */
     private final static String ITEMS = "items";
 
-    private DataTypeConfig<V> itemsDataType;
+    private ValueTypeConfig<V> itemsDataType;
 
-    public ArrayDataTypeConfig() {
+    public ArrayValueTypeConfig() {
     }
 
-    public ArrayDataTypeConfig(JsonObject configJson) {
+    public ArrayValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
         Object itemsValueType = configJson.get(ITEMS);
@@ -35,17 +35,17 @@ public class ArrayDataTypeConfig<V> extends AbstractDataTypeConfig<List<V>> {
             throw new RuntimeException("数组数据类型必须定义" + ITEMS + "，并且是一个JSON对象");
         }
 
-        this.itemsDataType = DataTypeConfigFactory.newInstance((JsonObject) itemsValueType);
+        this.itemsDataType = ValueTypeConfigFactory.newInstance((JsonObject) itemsValueType);
 
         // 默认值需要在所有属性解析完之后再解析
         this.parseDefaultValue(configJson);
     }
 
-    public DataTypeConfig<V> getItemsDataType() {
+    public ValueTypeConfig<V> getItemsDataType() {
         return itemsDataType;
     }
 
-    public void setItemsDataType(DataTypeConfig<V> itemsDataType) {
+    public void setItemsDataType(ValueTypeConfig<V> itemsDataType) {
         this.itemsDataType = itemsDataType;
     }
 
@@ -87,9 +87,9 @@ public class ArrayDataTypeConfig<V> extends AbstractDataTypeConfig<List<V>> {
 
     @Override
     public void validate(List<V> itemValues) throws InvalidDataException {
-        DataTypeConfig itemDataTypeConfig = this.itemsDataType;
+        ValueTypeConfig itemValueTypeConfig = this.itemsDataType;
         for (V itemValue : itemValues) {
-            DataValidationUtils.validate(itemValue, itemDataTypeConfig);
+            DataValidationUtils.validate(itemValue, itemValueTypeConfig);
         }
     }
 

@@ -12,10 +12,10 @@ public class CommonsDataTestConfiguration implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // 注册内置的数据类型
-        DataTypeConfigClassFactory.register(StringDataTypeConfig.class);
-        DataTypeConfigClassFactory.register(ObjectDataTypeConfig.class);
-        DataTypeConfigClassFactory.register(ArrayDataTypeConfig.class);
-        DataTypeConfigClassFactory.register(OptionDataTypeConfig.class);
+        ValueTypeConfigClassFactory.register(StringValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(ObjectValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(ArrayValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(OptionValueTypeConfig.class);
     }
 
     @Bean

@@ -17,7 +17,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CommonsDataTestApplication.class)
-public class ObjectDataTypeParserTest {
+public class ObjectValueTypeParserTest {
 
     @Resource
     private DataTypeParser parser;
@@ -28,15 +28,15 @@ public class ObjectDataTypeParserTest {
     @Test
     public void testTextObjectValueType() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datatype/object/object-simple.json");
-        DataTypeConfig valueType = this.parser.fromJson(configJson);
-        Assert.assertEquals(ObjectDataTypeConfig.class, valueType.getClass());
-        ObjectDataTypeConfig objectValueType = (ObjectDataTypeConfig) valueType;
+        ValueTypeConfig valueType = this.parser.fromJson(configJson);
+        Assert.assertEquals(ObjectValueTypeConfig.class, valueType.getClass());
+        ObjectValueTypeConfig objectValueType = (ObjectValueTypeConfig) valueType;
 
         Assert.assertEquals(false, objectValueType.isRequired());
         Assert.assertEquals("这是一个对象数据，有缺省值", objectValueType.getRemark());
         JsonTestUtils.assertDerivedFrom("{\"a\": \"x\", \"b\": \"y\"}", JsonUtils.toJsonString(objectValueType.getDefaultValue()));
 
-        List<ObjectProperty> properties = objectValueType.getProperties();
+        List<ObjectValueProperty> properties = objectValueType.getProperties();
         Assert.assertEquals(2, properties.size());
         Assert.assertEquals("a", properties.get(0).getName());
         Assert.assertEquals("b", properties.get(1).getName());

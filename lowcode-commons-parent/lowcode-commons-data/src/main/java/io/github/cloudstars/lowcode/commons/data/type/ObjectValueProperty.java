@@ -6,7 +6,7 @@ package io.github.cloudstars.lowcode.commons.data.type;
  * @author clouds
  *
  */
-public class ObjectProperty {
+public class ObjectValueProperty {
 
     /**
      * 属性名称
@@ -16,14 +16,14 @@ public class ObjectProperty {
     /**
      * 属性的数据类型
      */
-    private DataTypeConfig dataType;
+    private ValueTypeConfig valueType;
 
-    public ObjectProperty() {
+    public ObjectValueProperty() {
     }
 
-    public ObjectProperty(String name, DataTypeConfig dataType) {
+    public ObjectValueProperty(String name, ValueTypeConfig valueType) {
         this.name = name;
-        this.dataType = dataType;
+        this.valueType = valueType;
     }
 
     public String getName() {
@@ -34,12 +34,12 @@ public class ObjectProperty {
         this.name = name;
     }
 
-    public DataTypeConfig getDataType() {
-        return dataType;
+    public ValueTypeConfig getValueType() {
+        return valueType;
     }
 
-    public void setDataType(DataTypeConfig dataType) {
-        this.dataType = dataType;
+    public void setValueType(ValueTypeConfig valueType) {
+        this.valueType = valueType;
     }
 
 }

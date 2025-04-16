@@ -8,16 +8,16 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public class DataTypeParser implements XConfigParser<DataTypeConfig> {
+public class DataTypeParser implements XConfigParser<ValueTypeConfig> {
 
     @Override
-    public DataTypeConfig fromJson(JsonObject configJson) {
+    public ValueTypeConfig fromJson(JsonObject configJson) {
         Object dataTypeValue = configJson.get("dataType");
         if (dataTypeValue == null) {
             throw new RuntimeException("数据类型定义中dataType不能为空，请检查您的配置：" + configJson);
         }
 
-        return DataTypeConfigFactory.newInstance(configJson);
+        return ValueTypeConfigFactory.newInstance(configJson);
     }
 
 }

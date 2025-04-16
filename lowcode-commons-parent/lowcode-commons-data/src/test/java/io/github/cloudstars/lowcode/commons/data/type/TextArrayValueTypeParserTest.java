@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CommonsDataTestApplication.class)
-public class TextArrayDataTypeParserTest {
+public class TextArrayValueTypeParserTest {
 
     @Resource
     private DataTypeParser parser;
@@ -25,14 +25,14 @@ public class TextArrayDataTypeParserTest {
     @Test
     public void testArray() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datatype/array/text-array.json");
-        DataTypeConfig valueType = this.parser.fromJson(configJson);
-        Assert.assertEquals(ArrayDataTypeConfig.class, valueType.getClass());
-        ArrayDataTypeConfig arrayValueType = (ArrayDataTypeConfig) valueType;
+        ValueTypeConfig valueType = this.parser.fromJson(configJson);
+        Assert.assertEquals(ArrayValueTypeConfig.class, valueType.getClass());
+        ArrayValueTypeConfig arrayValueType = (ArrayValueTypeConfig) valueType;
         Assert.assertEquals(true, arrayValueType.isRequired());
 
-        DataTypeConfig itemDataTypeConfig = arrayValueType.getItemsDataType();
-        StringDataTypeConfig textItemValueType = (StringDataTypeConfig) itemDataTypeConfig;
-        Assert.assertEquals(StringDataTypeConfig.class, textItemValueType.getClass());
+        ValueTypeConfig itemValueTypeConfig = arrayValueType.getItemsDataType();
+        StringValueTypeConfig textItemValueType = (StringValueTypeConfig) itemValueTypeConfig;
+        Assert.assertEquals(StringValueTypeConfig.class, textItemValueType.getClass());
         Assert.assertEquals(false, textItemValueType.isRequired());
         Assert.assertEquals("这是一个文本数据，缺省值为abc", textItemValueType.getRemark());
         Assert.assertNull(textItemValueType.getDefaultValue());

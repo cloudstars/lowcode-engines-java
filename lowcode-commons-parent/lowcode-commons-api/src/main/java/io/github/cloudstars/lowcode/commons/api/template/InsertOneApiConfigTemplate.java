@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
-import io.github.cloudstars.lowcode.commons.data.type.NumberDataTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.type.ObjectDataTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.type.NumberValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.type.ObjectValueTypeConfig;
 
 /**
  * 单条数据插入API配置模板
@@ -18,10 +18,10 @@ public class InsertOneApiConfigTemplate extends AbstractApiConfigTemplate<Insert
     @Override
     public ApiConfig newInstance(InsertDataApiConfigParams params) {
         // 入参由输入的属性列表决定
-        ObjectDataTypeConfig inputDataType = new ObjectDataTypeConfig();
+        ObjectValueTypeConfig inputDataType = new ObjectValueTypeConfig();
         inputDataType.setProperties(params.getProperties());
         // 出参是影响行数（1 或 0）
-        NumberDataTypeConfig outputDataType = new NumberDataTypeConfig();
+        NumberValueTypeConfig outputDataType = new NumberValueTypeConfig();
 
         ApiConfig apiConfig = new ApiConfig(inputDataType, outputDataType);
         return apiConfig;

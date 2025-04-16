@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.file.commons;
 
 import io.github.cloudstars.lowcode.FileCommonsTestApplication;
-import io.github.cloudstars.lowcode.commons.data.type.DataTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.type.ValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.data.type.DataTypeParser;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
@@ -28,9 +28,9 @@ public class FileDataTypeParserTest {
     @Test
     public void testSimple() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datatype/file-simple.json");
-        DataTypeConfig valueType = this.parser.fromJson(configJson);
-        Assert.assertEquals(FileDataTypeConfig.class, valueType.getClass());
-        FileDataTypeConfig fileValueType = (FileDataTypeConfig) valueType;
+        ValueTypeConfig valueType = this.parser.fromJson(configJson);
+        Assert.assertEquals(FileValueTypeConfig.class, valueType.getClass());
+        FileValueTypeConfig fileValueType = (FileValueTypeConfig) valueType;
         Assert.assertEquals(false, fileValueType.isRequired());
         Assert.assertEquals("这是一个文件数据，有缺省值", fileValueType.getRemark());
         String expectedDefaultValueString = "{\"key\":  \"kkk\", \"name\": \"nnn\"}";

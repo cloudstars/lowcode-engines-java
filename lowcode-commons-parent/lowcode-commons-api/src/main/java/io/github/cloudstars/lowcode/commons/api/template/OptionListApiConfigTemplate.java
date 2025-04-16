@@ -19,29 +19,29 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
     @Override
     public ApiConfig newInstance(OptionsApiConfigParams params) {
         // 入参可以是一个可选的values属性
-        ObjectProperty valuesProperty = new ObjectProperty();
+        ObjectValueProperty valuesProperty = new ObjectValueProperty();
         valuesProperty.setName("values");
-        ArrayDataTypeConfig valuesDataType = new ArrayDataTypeConfig();
-        valuesDataType.setItemsDataType(new StringDataTypeConfig());
-        valuesProperty.setDataType(valuesDataType);
-        ObjectDataTypeConfig inputDataType = new ObjectDataTypeConfig();
+        ArrayValueTypeConfig valuesDataType = new ArrayValueTypeConfig();
+        valuesDataType.setItemsDataType(new StringValueTypeConfig());
+        valuesProperty.setValueType(valuesDataType);
+        ObjectValueTypeConfig inputDataType = new ObjectValueTypeConfig();
         inputDataType.setProperties(Arrays.asList(valuesProperty));
 
         // 出参是一个列表
-        StringDataTypeConfig labelDataType = new StringDataTypeConfig();
-        ObjectProperty labelProperty = new ObjectProperty(params.getLabelField(), labelDataType);
-        DataTypeConfig valueDataType = null;
+        StringValueTypeConfig labelDataType = new StringValueTypeConfig();
+        ObjectValueProperty labelProperty = new ObjectValueProperty(params.getLabelField(), labelDataType);
+        ValueTypeConfig valueDataType = null;
         if (params.getValueDataType() == OptionsApiConfigParams.ValueDataTypeEnum.STRING) {
-            StringDataTypeConfig stringDataTypeConfig = new StringDataTypeConfig();
+            StringValueTypeConfig stringDataTypeConfig = new StringValueTypeConfig();
             valueDataType = stringDataTypeConfig;
         } else {
-            NumberDataTypeConfig numberDataTypeConfig = new NumberDataTypeConfig();
+            NumberValueTypeConfig numberDataTypeConfig = new NumberValueTypeConfig();
             valueDataType = numberDataTypeConfig;
         }
-        ObjectProperty valueProperty = new ObjectProperty(params.getValueField(), valueDataType);
-        ObjectDataTypeConfig optionDataType = new ObjectDataTypeConfig();
+        ObjectValueProperty valueProperty = new ObjectValueProperty(params.getValueField(), valueDataType);
+        ObjectValueTypeConfig optionDataType = new ObjectValueTypeConfig();
         optionDataType.setProperties(Arrays.asList(labelProperty, valueProperty));
-        ArrayDataTypeConfig outputDataType = new ArrayDataTypeConfig();
+        ArrayValueTypeConfig outputDataType = new ArrayValueTypeConfig();
         outputDataType.setItemsDataType(optionDataType);
 
         ApiConfig apiConfig = new ApiConfig(inputDataType, outputDataType);

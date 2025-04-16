@@ -13,14 +13,14 @@ import java.util.Map;
  *
  * @author clouds
  */
-@DataTypeConfigClass(name = "OPTION")
-public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionObject> {
+@ValueTypeConfigClass(name = "OPTION")
+public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig<OptionObjectValue> {
 
     private String labelField = "label";
 
     private String valueField = "value";
 
-    public OptionDataTypeConfig(JsonObject configJson) {
+    public OptionValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
         Object propertiesConfig = configJson.get("properties");
@@ -30,8 +30,8 @@ public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionObj
             for (Object propertyConfig : propertiesConfigJson) {
                 JsonObject propertyConfigJson = (JsonObject) propertyConfig;
                 String propertyName = (String) propertyConfigJson.get("name");
-                DataTypeConfig propertyValueType = DataTypeConfigFactory.newInstance(propertyConfigJson);
-                ObjectProperty objectProperty = new ObjectProperty(propertyName, propertyValueType);
+                ValueTypeConfig propertyValueType = ValueTypeConfigFactory.newInstance(propertyConfigJson);
+                ObjectValueProperty objectProperty = new ObjectValueProperty(propertyName, propertyValueType);
                 this.properties.add(objectProperty);
             }
 
@@ -39,7 +39,7 @@ public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionObj
                 throw new RuntimeException("选项数据格式必须定义label与value两个属性");
             }
 
-            ObjectProperty firstValueProperty = this.properties.get(0);
+            ObjectValueProperty firstValueProperty = this.properties.get(0);
             if (!"label".equals(firstValueProperty.getName())) {
                 this.properties = Arrays.asList(this.properties.get(1), firstValueProperty);
             }
@@ -51,22 +51,22 @@ public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionObj
     }
 
     @Override
-    protected OptionObject parseDefaultValue(Object defaultValueConfig) {
-        OptionObject defaultValue = null;
+    protected OptionObjectValue parseDefaultValue(Object defaultValueConfig) {
+        OptionObjectValue defaultValue = null;
         if (defaultValueConfig != null) {
             if (defaultValueConfig instanceof Map) {
                 Map<String, Object> valueMap = (Map<String, Object>) defaultValueConfig;
-                defaultValue = new OptionObject();
+                defaultValue = new OptionObjectValue();
                 defaultValue.setLabel((String) valueMap.get(this.labelField));
                 defaultValue.setValue((String) valueMap.get(this.valueField));
             } else {
                 throw new InvalidDataException("选项数据格式不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
             }
         } else {
-            Object labelDefaultValue = this.properties.get(0).getDataType().getDefaultValue();
-            Object valueDefaultValue = this.properties.get(1).getDataType().getDefaultValue();
+            Object labelDefaultValue = this.properties.get(0).getValueType().getDefaultValue();
+            Object valueDefaultValue = this.properties.get(1).getValueType().getDefaultValue();
             if (labelDefaultValue != null || valueDefaultValue != null) {
-                defaultValue = new OptionObject();
+                defaultValue = new OptionObjectValue();
                 defaultValue.setLabel((String) labelDefaultValue);
                 defaultValue.setValue((String) valueDefaultValue);
             }
@@ -76,16 +76,16 @@ public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionObj
     }
 
     @Override
-    public OptionObject parseNonNullValue(Object nonNullValue) {
+    public OptionObjectValue parseNonNullValue(Object nonNullValue) {
         if (nonNullValue instanceof Map) {
             Map<String, Object> valueMap = (Map<String, Object>) nonNullValue;
-            OptionObject optionObject = new OptionObject();
-            optionObject.setLabel((String) valueMap.get(this.labelField));
-            optionObject.setValue((String) valueMap.get(this.valueField));
-            return optionObject;
+            OptionObjectValue optionObjectValue = new OptionObjectValue();
+            optionObjectValue.setLabel((String) valueMap.get(this.labelField));
+            optionObjectValue.setValue((String) valueMap.get(this.valueField));
+            return optionObjectValue;
         }
 
-        return (OptionObject) nonNullValue;
+        return (OptionObjectValue) nonNullValue;
     }
 
     public String getLabelField() {
@@ -105,7 +105,7 @@ public class OptionDataTypeConfig extends AbstractObjectDataTypeConfig<OptionObj
     }
 
     @Override
-    public void validate(OptionObject nonNullValue) throws InvalidDataException {
+    public void validate(OptionObjectValue nonNullValue) throws InvalidDataException {
 
     }
 

@@ -5,7 +5,7 @@ package io.github.cloudstars.lowcode.commons.data.type;
  *
  * @author clouds
  */
-public class OptionObject {
+public class OptionObjectValue {
 
     /**
      * 选项值

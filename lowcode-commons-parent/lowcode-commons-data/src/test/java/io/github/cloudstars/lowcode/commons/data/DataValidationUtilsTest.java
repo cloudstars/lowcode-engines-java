@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.data;
 
 import io.github.cloudstars.lowcode.CommonsDataTestApplication;
-import io.github.cloudstars.lowcode.commons.data.type.StringDataTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.type.StringValueTypeConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,7 @@ public class DataValidationUtilsTest {
 
     @Test
     public void testString() {
-        StringDataTypeConfig config = new StringDataTypeConfig();
+        StringValueTypeConfig config = new StringValueTypeConfig();
         config.setMinLength(5);
         config.setMaxLength(10);
 

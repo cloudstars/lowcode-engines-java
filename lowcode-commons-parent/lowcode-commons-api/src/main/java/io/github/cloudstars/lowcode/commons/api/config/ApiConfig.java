@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
-import io.github.cloudstars.lowcode.commons.data.type.DataTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.type.DataTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.data.type.ValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.type.ValueTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
@@ -16,12 +16,12 @@ public class ApiConfig extends AbstractConfig implements XConfig {
     /**
      * 入参数据格式
      */
-    private DataTypeConfig input;
+    private ValueTypeConfig input;
 
     /**
      * 出参数据格式
      */
-    private DataTypeConfig output;
+    private ValueTypeConfig output;
 
     public ApiConfig() {
     }
@@ -30,31 +30,31 @@ public class ApiConfig extends AbstractConfig implements XConfig {
         super(configJson);
 
         JsonObject inputJson = (JsonObject) configJson.get("input");
-        this.setInput(DataTypeConfigFactory.newInstance(inputJson));
+        this.setInput(ValueTypeConfigFactory.newInstance(inputJson));
         JsonObject outputJson = (JsonObject) configJson.get("output");
         if (outputJson != null) {
-            this.setOutput(DataTypeConfigFactory.newInstance(outputJson));
+            this.setOutput(ValueTypeConfigFactory.newInstance(outputJson));
         }
     }
 
-    public ApiConfig(DataTypeConfig input, DataTypeConfig output) {
+    public ApiConfig(ValueTypeConfig input, ValueTypeConfig output) {
         this.input = input;
         this.output = output;
     }
 
-    public DataTypeConfig getInput() {
+    public ValueTypeConfig getInput() {
         return input;
     }
 
-    public void setInput(DataTypeConfig input) {
+    public void setInput(ValueTypeConfig input) {
         this.input = input;
     }
 
-    public DataTypeConfig getOutput() {
+    public ValueTypeConfig getOutput() {
         return output;
     }
 
-    public void setOutput(DataTypeConfig output) {
+    public void setOutput(ValueTypeConfig output) {
         this.output = output;
     }
 

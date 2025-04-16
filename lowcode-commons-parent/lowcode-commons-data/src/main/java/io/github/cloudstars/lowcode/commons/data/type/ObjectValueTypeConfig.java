@@ -13,13 +13,13 @@ import java.util.List;
  *
  * @author clouds
  */
-@DataTypeConfigClass(name = "OBJECT")
-public class ObjectDataTypeConfig extends AbstractObjectDataTypeConfig<Object> {
+@ValueTypeConfigClass(name = "OBJECT")
+public class ObjectValueTypeConfig extends AbstractObjectValueTypeConfig<Object> {
 
-    public ObjectDataTypeConfig() {
+    public ObjectValueTypeConfig() {
     }
 
-    public ObjectDataTypeConfig(JsonObject configJson) {
+    public ObjectValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
         Object propertiesConfig = configJson.get("properties");
@@ -27,9 +27,9 @@ public class ObjectDataTypeConfig extends AbstractObjectDataTypeConfig<Object> {
             JsonArray propertiesConfigJson = (JsonArray) propertiesConfig;
             propertiesConfigJson.forEach((propertyConfig) -> {
                 JsonObject propertyConfigJson = (JsonObject) propertyConfig;
-                ObjectProperty objectProperty = new ObjectProperty();
+                ObjectValueProperty objectProperty = new ObjectValueProperty();
                 objectProperty.setName(propertyConfigJson.get("name").toString());
-                objectProperty.setDataType(DataTypeConfigFactory.newInstance(propertyConfigJson));
+                objectProperty.setValueType(ValueTypeConfigFactory.newInstance(propertyConfigJson));
                 this.properties.add(objectProperty);
             });
         }
@@ -51,11 +51,11 @@ public class ObjectDataTypeConfig extends AbstractObjectDataTypeConfig<Object> {
 
     @Override
     public void validate(Object objectValue) throws InvalidDataException {
-        List<ObjectProperty> properties = this.properties;
-        for (ObjectProperty property : properties) {
+        List<ObjectValueProperty> properties = this.properties;
+        for (ObjectValueProperty property : properties) {
             String propertyName = property.getName();
             Object propertyValue = ObjectUtils.getFieldValue(objectValue, propertyName);
-            DataTypeConfig propertyDataType = property.getDataType();
+            ValueTypeConfig propertyDataType = property.getValueType();
             DataValidationUtils.validate(propertyValue, propertyDataType);
         }
     }

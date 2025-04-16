@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 @Inherited
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DataTypeConfigClass {
+public @interface ValueTypeConfigClass {
 
     /**
      * 数据格式类型的名称

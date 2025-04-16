@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.commons.data.type.DataTypeConfigClassFactory;
+import io.github.cloudstars.lowcode.commons.data.type.ValueTypeConfigClassFactory;
 import io.github.cloudstars.lowcode.commons.data.type.DataTypeParser;
-import io.github.cloudstars.lowcode.file.commons.FileDataTypeConfig;
+import io.github.cloudstars.lowcode.file.commons.FileValueTypeConfig;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +13,7 @@ public class FileCommonsTestConfiguration implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        DataTypeConfigClassFactory.register(FileDataTypeConfig.class);
+        ValueTypeConfigClassFactory.register(FileValueTypeConfig.class);
     }
 
     @Bean

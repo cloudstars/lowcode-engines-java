@@ -9,7 +9,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds 
  */
-public interface DataTypeConfig<V> extends XConfig {
+public interface ValueTypeConfig<V> extends XConfig {
 
     /**
      * 是否必填

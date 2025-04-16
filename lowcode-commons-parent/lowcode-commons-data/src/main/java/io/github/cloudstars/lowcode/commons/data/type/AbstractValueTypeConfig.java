@@ -9,7 +9,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  * @param <T> 数据格式的值的类型
  * @author clouds
  */
-public abstract class AbstractDataTypeConfig<T> extends AbstractConfig implements DataTypeConfig<T> {
+public abstract class AbstractValueTypeConfig<T> extends AbstractConfig implements ValueTypeConfig<T> {
 
     /**
      * 数据格式的名称
@@ -31,11 +31,11 @@ public abstract class AbstractDataTypeConfig<T> extends AbstractConfig implement
      */
     protected String remark;
 
-    public AbstractDataTypeConfig() {
-        this.dataType = this.getClass().getAnnotationsByType(DataTypeConfigClass.class)[0].name();
+    public AbstractValueTypeConfig() {
+        this.dataType = this.getClass().getAnnotationsByType(ValueTypeConfigClass.class)[0].name();
     }
 
-    public AbstractDataTypeConfig(JsonObject configJson) {
+    public AbstractValueTypeConfig(JsonObject configJson) {
         this();
         this.required = (Boolean) configJson.getOrDefault("required", false);
         this.remark = (String) configJson.getOrDefault("remark", null);

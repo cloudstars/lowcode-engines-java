@@ -14,13 +14,13 @@ import java.util.Map;
  *
  * @author clouds
  */
-@DataTypeConfigClass(name = "JSON_OBJECT")
-public class JsonObjectDataTypeConfig extends AbstractObjectDataTypeConfig<JsonObject> {
+@ValueTypeConfigClass(name = "JSON_OBJECT")
+public class JsonObjectValueTypeConfig extends AbstractObjectValueTypeConfig<JsonObject> {
 
-    public JsonObjectDataTypeConfig() {
+    public JsonObjectValueTypeConfig() {
     }
 
-    public JsonObjectDataTypeConfig(JsonObject configJson) {
+    public JsonObjectValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
         Object propertiesConfig = configJson.get("properties");
@@ -28,9 +28,9 @@ public class JsonObjectDataTypeConfig extends AbstractObjectDataTypeConfig<JsonO
             JsonArray propertiesConfigJson = (JsonArray) propertiesConfig;
             propertiesConfigJson.forEach((propertyConfig) -> {
                 JsonObject propertyConfigJson = (JsonObject) propertyConfig;
-                ObjectProperty objectProperty = new ObjectProperty();
+                ObjectValueProperty objectProperty = new ObjectValueProperty();
                 objectProperty.setName(propertyConfigJson.get("name").toString());
-                objectProperty.setDataType(DataTypeConfigFactory.newInstance(propertyConfigJson));
+                objectProperty.setValueType(ValueTypeConfigFactory.newInstance(propertyConfigJson));
                 this.properties.add(objectProperty);
             });
         }
@@ -44,8 +44,8 @@ public class JsonObjectDataTypeConfig extends AbstractObjectDataTypeConfig<JsonO
         if (defaultValueConfig == null) {
             // 如果对象自身没有定义默认值，则计算对象下属性的默认值
             JsonObject propertiesDefaultValue = new JsonObject();
-            for (ObjectProperty property : this.properties) {
-                Object propertyDefaultValue = property.getDataType().getDefaultValue();
+            for (ObjectValueProperty property : this.properties) {
+                Object propertyDefaultValue = property.getValueType().getDefaultValue();
                 if (propertyDefaultValue != null) {
                     propertiesDefaultValue.put(property.getName(), propertiesDefaultValue);
                 }
@@ -82,11 +82,11 @@ public class JsonObjectDataTypeConfig extends AbstractObjectDataTypeConfig<JsonO
 
     @Override
     public void validate(JsonObject jsonObject) throws InvalidDataException {
-        List<ObjectProperty> properties = this.properties;
-        for (ObjectProperty property : properties) {
+        List<ObjectValueProperty> properties = this.properties;
+        for (ObjectValueProperty property : properties) {
             String propertyName = property.getName();
             Object propertyValue = jsonObject.get(propertyName);
-            DataTypeConfig propertyDataType = property.getDataType();
+            ValueTypeConfig propertyDataType = property.getValueType();
             DataValidationUtils.validate(propertyValue, propertyDataType);
         }
     }

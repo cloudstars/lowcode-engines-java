@@ -9,9 +9,9 @@ import java.lang.reflect.Constructor;
  *
  * @author clouds
  */
-public class DataTypeConfigFactory {
+public class ValueTypeConfigFactory {
 
-    private DataTypeConfigFactory() {
+    private ValueTypeConfigFactory() {
     }
 
     /**
@@ -20,15 +20,15 @@ public class DataTypeConfigFactory {
      * @param dataTypeConfig
      * @return
      */
-    public static DataTypeConfig newInstance(JsonObject dataTypeConfig) {
+    public static ValueTypeConfig newInstance(JsonObject dataTypeConfig) {
         Object dataTypeValue = dataTypeConfig.get("dataType");
         if (dataTypeValue == null) {
             throw new RuntimeException("数据格式[dataType]不存在！");
         }
 
-        Class<? extends DataTypeConfig> dataTypeClass = DataTypeConfigClassFactory.get(dataTypeValue.toString());
+        Class<? extends ValueTypeConfig> dataTypeClass = ValueTypeConfigClassFactory.get(dataTypeValue.toString());
         try {
-            Constructor<? extends DataTypeConfig> constructor = dataTypeClass.getConstructor(JsonObject.class);
+            Constructor<? extends ValueTypeConfig> constructor = dataTypeClass.getConstructor(JsonObject.class);
             return constructor.newInstance(dataTypeConfig);
         } catch (Exception e) {
             throw new RuntimeException("实例化数据格式" + dataTypeValue + "出错！", e);
