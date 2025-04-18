@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.commons.data.type.ValueTypeConfigClassFactory;
-import io.github.cloudstars.lowcode.commons.data.type.DataTypeParser;
+import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfigClassFactory;
+import io.github.cloudstars.lowcode.commons.data.value.ValueTypeParser;
 import io.github.cloudstars.lowcode.file.commons.FileValueTypeConfig;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -17,8 +17,8 @@ public class FileCommonsTestConfiguration implements ApplicationRunner {
     }
 
     @Bean
-    public DataTypeParser valueTypeParser() {
-        return new DataTypeParser();
+    public ValueTypeParser valueTypeParser() {
+        return new ValueTypeParser();
     }
     
 }

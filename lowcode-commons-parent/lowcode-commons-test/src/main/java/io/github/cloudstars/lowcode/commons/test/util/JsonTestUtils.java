@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -115,6 +116,18 @@ public final class JsonTestUtils {
         Assert.assertFalse(expectedJsonString != null && actualJsonString == null);
 
         assertDerivedFrom(JSON.parse(expectedJsonString), JSON.parse(actualJsonString), "root");
+    }
+
+    /**
+     * 判断源对象是否由目标对象派生的
+     *
+     * @param expectedJson 预期的JSON对象
+     * @param actualJson   事实的JSON对象
+     */
+    public static void assertDerivedFrom(JsonObject expectedJson, JsonObject actualJson) {
+        String expectedJsonString = expectedJson.toJsonString();
+        String actualJsonString = actualJson.toJsonString();
+        assertDerivedFrom(expectedJsonString, actualJsonString);
     }
 
     /**

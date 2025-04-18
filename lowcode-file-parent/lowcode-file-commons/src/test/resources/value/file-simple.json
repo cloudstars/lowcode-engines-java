@@ -1,0 +1,6 @@
+{
+  "type": "FILE",
+  "required": false,
+  "defaultValue": {"key":  "kkk", "name": "nnn"},
+  "remark": "这是一个文件数据，有缺省值"
+}

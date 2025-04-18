@@ -1,0 +1,26 @@
+{
+  "type": "form",
+  "key": "ifke832fjdsk",
+  "name": "简单字段类型的表单",
+  "fields": [
+    {
+      "name": "a",
+      "type": "TEXT",
+      "valueType": {
+        "type": "TEXT",
+        "required": false,
+        "defaultValue": "abc",
+        "remark": "这是一个文本数据，缺省值为abc"
+      }
+    },
+    {
+      "name": "b",
+      "type": "NUMBER",
+      "valueType": {
+        "type": "NUMBER",
+        "required": false,
+        "precision": 0
+      }
+    }
+  ]
+}

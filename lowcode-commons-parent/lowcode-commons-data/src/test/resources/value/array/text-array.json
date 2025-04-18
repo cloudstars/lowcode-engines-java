@@ -1,0 +1,11 @@
+{
+  "type": "ARRAY",
+  "required": true,
+  "defaultValue": ["abc", "efg"],
+  "remark": "这是一个文本数据，缺省值为abc",
+  "items": {
+    "type": "TEXT",
+    "required": false,
+    "remark": "这是一个文本数据，缺省值为abc"
+  }
+}

@@ -29,6 +29,7 @@
     <modules>
         <module>lowcode-commons-parent</module>
         <module>lowcode-expression-parent</module>
+        <module>lowcode-form-parent</module>
         <module>lowcode-object-parent</module>
         <module>lowcode-bpm-parent</module>
         <module>lowcode-excel-parent</module>

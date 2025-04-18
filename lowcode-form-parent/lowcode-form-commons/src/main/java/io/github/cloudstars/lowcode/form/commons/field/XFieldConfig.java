@@ -1,0 +1,32 @@
+package io.github.cloudstars.lowcode.form.commons.field;
+
+import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfig;
+
+/**
+ * 字段配置接口
+ *
+ * @author clouds
+ */
+public interface XFieldConfig {
+
+    /**
+     * 获取字段的名称
+     *
+     * @return
+     */
+    String getName();
+
+    /**
+     * 获取字段的标题
+     *
+     * @return
+     */
+    String getLabel();
+
+    /**
+     * 获取字段的数据格式
+     *
+     * @return
+     */
+    ValueTypeConfig getValueType();
+}

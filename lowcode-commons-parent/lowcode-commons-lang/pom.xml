@@ -25,8 +25,8 @@
 
         <!-- 测试时依赖 -->
         <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-test</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 

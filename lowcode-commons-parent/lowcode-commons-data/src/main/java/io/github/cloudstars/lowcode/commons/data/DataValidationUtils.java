@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data;
 
-import io.github.cloudstars.lowcode.commons.data.type.ValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfig;
 
 /**
  * 数据校验工具类

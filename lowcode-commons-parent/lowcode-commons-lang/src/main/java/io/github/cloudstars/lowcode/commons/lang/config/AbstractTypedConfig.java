@@ -9,8 +9,13 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public abstract class AbstractTypedConfig extends AbstractConfig implements XTypedConfig {
 
+    // 类型属性
     private static final String ATTR_TYPE = "type";
+
+    // 唯一标识属性
     private static final String ATTR_KEY = "key";
+
+    // 名称属性
     private static final String ATTR_NAME = "name";
 
     /**
