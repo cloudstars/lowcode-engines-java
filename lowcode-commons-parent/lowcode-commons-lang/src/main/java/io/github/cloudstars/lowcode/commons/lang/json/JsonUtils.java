@@ -3,6 +3,7 @@ package io.github.cloudstars.lowcode.commons.lang.json;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.util.FileUtils;
 
 import java.util.List;
@@ -45,8 +46,8 @@ public final class JsonUtils {
      *
      * @param jsonString
      * @param tClass
-     * @return
      * @param <T>
+     * @return
      */
     public static <T extends Object> T parseObject(String jsonString, Class<T> tClass) {
         return JSONObject.parseObject(jsonString, tClass);
@@ -57,11 +58,27 @@ public final class JsonUtils {
      *
      * @param jsonString
      * @param tClass
-     * @return
      * @param <T>
+     * @return
      */
     public static <T extends Object> List<T> parseArray(String jsonString, Class<T> tClass) {
         return JSONObject.parseArray(jsonString, tClass);
+    }
+
+    /**
+     * 将配置列表转换为JsonArray
+     *
+     * @param configs 配置列表
+     * @return JsonArray
+     * @param <T> 配置类型
+     */
+    public static <T extends XConfig> JsonArray parseArray(List<T> configs) {
+        JsonArray jsonArray = new JsonArray();
+        configs.forEach(config -> {
+            jsonArray.add(config.toJson());
+        });
+
+        return jsonArray;
     }
 
     /**

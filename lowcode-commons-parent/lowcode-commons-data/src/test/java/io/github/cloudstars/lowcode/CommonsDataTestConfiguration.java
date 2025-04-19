@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.commons.data.value.*;
+import io.github.cloudstars.lowcode.commons.data.expression.json.JsonExpressParser;
+import io.github.cloudstars.lowcode.commons.data.valuetype.*;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +20,13 @@ public class CommonsDataTestConfiguration implements ApplicationRunner {
     }
 
     @Bean
-    public ValueTypeParser valueTypeParser() {
-        return new ValueTypeParser();
+    public ValueTypeConfigParser valueTypeParser() {
+        return new ValueTypeConfigParser();
+    }
+
+    @Bean
+    public JsonExpressParser jsonExpressParser() {
+        return new JsonExpressParser();
     }
 
 }

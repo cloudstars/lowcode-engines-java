@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.file.commons;
 
 import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
-import io.github.cloudstars.lowcode.commons.data.value.AbstractObjectValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfigClass;
+import io.github.cloudstars.lowcode.commons.data.valuetype.AbstractObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 

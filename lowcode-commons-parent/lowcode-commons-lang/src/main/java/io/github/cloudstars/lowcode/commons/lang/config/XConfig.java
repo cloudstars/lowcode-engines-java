@@ -9,6 +9,21 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public interface XConfig {
 
+    // 类型属性名称
+    String ATTR_TYPE = "type";
+
+    // 编号属性名称
+    String ATTR_KEY = "key";
+
+    // 名称属性名称
+    String ATTR_NAME = "name";
+
+    // 标题属性名称
+    String ATTR_TITLE = "title";
+
+    // 值属性名称
+    String ATTR_VALUE = "value";
+
     /**
      * 将配置转为 JSON 字符串
      *

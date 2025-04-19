@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data;
 
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
 
 /**
  * 数据校验工具类
@@ -16,7 +16,7 @@ public class DataValidationUtils {
      * @param valueTypeConfig 数据格式的配置
      * @throws InvalidDataException 校验出错时抛出异常
      */
-    public static void validate(Object value, ValueTypeConfig valueTypeConfig) throws InvalidDataException {
+    public static void validate(Object value, XValueTypeConfig valueTypeConfig) throws InvalidDataException {
         if (value == null) {
             if (valueTypeConfig.isRequired()) {
                 throw new InvalidDataException("数据不能为空！");

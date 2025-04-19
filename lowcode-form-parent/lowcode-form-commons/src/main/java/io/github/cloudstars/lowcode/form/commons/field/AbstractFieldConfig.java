@@ -1,7 +1,8 @@
 package io.github.cloudstars.lowcode.form.commons.field;
 
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeParser;
+import io.github.cloudstars.lowcode.commons.data.defaultvalue.AbstractDefaultValueConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigParser;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -12,60 +13,68 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public class AbstractFieldConfig extends AbstractTypedConfig implements XFieldConfig {
 
-    // 标题属性
-    private static final String ATTR_LABEL = "label";
-
-    // 数据格式属性
-    private static final String ATTR_VALUE_TYPE = "valueType";
-
     /**
      * 字段的标题
      */
-    private String label;
+    private String title;
 
     /**
      * 字段的数据格式
      */
-    private ValueTypeConfig valueType;
+    private XValueTypeConfig valueType;
+
+    /**
+     * 默认值（后端的缺省值）
+     */
+    private AbstractDefaultValueConfig defaultValue;
 
     /**
      * 数据格式解析器
      */
-    private ValueTypeParser valueTypeParser = new ValueTypeParser();
+    private ValueTypeConfigParser valueTypeConfigParser = new ValueTypeConfigParser();
 
     protected AbstractFieldConfig() {}
 
     protected AbstractFieldConfig(JsonObject configJson) {
         super(configJson);
 
-        this.label = (String) configJson.get(ATTR_LABEL);
-        Object valueTypeValue = configJson.get(ATTR_VALUE_TYPE);
-        this.valueType = this.valueTypeParser.fromJson((JsonObject) valueTypeValue);
+        this.title = (String) configJson.get(ATTR_TITLE);
+        Object valueTypeValue = configJson.get(XValueTypeConfig.ATTR);
+        this.valueType = this.valueTypeConfigParser.fromJson((JsonObject) valueTypeValue);
     }
 
     @Override
-    public String getLabel() {
-        return label;
+    public String getTitle() {
+        return title;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
-    public ValueTypeConfig getValueType() {
+    public XValueTypeConfig getValueType() {
         return valueType;
     }
 
-    public void setValueType(ValueTypeConfig valueType) {
+    public void setValueType(XValueTypeConfig valueType) {
         this.valueType = valueType;
+    }
+
+    public AbstractDefaultValueConfig getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(AbstractDefaultValueConfig defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(ATTR_LABEL, this.label);
-        configJson.put(ATTR_VALUE_TYPE, this.valueType.toJson());
+        configJson.put(ATTR_TITLE, this.title);
+        configJson.put(XValueTypeConfig.ATTR, this.valueType.toJson());
+
         return configJson;
     }
 

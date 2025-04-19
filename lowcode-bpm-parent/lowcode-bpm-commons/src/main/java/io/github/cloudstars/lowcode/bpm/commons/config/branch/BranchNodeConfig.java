@@ -4,6 +4,7 @@ import io.github.cloudstars.lowcode.bpm.commons.config.*;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,14 +89,7 @@ public class BranchNodeConfig extends AbstractNodeConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-
-        // 添加节点配置
-        JsonArray nodeJsonArray = new JsonArray();
-        this.nodes.forEach(node -> {
-            nodeJsonArray.add(node.toJson());
-        });
-        configJson.put("nodes", nodeJsonArray);
-
+        configJson.put("nodes", JsonUtils.parseArray(this.nodes));
         return configJson;
     }
 

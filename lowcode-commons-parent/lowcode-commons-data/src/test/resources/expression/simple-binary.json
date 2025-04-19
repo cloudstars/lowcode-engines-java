@@ -1,0 +1,16 @@
+{
+  "type": "BINARY",
+  "left": {
+    "type": "FIELD",
+    "name": "a",
+    "title": "标题a",
+    "valueType": {
+      "type": "NUMBER"
+    }
+  },
+  "operator": "EQUAL",
+  "right": {
+    "type": "VALUE",
+    "value": "123"
+  }
+}

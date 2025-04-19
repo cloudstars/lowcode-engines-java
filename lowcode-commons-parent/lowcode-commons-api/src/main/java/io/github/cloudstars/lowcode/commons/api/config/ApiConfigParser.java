@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfigParser;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -15,9 +15,9 @@ public class ApiConfigParser implements XConfigParser<ApiConfig> {
     @Override
     public ApiConfig fromJson(JsonObject configJson) {
         JsonObject inputJson = (JsonObject) configJson.get("input");
-        ValueTypeConfig input = ValueTypeConfigFactory.newInstance(inputJson);
+        XValueTypeConfig input = ValueTypeConfigFactory.newInstance(inputJson);
         JsonObject outputJson = (JsonObject) configJson.get("output");
-        ValueTypeConfig output = null;
+        XValueTypeConfig output = null;
         if (outputJson != null) {
             output = ValueTypeConfigFactory.newInstance(outputJson);
         }

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
-import io.github.cloudstars.lowcode.commons.data.value.ObjectValueProperty;
+import io.github.cloudstars.lowcode.commons.data.valuetype.ObjectValueProperty;
 
 import java.util.List;
 

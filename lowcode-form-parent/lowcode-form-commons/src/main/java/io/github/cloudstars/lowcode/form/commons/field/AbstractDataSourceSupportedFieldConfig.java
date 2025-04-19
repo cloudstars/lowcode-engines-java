@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.form.commons.field;
 
-import io.github.cloudstars.lowcode.commons.data.source.XDataSourceConfig;
+import io.github.cloudstars.lowcode.commons.data.datasource.AbstractDataSourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -16,14 +16,14 @@ public class AbstractDataSourceSupportedFieldConfig extends AbstractFieldConfig 
     /**
      * 数据源
      */
-    private XDataSourceConfig dataSource;
+    private AbstractDataSourceConfig dataSource;
 
 
-    public XDataSourceConfig getDataSource() {
+    public AbstractDataSourceConfig getDataSource() {
         return dataSource;
     }
 
-    public void setDataSource(XDataSourceConfig dataSource) {
+    public void setDataSource(AbstractDataSourceConfig dataSource) {
         this.dataSource = dataSource;
     }
 

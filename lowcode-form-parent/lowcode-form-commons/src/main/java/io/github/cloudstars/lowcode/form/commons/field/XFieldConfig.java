@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.form.commons.field;
 
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
 
 /**
  * 字段配置接口
@@ -21,12 +21,12 @@ public interface XFieldConfig {
      *
      * @return
      */
-    String getLabel();
+    String getTitle();
 
     /**
      * 获取字段的数据格式
      *
      * @return
      */
-    ValueTypeConfig getValueType();
+    XValueTypeConfig getValueType();
 }

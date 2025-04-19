@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
-import io.github.cloudstars.lowcode.commons.data.value.*;
+import io.github.cloudstars.lowcode.commons.data.valuetype.*;
 
 import java.util.Arrays;
 
@@ -30,7 +30,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
         // 出参是一个列表
         TextValueTypeConfig labelDataType = new TextValueTypeConfig();
         ObjectValueProperty labelProperty = new ObjectValueProperty(params.getLabelField(), labelDataType);
-        ValueTypeConfig valueDataType = null;
+        XValueTypeConfig valueDataType = null;
         if (params.getValueDataType() == OptionsApiConfigParams.ValueDataTypeEnum.STRING) {
             TextValueTypeConfig stringDataTypeConfig = new TextValueTypeConfig();
             valueDataType = stringDataTypeConfig;

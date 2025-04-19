@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.data;
 
 import io.github.cloudstars.lowcode.CommonsDataTestApplication;
-import io.github.cloudstars.lowcode.commons.data.value.TextValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.TextValueTypeConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

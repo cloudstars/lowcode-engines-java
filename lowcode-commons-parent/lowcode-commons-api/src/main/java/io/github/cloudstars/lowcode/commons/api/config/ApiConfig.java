@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.value.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
@@ -16,12 +16,12 @@ public class ApiConfig extends AbstractConfig implements XConfig {
     /**
      * 入参数据格式
      */
-    private ValueTypeConfig input;
+    private XValueTypeConfig input;
 
     /**
      * 出参数据格式
      */
-    private ValueTypeConfig output;
+    private XValueTypeConfig output;
 
     public ApiConfig() {
     }
@@ -37,24 +37,24 @@ public class ApiConfig extends AbstractConfig implements XConfig {
         }
     }
 
-    public ApiConfig(ValueTypeConfig input, ValueTypeConfig output) {
+    public ApiConfig(XValueTypeConfig input, XValueTypeConfig output) {
         this.input = input;
         this.output = output;
     }
 
-    public ValueTypeConfig getInput() {
+    public XValueTypeConfig getInput() {
         return input;
     }
 
-    public void setInput(ValueTypeConfig input) {
+    public void setInput(XValueTypeConfig input) {
         this.input = input;
     }
 
-    public ValueTypeConfig getOutput() {
+    public XValueTypeConfig getOutput() {
         return output;
     }
 
-    public void setOutput(ValueTypeConfig output) {
+    public void setOutput(XValueTypeConfig output) {
         this.output = output;
     }
 
