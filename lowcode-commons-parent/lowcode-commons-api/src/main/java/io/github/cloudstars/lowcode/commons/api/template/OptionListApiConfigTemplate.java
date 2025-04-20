@@ -1,6 +1,8 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
+import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
+import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
 import io.github.cloudstars.lowcode.commons.data.valuetype.*;
 
 import java.util.Arrays;
@@ -19,32 +21,40 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
     @Override
     public ApiConfig newInstance(OptionsApiConfigParams params) {
         // 入参可以是一个可选的values属性
+        ApiInputConfig inputConfig = new ApiInputConfig();
         ObjectValueProperty valuesProperty = new ObjectValueProperty();
-        valuesProperty.setName("values");
+        valuesProperty.setCode("values");
         ArrayValueTypeConfig valuesDataType = new ArrayValueTypeConfig();
-        valuesDataType.setItemsDataType(new TextValueTypeConfig());
+        valuesDataType.setItemsValueType(new TextValueTypeConfig());
         valuesProperty.setValueType(valuesDataType);
-        ObjectValueTypeConfig inputDataType = new ObjectValueTypeConfig();
-        inputDataType.setProperties(Arrays.asList(valuesProperty));
+        ObjectValueTypeConfig inputValueType = new ObjectValueTypeConfig();
+        inputValueType.setProperties(Arrays.asList(valuesProperty));
+        inputConfig.setValueType(inputValueType);
 
         // 出参是一个列表
-        TextValueTypeConfig labelDataType = new TextValueTypeConfig();
-        ObjectValueProperty labelProperty = new ObjectValueProperty(params.getLabelField(), labelDataType);
-        XValueTypeConfig valueDataType = null;
+        ApiOutputConfig outputConfig = new ApiOutputConfig();
+        TextValueTypeConfig labelValueType = new TextValueTypeConfig();
+        ObjectValueProperty labelProperty = new ObjectValueProperty();
+        labelProperty.setCode(params.getLabelField());
+        labelProperty.setValueType(labelValueType);
+        XValueTypeConfig valueValueType = null;
         if (params.getValueDataType() == OptionsApiConfigParams.ValueDataTypeEnum.STRING) {
             TextValueTypeConfig stringDataTypeConfig = new TextValueTypeConfig();
-            valueDataType = stringDataTypeConfig;
+            valueValueType = stringDataTypeConfig;
         } else {
             NumberValueTypeConfig numberDataTypeConfig = new NumberValueTypeConfig();
-            valueDataType = numberDataTypeConfig;
+            valueValueType = numberDataTypeConfig;
         }
-        ObjectValueProperty valueProperty = new ObjectValueProperty(params.getValueField(), valueDataType);
-        ObjectValueTypeConfig optionDataType = new ObjectValueTypeConfig();
-        optionDataType.setProperties(Arrays.asList(labelProperty, valueProperty));
-        ArrayValueTypeConfig outputDataType = new ArrayValueTypeConfig();
-        outputDataType.setItemsDataType(optionDataType);
+        ObjectValueProperty valueProperty = new ObjectValueProperty();
+        valueProperty.setCode(params.getValueField());
+        valueProperty.setValueType(valueValueType);
+        ObjectValueTypeConfig optionValueType = new ObjectValueTypeConfig();
+        optionValueType.setProperties(Arrays.asList(labelProperty, valueProperty));
+        ArrayValueTypeConfig outputValueType = new ArrayValueTypeConfig();
+        outputValueType.setItemsValueType(optionValueType);
+        outputConfig.setValueType(outputValueType);
 
-        ApiConfig apiConfig = new ApiConfig(inputDataType, outputDataType);
+        ApiConfig apiConfig = new ApiConfig(inputConfig, outputConfig);
         return apiConfig;
     }
 

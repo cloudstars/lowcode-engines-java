@@ -14,7 +14,10 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 @NodeConfigClass(type = "DEFAULT.LOOP")
 public class LoopBranchNodeConfig extends BranchNodeConfig {
 
+    // 循环列表配置名称
     private static final String ATTR_ITEMS = "items";
+
+    // 当前迭代元素配置名称
     private static final String ATTR_ITEM = "item";
 
     /**

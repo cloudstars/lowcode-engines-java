@@ -2,7 +2,6 @@ package io.github.cloudstars.lowcode.commons.data.valuetype;
 
 import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 数据格式配置接口
@@ -26,30 +25,29 @@ public interface XValueTypeConfig<V> extends XConfig {
      *
      * @return
      */
-    @Deprecated/* 放到API参数定义以及模型字段定义中 */
-    default boolean isRequired() {
+    /* default boolean isRequired() {
         return false;
-    }
+    }*/
 
     /**
      * 获取备注信息
      *
      * @return
      */
-    @Deprecated/* 放到API参数定义以及模型字段定义中 */
+    /*@Deprecated 放到API参数定义以及模型字段定义中
     default String getRemark() {
         return null;
-    }
+    }*/
 
     /**
      * 获取默认值（没填写的时候使用）
      *
      * @return
      */
-    @Deprecated/* 放到API参数定义以及模型字段定义中 */
+    /* @Deprecated 放到API参数定义以及模型字段定义中
     default V getDefaultValue() {
         return null;
-    }
+    } */
 
     /**
      * 解析默认值
@@ -57,7 +55,7 @@ public interface XValueTypeConfig<V> extends XConfig {
      * @param configJson 默认值配置
      * @return 解析后的默认值
      */
-    V parseDefaultValue(JsonObject configJson);
+    // V parseDefaultValue(JsonObject configJson);
 
     /**
      * 解析目标数值（会添加默认值的逻辑）
@@ -65,16 +63,16 @@ public interface XValueTypeConfig<V> extends XConfig {
      * @param value
      * @return
      */
-    default V parseTargetValue(Object value) {
+    /*default V parseTargetValue(Object value) {
         if (value == null) {
-            return this.getDefaultValue();
+            return null;
         }
 
         return this.parseNonNullValue(value);
-    }
+    }*/
 
     /**
-     * 解析数值为正确的类型
+     * 解析一个非空的数据为正确的类型（比如将long转为Date）
      *
      * @param nonNullValue 非空的数值
      * @return 预期类型的数值对象
@@ -87,6 +85,6 @@ public interface XValueTypeConfig<V> extends XConfig {
      * @param nonNullValue
      * @throws InvalidDataException
      */
-    void validate(V nonNullValue) throws InvalidDataException;
+    void validateNonNullValue(V nonNullValue) throws InvalidDataException;
 
 }

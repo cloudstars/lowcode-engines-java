@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.data.valuetype;
 
-import io.github.cloudstars.lowcode.commons.data.DataValidationUtils;
 import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
 
@@ -22,26 +22,21 @@ public class ObjectValueTypeConfig extends AbstractObjectValueTypeConfig<Object>
     public ObjectValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        Object propertiesConfig = configJson.get("properties");
-        if (propertiesConfig != null) {
-            JsonArray propertiesConfigJson = (JsonArray) propertiesConfig;
-            propertiesConfigJson.forEach((propertyConfig) -> {
-                JsonObject propertyConfigJson = (JsonObject) propertyConfig;
-                ObjectValueProperty objectProperty = new ObjectValueProperty();
-                objectProperty.setName(propertyConfigJson.get("name").toString());
-                objectProperty.setValueType(ValueTypeConfigFactory.newInstance(propertyConfigJson));
-                this.properties.add(objectProperty);
-            });
+        JsonArray propertiesConfigJson = (JsonArray) configJson.get(ATTR_PROPERTIES);
+        if (propertiesConfigJson != null) { // 对象下可以不定义属性
+            this.properties = JsonConfigUtils.fromJsonArray(propertiesConfigJson,
+                    (propertyConfigJson) -> new ObjectValueProperty(propertyConfigJson)
+            );
         }
 
-        this.defaultValue = this.parseDefaultValue(configJson);
+        //this.defaultValue = this.parseDefaultValue(configJson);
     }
 
-    @Override
+    /*@Override
     protected Object parseDefaultValue(Object defaultValueConfig) {
         // TODO 获取V的真实类型，将defaultValueConfig作为参数传递给V的构造函数
         return defaultValueConfig;
-    }
+    }*/
 
     @Override
     public Object parseNonNullValue(Object nonNullValue) {
@@ -50,13 +45,15 @@ public class ObjectValueTypeConfig extends AbstractObjectValueTypeConfig<Object>
     }
 
     @Override
-    public void validate(Object objectValue) throws InvalidDataException {
+    public void validateNonNullValue(Object objectValue) throws InvalidDataException {
         List<ObjectValueProperty> properties = this.properties;
         for (ObjectValueProperty property : properties) {
-            String propertyName = property.getName();
+            String propertyName = property.getCode();
             Object propertyValue = ObjectUtils.getFieldValue(objectValue, propertyName);
-            XValueTypeConfig propertyDataType = property.getValueType();
-            DataValidationUtils.validate(propertyValue, propertyDataType);
+            XValueTypeConfig propertyValueType = property.getValueType();
+            if (propertyValue != null) {
+                propertyValueType.validateNonNullValue(propertyValue);
+            }
         }
     }
 

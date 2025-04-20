@@ -7,25 +7,14 @@ package io.github.cloudstars.lowcode.commons.lang.config;
  */
 public interface XTypedConfig extends XConfig {
 
+    // 类型属性名称
+    String ATTR = "type";
+
     /**
      * 获取配置的类型
      *
      * @return
      */
     String getType();
-
-    /**
-     * 获取配置的编号
-     *
-     * @return
-     */
-    String getKey();
-
-    /**
-     * 获取配置的名称
-     *
-     * @return
-     */
-    String getName();
 
 }

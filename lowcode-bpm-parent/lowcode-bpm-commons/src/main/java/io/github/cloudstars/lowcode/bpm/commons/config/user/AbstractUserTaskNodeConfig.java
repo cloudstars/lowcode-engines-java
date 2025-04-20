@@ -12,9 +12,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public abstract class AbstractUserTaskNodeConfig extends AbstractNodeConfig {
 
-    /**
-     * 任务处理人属性名称
-     */
+    // 任务处理人配置名称
     private static final String ATTR_ASSIGNEE = "assignee";
 
     /**

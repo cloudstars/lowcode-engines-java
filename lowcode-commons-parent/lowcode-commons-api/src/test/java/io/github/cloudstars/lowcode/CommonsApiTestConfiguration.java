@@ -1,6 +1,5 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.commons.api.config.ApiConfigParser;
 import io.github.cloudstars.lowcode.commons.api.template.OptionListApiConfigTemplate;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -12,11 +11,6 @@ public class CommonsApiTestConfiguration implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-    }
-
-    @Bean
-    public ApiConfigParser apiConfigParser() {
-        return new ApiConfigParser();
     }
 
     @Bean

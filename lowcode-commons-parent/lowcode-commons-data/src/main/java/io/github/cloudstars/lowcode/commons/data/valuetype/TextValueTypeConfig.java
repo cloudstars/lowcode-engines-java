@@ -11,6 +11,12 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 @ValueTypeConfigClass(name = "TEXT")
 public class TextValueTypeConfig extends AbstractValueTypeConfig<String> {
 
+    // 最小长度配置名称
+    private static final String ATTR_MIN_LENGTH = "minLength";
+
+    // 最大长度配置名称
+    private static final String ATTR_MAX_LENGTH = "maxLength";
+
     /**
      * 最小长度
      */
@@ -38,12 +44,12 @@ public class TextValueTypeConfig extends AbstractValueTypeConfig<String> {
         }
 
         // 默认值需要在所有属性解析完之后再解析
-        this.defaultValue = this.parseDefaultValue(configJson);
+        //this.defaultValue = this.parseDefaultValue(configJson);
     }
 
     @Override
     public DataTypeEnum getDataType() {
-        return DataTypeEnum.OBJECT;
+        return DataTypeEnum.STRING;
     }
 
     public Integer getMinLength() {
@@ -62,10 +68,10 @@ public class TextValueTypeConfig extends AbstractValueTypeConfig<String> {
         this.maxLength = maxLength;
     }
 
-    @Override
+    /*@Override
     protected String parseDefaultValue(Object defaultValueConfig) {
         return defaultValueConfig != null ? defaultValueConfig.toString() : null;
-    }
+    }*/
 
     @Override
     public String parseNonNullValue(Object nonNullValue) {
@@ -73,13 +79,7 @@ public class TextValueTypeConfig extends AbstractValueTypeConfig<String> {
     }
 
     @Override
-    public JsonObject toJson() {
-        JsonObject configJson = super.toJson();
-        return configJson;
-    }
-
-    @Override
-    public void validate(String nonNullValue) throws InvalidDataException {
+    public void validateNonNullValue(String nonNullValue) throws InvalidDataException {
         int valueLength = nonNullValue.length();
         if (this.minLength != null && valueLength < minLength) {
             throw new InvalidDataException("数据[" + nonNullValue + "]不足设定的最小长度:" + this.minLength);
@@ -87,6 +87,19 @@ public class TextValueTypeConfig extends AbstractValueTypeConfig<String> {
         if (this.maxLength != null && valueLength > maxLength) {
             throw new InvalidDataException("数据[" + nonNullValue + "]超出了设定的最大长度:" + this.maxLength);
         }
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject configJson = super.toJson();
+        if (this.minLength != null) {
+            configJson.put(ATTR_MIN_LENGTH, this.minLength);
+        }
+        if (this.maxLength != null) {
+            configJson.put(ATTR_MAX_LENGTH, this.maxLength);
+        }
+
+        return configJson;
     }
 
 }

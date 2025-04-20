@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.commons.lang.json;
 
 import com.alibaba.fastjson.JSONObject;
+import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 
 import java.util.Collection;
 import java.util.Map;
@@ -58,6 +59,30 @@ public class JsonObject<K, V> extends JsonProxy<JSONObject> implements Map<Strin
         return this.proxy.put(key, value);
     }
 
+    /**
+     * 值不为空时添加
+     *
+     * @param key
+     * @param value
+     */
+    public void putIfNotNull(String key, Object value) {
+        if (value != null) {
+            this.put(key, value);
+        }
+    }
+
+    /**
+     * 值不为空时添加配置的Json
+     *
+     * @param key
+     * @param value
+     */
+    public void putJsonIfNotNull(String key, XConfig value) {
+        if (value != null) {
+            this.put(key, value.toJson());
+        }
+    }
+
     @Override
 
     public Object remove(Object key) {
@@ -102,7 +127,6 @@ public class JsonObject<K, V> extends JsonProxy<JSONObject> implements Map<Strin
     public String toJsonString() {
         return this.proxy.toString();
     }
-
 
     /**
      * 从JSON对象中获取一个key的值，如果key存在，则调用转换函数转换成正确的格式，否则返回默认值

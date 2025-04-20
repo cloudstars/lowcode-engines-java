@@ -3,7 +3,6 @@ package io.github.cloudstars.lowcode.commons.data.valuetype;
 import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -31,7 +30,9 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig<OptionO
                 JsonObject propertyConfigJson = (JsonObject) propertyConfig;
                 String propertyName = (String) propertyConfigJson.get("name");
                 XValueTypeConfig propertyValueType = ValueTypeConfigFactory.newInstance(propertyConfigJson);
-                ObjectValueProperty objectProperty = new ObjectValueProperty(propertyName, propertyValueType);
+                ObjectValueProperty objectProperty = new ObjectValueProperty();
+                objectProperty.setCode(propertyName);
+                objectProperty.setValueType(propertyValueType);
                 this.properties.add(objectProperty);
             }
 
@@ -40,17 +41,17 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig<OptionO
             }
 
             ObjectValueProperty firstValueProperty = this.properties.get(0);
-            if (!"label".equals(firstValueProperty.getName())) {
+            if (!"label".equals(firstValueProperty.getCode())) {
                 this.properties = Arrays.asList(this.properties.get(1), firstValueProperty);
             }
         }
 
 
         // 默认值需要在所有属性解析完之后再解析
-        this.defaultValue = this.parseDefaultValue(configJson);
+        // this.defaultValue = this.parseDefaultValue(configJson);
     }
 
-    @Override
+    /*@Override
     protected OptionObjectValue parseDefaultValue(Object defaultValueConfig) {
         OptionObjectValue defaultValue = null;
         if (defaultValueConfig != null) {
@@ -73,7 +74,7 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig<OptionO
         }
 
         return defaultValue;
-    }
+    }*/
 
     @Override
     public OptionObjectValue parseNonNullValue(Object nonNullValue) {
@@ -105,7 +106,7 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig<OptionO
     }
 
     @Override
-    public void validate(OptionObjectValue nonNullValue) throws InvalidDataException {
+    public void validateNonNullValue(OptionObjectValue nonNullValue) throws InvalidDataException {
 
     }
 

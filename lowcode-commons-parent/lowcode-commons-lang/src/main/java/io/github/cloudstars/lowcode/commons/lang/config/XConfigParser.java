@@ -7,6 +7,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @param <T> 配置对象的类型
  */
+@Deprecated/*请使用对应的Factory来构建XConfig*/
 public interface XConfigParser<T extends XConfig> {
 
     /**

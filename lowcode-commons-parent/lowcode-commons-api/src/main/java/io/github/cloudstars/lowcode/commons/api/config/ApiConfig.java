@@ -1,9 +1,6 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
-import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -11,58 +8,63 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public class ApiConfig extends AbstractConfig implements XConfig {
+public class ApiConfig extends AbstractConfig {
+
+    // 输入配置名称
+    private static final String ATTR_INPUT = "input";
+
+    // 输出配置名称
+    private static final String ATTR_OUTPUT = "output";
 
     /**
-     * 入参数据格式
+     * 入参配置
      */
-    private XValueTypeConfig input;
+    private ApiInputConfig input;
 
     /**
-     * 出参数据格式
+     * 出参配置
      */
-    private XValueTypeConfig output;
+    private ApiOutputConfig output;
 
     public ApiConfig() {
+    }
+
+    public ApiConfig(ApiInputConfig inputConfig, ApiOutputConfig outputConfig) {
+        this.input = inputConfig;
+        this.output = outputConfig;
     }
 
     public ApiConfig(JsonObject configJson) {
         super(configJson);
 
-        JsonObject inputJson = (JsonObject) configJson.get("input");
-        this.setInput(ValueTypeConfigFactory.newInstance(inputJson));
-        JsonObject outputJson = (JsonObject) configJson.get("output");
-        if (outputJson != null) {
-            this.setOutput(ValueTypeConfigFactory.newInstance(outputJson));
-        }
+        JsonObject inputConfigJson = (JsonObject) configJson.get(ATTR_INPUT);
+        this.setInput(new ApiInputConfig(inputConfigJson));
+        JsonObject outputConfigJson = (JsonObject) configJson.get(ATTR_OUTPUT);
+        this.setOutput(new ApiOutputConfig(outputConfigJson));
     }
 
-    public ApiConfig(XValueTypeConfig input, XValueTypeConfig output) {
-        this.input = input;
-        this.output = output;
-    }
-
-    public XValueTypeConfig getInput() {
+    public ApiInputConfig getInput() {
         return input;
     }
 
-    public void setInput(XValueTypeConfig input) {
+    public void setInput(ApiInputConfig input) {
         this.input = input;
     }
 
-    public XValueTypeConfig getOutput() {
+    public ApiOutputConfig getOutput() {
         return output;
     }
 
-    public void setOutput(XValueTypeConfig output) {
+    public void setOutput(ApiOutputConfig output) {
         this.output = output;
     }
 
     @Override
     public JsonObject toJson() {
-        JsonObject configJson = new JsonObject<>();
-        configJson.put("input", input.toJson());
-        configJson.put("output", output.toJson());
+        JsonObject configJson = super.toJson();
+        configJson.put(ATTR_INPUT, input.toJson());
+        configJson.put(ATTR_OUTPUT, output.toJson());
+
         return configJson;
     }
 

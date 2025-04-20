@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.data.defaultvalue;
 
-import io.github.cloudstars.lowcode.commons.data.expression.ExpressionConfigParser;
-import io.github.cloudstars.lowcode.commons.data.expression.XExpressionConfig;
+import io.github.cloudstars.lowcode.commons.data.predicate.ExpressionConfigParser;
+import io.github.cloudstars.lowcode.commons.data.predicate.XExpressionConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -36,14 +36,14 @@ public class ExpressionDefaultValueConfig extends AbstractDefaultValueConfig {
     public ExpressionDefaultValueConfig(JsonObject configJson) {
         super(configJson);
 
-        JsonObject exprConfigJson = (JsonObject) configJson.get(XExpressionConfig.ATTR_EXPRESSION);
+        JsonObject exprConfigJson = (JsonObject) configJson.get(XExpressionConfig.ATTR);
         this.expression = this.exprParser.fromJson(exprConfigJson);
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(XExpressionConfig.ATTR_EXPRESSION, this.expression.toJson());
+        configJson.put(XExpressionConfig.ATTR, this.expression.toJson());
         return configJson;
     }
 }

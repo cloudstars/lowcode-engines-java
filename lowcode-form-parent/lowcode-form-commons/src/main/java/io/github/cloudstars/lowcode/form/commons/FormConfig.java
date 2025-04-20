@@ -1,10 +1,11 @@
 package io.github.cloudstars.lowcode.form.commons;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
+import io.github.cloudstars.lowcode.commons.data.field.AbstractFieldConfig;
+import io.github.cloudstars.lowcode.commons.data.field.FieldConfigFactory;
+import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.form.commons.field.AbstractFieldConfig;
-import io.github.cloudstars.lowcode.form.commons.field.FieldConfigFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,9 @@ import java.util.List;
  *
  * @author clouds
  */
-public class FormConfig extends AbstractTypedConfig {
+public class FormConfig extends AbstractIdentifiedConfig {
 
-    // 字段列表属性
+    // 字段列表配置名称
     private static final String ATTR_FIELDS = "fields";
 
     /**
@@ -44,7 +45,7 @@ public class FormConfig extends AbstractTypedConfig {
                 fieldConfigs.add(fieldConfig);
             }
         });
-        this.setFields(fieldConfigs);
+        this.fields = fieldConfigs;
     }
 
     public List<AbstractFieldConfig> getFields() {
@@ -56,14 +57,10 @@ public class FormConfig extends AbstractTypedConfig {
     }
 
     @Override
-    public JsonObject toJson() {
+    public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        // 添加字段配置
-        JsonArray fieldJsonArray = new JsonArray();
-        this.fields.forEach(field -> {
-            fieldJsonArray.add(field.toJson());
-        });
-        configJson.put(ATTR_FIELDS, fieldJsonArray);
+        // 添加字段列表配置
+        configJson.put(ATTR_FIELDS, JsonConfigUtils.toJsonArray(this.fields));
 
         return configJson;
     }

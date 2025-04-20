@@ -9,15 +9,32 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public abstract class AbstractConfig implements XConfig {
 
+    /**
+     * 配置描述
+     */
+    private String description;
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public AbstractConfig() {
     }
 
     public AbstractConfig(JsonObject configJson) {
+        this.description = (String) configJson.get(ATTR_DESCRIPTION);
     }
 
     @Override
-    public JsonObject toJson() {
-        JsonObject configJson = new JsonObject();
+    public JsonObject<String, Object> toJson() {
+        JsonObject<String, Object> configJson = new JsonObject<>();
+        configJson.putIfNotNull(ATTR_DESCRIPTION, this.description);
+
         return configJson;
     }
 

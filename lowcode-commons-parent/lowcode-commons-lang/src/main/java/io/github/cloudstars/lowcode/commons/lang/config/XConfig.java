@@ -9,26 +9,30 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public interface XConfig {
 
-    // 类型属性名称
-    String ATTR_TYPE = "type";
-
-    // 编号属性名称
-    String ATTR_KEY = "key";
-
-    // 名称属性名称
-    String ATTR_NAME = "name";
-
-    // 标题属性名称
-    String ATTR_TITLE = "title";
-
-    // 值属性名称
-    String ATTR_VALUE = "value";
+    // 描述配置项名称
+    String ATTR_DESCRIPTION  = "description";
 
     /**
-     * 将配置转为 JSON 字符串
+     * 获取配置的描述
      *
      * @return
      */
-    JsonObject toJson();
+    String getDescription();
+
+    /**
+     * 将配置转为 Json对象
+     *
+     * @return
+     */
+    JsonObject<String, Object> toJson();
+
+    /**
+     * 将配置转为 Json 字符串
+     *
+     * @return
+     */
+    default String toJsonString() {
+        return toJson().toJsonString();
+    }
 
 }

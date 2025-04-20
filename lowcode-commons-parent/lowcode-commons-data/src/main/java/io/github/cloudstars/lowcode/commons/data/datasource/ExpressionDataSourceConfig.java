@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data.datasource;
 
-import io.github.cloudstars.lowcode.commons.data.expression.AbstractExpressionConfig;
+import io.github.cloudstars.lowcode.commons.data.predicate.AbstractExpressionConfig;
 
 /**
  * 表达式数据源配置

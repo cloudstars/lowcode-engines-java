@@ -3,7 +3,6 @@ package io.github.cloudstars.lowcode.commons.lang.json;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.util.FileUtils;
 
 import java.util.List;
@@ -17,6 +16,19 @@ import java.util.Map;
 public final class JsonUtils {
 
     private JsonUtils() {
+    }
+
+
+    /**
+     * 从类路径加载JSON文件并反序列化成JsonObject
+     *
+     * @param filePath
+     * @return JsonObject
+     */
+    public static JsonObject loadJsonObjectFromClasspath(String filePath) {
+        String content = FileUtils.loadTextFromClasspath(filePath);
+        JSONObject jsonObject = JSONObject.parseObject(content);
+        return FastJsonUtils.wrapJSONObject(jsonObject);
     }
 
     /**
@@ -61,36 +73,8 @@ public final class JsonUtils {
      * @param <T>
      * @return
      */
-    public static <T extends Object> List<T> parseArray(String jsonString, Class<T> tClass) {
+    public static <T extends Object> List<T> toJsonArray(String jsonString, Class<T> tClass) {
         return JSONObject.parseArray(jsonString, tClass);
-    }
-
-    /**
-     * 将配置列表转换为JsonArray
-     *
-     * @param configs 配置列表
-     * @return JsonArray
-     * @param <T> 配置类型
-     */
-    public static <T extends XConfig> JsonArray parseArray(List<T> configs) {
-        JsonArray jsonArray = new JsonArray();
-        configs.forEach(config -> {
-            jsonArray.add(config.toJson());
-        });
-
-        return jsonArray;
-    }
-
-    /**
-     * 从类路径加载JSON文件并反序列化成JsonObject
-     *
-     * @param filePath
-     * @return JsonObject
-     */
-    public static JsonObject loadJsonObjectFromClasspath(String filePath) {
-        String content = FileUtils.loadTextFromClasspath(filePath);
-        JSONObject jsonObject = JSONObject.parseObject(content);
-        return FastJsonUtils.wrapJSONObject(jsonObject);
     }
 
     /**

@@ -1,5 +1,8 @@
 package io.github.cloudstars.lowcode.form.commons.field;
 
+import io.github.cloudstars.lowcode.commons.data.field.AbstractFieldConfig;
+import io.github.cloudstars.lowcode.commons.data.field.FieldConfigClass;
+import io.github.cloudstars.lowcode.commons.data.valuetype.NumberValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -7,7 +10,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@FieldConfigClass(type = "NUMBER")
+@FieldConfigClass(name = "NUMBER")
 public class NumberFieldConfig extends AbstractFieldConfig {
 
     public NumberFieldConfig() {
@@ -15,6 +18,8 @@ public class NumberFieldConfig extends AbstractFieldConfig {
 
     public NumberFieldConfig(JsonObject configJson) {
         super(configJson);
+
+        this.setValueType(new NumberValueTypeConfig(configJson));
     }
 
     @Override

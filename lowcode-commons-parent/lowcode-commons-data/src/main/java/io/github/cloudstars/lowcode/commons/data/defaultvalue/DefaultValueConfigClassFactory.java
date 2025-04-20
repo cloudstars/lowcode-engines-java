@@ -24,22 +24,22 @@ public class DefaultValueConfigClassFactory {
     /**
      * 注册一种默认值Java类
      *
-     * @param defaultValueConfigClass 默认值配置Java类
+     * @param configClass 默认值配置Java类
      */
-    public static void register(Class<? extends XDefaultValueConfig> defaultValueConfigClass) {
-        String dataTypeName = defaultValueConfigClass.getName();
-        DefaultValueConfigClass[] annos = defaultValueConfigClass.getAnnotationsByType(DefaultValueConfigClass.class);
+    public static void register(Class<? extends XDefaultValueConfig> configClass) {
+        String dataTypeName = configClass.getName();
+        DefaultValueConfigClass[] annos = configClass.getAnnotationsByType(DefaultValueConfigClass.class);
         if (annos.length == 0) {
-            throw new RuntimeException("默认值类型[" + dataTypeName + "]必须添加注解@DefaultValueConfigClass，注册失败！");
+            throw new RuntimeException("默认值配置类型[" + dataTypeName + "]必须添加注解@DefaultValueConfigClass，注册失败！");
         }
 
         try {
-            defaultValueConfigClass.getConstructor(JsonObject.class);
+            configClass.getConstructor(JsonObject.class);
         } catch (Exception e) {
-            throw new RuntimeException("默认值类型[" + dataTypeName + "]必须有一个带JsonObject参数的public构造函数！");
+            throw new RuntimeException("默认值配置类型[" + dataTypeName + "]必须有一个带JsonObject参数的public构造函数！");
         }
 
-        configClassMap.put(annos[0].name(), defaultValueConfigClass);
+        configClassMap.put(annos[0].name().toUpperCase(), configClass);
     }
 
     /**
@@ -49,9 +49,9 @@ public class DefaultValueConfigClassFactory {
      * @return 默认值配置的Java类
      */
     public static Class<? extends XDefaultValueConfig> get(String typeName) {
-        Class<? extends XDefaultValueConfig> typeClass = configClassMap.get(typeName);
+        Class<? extends XDefaultValueConfig> typeClass = configClassMap.get(typeName.toUpperCase());
         if (typeClass == null) {
-            throw new RuntimeException("默认值类型[" + typeName + "]不存在！");
+            throw new RuntimeException("默认值配置类型[" + typeName + "]不存在！");
         }
 
         return typeClass;

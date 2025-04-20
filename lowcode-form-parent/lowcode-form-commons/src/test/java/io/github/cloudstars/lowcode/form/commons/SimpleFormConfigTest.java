@@ -16,10 +16,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SimpleFormConfigTest {
 
     @Test
-    public void test1() {
+    public void test() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple.json");
         FormConfig formConfig = new FormConfig(configJson);
-        JsonTestUtils.assertDerivedFrom(configJson, formConfig.toJson());
+        JsonTestUtils.assertEquals(configJson, formConfig.toJson());
+    }
+
+    @Test
+    public void test0() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple-0.json");
+        FormConfig formConfig = new FormConfig(configJson);
+        JsonTestUtils.assertEquals(configJson, formConfig.toJson());
+    }
+
+    @Test
+    public void test1() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple-1.json");
+        FormConfig formConfig = new FormConfig(configJson);
+        JsonTestUtils.assertEquals(configJson, formConfig.toJson());
     }
 
 }

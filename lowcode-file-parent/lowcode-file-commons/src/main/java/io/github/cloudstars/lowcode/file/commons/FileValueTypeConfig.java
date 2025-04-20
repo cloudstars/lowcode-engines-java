@@ -66,7 +66,7 @@ public class FileValueTypeConfig extends AbstractObjectValueTypeConfig<FileObjec
 
 
     @Override
-    public void validate(FileObject nonNullValue) throws InvalidDataException {
+    public void validateNonNullValue(FileObject nonNullValue) throws InvalidDataException {
 
     }
 

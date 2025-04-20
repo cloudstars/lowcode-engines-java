@@ -17,11 +17,11 @@ public class NodeConfigFactory {
     /**
      * 根据节点的Json配置实例化一个节点配置
      *
-     * @param nodeConfig
+     * @param configJson
      * @return
      */
-    public static AbstractNodeConfig newInstance(JsonObject nodeConfig) {
-        Object typeValue = nodeConfig.get("type");
+    public static AbstractNodeConfig newInstance(JsonObject configJson) {
+        Object typeValue = configJson.get("type");
         if (typeValue == null) {
             throw new RuntimeException("节点类型[type]不存在！");
         }
@@ -30,7 +30,7 @@ public class NodeConfigFactory {
         Class<? extends AbstractNodeConfig> nodeConfigClass = NodeConfigClassFactory.get(type);
         try {
             Constructor<? extends AbstractNodeConfig> constructor = nodeConfigClass.getConstructor(JsonObject.class);
-            return constructor.newInstance(nodeConfig);
+            return constructor.newInstance(configJson);
         } catch (Exception e) {
             throw new RuntimeException("实例化节点配置，类型为[" + type + "]出错！", e);
         }

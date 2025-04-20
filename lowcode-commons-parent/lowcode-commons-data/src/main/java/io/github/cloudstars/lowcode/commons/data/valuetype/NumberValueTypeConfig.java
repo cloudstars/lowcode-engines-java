@@ -11,10 +11,19 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 @ValueTypeConfigClass(name = "NUMBER")
 public class NumberValueTypeConfig extends AbstractValueTypeConfig<Number> {
 
+    // 精度配置名称
+    private static final String ATTR_PRECISION = "precision";
+
+    // 最小值配置名称
+    private static final String ATTR_MIN_VALUE = "minValue";
+
+    // 最大值配置名称
+    private static final String ATTR_MAX_VALUE = "maxValue";
+
     /**
      * 精度
      */
-    private int precision = 0;
+    private Integer precision;
 
     /**
      * 最小值
@@ -32,28 +41,28 @@ public class NumberValueTypeConfig extends AbstractValueTypeConfig<Number> {
     public NumberValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        Object minValueValue = configJson.get("minValue");
+        Object minValueValue = configJson.get(ATTR_MIN_VALUE);
         if (minValueValue != null) {
-            this.minValue = this.getActualValue(minValueValue);
+            this.minValue = (Number) minValueValue;
         }
 
-        Object maxValueValue = configJson.get("maxValue");
+        Object maxValueValue = configJson.get(ATTR_MAX_VALUE);
         if (maxValueValue != null) {
-            this.maxValue = this.getActualValue(maxValueValue);
+            this.maxValue = (Number) maxValueValue;
         }
 
-        Object precisionValue = configJson.get("precision");
+        Object precisionValue = configJson.get(ATTR_PRECISION);
         if (precisionValue != null) {
             this.precision = (Integer) precisionValue;
         }
 
         // 默认值需要在所有属性解析完之后再解析
-        this.defaultValue = this.parseDefaultValue(configJson);
+        // this.defaultValue = this.parseDefaultValue(configJson);
     }
 
     @Override
     public DataTypeEnum getDataType() {
-        if (this.precision == 0) {
+        if (this.precision == null || this.precision == 0) {
             if (this.maxValue != null) {
                 long mv = Long.parseLong(this.maxValue.toString());
                 if (mv > Integer.MAX_VALUE) {
@@ -91,16 +100,16 @@ public class NumberValueTypeConfig extends AbstractValueTypeConfig<Number> {
         this.maxValue = maxValue;
     }
 
-    @Override
+    /*@Override
     protected Number parseDefaultValue(Object defaultValueConfig) {
         if (defaultValueConfig != null) {
             getActualValue(defaultValueConfig);
         }
 
         return null;
-    }
+    }*/
 
-    private Number getActualValue(Object value) {
+    /*private Number getActualValue(Object value) {
         if (this.precision == 0) {
             this.defaultValue = (Integer) value;
         } else {
@@ -108,28 +117,22 @@ public class NumberValueTypeConfig extends AbstractValueTypeConfig<Number> {
         }
 
         return (Number) value;
-    }
+    }*/
 
     @Override
     public Number parseNonNullValue(Object nonNullValue) {
-        return null;
+        Number value = null;
+        if (this.precision == 0) {
+            value = (Integer) nonNullValue;
+        } else {
+            value = (Double) nonNullValue;
+        }
+
+        return value;
     }
 
     @Override
-    public JsonObject toJson() {
-        JsonObject configJson = super.toJson();
-        configJson.put("precision", this.precision);
-        if (this.minValue != null) {
-            configJson.put("minValue", this.minValue);
-        }
-        if (this.maxValue != null) {
-            configJson.put("maxValue", this.maxValue);
-        }
-        return configJson;
-    }
-
-    @Override
-    public void validate(Number nonNullValue) throws InvalidDataException {
+    public void validateNonNullValue(Number nonNullValue) throws InvalidDataException {
         if (this.minValue != null && this.compare(nonNullValue, minValue) < 0) {
             throw new InvalidDataException("数据[" + nonNullValue + "]不足设定的最小值:" + this.minValue);
         }
@@ -152,7 +155,17 @@ public class NumberValueTypeConfig extends AbstractValueTypeConfig<Number> {
 
         double mistake = 1 / Math.pow(10, this.precision + 1);
         double d = n1.doubleValue() - n2.doubleValue();
-        return (Math.abs(d) < mistake) ? 0 : ((d < 0) ? - 1 : 1);
+        return (Math.abs(d) < mistake) ? 0 : ((d < 0) ? -1 : 1);
+    }
+
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject configJson = super.toJson();
+        configJson.putIfNotNull(ATTR_PRECISION, this.precision);
+        configJson.putIfNotNull(ATTR_MIN_VALUE, this.minValue);
+        configJson.putIfNotNull(ATTR_MAX_VALUE, this.maxValue);
+        return configJson;
     }
 
 }

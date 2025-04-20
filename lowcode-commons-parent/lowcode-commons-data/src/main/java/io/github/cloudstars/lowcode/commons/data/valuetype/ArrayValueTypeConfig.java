@@ -1,9 +1,8 @@
 package io.github.cloudstars.lowcode.commons.data.valuetype;
 
-import io.github.cloudstars.lowcode.commons.data.DataValidationUtils;
 import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
+import io.github.cloudstars.lowcode.commons.data.field.XFieldConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,11 +17,24 @@ import java.util.List;
 public class ArrayValueTypeConfig<V> extends AbstractValueTypeConfig<List<V>> {
 
     /**
-     * 配置中的ITEMS属性名称
+     * 数组下元素的属性名称
      */
-    private final static String ITEMS = "items";
+    private final static String ATTR_ITEMS = "items";
 
-    private XValueTypeConfig<V> itemsDataType;
+    /**
+     * 数组下元数的数据格式
+     */
+    private XValueTypeConfig itemsValueType;
+
+    /**
+     * 数组下元数是否必填
+     */
+    private Boolean itemsRequired;
+
+    /**
+     * 数组下元素的数据格式
+     */
+    //private XValueTypeConfig<V> items;
 
     public ArrayValueTypeConfig() {
     }
@@ -30,15 +42,14 @@ public class ArrayValueTypeConfig<V> extends AbstractValueTypeConfig<List<V>> {
     public ArrayValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        Object itemsValueType = configJson.get(ITEMS);
-        if (itemsValueType == null || !(itemsValueType instanceof JsonObject)) {
-            throw new RuntimeException("数组数据类型必须定义" + ITEMS + "，并且是一个JSON对象");
-        }
-
-        this.itemsDataType = ValueTypeConfigFactory.newInstance((JsonObject) itemsValueType);
+        JsonObject itemsConfigJson = (JsonObject) configJson.get(ATTR_ITEMS);
+        this.itemsValueType = ValueTypeConfigFactory.newInstance(itemsConfigJson);
+        this.itemsRequired = (Boolean) itemsConfigJson.get(XFieldConfig.ATTR_REQUIRED);
+        //Object itemsValueType = configJson.get(ITEMS);
+        //this.items = ValueTypeConfigFactory.newInstance((JsonObject) itemsValueType);
 
         // 默认值需要在所有属性解析完之后再解析
-        this.parseDefaultValue(configJson);
+        // this.parseDefaultValue(configJson);
     }
 
     @Override
@@ -46,15 +57,31 @@ public class ArrayValueTypeConfig<V> extends AbstractValueTypeConfig<List<V>> {
         return DataTypeEnum.ARRAY;
     }
 
-    public XValueTypeConfig<V> getItemsDataType() {
-        return itemsDataType;
+    /*public XValueTypeConfig<V> getItems() {
+        return items;
     }
 
-    public void setItemsDataType(XValueTypeConfig<V> itemsDataType) {
-        this.itemsDataType = itemsDataType;
+    public void setItems(XValueTypeConfig<V> items) {
+        this.items = items;
+    }*/
+
+    public XValueTypeConfig getItemsValueType() {
+        return itemsValueType;
     }
 
-    @Override
+    public void setItemsValueType(XValueTypeConfig itemsValueType) {
+        this.itemsValueType = itemsValueType;
+    }
+
+    public Boolean getItemsRequired() {
+        return itemsRequired;
+    }
+
+    public void setItemsRequired(Boolean itemsRequired) {
+        this.itemsRequired = itemsRequired;
+    }
+
+    /*@Override
     protected List<V> parseDefaultValue(Object defaultValueConfig) {
         if (defaultValueConfig != null) {
             if (defaultValueConfig instanceof List) {
@@ -71,7 +98,7 @@ public class ArrayValueTypeConfig<V> extends AbstractValueTypeConfig<List<V>> {
         }
 
         return null;
-    }
+    }*/
 
     @Override
     public List<V> parseNonNullValue(Object nonNullValue) {
@@ -84,24 +111,30 @@ public class ArrayValueTypeConfig<V> extends AbstractValueTypeConfig<List<V>> {
 
         List<V> listVItems = new ArrayList<>();
         for (Object listItem : listItems) {
-            listVItems.add(this.itemsDataType.parseTargetValue(listItem));
+            //listVItems.add(this.itemsDataType.parseTargetValue(listItem));
         }
 
         return listVItems;
     }
 
     @Override
-    public void validate(List<V> itemValues) throws InvalidDataException {
-        XValueTypeConfig itemValueTypeConfig = this.itemsDataType;
+    public void validateNonNullValue(List<V> itemValues) throws InvalidDataException {
+        XValueTypeConfig itemValueTypeConfig = this.itemsValueType;
         for (V itemValue : itemValues) {
-            DataValidationUtils.validate(itemValue, itemValueTypeConfig);
+            if (itemValue != null) {
+                itemValueTypeConfig.validateNonNullValue(itemValue);
+            }
         }
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(ITEMS, itemsDataType.toJson());
+        // 将items的信息合并在一个json中
+        JsonObject itemConfigJson = this.itemsValueType.toJson();
+        itemConfigJson.putIfNotNull(XFieldConfig.ATTR_REQUIRED, this.itemsRequired);
+        configJson.put(ATTR_ITEMS, itemConfigJson);
+
         return configJson;
     }
 

@@ -10,15 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
-
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CommonsApiTestApplication.class)
 public class ApiConfigParserTest {
-
-    @Resource
-    private ApiConfigParser parser;
 
     @Test
     public void test1() {

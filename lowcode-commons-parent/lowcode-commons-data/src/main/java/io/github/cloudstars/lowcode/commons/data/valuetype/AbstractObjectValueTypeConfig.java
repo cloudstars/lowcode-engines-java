@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.data.valuetype;
 
+import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,16 +12,20 @@ import java.util.List;
  */
 public abstract class AbstractObjectValueTypeConfig<V extends Object> extends AbstractValueTypeConfig<V> {
 
+    // 对象下的属性列表配置名称
+    public static final String ATTR_PROPERTIES = "properties";
+
     protected AbstractObjectValueTypeConfig() {}
 
     /**
      * 对象值下面的属性列表
      */
-    protected List<ObjectValueProperty> properties = new ArrayList<>();
+    protected List<ObjectValueProperty> properties;
 
     public AbstractObjectValueTypeConfig(JsonObject configJson) {
         super(configJson);
     }
+
 
     public List<ObjectValueProperty> getProperties() {
         return properties;
@@ -39,13 +43,9 @@ public abstract class AbstractObjectValueTypeConfig<V extends Object> extends Ab
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        List<JsonObject> propertiesJson = new ArrayList<>();
-        for (ObjectValueProperty property : this.properties) {
-            JsonObject propertyJson = property.getValueType().toJson();
-            propertyJson.put("name", property.getName());
-            propertiesJson.add(propertyJson);
+        if (this.properties != null) {
+            configJson.put("properties", JsonConfigUtils.toJsonArray(this.properties));
         }
-        configJson.put("properties", propertiesJson);
 
         return configJson;
     }

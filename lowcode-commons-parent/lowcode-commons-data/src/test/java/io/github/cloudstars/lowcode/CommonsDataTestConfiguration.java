@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.commons.data.expression.json.JsonExpressParser;
+import io.github.cloudstars.lowcode.commons.data.predicate.json.JsonExpressParser;
 import io.github.cloudstars.lowcode.commons.data.valuetype.*;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

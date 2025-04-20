@@ -29,10 +29,11 @@ public class TextValueTypeConfigParserTest {
         JsonObject configJson = new JsonObject(configMap);
         XValueTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(TextValueTypeConfig.class, valueType.getClass());
-        TextValueTypeConfig textValueType = (TextValueTypeConfig) valueType;
-        Assert.assertEquals(false, textValueType.isRequired());
-        Assert.assertEquals("这是一个文本数据，缺省值为abc", textValueType.getRemark());
-        Assert.assertEquals("abc", textValueType.getDefaultValue());
+        JsonTestUtils.assertDerivedFrom(configJson, valueType.toJson());
+        // TextValueTypeConfig textValueType = (TextValueTypeConfig) valueType;
+        //Assert.assertEquals(false, textValueType.isRequired());
+        //Assert.assertEquals("这是一个文本数据，缺省值为abc", textValueType.getRemark());
+        //Assert.assertEquals("abc", textValueType.getDefaultValue());
     }
 
 }

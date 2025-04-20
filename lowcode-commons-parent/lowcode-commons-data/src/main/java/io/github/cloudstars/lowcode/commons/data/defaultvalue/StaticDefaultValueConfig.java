@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data.defaultvalue;
 
+import io.github.cloudstars.lowcode.commons.data.field.XFieldConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -29,13 +30,14 @@ public class StaticDefaultValueConfig extends AbstractDefaultValueConfig {
     public StaticDefaultValueConfig(JsonObject configJson) {
         super(configJson);
 
-        this.value = configJson.get(ATTR_VALUE);
+        this.value = configJson.get(XFieldConfig.ATTR_VALUE);
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(ATTR_VALUE, this.value);
+        configJson.put(XFieldConfig.ATTR_VALUE, this.value);
+
         return configJson;
     }
 

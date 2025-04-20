@@ -9,30 +9,13 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public abstract class AbstractTypedConfig extends AbstractConfig implements XTypedConfig {
 
-    // 类型属性
+    // 类型配置名称
     private static final String ATTR_TYPE = "type";
-
-    // 唯一标识属性
-    private static final String ATTR_KEY = "key";
-
-    // 名称属性
-    private static final String ATTR_NAME = "name";
 
     /**
      * 配置的类型
      */
     private String type;
-
-    /**
-     * 配置的编号
-     */
-    private String key;
-
-    /**
-     * 配置的名称
-     */
-    private String name;
-
 
     public AbstractTypedConfig() {
     }
@@ -41,8 +24,6 @@ public abstract class AbstractTypedConfig extends AbstractConfig implements XTyp
         super(configJson);
 
         this.type = (String) configJson.get(ATTR_TYPE);
-        this.key = (String) configJson.get(ATTR_KEY);
-        this.name = (String) configJson.get(ATTR_NAME);
     }
 
     @Override
@@ -54,29 +35,10 @@ public abstract class AbstractTypedConfig extends AbstractConfig implements XTyp
         this.type = type;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public JsonObject toJson() {
-        JsonObject configJson = new JsonObject();
+        JsonObject configJson = super.toJson();
         configJson.put(ATTR_TYPE, this.type);
-        configJson.put(ATTR_KEY, this.key);
-        configJson.put(ATTR_NAME, this.name);
 
         return configJson;
     }

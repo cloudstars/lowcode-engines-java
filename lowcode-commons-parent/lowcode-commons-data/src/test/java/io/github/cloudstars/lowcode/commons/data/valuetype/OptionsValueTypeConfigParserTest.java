@@ -32,12 +32,14 @@ public class OptionsValueTypeConfigParserTest {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("valuetype/option/option-simple.json");
         XValueTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(OptionValueTypeConfig.class, valueType.getClass());
+        JsonTestUtils.assertDerivedFrom(configJson, valueType.toJson());
+
         OptionValueTypeConfig optionValueType = (OptionValueTypeConfig) valueType;
-        Assert.assertEquals(false, optionValueType.isRequired());
-        Assert.assertEquals("这是一个选项数据，有缺省值", optionValueType.getRemark());
-        String expectedDefaultValueString = "{\"label\":  \"lll\", \"value\": \"vvv\"}";
-        String actualDefaultValueString = JsonUtils.toJsonString(optionValueType.getDefaultValue());
-        JsonTestUtils.assertDerivedFrom(expectedDefaultValueString, actualDefaultValueString);
+        //Assert.assertEquals(false, optionValueType.isRequired());
+        //Assert.assertEquals("这是一个选项数据，有缺省值", optionValueType.getRemark());
+        //String expectedDefaultValueString = "{\"label\":  \"lll\", \"value\": \"vvv\"}";
+        //String actualDefaultValueString = JsonUtils.toJsonString(optionValueType.getDefaultValue());
+        //JsonTestUtils.assertDerivedFrom(expectedDefaultValueString, actualDefaultValueString);
     }
 
 }

@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data.valuetype;
 
+import io.github.cloudstars.lowcode.commons.lang.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.lang.reflect.Constructor;
@@ -17,21 +18,21 @@ public class ValueTypeConfigFactory {
     /**
      * 根据数据格式的Json配置实例化一个数据格式配置
      *
-     * @param dataTypeConfig
+     * @param configJson
      * @return
      */
-    public static XValueTypeConfig newInstance(JsonObject dataTypeConfig) {
-        Object dataTypeValue = dataTypeConfig.get("type");
-        if (dataTypeValue == null) {
-            throw new RuntimeException("数据格式[type]不存在！");
+    public static XValueTypeConfig newInstance(JsonObject configJson) {
+        Object typeName = configJson.get(XTypedConfig.ATTR);
+        if (typeName == null) {
+            throw new RuntimeException("数据格式配置类型[type]不存在！");
         }
 
-        Class<? extends XValueTypeConfig> dataTypeClass = ValueTypeConfigClassFactory.get(dataTypeValue.toString());
+        Class<? extends XValueTypeConfig> configClass = ValueTypeConfigClassFactory.get(typeName.toString());
         try {
-            Constructor<? extends XValueTypeConfig> constructor = dataTypeClass.getConstructor(JsonObject.class);
-            return constructor.newInstance(dataTypeConfig);
+            Constructor<? extends XValueTypeConfig> constructor = configClass.getConstructor(JsonObject.class);
+            return constructor.newInstance(configJson);
         } catch (Exception e) {
-            throw new RuntimeException("实例化数据格式" + dataTypeValue + "出错！", e);
+            throw new RuntimeException("实例化数据格式配置类型[" + typeName + "]出错！", e);
         }
     }
 

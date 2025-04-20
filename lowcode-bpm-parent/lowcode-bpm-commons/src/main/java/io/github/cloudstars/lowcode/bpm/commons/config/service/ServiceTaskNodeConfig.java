@@ -14,6 +14,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 @NodeConfigClass(type = "DEFAULT.SERVICE")
 public class ServiceTaskNodeConfig extends AbstractNodeConfig {
 
+    // 类名配置名称
     private static final String ATTR_CLASSNAME = "className";
 
     /**

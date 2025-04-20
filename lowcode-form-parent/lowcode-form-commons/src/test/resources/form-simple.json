@@ -4,26 +4,25 @@
   "name": "简单字段类型的表单",
   "fields": [
     {
-      "name": "a",
       "type": "TEXT",
-      "valueType": {
-        "type": "TEXT",
-        "required": false,
-        "defaultValue": "abc",
-        "remark": "这是一个文本数据，缺省值为abc"
-      },
+      "code": "a",
+      "name": "字段A",
+      "required": true,
       "defaultValue": {
         "type": "static",
         "value": "abc"
       }
     },
     {
-      "name": "b",
       "type": "NUMBER",
-      "valueType": {
-        "type": "NUMBER",
-        "required": false,
-        "precision": 0
+      "code": "b",
+      "precision": 0,
+      "defaultValue": {
+        "type": "expression",
+        "expression": {
+          "type": "static",
+          "text": "a + 1"
+        }
       }
     }
   ]

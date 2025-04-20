@@ -11,12 +11,12 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 public class ConditionConfig extends AbstractConfig {
 
     /**
-     * 条件类型属性的名称
+     * 条件类型配置名称
      */
     private static final String ATTR_TYPE = "type";
 
     /**
-     * 条件类型属性的名称
+     * 条件值配置名称
      */
     private static final String ATTR_VALUE = "value";
 

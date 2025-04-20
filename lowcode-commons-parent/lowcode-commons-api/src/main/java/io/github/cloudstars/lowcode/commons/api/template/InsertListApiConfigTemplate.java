@@ -1,6 +1,8 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
+import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
+import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
 import io.github.cloudstars.lowcode.commons.data.valuetype.ArrayValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.data.valuetype.NumberValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.data.valuetype.ObjectValueTypeConfig;
@@ -19,14 +21,20 @@ public class InsertListApiConfigTemplate extends AbstractApiConfigTemplate<Inser
     @Override
     public ApiConfig newInstance(InsertDataApiConfigParams params) {
         // 入参由输入的属性列表决定，数组下的元素是对象
-        ArrayValueTypeConfig inputDataType = new ArrayValueTypeConfig();
-        ObjectValueTypeConfig objectDataType = new ObjectValueTypeConfig();
-        objectDataType.setProperties(params.getProperties());
-        inputDataType.setItemsDataType(objectDataType);
-        // 出参是影响行数（n 或 0）
-        NumberValueTypeConfig outputDataType = new NumberValueTypeConfig();
+        ApiInputConfig inputConfig = new ApiInputConfig();
+        ArrayValueTypeConfig inputValueType = new ArrayValueTypeConfig();
+        ObjectValueTypeConfig objectValueType = new ObjectValueTypeConfig();
+        objectValueType.setProperties(params.getProperties());
+        inputValueType.setItemsValueType(objectValueType);
+        inputValueType.setItemsRequired(true);
+        inputConfig.setValueType(inputValueType);
 
-        ApiConfig apiConfig = new ApiConfig(inputDataType, outputDataType);
+        // 出参是影响行数（n 或 0）
+        ApiOutputConfig outputConfig = new ApiOutputConfig();
+        NumberValueTypeConfig outputValueType = new NumberValueTypeConfig();
+        outputConfig.setValueType(outputValueType);
+
+        ApiConfig apiConfig = new ApiConfig(inputConfig, outputConfig);
         return apiConfig;
     }
 

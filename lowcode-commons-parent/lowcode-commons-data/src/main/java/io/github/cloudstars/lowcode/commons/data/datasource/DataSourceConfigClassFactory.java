@@ -30,16 +30,16 @@ public class DataSourceConfigClassFactory {
         String typeName = configClass.getName();
         DataSourceConfigClass[] annos = configClass.getAnnotationsByType(DataSourceConfigClass.class);
         if (annos.length == 0) {
-            throw new RuntimeException("数据源" + typeName + "必须添加注解@DataSourceConfigClass，注册失败！");
+            throw new RuntimeException("数据源配置类型[" + typeName + "]必须添加注解@DataSourceConfigClass，注册失败！");
         }
 
         try {
             configClass.getConstructor(JsonObject.class);
         } catch (Exception e) {
-            throw new RuntimeException("数据源" + typeName + "必须有一个带JsonObject参数的public构造函数！");
+            throw new RuntimeException("数据源配置类型[" + typeName + "]必须有一个带JsonObject参数的public构造函数！");
         }
 
-        configClassMap.put(annos[0].name(), configClass);
+        configClassMap.put(annos[0].name().toUpperCase(), configClass);
     }
 
     /**
@@ -49,9 +49,9 @@ public class DataSourceConfigClassFactory {
      * @return 数据源配置的Java类
      */
     public static Class<? extends XDataSourceConfig> get(String typeName) {
-        Class<? extends XDataSourceConfig> configClass = configClassMap.get(typeName);
+        Class<? extends XDataSourceConfig> configClass = configClassMap.get(typeName.toUpperCase());
         if (configClass == null) {
-            throw new RuntimeException("数据源" + typeName + "不存在！");
+            throw new RuntimeException("数据源配置类型[" + typeName + "]不存在！");
         }
 
         return configClass;

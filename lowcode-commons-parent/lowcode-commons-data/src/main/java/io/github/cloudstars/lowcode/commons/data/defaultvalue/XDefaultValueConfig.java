@@ -9,4 +9,8 @@ import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
  *
  */
 public interface XDefaultValueConfig extends XConfig {
+
+    // 默认值属性名称
+    String ATTR = "defaultValue";
+
 }

@@ -30,16 +30,18 @@ public class ObjectValueTypeConfigParserTest {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("valuetype/object/object-simple.json");
         XValueTypeConfig valueType = this.parser.fromJson(configJson);
         Assert.assertEquals(ObjectValueTypeConfig.class, valueType.getClass());
+        JsonTestUtils.assertDerivedFrom(configJson, valueType.toJson());
+
         ObjectValueTypeConfig objectValueType = (ObjectValueTypeConfig) valueType;
 
-        Assert.assertEquals(false, objectValueType.isRequired());
-        Assert.assertEquals("这是一个对象数据，有缺省值", objectValueType.getRemark());
-        JsonTestUtils.assertDerivedFrom("{\"a\": \"x\", \"b\": \"y\"}", JsonUtils.toJsonString(objectValueType.getDefaultValue()));
+        //Assert.assertEquals(false, objectValueType.isRequired());
+        //Assert.assertEquals("这是一个对象数据，有缺省值", objectValueType.getRemark());
+        //JsonTestUtils.assertDerivedFrom("{\"a\": \"x\", \"b\": \"y\"}", JsonUtils.toJsonString(objectValueType.getDefaultValue()));
 
         List<ObjectValueProperty> properties = objectValueType.getProperties();
         Assert.assertEquals(2, properties.size());
-        Assert.assertEquals("a", properties.get(0).getName());
-        Assert.assertEquals("b", properties.get(1).getName());
+        Assert.assertEquals("a", properties.get(0).getCode());
+        Assert.assertEquals("b", properties.get(1).getCode());
     }
 
 }

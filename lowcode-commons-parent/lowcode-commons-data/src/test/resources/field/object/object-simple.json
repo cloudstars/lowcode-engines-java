@@ -1,0 +1,23 @@
+{
+  "type": "OBJECT",
+  "required": false,
+  "defaultValue": {
+    "a": "x",
+    "b": "y"
+  },
+  "remark": "这是一个对象数据，有缺省值",
+  "properties": [
+    {
+      "name": "a",
+      "type": "TEXT",
+      "required": false,
+      "remark": "这是一个文本数据，缺省值为a"
+    },
+    {
+      "name": "b",
+      "type": "TEXT",
+      "required": false,
+      "remark": "这是一个文本数据，缺省值为b"
+    }
+  ]
+}

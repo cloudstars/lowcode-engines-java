@@ -1,36 +1,39 @@
 {
   "input": {
-    "dataType": "ARRAY",
+    "valueType": {
+      "type": "ARRAY",
+      "items": {
+        "type": "TEXT",
+        "required": true,
+        "description": "value值不能是null"
+      }
+    },
     "required": false,
-    "remark": "入参是可选的",
-    "items": {
-      "dataType": "STRING",
-      "required": true,
-      "remark": "value值不能是null"
-    }
+    "description": "入参是可选的"
   },
   "output": {
-    "dataType": "ARRAY",
+    "valueType": {
+      "type": "ARRAY",
+      "items": {
+        "type": "OBJECT",
+        "properties": [
+          {
+            "code": "a",
+            "name": "参数A",
+            "required": true,
+            "type": "TEXT",
+            "description": "这是一个label，数据格式是文本"
+          },
+          {
+            "code": "b",
+            "required": true,
+            "type": "NUMBER",
+            "description": "这是一个value，数据格式是数字"
+          }
+        ]
+      }
+    },
     "required": true,
-    "remark": "入参是可选的",
-    "items": {
-      "dataType": "OBJECT",
-      "required": true,
-      "remark": "value值不能是null",
-      "properties": [
-        {
-          "name": "a",
-          "dataType": "STRING",
-          "required": true,
-          "remark": "这是一个label，数据格式是文本"
-        },
-        {
-          "name": "b",
-          "dataType": "NUMBER",
-          "required": true,
-          "remark": "这是一个value，数据格式是数字"
-        }
-      ]
-    }
+    "description": "value值不能是null"
   }
 }

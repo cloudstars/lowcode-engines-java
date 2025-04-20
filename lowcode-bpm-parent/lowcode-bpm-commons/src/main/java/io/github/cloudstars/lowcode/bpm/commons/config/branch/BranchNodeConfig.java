@@ -1,10 +1,13 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.branch;
 
-import io.github.cloudstars.lowcode.bpm.commons.config.*;
+import io.github.cloudstars.lowcode.bpm.commons.config.AbstractNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeConfigClass;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeConfigFactory;
+import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +92,7 @@ public class BranchNodeConfig extends AbstractNodeConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put("nodes", JsonUtils.parseArray(this.nodes));
+        configJson.put("nodes", JsonConfigUtils.toJsonArray(this.nodes));
         return configJson;
     }
 

@@ -2,7 +2,6 @@ package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.CommonsApiTestApplication;
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
-import io.github.cloudstars.lowcode.commons.api.config.ApiConfigParser;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
@@ -20,9 +19,6 @@ import javax.annotation.Resource;
 public class OptionListApiConfigTemplateTest {
 
     @Resource
-    private ApiConfigParser parser;
-
-    @Resource
     private OptionListApiConfigTemplate template;
 
     @Test
@@ -34,8 +30,8 @@ public class OptionListApiConfigTemplateTest {
         ApiConfig apiConfig = this.template.newInstance(params);
 
         JsonObject expectedConfigJson = JsonUtils.loadJsonObjectFromClasspath("template/option-list.json");
-        ApiConfig expectedApiConfig = this.parser.fromJson(expectedConfigJson);
-        JsonTestUtils.assertDerivedFrom(expectedApiConfig.toJson().toJsonString(), apiConfig.toJson().toJsonString());
+        ApiConfig expectedApiConfig = new ApiConfig(expectedConfigJson);
+        JsonTestUtils.assertEquals(expectedApiConfig, apiConfig);
     }
 
 }
