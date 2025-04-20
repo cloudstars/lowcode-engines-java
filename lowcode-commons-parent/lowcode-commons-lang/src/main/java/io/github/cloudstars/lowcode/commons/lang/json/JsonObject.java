@@ -72,6 +72,16 @@ public class JsonObject<K, V> extends JsonProxy<JSONObject> implements Map<Strin
     }
 
     /**
+     * 添加配置的Json
+     *
+     * @param key
+     * @param value
+     */
+    public void putJson(String key, XConfig value) {
+        this.put(key, value.toJson());
+    }
+
+    /**
      * 值不为空时添加配置的Json
      *
      * @param key

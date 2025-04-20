@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.commons.api.template;
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
 import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
 import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.*;
+import io.github.cloudstars.lowcode.commons.value.type.config.*;
 
 import java.util.Arrays;
 

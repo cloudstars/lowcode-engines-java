@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.form.commons.field;
 
-import io.github.cloudstars.lowcode.commons.data.datasource.AbstractDataSourceConfig;
+import io.github.cloudstars.lowcode.commons.datasource.config.AbstractDataSourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**

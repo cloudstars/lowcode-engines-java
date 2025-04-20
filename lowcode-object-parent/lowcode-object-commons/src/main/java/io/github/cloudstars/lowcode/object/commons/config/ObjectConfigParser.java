@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author clouds
  */
-public class ObjectConfigParser {
+public final class ObjectConfigParser {
 
     /**
      * 解析一个模型的配置

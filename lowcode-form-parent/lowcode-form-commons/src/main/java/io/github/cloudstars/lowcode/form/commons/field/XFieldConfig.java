@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.form.commons.field;
 
-import io.github.cloudstars.lowcode.commons.data.defaultvalue.XDefaultValueConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.XValueConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XIdentifiedConfig;
 
 /**
@@ -36,6 +36,6 @@ public interface XFieldConfig extends XIdentifiedConfig {
      *
      * @return
      */
-    XDefaultValueConfig getDefaultValue();
+    XValueConfig getDefaultValue();
 
 }

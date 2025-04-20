@@ -1,0 +1,17 @@
+{
+  "type": "OBJECT",
+  "properties": [
+    {
+      "code": "a",
+      "name": "这是a",
+      "type": "TEXT",
+      "minLength": 10
+    },
+    {
+      "code": "b",
+      "name": "这是b",
+      "type": "TEXT",
+      "maxLength": 100
+    }
+  ]
+}

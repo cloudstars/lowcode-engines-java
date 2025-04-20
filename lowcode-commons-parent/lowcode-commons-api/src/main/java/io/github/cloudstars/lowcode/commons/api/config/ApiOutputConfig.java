@@ -1,10 +1,10 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
-import io.github.cloudstars.lowcode.commons.data.field.XFieldConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.value.XValueConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
 
 /**
  * API输出配置
@@ -49,13 +49,13 @@ public class ApiOutputConfig extends AbstractConfig {
         if (valueTypeConfigJson != null) {
             this.valueType = ValueTypeConfigFactory.newInstance(valueTypeConfigJson);
         }
-        this.required = (Boolean) configJson.get(XFieldConfig.ATTR_REQUIRED);
+        this.required = (Boolean) configJson.get(XValueConfig.ATTR_REQUIRED);
     }
 
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putIfNotNull(XFieldConfig.ATTR_REQUIRED, this.required);
+        configJson.putIfNotNull(XValueConfig.ATTR_REQUIRED, this.required);
         configJson.putJsonIfNotNull(XValueTypeConfig.ATTR, this.valueType);
 
         return configJson;

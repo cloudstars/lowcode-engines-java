@@ -16,9 +16,12 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-data</artifactId>
+            <artifactId>lowcode-commons-value</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-datasource</artifactId>
+        </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>

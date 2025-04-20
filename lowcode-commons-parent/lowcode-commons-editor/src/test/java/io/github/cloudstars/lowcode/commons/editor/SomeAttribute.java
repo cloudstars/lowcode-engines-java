@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.editor;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public class SomeAttribute  implements XConfig {
+public class SomeAttribute extends AbstractConfig {
 
     private String attr1;
 
@@ -28,6 +28,13 @@ public class SomeAttribute  implements XConfig {
 
     public void setAttr2(String attr2) {
         this.attr2 = attr2;
+    }
+
+    public SomeAttribute() {
+    }
+
+    public SomeAttribute(JsonObject configJson) {
+        super(configJson);
     }
 
     @Override

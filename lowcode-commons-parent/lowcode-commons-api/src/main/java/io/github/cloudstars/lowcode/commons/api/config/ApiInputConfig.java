@@ -1,10 +1,9 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
-import io.github.cloudstars.lowcode.commons.data.defaultvalue.DefaultValueConfigFactory;
-import io.github.cloudstars.lowcode.commons.data.defaultvalue.XDefaultValueConfig;
-import io.github.cloudstars.lowcode.commons.data.field.XFieldConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.ValueConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.XValueConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -28,7 +27,7 @@ public class ApiInputConfig extends AbstractConfig {
     /**
      * 默认值配置
      */
-    private XDefaultValueConfig defaultValue;
+    private XValueConfig defaultValue;
 
     public XValueTypeConfig getValueType() {
         return valueType;
@@ -46,11 +45,11 @@ public class ApiInputConfig extends AbstractConfig {
         this.required = required;
     }
 
-    public XDefaultValueConfig getDefaultValue() {
+    public XValueConfig getDefaultValue() {
         return defaultValue;
     }
 
-    public void setDefaultValue(XDefaultValueConfig defaultValue) {
+    public void setDefaultValue(XValueConfig defaultValue) {
         this.defaultValue = defaultValue;
     }
 
@@ -64,19 +63,19 @@ public class ApiInputConfig extends AbstractConfig {
         if (valueTypeConfigJson != null) {
             this.valueType = ValueTypeConfigFactory.newInstance(valueTypeConfigJson);
         }
-        this.required = (Boolean) configJson.get(XFieldConfig.ATTR_REQUIRED);
-        JsonObject defaultValueConfigJson = (JsonObject) configJson.get(XDefaultValueConfig.ATTR);
+        this.required = (Boolean) configJson.get(XValueConfig.ATTR_REQUIRED);
+        JsonObject defaultValueConfigJson = (JsonObject) configJson.get(XValueConfig.ATTR_DEFAULT_VALUE);
         if (defaultValueConfigJson != null) {
-            this.defaultValue = DefaultValueConfigFactory.newInstance(defaultValueConfigJson);
+            this.defaultValue = ValueConfigFactory.newInstance(defaultValueConfigJson);
         }
     }
 
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putIfNotNull(XFieldConfig.ATTR_REQUIRED, this.required);
+        configJson.putIfNotNull(XValueConfig.ATTR_REQUIRED, this.required);
         configJson.putJsonIfNotNull(XValueTypeConfig.ATTR, this.valueType);
-        configJson.putJsonIfNotNull(XDefaultValueConfig.ATTR, this.defaultValue);
+        configJson.putJsonIfNotNull(XValueConfig.ATTR_DEFAULT_VALUE, this.defaultValue);
 
         return configJson;
     }

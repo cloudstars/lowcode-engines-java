@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.editor;
 
+import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -10,13 +11,17 @@ import java.util.List;
  *
  * @author clouds
  */
-public class SomeConfig implements XConfig {
+public class SomeConfig extends AbstractConfig {
 
     private String x;
 
     private List<SomeAttribute> items;
 
     public SomeConfig() {
+    }
+
+    public SomeConfig(JsonObject configJson) {
+        super(configJson);
     }
 
     public String getX() {

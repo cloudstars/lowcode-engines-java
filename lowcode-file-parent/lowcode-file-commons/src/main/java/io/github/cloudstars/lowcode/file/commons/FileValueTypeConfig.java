@@ -1,69 +1,26 @@
 package io.github.cloudstars.lowcode.file.commons;
 
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.AbstractObjectValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigClass;
+import io.github.cloudstars.lowcode.commons.value.type.config.AbstractObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 文件数据格式配置
  *
- * @author clouds 
+ * @author clouds
  */
 @ValueTypeConfigClass(name = "FILE")
-public class FileValueTypeConfig extends AbstractObjectValueTypeConfig<FileObject> {
+public class FileValueTypeConfig extends AbstractObjectValueTypeConfig {
 
-    /**
-     * 数据中的文件标识属性名
-     */
-    private final static String ATTR_KEY = "key";
-
-    /**
-     * 数据中的文件名称属性名
-     */
-    private final static String ATTR_NAME = "name";
+    public FileValueTypeConfig() {
+    }
 
     public FileValueTypeConfig(JsonObject configJson) {
         super(configJson);
-
-        // 默认值需要在所有属性解析完之后再解析
-        // this.defaultValue = this.parseDefaultValue(configJson);
-    }
-
-    /*@Override
-    protected FileObject parseDefaultValue(Object defaultValueConfig) {
-        FileObject defaultValue = null;
-        if (defaultValueConfig != null) {
-            if (defaultValueConfig instanceof JsonObject || defaultValueConfig instanceof Map) {
-                Map<String, Object> valueMap = (Map<String, Object>) defaultValueConfig;
-                defaultValue = new FileObject();
-                defaultValue.setKey((String) valueMap.get(ATTR_KEY));
-                defaultValue.setName((String) valueMap.get(ATTR_NAME));
-            } else {
-                throw new InvalidDataException("文件数据格式不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
-            }
-        }
-
-        return defaultValue;
     }
 
     @Override
-    public FileObject parseNonNullValue(Object nonNullValue) {
-        if (!(nonNullValue instanceof Map)) {
-            throw new InvalidDataException("文件类型的数据格式不正确，必须是包括key、name属性的对象");
-        }
-
-        Map<String, Object> fileValueMap = (Map<String, Object>) nonNullValue;
-        FileObject fileObject = new FileObject();
-        fileObject.setKey((String) fileValueMap.get(ATTR_KEY));
-        fileObject.setName((String) fileValueMap.get(ATTR_NAME));
-
-        return fileObject;
+    public JsonObject toJson() {
+        return super.toJson();
     }
-
-
-    @Override
-    public void validateNonNullValue(FileObject nonNullValue) throws InvalidDataException {
-
-    }*/
-
 }

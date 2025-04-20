@@ -12,6 +12,9 @@ public interface XConfig {
     // 描述配置项名称
     String ATTR_DESCRIPTION  = "description";
 
+    // 表达式配置项名称
+    String ATTR_EXPRESSION = "expression";
+
     /**
      * 获取配置的描述
      *

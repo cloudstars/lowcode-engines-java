@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.object.commons.config;
 
+import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class ObjectConfig implements XConfig {
+public class ObjectConfig extends AbstractIdentifiedConfig implements XConfig {
 
     /**
      * 编号
@@ -62,6 +63,14 @@ public class ObjectConfig implements XConfig {
 
     public void setFields(List<AbstractFieldConfig> fields) {
         this.fields = fields;
+    }
+
+    public ObjectConfig() {
+        super();
+    }
+
+    public ObjectConfig(JsonObject configJson) {
+        super(configJson);
     }
 
     @Override

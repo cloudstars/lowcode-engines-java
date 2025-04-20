@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.form.commons.field;
 
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.TextValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.TextValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**

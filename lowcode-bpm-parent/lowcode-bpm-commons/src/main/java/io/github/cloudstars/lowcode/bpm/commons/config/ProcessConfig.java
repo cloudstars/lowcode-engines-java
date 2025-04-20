@@ -10,7 +10,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public class ProcessConfig extends AbstractConfig implements XConfig {
+public class ProcessConfig extends AbstractConfig {
 
     /**
      * 流程编号（自动生成）

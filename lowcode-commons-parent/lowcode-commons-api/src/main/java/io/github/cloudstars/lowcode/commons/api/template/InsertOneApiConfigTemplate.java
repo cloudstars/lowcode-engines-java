@@ -3,8 +3,8 @@ package io.github.cloudstars.lowcode.commons.api.template;
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
 import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
 import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.NumberValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.config.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.NumberValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.ObjectValueTypeConfig;
 
 /**
  * 单条数据插入API配置模板

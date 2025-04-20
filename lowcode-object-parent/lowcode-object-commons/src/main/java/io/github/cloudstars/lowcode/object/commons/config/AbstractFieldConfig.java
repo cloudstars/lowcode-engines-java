@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.commons.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public class AbstractFieldConfig implements XConfig {
+public class AbstractFieldConfig extends AbstractIdentifiedConfig {
 
     /**
      * 字段的编号
