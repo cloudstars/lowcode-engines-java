@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.data.defaultvalue;
 
-import io.github.cloudstars.lowcode.commons.data.predicate.ExpressionConfigParser;
-import io.github.cloudstars.lowcode.commons.data.predicate.XExpressionConfig;
+import io.github.cloudstars.lowcode.commons.data.predicate.PredicateConfigParser;
+import io.github.cloudstars.lowcode.commons.data.predicate.XPredicateConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -15,18 +15,18 @@ public class ExpressionDefaultValueConfig extends AbstractDefaultValueConfig {
     /**
      * 表达式
      */
-    private XExpressionConfig expression;
+    private XPredicateConfig expression;
 
     /**
      * 表达式解析器
      */
-    private ExpressionConfigParser exprParser = new ExpressionConfigParser();
+    private PredicateConfigParser exprParser = new PredicateConfigParser();
 
-    public XExpressionConfig getExpression() {
+    public XPredicateConfig getExpression() {
         return expression;
     }
 
-    public void setExpression(XExpressionConfig expression) {
+    public void setExpression(XPredicateConfig expression) {
         this.expression = expression;
     }
 
@@ -36,14 +36,14 @@ public class ExpressionDefaultValueConfig extends AbstractDefaultValueConfig {
     public ExpressionDefaultValueConfig(JsonObject configJson) {
         super(configJson);
 
-        JsonObject exprConfigJson = (JsonObject) configJson.get(XExpressionConfig.ATTR);
+        JsonObject exprConfigJson = (JsonObject) configJson.get(XPredicateConfig.ATTR);
         this.expression = this.exprParser.fromJson(exprConfigJson);
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(XExpressionConfig.ATTR, this.expression.toJson());
+        configJson.put(XPredicateConfig.ATTR, this.expression.toJson());
         return configJson;
     }
 }

@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.commons.data.predicate.json;
 import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 
 /**
- * 二元操作表达式中的左右项
+ * 二元操作断言中的左右项
  *
  * @author clouds
  */

@@ -3,8 +3,8 @@ package io.github.cloudstars.lowcode.commons.api.config;
 import io.github.cloudstars.lowcode.commons.data.defaultvalue.DefaultValueConfigFactory;
 import io.github.cloudstars.lowcode.commons.data.defaultvalue.XDefaultValueConfig;
 import io.github.cloudstars.lowcode.commons.data.field.XFieldConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 

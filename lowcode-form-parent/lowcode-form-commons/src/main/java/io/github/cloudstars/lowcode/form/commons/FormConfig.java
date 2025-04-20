@@ -1,11 +1,11 @@
 package io.github.cloudstars.lowcode.form.commons;
 
-import io.github.cloudstars.lowcode.commons.data.field.AbstractFieldConfig;
-import io.github.cloudstars.lowcode.commons.data.field.FieldConfigFactory;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.form.commons.field.AbstractFieldConfig;
+import io.github.cloudstars.lowcode.form.commons.field.FieldConfigFactory;
 
 import java.util.ArrayList;
 import java.util.List;

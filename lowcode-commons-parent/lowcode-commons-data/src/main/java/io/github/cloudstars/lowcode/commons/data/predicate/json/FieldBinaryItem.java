@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.data.predicate.json;
 
-import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;

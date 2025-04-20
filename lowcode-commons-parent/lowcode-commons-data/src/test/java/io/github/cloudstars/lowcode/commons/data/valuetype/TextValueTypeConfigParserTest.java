@@ -1,6 +1,9 @@
 package io.github.cloudstars.lowcode.commons.data.valuetype;
 
 import io.github.cloudstars.lowcode.CommonsDataTestApplication;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.TextValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigParser;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
 import org.junit.Assert;

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.data.datasource;
 
-import io.github.cloudstars.lowcode.commons.data.predicate.AbstractExpressionConfig;
+import io.github.cloudstars.lowcode.commons.data.predicate.AbstractPredicateConfig;
 
 /**
  * 表达式数据源配置
@@ -13,13 +13,13 @@ public class ExpressionDataSourceConfig extends AbstractDataSourceConfig {
     /**
      * 表达式
      */
-    private AbstractExpressionConfig expression;
+    private AbstractPredicateConfig expression;
 
-    public AbstractExpressionConfig getExpression() {
+    public AbstractPredicateConfig getExpression() {
         return expression;
     }
 
-    public void setExpression(AbstractExpressionConfig expression) {
+    public void setExpression(AbstractPredicateConfig expression) {
         this.expression = expression;
     }
 }

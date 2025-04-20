@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode;
 
-import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigClassFactory;
-import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigParser;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigClassFactory;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigParser;
 import io.github.cloudstars.lowcode.file.commons.FileValueTypeConfig;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

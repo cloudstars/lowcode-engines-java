@@ -3,10 +3,10 @@ package io.github.cloudstars.lowcode.commons.data;
 import io.github.cloudstars.lowcode.commons.data.defaultvalue.DefaultValueConfigClassFactory;
 import io.github.cloudstars.lowcode.commons.data.defaultvalue.ExpressionDefaultValueConfig;
 import io.github.cloudstars.lowcode.commons.data.defaultvalue.StaticDefaultValueConfig;
-import io.github.cloudstars.lowcode.commons.data.predicate.ExpressionConfigClassFactory;
-import io.github.cloudstars.lowcode.commons.data.predicate.JsonExpressionConfig;
-import io.github.cloudstars.lowcode.commons.data.predicate.StaticExpressionConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.*;
+import io.github.cloudstars.lowcode.commons.data.predicate.PredicateConfigClassFactory;
+import io.github.cloudstars.lowcode.commons.data.predicate.json.JsonPredicateConfig;
+import io.github.cloudstars.lowcode.commons.data.predicate.expression.StaticPredicatePredicateConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.*;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
@@ -25,8 +25,8 @@ public class CommonsDataAutoConfiguration  implements ApplicationRunner {
         DefaultValueConfigClassFactory.register(ExpressionDefaultValueConfig.class);
 
         // 注册内置的表达式配置类型
-        ExpressionConfigClassFactory.register(StaticExpressionConfig.class);
-        ExpressionConfigClassFactory.register(JsonExpressionConfig.class);
+        PredicateConfigClassFactory.register(StaticPredicatePredicateConfig.class);
+        PredicateConfigClassFactory.register(JsonPredicateConfig.class);
     }
 
 }

@@ -1,12 +1,8 @@
 package io.github.cloudstars.lowcode.file.commons;
 
-import io.github.cloudstars.lowcode.commons.data.InvalidDataException;
-import io.github.cloudstars.lowcode.commons.data.valuetype.AbstractObjectValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigClass;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.AbstractObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-
-import java.util.Map;
 
 /**
  * 文件数据格式配置
@@ -30,10 +26,10 @@ public class FileValueTypeConfig extends AbstractObjectValueTypeConfig<FileObjec
         super(configJson);
 
         // 默认值需要在所有属性解析完之后再解析
-        this.defaultValue = this.parseDefaultValue(configJson);
+        // this.defaultValue = this.parseDefaultValue(configJson);
     }
 
-    @Override
+    /*@Override
     protected FileObject parseDefaultValue(Object defaultValueConfig) {
         FileObject defaultValue = null;
         if (defaultValueConfig != null) {
@@ -68,6 +64,6 @@ public class FileValueTypeConfig extends AbstractObjectValueTypeConfig<FileObjec
     @Override
     public void validateNonNullValue(FileObject nonNullValue) throws InvalidDataException {
 
-    }
+    }*/
 
 }

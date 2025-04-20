@@ -1,10 +1,6 @@
 package io.github.cloudstars.lowcode.form.commons;
 
-import io.github.cloudstars.lowcode.commons.data.field.FieldConfigClassFactory;
-import io.github.cloudstars.lowcode.form.commons.field.JsonFieldConfig;
-import io.github.cloudstars.lowcode.form.commons.field.NumberFieldConfig;
-import io.github.cloudstars.lowcode.form.commons.field.SubFormFieldConfig;
-import io.github.cloudstars.lowcode.form.commons.field.TextFieldConfig;
+import io.github.cloudstars.lowcode.form.commons.field.*;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 

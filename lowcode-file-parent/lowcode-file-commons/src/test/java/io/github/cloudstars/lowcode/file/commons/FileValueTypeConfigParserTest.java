@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.file.commons;
 
 import io.github.cloudstars.lowcode.FileCommonsTestApplication;
-import io.github.cloudstars.lowcode.commons.data.valuetype.ValueTypeConfigParser;
-import io.github.cloudstars.lowcode.commons.data.valuetype.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.ValueTypeConfigParser;
+import io.github.cloudstars.lowcode.commons.data.valuetype.config.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import org.junit.Assert;
