@@ -8,9 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Time;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * JavaObject 工具类
@@ -153,6 +151,32 @@ public final class ObjectUtils {
         }
 
         return methodMap;
+    }
+
+    /**
+     * 获取对象的属性名称列表
+     *
+     * @param object 对象
+     * @return List
+     */
+    public static List<String> getDeclaredFieldNames(Object object) {
+        if (object == null) {
+            return Collections.emptyList();
+        }
+
+        List<String> fieldNames = new ArrayList<>();
+        Field[] fields = object.getClass().getDeclaredFields();
+        for (int i = 0, l = fields.length; i < l; i++) {
+            Field field = fields[i];
+            String fieldName = field.getName();
+            if (fieldName.startsWith("this$")) {
+                // 如果是内部类的话，存在一些特殊的属性，可以忽略
+                continue;
+            }
+            fieldNames.add(fieldName);
+        }
+
+        return fieldNames;
     }
 
     /**

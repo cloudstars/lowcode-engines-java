@@ -1,11 +1,13 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
+import io.github.cloudstars.lowcode.commons.value.XValue;
+
 /**
  * 选项格式的数据
  *
  * @author clouds
  */
-public class OptionObject {
+public class OptionObject implements XValue {
 
     /**
      * 选项值

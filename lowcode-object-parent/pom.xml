@@ -14,13 +14,12 @@
 
     <modules>
         <module>lowcode-object-commons</module>
+        <module>lowcode-object-core-parent</module>
+        <module>lowcode-object-bpm-parent</module>
         <module>lowcode-object-view-parent</module>
-        <module>lowcode-object-datasource</module>
         <module>lowcode-object-method</module>
-        <module>lowcode-object-engine-parent</module>
-        <module>lowcode-object-oql-parent</module>
         <module>lowcode-object-excel</module>
-        <module>lowcode-object-bpm</module>
+        <module>lowcode-object-oql-parent</module>
     </modules>
 
     <dependencyManagement>

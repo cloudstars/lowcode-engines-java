@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RunWith(JUnit4ClassRunner.class)
@@ -28,6 +29,16 @@ public class ObjectUtilsTest {
         Assert.assertTrue(methodBB != null && methodBB.equals(ObjectUtilsTestClass1.class.getDeclaredMethod("getBb")));
         Method methodS = methodMap.get("s");
         Assert.assertTrue(methodS != null && methodS.equals(ObjectUtilsTestClass1.class.getDeclaredMethod("getS")));
+    }
+
+    @Test
+    public void testGetFieldNames() {
+        ObjectUtilsTestClass2 tc = new ObjectUtilsTestClass2();
+        List<String> fieldNames = ObjectUtils.getDeclaredFieldNames(tc);
+        String[] fns = new String[]{"str", "integer", "date", "aBoolean"};
+        for (int i = 0, l = fns.length; i < l; i++) {
+            assert (fieldNames.contains(fns[i]));
+        }
     }
 
     @Test

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import io.github.cloudstars.lowcode.commons.test.db.dataset.JsonDataSetLoader;
 import io.github.cloudstars.lowcode.commons.test.db.dataset.MySqlDataSetOperator;
 import io.github.cloudstars.lowcode.commons.test.db.dataset.IDataSet;
-import io.github.cloudstars.lowcode.commons.test.util.DataCompareTestUtils;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +39,7 @@ public class MySqlDataSetOperatorTest {
         List<Map<String, Object>> dataList = this.namedParameterJdbcTemplate.queryForList("select * from A", new HashMap<>());
         Map<String, Object> loadedData = JsonTestUtils.loadMapFromClasspath(filePath);
         JSONArray loadedDataValues = (JSONArray) loadedData.get("valuesList");
-        assert (DataCompareTestUtils.isAssignableFromList(loadedDataValues, dataList));
+        JsonTestUtils.assertEquals(loadedDataValues, dataList);
     }
 
 }

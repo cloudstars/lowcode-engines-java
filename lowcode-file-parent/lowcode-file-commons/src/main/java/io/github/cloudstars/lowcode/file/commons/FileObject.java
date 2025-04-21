@@ -1,11 +1,13 @@
 package io.github.cloudstars.lowcode.file.commons;
 
+import io.github.cloudstars.lowcode.commons.value.XValue;
+
 /**
  * 文件格式的数据
  *
  * @author clouds
  */
-public class FileObject {
+public class FileObject implements XValue {
 
     private String key;
 
