@@ -9,14 +9,14 @@
     </parent>
 
     <artifactId>lowcode-commons-value</artifactId>
-    <description>公共数据定义</description>
+    <description>公共动态值定义</description>
 
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-lang</artifactId>
+            <artifactId>lowcode-commons-value-type</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

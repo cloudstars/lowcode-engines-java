@@ -3,8 +3,8 @@ package io.github.cloudstars.lowcode.object.form.config.field;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.ValueConfigFactory;
-import io.github.cloudstars.lowcode.commons.value.XValueConfig;
+import io.github.cloudstars.lowcode.commons.value.dynamic.ValueConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.dynamic.XValueConfig;
 import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
 
 /**
@@ -25,9 +25,9 @@ public abstract class AbstractFieldConfig extends AbstractIdentifiedConfig imple
     private XValueTypeConfig valueType;
 
     /**
-     * 默认值配置
+     * 动态值配置
      */
-    private XValueConfig defaultValue;
+    private XValueConfig value;
 
     protected AbstractFieldConfig() {}
 
@@ -36,9 +36,9 @@ public abstract class AbstractFieldConfig extends AbstractIdentifiedConfig imple
 
         this.setType(this.getClass().getAnnotation(FieldConfigClass.class).name());
         this.required = (Boolean) configJson.get(XFieldConfig.ATTR_REQUIRED);
-        JsonObject defaultValueConfigJson = (JsonObject) configJson.get(XValueConfig.ATTR_DEFAULT_VALUE);
-        if (defaultValueConfigJson != null) {
-            this.defaultValue = ValueConfigFactory.newInstance(defaultValueConfigJson);
+        JsonObject valueConfigJson = (JsonObject) configJson.get(XValueConfig.ATTR);
+        if (valueConfigJson != null) {
+            this.value = ValueConfigFactory.newInstance(valueConfigJson);
         }
     }
 
@@ -64,12 +64,13 @@ public abstract class AbstractFieldConfig extends AbstractIdentifiedConfig imple
         this.valueType = valueType;
     }
 
-    public XValueConfig getDefaultValue() {
-        return defaultValue;
+    @Override
+    public XValueConfig getValue() {
+        return value;
     }
 
-    public void setDefaultValue(XValueConfig defaultValue) {
-        this.defaultValue = defaultValue;
+    public void setValue(XValueConfig value) {
+        this.value = value;
     }
 
     @Override
@@ -87,9 +88,7 @@ public abstract class AbstractFieldConfig extends AbstractIdentifiedConfig imple
             });
         }
 
-        if (this.defaultValue != null) {
-            configJson.put(XValueConfig.ATTR_DEFAULT_VALUE, this.defaultValue.toJson());
-        }
+        configJson.putJsonIfNotNull(XValueConfig.ATTR, this.value);
 
         return configJson;
     }

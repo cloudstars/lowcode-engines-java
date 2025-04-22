@@ -17,7 +17,7 @@
 
     <modules>
         <module>lowcode-expression-commons</module>
-        <module>lowcode-expression-parser</module>
+        <!--<module>lowcode-expression-parser</module>-->
         <module>lowcode-expression-engine</module>
     </modules>
 

@@ -38,7 +38,6 @@ public class JsonBpmFieldConfig extends AbstractBpmFieldConfig {
         this.setValueType(new ObjectValueTypeConfig(configJson));
     }
 
-
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();

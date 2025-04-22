@@ -29,6 +29,9 @@
     <modules>
         <module>lowcode-commons-parent</module>
         <module>lowcode-expression-parent</module>
+        <module>lowcode-api-parent</module>
+        <module>lowcode-datasource-parent</module>
+        <module>lowcode-predicate-parent</module>
         <module>lowcode-object-parent</module>
         <module>lowcode-bpm-parent</module>
         <module>lowcode-excel-parent</module>
@@ -48,12 +51,32 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-commons-value-type</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-value</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-datasource</artifactId>
+                <artifactId>lowcode-datasource-type</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-datasource-engine</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-predicate-type</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-commons-predicate</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -85,7 +108,7 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-api</artifactId>
+                <artifactId>lowcode-api-type</artifactId>
                 <version>${revision}</version>
             </dependency>
 

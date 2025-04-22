@@ -29,13 +29,4 @@ public interface XConfig {
      */
     JsonObject<String, Object> toJson();
 
-    /**
-     * 将配置转为 Json 字符串
-     *
-     * @return
-     */
-    default String toJsonString() {
-        return toJson().toJsonString();
-    }
-
 }

@@ -27,7 +27,7 @@
         <dependencies>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-api</artifactId>
+                <artifactId>lowcode-api-type</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

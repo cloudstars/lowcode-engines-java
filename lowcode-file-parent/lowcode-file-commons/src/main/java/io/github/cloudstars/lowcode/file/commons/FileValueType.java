@@ -5,7 +5,7 @@ import io.github.cloudstars.lowcode.commons.value.type.InvalidDataException;
 
 import java.util.Map;
 
-public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, FileObject> {
+public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, FileValue> {
 
     /**
      * 数据中的文件标识属性名
@@ -23,21 +23,21 @@ public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, Fi
     }
 
     @Override
-    public FileObject parseValue(Object rawValue) throws InvalidDataException {
+    public FileValue parseValue(Object rawValue) throws InvalidDataException {
         if (!(rawValue instanceof Map)) {
             throw new InvalidDataException("文件类型的数据格式不正确，必须是包括key、name属性的对象");
         }
 
         Map<String, Object> fileValueMap = (Map<String, Object>) rawValue;
-        FileObject fileObject = new FileObject();
-        fileObject.setKey((String) fileValueMap.get(ATTR_KEY));
-        fileObject.setName((String) fileValueMap.get(ATTR_NAME));
+        FileValue fileValue = new FileValue();
+        fileValue.setKey((String) fileValueMap.get(ATTR_KEY));
+        fileValue.setName((String) fileValueMap.get(ATTR_NAME));
 
-        return fileObject;
+        return fileValue;
     }
 
     @Override
-    public void validate(FileObject value) throws InvalidDataException {
+    public void validate(FileValue value) throws InvalidDataException {
 
     }
 

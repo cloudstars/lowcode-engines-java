@@ -1,0 +1,7 @@
+{
+  "type": "expression",
+  "expression": {
+    "type": "static",
+    "text": "a + 1"
+  }
+}

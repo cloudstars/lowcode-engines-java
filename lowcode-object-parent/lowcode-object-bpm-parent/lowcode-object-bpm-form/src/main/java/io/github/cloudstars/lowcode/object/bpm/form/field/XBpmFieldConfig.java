@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.bpm.form.field;
 
 import io.github.cloudstars.lowcode.commons.lang.config.XIdentifiedConfig;
-import io.github.cloudstars.lowcode.commons.value.XValueConfig;
+import io.github.cloudstars.lowcode.commons.value.dynamic.XValueConfig;
 import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
 
 /**
@@ -13,9 +13,6 @@ public interface XBpmFieldConfig extends XIdentifiedConfig {
 
     // 是否必填的属性名称
     String ATTR_REQUIRED = "required";
-
-    // 值属性名称
-    String ATTR_VALUE = "value";
 
     /**
      * 是否必须
@@ -32,10 +29,10 @@ public interface XBpmFieldConfig extends XIdentifiedConfig {
     XValueTypeConfig getValueType();
 
     /**
-     * 获取字段的默认值配置
+     * 获取字段的动态值配置
      *
      * @return
      */
-    XValueConfig getDefaultValue();
+    XValueConfig getValue();
 
 }

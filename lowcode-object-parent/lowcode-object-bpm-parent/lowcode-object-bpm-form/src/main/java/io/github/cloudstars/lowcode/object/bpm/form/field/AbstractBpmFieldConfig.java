@@ -3,9 +3,11 @@ package io.github.cloudstars.lowcode.object.bpm.form.field;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.ValueConfigFactory;
-import io.github.cloudstars.lowcode.commons.value.XValueConfig;
+import io.github.cloudstars.lowcode.commons.value.dynamic.ValueConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.dynamic.XValueConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.config.defaultvalue.XDefaultValueConfig;
 
 /**
  * 抽象的字段配置
@@ -25,20 +27,22 @@ public abstract class AbstractBpmFieldConfig extends AbstractIdentifiedConfig im
     private XValueTypeConfig valueType;
 
     /**
-     * 默认值配置
+     * 动态值配置
      */
-    private XValueConfig defaultValue;
+    private XValueConfig value;
 
-    protected AbstractBpmFieldConfig() {}
+    protected AbstractBpmFieldConfig() {
+    }
 
     protected AbstractBpmFieldConfig(JsonObject configJson) {
         super(configJson);
 
         this.setType(this.getClass().getAnnotation(BpmFieldConfigClass.class).name());
         this.required = (Boolean) configJson.get(XBpmFieldConfig.ATTR_REQUIRED);
-        JsonObject defaultValueConfigJson = (JsonObject) configJson.get(XValueConfig.ATTR_DEFAULT_VALUE);
-        if (defaultValueConfigJson != null) {
-            this.defaultValue = ValueConfigFactory.newInstance(defaultValueConfigJson);
+        this.valueType = ValueTypeConfigFactory.newInstance(configJson);
+        JsonObject valueConfigJson = (JsonObject) configJson.get(XDefaultValueConfig.ATTR);
+        if (valueConfigJson != null) {
+            this.value = ValueConfigFactory.newInstance(valueConfigJson);
         }
     }
 
@@ -64,12 +68,12 @@ public abstract class AbstractBpmFieldConfig extends AbstractIdentifiedConfig im
         this.valueType = valueType;
     }
 
-    public XValueConfig getDefaultValue() {
-        return defaultValue;
+    public XValueConfig getValue() {
+        return value;
     }
 
-    public void setDefaultValue(XValueConfig defaultValue) {
-        this.defaultValue = defaultValue;
+    public void setValue(XValueConfig value) {
+        this.value = value;
     }
 
     @Override
@@ -87,9 +91,7 @@ public abstract class AbstractBpmFieldConfig extends AbstractIdentifiedConfig im
             });
         }
 
-        if (this.defaultValue != null) {
-            configJson.put(XValueConfig.ATTR_DEFAULT_VALUE, this.defaultValue.toJson());
-        }
+        configJson.putJsonIfNotNull(XDefaultValueConfig.ATTR, this.value);
 
         return configJson;
     }
