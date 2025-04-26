@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.view.commons.config.table;
 
-import io.github.cloudstars.lowcode.commons.config.ResourceConfigClass;
+import io.github.cloudstars.lowcode.commons.config.ResourceTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.object.view.commons.config.AbstractViewConfig;
 import io.github.cloudstars.lowcode.object.view.commons.config.table.action.ActionsConfig;
@@ -11,7 +11,7 @@ import io.github.cloudstars.lowcode.object.view.commons.config.table.query.Query
  *
  * @author clouds
  */
-@ResourceConfigClass(type = "TableView", name = "表格视图")
+@ResourceTypeConfigClass(name = "TableView", description = "表格视图")
 public class TableViewConfig extends AbstractViewConfig {
 
     /**

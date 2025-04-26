@@ -1,10 +1,10 @@
 package io.github.cloudstars.lowcode.excel.commons.config;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
-import io.github.cloudstars.lowcode.commons.config.ResourceConfigClass;
+import io.github.cloudstars.lowcode.commons.config.ResourceTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
-@ResourceConfigClass(type = "Excel", name = "模型Excel导入导出")
+@ResourceTypeConfigClass(name = "Excel", description = "模型Excel导入导出")
 public class ExcelConfig extends AbstractConfig {
 
     public ExcelConfig() {

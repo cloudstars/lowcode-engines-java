@@ -6,20 +6,20 @@ import java.lang.annotation.*;
 @Inherited
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ResourceConfigClass {
+public @interface ResourceTypeConfigClass {
 
     /**
-     * 资源类型
+     * 资源类型的名称
      *
-     * @return 资源类型
-     */
-    String type();
-
-    /**
-     * 资源名称
-     *
-     * @return 资源名称
+     * @return 资源类型的名称
      */
     String name();
+
+    /**
+     * 资源类型的描述
+     *
+     * @return 资源类型的描述
+     */
+    String description();
 
 }
