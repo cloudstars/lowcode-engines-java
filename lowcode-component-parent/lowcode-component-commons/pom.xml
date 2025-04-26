@@ -17,6 +17,10 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-commons-lang</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-dynamic-value-type</artifactId>
+        </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>

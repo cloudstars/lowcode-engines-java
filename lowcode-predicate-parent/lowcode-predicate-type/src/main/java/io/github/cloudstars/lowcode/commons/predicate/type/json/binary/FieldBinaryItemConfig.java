@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.predicate.type.json.binary;
 
-import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.config.XIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
@@ -51,8 +51,8 @@ public class FieldBinaryItemConfig extends AbstractTypedConfig implements XBinar
         super(configJson);
 
         this.setType(TYPE_FIELD);
-        this.code = (String) configJson.get(XIdentifiedConfig.ATTR_CODE);
-        this.name = (String) configJson.get(XIdentifiedConfig.ATTR_NAME);
+        this.code = (String) configJson.get(XIdentifiedConfig.ATTR_NAME);
+        this.name = (String) configJson.get(XIdentifiedConfig.ATTR_LABEL);
         JsonObject valueTypeConfigJson = (JsonObject) configJson.get(XValueTypeConfig.ATTR);
         this.valueType = ValueTypeConfigFactory.newInstance(valueTypeConfigJson);
     }
@@ -60,8 +60,8 @@ public class FieldBinaryItemConfig extends AbstractTypedConfig implements XBinar
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(XIdentifiedConfig.ATTR_CODE, this.code);
-        configJson.put(XIdentifiedConfig.ATTR_NAME, this.name);
+        configJson.put(XIdentifiedConfig.ATTR_NAME, this.code);
+        configJson.put(XIdentifiedConfig.ATTR_LABEL, this.name);
         configJson.put(XValueTypeConfig.ATTR, this.valueType.toJson());
         return configJson;
     }

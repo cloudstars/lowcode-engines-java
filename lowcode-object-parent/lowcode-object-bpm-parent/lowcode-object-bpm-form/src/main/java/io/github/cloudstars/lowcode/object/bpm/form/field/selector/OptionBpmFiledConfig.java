@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.bpm.form.field.selector;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.config.OptionValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.OptionValueTypeConfig;
 import io.github.cloudstars.lowcode.object.bpm.form.field.BpmFieldConfigClass;
 
 /**

@@ -22,7 +22,6 @@
         <module>lowcode-commons-value-type</module>
         <module>lowcode-commons-value</module>
         <module>lowcode-commons-js</module>
-        <module>lowcode-commons-editor</module>
         <module>lowcode-commons-db</module>
         <module>lowcode-commons-event</module>
         <module>lowcode-commons-cache</module>

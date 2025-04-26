@@ -3,9 +3,9 @@ package io.github.cloudstars.lowcode.commons.api.template;
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
 import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
 import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.ArrayValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.NumberValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.ArrayValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.NumberValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
 
 /**
  * 批量数据插入API配置模板

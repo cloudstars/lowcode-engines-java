@@ -11,10 +11,10 @@ public interface XIdentifiedConfig extends XTypedConfig {
     String ATTR_KEY = "key";
 
     // 代码属性名称
-    String ATTR_CODE = "code";
+    String ATTR_NAME = "code";
 
     // 标题属性名称
-    String ATTR_NAME = "name";
+    String ATTR_LABEL = "name";
 
     /**
      * 获取配置的编号

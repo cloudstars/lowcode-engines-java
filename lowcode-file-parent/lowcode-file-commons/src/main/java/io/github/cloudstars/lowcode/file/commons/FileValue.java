@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.file.commons;
 
-import io.github.cloudstars.lowcode.commons.value.XObjectValue;
+import io.github.cloudstars.lowcode.commons.value.type.XObjectValue;
 
 /**
  * 文件格式的数据

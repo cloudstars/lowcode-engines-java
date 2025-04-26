@@ -8,13 +8,10 @@ package io.github.cloudstars.lowcode.commons.value.type;
 public enum DataTypeEnum {
 
     STRING,
-    //DECIMAL,
-    //INTEGER,
-    //LONG,
+    BOOLEAN,
     NUMBER,
     DATE,
     TIME,
-    BOOLEAN,
     OBJECT,
     ARRAY;
 

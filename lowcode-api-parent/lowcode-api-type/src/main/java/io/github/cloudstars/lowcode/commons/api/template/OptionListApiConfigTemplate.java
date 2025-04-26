@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.commons.api.template;
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
 import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
 import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.*;
+import io.github.cloudstars.lowcode.commons.value.type.*;
 
 import java.util.Arrays;
 
@@ -22,8 +22,8 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
     public ApiConfig newInstance(OptionsApiConfigParams params) {
         // 入参可以是一个可选的values属性
         ApiInputConfig inputConfig = new ApiInputConfig();
-        ObjectValueProperty valuesProperty = new ObjectValueProperty();
-        valuesProperty.setCode("values");
+        ObjectPropertyConfig valuesProperty = new ObjectPropertyConfig();
+        valuesProperty.setName("values");
         ArrayValueTypeConfig valuesDataType = new ArrayValueTypeConfig();
         valuesDataType.setItemsValueType(new TextValueTypeConfig());
         valuesProperty.setValueType(valuesDataType);
@@ -34,8 +34,8 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
         // 出参是一个列表
         ApiOutputConfig outputConfig = new ApiOutputConfig();
         TextValueTypeConfig labelValueType = new TextValueTypeConfig();
-        ObjectValueProperty labelProperty = new ObjectValueProperty();
-        labelProperty.setCode(params.getLabelField());
+        ObjectPropertyConfig labelProperty = new ObjectPropertyConfig();
+        labelProperty.setName(params.getLabelField());
         labelProperty.setValueType(labelValueType);
         XValueTypeConfig valueValueType = null;
         if (params.getValueDataType() == OptionsApiConfigParams.ValueDataTypeEnum.STRING) {
@@ -45,8 +45,8 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
             NumberValueTypeConfig numberDataTypeConfig = new NumberValueTypeConfig();
             valueValueType = numberDataTypeConfig;
         }
-        ObjectValueProperty valueProperty = new ObjectValueProperty();
-        valueProperty.setCode(params.getValueField());
+        ObjectPropertyConfig valueProperty = new ObjectPropertyConfig();
+        valueProperty.setName(params.getValueField());
         valueProperty.setValueType(valueValueType);
         ObjectValueTypeConfig optionValueType = new ObjectValueTypeConfig();
         optionValueType.setProperties(Arrays.asList(labelProperty, valueProperty));

@@ -31,8 +31,8 @@ public abstract class AbstractIdentifiedConfig extends AbstractTypedConfig imple
         super(configJson);
 
         this.key = (String) configJson.get(ATTR_KEY);
-        this.code = (String) configJson.get(ATTR_CODE);
-        this.name = (String) configJson.get(ATTR_NAME);
+        this.code = (String) configJson.get(ATTR_NAME);
+        this.name = (String) configJson.get(ATTR_LABEL);
     }
 
 
@@ -67,8 +67,8 @@ public abstract class AbstractIdentifiedConfig extends AbstractTypedConfig imple
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
         configJson.put(ATTR_KEY, this.key);
-        configJson.putIfNotNull(ATTR_CODE, this.code);
-        configJson.putIfNotNull(ATTR_NAME, this.name);
+        configJson.putIfNotNull(ATTR_NAME, this.code);
+        configJson.putIfNotNull(ATTR_LABEL, this.name);
 
         return configJson;
     }

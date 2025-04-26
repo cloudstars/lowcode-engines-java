@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.cloudstars</groupId>
+        <artifactId>lowcode-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>lowcode-dynamic-value-parent</artifactId>
+    <packaging>pom</packaging>
+    <description>低代码平台动态值parent</description>
+
+    <properties>
+    </properties>
+
+    <modules>
+        <module>lowcode-dynamic-value-commons</module>
+        <module>lowcode-dynamic-value-type</module>
+        <module>lowcode-dynamic-value-loader</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-dynamic-value-commons</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

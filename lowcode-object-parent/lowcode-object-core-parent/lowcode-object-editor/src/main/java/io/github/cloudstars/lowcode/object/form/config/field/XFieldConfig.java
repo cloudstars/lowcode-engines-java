@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.object.form.config.field;
 
 import io.github.cloudstars.lowcode.commons.lang.config.XIdentifiedConfig;
 import io.github.cloudstars.lowcode.commons.value.dynamic.XValueConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 /**
  * 字段配置接口

@@ -164,4 +164,16 @@ public class ObjectUtilsTest {
         Assert.assertEquals(now, toTestObject.getDate());
     }
 
+    @Test
+    public void testGetOrDefault() {
+        Map<String, Object> m = new HashMap<>();
+        m.put("a", "aaa");
+        m.put("b", 123);
+
+        Assert.assertEquals("aaa", ObjectUtils.getOrDefault(m.get("a"), "abc"));
+        Assert.assertEquals(123, ObjectUtils.getOrDefault(m.get("b"), 111));
+        Assert.assertEquals("abc", ObjectUtils.getOrDefault(m.get("ab"), "abc"));
+        Assert.assertEquals(111, ObjectUtils.getOrDefault(m.get("ab"), 111));
+    }
+
 }

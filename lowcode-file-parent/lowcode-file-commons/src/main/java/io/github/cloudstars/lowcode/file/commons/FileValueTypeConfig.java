@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.file.commons;
 
-import io.github.cloudstars.lowcode.commons.value.type.config.AbstractObjectValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigClass;
+import io.github.cloudstars.lowcode.commons.value.type.AbstractObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**

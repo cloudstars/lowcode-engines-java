@@ -16,6 +16,8 @@ public class SubFormBpmFieldConfig extends AbstractBpmFieldConfig {
      */
     private BpmFormConfig subBpmFormConfig;
 
+    private Boolean allowNew;
+
     public SubFormBpmFieldConfig() {
     }
 

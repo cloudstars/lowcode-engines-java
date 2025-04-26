@@ -5,8 +5,8 @@ import io.github.cloudstars.lowcode.commons.lang.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.dynamic.ValueConfigFactory;
 import io.github.cloudstars.lowcode.commons.value.dynamic.XValueConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.value.type.config.defaultvalue.XDefaultValueConfig;
 
 /**
@@ -15,6 +15,8 @@ import io.github.cloudstars.lowcode.commons.value.type.config.defaultvalue.XDefa
  * @author clouds
  */
 public abstract class AbstractBpmFieldConfig extends AbstractIdentifiedConfig implements XBpmFieldConfig {
+
+    // 和流程相关的配 private
 
     /**
      * 是否必填

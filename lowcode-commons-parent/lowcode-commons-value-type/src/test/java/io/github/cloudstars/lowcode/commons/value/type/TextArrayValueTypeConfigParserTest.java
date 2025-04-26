@@ -1,9 +1,6 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
-import io.github.cloudstars.lowcode.CommonsValueTestApplication;
-import io.github.cloudstars.lowcode.commons.value.type.config.ArrayValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.CommonsValueTypeTestApplication;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
@@ -15,11 +12,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CommonsValueTestApplication.class)
+@SpringBootTest(classes = CommonsValueTypeTestApplication.class)
 public class TextArrayValueTypeConfigParserTest {
 
     /**
-     * 测试一个简单的文本
+     * 测试一个简单的文本数组
      */
     @Test
     public void testArray() {

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
-import io.github.cloudstars.lowcode.commons.value.type.config.ObjectValueProperty;
+import io.github.cloudstars.lowcode.commons.value.type.ObjectPropertyConfig;
 
 import java.util.List;
 
@@ -14,13 +14,13 @@ public class InsertDataApiConfigParams {
     /**
      * 插入的属性列表
      */
-    private List<ObjectValueProperty> properties;
+    private List<ObjectPropertyConfig> properties;
 
-    public List<ObjectValueProperty> getProperties() {
+    public List<ObjectPropertyConfig> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<ObjectValueProperty> properties) {
+    public void setProperties(List<ObjectPropertyConfig> properties) {
         this.properties = properties;
     }
 

@@ -5,7 +5,7 @@ import io.github.cloudstars.lowcode.commons.lang.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.dynamic.ValueConfigFactory;
 import io.github.cloudstars.lowcode.commons.value.dynamic.XValueConfig;
-import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 /**
  * 抽象的字段配置

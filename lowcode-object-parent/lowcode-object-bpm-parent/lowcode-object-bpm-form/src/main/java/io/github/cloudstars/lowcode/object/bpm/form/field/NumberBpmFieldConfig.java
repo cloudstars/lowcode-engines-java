@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.bpm.form.field;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.config.NumberValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.NumberValueTypeConfig;
 
 /**
  * 数字字段配置

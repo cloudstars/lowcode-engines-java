@@ -256,5 +256,16 @@ public final class ObjectUtils {
         }
     }
 
+
+    /**
+     * 获取一个值，如果值为空则返回默认值
+     *
+     * @param a 期望获取的值
+     * @param b 默认值
+     * @return 结果值
+     */
+    public static <T extends Object> T getOrDefault(T a, T b) {
+        return a != null ? a : b;
+    }
 }
 

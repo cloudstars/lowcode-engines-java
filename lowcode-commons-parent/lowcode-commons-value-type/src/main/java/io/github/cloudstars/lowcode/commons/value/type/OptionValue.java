@@ -1,7 +1,5 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
-import io.github.cloudstars.lowcode.commons.value.XObjectValue;
-
 /**
  * 选项格式的数据
  *

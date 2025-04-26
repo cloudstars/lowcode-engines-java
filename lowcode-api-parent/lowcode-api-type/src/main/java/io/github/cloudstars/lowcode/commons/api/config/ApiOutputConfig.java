@@ -2,8 +2,8 @@ package io.github.cloudstars.lowcode.commons.api.config;
 
 import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 /**
  * API输出配置

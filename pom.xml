@@ -31,13 +31,13 @@
         <module>lowcode-expression-parent</module>
         <module>lowcode-api-parent</module>
         <module>lowcode-datasource-parent</module>
+        <module>lowcode-dynamic-value-parent</module>
         <module>lowcode-predicate-parent</module>
         <module>lowcode-object-parent</module>
         <module>lowcode-bpm-parent</module>
         <module>lowcode-excel-parent</module>
         <module>lowcode-file-parent</module>
         <module>lowcode-script-parent</module>
-        <module>lowcode-api-proxy-parent</module>
         <module>lowcode-flow-parent</module>
         <module>lowcode-component-parent</module>
     </modules>
@@ -57,6 +57,11 @@
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-commons-value</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-dynamic-value-type</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

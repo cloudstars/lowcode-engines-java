@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.file.commons;
 
 import io.github.cloudstars.lowcode.FileCommonsTestApplication;
-import io.github.cloudstars.lowcode.commons.value.type.config.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.value.type.config.XValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
