@@ -10,8 +10,11 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public class AbstractFieldConfig extends AbstractTypedConfig {
 
+    // 字段编号配置名称
     private static final String ATTR_KEY = "key";
+    // 字段名配置名称
     private static final String ATTR_NAME = "name";
+    // 字段标签配置名称
     private static final String ATTR_LABEL = "label";
 
     /**

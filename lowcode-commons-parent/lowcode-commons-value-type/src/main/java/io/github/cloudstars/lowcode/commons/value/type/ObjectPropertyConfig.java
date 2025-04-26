@@ -3,7 +3,6 @@ package io.github.cloudstars.lowcode.commons.value.type;
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
-import io.github.cloudstars.lowcode.commons.config.XResourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -71,21 +70,19 @@ public class ObjectPropertyConfig extends AbstractConfig {
     public ObjectPropertyConfig(JsonObject configJson) {
         super(configJson);
 
-        this.name = (String) configJson.get(XResourceConfig.ATTR_CODE);
-        this.label = (String) configJson.get(XResourceConfig.ATTR_NAME);
+        this.name = (String) configJson.get(GlobalAttrNames.ATTR_NAME);
+        this.label = (String) configJson.get(GlobalAttrNames.ATTR_LABEL);
         this.required = (Boolean) configJson.get(GlobalAttrNames.ATTR_REQUIRED);
         this.valueType = ValueTypeConfigFactory.newInstance(configJson);
-
-        Object defaultValue = configJson.get(XValueTypeConfig.ATTR_DEFAULT_VALUE);
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(XResourceConfig.ATTR_CODE, this.name);
-        configJson.put(XResourceConfig.ATTR_NAME, this.label);
+        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_NAME, this.name);
+        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_LABEL, this.label);
         ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_REQUIRED, this.required);
-        configJson.putAll(this.valueType.toJson());
+        ConfigUtils.putAll(configJson, this.valueType);
 
         return configJson;
     }

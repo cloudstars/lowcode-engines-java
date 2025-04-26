@@ -6,14 +6,14 @@
     {
       "type": "SUBFORM",
       "key": "q8jklfjewlj",
-      "code": "subform1",
-      "name": "子表单名称SubForm1",
+      "name": "subform1",
+      "label": "子表单名称SubForm1",
       "required": true,
       "fields": [
         {
           "type": "TEXT",
-          "code": "a",
-          "name": "字段A",
+          "name": "a",
+          "label": "字段A",
           "required": true,
           "defaultValue": {
             "type": "static",
@@ -22,7 +22,7 @@
         },
         {
           "type": "NUMBER",
-          "code": "b",
+          "name": "b",
           "precision": 0,
           "defaultValue": {
             "type": "expression",

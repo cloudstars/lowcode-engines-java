@@ -8,7 +8,7 @@
     return {
         "name": "descriptor",
         "description": "这是一个规范，对应的配置类型是SomeConfig",
-        "configClassName": "io.github.cloudstars.lowcode.commons.editor.SomeConfig",
+        "configClassName": "io.github.cloudstars.lowcode.commons.descriptor.SomeConfig",
         "attributes": [
             {
                 "name": "x",

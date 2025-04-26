@@ -20,10 +20,22 @@ public final class ConfigUtils {
 
 
     /**
+     * 添加配置
+     *
+     * @param configJson JSON配置
+     * @param key        配置KEY
+     * @param value      配置值
+     */
+    public static void put(JsonObject configJson, String key, Object value) {
+        configJson.put(key, value);
+    }
+
+    /**
      * 值不为空时添加
      *
-     * @param key
-     * @param value
+     * @param configJson JSON配置
+     * @param key        配置KEY
+     * @param value      配置值
      */
     public static void putIfNotNull(JsonObject configJson, String key, Object value) {
         if (value != null) {
@@ -59,9 +71,9 @@ public final class ConfigUtils {
      * 添加一个配置列表
      *
      * @param configJson 目标的JSON配置
-     * @param key 配置的键
-     * @param values 配置的列表
-     * @param <T> 配置子项的类型
+     * @param key        配置的键
+     * @param values     配置的列表
+     * @param <T>        配置子项的类型
      */
     public static <T extends XConfig> void putArray(JsonObject configJson, String key, List<T> values) {
         configJson.put(key, toJsonArray(values));
@@ -71,6 +83,16 @@ public final class ConfigUtils {
         if (values != null) {
             configJson.put(key, toJsonArray(values));
         }
+    }
+
+    /**
+     * 添加来源配置中的全部属性
+     *
+     * @param configJson
+     * @param fromConfig
+     */
+    public static void putAll(JsonObject configJson, XConfig fromConfig) {
+        configJson.putAll(fromConfig.toJson());
     }
 
     /**

@@ -6,14 +6,14 @@
     {
       "type": "SUBFORM",
       "key": "iuflme83200l",
-      "code": "array2",
-      "name": "子表单名称SubForm2",
+      "name": "array2",
+      "label": "子表单名称SubForm2",
       "required": false,
       "fields": [
         {
-          "type": "JSON",
-          "code": "json1",
-          "name": "字段O1无属性",
+          "type": "OBJECT",
+          "name": "obj1",
+          "label": "字段O1无属性",
           "required": true,
           "defaultValue": {
             "type": "static",
@@ -21,9 +21,9 @@
           }
         },
         {
-          "type": "JSON",
-          "code": "json2",
-          "name": "字段O2有属性，它有默认值",
+          "type": "OBJECT",
+          "name": "obj2",
+          "label": "字段O2有属性，它有默认值",
           "required": false,
           "defaultValue": {
             "type": "static",
@@ -35,13 +35,13 @@
           "properties": [
             {
               "type": "TEXT",
-              "code": "a",
-              "name": "字段A",
+              "name": "a",
+              "label": "字段A",
               "required": true
             },
             {
               "type": "NUMBER",
-              "name": "b",
+              "label": "b",
               "precision": 0
             }
           ]

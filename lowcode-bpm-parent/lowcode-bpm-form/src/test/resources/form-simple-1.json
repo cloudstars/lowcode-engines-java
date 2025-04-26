@@ -5,7 +5,7 @@
   "fields": [
     {
       "type": "NUMBER",
-      "code": "b",
+      "name": "b",
       "precision": 0,
       "defaultValue": {
         "type": "expression",

@@ -5,8 +5,8 @@
   "fields": [
     {
       "type": "TEXT",
-      "code": "a",
-      "name": "字段A",
+      "name": "a",
+      "label": "字段A",
       "required": true,
       "defaultValue": {
         "type": "static",

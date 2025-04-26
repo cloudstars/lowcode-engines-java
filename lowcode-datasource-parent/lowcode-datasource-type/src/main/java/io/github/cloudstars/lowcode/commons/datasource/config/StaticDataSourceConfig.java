@@ -10,6 +10,9 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 @DataSourceConfigClass(name = "STATIC")
 public class StaticDataSourceConfig extends AbstractDataSourceConfig {
 
+    // 静态数据配置名称
+    private static final String ATTR_DATA = "data";
+
     /**
      * 静态数据
      */
@@ -29,5 +32,15 @@ public class StaticDataSourceConfig extends AbstractDataSourceConfig {
 
     public StaticDataSourceConfig(JsonObject configJson) {
         super(configJson);
+
+        this.data = configJson.get(ATTR_DATA);
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject configJson = super.toJson();
+        configJson.put(ATTR_DATA, this.data);
+
+        return configJson;
     }
 }
