@@ -15,4 +15,11 @@ public @interface ValueTypeConfigClass {
      */
     String name();
 
+    /**
+     * 数据格式值的类型
+     * 
+     * @return
+     */
+    Class<? extends Object> valueClass();
+
 }

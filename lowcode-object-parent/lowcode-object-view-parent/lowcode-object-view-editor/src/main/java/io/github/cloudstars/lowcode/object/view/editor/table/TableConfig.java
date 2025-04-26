@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.view.editor.table;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 
 /**
  * 表格组件配置

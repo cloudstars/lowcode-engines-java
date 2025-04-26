@@ -1,7 +1,8 @@
 package io.github.cloudstars.lowcode.file.commons;
 
-import io.github.cloudstars.lowcode.commons.value.type.AbstractValueTypeImpl;
-import io.github.cloudstars.lowcode.commons.value.type.InvalidDataException;
+
+import io.github.cloudstars.lowcode.commons.value.AbstractValueTypeImpl;
+import io.github.cloudstars.lowcode.commons.value.InvalidDataException;
 
 import java.util.Map;
 
@@ -34,6 +35,11 @@ public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, Fi
         fileValue.setName((String) fileValueMap.get(ATTR_NAME));
 
         return fileValue;
+    }
+
+    @Override
+    public FileValue parseDefaultValue(Object defaultValueConfig) throws io.github.cloudstars.lowcode.commons.value.InvalidDataException {
+        return null;
     }
 
     @Override

@@ -1,8 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.branch.BranchNodeConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**

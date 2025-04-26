@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.predicate.type;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -30,13 +30,13 @@ public class ExpressionPredicateConfig extends AbstractPredicateConfig {
     public ExpressionPredicateConfig(JsonObject configJson) {
         super(configJson);
 
-        this.expression = (String) configJson.get(XConfig.ATTR_EXPRESSION);
+        this.expression = (String) configJson.get(GlobalAttrNames.ATTR_EXPRESSION);
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(XConfig.ATTR_EXPRESSION, this.expression);
+        configJson.put(GlobalAttrNames.ATTR_EXPRESSION, this.expression);
 
         return configJson;
     }

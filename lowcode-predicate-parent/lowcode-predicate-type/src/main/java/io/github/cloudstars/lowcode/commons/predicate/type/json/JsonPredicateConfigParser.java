@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.predicate.type.json;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.predicate.type.json.binary.BinaryJsonPredicateConfig;
 import io.github.cloudstars.lowcode.commons.predicate.type.json.logic.LogicJsonPredicateConfig;

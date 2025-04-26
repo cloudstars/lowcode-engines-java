@@ -1,7 +1,8 @@
 package io.github.cloudstars.lowcode.commons.predicate.type.json.binary;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.XTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.predicate.type.json.XJsonPredicateConfig;
 
@@ -93,9 +94,9 @@ public class BinaryJsonPredicateConfig extends AbstractTypedConfig implements XJ
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putJson(ATTR_LEFT, this.left);
+        ConfigUtils.putJson(configJson, ATTR_LEFT, this.left);
         configJson.put(ATTR_OPERATOR, this.operator);
-        configJson.putJson(ATTR_RIGHT, this.right);
+        ConfigUtils.putJson(configJson, ATTR_RIGHT, this.right);
 
         return configJson;
     }

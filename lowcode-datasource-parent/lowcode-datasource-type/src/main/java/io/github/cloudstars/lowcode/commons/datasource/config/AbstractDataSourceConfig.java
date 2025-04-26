@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.datasource.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**

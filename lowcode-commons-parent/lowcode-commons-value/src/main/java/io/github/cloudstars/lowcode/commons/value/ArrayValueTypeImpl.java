@@ -13,9 +13,9 @@ import java.util.List;
  *
  * @param <T> 数组元素的类型
  */
-public class ArrayValueTypeImpl<T extends Object> extends AbstractValueTypeImpl<ArrayValueTypeConfig<T>, List<T>> {
+public class ArrayValueTypeImpl<T extends Object> extends AbstractValueTypeImpl<ArrayValueTypeConfig, List<T>> {
 
-    public ArrayValueTypeImpl(ArrayValueTypeConfig<T> valueTypeConfig) {
+    public ArrayValueTypeImpl(ArrayValueTypeConfig valueTypeConfig) {
         super(valueTypeConfig);
     }
 

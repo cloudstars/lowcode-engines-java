@@ -23,6 +23,7 @@
         <module>lowcode-bpm-engine-starter-flowable</module>
         <module>lowcode-bpm-engine-starter-camunda</module>
         <module>lowcode-bpm-vendor-parent</module>
+        <module>lowcode-bpm-form</module>
     </modules>
 
     <dependencyManagement>

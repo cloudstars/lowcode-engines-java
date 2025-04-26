@@ -16,7 +16,7 @@ public interface XValueType<T> {
      *
      * @return
      */
-    XValueTypeConfig<T> getValueTypeConfig();
+    XValueTypeConfig getValueTypeConfig();
 
     /**
      * 解析默认值

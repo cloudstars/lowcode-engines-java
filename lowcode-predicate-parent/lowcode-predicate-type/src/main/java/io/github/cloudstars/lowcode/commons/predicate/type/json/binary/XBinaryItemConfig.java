@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.predicate.type.json.binary;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.XConfig;
 
 /**
  * 二元操作断言中的左右项

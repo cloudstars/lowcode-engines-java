@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.view.commons.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractResourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public abstract class AbstractViewConfig extends AbstractTypedConfig {
+public abstract class AbstractViewConfig extends AbstractResourceConfig {
 
     /**
      * 视图的编号

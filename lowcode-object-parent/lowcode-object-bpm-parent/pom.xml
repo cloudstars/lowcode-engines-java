@@ -19,7 +19,6 @@
         <module>lowcode-object-bpm-commons</module>
         <module>lowcode-object-bpm-editor</module>
         <module>lowcode-object-bpm-engine</module>
-        <module>lowcode-object-bpm-form</module>
     </modules>
 
     <dependencyManagement>

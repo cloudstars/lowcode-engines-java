@@ -17,9 +17,10 @@
         <module>lowcode-object-core-parent</module>
         <module>lowcode-object-bpm-parent</module>
         <module>lowcode-object-view-parent</module>
-        <module>lowcode-object-method</module>
         <module>lowcode-object-excel</module>
         <module>lowcode-object-oql-parent</module>
+        <module>lowcode-object-repository-parent</module>
+        <module>lowcode-object-datasource-parent</module>
     </modules>
 
     <dependencyManagement>

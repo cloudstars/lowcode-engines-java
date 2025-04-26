@@ -5,7 +5,7 @@ import io.github.cloudstars.lowcode.bpm.commons.config.NodeConfigClass;
 import io.github.cloudstars.lowcode.bpm.commons.config.NodeTypeEnum;
 import io.github.cloudstars.lowcode.bpm.commons.config.branch.BranchNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -43,7 +43,7 @@ public class GatewayNodeConfig extends AbstractNodeConfig {
         }
 
         JsonArray branchesConfig = (JsonArray) configJson.get("branches");
-        this.branches = XConfigUtils.toList(branchesConfig, ConditionBranchNodeConfig.class);
+        this.branches = ConfigUtils.toList(branchesConfig, ConditionBranchNodeConfig.class);
 
         // 建立网关与分支的前后关系，网关分支节点的前后节点都是网关节点
         for (ConditionBranchNodeConfig branch : this.branches) {

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.predicate.type.json;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.XConfig;
 
 /**
  * JSON断言接口

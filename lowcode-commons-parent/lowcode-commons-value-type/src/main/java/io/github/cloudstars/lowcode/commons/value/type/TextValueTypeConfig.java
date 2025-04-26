@@ -7,8 +7,8 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "TEXT")
-public class TextValueTypeConfig extends AbstractValueTypeConfig<String> {
+@ValueTypeConfigClass(name = "TEXT", valueClass = String.class)
+public class TextValueTypeConfig extends AbstractValueTypeConfig {
 
     // 最小长度配置名称
     private static final String ATTR_MIN_LENGTH = "minLength";
@@ -63,11 +63,6 @@ public class TextValueTypeConfig extends AbstractValueTypeConfig<String> {
     public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
     }
-
-    /*@Override
-    protected String parseDefaultValue(Object defaultValueConfig) {
-        return defaultValueConfig != null ? defaultValueConfig.toString() : null;
-    }*/
 
     @Override
     public JsonObject toJson() {

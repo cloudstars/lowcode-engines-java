@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.view.commons.config.table.query;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -103,7 +103,7 @@ public class QueryConfig extends AbstractConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put("selectFields", XConfigUtils.toJsonArray(this.selectFields));
+        configJson.put("selectFields", ConfigUtils.toJsonArray(this.selectFields));
         if (this.filter != null) {
             configJson.put("filter", this.filter.toJson());
         }

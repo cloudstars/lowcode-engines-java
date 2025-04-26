@@ -1,20 +1,16 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.XConfig;
 
 /**
  * 数据格式配置接口
  *
  * @author clouds
- * @param <T>
  */
-public interface XValueTypeConfig<T extends Object> extends XConfig {
+public interface XValueTypeConfig extends XConfig {
 
     // 数据格式配置名称
     String ATTR = "valueType";
-
-    // 是否必填配置名称
-    String ATTR_REQUIRED = "required";
 
     // 默认值配置名称
     String  ATTR_DEFAULT_VALUE = "defaultValue";

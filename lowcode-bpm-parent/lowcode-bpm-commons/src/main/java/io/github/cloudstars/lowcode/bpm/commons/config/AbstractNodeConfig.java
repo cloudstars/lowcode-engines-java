@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config;
 
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.List;

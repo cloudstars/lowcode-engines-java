@@ -18,8 +18,6 @@
         <module>lowcode-object-engine</module>
         <module>lowcode-object-engine-starter-mysql</module>
         <module>lowcode-object-engine-starter-mongodb</module>
-        <module>lowcode-object-datasource-parent</module>
-        <module>lowcode-object-repository-parent</module>
     </modules>
 
     <dependencyManagement>

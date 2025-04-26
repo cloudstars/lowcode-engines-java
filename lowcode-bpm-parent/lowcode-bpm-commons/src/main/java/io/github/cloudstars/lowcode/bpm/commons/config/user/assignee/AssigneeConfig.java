@@ -1,7 +1,8 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.user.assignee;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.GlobalAttrNames;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
+import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -38,7 +39,7 @@ public class AssigneeConfig extends AbstractConfig {
     public AssigneeConfig(JsonObject configJson) {
         super(configJson);
 
-        this.type = (String) configJson.get(GlobalAttrNames.ATTR_TYPE);
+        this.type = (String) configJson.get(XTypedConfig.ATTR);
         this.value = configJson.get(GlobalAttrNames.ATTR_VALUE);
     }
 
@@ -77,7 +78,7 @@ public class AssigneeConfig extends AbstractConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(GlobalAttrNames.ATTR_TYPE, this.type);
+        configJson.put(XTypedConfig.ATTR, this.type);
         configJson.put(GlobalAttrNames.ATTR_VALUE, this.value);
         return configJson;
     }

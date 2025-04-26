@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.lang.reflect.Constructor;

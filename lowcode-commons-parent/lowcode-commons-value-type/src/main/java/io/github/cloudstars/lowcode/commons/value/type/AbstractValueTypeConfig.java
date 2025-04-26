@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -8,13 +9,12 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public abstract class AbstractValueTypeConfig<T extends Object> extends AbstractTypedConfig implements XValueTypeConfig<T> {
+public abstract class AbstractValueTypeConfig extends AbstractTypedConfig implements XValueTypeConfig {
 
     /**
      * 默认值配置
      */
     private Object defaultValue;
-
 
     public AbstractValueTypeConfig() {
     }
@@ -38,7 +38,7 @@ public abstract class AbstractValueTypeConfig<T extends Object> extends Abstract
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putIfNotNull(XValueTypeConfig.ATTR_DEFAULT_VALUE, this.defaultValue);
+        ConfigUtils.putIfNotNull(configJson, XValueTypeConfig.ATTR_DEFAULT_VALUE, this.defaultValue);
         return configJson;
     }
 

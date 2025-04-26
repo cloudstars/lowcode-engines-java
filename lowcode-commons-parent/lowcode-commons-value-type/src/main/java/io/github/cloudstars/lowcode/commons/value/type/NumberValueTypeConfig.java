@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -7,8 +8,8 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "NUMBER")
-public class NumberValueTypeConfig extends AbstractValueTypeConfig<Number> {
+@ValueTypeConfigClass(name = "NUMBER", valueClass = Number.class)
+public class NumberValueTypeConfig extends AbstractValueTypeConfig {
 
     // 精度配置名称
     private static final String ATTR_PRECISION = "precision";
@@ -100,32 +101,12 @@ public class NumberValueTypeConfig extends AbstractValueTypeConfig<Number> {
         this.maxValue = maxValue;
     }
 
-    /*@Override
-    protected Number parseDefaultValue(Object defaultValueConfig) {
-        if (defaultValueConfig != null) {
-            getActualValue(defaultValueConfig);
-        }
-
-        return null;
-    }*/
-
-    /*private Number getActualValue(Object value) {
-        if (this.precision == 0) {
-            this.defaultValue = (Integer) value;
-        } else {
-            this.defaultValue = (Double) value;
-        }
-
-        return (Number) value;
-    }*/
-
-
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putIfNotNull(ATTR_PRECISION, this.precision);
-        configJson.putIfNotNull(ATTR_MIN_VALUE, this.minValue);
-        configJson.putIfNotNull(ATTR_MAX_VALUE, this.maxValue);
+        ConfigUtils.putIfNotNull(configJson, ATTR_PRECISION, this.precision);
+        ConfigUtils.putIfNotNull(configJson, ATTR_MIN_VALUE, this.minValue);
+        ConfigUtils.putIfNotNull(configJson, ATTR_MAX_VALUE, this.maxValue);
         return configJson;
     }
 

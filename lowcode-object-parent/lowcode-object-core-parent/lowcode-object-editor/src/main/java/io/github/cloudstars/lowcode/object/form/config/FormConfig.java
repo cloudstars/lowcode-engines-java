@@ -1,10 +1,10 @@
 package io.github.cloudstars.lowcode.object.form.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractResourceConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.object.form.config.field.AbstractFieldConfig;
+import io.github.cloudstars.lowcode.object.form.config.field.AbstractObjectFieldConfig;
 import io.github.cloudstars.lowcode.object.form.config.field.FieldConfigFactory;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class FormConfig extends AbstractIdentifiedConfig {
+public class FormConfig extends AbstractResourceConfig {
 
     // 字段列表配置名称
     private static final String ATTR_FIELDS = "fields";
@@ -23,7 +23,7 @@ public class FormConfig extends AbstractIdentifiedConfig {
     /**
      * 字段列表
      */
-    private List<AbstractFieldConfig> fields;
+    private List<AbstractObjectFieldConfig> fields;
 
     public FormConfig() {
     }
@@ -36,11 +36,11 @@ public class FormConfig extends AbstractIdentifiedConfig {
             throw new RuntimeException("字段信息fields不存在或不是数组格式，请检查：" + configJson);
         }
 
-        List<AbstractFieldConfig> fieldConfigs = new ArrayList<>();
+        List<AbstractObjectFieldConfig> fieldConfigs = new ArrayList<>();
         JsonArray fields = (JsonArray) fieldsValue;
         fields.forEach((field) -> {
             JsonObject fieldConfigJson = (JsonObject) field;
-            AbstractFieldConfig fieldConfig = FieldConfigFactory.newInstance(fieldConfigJson);
+            AbstractObjectFieldConfig fieldConfig = FieldConfigFactory.newInstance(fieldConfigJson);
             if (fieldConfig != null) {
                 fieldConfigs.add(fieldConfig);
             }
@@ -48,11 +48,11 @@ public class FormConfig extends AbstractIdentifiedConfig {
         this.fields = fieldConfigs;
     }
 
-    public List<AbstractFieldConfig> getFields() {
+    public List<AbstractObjectFieldConfig> getFields() {
         return fields;
     }
 
-    public void setFields(List<AbstractFieldConfig> fields) {
+    public void setFields(List<AbstractObjectFieldConfig> fields) {
         this.fields = fields;
     }
 
@@ -60,7 +60,7 @@ public class FormConfig extends AbstractIdentifiedConfig {
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
         // 添加字段列表配置
-        configJson.put(ATTR_FIELDS, JsonConfigUtils.toJsonArray(this.fields));
+        configJson.put(ATTR_FIELDS, ConfigUtils.toJsonArray(this.fields));
 
         return configJson;
     }

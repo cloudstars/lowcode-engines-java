@@ -9,7 +9,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "FILE")
+@ValueTypeConfigClass(name = "FILE", valueClass = FileValue.class)
 public class FileValueTypeConfig extends AbstractObjectValueTypeConfig {
 
     public FileValueTypeConfig() {

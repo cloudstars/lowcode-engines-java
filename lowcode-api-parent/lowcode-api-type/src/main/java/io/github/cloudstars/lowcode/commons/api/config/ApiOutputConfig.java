@@ -1,6 +1,8 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
@@ -48,14 +50,14 @@ public class ApiOutputConfig extends AbstractConfig {
         if (valueTypeConfigJson != null) {
             this.valueType = ValueTypeConfigFactory.newInstance(valueTypeConfigJson);
         }
-        this.required = (Boolean) configJson.get(XValueTypeConfig.ATTR_REQUIRED);
+        this.required = (Boolean) configJson.get(GlobalAttrNames.ATTR_REQUIRED);
     }
 
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putIfNotNull(XValueTypeConfig.ATTR_REQUIRED, this.required);
-        configJson.putJsonIfNotNull(XValueTypeConfig.ATTR, this.valueType);
+        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_REQUIRED, this.required);
+        ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.valueType);
 
         return configJson;
     }

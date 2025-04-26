@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.datasource.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.XConfig;
 
 /**
  * 数据源配置

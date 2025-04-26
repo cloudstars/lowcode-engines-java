@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.commons.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -8,7 +8,11 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public class AbstractFieldConfig extends AbstractIdentifiedConfig {
+public class AbstractFieldConfig extends AbstractTypedConfig {
+
+    private static final String ATTR_KEY = "key";
+    private static final String ATTR_NAME = "name";
+    private static final String ATTR_LABEL = "label";
 
     /**
      * 字段的编号
@@ -16,14 +20,26 @@ public class AbstractFieldConfig extends AbstractIdentifiedConfig {
     private String key;
 
     /**
-     * 字段的代码
-     */
-    private String code;
-
-    /**
      * 字段的名称
      */
     private String name;
+
+    /**
+     * 字段的标题
+     */
+    private String label;
+
+
+    public AbstractFieldConfig() {
+    }
+
+    public AbstractFieldConfig(JsonObject configJson) {
+        super(configJson);
+
+        this.key = (String) configJson.get(ATTR_KEY);
+        this.name = (String) configJson.get(ATTR_NAME);
+        this.label = (String) configJson.get(ATTR_LABEL);
+    }
 
     public String getKey() {
         return key;
@@ -31,14 +47,6 @@ public class AbstractFieldConfig extends AbstractIdentifiedConfig {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -49,12 +57,21 @@ public class AbstractFieldConfig extends AbstractIdentifiedConfig {
         this.name = name;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     @Override
     public JsonObject toJson() {
-        JsonObject configJson = new JsonObject();
-        configJson.put("key", this.key);
-        configJson.put("code", this.code);
-        configJson.put("name", this.name);
+        JsonObject configJson = super.toJson();
+        configJson.put(ATTR_KEY, this.key);
+        configJson.put(ATTR_NAME, this.name);
+        configJson.put(ATTR_LABEL, this.label);
+
         return configJson;
     }
 

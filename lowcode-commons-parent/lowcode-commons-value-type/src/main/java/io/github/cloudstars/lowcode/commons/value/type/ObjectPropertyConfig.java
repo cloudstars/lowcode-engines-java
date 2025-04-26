@@ -1,14 +1,15 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.XIdentifiedConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
+import io.github.cloudstars.lowcode.commons.config.XResourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
  * 对象数据下的属性配置
  *
  * @author clouds
- *
  */
 public class ObjectPropertyConfig extends AbstractConfig {
 
@@ -70,9 +71,9 @@ public class ObjectPropertyConfig extends AbstractConfig {
     public ObjectPropertyConfig(JsonObject configJson) {
         super(configJson);
 
-        this.name = (String) configJson.get(XIdentifiedConfig.ATTR_NAME);
-        this.label = (String) configJson.get(XIdentifiedConfig.ATTR_LABEL);
-        this.required = (Boolean) configJson.get(XValueTypeConfig.ATTR_REQUIRED);
+        this.name = (String) configJson.get(XResourceConfig.ATTR_CODE);
+        this.label = (String) configJson.get(XResourceConfig.ATTR_NAME);
+        this.required = (Boolean) configJson.get(GlobalAttrNames.ATTR_REQUIRED);
         this.valueType = ValueTypeConfigFactory.newInstance(configJson);
 
         Object defaultValue = configJson.get(XValueTypeConfig.ATTR_DEFAULT_VALUE);
@@ -81,9 +82,9 @@ public class ObjectPropertyConfig extends AbstractConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(XIdentifiedConfig.ATTR_NAME, this.name);
-        configJson.put(XIdentifiedConfig.ATTR_LABEL, this.label);
-        configJson.putIfNotNull(XValueTypeConfig.ATTR_REQUIRED, this.required);
+        configJson.put(XResourceConfig.ATTR_CODE, this.name);
+        configJson.put(XResourceConfig.ATTR_NAME, this.label);
+        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_REQUIRED, this.required);
         configJson.putAll(this.valueType.toJson());
 
         return configJson;

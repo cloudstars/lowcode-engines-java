@@ -9,7 +9,7 @@ import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
  * @author clouds
  * @param <V> 数据格式的值的类型
  */
-public abstract class AbstractValueTypeImpl<C extends XValueTypeConfig<V>, V extends Object> implements XValueType<V> {
+public abstract class AbstractValueTypeImpl<C extends XValueTypeConfig, V extends Object> implements XValueType<V> {
 
     /**
      * 数据格式配置

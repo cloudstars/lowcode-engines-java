@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.object.view.editor.descriptor;
 
-import io.github.cloudstars.lowcode.commons.lang.config.ConfigAttribute;
+
+import io.github.cloudstars.lowcode.commons.editor.ConfigAttribute;
 
 import java.util.List;
 

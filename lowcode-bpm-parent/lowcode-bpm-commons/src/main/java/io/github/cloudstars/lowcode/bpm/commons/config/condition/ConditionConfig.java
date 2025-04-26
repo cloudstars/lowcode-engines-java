@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.bpm.commons.config.condition;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**

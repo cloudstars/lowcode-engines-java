@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.view.editor;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.object.commons.config.ObjectConfig;
 import io.github.cloudstars.lowcode.object.view.commons.config.AbstractViewConfig;
 

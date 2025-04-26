@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.commons.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractIdentifiedConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractResourceConfig;
+import io.github.cloudstars.lowcode.commons.config.XConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class ObjectConfig extends AbstractIdentifiedConfig implements XConfig {
+public class ObjectConfig extends AbstractResourceConfig implements XConfig {
 
     /**
      * 编号

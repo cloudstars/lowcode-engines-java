@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.view.commons.config.table.action;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractConfig;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -13,6 +13,12 @@ import java.util.List;
  * @author clouds
  */
 public class ActionsConfig extends AbstractConfig {
+
+    // 工具栏配置名称
+    private static final String ATTR_TOOLBAR = "toolbar";
+
+    // 表格行配置名称
+    private static final String ATTR_ROW = "row";
 
     /**
      * 表头工具栏操作配置
@@ -31,14 +37,14 @@ public class ActionsConfig extends AbstractConfig {
     public ActionsConfig(JsonObject configJson) {
         super(configJson);
 
-        Object toolbarValue = configJson.get("toolbar");
+        Object toolbarValue = configJson.get(ATTR_TOOLBAR);
         if (toolbarValue != null) {
-            this.setToolbar(XConfigUtils.toList((JsonArray) toolbarValue, TableViewActionConfig.class));
+            this.setToolbar(ConfigUtils.toList((JsonArray) toolbarValue, TableViewActionConfig.class));
         }
 
-        Object rowValue = configJson.get("row");
+        Object rowValue = configJson.get(ATTR_ROW);
         if (rowValue != null) {
-            this.setRow(XConfigUtils.toList((JsonArray) rowValue, TableViewActionConfig.class));
+            this.setRow(ConfigUtils.toList((JsonArray) rowValue, TableViewActionConfig.class));
         }
     }
 
@@ -61,12 +67,8 @@ public class ActionsConfig extends AbstractConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        if (this.toolbar != null) {
-            configJson.put("toolbar", XConfigUtils.toJsonArray(this.toolbar));
-        }
-        if (this.row != null) {
-            configJson.put("row", XConfigUtils.toJsonArray(this.row));
-        }
+        ConfigUtils.putArrayIfNotNull(configJson, ATTR_TOOLBAR, this.toolbar);
+        ConfigUtils.putArrayIfNotNull(configJson, ATTR_ROW, this.row);
 
         return configJson;
     }

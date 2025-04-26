@@ -7,8 +7,8 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "BOOLEAN")
-public class BooleanValueTypeConfig extends AbstractValueTypeConfig<Boolean> {
+@ValueTypeConfigClass(name = "BOOLEAN", valueClass = Boolean.class)
+public class BooleanValueTypeConfig extends AbstractValueTypeConfig {
 
     public BooleanValueTypeConfig() {
     }

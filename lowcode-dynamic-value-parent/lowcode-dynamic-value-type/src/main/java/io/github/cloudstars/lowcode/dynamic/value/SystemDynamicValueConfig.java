@@ -10,21 +10,13 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 @DynamicValueConfigClass(name = "SYSTEM")
 public class SystemDynamicValueConfig extends AbstractDynamicValueConfig {
 
-    // value配置名称
-    private static final String ATTR_VALUE = "value";
+    // 系统变量配置名称
+    private static final String ATTR_NAME = "name";
 
     /**
-     * 静态值
+     * 变量值
      */
-    private Object value;
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
-    }
+    private String name;
 
     public SystemDynamicValueConfig() {
     }
@@ -32,13 +24,21 @@ public class SystemDynamicValueConfig extends AbstractDynamicValueConfig {
     public SystemDynamicValueConfig(JsonObject configJson) {
         super(configJson);
 
-        this.value = configJson.get(ATTR_VALUE);
+        this.name = (String) configJson.get(ATTR_NAME);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(ATTR_VALUE, this.value);
+        configJson.put(ATTR_NAME, this.name);
 
         return configJson;
     }

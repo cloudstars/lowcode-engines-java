@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.config;
 
 import io.github.cloudstars.lowcode.bpm.commons.visitor.BpmNodeVisitor;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.XConfig;
 
 /**
  * 节点类型配置接口

@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.Map;
@@ -11,8 +11,8 @@ import java.util.Map;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "OBJECT")
-public class ObjectValueTypeConfig extends AbstractObjectValueTypeConfig<Map<String, Object>> {
+@ValueTypeConfigClass(name = "OBJECT", valueClass = Map.class)
+public class ObjectValueTypeConfig extends AbstractObjectValueTypeConfig {
 
     public ObjectValueTypeConfig() {
     }
@@ -22,10 +22,15 @@ public class ObjectValueTypeConfig extends AbstractObjectValueTypeConfig<Map<Str
 
         JsonArray propertiesConfigJson = (JsonArray) configJson.get(ATTR_PROPERTIES);
         if (propertiesConfigJson != null) { // 对象下可以不定义属性
-            this.properties = JsonConfigUtils.fromJsonArray(propertiesConfigJson,
+            this.properties = ConfigUtils.fromJsonArray(propertiesConfigJson,
                     (propertyConfigJson) -> new ObjectPropertyConfig(propertyConfigJson)
             );
         }
+    }
+
+    @Override
+    public JsonObject toJson() {
+        return super.toJson();
     }
 
 }

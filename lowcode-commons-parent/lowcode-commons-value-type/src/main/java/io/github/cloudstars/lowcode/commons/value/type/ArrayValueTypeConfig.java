@@ -1,5 +1,7 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.List;
@@ -8,8 +10,8 @@ import java.util.List;
  * 数组类型的数据格式
  *
  */
-@ValueTypeConfigClass(name = "ARRAY")
-public class ArrayValueTypeConfig<T extends Object> extends AbstractValueTypeConfig<List<T>> {
+@ValueTypeConfigClass(name = "ARRAY", valueClass = List.class)
+public class ArrayValueTypeConfig extends AbstractValueTypeConfig {
 
     /**
      * 数组下元素的属性名称
@@ -19,7 +21,7 @@ public class ArrayValueTypeConfig<T extends Object> extends AbstractValueTypeCon
     /**
      * 数组下元数的数据格式
      */
-    private XValueTypeConfig<List<T>> itemsValueType;
+    private XValueTypeConfig itemsValueType;
 
     /**
      * 数组下元数是否必填
@@ -34,7 +36,7 @@ public class ArrayValueTypeConfig<T extends Object> extends AbstractValueTypeCon
 
         JsonObject itemsConfigJson = (JsonObject) configJson.get(ATTR_ITEMS);
         this.itemsValueType = ValueTypeConfigFactory.newInstance(itemsConfigJson);
-        this.itemsRequired = (Boolean) itemsConfigJson.get(XValueTypeConfig.ATTR_REQUIRED);
+        this.itemsRequired = (Boolean) itemsConfigJson.get(GlobalAttrNames.ATTR_REQUIRED);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class ArrayValueTypeConfig<T extends Object> extends AbstractValueTypeCon
         JsonObject configJson = super.toJson();
         // 将items的信息合并在一个json中
         JsonObject itemConfigJson = this.itemsValueType.toJson();
-        itemConfigJson.putIfNotNull(XValueTypeConfig.ATTR_REQUIRED, this.itemsRequired);
+        ConfigUtils.putIfNotNull(itemConfigJson, GlobalAttrNames.ATTR_REQUIRED, this.itemsRequired);
         configJson.put(ATTR_ITEMS, itemConfigJson);
 
         return configJson;

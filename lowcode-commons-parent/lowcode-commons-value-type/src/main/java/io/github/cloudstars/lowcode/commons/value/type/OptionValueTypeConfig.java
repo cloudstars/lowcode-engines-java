@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -7,8 +8,8 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "OPTION")
-public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig<OptionValue> {
+@ValueTypeConfigClass(name = "OPTION", valueClass = OptionValue.class)
+public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig {
 
     // 标签配置名称
     private static final String ATTR_LABEL = "labelField";
@@ -25,8 +26,6 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig<OptionV
      * 值配置名称
      */
     private String valueField;
-
-
 
     public String getLabelField() {
         return labelField;
@@ -57,8 +56,8 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig<OptionV
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putIfNotNull(ATTR_LABEL, this.labelField);
-        configJson.putIfNotNull(ATTR_VALUE, this.valueField);
+        ConfigUtils.putIfNotNull(configJson, ATTR_LABEL, this.labelField);
+        ConfigUtils.putIfNotNull(configJson, ATTR_VALUE, this.valueField);
 
         return configJson;
     }

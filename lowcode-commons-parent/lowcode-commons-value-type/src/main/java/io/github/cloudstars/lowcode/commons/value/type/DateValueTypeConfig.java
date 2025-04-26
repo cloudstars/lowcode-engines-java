@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.Date;
@@ -9,8 +10,8 @@ import java.util.Date;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "DATE")
-public class DateValueTypeConfig extends AbstractValueTypeConfig<Date> {
+@ValueTypeConfigClass(name = "DATE", valueClass = Date.class)
+public class DateValueTypeConfig extends AbstractValueTypeConfig {
 
     // 日期格式配置名称
     private static final String ATTR_FORMAT = "format";
@@ -48,7 +49,7 @@ public class DateValueTypeConfig extends AbstractValueTypeConfig<Date> {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putIfNotNull(ATTR_FORMAT, this.format);
+        ConfigUtils.putIfNotNull(configJson, ATTR_FORMAT, this.format);
         return configJson;
     }
 

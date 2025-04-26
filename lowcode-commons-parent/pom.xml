@@ -19,6 +19,8 @@
         <module>lowcode-commons-test</module>
         <module>lowcode-commons-test-db</module>
         <module>lowcode-commons-lang</module>
+        <module>lowcode-commons-config</module>
+        <module>lowcode-commons-descriptor</module>
         <module>lowcode-commons-value-type</module>
         <module>lowcode-commons-value</module>
         <module>lowcode-commons-js</module>

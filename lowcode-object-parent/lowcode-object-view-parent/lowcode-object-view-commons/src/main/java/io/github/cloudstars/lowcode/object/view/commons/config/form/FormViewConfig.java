@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.view.commons.config.form;
 
-import io.github.cloudstars.lowcode.commons.lang.config.ConfigTypeClass;
+import io.github.cloudstars.lowcode.commons.config.ResourceConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.object.commons.config.ObjectConfig;
 import io.github.cloudstars.lowcode.object.view.commons.config.AbstractViewConfig;
@@ -10,7 +10,7 @@ import io.github.cloudstars.lowcode.object.view.commons.config.AbstractViewConfi
  *
  * @author clouds
  */
-@ConfigTypeClass(code = "FormView", name = "表单视图")
+@ResourceConfigClass(type = "FormView", name = "表单视图")
 public class FormViewConfig extends AbstractViewConfig {
 
     public FormViewConfig() {

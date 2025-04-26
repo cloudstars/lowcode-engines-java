@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.commons.lang.json;
 
 import com.alibaba.fastjson.JSONObject;
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
 
 import java.util.Collection;
 import java.util.Map;
@@ -57,40 +56,6 @@ public class JsonObject<K, V> extends JsonProxy<JSONObject> implements Map<Strin
     @Override
     public Object put(String key, Object value) {
         return this.proxy.put(key, value);
-    }
-
-    /**
-     * 值不为空时添加
-     *
-     * @param key
-     * @param value
-     */
-    public void putIfNotNull(String key, Object value) {
-        if (value != null) {
-            this.put(key, value);
-        }
-    }
-
-    /**
-     * 添加配置的Json
-     *
-     * @param key
-     * @param value
-     */
-    public void putJson(String key, XConfig value) {
-        this.put(key, value.toJson());
-    }
-
-    /**
-     * 值不为空时添加配置的Json
-     *
-     * @param key
-     * @param value
-     */
-    public void putJsonIfNotNull(String key, XConfig value) {
-        if (value != null) {
-            this.put(key, value.toJson());
-        }
     }
 
     @Override

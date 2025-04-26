@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.datasource.config;
 
-import io.github.cloudstars.lowcode.commons.lang.config.XConfig;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -29,12 +29,14 @@ public class ExpressionDataSourceConfig extends AbstractDataSourceConfig {
 
     public ExpressionDataSourceConfig(JsonObject configJson) {
         super(configJson);
+
+        this.expression = (String) configJson.get(GlobalAttrNames.ATTR_EXPRESSION);
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = new JsonObject();
-        configJson.put(XConfig.ATTR_EXPRESSION, this.expression);
+        configJson.put(GlobalAttrNames.ATTR_EXPRESSION, this.expression);
 
         return super.toJson();
     }

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
-import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class AbstractObjectValueTypeConfig<T extends Object> extends AbstractValueTypeConfig<T> {
+public abstract class AbstractObjectValueTypeConfig extends AbstractValueTypeConfig {
 
     // 对象下的属性列表配置名称
     public static final String ATTR_PROPERTIES = "properties";
@@ -42,9 +42,7 @@ public abstract class AbstractObjectValueTypeConfig<T extends Object> extends Ab
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        if (this.properties != null) {
-            configJson.put(ATTR_PROPERTIES, JsonConfigUtils.toJsonArray(this.properties));
-        }
+        ConfigUtils.putArrayIfNotNull(configJson, ATTR_PROPERTIES, this.properties);
 
         return configJson;
     }

@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.predicate.type.json.logic;
 
-import io.github.cloudstars.lowcode.commons.lang.config.AbstractTypedConfig;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.predicate.type.XPredicateConfig;
 import io.github.cloudstars.lowcode.commons.predicate.type.json.XJsonPredicateConfig;
@@ -47,7 +47,7 @@ public class LogicJsonPredicateConfig extends AbstractTypedConfig implements XJs
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
         configJson.put(ATTR_OPERATOR, this.operator);
-        configJson.put(XPredicateConfig.ATTR, JsonConfigUtils.toJsonArray(this.expressions));
+        ConfigUtils.putArrayIfNotNull(configJson, XPredicateConfig.ATTR, this.expressions);
         return configJson;
     }
 

@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.sql.Time;
@@ -9,8 +10,8 @@ import java.sql.Time;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "TIME")
-public class TimeValueTypeConfig extends AbstractValueTypeConfig<Time> {
+@ValueTypeConfigClass(name = "TIME", valueClass = Time.class)
+public class TimeValueTypeConfig extends AbstractValueTypeConfig {
 
     // 日期格式配置名称
     private static final String ATTR_FORMAT = "format";
@@ -40,7 +41,6 @@ public class TimeValueTypeConfig extends AbstractValueTypeConfig<Time> {
         this.format = format;
     }
 
-
     @Override
     public DataTypeEnum getDataType() {
         return DataTypeEnum.TIME;
@@ -49,7 +49,7 @@ public class TimeValueTypeConfig extends AbstractValueTypeConfig<Time> {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.putIfNotNull(ATTR_FORMAT, this.format);
+        ConfigUtils.putIfNotNull(configJson, ATTR_FORMAT, this.format);
         return configJson;
     }
 
