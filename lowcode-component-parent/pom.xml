@@ -21,6 +21,7 @@
         <module>lowcode-component-page</module>
         <module>lowcode-component-form</module>
         <module>lowcode-component-table</module>
+        <module>lowcode-component-view</module>
     </modules>
 
     <dependencyManagement>

@@ -9,19 +9,22 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-object-datasource-parent</artifactId>
-    <description>低代码模型数据源parent</description>
+    <artifactId>lowcode-object-excel-parent</artifactId>
+    <description>低代码模型Excel接口</description>
     <packaging>pom</packaging>
 
-   <modules>
-       <module>lowcode-object-datasource-commons</module>
-   </modules>
+
+    <modules>
+        <module>lowcode-object-excel-commons</module>
+        <module>lowcode-object-excel-editor</module>
+        <module>lowcode-object-excel-engine</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-object-datasource-commons</artifactId>
+                <artifactId>lowcode-object-excel-commons</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

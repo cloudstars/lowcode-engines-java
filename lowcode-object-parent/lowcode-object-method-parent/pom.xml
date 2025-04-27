@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -9,21 +8,27 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-object-datasource-parent</artifactId>
-    <description>低代码模型数据源parent</description>
+    <artifactId>lowcode-object-method-parent</artifactId>
     <packaging>pom</packaging>
+    <description>低代码平台模型方法 parent</description>
 
-   <modules>
-       <module>lowcode-object-datasource-commons</module>
-   </modules>
+    <properties>
+    </properties>
+
+    <modules>
+        <module>lowcode-object-method-commons</module>
+        <module>lowcode-object-method-editor</module>
+        <module>lowcode-object-method-engine</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-object-datasource-commons</artifactId>
+                <artifactId>lowcode-object-method-commons</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 </project>

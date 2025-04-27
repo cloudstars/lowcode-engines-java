@@ -10,15 +10,14 @@
 
     <artifactId>lowcode-object-oql-parent</artifactId>
     <packaging>pom</packaging>
-    <description>低代码模型OQL parent</description>
-
-    <properties>
-    </properties>
+    <description>低代码平台模型OQL parent</description>
 
     <modules>
         <module>lowcode-object-oql-commons</module>
         <module>lowcode-object-oql-parser</module>
         <module>lowcode-object-oql-engine</module>
+        <module>lowcode-object-oql-engine-starter-mysql</module>
+        <module>lowcode-object-oql-engine-starter-mongodb</module>
     </modules>
 
     <dependencyManagement>

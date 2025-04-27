@@ -15,9 +15,10 @@
     <modules>
         <module>lowcode-object-commons</module>
         <module>lowcode-object-core-parent</module>
+        <module>lowcode-object-method-parent</module>
+        <module>lowcode-object-excel-parent</module>
         <module>lowcode-object-bpm-parent</module>
         <module>lowcode-object-view-parent</module>
-        <module>lowcode-object-excel</module>
         <module>lowcode-object-oql-parent</module>
         <module>lowcode-object-repository-parent</module>
         <module>lowcode-object-datasource-parent</module>
@@ -28,6 +29,11 @@
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-object-commons</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-object-editor</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -63,6 +69,26 @@
                 <artifactId>lowcode-object-repository-cfdata</artifactId>
                 <version>${revision}</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-object-method-engine</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-object-excel-engine</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-object-bpm-engine</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-object-oql-engine</artifactId>
+                <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
