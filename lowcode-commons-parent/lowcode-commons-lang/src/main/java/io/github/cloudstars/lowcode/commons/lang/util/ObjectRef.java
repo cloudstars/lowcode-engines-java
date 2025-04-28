@@ -10,6 +10,11 @@ public class ObjectRef<T> {
 
     private T ref;
 
+
+    public ObjectRef() {
+    }
+
+
     public ObjectRef(T ref) {
         this.ref = ref;
     }

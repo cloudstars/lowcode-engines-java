@@ -7,12 +7,8 @@ public class FormulaTestFxVisitor extends FxParserBaseVisitor {
 
     @Override
     public Object visitFx(FxParser.FxContext ctx) {
-        System.out.println("visitProgram: " + System.currentTimeMillis());
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println("visitFx: " + System.currentTimeMillis());
+        sleep();
 
         return super.visitFx(ctx);
     }
@@ -20,11 +16,7 @@ public class FormulaTestFxVisitor extends FxParserBaseVisitor {
     @Override
     public Object visitLiteralExpression(FxParser.LiteralExpressionContext ctx) {
         System.out.println("visitLiteralExpression: " + System.currentTimeMillis());
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        sleep();
 
         return super.visitLiteralExpression(ctx);
     }
@@ -32,12 +24,27 @@ public class FormulaTestFxVisitor extends FxParserBaseVisitor {
     @Override
     public Object visitLiteral(FxParser.LiteralContext ctx) {
         System.out.println("visitLiteral: " + System.currentTimeMillis());
+        sleep();
+
+        return super.visitLiteral(ctx);
+    }
+
+    @Override
+    public Object visitNumericLiteral(FxParser.NumericLiteralContext ctx) {
+        System.out.println("visitNumericLiteral: " + System.currentTimeMillis());
+        sleep();
+
+        return super.visitNumericLiteral(ctx);
+    }
+
+    /**
+     *
+     */
+    private void sleep() {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        return super.visitLiteral(ctx);
     }
 }

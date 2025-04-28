@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.formula.engine;
 
+import io.github.cloudstars.lowcode.commons.lang.util.ObjectRef;
 import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 
 /**
@@ -17,9 +18,10 @@ public class FormulaImpl implements Formula {
 
     @Override
     public Object execute() {
-        FormulaCalculateFxVisitor visitor = new FormulaCalculateFxVisitor();
-        Object result = visitor.visitFx(this.context);
-        return result;
+        ObjectRef<Object> resultRef = new ObjectRef<>();
+        FormulaCalculateFxVisitor visitor = new FormulaCalculateFxVisitor(resultRef);
+        visitor.visitFx(this.context);
+        return resultRef.getRef();
     }
 
 }

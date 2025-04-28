@@ -20,7 +20,7 @@ public class FormulaParserErrorListenerTest {
 
     @Test
     public void test() {
-        FxParser.FxContext context = FormulaParser.parse("abc", Arrays.asList(ERROR_LISTENER));
+        FxParser.FxContext context = FormulaParser.parse("123", Arrays.asList(ERROR_LISTENER));
         FormulaTestFxVisitor visitor = new FormulaTestFxVisitor();
         visitor.visitFx(context);
     }

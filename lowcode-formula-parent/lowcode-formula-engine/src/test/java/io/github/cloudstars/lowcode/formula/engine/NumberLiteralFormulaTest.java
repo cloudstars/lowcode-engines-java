@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FormulaEngineTestApplication.class)
-public class LiteralFormulaTest {
+public class NumberLiteralFormulaTest {
 
     @Resource
     private FormulaExecutor executor;
@@ -22,7 +22,7 @@ public class LiteralFormulaTest {
     public void test() {
         String fx0 = "123";
         Object result = this.executor.execute(fx0);
-        Assert.assertEquals(fx0, result);
+        Assert.assertEquals(123, result);
     }
 
 }
