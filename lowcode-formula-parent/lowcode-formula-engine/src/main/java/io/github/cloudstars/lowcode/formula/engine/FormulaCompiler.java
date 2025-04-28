@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.formula.engine;
 
 import io.github.cloudstars.lowcode.formula.parser.FormulaParser;
-import io.github.cloudstars.lowcode.formula.parser.g4.FxExprParser;
+import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 
 /**
  * 公式编译器
@@ -25,7 +25,7 @@ public final class FormulaCompiler {
      * @return 公式
      */
     public static Formula compile(String fx) {
-        FxExprParser.ProgramContext context = FormulaParser.parse(fx);
+        FxParser.FxContext context = FormulaParser.parse(fx);
         FormulaImpl formula = new FormulaImpl(context);
         return formula;
     }

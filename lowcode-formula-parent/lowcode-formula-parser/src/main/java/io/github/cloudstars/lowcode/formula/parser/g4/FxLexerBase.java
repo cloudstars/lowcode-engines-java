@@ -7,12 +7,12 @@ import org.antlr.v4.runtime.Lexer;
  * All lexer methods that used in grammar (IsStrictMode)
  * should start with Upper Case Char similar to Lexer rules.
  */
-public abstract class FxExprLexerBase extends Lexer {
+public abstract class FxLexerBase extends Lexer {
 
-    public FxExprLexerBase() {
+    public FxLexerBase() {
     }
 
-    public FxExprLexerBase(CharStream input) {
+    public FxLexerBase(CharStream input) {
         super(input);
     }
 

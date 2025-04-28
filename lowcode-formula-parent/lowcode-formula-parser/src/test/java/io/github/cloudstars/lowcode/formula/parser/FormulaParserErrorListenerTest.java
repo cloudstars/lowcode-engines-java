@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.formula.parser;
 
 import io.github.cloudstars.lowcode.FormulaParserTestApplication;
-import io.github.cloudstars.lowcode.formula.parser.g4.FxExprParser;
+import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,9 +20,9 @@ public class FormulaParserErrorListenerTest {
 
     @Test
     public void test() {
-        FxExprParser.ProgramContext context = FormulaParser.parse("abc", Arrays.asList(ERROR_LISTENER));
-        FormulaAstTestVisitor visitor = new FormulaAstTestVisitor();
-        visitor.visitProgram(context);
+        FxParser.FxContext context = FormulaParser.parse("abc", Arrays.asList(ERROR_LISTENER));
+        FormulaTestFxVisitor visitor = new FormulaTestFxVisitor();
+        visitor.visitFx(context);
     }
 
 }

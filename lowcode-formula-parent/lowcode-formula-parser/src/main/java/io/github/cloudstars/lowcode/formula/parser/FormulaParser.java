@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.formula.parser;
 
-import io.github.cloudstars.lowcode.formula.parser.g4.FxExprLexer;
-import io.github.cloudstars.lowcode.formula.parser.g4.FxExprParser;
+import io.github.cloudstars.lowcode.formula.parser.g4.FxLexer;
+import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -27,7 +27,7 @@ public final class FormulaParser {
      * @param fx 公式文本
      * @return 解析后的公式
      */
-    public static FxExprParser.ProgramContext parse(String fx) {
+    public static FxParser.FxContext parse(String fx) {
         return parse(fx, null);
     }
 
@@ -38,12 +38,12 @@ public final class FormulaParser {
      * @param errorListeners 错误监听器列表
      * @return 解析后的公式
      */
-    public static FxExprParser.ProgramContext parse(String fx, List<BaseErrorListener> errorListeners) {
+    public static FxParser.FxContext parse(String fx, List<BaseErrorListener> errorListeners) {
         LOGGER.debug("公式：{}解析开始。", fx);
 
-        FxExprLexer lexer = new FxExprLexer(CharStreams.fromString(fx));
+        FxLexer lexer = new FxLexer(CharStreams.fromString(fx));
         TokenStream tokenStream = new CommonTokenStream(lexer);
-        FxExprParser parser = new FxExprParser(tokenStream);
+        FxParser parser = new FxParser(tokenStream);
 
         // 添加自定义的监听器
         if (errorListeners != null && errorListeners.size() > 0) {
@@ -52,7 +52,7 @@ public final class FormulaParser {
             }
         }
 
-        FxExprParser.ProgramContext  context = parser.program();
+        FxParser.FxContext  context = parser.fx();
         LOGGER.debug("公式：{}解析结束。", fx);
 
         return context;

@@ -1,7 +1,8 @@
 package io.github.cloudstars.lowcode.formula.parser;
 
 import io.github.cloudstars.lowcode.FormulaParserTestApplication;
-import io.github.cloudstars.lowcode.formula.parser.g4.FxExprParser;
+import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,8 +16,8 @@ public class FormulaParserTest {
 
     @Test
     public void test0() {
-        FxExprParser.ProgramContext context = FormulaParser.parse(expr0);
-        System.out.println(context.getChildCount());
+        FxParser.FxContext context = FormulaParser.parse(expr0);
+        Assert.assertNotNull(context);
     }
 
 }

@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.formula.engine;
 
-import io.github.cloudstars.lowcode.formula.parser.g4.FxExprParser;
+import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 
 /**
  * 公式实现
@@ -9,16 +9,16 @@ import io.github.cloudstars.lowcode.formula.parser.g4.FxExprParser;
  */
 public class FormulaImpl implements Formula {
 
-    private FxExprParser.ProgramContext context;
+    private FxParser.FxContext context;
 
-    public FormulaImpl(FxExprParser.ProgramContext context) {
+    public FormulaImpl(FxParser.FxContext context) {
         this.context = context;
     }
 
     @Override
     public Object execute() {
-        FormulaCalculateAstVisitor visitor = new FormulaCalculateAstVisitor();
-        Object result = visitor.visitProgram(this.context);
+        FormulaCalculateFxVisitor visitor = new FormulaCalculateFxVisitor();
+        Object result = visitor.visitFx(this.context);
         return result;
     }
 

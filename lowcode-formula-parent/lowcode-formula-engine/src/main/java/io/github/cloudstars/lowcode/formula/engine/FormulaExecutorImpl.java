@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.formula.engine;
 
 import io.github.cloudstars.lowcode.formula.parser.FormulaParser;
-import io.github.cloudstars.lowcode.formula.parser.g4.FxExprParser;
+import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public class FormulaExecutorImpl implements FormulaExecutor {
      */
     @Override
     public Formula compile(String fx) {
-        FxExprParser.ProgramContext context = FormulaParser.parse(fx);
+        FxParser.FxContext context = FormulaParser.parse(fx);
         return new FormulaImpl(context);
     }
 
