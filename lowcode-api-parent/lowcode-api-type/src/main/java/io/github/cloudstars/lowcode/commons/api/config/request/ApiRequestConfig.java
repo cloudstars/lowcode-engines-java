@@ -1,28 +1,30 @@
-package io.github.cloudstars.lowcode.commons.api.config;
+package io.github.cloudstars.lowcode.commons.api.config.request;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
-import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 /**
- * API输出配置
+ * API请求配置
  *
  * @author clouds
  */
-public class ApiOutputConfig extends AbstractConfig {
+public class ApiRequestConfig extends AbstractConfig {
+
+    // 媒体内容类型配置名称
+    private static final String ATTR_CONTENT_TYPE = "contentType";
 
     /**
-     * 数据格式
+     * 媒体类型
+     */
+    private RequestContentTypeEnum contentType;
+
+    /**
+     * 数据格式配置
      */
     private XValueTypeConfig valueType;
-
-    /**
-     * 是否必填（前端得有返回值）
-     */
-    private Boolean required;
 
     public XValueTypeConfig getValueType() {
         return valueType;
@@ -32,35 +34,29 @@ public class ApiOutputConfig extends AbstractConfig {
         this.valueType = valueType;
     }
 
-    public Boolean getRequired() {
-        return required;
+    public ApiRequestConfig() {
     }
 
-    public void setRequired(Boolean required) {
-        this.required = required;
-    }
-
-    public ApiOutputConfig() {
-    }
-
-    public ApiOutputConfig(JsonObject configJson) {
+    public ApiRequestConfig(JsonObject configJson) {
         super(configJson);
 
+        String contentTypeValue = (String) configJson.get(ATTR_CONTENT_TYPE);
+        if (contentTypeValue != null) {
+            this.contentType = RequestContentTypeEnum.valueOf(contentTypeValue.toUpperCase());
+        }
         JsonObject valueTypeConfigJson = (JsonObject) configJson.get(XValueTypeConfig.ATTR);
         if (valueTypeConfigJson != null) {
             this.valueType = ValueTypeConfigFactory.newInstance(valueTypeConfigJson);
         }
-        this.required = (Boolean) configJson.get(GlobalAttrNames.ATTR_REQUIRED);
     }
 
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_REQUIRED, this.required);
+        ConfigUtils.putIfNotNull(configJson, ATTR_CONTENT_TYPE, this.contentType);
         ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.valueType);
 
         return configJson;
     }
-
 
 }

@@ -1,6 +1,9 @@
 package io.github.cloudstars.lowcode.commons.api.config;
 
+import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
+import io.github.cloudstars.lowcode.commons.api.config.response.ApiResponseConfig;
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 /**
@@ -10,60 +13,78 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 public class ApiConfig extends AbstractConfig {
 
+    // HTTP方法配置名称
+    private static final String ATTR_HTTP_METHOD = "httpMethod";
+
+    // HTTP服务名称
+    private static final String ATTR_SERVICE_NAME = "serviceName";
+
     // 输入配置名称
-    private static final String ATTR_INPUT = "input";
+    private static final String ATTR_REQUEST = "input";
 
     // 输出配置名称
-    private static final String ATTR_OUTPUT = "output";
+    private static final String ATTR_RESPONSE = "output";
 
     /**
-     * 入参配置
+     * HTTP方法
      */
-    private ApiInputConfig input;
+    private HttpMethod httpMethod;
 
     /**
-     * 出参配置
+     * 服务名称
      */
-    private ApiOutputConfig output;
+    private String serviceName;
+
+    /**
+     * 请求配置
+     */
+    private ApiRequestConfig request;
+
+    /**
+     * 响应配置
+     */
+    private ApiResponseConfig response;
 
     public ApiConfig() {
-    }
-
-    public ApiConfig(ApiInputConfig inputConfig, ApiOutputConfig outputConfig) {
-        this.input = inputConfig;
-        this.output = outputConfig;
     }
 
     public ApiConfig(JsonObject configJson) {
         super(configJson);
 
-        JsonObject inputConfigJson = (JsonObject) configJson.get(ATTR_INPUT);
-        this.setInput(new ApiInputConfig(inputConfigJson));
-        JsonObject outputConfigJson = (JsonObject) configJson.get(ATTR_OUTPUT);
-        this.setOutput(new ApiOutputConfig(outputConfigJson));
+        String httpMethodValue = (String) configJson.get(ATTR_HTTP_METHOD);
+        if (httpMethodValue != null) {
+            this.httpMethod = HttpMethod.valueOf(httpMethodValue.toUpperCase());
+        }
+        this.serviceName = (String) configJson.get(ATTR_SERVICE_NAME);
+        JsonObject requestConfigJson = (JsonObject) configJson.get(ATTR_REQUEST);
+        this.setRequest(new ApiRequestConfig(requestConfigJson));
+        JsonObject responseConfigJson = (JsonObject) configJson.get(ATTR_RESPONSE);
+        this.setResponse(new ApiResponseConfig(responseConfigJson));
     }
 
-    public ApiInputConfig getInput() {
-        return input;
+    public ApiRequestConfig getRequest() {
+        return request;
     }
 
-    public void setInput(ApiInputConfig input) {
-        this.input = input;
+    public void setRequest(ApiRequestConfig request) {
+        this.request = request;
     }
 
-    public ApiOutputConfig getOutput() {
-        return output;
+    public ApiResponseConfig getResponse() {
+        return response;
     }
 
-    public void setOutput(ApiOutputConfig output) {
-        this.output = output;
+    public void setResponse(ApiResponseConfig response) {
+        this.response = response;
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(ATTR_INPUT, input.toJson());
-        configJson.put(ATTR_OUTPUT, output.toJson());
+        ConfigUtils.putIfNotNull(configJson, ATTR_HTTP_METHOD, this.httpMethod);
+        ConfigUtils.put(configJson, ATTR_SERVICE_NAME, this.serviceName);
+        ConfigUtils.putJsonIfNotNull(configJson, ATTR_REQUEST, request);
+        ConfigUtils.putJsonIfNotNull(configJson, ATTR_RESPONSE, response);
 
         return configJson;
     }

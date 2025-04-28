@@ -6,6 +6,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -18,6 +19,19 @@ public final class ConfigUtils {
     private ConfigUtils() {
     }
 
+
+    /**
+     * 当配置中存在键时，取值并消费
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @param consumer   消费者
+     */
+    public static void getIfPresent(JsonObject configJson, String key, Consumer<Object> consumer) {
+        if (configJson.containsKey(key)) {
+            consumer.accept(configJson.get(key));
+        }
+    }
 
     /**
      * 添加配置

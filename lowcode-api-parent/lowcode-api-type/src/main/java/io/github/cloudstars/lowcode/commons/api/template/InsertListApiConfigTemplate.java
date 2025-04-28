@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
-import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
-import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
+import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
+import io.github.cloudstars.lowcode.commons.api.config.response.ApiResponseConfig;
 import io.github.cloudstars.lowcode.commons.value.type.ArrayValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.value.type.NumberValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
@@ -21,7 +21,7 @@ public class InsertListApiConfigTemplate extends AbstractApiConfigTemplate<Inser
     @Override
     public ApiConfig newInstance(InsertDataApiConfigParams params) {
         // 入参由输入的属性列表决定，数组下的元素是对象
-        ApiInputConfig inputConfig = new ApiInputConfig();
+        ApiRequestConfig inputConfig = new ApiRequestConfig();
         ArrayValueTypeConfig inputValueType = new ArrayValueTypeConfig();
         ObjectValueTypeConfig objectValueType = new ObjectValueTypeConfig();
         objectValueType.setProperties(params.getProperties());
@@ -30,11 +30,14 @@ public class InsertListApiConfigTemplate extends AbstractApiConfigTemplate<Inser
         inputConfig.setValueType(inputValueType);
 
         // 出参是影响行数（n 或 0）
-        ApiOutputConfig outputConfig = new ApiOutputConfig();
-        NumberValueTypeConfig outputValueType = new NumberValueTypeConfig();
-        outputConfig.setValueType(outputValueType);
+        ApiResponseConfig responseConfig = new ApiResponseConfig();
+        NumberValueTypeConfig responseValueType = new NumberValueTypeConfig();
+        responseConfig.setValueType(responseValueType);
 
-        ApiConfig apiConfig = new ApiConfig(inputConfig, outputConfig);
+        ApiConfig apiConfig = new ApiConfig();
+        apiConfig.setRequest(inputConfig);
+        apiConfig.setResponse(responseConfig);
+
         return apiConfig;
     }
 

@@ -1,5 +1,7 @@
 {
-  "input": {
+  "httpMethod": "GET",
+  "serviceName": "platform/dict/{dictId}/items",
+  "request": {
     "valueType": {
       "type": "ARRAY",
       "items": {
@@ -11,7 +13,7 @@
     "required": false,
     "description": "入参是可选的"
   },
-  "output": {
+  "response": {
     "valueType": {
       "type": "ARRAY",
       "items": {

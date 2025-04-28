@@ -15,7 +15,7 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-api-commons</artifactId>
+            <artifactId>lowcode-api-type</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

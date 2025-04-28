@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
-import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
-import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
+import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
+import io.github.cloudstars.lowcode.commons.api.config.response.ApiResponseConfig;
 import io.github.cloudstars.lowcode.commons.value.type.NumberValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
 
@@ -20,19 +20,21 @@ public class InsertOneApiConfigTemplate extends AbstractApiConfigTemplate<Insert
     @Override
     public ApiConfig newInstance(InsertDataApiConfigParams params) {
         // 入参由输入的属性列表决定
-        ApiInputConfig inputConfig = new ApiInputConfig();
-        inputConfig.setRequired(true);
-        inputConfig.setDescription("这是插入单条记录的API模板");
+        ApiRequestConfig requestConfig = new ApiRequestConfig();
+        requestConfig.setDescription("这是插入单条记录的API模板");
         ObjectValueTypeConfig inputValueType = new ObjectValueTypeConfig();
         inputValueType.setProperties(params.getProperties());
-        inputConfig.setValueType(inputValueType);
+        requestConfig.setValueType(inputValueType);
 
         // 出参是影响行数（1 或 0）
-        ApiOutputConfig outputConfig = new ApiOutputConfig();
-        NumberValueTypeConfig outputValueType = new NumberValueTypeConfig();
-        outputConfig.setValueType(outputValueType);
+        ApiResponseConfig responseConfig = new ApiResponseConfig();
+        NumberValueTypeConfig responseValueType = new NumberValueTypeConfig();
+        responseConfig.setValueType(responseValueType);
 
-        ApiConfig apiConfig = new ApiConfig(inputConfig, outputConfig);
+        ApiConfig apiConfig = new ApiConfig();
+        apiConfig.setRequest(requestConfig);
+        apiConfig.setResponse(responseConfig);
+
         return apiConfig;
     }
 

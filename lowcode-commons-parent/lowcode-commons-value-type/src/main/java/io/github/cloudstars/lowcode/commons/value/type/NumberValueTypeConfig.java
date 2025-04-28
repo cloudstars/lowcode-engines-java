@@ -77,11 +77,11 @@ public class NumberValueTypeConfig extends AbstractValueTypeConfig {
         return DataTypeEnum.DECIMAL;*/
     }
 
-    public int getPrecision() {
+    public Integer getPrecision() {
         return precision;
     }
 
-    public void setPrecision(int precision) {
+    public void setPrecision(Integer precision) {
         this.precision = precision;
     }
 
@@ -107,6 +107,7 @@ public class NumberValueTypeConfig extends AbstractValueTypeConfig {
         ConfigUtils.putIfNotNull(configJson, ATTR_PRECISION, this.precision);
         ConfigUtils.putIfNotNull(configJson, ATTR_MIN_VALUE, this.minValue);
         ConfigUtils.putIfNotNull(configJson, ATTR_MAX_VALUE, this.maxValue);
+
         return configJson;
     }
 

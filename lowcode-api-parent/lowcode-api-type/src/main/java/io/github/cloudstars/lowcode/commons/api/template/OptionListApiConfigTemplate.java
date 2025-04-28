@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
-import io.github.cloudstars.lowcode.commons.api.config.ApiInputConfig;
-import io.github.cloudstars.lowcode.commons.api.config.ApiOutputConfig;
+import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
+import io.github.cloudstars.lowcode.commons.api.config.response.ApiResponseConfig;
 import io.github.cloudstars.lowcode.commons.value.type.*;
 
 import java.util.Arrays;
@@ -21,18 +21,18 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
     @Override
     public ApiConfig newInstance(OptionsApiConfigParams params) {
         // 入参可以是一个可选的values属性
-        ApiInputConfig inputConfig = new ApiInputConfig();
+        ApiRequestConfig requestConfig = new ApiRequestConfig();
         ObjectPropertyConfig valuesProperty = new ObjectPropertyConfig();
         valuesProperty.setName("values");
         ArrayValueTypeConfig valuesDataType = new ArrayValueTypeConfig();
         valuesDataType.setItemsValueType(new TextValueTypeConfig());
         valuesProperty.setValueType(valuesDataType);
-        ObjectValueTypeConfig inputValueType = new ObjectValueTypeConfig();
-        inputValueType.setProperties(Arrays.asList(valuesProperty));
-        inputConfig.setValueType(inputValueType);
+        ObjectValueTypeConfig requestValueType = new ObjectValueTypeConfig();
+        requestValueType.setProperties(Arrays.asList(valuesProperty));
+        requestConfig.setValueType(requestValueType);
 
         // 出参是一个列表
-        ApiOutputConfig outputConfig = new ApiOutputConfig();
+        ApiResponseConfig responseConfig = new ApiResponseConfig();
         TextValueTypeConfig labelValueType = new TextValueTypeConfig();
         ObjectPropertyConfig labelProperty = new ObjectPropertyConfig();
         labelProperty.setName(params.getLabelField());
@@ -45,16 +45,19 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
             NumberValueTypeConfig numberDataTypeConfig = new NumberValueTypeConfig();
             valueValueType = numberDataTypeConfig;
         }
-        ObjectPropertyConfig valueProperty = new ObjectPropertyConfig();
-        valueProperty.setName(params.getValueField());
-        valueProperty.setValueType(valueValueType);
+        ObjectPropertyConfig responseValueProperty = new ObjectPropertyConfig();
+        responseValueProperty.setName(params.getValueField());
+        responseValueProperty.setValueType(valueValueType);
         ObjectValueTypeConfig optionValueType = new ObjectValueTypeConfig();
-        optionValueType.setProperties(Arrays.asList(labelProperty, valueProperty));
-        ArrayValueTypeConfig outputValueType = new ArrayValueTypeConfig();
-        outputValueType.setItemsValueType(optionValueType);
-        outputConfig.setValueType(outputValueType);
+        optionValueType.setProperties(Arrays.asList(labelProperty, responseValueProperty));
+        ArrayValueTypeConfig responseValueType = new ArrayValueTypeConfig();
+        responseValueType.setItemsValueType(optionValueType);
+        responseConfig.setValueType(responseValueType);
 
-        ApiConfig apiConfig = new ApiConfig(inputConfig, outputConfig);
+        ApiConfig apiConfig = new ApiConfig();
+        apiConfig.setRequest(requestConfig);
+        apiConfig.setResponse(responseConfig);
+
         return apiConfig;
     }
 
