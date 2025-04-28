@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  */
 public final class FileUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     private FileUtils() {}
 

@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class ActivitiBpmProcessProviderImpl implements BpmProcessProvider {
 
-    private final static Logger logger = LoggerFactory.getLogger(ActivitiBpmProcessProviderImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiBpmProcessProviderImpl.class);
 
     @Resource
     private RuntimeService runtimeService;

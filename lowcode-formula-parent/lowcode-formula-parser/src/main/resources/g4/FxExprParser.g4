@@ -6,7 +6,7 @@ options {
 }
 
 program
-    : expressionStatement
+    : expressionStatement EOF
     ;
 
 expressionStatement

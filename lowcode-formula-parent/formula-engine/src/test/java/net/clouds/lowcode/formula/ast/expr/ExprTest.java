@@ -23,15 +23,15 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ExprTest {
 
-    private final static String EXPR1 = "(1 + 2) * 3.1 + 5 * (2 - 1.1)";
+    private static final String EXPR1 = "(1 + 2) * 3.1 + 5 * (2 - 1.1)";
 
-    private final static String EXPR2 = "1 + 2 * 3 + 3 * 4 * 5 - 6";
+    private static final String EXPR2 = "1 + 2 * 3 + 3 * 4 * 5 - 6";
 
-    private final static String IDENTIFIER_1 = "(aa1 + 1.1) * 2 + aa2 / (b - 4)";
+    private static final String IDENTIFIER_1 = "(aa1 + 1.1) * 2 + aa2 / (b - 4)";
 
-    private final static String PROPERTY_1 = "(o1.f1 + 1.1) * 2 + o2.f2 / (o3.o4.f1 - 4)";
+    private static final String PROPERTY_1 = "(o1.f1 + 1.1) * 2 + o2.f2 / (o3.o4.f1 - 4)";
 
-    private final static String METHOD_1 = "1 + max(detail.f1, 1)";
+    private static final String METHOD_1 = "1 + max(detail.f1, 1)";
 
 
     @Test

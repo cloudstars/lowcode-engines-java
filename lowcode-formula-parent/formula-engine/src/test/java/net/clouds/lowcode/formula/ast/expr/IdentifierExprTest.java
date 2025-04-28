@@ -16,9 +16,9 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class IdentifierExprTest {
 
-    final static String IDENTIFIER_1 = "(a)";
+    static final String IDENTIFIER_1 = "(a)";
 
-    final static String PROPERTY_1 = "o1.o2.o3.xx";
+    static final String PROPERTY_1 = "o1.o2.o3.xx";
 
     @Test
     public void testIdentifier1() {

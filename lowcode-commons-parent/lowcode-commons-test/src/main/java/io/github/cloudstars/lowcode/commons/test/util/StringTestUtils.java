@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class StringTestUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(StringTestUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(StringTestUtils.class);
 
     private StringTestUtils() {}
 

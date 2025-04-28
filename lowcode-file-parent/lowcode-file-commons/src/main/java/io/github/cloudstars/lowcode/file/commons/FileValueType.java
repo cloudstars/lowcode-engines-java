@@ -11,12 +11,12 @@ public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, Fi
     /**
      * 数据中的文件标识属性名
      */
-    private final static String ATTR_KEY = "key";
+    private static final String ATTR_KEY = "key";
 
     /**
      * 数据中的文件名称属性名
      */
-    private final static String ATTR_NAME = "name";
+    private static final String ATTR_NAME = "name";
 
 
     public FileValueType(FileValueTypeConfig valueTypeConfig) {

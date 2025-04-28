@@ -11,7 +11,7 @@ public final class XDescriptorFactory {
     /**
      * 注册器映射
      */
-    final static Map<String, XDescriptor> DESCRIPTORS = new HashMap<>();
+    static final Map<String, XDescriptor> DESCRIPTORS = new HashMap<>();
 
     /**
      * 注册一个规范注册器

@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  */
 public class ActivitiBpmDeployProviderImpl implements BpmDeployProvider {
 
-    private final static Logger logger = LoggerFactory.getLogger(ActivitiBpmDeployProviderImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiBpmDeployProviderImpl.class);
 
     @Resource
     private RepositoryService repositoryService;

@@ -7,6 +7,11 @@ package io.github.cloudstars.lowcode.formula.engine;
  */
 public interface Formula {
 
+    /**
+     * 执行公式
+     *
+     * @return 公式执行结果
+     */
     Object execute();
 
 }

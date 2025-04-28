@@ -13,23 +13,23 @@ import java.util.List;
 @RunWith(JUnit4.class)
 public class LiteralJsonExprTest {
 
-    private final static String EMPTY_ARRAY = "[]";
+    private static final String EMPTY_ARRAY = "[]";
 
-    private final static String INT_ARRAY1 = "[1, 2 , 3]";
+    private static final String INT_ARRAY1 = "[1, 2 , 3]";
 
-    private final static String CHAR_ARRAY1 = "['1', '2', '3']";
+    private static final String CHAR_ARRAY1 = "['1', '2', '3']";
 
-    private final static String CHAR_ARRAY2 = "['', '2']";
+    private static final String CHAR_ARRAY2 = "['', '2']";
 
-    private final static String NUMBER_ARRAY1 = "[1.1, 1.2]";
+    private static final String NUMBER_ARRAY1 = "[1.1, 1.2]";
 
-    private final static String BOOLEAN_ARRAY1 = "[true, false]";
+    private static final String BOOLEAN_ARRAY1 = "[true, false]";
 
-    private final static String EMPTY_JSON = "{}";
+    private static final String EMPTY_JSON = "{}";
 
-    private final static String JSON1 = "{\"a\": 1, \"b\": \"2\"}";
+    private static final String JSON1 = "{\"a\": 1, \"b\": \"2\"}";
 
-    private final static String JSON_ARRAY1 = "[{\"a\": 1, \"b\": \"2\"}, {\"a\": 1, \"b\": \"2\"}]";
+    private static final String JSON_ARRAY1 = "[{\"a\": 1, \"b\": \"2\"}, {\"a\": 1, \"b\": \"2\"}]";
 
 
 

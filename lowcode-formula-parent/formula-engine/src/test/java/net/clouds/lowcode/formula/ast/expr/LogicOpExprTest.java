@@ -24,25 +24,25 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class LogicOpExprTest {
 
-    private final static String EXPR1 = "a == 1 and b == 2.0";
+    private static final String EXPR1 = "a == 1 and b == 2.0";
 
-    private final static String EXPR2 = "b != 1.0 && b != '33'";
+    private static final String EXPR2 = "b != 1.0 && b != '33'";
 
-    private final static String EXPR3 = "c < 0.0 or b.y == 33.331";
+    private static final String EXPR3 = "c < 0.0 or b.y == 33.331";
 
-    private final static String EXPR4 = "c < 0.0 || b.y == 33.331";
+    private static final String EXPR4 = "c < 0.0 || b.y == 33.331";
 
-    private final static String EXPR5 = "!(a < 1)";
+    private static final String EXPR5 = "!(a < 1)";
 
-    private final static String EXPR6 = "not(o.a.b > -1)";
+    private static final String EXPR6 = "not(o.a.b > -1)";
 
-    private final static String EXPR7 = "(o.a >= o.b) or b == 1 and c == 2";
+    private static final String EXPR7 = "(o.a >= o.b) or b == 1 and c == 2";
 
     // and 与 || 混用
-    private final static String EXPR8 = "1 <= 1 and (!(2 > 2) || 3 != 3)";
+    private static final String EXPR8 = "1 <= 1 and (!(2 > 2) || 3 != 3)";
 
     // 这是一个很复杂的表达式,含了各种运算,并且省掉了所有的可省的空格
-    private final static String EXPR9 = "(a>1)or b<1&& c<5*9+4";
+    private static final String EXPR9 = "(a>1)or b<1&& c<5*9+4";
 
 
     @Test

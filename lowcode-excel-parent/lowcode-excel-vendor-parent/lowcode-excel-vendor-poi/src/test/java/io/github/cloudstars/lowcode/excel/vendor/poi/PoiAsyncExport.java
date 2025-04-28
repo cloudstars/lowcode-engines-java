@@ -20,7 +20,7 @@ import java.util.Map;
 @RunWith(JUnit4.class)
 public class PoiAsyncExport {
 
-    private final static Logger logger = LoggerFactory.getLogger(PoiAsyncExport.class);
+    private static final Logger logger = LoggerFactory.getLogger(PoiAsyncExport.class);
 
     @Test
     public void exportStatisticsData() {

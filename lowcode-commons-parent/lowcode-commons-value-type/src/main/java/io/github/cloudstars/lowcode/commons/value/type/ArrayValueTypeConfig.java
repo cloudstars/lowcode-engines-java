@@ -16,7 +16,7 @@ public class ArrayValueTypeConfig extends AbstractValueTypeConfig {
     /**
      * 数组下元素的属性名称
      */
-    private final static String ATTR_ITEMS = "items";
+    private static final String ATTR_ITEMS = "items";
 
     /**
      * 数组下元数的数据格式

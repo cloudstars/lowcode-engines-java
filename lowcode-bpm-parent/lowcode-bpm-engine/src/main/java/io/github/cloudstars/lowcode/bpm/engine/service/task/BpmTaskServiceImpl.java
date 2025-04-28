@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class BpmTaskServiceImpl implements BpmTaskService {
 
-    private final static Logger logger = LoggerFactory.getLogger(BpmTaskServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BpmTaskServiceImpl.class);
 
     /**
      * 流程引擎任务提供方

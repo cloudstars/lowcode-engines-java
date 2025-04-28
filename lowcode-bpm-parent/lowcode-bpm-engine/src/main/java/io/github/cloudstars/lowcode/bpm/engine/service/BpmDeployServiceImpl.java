@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BpmDeployServiceImpl implements BpmDeployService {
 
-    private final static Logger logger = LoggerFactory.getLogger(BpmDeployServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BpmDeployServiceImpl.class);
 
     /**
      * 流程引擎提供方

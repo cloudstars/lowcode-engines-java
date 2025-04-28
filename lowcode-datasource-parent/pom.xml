@@ -18,7 +18,7 @@
     <modules>
         <module>lowcode-datasource-commons</module>
         <module>lowcode-datasource-type</module>
-        <module>lowcode-datasource-engine</module>
+        <module>lowcode-datasource-loader</module>
     </modules>
 
     <dependencyManagement>

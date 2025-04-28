@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class FileTestUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(FileTestUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileTestUtils.class);
 
     private FileTestUtils() {}
 

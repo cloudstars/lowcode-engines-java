@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    private final static Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     @Resource
     private StudentMapper studentMapper;

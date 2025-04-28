@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class SqlCmdExecutor {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(SqlCmdExecutor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SqlCmdExecutor.class);
 
     private final ObjectRepository repository;
 

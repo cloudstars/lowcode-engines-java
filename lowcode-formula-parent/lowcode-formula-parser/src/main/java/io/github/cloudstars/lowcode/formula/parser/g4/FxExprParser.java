@@ -1,13 +1,15 @@
 // Generated from D:/clouds/java/lowcode-parent/lowcode-formula-parent/lowcode-formula-parser/src/main/resources/g4/FxExprParser.g4 by ANTLR 4.13.1
 package io.github.cloudstars.lowcode.formula.parser.g4;
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
+
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class FxExprParser extends FxExprParserBase {
@@ -157,6 +159,7 @@ public class FxExprParser extends FxExprParserBase {
 		public ExpressionStatementContext expressionStatement() {
 			return getRuleContext(ExpressionStatementContext.class,0);
 		}
+		public TerminalNode EOF() { return getToken(FxExprParser.EOF, 0); }
 		public ProgramContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -184,6 +187,8 @@ public class FxExprParser extends FxExprParserBase {
 			{
 			setState(6);
 			expressionStatement();
+			setState(7);
+			match(EOF);
 			}
 		}
 		catch (RecognitionException re) {
@@ -237,7 +242,7 @@ public class FxExprParser extends FxExprParserBase {
 			_localctx = new LiteralExpressionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(8);
+			setState(9);
 			literal();
 			}
 		}
@@ -280,7 +285,7 @@ public class FxExprParser extends FxExprParserBase {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(10);
+			setState(11);
 			match(StringLiteral);
 			}
 		}
@@ -296,14 +301,14 @@ public class FxExprParser extends FxExprParserBase {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0085\r\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
-		"\u0002\u0007\u0002\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001"+
-		"\u0002\u0001\u0002\u0001\u0002\u0000\u0000\u0003\u0000\u0002\u0004\u0000"+
-		"\u0000\t\u0000\u0006\u0001\u0000\u0000\u0000\u0002\b\u0001\u0000\u0000"+
-		"\u0000\u0004\n\u0001\u0000\u0000\u0000\u0006\u0007\u0003\u0002\u0001\u0000"+
-		"\u0007\u0001\u0001\u0000\u0000\u0000\b\t\u0003\u0004\u0002\u0000\t\u0003"+
-		"\u0001\u0000\u0000\u0000\n\u000b\u0005}\u0000\u0000\u000b\u0005\u0001"+
-		"\u0000\u0000\u0000\u0000";
+		"\u0004\u0001\u0085\u000e\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
+		"\u0002\u0002\u0007\u0002\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
+		"\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0000\u0000\u0003\u0000"+
+		"\u0002\u0004\u0000\u0000\n\u0000\u0006\u0001\u0000\u0000\u0000\u0002\t"+
+		"\u0001\u0000\u0000\u0000\u0004\u000b\u0001\u0000\u0000\u0000\u0006\u0007"+
+		"\u0003\u0002\u0001\u0000\u0007\b\u0005\u0000\u0000\u0001\b\u0001\u0001"+
+		"\u0000\u0000\u0000\t\n\u0003\u0004\u0002\u0000\n\u0003\u0001\u0000\u0000"+
+		"\u0000\u000b\f\u0005}\u0000\u0000\f\u0005\u0001\u0000\u0000\u0000\u0000";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

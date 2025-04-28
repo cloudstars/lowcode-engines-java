@@ -25,19 +25,19 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class RelationalOpExprTest {
 
-    private final static String EXPR1 = "a == 1";
+    private static final String EXPR1 = "a == 1";
 
-    private final static String EXPR2 = "b != 1.0";
+    private static final String EXPR2 = "b != 1.0";
 
-    private final static String EXPR3 = "c < 0.0";
+    private static final String EXPR3 = "c < 0.0";
 
-    private final static String EXPR4 = "o.a <= -1";
+    private static final String EXPR4 = "o.a <= -1";
 
-    private final static String EXPR5 = "o.a.b > -1";
+    private static final String EXPR5 = "o.a.b > -1";
 
-    private final static String EXPR6 = "o.a >= o.b";
+    private static final String EXPR6 = "o.a >= o.b";
 
-    private final static String EXPR7 = "1 == 1";
+    private static final String EXPR7 = "1 == 1";
 
     @Test
     public void testExpr1() {

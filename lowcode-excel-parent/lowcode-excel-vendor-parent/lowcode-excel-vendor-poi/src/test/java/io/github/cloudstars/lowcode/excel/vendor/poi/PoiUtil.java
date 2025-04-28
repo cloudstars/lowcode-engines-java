@@ -15,10 +15,10 @@ import java.io.FileOutputStream;
 
 public class PoiUtil {
 
-    private final static Logger logger = LoggerFactory.getLogger(PoiUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(PoiUtil.class);
 
-    private final static int PER_WRITE_ROW_COUNT = 200;
-    private final static int PER_SHEET_WRITE_COUNT = 1000;
+    private static final int PER_WRITE_ROW_COUNT = 200;
+    private static final int PER_SHEET_WRITE_COUNT = 1000;
 
     /**
      * <一句话功能简述> 导出大量数据到Excel

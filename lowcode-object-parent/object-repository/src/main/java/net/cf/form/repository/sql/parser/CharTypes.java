@@ -7,13 +7,13 @@ package net.cf.form.repository.sql.parser;
  */
 public class CharTypes {
 
-    final static char EOF = 26;
+    static final char EOF = 26;
 
     /* ASCII码表的长度 */
-    final static int ASCII_SIZE = 256;
+    static final int ASCII_SIZE = 256;
 
     /* 全角空格 */
-    final static int CHINESE_WHITESPACE = 12288;
+    static final int CHINESE_WHITESPACE = 12288;
 
     /**
      * 空白字符特征数组

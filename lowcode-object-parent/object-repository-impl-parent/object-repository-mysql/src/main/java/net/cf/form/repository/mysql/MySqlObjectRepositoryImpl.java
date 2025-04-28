@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class MySqlObjectRepositoryImpl implements ObjectRepository {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MySqlObjectRepositoryImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MySqlObjectRepositoryImpl.class);
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
