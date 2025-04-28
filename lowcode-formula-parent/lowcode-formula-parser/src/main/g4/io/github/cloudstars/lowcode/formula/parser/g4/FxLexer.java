@@ -1,5 +1,5 @@
-// Generated from D:/clouds/java/lowcode-parent/lowcode-formula-parent/lowcode-formula-parser/src/main/resources/g4/FxExprLexer.g4 by ANTLR 4.13.1
-package g4;
+// Generated from D:/clouds/java/lowcode-parent/lowcode-formula-parent/lowcode-formula-parser/src/main/g4/FxLexer.g4 by ANTLR 4.13.1
+package io.github.cloudstars.lowcode.formula.parser.g4;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
-public class FxExprLexer extends FxExprLexerBase {
+public class FxLexer extends FxLexerBase {
 	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -82,13 +82,13 @@ public class FxExprLexer extends FxExprLexerBase {
 	}
 
 
-	public FxExprLexer(CharStream input) {
+	public FxLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "FxExprLexer.g4"; }
+	public String getGrammarFileName() { return "FxLexer.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

@@ -3,6 +3,8 @@ package io.github.cloudstars.lowcode.formula.engine;
 import io.github.cloudstars.lowcode.commons.lang.util.ObjectRef;
 import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 
+import java.util.Map;
+
 /**
  * 公式实现
  *
@@ -24,4 +26,8 @@ public class FormulaImpl implements Formula {
         return resultRef.getRef();
     }
 
+    @Override
+    public Object execute(Map<String, Object> context) {
+        return null;
+    }
 }

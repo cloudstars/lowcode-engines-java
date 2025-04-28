@@ -21,10 +21,18 @@ public class FormulaCalculateFxVisitor extends FxParserBaseVisitor<Object> {
     }
 
     @Override
+    protected Object aggregateResult(Object aggregate, Object nextResult) {
+        if (aggregate == null && nextResult != null) {
+            // 把最后的结束归并到结果中
+            this.resultRef.setRef(nextResult);
+        }
+
+        return  super.aggregateResult(aggregate, nextResult);
+    }
+
+    @Override
     public Object visitFx(FxParser.FxContext ctx) {
-        Object superResult = super.visitFx(ctx);
-        this.resultRef.setRef(superResult);
-        return superResult;
+        return super.visitFx(ctx);
     }
 
     @Override
