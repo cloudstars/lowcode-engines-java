@@ -31,4 +31,4 @@ target/
 hs_err_pid*
 
 # g4 auto generated Filed
-g4/io/
+src/main/g4/io/
