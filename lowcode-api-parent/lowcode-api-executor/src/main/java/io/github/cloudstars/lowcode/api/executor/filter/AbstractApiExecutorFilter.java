@@ -14,7 +14,7 @@ public class AbstractApiExecutorFilter implements ApiExecuteFilter {
     @Override
     public void process(ApiRequest apiRequest, ApiResponse apiResponse) {
         this.doBeforeRequest(apiRequest);
-        this.filterChain.doFilter();
+        this.filterChain.doFilter(apiRequest, apiResponse);
         this.doAfterResponse(apiResponse);
     }
 
