@@ -1,13 +1,13 @@
 package io.github.cloudstars.lowcode.api.executor.filter;
 
-import io.github.cloudstars.lowcode.api.executor.ApiRequest;
-import io.github.cloudstars.lowcode.api.executor.ApiResponse;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiRequest;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiResponse;
 
-public class AbstractApiExecutorFilter implements ApiExecuteFilter {
+public class AbstractApiExecuteFilter implements ApiExecuteFilter {
 
     private ApiExecuteFilterChain filterChain;
 
-    public AbstractApiExecutorFilter(ApiExecuteFilterChain filterChain) {
+    public AbstractApiExecuteFilter(ApiExecuteFilterChain filterChain) {
         this.filterChain = filterChain;
     }
 

@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.api.executor.filter;
 
-import io.github.cloudstars.lowcode.api.executor.ApiRequest;
-import io.github.cloudstars.lowcode.api.executor.ApiResponse;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiRequest;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiResponse;
 
 /**
  * API过滤链

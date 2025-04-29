@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.api.executor.filter;
 
-import io.github.cloudstars.lowcode.api.executor.ApiRequest;
-import io.github.cloudstars.lowcode.api.executor.ApiResponse;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiRequest;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiResponse;
 
 /**
  * API执行过滤器
@@ -9,6 +9,13 @@ import io.github.cloudstars.lowcode.api.executor.ApiResponse;
  * @author clouds
  */
 public interface ApiExecuteFilter {
+
+    /**
+     * 设置过滤链
+     *
+     * @param filterChain
+     */
+    // void setFilterChain(ApiExecuteFilterChain filterChain);
 
     /**
      * 处理请求、响应

@@ -7,23 +7,50 @@ package io.github.cloudstars.lowcode.api.executor;
  */
 public class ApiResult {
 
+    /**
+     * 是否执行成功的标识
+     */
     private boolean success;
 
-    private Object body;
+    /**
+     * 执行的错误消息
+     */
+    private String errorMsg;
+
+    /**
+     * 执行的结果
+     */
+    private Object result;
 
     public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public Object getResult() {
+        return result;
     }
 
-    public Object getBody() {
-        return body;
+    public void setResult(Object result) {
+        this.result = result;
     }
 
-    public void setBody(Object body) {
-        this.body = body;
+    /**
+     * 设置执行的正确结果
+     *
+     * @param result 结果内容
+     */
+    public void success(String result) {
+        this.result = result;
     }
+
+    /**
+     * 设置执行结果错误消息
+     *
+     * @param errorMsg 错误消息
+     */
+    public void error(String errorMsg) {
+        this.success = false;
+        this.errorMsg = errorMsg;
+    }
+
 }
