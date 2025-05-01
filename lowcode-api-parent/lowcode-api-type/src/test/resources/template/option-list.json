@@ -1,5 +1,5 @@
 {
-  "input": {
+  "request": {
     "dataType": "OBJECT",
     "required": false,
     "properties": [
@@ -14,7 +14,7 @@
       }
     ]
   },
-  "output": {
+  "response": {
     "dataType": "ARRAY",
     "items": {
       "dataType": "OBJECT",

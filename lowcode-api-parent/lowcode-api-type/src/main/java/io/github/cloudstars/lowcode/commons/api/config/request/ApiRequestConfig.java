@@ -40,14 +40,12 @@ public class ApiRequestConfig extends AbstractConfig {
     public ApiRequestConfig(JsonObject configJson) {
         super(configJson);
 
-        String contentTypeValue = (String) configJson.get(ATTR_CONTENT_TYPE);
-        if (contentTypeValue != null) {
-            this.contentType = RequestContentTypeEnum.valueOf(contentTypeValue.toUpperCase());
-        }
-        JsonObject valueTypeConfigJson = (JsonObject) configJson.get(XValueTypeConfig.ATTR);
-        if (valueTypeConfigJson != null) {
-            this.valueType = ValueTypeConfigFactory.newInstance(valueTypeConfigJson);
-        }
+        ConfigUtils.getIfPresent(configJson, ATTR_CONTENT_TYPE, (v) -> {
+            this.contentType = RequestContentTypeEnum.valueOf(((String) v).toUpperCase());
+        });
+        ConfigUtils.getIfPresent(configJson, XValueTypeConfig.ATTR, (v) -> {
+            this.valueType = ValueTypeConfigFactory.newInstance((JsonObject) v);
+        });
     }
 
     @Override

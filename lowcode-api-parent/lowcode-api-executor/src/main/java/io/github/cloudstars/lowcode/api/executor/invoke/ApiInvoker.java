@@ -8,11 +8,19 @@ package io.github.cloudstars.lowcode.api.executor.invoke;
 public interface ApiInvoker {
 
     /**
-     * 执行一个API调用
+     * 发送 Get 请求
      *
      * @param request API请求对象
-     * @return API响尖对象
+     * @return API响应结果
      */
-    ApiResponse invoke(ApiRequest request);
+    ApiResponse get(ApiRequest request);
+
+    /**
+     * 发送 Post 请求
+     *
+     * @param request
+     * @return
+     */
+    ApiResponse post(ApiRequest request);
 
 }

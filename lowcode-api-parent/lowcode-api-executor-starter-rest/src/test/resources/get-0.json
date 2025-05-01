@@ -1,0 +1,13 @@
+{
+  "key": "xxx",
+  "code": "xxx",
+  "name": "xxx",
+  "httpMethod": "GET",
+  "servicePath": "http://localhost:8080/remote/api/get",
+  "request": {
+    "contentType": "application_json"
+  },
+  "response": {
+    "contentType": "application_json"
+  }
+}

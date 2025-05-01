@@ -19,6 +19,8 @@
         <module>lowcode-api-commons</module>
         <module>lowcode-api-type</module>
         <module>lowcode-api-executor</module>
+        <module>lowcode-api-executor-starter-rest</module>
+        <module>lowcode-api-executor-starter-feign</module>
     </modules>
 
     <dependencyManagement>
