@@ -10,23 +10,19 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-/**
- * 选项数据格式测试类
- *
- * @author clouds
- */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CommonsValueTypeTestApplication.class)
-public class OptionsValueTypeConfigParserTest {
+public class TimeValueTypeConfigTest {
 
     /**
-     * 测试一个简单的选项
+     * 测试一个简单的时间
      */
     @Test
     public void testSimple() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/type/option/option-simple.json");
+        JsonObject configJson= JsonUtils.loadJsonObjectFromClasspath("value/type/time/time-simple.json");
         XValueTypeConfig valueType = ValueTypeConfigFactory.newInstance(configJson);
-        Assert.assertEquals(OptionValueTypeConfig.class, valueType.getClass());
+        Assert.assertEquals(TimeValueTypeConfig.class, valueType.getClass());
         JsonTestUtils.assertEquals(configJson, valueType.toJson());
     }
 

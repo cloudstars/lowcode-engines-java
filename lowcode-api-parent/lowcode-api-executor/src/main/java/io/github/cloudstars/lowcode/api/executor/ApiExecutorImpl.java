@@ -63,7 +63,7 @@ public class ApiExecutorImpl implements ApiExecutor {
      */
     private ApiRequest makeRequest(ApiConfig config) {
         ApiRequest apiRequest = new ApiRequest();
-        apiRequest.setUrl(config.getServicePath());
+        apiRequest.setUrl(config.getRequest().getServicePath());
         return apiRequest;
     }
 

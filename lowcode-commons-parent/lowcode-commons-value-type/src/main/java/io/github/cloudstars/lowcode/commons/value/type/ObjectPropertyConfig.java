@@ -23,11 +23,6 @@ public class ObjectPropertyConfig extends AbstractConfig {
     private String label;
 
     /**
-     * 是否必填
-     */
-    private Boolean required;
-
-    /**
      * 属性的数据格式
      */
     private XValueTypeConfig valueType;
@@ -48,14 +43,6 @@ public class ObjectPropertyConfig extends AbstractConfig {
         this.label = label;
     }
 
-    public Boolean getRequired() {
-        return required;
-    }
-
-    public void setRequired(Boolean required) {
-        this.required = required;
-    }
-
     public XValueTypeConfig getValueType() {
         return valueType;
     }
@@ -72,7 +59,6 @@ public class ObjectPropertyConfig extends AbstractConfig {
 
         this.name = (String) configJson.get(GlobalAttrNames.ATTR_NAME);
         this.label = (String) configJson.get(GlobalAttrNames.ATTR_LABEL);
-        this.required = (Boolean) configJson.get(GlobalAttrNames.ATTR_REQUIRED);
         this.valueType = ValueTypeConfigFactory.newInstance(configJson);
     }
 
@@ -81,7 +67,6 @@ public class ObjectPropertyConfig extends AbstractConfig {
         JsonObject configJson = super.toJson();
         ConfigUtils.put(configJson, GlobalAttrNames.ATTR_NAME, this.name);
         ConfigUtils.put(configJson, GlobalAttrNames.ATTR_LABEL, this.label);
-        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_REQUIRED, this.required);
         ConfigUtils.putAll(configJson, this.valueType);
 
         return configJson;

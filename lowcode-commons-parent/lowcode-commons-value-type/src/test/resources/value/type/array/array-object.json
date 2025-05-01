@@ -1,0 +1,20 @@
+{
+  "type": "ARRAY",
+  "items": {
+    "type": "OBJECT",
+    "required": true,
+    "properties": [
+      {
+        "type": "TEXT",
+        "name": "a",
+        "required": true
+      },
+      {
+        "type": "TEXT",
+        "name": "b",
+        "required": true
+      }
+    ]
+  },
+  "required": true
+}

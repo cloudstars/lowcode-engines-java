@@ -12,18 +12,34 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 public abstract class AbstractValueTypeConfig extends AbstractTypedConfig implements XValueTypeConfig {
 
     /**
+     * 是否必填配置
+     */
+    private Boolean required;
+
+    /**
      * 默认值配置
      */
     private Object defaultValue;
 
     public AbstractValueTypeConfig() {
+        this.setType(this.getClass().getAnnotation(ValueTypeConfigClass.class).name());
     }
 
     public AbstractValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
         this.setType(this.getClass().getAnnotation(ValueTypeConfigClass.class).name());
-        this.defaultValue = configJson.get(XValueTypeConfig.ATTR_DEFAULT_VALUE);
+        this.required = ConfigUtils.getBoolean(configJson, XValueTypeConfig.ATTR_REQUIRED);
+        this.defaultValue = ConfigUtils.get(configJson, XValueTypeConfig.ATTR_DEFAULT_VALUE);
+    }
+
+    @Override
+    public Boolean getRequired() {
+        return required;
+    }
+
+    public void setRequired(Boolean required) {
+        this.required = required;
     }
 
     @Override
@@ -38,7 +54,9 @@ public abstract class AbstractValueTypeConfig extends AbstractTypedConfig implem
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
+        ConfigUtils.putIfNotNull(configJson, XValueTypeConfig.ATTR_REQUIRED, this.required);
         ConfigUtils.putIfNotNull(configJson, XValueTypeConfig.ATTR_DEFAULT_VALUE, this.defaultValue);
+        
         return configJson;
     }
 

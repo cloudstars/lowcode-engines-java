@@ -1,6 +1,8 @@
 package io.github.cloudstars.lowcode.api.executor.invoke;
 
-import io.github.cloudstars.lowcode.commons.api.config.HttpMethod;
+import io.github.cloudstars.lowcode.commons.api.config.request.HttpMethod;
+
+import java.util.List;
 
 /**
  * API请求
@@ -18,6 +20,11 @@ public class ApiRequest {
      * 请求地址
      */
     private String url;
+
+    /**
+     * 请求头部
+     */
+    private List<HttpHeader> headers;
 
     /**
      * 请求参数
@@ -38,6 +45,14 @@ public class ApiRequest {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public List<HttpHeader> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(List<HttpHeader> headers) {
+        this.headers = headers;
     }
 
     public Object getBody() {

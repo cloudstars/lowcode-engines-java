@@ -1,0 +1,10 @@
+{
+  "type": "ARRAY",
+  "items": {
+    "type": "OPTION",
+    "required": true,
+    "labelField": "abc",
+    "valueField": "xyz"
+  },
+  "required": true
+}

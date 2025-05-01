@@ -2,15 +2,27 @@
   "type": "OBJECT",
   "properties": [
     {
-      "code": "a",
-      "name": "这是a",
+      "name": "a",
+      "label": "这是a",
       "type": "TEXT",
       "minLength": 10
     },
     {
-      "code": "b",
-      "name": "这是b",
+      "name": "b",
+      "label": "这是b",
       "type": "TEXT",
+      "maxLength": 100
+    },
+    {
+      "name": "c",
+      "label": "这是c",
+      "type": "TEXT"
+    },
+    {
+      "name": "d",
+      "label": "这是d",
+      "type": "TEXT",
+      "minLength": 10,
       "maxLength": 100
     }
   ]

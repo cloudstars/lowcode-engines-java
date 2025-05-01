@@ -21,13 +21,12 @@ public class InsertListApiConfigTemplate extends AbstractApiConfigTemplate<Inser
     @Override
     public ApiConfig newInstance(InsertDataApiConfigParams params) {
         // 入参由输入的属性列表决定，数组下的元素是对象
-        ApiRequestConfig inputConfig = new ApiRequestConfig();
+        ApiRequestConfig requestConfig = new ApiRequestConfig();
         ArrayValueTypeConfig inputValueType = new ArrayValueTypeConfig();
         ObjectValueTypeConfig objectValueType = new ObjectValueTypeConfig();
         objectValueType.setProperties(params.getProperties());
-        inputValueType.setItemsValueType(objectValueType);
-        inputValueType.setItemsRequired(true);
-        inputConfig.setValueType(inputValueType);
+        inputValueType.setRequired(true);
+        requestConfig.setValueType(inputValueType);
 
         // 出参是影响行数（n 或 0）
         ApiResponseConfig responseConfig = new ApiResponseConfig();
@@ -35,7 +34,7 @@ public class InsertListApiConfigTemplate extends AbstractApiConfigTemplate<Inser
         responseConfig.setValueType(responseValueType);
 
         ApiConfig apiConfig = new ApiConfig();
-        apiConfig.setRequest(inputConfig);
+        apiConfig.setRequest(requestConfig);
         apiConfig.setResponse(responseConfig);
 
         return apiConfig;

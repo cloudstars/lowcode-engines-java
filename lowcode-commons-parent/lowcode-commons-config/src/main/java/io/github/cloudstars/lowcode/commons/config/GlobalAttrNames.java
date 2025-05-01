@@ -7,24 +7,15 @@ package io.github.cloudstars.lowcode.commons.config;
  */
 public interface GlobalAttrNames {
 
-    // 字段编号配置名称
-    String ATTR_KEY = "key";
     // 字段名配置名称
     String ATTR_NAME = "name";
     // 字段标签配置名称
     String ATTR_LABEL = "label";
-    
-    /**
-     * “标题“属性名称
-     */
-    String ATTR_TITLE = "title";
-
-    // 是否必填的属性名称
-    String ATTR_REQUIRED = "required";
 
     // 值配置项名称
     String ATTR_VALUE = "value";
 
     // 表达式配置项名称
     String ATTR_EXPRESSION = "expression";
+
 }

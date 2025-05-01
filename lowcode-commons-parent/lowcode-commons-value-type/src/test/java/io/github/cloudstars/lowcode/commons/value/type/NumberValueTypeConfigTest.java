@@ -14,16 +14,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CommonsValueTypeTestApplication.class)
-public class ObjectValueTypeConfigParserTest {
+public class NumberValueTypeConfigTest {
 
     /**
-     * 测试一个简单的文本对象
+     * 测试一个简单的数字
      */
     @Test
-    public void testTextObjectValueType() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/type/object/object-simple.json");
+    public void testSimple() {
+        JsonObject configJson= JsonUtils.loadJsonObjectFromClasspath("value/type/number/number-simple.json");
         XValueTypeConfig valueType = ValueTypeConfigFactory.newInstance(configJson);
-        Assert.assertEquals(ObjectValueTypeConfig.class, valueType.getClass());
+        Assert.assertEquals(NumberValueTypeConfig.class, valueType.getClass());
         JsonTestUtils.assertEquals(configJson, valueType.toJson());
     }
 

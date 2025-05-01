@@ -26,7 +26,7 @@ public class OptionListApiConfigTemplateTest {
         OptionsApiConfigParams params = new OptionsApiConfigParams();
         params.setLabelField("a");
         params.setValueField("b");
-        params.setValueDataType(OptionsApiConfigParams.ValueDataTypeEnum.NUMBER);
+        params.setValueDataType(OptionsApiConfigParams.ValueDataTypeEnum.STRING);
         ApiConfig apiConfig = this.template.newInstance(params);
 
         JsonObject expectedConfigJson = JsonUtils.loadJsonObjectFromClasspath("template/option-list.json");

@@ -1,4 +1,3 @@
-
 package io.github.cloudstars.lowcode.commons.value.type;
 
 import io.github.cloudstars.lowcode.CommonsValueTypeTestApplication;
@@ -14,16 +13,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CommonsValueTypeTestApplication.class)
-public class NumberValueTypeConfigParserTest {
+public class BooleanValueTypeConfigTest {
 
     /**
-     * 测试一个简单的数字
+     * 测试一个简单的布尔
      */
     @Test
     public void testSimple() {
-        JsonObject configJson= JsonUtils.loadJsonObjectFromClasspath("value/type/number/number-simple.json");
+        JsonObject configJson= JsonUtils.loadJsonObjectFromClasspath("value/type/boolean/boolean-simple.json");
         XValueTypeConfig valueType = ValueTypeConfigFactory.newInstance(configJson);
-        Assert.assertEquals(NumberValueTypeConfig.class, valueType.getClass());
+        Assert.assertEquals(BooleanValueTypeConfig.class, valueType.getClass());
         JsonTestUtils.assertEquals(configJson, valueType.toJson());
     }
 

@@ -15,8 +15,40 @@ import java.util.function.Function;
  * @author clouds
  */
 public final class ConfigUtils {
-
     private ConfigUtils() {
+    }
+
+    /**
+     * 获取配置中指定键对应的值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return  Object值
+     */
+    public static Object get(JsonObject configJson, String key) {
+        return configJson.get(key);
+    }
+
+    /**
+     * 获取配置中指定键对应的String值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return String值
+     */
+    public static String getString(JsonObject configJson, String key) {
+        return (String) get(configJson, key);
+    }
+
+    /**
+     * 获取配置中指定键对应的Boolean值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return String值
+     */
+    public static Boolean getBoolean(JsonObject configJson, String key) {
+        return (Boolean) get(configJson, key);
     }
 
 

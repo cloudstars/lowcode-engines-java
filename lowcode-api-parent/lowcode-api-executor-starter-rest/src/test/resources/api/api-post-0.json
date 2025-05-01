@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/users",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+    },
+    "body": {
+      "name": "John Doe",
+      "email": "john.doe@example.com"
+    }
+  },
+  "response": {
+    "contentType": "application_json"
+  }
+}

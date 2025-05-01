@@ -1,0 +1,20 @@
+{
+  "type": "OBJECT",
+  "required": false,
+  "properties": [
+    {
+      "type": "TEXT",
+      "name": "dictId",
+      "required": true
+    },
+    {
+      "type": "ARRAY",
+      "name": "values",
+      "items": {
+        "type": "TEXT",
+        "required": true
+      },
+      "required": false
+    }
+  ]
+}

@@ -1,16 +1,16 @@
 {
-  "httpMethod": "GET",
-  "serviceName": "platform/dict/{dictId}/items",
   "request": {
+    "httpMethod": "GET",
+    "servicePath": "platform/dict/{dictId}/items",
     "valueType": {
       "type": "ARRAY",
       "items": {
         "type": "TEXT",
         "required": true,
         "description": "value值不能是null"
-      }
+      },
+      "required": false
     },
-    "required": false,
     "description": "入参是可选的"
   },
   "response": {
@@ -20,14 +20,14 @@
         "type": "OBJECT",
         "properties": [
           {
-            "code": "a",
-            "name": "参数A",
+            "name": "a",
+            "label": "参数A",
             "required": true,
             "type": "TEXT",
             "description": "这是一个label，数据格式是文本"
           },
           {
-            "code": "b",
+            "name": "b",
             "required": true,
             "type": "NUMBER",
             "description": "这是一个value，数据格式是数字"
@@ -35,7 +35,6 @@
         ]
       }
     },
-    "required": true,
     "description": "value值不能是null"
   }
 }

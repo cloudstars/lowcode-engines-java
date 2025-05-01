@@ -13,33 +13,28 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
+/**
+ * 测试以低代码API的方式访问远程服务
+ *
+ * @author clouds
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = ApiExecutorRestTestApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
 )
-public class RestApiInvokerTest {
-
-    @Resource
-    private TestRestTemplate testRestTemplate;
+public class RestApiTest {
 
     @Resource
     private ApiInvoker restApiInvoke;
 
     @Test
-    public void test() {
-        String result = this.testRestTemplate.getForObject("/remote/api/get", String.class);
-        Assert.assertEquals("SomeThing", result);
-    }
-
-    @Test
     public void test1() {
-        JsonObject apiConfigJson = JsonUtils.loadJsonObjectFromClasspath("get-0.json");
+        JsonObject apiConfigJson = JsonUtils.loadJsonObjectFromClasspath("api/api-get-0.json");
         ApiExecutor apiExecutor = new ApiExecutorImpl(restApiInvoke);
         ApiConfig apiConfig = new ApiConfig(apiConfigJson);
         ApiResult apiResult = apiExecutor.execute(apiConfig);

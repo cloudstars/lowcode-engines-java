@@ -1,5 +1,6 @@
 {
   "type": "NUMBER",
   "precision": 2,
-  "defaultValue": 2.5
+  "defaultValue": 2.5,
+  "required": false
 }

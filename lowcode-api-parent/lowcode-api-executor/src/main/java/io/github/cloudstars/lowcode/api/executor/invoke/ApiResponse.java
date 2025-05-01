@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.api.executor.invoke;
 
-import io.github.cloudstars.lowcode.commons.api.config.response.ResponseContentTypeEnum;
+import java.util.List;
 
 /**
  * API响应
@@ -14,7 +14,10 @@ public class ApiResponse {
      */
     private int httpStatus;
 
-    private ResponseContentTypeEnum contentType;
+    /**
+     * 请求头部
+     */
+    private List<HttpHeader> headers;
 
     private String body;
 
@@ -26,12 +29,12 @@ public class ApiResponse {
         this.httpStatus = httpStatus;
     }
 
-    public ResponseContentTypeEnum getContentType() {
-        return contentType;
+    public List<HttpHeader> getHeaders() {
+        return headers;
     }
 
-    public void setContentType(ResponseContentTypeEnum contentType) {
-        this.contentType = contentType;
+    public void setHeaders(List<HttpHeader> headers) {
+        this.headers = headers;
     }
 
     public String getBody() {

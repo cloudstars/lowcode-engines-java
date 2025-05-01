@@ -49,7 +49,7 @@ public class OptionsApiConfigParams {
     /**
      * 选项值数据格式
      */
-    public static enum ValueDataTypeEnum {
+    public enum ValueDataTypeEnum {
         STRING,
         NUMBER;
     }

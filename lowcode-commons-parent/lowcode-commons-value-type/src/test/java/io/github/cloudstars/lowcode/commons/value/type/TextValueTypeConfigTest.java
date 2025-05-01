@@ -13,17 +13,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CommonsValueTypeTestApplication.class)
-public class TextArrayValueTypeConfigParserTest {
+public class TextValueTypeConfigTest {
 
     /**
-     * 测试一个简单的文本数组
+     * 测试一个简单的文本
      */
     @Test
-    public void testArray() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/type/array/text-array.json");
+    public void testSimple() {
+        JsonObject configJson= JsonUtils.loadJsonObjectFromClasspath("value/type/text/text-simple.json");
         XValueTypeConfig valueType = ValueTypeConfigFactory.newInstance(configJson);
-        Assert.assertEquals(ArrayValueTypeConfig.class, valueType.getClass());
-        JsonTestUtils.assertDerivedFrom(configJson, valueType.toJson());
+        Assert.assertEquals(TextValueTypeConfig.class, valueType.getClass());
+        JsonTestUtils.assertEquals(configJson, valueType.toJson());
     }
 
 }

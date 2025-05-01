@@ -1,38 +1,50 @@
 {
   "request": {
-    "dataType": "OBJECT",
-    "required": false,
-    "properties": [
-      {
-        "dataType": "ARRAY",
-        "name": "values",
-        "items": {
-          "dataType": "STRING",
-          "required": false
-        },
-        "required": false
-      }
-    ]
-  },
-  "response": {
-    "dataType": "ARRAY",
-    "items": {
-      "dataType": "OBJECT",
-      "required": false,
+    "httpMethod": "GET",
+    "servicePath": "api://dict/{dictId}/item-list",
+    "contentType": "APPLICATION_JSON",
+    "valueType": {
+      "type": "OBJECT",
+      "required": true,
       "properties": [
         {
-          "dataType": "STRING",
-          "name": "a",
-          "required": false
+          "type": "TEXT",
+          "name": "dictId",
+          "required": true
         },
         {
-          "dataType": "NUMBER",
-          "precision": 0,
-          "name": "b",
+          "type": "ARRAY",
+          "name": "values",
+          "items": {
+            "type": "TEXT",
+            "required": true
+          },
           "required": false
         }
       ]
-    },
-    "required": false
+    }
+  },
+  "response": {
+    "contentType": "APPLICATION_JSON",
+    "valueType": {
+      "type": "ARRAY",
+      "items": {
+        "type": "OBJECT",
+        "required": true,
+        "properties": [
+          {
+            "type": "TEXT",
+            "name": "a",
+            "required": true
+          },
+          {
+            "type": "TEXT",
+            "name": "b",
+            "required": true
+          }
+        ]
+      },
+      "required": true
+    }
   }
 }
