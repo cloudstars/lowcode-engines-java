@@ -7,6 +7,7 @@ import io.github.cloudstars.lowcode.commons.value.type.TextValueTypeConfig;
  *
  * @author clouds
  */
+@ValueTypeClass(name = "TEXT", valueTypeConfigClass = TextValueTypeConfig.class)
 public class TextValueTypeImpl extends AbstractValueTypeImpl<TextValueTypeConfig, String> {
 
     public TextValueTypeImpl(TextValueTypeConfig valueTypeConfig) {
@@ -14,7 +15,8 @@ public class TextValueTypeImpl extends AbstractValueTypeImpl<TextValueTypeConfig
     }
 
     @Override
-    public String parseDefaultValue(Object defaultValueConfig) throws InvalidDataException {
+    public String parseDefaultValue() throws InvalidDataException {
+        Object defaultValueConfig = this.valueTypeConfig.getDefaultValue();
         if (defaultValueConfig != null) {
             if (defaultValueConfig instanceof String) {
                 return (String) defaultValueConfig;

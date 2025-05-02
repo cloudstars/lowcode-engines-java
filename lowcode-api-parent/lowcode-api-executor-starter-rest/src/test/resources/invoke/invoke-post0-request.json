@@ -1,0 +1,15 @@
+{
+  "method": "POST",
+  "url": "http://localhost:8080/remote/api/post",
+  "headers": {
+    "contentType": "application_json",
+    "Authorization": "Bearer CF-TOKEN"
+  },
+  "body": {
+    "a": "abc",
+    "x": {
+      "x1": "xyz",
+      "x2": 123
+    }
+  }
+}

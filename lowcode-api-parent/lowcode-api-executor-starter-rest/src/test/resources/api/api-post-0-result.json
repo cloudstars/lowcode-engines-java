@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "returnCode": null,
+  "body": {
+    "a": "xyz",
+    "x": {
+      "x": 123.3,
+      "y": -1
+    }
+  }
+}

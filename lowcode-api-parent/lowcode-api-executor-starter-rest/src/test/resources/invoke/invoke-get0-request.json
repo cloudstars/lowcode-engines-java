@@ -1,6 +1,6 @@
 {
   "method": "GET",
-  "url": "http://localhost:8080/remote/api/get",
+  "url": "http://localhost:8080/remote/api/get/0",
   "headers": {
     "contentType": "application_json",
     "Authorization": "Bearer CF-TOKEN"

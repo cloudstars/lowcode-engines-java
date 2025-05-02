@@ -1,6 +1,6 @@
 {
   "request": {
-    "httpMethod": "GET",
+    "method": "GET",
     "servicePath": "platform/dict/{dictId}/items",
     "valueType": {
       "type": "ARRAY",

@@ -13,6 +13,7 @@ import java.util.List;
  *
  * @param <T> 数组元素的类型
  */
+@ValueTypeClass(name = "ARRAY", valueTypeConfigClass = ArrayValueTypeConfig.class)
 public class ArrayValueTypeImpl<T extends Object> extends AbstractValueTypeImpl<ArrayValueTypeConfig, List<T>> {
 
     public ArrayValueTypeImpl(ArrayValueTypeConfig valueTypeConfig) {
@@ -20,23 +21,28 @@ public class ArrayValueTypeImpl<T extends Object> extends AbstractValueTypeImpl<
     }
 
     @Override
-    public List<T> parseDefaultValue(Object defaultValueConfig) {
-        if (defaultValueConfig != null) {
-            if (defaultValueConfig instanceof List) {
+    public List<T> parseDefaultValue() throws InvalidDataException {
+        return null;
+    }
+
+    @Override
+    public List<T> mergeDefaultValue(Object rawValue) {
+        if (rawValue != null) {
+            if (rawValue instanceof List) {
                 XValueTypeConfig itemValueTypeConfig = this.valueTypeConfig.getItemsValueType();
-                List defaultValueConfigList = (List) defaultValueConfig;
+                List defaultValueConfigList = (List) rawValue;
                 List<T> itemValues = new ArrayList<>();
                 for (Object defaultValueConfigItem : defaultValueConfigList) {
-                    T itemValue = (T) ValueTypeFactory.newInstance(itemValueTypeConfig).parseDefaultValue(defaultValueConfigItem);
+                    T itemValue = (T) ValueTypeFactory.newInstance(itemValueTypeConfig).mergeDefaultValue(defaultValueConfigItem);
                     itemValues.add(itemValue);
                 }
                 return itemValues;
             } else {
-                throw new InvalidDataException("数组数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(defaultValueConfig));
+                throw new InvalidDataException("数组数据格式的默认值不正确，请检查您的数据：" + JsonUtils.toJsonString(rawValue));
             }
         }
 
-        return (List<T>) defaultValueConfig;
+        return (List<T>) rawValue;
     }
 
     @Override

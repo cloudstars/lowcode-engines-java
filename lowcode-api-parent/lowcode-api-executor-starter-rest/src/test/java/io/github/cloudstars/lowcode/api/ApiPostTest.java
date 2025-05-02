@@ -9,13 +9,15 @@ import io.github.cloudstars.lowcode.api.executor.invoke.ApiInvoker;
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-import org.junit.Assert;
+import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 测试以低代码API的方式访问远程服务
@@ -27,18 +29,26 @@ import javax.annotation.Resource;
         classes = ApiExecutorRestTestApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
 )
-public class RestApiTest {
+public class ApiPostTest {
 
     @Resource
     private ApiInvoker restApiInvoke;
 
     @Test
     public void test1() {
-        JsonObject apiConfigJson = JsonUtils.loadJsonObjectFromClasspath("api/api-get-0.json");
+        JsonObject apiConfigJson = JsonUtils.loadJsonObjectFromClasspath("api/api-post-0.json");
         ApiExecutor apiExecutor = new ApiExecutorImpl(restApiInvoke);
         ApiConfig apiConfig = new ApiConfig(apiConfigJson);
-        ApiResult apiResult = apiExecutor.execute(apiConfig);
-        Assert.assertEquals("SomeThing", apiResult.getResult());
+        PostRemoteTestController.PostBody postBody = new PostRemoteTestController.PostBody();
+        postBody.setA("xyz");
+        Map<String, Object> xMap = new HashMap<>();
+        xMap.put("x", 123.3);
+        xMap.put("y", -1);
+        postBody.setX(xMap);
+
+        ApiResult apiResult = apiExecutor.execute(apiConfig, postBody);
+        JsonObject expectedResultJson = JsonUtils.loadJsonObjectFromClasspath("/api/api-post-0-result.json");
+        JsonTestUtils.assertEquals(expectedResultJson, apiResult);
     }
 
 }

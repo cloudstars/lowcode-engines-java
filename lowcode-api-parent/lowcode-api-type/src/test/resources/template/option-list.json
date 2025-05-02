@@ -1,6 +1,6 @@
 {
   "request": {
-    "httpMethod": "GET",
+    "method": "GET",
     "servicePath": "api://dict/{dictId}/item-list",
     "contentType": "APPLICATION_JSON",
     "valueType": {

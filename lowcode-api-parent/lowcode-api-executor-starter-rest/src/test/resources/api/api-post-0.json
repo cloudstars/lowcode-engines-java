@@ -1,17 +1,30 @@
 {
+  "key": "xxx",
+  "code": "xxx",
+  "name": "xxx",
   "request": {
     "method": "POST",
-    "url": "/api/users",
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer YOUR_ACCESS_TOKEN"
-    },
-    "body": {
-      "name": "John Doe",
-      "email": "john.doe@example.com"
+    "servicePath": "http://localhost:8080/remote/api/post/0",
+    "contentType": "APPLICATION_JSON",
+    "valueType": {
+      "type": "OBJECT",
+      "properties": [
+        {
+          "name": "a",
+          "label": "这是a",
+          "type": "TEXT",
+          "minLength": 10
+        },
+        {
+          "name": "b",
+          "label": "这是b",
+          "type": "TEXT",
+          "maxLength": 100
+        }
+      ]
     }
   },
   "response": {
-    "contentType": "application_json"
+    "contentType": "APPLICATION_JSON"
   }
 }

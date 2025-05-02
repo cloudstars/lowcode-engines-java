@@ -7,6 +7,7 @@ import io.github.cloudstars.lowcode.commons.value.type.BooleanValueTypeConfig;
  *
  * @author clouds
  */
+@ValueTypeClass(name = "BOOLEAN", valueTypeConfigClass = BooleanValueTypeConfig.class)
 public class BooleanValueTypeImpl extends AbstractValueTypeImpl<BooleanValueTypeConfig, Boolean> {
 
     public BooleanValueTypeImpl(BooleanValueTypeConfig valueTypeConfig) {
@@ -14,7 +15,8 @@ public class BooleanValueTypeImpl extends AbstractValueTypeImpl<BooleanValueType
     }
 
     @Override
-    public Boolean parseDefaultValue(Object defaultValueConfig) throws InvalidDataException {
+    public Boolean parseDefaultValue() throws InvalidDataException {
+        Object defaultValueConfig = this.valueTypeConfig.getDefaultValue();
         if (defaultValueConfig instanceof String) {
             return this.parseStringBoolean((String) defaultValueConfig);
         }

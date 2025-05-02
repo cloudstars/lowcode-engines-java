@@ -38,7 +38,7 @@ public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, Fi
     }
 
     @Override
-    public FileValue parseDefaultValue(Object defaultValueConfig) throws io.github.cloudstars.lowcode.commons.value.InvalidDataException {
+    public FileValue mergeDefaultValue(Object rawValue) throws io.github.cloudstars.lowcode.commons.value.InvalidDataException {
         return null;
     }
 

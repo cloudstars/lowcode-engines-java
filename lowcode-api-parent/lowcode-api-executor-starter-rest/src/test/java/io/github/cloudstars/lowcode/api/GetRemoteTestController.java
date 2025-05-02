@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @author clouds
  */
 @RestController
-@RequestMapping("/remote/api")
-public class RemoteTestController {
+@RequestMapping("/remote/api/get")
+public class GetRemoteTestController {
 
-    @GetMapping("/get")
+    @GetMapping("/0")
     public Object getSomeThing(Object params) {
         return "SomeThing";
     }

@@ -1,29 +1,42 @@
 package io.github.cloudstars.lowcode.commons.value;
 
 
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
-
 /**
  * 数据格式
  *
  * @author clouds
- * @param <T> 数据格式的值类型
+ * @param <C> 配置类
+ * @param <V> 数据格式的值类型
  */
-public interface XValueType<T> {
+public interface XValueType<C, V> {
 
     /**
      * 获数数据格式的配置
      *
      * @return
      */
-    XValueTypeConfig getValueTypeConfig();
+    C getValueTypeConfig();
 
     /**
-     * 解析默认值
+     * 解析解析默认值
      *
-     * @return 符合格式的Value值
+     * @return 符合数据格式的默认值
      */
-    T parseDefaultValue(Object defaultValueConfig) throws InvalidDataException;
+    V parseDefaultValue() throws InvalidDataException;
+
+    /**
+     * 根据输入的数据和默认值合并产生一个新的值
+     *
+     * @param rawValue
+     * @return
+     */
+    default V mergeDefaultValue(Object rawValue) {
+        if (rawValue != null) {
+            return this.parseValue(rawValue);
+        }
+
+        return this.parseDefaultValue();
+    }
 
     /**
      * 解析一个非空的数据为正确的类型（比如将long转为Date）
@@ -31,7 +44,7 @@ public interface XValueType<T> {
      * @param rawValue 原始的数值
      * @return 预期类型的数值对象
      */
-    T parseValue(Object rawValue) throws InvalidDataException;
+    V parseValue(Object rawValue) throws InvalidDataException;
 
     /**
      * 校验一个数据
@@ -39,6 +52,6 @@ public interface XValueType<T> {
      * @param value 符合预期的数值
      * @throws InvalidDataException 非常数据异常
      */
-    void validate(T value) throws InvalidDataException;
+    void validate(V value) throws InvalidDataException;
 
 }

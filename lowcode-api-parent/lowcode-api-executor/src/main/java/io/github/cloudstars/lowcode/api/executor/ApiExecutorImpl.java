@@ -5,6 +5,11 @@ import io.github.cloudstars.lowcode.api.executor.invoke.ApiInvoker;
 import io.github.cloudstars.lowcode.api.executor.invoke.ApiRequest;
 import io.github.cloudstars.lowcode.api.executor.invoke.ApiResponse;
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
+import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
+import io.github.cloudstars.lowcode.commons.api.config.request.HttpMethod;
+import io.github.cloudstars.lowcode.commons.value.ValueTypeFactory;
+import io.github.cloudstars.lowcode.commons.value.XValueType;
+import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 /**
  * API执行器实现类
@@ -25,7 +30,6 @@ public class ApiExecutorImpl implements ApiExecutor {
 
     /**
      * API执行过滤器
-     *
      */
     private ApiExecuteFilterChain apiExecuteFilterChain;
 
@@ -40,7 +44,12 @@ public class ApiExecutorImpl implements ApiExecutor {
 
     @Override
     public ApiResult execute(ApiConfig config) {
-        ApiRequest apiRequest = this.makeRequest(config);
+        return this.execute(apiConfig, null);
+    }
+
+    @Override
+    public ApiResult execute(ApiConfig config, Object params) {
+        ApiRequest apiRequest = this.makeRequest(config, params);
 
         if (apiExecuteFilterChain != null) {
             apiExecuteFilterChain.doFilter(apiRequest, null);
@@ -61,9 +70,27 @@ public class ApiExecutorImpl implements ApiExecutor {
      *
      * @return API请求对象
      */
-    private ApiRequest makeRequest(ApiConfig config) {
+    private ApiRequest makeRequest(ApiConfig config, Object params) {
+        ApiRequestConfig apiRequestConfig = config.getRequest();
         ApiRequest apiRequest = new ApiRequest();
-        apiRequest.setUrl(config.getRequest().getServicePath());
+        apiRequest.setUrl(apiRequestConfig.getServicePath());
+        apiRequest.setMethod(apiRequestConfig.getMethod());
+        HttpMethod apiRequestMethod = apiRequestConfig.getMethod();
+        XValueTypeConfig apiRequestValueTypeConfig = apiRequestConfig.getValueType();
+        if (params != null) {
+            if (apiRequestMethod == HttpMethod.GET) {
+
+            } else if (apiRequestMethod == HttpMethod.POST) {
+                if (apiRequestValueTypeConfig != null) {
+                    XValueType valueType = ValueTypeFactory.newInstance(apiRequestValueTypeConfig);
+                    Object targetValue = valueType.mergeDefaultValue(params);
+                    apiRequest.setBody(targetValue);
+                } else {
+                    apiRequest.setBody(params);
+                }
+            }
+        }
+
         return apiRequest;
     }
 
@@ -73,7 +100,14 @@ public class ApiExecutorImpl implements ApiExecutor {
      * @return API响应对象
      */
     private ApiResponse sendRequest(ApiRequest request) {
-        ApiResponse apiResponse = this.apiInvoker.get(request);
+        HttpMethod method = request.getMethod();
+        ApiResponse apiResponse = null;
+        if (method == HttpMethod.GET) {
+            apiResponse = this.apiInvoker.get(request);
+        } else {
+            apiResponse = this.apiInvoker.post(request);
+        }
+
         return apiResponse;
     }
 
@@ -85,7 +119,7 @@ public class ApiExecutorImpl implements ApiExecutor {
      */
     private ApiResult makeResult(ApiResponse response) {
         ApiResult apiResult = new ApiResult();
-        apiResult.setResult(response.getBody());
+        apiResult.success(response.getBody());
         return apiResult;
     }
 }

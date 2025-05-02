@@ -20,18 +20,18 @@ public class ApiResult {
     /**
      * 执行的结果
      */
-    private Object result;
+    private Object body;
 
     public boolean isSuccess() {
         return success;
     }
 
-    public Object getResult() {
-        return result;
+    public Object getBody() {
+        return body;
     }
 
-    public void setResult(Object result) {
-        this.result = result;
+    public void setBody(Object body) {
+        this.body = body;
     }
 
     /**
@@ -40,7 +40,8 @@ public class ApiResult {
      * @param result 结果内容
      */
     public void success(String result) {
-        this.result = result;
+        this.success = true;
+        this.body = result;
     }
 
     /**

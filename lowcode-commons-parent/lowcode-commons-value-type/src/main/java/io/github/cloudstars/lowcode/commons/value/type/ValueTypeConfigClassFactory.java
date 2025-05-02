@@ -14,17 +14,17 @@ import java.util.Map;
 public class ValueTypeConfigClassFactory {
 
     /**
-     * key是数据格式名称，值是数据格式配置Java类的映射表
+     * key是数据格式名称，值是数据格式配置类的映射表
      */
-    private static final Map<String, Class<? extends XValueTypeConfig>> valueTypeConfigClassMap = new HashMap<>();
+    private static final Map<String, Class<? extends XValueTypeConfig>> VALUE_TYPE_CONFIG_CLASS_MAP = new HashMap<>();
 
     private ValueTypeConfigClassFactory() {
     }
 
     /**
-     * 注册一种数据格式Java类
+     * 注册一种数据格式配置类
      *
-     * @param valueTypeConfigClass 数据格式配置Java类
+     * @param valueTypeConfigClass 数据格式配置类
      */
     public static void register(Class<? extends XValueTypeConfig> valueTypeConfigClass) {
         String typeName = valueTypeConfigClass.getName();
@@ -39,7 +39,7 @@ public class ValueTypeConfigClassFactory {
             throw new RuntimeException("数据格式类型" + typeName + "必须有一个带JsonObject参数的public构造函数！");
         }
 
-        valueTypeConfigClassMap.put(annos[0].name(), valueTypeConfigClass);
+        VALUE_TYPE_CONFIG_CLASS_MAP.put(annos[0].name(), valueTypeConfigClass);
     }
 
     /**
@@ -49,7 +49,7 @@ public class ValueTypeConfigClassFactory {
      * @return 数据格式配置的类型
      */
     public static Class<? extends XValueTypeConfig> get(String typeName) {
-        Class<? extends XValueTypeConfig> dataTypeClass = valueTypeConfigClassMap.get(typeName);
+        Class<? extends XValueTypeConfig> dataTypeClass = VALUE_TYPE_CONFIG_CLASS_MAP.get(typeName);
         if (dataTypeClass == null) {
             throw new RuntimeException("数据格式类型" + typeName + "不存在！");
         }

@@ -12,28 +12,28 @@ public class ApiResponse {
     /**
      * 响应状态
      */
-    private int httpStatus;
+    private int status;
 
     /**
      * 请求头部
      */
-    private List<HttpHeader> headers;
+    private List<ApiHttpHeader> headers;
 
     private String body;
 
-    public int getHttpStatus() {
-        return httpStatus;
+    public int getStatus() {
+        return status;
     }
 
-    public void setHttpStatus(int httpStatus) {
-        this.httpStatus = httpStatus;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public List<HttpHeader> getHeaders() {
+    public List<ApiHttpHeader> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(List<HttpHeader> headers) {
+    public void setHeaders(List<ApiHttpHeader> headers) {
         this.headers = headers;
     }
 

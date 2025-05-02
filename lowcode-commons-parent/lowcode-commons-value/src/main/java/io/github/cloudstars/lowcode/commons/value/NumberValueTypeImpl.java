@@ -7,6 +7,7 @@ import io.github.cloudstars.lowcode.commons.value.type.NumberValueTypeConfig;
  *
  * @author clouds
  */
+@ValueTypeClass(name = "NUMBER", valueTypeConfigClass = NumberValueTypeConfig.class)
 public class NumberValueTypeImpl extends AbstractValueTypeImpl<NumberValueTypeConfig, Number> {
 
     /**
@@ -22,7 +23,8 @@ public class NumberValueTypeImpl extends AbstractValueTypeImpl<NumberValueTypeCo
     }
 
     @Override
-    public Number parseDefaultValue(Object defaultValueConfig) throws InvalidDataException {
+    public Number parseDefaultValue() throws InvalidDataException {
+        Object defaultValueConfig = this.valueTypeConfig.getDefaultValue();
         if (defaultValueConfig != null) {
             Number defaultValue = null;
             if (defaultValueConfig instanceof Integer) {

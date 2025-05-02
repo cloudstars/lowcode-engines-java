@@ -22,11 +22,6 @@ public class ArrayValueTypeConfig extends AbstractValueTypeConfig {
      */
     private XValueTypeConfig itemsValueType;
 
-    /**
-     * 数组下元数是否必填
-     */
-    //private Boolean itemsRequired;
-
     public ArrayValueTypeConfig() {
     }
 
@@ -35,7 +30,6 @@ public class ArrayValueTypeConfig extends AbstractValueTypeConfig {
 
         JsonObject itemsConfigJson = (JsonObject) configJson.get(ATTR_ITEMS);
         this.itemsValueType = ValueTypeConfigFactory.newInstance(itemsConfigJson);
-        //this.itemsRequired = (Boolean) itemsConfigJson.get(XValueTypeConfig.ATTR_REQUIRED);
     }
 
     @Override

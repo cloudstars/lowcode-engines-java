@@ -7,10 +7,11 @@ import io.github.cloudstars.lowcode.commons.value.type.OptionValueTypeConfig;
 import java.util.Map;
 
 /**
- * 选项数据
+ * 选项数据格式
  *
  * @author clouds
  */
+@ValueTypeClass(name = "OPTION", valueTypeConfigClass = OptionValueTypeConfig.class)
 public class OptionValueTypeImpl extends AbstractValueTypeImpl<OptionValueTypeConfig, OptionValue> {
 
     // 标签配置名称
@@ -31,9 +32,14 @@ public class OptionValueTypeImpl extends AbstractValueTypeImpl<OptionValueTypeCo
     }
 
     @Override
-    public OptionValue parseDefaultValue(Object defaultValueConfig) throws InvalidDataException {
-        if (defaultValueConfig instanceof Map) {
-            Map defaultValueConfigMap = (Map) defaultValueConfig;
+    public OptionValue parseDefaultValue() throws InvalidDataException {
+        return null;
+    }
+
+    @Override
+    public OptionValue mergeDefaultValue(Object rawValue) throws InvalidDataException {
+        if (rawValue instanceof Map) {
+            Map defaultValueConfigMap = (Map) rawValue;
             String labelField = ObjectUtils.getOrDefault(valueTypeConfig.getLabelField(), DEFAULT_LABEL_FIELD);
             String valueField = ObjectUtils.getOrDefault(valueTypeConfig.getValueField(), DEFAULT_VALUE_FIELD);
             OptionValue optionValue = new OptionValue();
@@ -42,7 +48,7 @@ public class OptionValueTypeImpl extends AbstractValueTypeImpl<OptionValueTypeCo
             return optionValue;
         }
 
-        return (OptionValue) defaultValueConfig;
+        return (OptionValue) rawValue;
     }
 
     @Override

@@ -14,7 +14,7 @@ import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 public class ApiRequestConfig extends AbstractConfig {
 
     // HTTP方法配置名称
-    private static final String ATTR_HTTP_METHOD = "httpMethod";
+    private static final String ATTR_METHOD = "method";
 
     // HTTP服务地址
     private static final String ATTR_SERVICE_PATH = "servicePath";
@@ -25,7 +25,7 @@ public class ApiRequestConfig extends AbstractConfig {
     /**
      * HTTP方法
      */
-    private HttpMethod httpMethod;
+    private HttpMethod method;
 
     /**
      * 服务名称
@@ -56,8 +56,8 @@ public class ApiRequestConfig extends AbstractConfig {
     public ApiRequestConfig(JsonObject configJson) {
         super(configJson);
 
-        ConfigUtils.getIfPresent(configJson, ATTR_HTTP_METHOD, (v) -> {
-            this.httpMethod = HttpMethod.valueOf(((String) v).toUpperCase());
+        ConfigUtils.getIfPresent(configJson, ATTR_METHOD, (v) -> {
+            this.method = HttpMethod.valueOf(((String) v).toUpperCase());
         });
         this.servicePath = ConfigUtils.getString(configJson, ATTR_SERVICE_PATH);
         ConfigUtils.getIfPresent(configJson, ATTR_CONTENT_TYPE, (v) -> {
@@ -68,12 +68,12 @@ public class ApiRequestConfig extends AbstractConfig {
         });
     }
 
-    public HttpMethod getHttpMethod() {
-        return httpMethod;
+    public HttpMethod getMethod() {
+        return method;
     }
 
-    public void setHttpMethod(HttpMethod httpMethod) {
-        this.httpMethod = httpMethod;
+    public void setMethod(HttpMethod method) {
+        this.method = method;
     }
 
     public String getServicePath() {
@@ -95,7 +95,7 @@ public class ApiRequestConfig extends AbstractConfig {
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_HTTP_METHOD, this.httpMethod);
+        ConfigUtils.putIfNotNull(configJson, ATTR_METHOD, this.method);
         ConfigUtils.put(configJson, ATTR_SERVICE_PATH, this.servicePath);
         ConfigUtils.putIfNotNull(configJson, ATTR_CONTENT_TYPE, this.contentType);
         ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.valueType);

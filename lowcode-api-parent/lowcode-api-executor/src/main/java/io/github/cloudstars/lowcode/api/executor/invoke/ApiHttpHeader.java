@@ -5,7 +5,7 @@ package io.github.cloudstars.lowcode.api.executor.invoke;
  *
  * @author clouds
  */
-public class HttpHeader {
+public class ApiHttpHeader {
 
     /**
      * 头部名称

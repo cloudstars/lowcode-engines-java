@@ -12,6 +12,7 @@ import java.util.Date;
  *
  * @author clouds
  */
+@ValueTypeClass(name = "TIME", valueTypeConfigClass = TimeValueTypeConfig.class)
 public class TimeValueTypeImpl extends AbstractValueTypeImpl<TimeValueTypeConfig, Time> {
 
     // 默认的时间格式
@@ -22,7 +23,8 @@ public class TimeValueTypeImpl extends AbstractValueTypeImpl<TimeValueTypeConfig
     }
 
     @Override
-    public Time parseDefaultValue(Object defaultValueConfig) throws InvalidDataException {
+    public Time parseDefaultValue() throws InvalidDataException {
+        Object defaultValueConfig = this.valueTypeConfig.getDefaultValue();
         if (defaultValueConfig != null) {
             if (defaultValueConfig instanceof String) {
                 return this.parseStringTime((String) defaultValueConfig);

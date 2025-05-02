@@ -11,6 +11,7 @@ import java.util.Date;
  *
  * @author clouds
  */
+@ValueTypeClass(name = "DATE", valueTypeConfigClass = DateValueTypeConfig.class)
 public class DateValueTypeImpl extends AbstractValueTypeImpl<DateValueTypeConfig, Date> {
 
     // 默认的日期格式
@@ -21,7 +22,8 @@ public class DateValueTypeImpl extends AbstractValueTypeImpl<DateValueTypeConfig
     }
 
     @Override
-    public Date parseDefaultValue(Object defaultValueConfig) throws InvalidDataException {
+    public Date parseDefaultValue() throws InvalidDataException {
+        Object defaultValueConfig = this.valueTypeConfig.getDefaultValue();
         if (defaultValueConfig != null) {
             if (defaultValueConfig instanceof String) {
                 return this.parseStringDate((String) defaultValueConfig);

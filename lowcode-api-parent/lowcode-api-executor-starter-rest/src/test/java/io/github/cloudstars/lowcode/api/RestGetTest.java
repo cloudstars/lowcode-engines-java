@@ -21,14 +21,14 @@ import javax.annotation.Resource;
         classes = ApiExecutorRestTestApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
 )
-public class RestRemoteControllerTest {
+public class RestGetTest {
 
     @Resource
     private TestRestTemplate testRestTemplate;
 
     @Test
     public void test() {
-        String result = this.testRestTemplate.getForObject("/remote/api/get", String.class);
+        String result = this.testRestTemplate.getForObject("/remote/api/get/0", String.class);
         Assert.assertEquals("SomeThing", result);
     }
 

@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 
 /**
- * 测试以API调用器的方式访问远程服务
+ * 测试以API调用器的方式访问远程Post服务
  *
  * @author clouds
  */
@@ -25,7 +25,7 @@ import javax.annotation.Resource;
         classes = ApiExecutorRestTestApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
 )
-public class RestApiInvokerTest {
+public class RestPostApiInvokerTest {
 
     @Resource
     private ApiInvoker restApiInvoke;
@@ -33,12 +33,12 @@ public class RestApiInvokerTest {
     @Test
     public void test1() {
         // 加载API请求配置并发送请求
-        String apiRequestString = FileUtils.loadTextFromClasspath("invoke/invoke-get0-request.json");
+        String apiRequestString = FileUtils.loadTextFromClasspath("invoke/invoke-post0-request.json");
         ApiRequest apiRequest = JsonUtils.parseObject(apiRequestString, ApiRequest.class);
-        ApiResponse apiResponse = this.restApiInvoke.get(apiRequest);
+        ApiResponse apiResponse = this.restApiInvoke.post(apiRequest);
 
         // 断言与预期的结果相等
-        String apiResponseString = FileUtils.loadTextFromClasspath("invoke/invoke-get0-response200.json");
+        String apiResponseString = FileUtils.loadTextFromClasspath("invoke/invoke-post0-response200.json");
         ApiResponse apiResponseExpected = JsonUtils.parseObject(apiResponseString, ApiResponse.class);
         JsonTestUtils.assertEquals(apiResponseExpected, apiResponse);
     }

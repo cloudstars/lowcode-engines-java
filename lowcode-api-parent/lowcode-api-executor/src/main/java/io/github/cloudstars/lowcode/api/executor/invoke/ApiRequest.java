@@ -24,7 +24,7 @@ public class ApiRequest {
     /**
      * 请求头部
      */
-    private List<HttpHeader> headers;
+    private List<ApiHttpHeader> headers;
 
     /**
      * 请求参数
@@ -47,11 +47,11 @@ public class ApiRequest {
         this.url = url;
     }
 
-    public List<HttpHeader> getHeaders() {
+    public List<ApiHttpHeader> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(List<HttpHeader> headers) {
+    public void setHeaders(List<ApiHttpHeader> headers) {
         this.headers = headers;
     }
 

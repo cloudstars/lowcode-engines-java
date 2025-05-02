@@ -25,7 +25,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
     public ApiConfig newInstance(OptionsApiConfigParams params) {
         // 请求可以是一个可选的values属性
         ApiRequestConfig apiRequestConfig = new ApiRequestConfig();
-        apiRequestConfig.setHttpMethod(HttpMethod.GET);
+        apiRequestConfig.setMethod(HttpMethod.GET);
         apiRequestConfig.setServicePath("api://dict/{dictId}/item-list");
         apiRequestConfig.setContentType(RequestContentTypeEnum.APPLICATION_JSON);
 
