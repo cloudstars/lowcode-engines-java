@@ -1,10 +1,11 @@
-package io.github.cloudstars.lowcode.api;
+package io.github.cloudstars.lowcode.rest;
 
 
 import io.github.cloudstars.lowcode.ApiExecutorRestTestApplication;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
+import io.github.cloudstars.lowcode.controller.PostRemoteTestController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 测试以Rest的方式直接访问远程服务
+ * 测试以Rest的方式Post请求远程服务
  *
  * @author clouds
  */

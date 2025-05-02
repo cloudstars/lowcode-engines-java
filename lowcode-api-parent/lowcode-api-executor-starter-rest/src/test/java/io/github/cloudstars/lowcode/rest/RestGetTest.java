@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.api;
+package io.github.cloudstars.lowcode.rest;
 
 
 import io.github.cloudstars.lowcode.ApiExecutorRestTestApplication;
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 
 /**
- * 测试以Rest的方式直接访问远程服务
+ * 测试以RestTemplate的方式Get请求远程服务
  *
  * @author clouds
  */

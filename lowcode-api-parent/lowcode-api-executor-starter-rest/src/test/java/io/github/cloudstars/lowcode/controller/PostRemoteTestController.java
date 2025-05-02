@@ -1,5 +1,5 @@
 
-package io.github.cloudstars.lowcode.api;
+package io.github.cloudstars.lowcode.controller;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * 用于测试API远程调用的Controller
+ * 用于测试API Post请求的Controller
  *
  * @author clouds
  */
