@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FileCommonsTestApplication.class)
-public class FileValueTypeConfigParserTest {
+public class FileValueTypeImplConfigTest {
 
     /**
      * 测试一个简单的文件

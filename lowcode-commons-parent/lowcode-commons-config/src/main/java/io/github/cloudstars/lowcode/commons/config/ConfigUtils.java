@@ -142,6 +142,18 @@ public final class ConfigUtils {
     }
 
     /**
+     * 添加来源配置中的全部属性（如果来源配置不为null的话）
+     *
+     * @param configJson
+     * @param fromConfig
+     */
+    public static void putAllIfNotNull(JsonObject configJson, XConfig fromConfig) {
+        if (fromConfig != null) {
+            configJson.putAll(fromConfig.toJson());
+        }
+    }
+
+    /**
      * 将配置列表转为JSON数组
      *
      * @param configs

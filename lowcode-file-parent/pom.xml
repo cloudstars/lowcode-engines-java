@@ -14,6 +14,7 @@
 
     <modules>
         <module>lowcode-file-commons</module>
+        <module>lowcode-file-type</module>
         <module>lowcode-file-engine</module>
     </modules>
 

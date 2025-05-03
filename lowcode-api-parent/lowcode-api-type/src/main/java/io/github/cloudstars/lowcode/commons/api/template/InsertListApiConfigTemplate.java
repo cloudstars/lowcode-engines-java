@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
+import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestBodyConfig;
 import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
 import io.github.cloudstars.lowcode.commons.api.config.response.ApiResponseConfig;
 import io.github.cloudstars.lowcode.commons.value.type.ArrayValueTypeConfig;
@@ -22,11 +23,11 @@ public class InsertListApiConfigTemplate extends AbstractApiConfigTemplate<Inser
     public ApiConfig newInstance(InsertDataApiConfigParams params) {
         // 入参由输入的属性列表决定，数组下的元素是对象
         ApiRequestConfig requestConfig = new ApiRequestConfig();
-        ArrayValueTypeConfig inputValueType = new ArrayValueTypeConfig();
+        ArrayValueTypeConfig requestValueType = new ArrayValueTypeConfig();
         ObjectValueTypeConfig objectValueType = new ObjectValueTypeConfig();
         objectValueType.setProperties(params.getProperties());
-        inputValueType.setRequired(true);
-        requestConfig.setValueType(inputValueType);
+        requestValueType.setRequired(true);
+        requestConfig.setBody(new ApiRequestBodyConfig(requestValueType));
 
         // 出参是影响行数（n 或 0）
         ApiResponseConfig responseConfig = new ApiResponseConfig();

@@ -8,14 +8,14 @@ public class CommonsValueAutoConfiguration implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        ValueTypeFactory.register(TextValueTypeImpl.class);
-        ValueTypeFactory.register(NumberValueTypeImpl.class);
-        ValueTypeFactory.register(BooleanValueTypeImpl.class);
-        ValueTypeFactory.register(DateValueTypeImpl.class);
-        ValueTypeFactory.register(TimeValueTypeImpl.class);
-        ValueTypeFactory.register(ObjectValueTypeImpl.class);
-        ValueTypeFactory.register(ArrayValueTypeImpl.class);
-        ValueTypeFactory.register(OptionValueTypeImpl.class);
+        ValueTypeClassFactory.register(TextValueTypeImpl.class);
+        ValueTypeClassFactory.register(NumberValueTypeImpl.class);
+        ValueTypeClassFactory.register(BooleanValueTypeImpl.class);
+        ValueTypeClassFactory.register(DateValueTypeImpl.class);
+        ValueTypeClassFactory.register(TimeValueTypeImpl.class);
+        ValueTypeClassFactory.register(ObjectValueTypeImpl.class);
+        ValueTypeClassFactory.register(ArrayValueTypeImpl.class);
+        ValueTypeClassFactory.register(OptionValueTypeImpl.class);
     }
 
 }

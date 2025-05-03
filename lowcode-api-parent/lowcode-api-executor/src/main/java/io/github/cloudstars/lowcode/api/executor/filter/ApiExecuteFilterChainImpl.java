@@ -2,29 +2,33 @@ package io.github.cloudstars.lowcode.api.executor.filter;
 
 import io.github.cloudstars.lowcode.api.executor.invoke.ApiRequest;
 import io.github.cloudstars.lowcode.api.executor.invoke.ApiResponse;
-import io.github.cloudstars.lowcode.commons.lang.exception.SystemException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApiExecuteFilterChainImpl implements ApiExecuteFilterChain {
 
-    private List<? extends ApiExecuteFilter> filters;
+    /**
+     * 过滤器列表
+     */
+    private List<ApiExecuteFilter> filters = new ArrayList<>();
 
-    private int currentIndex = 0;
+    private int currentIndex = -1;
 
-    public ApiExecuteFilterChainImpl(List<? extends ApiExecuteFilter> filters) {
-        this.filters = filters;
+    public ApiExecuteFilterChainImpl() {
     }
 
     @Override
-    public ApiExecuteFilterChain doFilter(ApiRequest apiRequest, ApiResponse apiResponse) {
+    public void doFilter(ApiRequest apiRequest, ApiResponse apiResponse) {
+        currentIndex++;
         if (currentIndex < filters.size()) {
             filters.get(currentIndex).process(apiRequest, apiResponse);
-            currentIndex++;
-        } else {
-            throw new SystemException("API执行过滤链越界，当前索引：" + currentIndex);
         }
-
-        return this;
     }
+
+    @Override
+    public void addFilter(ApiExecuteFilter filter) {
+        this.filters.add(filter);
+    }
+
 }

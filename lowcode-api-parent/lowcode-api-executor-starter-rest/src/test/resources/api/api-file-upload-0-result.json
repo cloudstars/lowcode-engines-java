@@ -1,0 +1,5 @@
+{
+  "success": true,
+  "returnCode": null,
+  "body": "File uploaded successfully: http://localhost:8080/remote/api/download/pom.xml"
+}

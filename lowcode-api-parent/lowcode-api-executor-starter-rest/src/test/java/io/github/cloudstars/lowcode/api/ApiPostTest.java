@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 测试以低代码API的方式访问远程服务
+ * 测试以低代码API的方式Post请求远程服务
  *
  * @author clouds
  */

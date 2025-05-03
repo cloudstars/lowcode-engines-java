@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 
 /**
- * 测试以低代码API的方式访问远程服务
+ * 测试以低代码API的方式Get请求远程服务
  *
  * @author clouds
  */

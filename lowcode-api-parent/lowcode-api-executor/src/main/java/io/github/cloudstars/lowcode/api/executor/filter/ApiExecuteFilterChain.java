@@ -17,6 +17,13 @@ public interface ApiExecuteFilterChain {
      * @param apiResponse
      * @return
      */
-    ApiExecuteFilterChain doFilter(ApiRequest apiRequest, ApiResponse apiResponse);
+    void doFilter(ApiRequest apiRequest, ApiResponse apiResponse);
+
+    /**
+     * 添加一个过滤器
+     *
+     * @param filter 过滤器
+     */
+    void addFilter(ApiExecuteFilter filter);
 
 }

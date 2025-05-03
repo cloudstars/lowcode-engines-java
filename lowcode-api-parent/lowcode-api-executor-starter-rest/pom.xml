@@ -32,6 +32,11 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-commons-test</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-file-type</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

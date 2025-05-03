@@ -7,7 +7,9 @@ package io.github.cloudstars.lowcode.commons.api.config.request;
  */
 public enum RequestContentTypeEnum {
 
-    APPLICATION_JSON("application/json");
+    APPLICATION_FORM_URLENCODED("application/x-www-form-urlencoded"),
+    APPLICATION_JSON("application/json"),
+    MULTIPART_FORM_DATA("multipart/form-data");
 
     private String name;
 

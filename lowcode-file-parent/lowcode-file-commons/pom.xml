@@ -15,7 +15,7 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-value</artifactId>
+            <artifactId>lowcode-commons-lang</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

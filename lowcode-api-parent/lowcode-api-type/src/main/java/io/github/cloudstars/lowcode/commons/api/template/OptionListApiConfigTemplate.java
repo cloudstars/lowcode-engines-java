@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.commons.api.template;
 
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
+import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestBodyConfig;
 import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
 import io.github.cloudstars.lowcode.commons.api.config.request.HttpMethod;
 import io.github.cloudstars.lowcode.commons.api.config.request.RequestContentTypeEnum;
@@ -51,7 +52,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
         ObjectValueTypeConfig requestValueType = new ObjectValueTypeConfig();
         requestValueType.setProperties(Arrays.asList(dictIdProperty, valuesProperty));
         requestValueType.setRequired(true);
-        apiRequestConfig.setValueType(requestValueType);
+        apiRequestConfig.setBody(new ApiRequestBodyConfig(requestValueType));
 
         // 响应是一个列表List<Option<labelField, valueField>>
         ApiResponseConfig responseConfig = new ApiResponseConfig();

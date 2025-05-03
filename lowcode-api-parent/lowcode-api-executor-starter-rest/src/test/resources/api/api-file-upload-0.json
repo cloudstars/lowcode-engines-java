@@ -1,0 +1,29 @@
+{
+  "key": "xxx",
+  "code": "xxx",
+  "name": "测试文件上传",
+  "request": {
+    "method": "POST",
+    "servicePath": "http://localhost:8080/remote/api/upload/0",
+    "contentType": "MULTIPART_FORM_DATA",
+    "valueType": {
+      "type": "OBJECT",
+      "properties": [
+        {
+          "name": "a",
+          "label": "这是a",
+          "type": "TEXT",
+          "minLength": 10
+        },
+        {
+          "name": "file",
+          "label": "这是一个文件",
+          "type": "FILE"
+        }
+      ]
+    }
+  },
+  "response": {
+    "contentType": "APPLICATION_JSON"
+  }
+}

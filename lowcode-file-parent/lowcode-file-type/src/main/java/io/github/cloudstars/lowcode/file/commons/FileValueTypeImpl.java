@@ -3,10 +3,17 @@ package io.github.cloudstars.lowcode.file.commons;
 
 import io.github.cloudstars.lowcode.commons.value.AbstractValueTypeImpl;
 import io.github.cloudstars.lowcode.commons.value.InvalidDataException;
+import io.github.cloudstars.lowcode.commons.value.ValueTypeClass;
 
 import java.util.Map;
 
-public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, FileValue> {
+/**
+ * 文件数据格式
+ *
+ * @author clouds 
+ */
+@ValueTypeClass(name = "FILE", valueTypeConfigClass = FileValueTypeConfig.class)
+public class FileValueTypeImpl extends AbstractValueTypeImpl<FileValueTypeConfig, FileValue> {
 
     /**
      * 数据中的文件标识属性名
@@ -19,8 +26,18 @@ public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, Fi
     private static final String ATTR_NAME = "name";
 
 
-    public FileValueType(FileValueTypeConfig valueTypeConfig) {
+    public FileValueTypeImpl(FileValueTypeConfig valueTypeConfig) {
         super(valueTypeConfig);
+    }
+
+    @Override
+    public FileValue parseDefaultValue() throws InvalidDataException {
+        return null;
+    }
+
+    @Override
+    public FileValue mergeDefaultValue(Object rawValue) throws io.github.cloudstars.lowcode.commons.value.InvalidDataException {
+        return null;
     }
 
     @Override
@@ -35,11 +52,6 @@ public class FileValueType extends AbstractValueTypeImpl<FileValueTypeConfig, Fi
         fileValue.setName((String) fileValueMap.get(ATTR_NAME));
 
         return fileValue;
-    }
-
-    @Override
-    public FileValue mergeDefaultValue(Object rawValue) throws io.github.cloudstars.lowcode.commons.value.InvalidDataException {
-        return null;
     }
 
     @Override

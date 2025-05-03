@@ -41,7 +41,7 @@ public class RestPostTest {
         postBody.setX(xMap);
         String result = this.testRestTemplate.postForObject("/remote/api/post/0", postBody, String.class);
 
-        JsonObject expectedResultJson = JsonUtils.loadJsonObjectFromClasspath("/api/rest-post-0-result.json");
+        JsonObject expectedResultJson = JsonUtils.loadJsonObjectFromClasspath("/rest/rest-post-0-result.json");
         JsonTestUtils.assertEquals(expectedResultJson, JsonUtils.toJsonObject(result));
     }
 

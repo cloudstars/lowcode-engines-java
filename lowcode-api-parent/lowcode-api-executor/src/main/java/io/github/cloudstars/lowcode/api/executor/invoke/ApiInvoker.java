@@ -18,9 +18,17 @@ public interface ApiInvoker {
     /**
      * 发送 Post 请求
      *
-     * @param request
-     * @return
+     * @param request API请求对象
+     * @return API响应结果
      */
     ApiResponse post(ApiRequest request);
+
+    /**
+     * 发送文件上传请求
+     *
+     * @param request API请求对象
+     * @return API响应结果
+     */
+    ApiResponse uploadFile(ApiFileUploadRequest request);
 
 }

@@ -3,6 +3,7 @@ package io.github.cloudstars.lowcode.api.executor.invoke;
 import io.github.cloudstars.lowcode.commons.api.config.request.HttpMethod;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * API请求
@@ -27,9 +28,19 @@ public class ApiRequest {
     private List<ApiHttpHeader> headers;
 
     /**
+     * 查询参数
+     */
+    private Map<String, Object> queryParams;
+
+    /**
      * 请求参数
      */
     private Object body;
+
+    /**
+     * 请求的表单项
+     */
+    private Map<String, List<Object>> formItems;
 
     public HttpMethod getMethod() {
         return method;
@@ -55,11 +66,27 @@ public class ApiRequest {
         this.headers = headers;
     }
 
+    public Map<String, Object> getQueryParams() {
+        return queryParams;
+    }
+
+    public void setQueryParams(Map<String, Object> queryParams) {
+        this.queryParams = queryParams;
+    }
+
     public Object getBody() {
         return body;
     }
 
     public void setBody(Object body) {
         this.body = body;
+    }
+
+    public Map<String, List<Object>> getFormItems() {
+        return formItems;
+    }
+
+    public void setFormItems(Map<String, List<Object>> formItems) {
+        this.formItems = formItems;
     }
 }

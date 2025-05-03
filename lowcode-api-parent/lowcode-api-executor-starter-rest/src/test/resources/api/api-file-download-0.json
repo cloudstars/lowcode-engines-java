@@ -1,0 +1,29 @@
+{
+  "key": "xxx",
+  "code": "xxx",
+  "name": "测试文件下载",
+  "request": {
+    "method": "GET",
+    "servicePath": "http://localhost:8080/remote/api/download/{fileName}",
+    "contentType": "MULTIPART_FORM_DATA",
+    "body": {
+      "type": "OBJECT",
+      "properties": [
+        {
+          "name": "a",
+          "label": "这是a",
+          "type": "TEXT",
+          "minLength": 10
+        },
+        {
+          "name": "file",
+          "label": "这是一个文件",
+          "type": "FILE"
+        }
+      ]
+    }
+  },
+  "response": {
+    "contentType": "APPLICATION_JSON"
+  }
+}

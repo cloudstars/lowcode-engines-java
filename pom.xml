@@ -71,6 +71,11 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-file-type</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-api-type</artifactId>
                 <version>${revision}</version>
             </dependency>

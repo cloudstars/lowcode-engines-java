@@ -3,7 +3,6 @@ package io.github.cloudstars.lowcode.commons.api.config.request;
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigFactory;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 /**
@@ -38,16 +37,16 @@ public class ApiRequestConfig extends AbstractConfig {
     private RequestContentTypeEnum contentType;
 
     /**
-     * 数据格式配置
+     * 请求体配置
      */
-    private XValueTypeConfig valueType;
+    private ApiRequestBodyConfig body;
 
-    public XValueTypeConfig getValueType() {
-        return valueType;
+    public ApiRequestBodyConfig getBody() {
+        return body;
     }
 
-    public void setValueType(XValueTypeConfig valueType) {
-        this.valueType = valueType;
+    public void setBody(ApiRequestBodyConfig body) {
+        this.body = body;
     }
 
     public ApiRequestConfig() {
@@ -64,7 +63,7 @@ public class ApiRequestConfig extends AbstractConfig {
             this.contentType = RequestContentTypeEnum.valueOf(((String) v).toUpperCase());
         });
         ConfigUtils.getIfPresent(configJson, XValueTypeConfig.ATTR, (v) -> {
-            this.valueType = ValueTypeConfigFactory.newInstance((JsonObject) v);
+            this.body = new ApiRequestBodyConfig((JsonObject) v);
         });
     }
 
@@ -98,7 +97,7 @@ public class ApiRequestConfig extends AbstractConfig {
         ConfigUtils.putIfNotNull(configJson, ATTR_METHOD, this.method);
         ConfigUtils.put(configJson, ATTR_SERVICE_PATH, this.servicePath);
         ConfigUtils.putIfNotNull(configJson, ATTR_CONTENT_TYPE, this.contentType);
-        ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.valueType);
+        ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.body);
 
         return configJson;
     }
