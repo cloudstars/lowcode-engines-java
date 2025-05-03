@@ -9,7 +9,8 @@ import io.github.cloudstars.lowcode.commons.lang.enums.ICodedEnum;
  */
 public enum ResponseContentTypeEnum implements ICodedEnum {
 
-    APPLICATION_JSON("application/json");
+    APPLICATION_JSON("application/json"),
+    APPLICATION_OCTET_STREAM("application/octet-stream");
 
     private String code;
 

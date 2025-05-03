@@ -30,15 +30,15 @@ public class ApiExecutorImpl implements ApiExecutor {
     /**
      * API执行过滤器
      */
-    private ApiExecuteFilterChain apiExecuteFilterChain;
+    private ApiExecuteFilterChain filterChain;
 
     public ApiExecutorImpl(ApiInvoker apiInvoker) {
         this.apiInvoker = apiInvoker;
     }
 
-    public ApiExecutorImpl(ApiInvoker apiInvoker, ApiExecuteFilterChain apiExecuteFilterChain) {
+    public ApiExecutorImpl(ApiInvoker apiInvoker, ApiExecuteFilterChain filterChain) {
         this.apiInvoker = apiInvoker;
-        this.apiExecuteFilterChain = apiExecuteFilterChain;
+        this.filterChain = filterChain;
     }
 
     @Override
@@ -50,15 +50,15 @@ public class ApiExecutorImpl implements ApiExecutor {
     public ApiResult execute(ApiConfig apiConfig, Object params) {
         ApiRequest apiRequest = this.makeRequest(apiConfig, params);
 
-        if (apiExecuteFilterChain != null) {
-            apiExecuteFilterChain.doFilter(apiRequest, null);
+        if (filterChain != null) {
+            filterChain.doFilter(apiRequest, null);
         }
 
         ApiResponse apiResponse = this.sendRequest(apiConfig, apiRequest);
         ApiResult apiResult = this.makeResult(apiConfig, apiResponse);
 
-        if (apiExecuteFilterChain != null) {
-            apiExecuteFilterChain.doFilter(apiRequest, apiResponse);
+        if (filterChain != null) {
+            filterChain.doFilter(apiRequest, apiResponse);
         }
 
         return apiResult;

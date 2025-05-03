@@ -12,6 +12,11 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 路径变量替换过滤器测试
+ *
+ * @author clouds
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApiExecutorTestApplication.class)
 public class PathVariableReplaceFilterTest {

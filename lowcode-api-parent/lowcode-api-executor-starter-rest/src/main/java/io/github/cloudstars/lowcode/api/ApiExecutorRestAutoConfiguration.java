@@ -1,5 +1,8 @@
 package io.github.cloudstars.lowcode.api;
 
+import io.github.cloudstars.lowcode.api.executor.filter.ApiExecuteFilterChain;
+import io.github.cloudstars.lowcode.api.executor.filter.ApiExecuteFilterChainImpl;
+import io.github.cloudstars.lowcode.api.executor.filter.PathVariableReplaceFilter;
 import io.github.cloudstars.lowcode.api.executor.rest.RestTemplateApiInvoker;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -54,4 +57,16 @@ public class ApiExecutorRestAutoConfiguration implements ApplicationRunner {
         return new RestTemplateApiInvoker(template);
     }
 
+    @Bean
+    public ApiExecuteFilterChain apiExecuteFilterChain() {
+        return new ApiExecuteFilterChainImpl();
+    }
+
+    @Bean
+    public PathVariableReplaceFilter pathVariableReplaceFilter(ApiExecuteFilterChain filterChain) {
+        PathVariableReplaceFilter filter = new PathVariableReplaceFilter(filterChain);
+        filterChain.addFilter(filter);
+        return filter;
+    }
+    
 }

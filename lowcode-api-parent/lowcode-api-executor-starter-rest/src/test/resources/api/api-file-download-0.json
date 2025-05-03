@@ -4,8 +4,8 @@
   "name": "测试文件下载",
   "request": {
     "method": "GET",
-    "servicePath": "http://localhost:8080/remote/api/download/{fileName}",
-    "contentType": "MULTIPART_FORM_DATA",
+    "servicePath": "http://localhost:8080/remote/api/download/${fileName}",
+    "contentType": "APPLICATION_JSON",
     "body": {
       "type": "OBJECT",
       "properties": [
@@ -24,6 +24,6 @@
     }
   },
   "response": {
-    "contentType": "APPLICATION_JSON"
+    "contentType": "APPLICATION_OCTET_STREAM"
   }
 }
