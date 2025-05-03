@@ -59,7 +59,7 @@ public final class ConfigUtils {
      * @param key        键
      * @param consumer   消费者
      */
-    public static void getIfPresent(JsonObject configJson, String key, Consumer<Object> consumer) {
+    public static void consumeIfPresent(JsonObject configJson, String key, Consumer<Object> consumer) {
         if (configJson.containsKey(key)) {
             consumer.accept(configJson.get(key));
         }

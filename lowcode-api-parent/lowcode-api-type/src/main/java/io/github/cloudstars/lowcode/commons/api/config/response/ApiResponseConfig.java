@@ -32,10 +32,10 @@ public class ApiResponseConfig extends AbstractConfig {
     public ApiResponseConfig(JsonObject configJson) {
         super(configJson);
 
-        ConfigUtils.getIfPresent(configJson, ATTR_CONTENT_TYPE, (e) -> {
+        ConfigUtils.consumeIfPresent(configJson, ATTR_CONTENT_TYPE, (e) -> {
             this.contentType = ResponseContentTypeEnum.valueOf(((String) e).toUpperCase());
         });
-        ConfigUtils.getIfPresent(configJson, XValueTypeConfig.ATTR, (e) -> {
+        ConfigUtils.consumeIfPresent(configJson, XValueTypeConfig.ATTR, (e) -> {
             this.valueType = ValueTypeConfigFactory.newInstance((JsonObject) e);
         });
     }

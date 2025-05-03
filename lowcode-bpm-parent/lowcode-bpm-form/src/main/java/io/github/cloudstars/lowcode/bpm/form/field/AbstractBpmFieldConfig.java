@@ -70,7 +70,34 @@ public abstract class AbstractBpmFieldConfig<T extends XValueTypeConfig> extends
         this.digestSupported = (Boolean) configJson.get(XBpmFieldConfig.ATTR_DIGEST_SUPPORTED);
     }
 
+    @Override
+    public boolean isRequired() {
+        return required != null && required;
+    }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
     public Boolean getRequired() {
         return required;
@@ -80,9 +107,20 @@ public abstract class AbstractBpmFieldConfig<T extends XValueTypeConfig> extends
         this.required = required;
     }
 
-    @Override
-    public boolean isRequired() {
-        return required != null && required;
+    public Boolean getTitleSupported() {
+        return titleSupported;
+    }
+
+    public void setTitleSupported(Boolean titleSupported) {
+        this.titleSupported = titleSupported;
+    }
+
+    public Boolean getDigestSupported() {
+        return digestSupported;
+    }
+
+    public void setDigestSupported(Boolean digestSupported) {
+        this.digestSupported = digestSupported;
     }
 
     @Override

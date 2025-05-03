@@ -1,7 +1,10 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+
+import java.util.Arrays;
 
 /**
  * 选项数据格式
@@ -10,12 +13,6 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  */
 @ValueTypeConfigClass(name = "OPTION", valueClass = OptionValue.class)
 public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig {
-
-    // 标签配置名称
-    private static final String ATTR_LABEL = "labelField";
-
-    // 值配置名称
-    private static final String ATTR_VALUE = "valueField";
 
     /**
      * 标签配置名称
@@ -49,15 +46,33 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig {
     public OptionValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        this.labelField = (String) configJson.get(ATTR_LABEL);
-        this.valueField = (String) configJson.get(ATTR_VALUE);
+        this.labelField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_LABLE_FIELD);
+        this.valueField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_VALUE_FIELD);
+
+        ObjectPropertyConfig labelPropertyConfig = new ObjectPropertyConfig();
+        {
+            labelPropertyConfig.setName(this.labelField);
+            labelPropertyConfig.setLabel("标签");
+            TextValueTypeConfig labelValueTypeConfig = new TextValueTypeConfig();
+            labelPropertyConfig.setValueType(labelValueTypeConfig);
+        }
+
+        ObjectPropertyConfig valuePropertyConfig = new ObjectPropertyConfig();
+        {
+            valuePropertyConfig.setName(this.valueField);
+            valuePropertyConfig.setLabel("值");
+            TextValueTypeConfig valueValueTypeConfig = new TextValueTypeConfig();
+            valuePropertyConfig.setValueType(valueValueTypeConfig);
+        }
+
+        this.properties = Arrays.asList(labelPropertyConfig, valuePropertyConfig);
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_LABEL, this.labelField);
-        ConfigUtils.putIfNotNull(configJson, ATTR_VALUE, this.valueField);
+        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_LABLE_FIELD, this.labelField);
+        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_VALUE_FIELD, this.valueField);
 
         return configJson;
     }

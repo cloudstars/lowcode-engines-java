@@ -9,11 +9,21 @@ public interface GlobalAttrNames {
 
     // 字段名配置名称
     String ATTR_NAME = "name";
+
     // 字段标签配置名称
     String ATTR_LABEL = "label";
 
     // 值配置项名称
     String ATTR_VALUE = "value";
+
+    // 标签字段名配置名称
+    String ATTR_LABLE_FIELD = "labelField";
+
+    // 值字段名配置名称
+    String ATTR_VALUE_FIELD = "valueField";
+
+    // 标识字段名配置名称
+    String ATTR_KEY_FIELD = "keyField";
 
     // 表达式配置项名称
     String ATTR_EXPRESSION = "expression";

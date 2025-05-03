@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.List;
@@ -10,17 +11,12 @@ import java.util.List;
  *
  */
 @ValueTypeConfigClass(name = "ARRAY", valueClass = List.class)
-public class ArrayValueTypeConfig extends AbstractValueTypeConfig {
+public class ArrayValueTypeConfig extends AbstractArrayValueTypeConfig {
 
     /**
-     * 数组下元素的属性名称
+     * 标识字段名配置名称
      */
-    private static final String ATTR_ITEMS = "items";
-
-    /**
-     * 数组下元数的数据格式
-     */
-    private XValueTypeConfig itemsValueType;
+    private String keyField;
 
     public ArrayValueTypeConfig() {
     }
@@ -30,6 +26,7 @@ public class ArrayValueTypeConfig extends AbstractValueTypeConfig {
 
         JsonObject itemsConfigJson = (JsonObject) configJson.get(ATTR_ITEMS);
         this.itemsValueType = ValueTypeConfigFactory.newInstance(itemsConfigJson);
+        this.keyField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_KEY_FIELD);
     }
 
     @Override
@@ -45,11 +42,17 @@ public class ArrayValueTypeConfig extends AbstractValueTypeConfig {
         this.itemsValueType = itemsValueType;
     }
 
+    public String getParentKeyField() {
+        return keyField;
+    }
+
+    public void setParentKeyField(String parentKeyField) {
+        this.keyField = parentKeyField;
+    }
+
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        // 将items的信息合并在一个json中
-        // JsonObject itemConfigJson = this.itemsValueType.toJson();
         ConfigUtils.putJson(configJson, ATTR_ITEMS, this.itemsValueType);
 
         return configJson;

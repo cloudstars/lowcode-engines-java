@@ -1,6 +1,5 @@
 package io.github.cloudstars.lowcode.commons.value.type;
 
-import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 public abstract class AbstractObjectValueTypeConfig extends AbstractValueTypeConfig {
 
     // 对象下的属性列表配置名称
-    public static final String ATTR_PROPERTIES = "properties";
+    protected static final String ATTR_PROPERTIES = "properties";
 
     /**
      * 对象值下面的属性列表
@@ -30,9 +29,9 @@ public abstract class AbstractObjectValueTypeConfig extends AbstractValueTypeCon
         return properties;
     }
 
-    public void setProperties(List<ObjectPropertyConfig> properties) {
+    /*protected void setProperties(List<ObjectPropertyConfig> properties) {
         this.properties = properties;
-    }
+    }*/
 
     @Override
     public DataTypeEnum getDataType() {
@@ -42,8 +41,6 @@ public abstract class AbstractObjectValueTypeConfig extends AbstractValueTypeCon
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putArrayIfNotNull(configJson, ATTR_PROPERTIES, this.properties);
-
         return configJson;
     }
 }

@@ -1,17 +1,20 @@
 package io.github.cloudstars.lowcode.api.executor;
 
 import io.github.cloudstars.lowcode.api.executor.filter.ApiExecuteFilterChain;
-import io.github.cloudstars.lowcode.api.executor.invoke.*;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiFileUploadRequest;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiInvoker;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiRequest;
+import io.github.cloudstars.lowcode.api.executor.invoke.ApiResponse;
 import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
-import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestBodyConfig;
-import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
-import io.github.cloudstars.lowcode.commons.api.config.request.HttpMethod;
-import io.github.cloudstars.lowcode.commons.api.config.request.RequestContentTypeEnum;
+import io.github.cloudstars.lowcode.commons.api.config.request.*;
 import io.github.cloudstars.lowcode.commons.lang.exception.SystemException;
+import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
 import io.github.cloudstars.lowcode.commons.value.ValueTypeFactory;
 import io.github.cloudstars.lowcode.commons.value.XValueType;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import org.springframework.util.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,16 +98,7 @@ public class ApiExecutorImpl implements ApiExecutor {
      */
     private ApiRequest makeGetRequest(ApiConfig config, Object params) {
         ApiRequestConfig apiRequestConfig = config.getRequest();
-        ApiRequest apiRequest = this.makeInitApiRequest(apiRequestConfig);
-        RequestContentTypeEnum contentType = apiRequestConfig.getContentType();
-        if (params != null) {
-            if (contentType != RequestContentTypeEnum.MULTIPART_FORM_DATA) {
-                apiRequest.setQueryParams((Map<String, Object>) params);
-            } else {
-                throw new SystemException("Get请求不支持ContentType：" + contentType);
-            }
-        }
-
+        ApiRequest apiRequest = this.makeInitApiRequest(apiRequestConfig, params);
         return apiRequest;
     }
 
@@ -117,7 +111,7 @@ public class ApiExecutorImpl implements ApiExecutor {
      */
     private ApiRequest makePostRequest(ApiConfig config, Object params) {
         ApiRequestConfig apiRequestConfig = config.getRequest();
-        ApiRequest apiRequest = this.makeInitApiRequest(apiRequestConfig);
+        ApiRequest apiRequest = this.makeInitApiRequest(apiRequestConfig, params);
 
         Object targetValue = params;
         RequestContentTypeEnum requestContentType = apiRequestConfig.getContentType();
@@ -142,17 +136,22 @@ public class ApiExecutorImpl implements ApiExecutor {
      * @param apiRequestConfig API请求配置
      * @return 初始API请求
      */
-    private ApiRequest makeInitApiRequest(ApiRequestConfig apiRequestConfig) {
+    private ApiRequest makeInitApiRequest(ApiRequestConfig apiRequestConfig, Object params) {
         ApiRequest apiRequest = new ApiRequest();
         apiRequest.setUrl(apiRequestConfig.getServicePath());
         apiRequest.setMethod(apiRequestConfig.getMethod());
-        return apiRequest;
-    }
-
-    private void setApiParams(AbstractApiRequest apiRequest, Object params) {
-        if (params != null) {
-
+        List<ApiRequestQueryParamConfig> queryParamConfigs = apiRequestConfig.getQueryParamConfigs();
+        if (!CollectionUtils.isEmpty(queryParamConfigs) && params != null) {
+            Map<String, Object> queryParams = new HashMap<>();
+            for (ApiRequestQueryParamConfig queryParamConfig : queryParamConfigs) {
+                String paramName = queryParamConfig.getName();
+                Object paramValue = ObjectUtils.getFieldValue(params, paramName);
+                queryParams.put(paramName, paramValue);
+            }
+            apiRequest.setQueryParams(queryParams);
         }
+
+        return apiRequest;
     }
 
     /**

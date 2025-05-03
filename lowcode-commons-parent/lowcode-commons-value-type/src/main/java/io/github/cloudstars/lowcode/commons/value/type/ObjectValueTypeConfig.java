@@ -20,17 +20,19 @@ public class ObjectValueTypeConfig extends AbstractObjectValueTypeConfig {
     public ObjectValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        JsonArray propertiesConfigJson = (JsonArray) configJson.get(ATTR_PROPERTIES);
-        if (propertiesConfigJson != null) { // 对象下可以不定义属性
-            this.properties = ConfigUtils.fromJsonArray(propertiesConfigJson,
+        ConfigUtils.consumeIfPresent(configJson, ATTR_PROPERTIES, (v) -> {
+            this.properties = ConfigUtils.fromJsonArray((JsonArray) v,
                     (propertyConfigJson) -> new ObjectPropertyConfig(propertyConfigJson)
             );
-        }
+        });
     }
 
     @Override
     public JsonObject toJson() {
-        return super.toJson();
+        JsonObject configJson = super.toJson();
+        ConfigUtils.putArrayIfNotNull(configJson, ATTR_PROPERTIES, this.properties);
+
+        return configJson;
     }
 
 }

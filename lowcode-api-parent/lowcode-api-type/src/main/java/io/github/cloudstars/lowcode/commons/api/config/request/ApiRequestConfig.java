@@ -2,8 +2,11 @@ package io.github.cloudstars.lowcode.commons.api.config.request;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+
+import java.util.List;
 
 /**
  * API请求配置
@@ -18,6 +21,9 @@ public class ApiRequestConfig extends AbstractConfig {
     // HTTP服务地址
     private static final String ATTR_SERVICE_PATH = "servicePath";
 
+    // 请求参数配置名称
+    private static final String ATTR_QUERY_PARAMS = "queryParams";
+
     // 媒体内容类型配置名称
     private static final String ATTR_CONTENT_TYPE = "contentType";
 
@@ -30,6 +36,11 @@ public class ApiRequestConfig extends AbstractConfig {
      * 服务名称
      */
     private String servicePath;
+
+    /**
+     * 请求参数列表配置
+     */
+    private List<ApiRequestQueryParamConfig> queryParamConfigs;
 
     /**
      * 媒体类型
@@ -55,14 +66,17 @@ public class ApiRequestConfig extends AbstractConfig {
     public ApiRequestConfig(JsonObject configJson) {
         super(configJson);
 
-        ConfigUtils.getIfPresent(configJson, ATTR_METHOD, (v) -> {
+        ConfigUtils.consumeIfPresent(configJson, ATTR_METHOD, (v) -> {
             this.method = HttpMethod.valueOf(((String) v).toUpperCase());
         });
         this.servicePath = ConfigUtils.getString(configJson, ATTR_SERVICE_PATH);
-        ConfigUtils.getIfPresent(configJson, ATTR_CONTENT_TYPE, (v) -> {
+        ConfigUtils.consumeIfPresent(configJson, ATTR_QUERY_PARAMS, (v) -> {
+            this.queryParamConfigs = ConfigUtils.toList((JsonArray) v, ApiRequestQueryParamConfig.class);
+        });
+        ConfigUtils.consumeIfPresent(configJson, ATTR_CONTENT_TYPE, (v) -> {
             this.contentType = RequestContentTypeEnum.valueOf(((String) v).toUpperCase());
         });
-        ConfigUtils.getIfPresent(configJson, XValueTypeConfig.ATTR, (v) -> {
+        ConfigUtils.consumeIfPresent(configJson, XValueTypeConfig.ATTR, (v) -> {
             this.body = new ApiRequestBodyConfig((JsonObject) v);
         });
     }
@@ -83,6 +97,14 @@ public class ApiRequestConfig extends AbstractConfig {
         this.servicePath = servicePath;
     }
 
+    public List<ApiRequestQueryParamConfig> getQueryParamConfigs() {
+        return queryParamConfigs;
+    }
+
+    public void setQueryParamConfigs(List<ApiRequestQueryParamConfig> queryParamConfigs) {
+        this.queryParamConfigs = queryParamConfigs;
+    }
+
     public RequestContentTypeEnum getContentType() {
         return contentType;
     }
@@ -96,6 +118,7 @@ public class ApiRequestConfig extends AbstractConfig {
         JsonObject configJson = super.toJson();
         ConfigUtils.putIfNotNull(configJson, ATTR_METHOD, this.method);
         ConfigUtils.put(configJson, ATTR_SERVICE_PATH, this.servicePath);
+        ConfigUtils.putArrayIfNotNull(configJson, ATTR_QUERY_PARAMS, this.queryParamConfigs);
         ConfigUtils.putIfNotNull(configJson, ATTR_CONTENT_TYPE, this.contentType);
         ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.body);
 
