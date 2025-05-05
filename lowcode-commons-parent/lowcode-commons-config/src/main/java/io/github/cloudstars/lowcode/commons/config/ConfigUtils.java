@@ -51,7 +51,6 @@ public final class ConfigUtils {
         return (Boolean) get(configJson, key);
     }
 
-
     /**
      * 当配置中存在键时，取值并消费
      *

@@ -1,0 +1,15 @@
+{
+  "key": "yt83mc9sk",
+  "code": "Apply",
+  "name": "请假模型",
+  "fields": [
+    {
+      "type": "TEXT",
+      "key": "mnfd76jewue",
+      "name": "reason",
+      "label": "请假事由",
+      "fields": [
+      ]
+    }
+  ]
+}

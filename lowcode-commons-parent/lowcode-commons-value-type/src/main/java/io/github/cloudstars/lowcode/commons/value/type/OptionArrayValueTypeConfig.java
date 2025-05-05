@@ -26,7 +26,7 @@ public class OptionArrayValueTypeConfig extends AbstractArrayValueTypeConfig {
     public OptionArrayValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        this.labelField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_LABLE_FIELD);
+        this.labelField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_LABEL_FIELD);
         this.valueField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_VALUE_FIELD);
 
         OptionValueTypeConfig optionValueTypeConfig = new OptionValueTypeConfig();
@@ -58,7 +58,7 @@ public class OptionArrayValueTypeConfig extends AbstractArrayValueTypeConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_LABLE_FIELD, this.labelField);
+        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_LABEL_FIELD, this.labelField);
         ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_VALUE_FIELD, this.valueField);
 
         return configJson;

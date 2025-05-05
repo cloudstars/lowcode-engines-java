@@ -1,0 +1,19 @@
+{
+  "type": "INSERT_ONE",
+  "code": "InsertXxxxOne",
+  "name": "单条插入XXX001",
+  "fields": [
+    {
+      "name": "field1",
+      "required": true
+    },
+    {
+      "name": "field2",
+      "required": true
+    },
+    {
+      "name": "field3",
+      "required": false
+    }
+  ]
+}

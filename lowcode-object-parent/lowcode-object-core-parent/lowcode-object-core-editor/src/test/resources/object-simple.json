@@ -1,0 +1,29 @@
+{
+  "type": "OBJECT",
+  "key": "ifke832fjdsk",
+  "name": "简单字段类型的模型",
+  "fields": [
+    {
+      "type": "TEXT",
+      "name": "a",
+      "label": "字段A",
+      "required": true,
+      "defaultValue": {
+        "type": "static",
+        "value": "abc"
+      }
+    },
+    {
+      "type": "NUMBER",
+      "name": "b",
+      "precision": 0,
+      "defaultValue": {
+        "type": "expression",
+        "expression": {
+          "type": "static",
+          "text": "a + 1"
+        }
+      }
+    }
+  ]
+}

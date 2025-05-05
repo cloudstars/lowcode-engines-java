@@ -16,7 +16,11 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-method-commons</artifactId>
+            <artifactId>lowcode-object-method-editor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-object-core-engine</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
@@ -26,7 +30,7 @@
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-test</artifactId>
+            <artifactId>lowcode-object-commons-test</artifactId>
         </dependency>
     </dependencies>
 

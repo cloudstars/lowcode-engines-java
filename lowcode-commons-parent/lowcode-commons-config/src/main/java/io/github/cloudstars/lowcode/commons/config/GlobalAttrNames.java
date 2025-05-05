@@ -17,7 +17,7 @@ public interface GlobalAttrNames {
     String ATTR_VALUE = "value";
 
     // 标签字段名配置名称
-    String ATTR_LABLE_FIELD = "labelField";
+    String ATTR_LABEL_FIELD = "labelField";
 
     // 值字段名配置名称
     String ATTR_VALUE_FIELD = "valueField";

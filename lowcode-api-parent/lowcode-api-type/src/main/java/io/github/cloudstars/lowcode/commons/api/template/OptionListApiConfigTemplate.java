@@ -9,8 +9,6 @@ import io.github.cloudstars.lowcode.commons.api.config.response.ApiResponseConfi
 import io.github.cloudstars.lowcode.commons.api.config.response.ResponseContentTypeEnum;
 import io.github.cloudstars.lowcode.commons.value.type.*;
 
-import java.util.Arrays;
-
 /**
  * 选项列表API配置模板
  *
@@ -50,7 +48,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
         }
 
         ObjectValueTypeConfig requestValueType = new ObjectValueTypeConfig();
-        requestValueType.setProperties(Arrays.asList(dictIdProperty, valuesProperty));
+        //requestValueType.setProperties(Arrays.asList(dictIdProperty, valuesProperty));
         requestValueType.setRequired(true);
         apiRequestConfig.setBody(new ApiRequestBodyConfig(requestValueType));
 
@@ -82,7 +80,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
         }
 
         ObjectValueTypeConfig optionValueType = new ObjectValueTypeConfig();
-        optionValueType.setProperties(Arrays.asList(labelProperty, valueProperty));
+        //optionValueType.setProperties(Arrays.asList(labelProperty, valueProperty));
         optionValueType.setRequired(true);
 
         ArrayValueTypeConfig responseValueType = new ArrayValueTypeConfig();

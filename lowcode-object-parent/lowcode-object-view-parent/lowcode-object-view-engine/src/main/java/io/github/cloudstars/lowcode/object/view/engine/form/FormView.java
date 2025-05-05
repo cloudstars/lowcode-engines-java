@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.view.engine.form;
 
+import io.github.cloudstars.lowcode.object.view.editor.AbstractObjectViewConfig;
 import io.github.cloudstars.lowcode.object.view.engine.ObjectView;
-import io.github.cloudstars.lowcode.object.view.commons.config.AbstractViewConfig;
 import io.github.cloudstars.lowcode.object.view.engine.form.api.FormViewInsertApiInput;
 
 /**
@@ -9,7 +9,7 @@ import io.github.cloudstars.lowcode.object.view.engine.form.api.FormViewInsertAp
  *
  * @author clouds 
  */
-public interface FormView<T extends AbstractViewConfig> extends ObjectView<T> {
+public interface FormView<T extends AbstractObjectViewConfig> extends ObjectView<T> {
 
     /**
      * 执行表单数据插入接口

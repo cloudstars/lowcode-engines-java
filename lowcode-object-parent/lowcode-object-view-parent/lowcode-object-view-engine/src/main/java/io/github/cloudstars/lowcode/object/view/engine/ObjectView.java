@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.view.engine;
 
-import io.github.cloudstars.lowcode.object.view.commons.config.AbstractViewConfig;
+import io.github.cloudstars.lowcode.object.view.editor.AbstractObjectViewConfig;
 
 /**
  * 模型视图接口
@@ -8,5 +8,6 @@ import io.github.cloudstars.lowcode.object.view.commons.config.AbstractViewConfi
  * @author clouds
  * @param <C> 视图的配置类型
  */
-public interface ObjectView<C extends AbstractViewConfig> {
+public interface ObjectView<C extends AbstractObjectViewConfig> {
+
 }

@@ -16,19 +16,19 @@ public class TableViewServiceImpl implements TableViewService {
 
     @Override
     public PageQueryOutput<Map<String, Object>> execute(String viewKey, TableViewPageQueryApiInput input) {
-        TableView view = this.resolveTableView(viewKey);
+        ObjectTableView view = this.resolveTableView(viewKey);
         return view.execute(input);
     }
 
     @Override
     public List<Map<String, Object>> execute(String viewKey, TableViewQueryApiInput input) {
-        TableView view = this.resolveTableView(viewKey);
+        ObjectTableView view = this.resolveTableView(viewKey);
         return view.execute(input);
     }
 
-    private TableView resolveTableView(String viewKey) {
+    private ObjectTableView resolveTableView(String viewKey) {
         // TODO 根据viewKey生成TablView
-        return new TableViewImpl();
+        return new ObjectTableViewImpl();
     }
 
 }

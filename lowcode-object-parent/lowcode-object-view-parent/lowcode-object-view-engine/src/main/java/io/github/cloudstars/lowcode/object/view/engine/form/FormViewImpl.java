@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.view.engine.form;
 
-import io.github.cloudstars.lowcode.object.view.commons.config.form.FormViewConfig;
+import io.github.cloudstars.lowcode.object.view.editor.form.AbstractObjectFormViewConfig;
 import io.github.cloudstars.lowcode.object.view.engine.form.api.FormViewInsertApi;
 import io.github.cloudstars.lowcode.object.view.engine.form.api.FormViewInsertApiInput;
 
@@ -9,11 +9,11 @@ import io.github.cloudstars.lowcode.object.view.engine.form.api.FormViewInsertAp
  *
  * @author clouds 
  */
-public class FormViewImpl implements FormView<FormViewConfig> {
+public class FormViewImpl implements FormView<AbstractObjectFormViewConfig> {
 
-    private FormViewConfig viewConfig;
+    private AbstractObjectFormViewConfig viewConfig;
 
-    public FormViewImpl(FormViewConfig viewConfig) {
+    public FormViewImpl(AbstractObjectFormViewConfig viewConfig) {
         this.viewConfig = viewConfig;
     }
 

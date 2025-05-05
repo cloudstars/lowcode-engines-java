@@ -1,0 +1,30 @@
+{
+  "key": "eu56oei883",
+  "code": "Travel",
+  "name": "出差模型",
+  "fields": [
+    {
+      "type": "TEXT",
+      "key": "uy98223llk",
+      "name": "reason",
+      "label": "出差事由",
+      "fields": [
+      ]
+    },
+    {
+      "type": "DETAIL_OBJECT",
+      "key": "iw873j2mdieu",
+      "code": "trips",
+      "objectName": "TRIP",
+      "name": "出差行程",
+      "fields": [
+        {
+          "type": "TEXT",
+          "key": "tyew7l328jfd",
+          "name": "target",
+          "label": "目的地"
+        }
+      ]
+    }
+  ]
+}

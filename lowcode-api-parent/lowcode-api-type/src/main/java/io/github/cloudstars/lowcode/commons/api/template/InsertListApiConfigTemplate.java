@@ -25,7 +25,7 @@ public class InsertListApiConfigTemplate extends AbstractApiConfigTemplate<Inser
         ApiRequestConfig requestConfig = new ApiRequestConfig();
         ArrayValueTypeConfig requestValueType = new ArrayValueTypeConfig();
         ObjectValueTypeConfig objectValueType = new ObjectValueTypeConfig();
-        objectValueType.setProperties(params.getProperties());
+        //objectValueType.setProperties(params.getProperties());
         requestValueType.setRequired(true);
         requestConfig.setBody(new ApiRequestBodyConfig(requestValueType));
 

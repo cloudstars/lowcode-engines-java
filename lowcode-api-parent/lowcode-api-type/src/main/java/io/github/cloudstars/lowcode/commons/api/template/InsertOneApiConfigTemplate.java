@@ -24,7 +24,7 @@ public class InsertOneApiConfigTemplate extends AbstractApiConfigTemplate<Insert
         ApiRequestConfig requestConfig = new ApiRequestConfig();
         requestConfig.setDescription("这是插入单条记录的API模板");
         ObjectValueTypeConfig requestValueType = new ObjectValueTypeConfig();
-        requestValueType.setProperties(params.getProperties());
+        //requestValueType.setProperties(params.getProperties());
         requestConfig.setBody(new ApiRequestBodyConfig(requestValueType));
 
         // 出参是影响行数（1 或 0）

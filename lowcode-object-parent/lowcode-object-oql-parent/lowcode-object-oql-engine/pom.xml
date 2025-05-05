@@ -18,6 +18,10 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-object-oql-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-object-repository</artifactId>
+        </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>

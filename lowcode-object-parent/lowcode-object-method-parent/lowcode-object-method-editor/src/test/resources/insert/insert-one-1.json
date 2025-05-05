@@ -1,0 +1,9 @@
+{
+  "type": "INSERT_ONE",
+  "objectKey": "xxxObject",
+  "fieldKeys": [
+    "fieldKey1",
+    "fieldKey2",
+    "fieldKey3"
+  ]
+}

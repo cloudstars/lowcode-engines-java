@@ -16,19 +16,11 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-object-core-editor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-object-oql-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-method-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-excel-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-bpm-engine</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

@@ -1,0 +1,44 @@
+package io.github.cloudstars.lowcode.object.core.editor.field.objectref;
+
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.object.core.editor.FormBasedObjectConfig;
+import io.github.cloudstars.lowcode.object.core.editor.field.ObjectFieldConfigClass;
+
+/**
+ * 子模型字段配置
+ *
+ * @author clouds
+ */
+@ObjectFieldConfigClass(name = "DETAIL_OBJECT")
+public class DetailObjectObjectFieldConfig extends AbstractObjectRefObjectFieldConfig {
+
+    /**
+     * 子模型配置
+     */
+    private FormBasedObjectConfig subObjectConfig;
+
+    public DetailObjectObjectFieldConfig() {
+    }
+
+    public DetailObjectObjectFieldConfig(JsonObject configJson) {
+        super(configJson);
+
+        this.subObjectConfig = new FormBasedObjectConfig(configJson);
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject configJson = super.toJson();
+
+        // 将子模型中的个性化配置项合并到当前字段配置中
+        JsonObject<String, Object> subFormConfigJson = this.subObjectConfig.toJson();
+        subFormConfigJson.forEach((k, v) -> {
+            if (!configJson.containsKey(k)) {
+                configJson.put(k, v);
+            }
+        });
+
+        return configJson;
+    }
+
+}
