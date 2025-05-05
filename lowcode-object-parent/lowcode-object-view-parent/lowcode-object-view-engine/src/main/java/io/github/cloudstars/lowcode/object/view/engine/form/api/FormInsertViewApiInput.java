@@ -5,5 +5,5 @@ package io.github.cloudstars.lowcode.object.view.engine.form.api;
  *
  * @author clouds
  */
-public class FormViewInsertApiInput {
+public class FormInsertViewApiInput {
 }

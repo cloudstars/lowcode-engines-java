@@ -6,8 +6,10 @@ import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
  * 视图接口
  *
  * @author clouds
+ * @param <P> 接口参数类型
+ * @param <R> 接口返回值类型
  */
-public interface ObjectViewApi<T extends Object, R extends Object> {
+public interface ObjectViewApi<P extends Object, R extends Object> {
 
     /**
      * 获取视图接口的名称
@@ -29,6 +31,6 @@ public interface ObjectViewApi<T extends Object, R extends Object> {
      * @param data
      * @return
      */
-    R execute(T data);
+    R execute(P data);
 
 }

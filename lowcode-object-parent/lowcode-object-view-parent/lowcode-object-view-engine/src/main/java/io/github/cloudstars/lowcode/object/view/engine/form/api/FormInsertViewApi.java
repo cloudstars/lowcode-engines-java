@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.object.view.engine.ObjectViewApi;
  *
  * @author clouds
  */
-public class FormViewInsertApi implements ObjectViewApi<FormViewInsertApiInput, Integer> {
+public class FormInsertViewApi implements ObjectViewApi<FormInsertViewApiInput, Integer> {
 
     @Override
     public String getName() {
@@ -21,7 +21,7 @@ public class FormViewInsertApi implements ObjectViewApi<FormViewInsertApiInput, 
     }
 
     @Override
-    public Integer execute(FormViewInsertApiInput formData) {
+    public Integer execute(FormInsertViewApiInput formData) {
         return null;
     }
 }

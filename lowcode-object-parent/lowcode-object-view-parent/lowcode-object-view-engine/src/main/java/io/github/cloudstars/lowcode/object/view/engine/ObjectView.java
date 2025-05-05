@@ -10,4 +10,12 @@ import io.github.cloudstars.lowcode.object.view.editor.AbstractObjectViewConfig;
  */
 public interface ObjectView<C extends AbstractObjectViewConfig> {
 
+    /**
+     * 执行视图API
+     *
+     * @param apiType API类型
+     * @param apiParams API参数
+     * @return
+     */
+    Object executeApi(String apiType, Object apiParams);
 }
