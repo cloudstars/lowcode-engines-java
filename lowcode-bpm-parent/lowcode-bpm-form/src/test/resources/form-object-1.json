@@ -5,26 +5,13 @@
   "fields": [
     {
       "type": "OBJECT",
-      "name": "obj2",
-      "label": "字段O2有属性，它有默认值",
-      "required": false,
+      "name": "obj1",
+      "label": "字段O1无属性",
+      "required": true,
       "defaultValue": {
-        "a": "xyz",
-        "b": 111
-      },
-      "properties": [
-        {
-          "type": "TEXT",
-          "name": "a",
-          "label": "字段A",
-          "required": true
-        },
-        {
-          "type": "NUMBER",
-          "label": "b",
-          "precision": 0
-        }
-      ]
+        "x": "abc",
+        "y": 123
+      }
     }
   ]
 }

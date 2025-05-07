@@ -164,6 +164,23 @@ public final class ConfigUtils {
     }
 
     /**
+     *
+     * 添加来源配置中的全部属性（同名属性忽略）
+     *
+     * @param configJson
+     * @param fromConfig
+     */
+    public static void putAllIgnorePresent(JsonObject configJson, XConfig fromConfig) {
+        JsonObject<String, Object> fromConfigJson = fromConfig.toJson();
+        fromConfigJson.forEach((k, v) -> {
+            if (!configJson.containsKey(k)) {
+                configJson.put(k, v);
+            }
+        });
+
+    }
+
+    /**
      * 将配置列表转为JSON数组
      *
      * @param configs

@@ -4,15 +4,13 @@
   "name": "简单字段类型的表单",
   "fields": [
     {
-      "type": "NUMBER",
-      "name": "b",
-      "precision": 0,
+      "type": "TEXT",
+      "name": "a",
+      "label": "字段A",
+      "required": true,
       "defaultValue": {
-        "type": "expression",
-        "expression": {
-          "type": "static",
-          "text": "a + 1"
-        }
+        "type": "static",
+        "value": "abc"
       }
     }
   ]

@@ -5,23 +5,23 @@
   "fields": [
     {
       "type": "OBJECT",
-      "name": "obj2",
-      "label": "字段O2有属性，它有默认值",
+      "name": "obj3",
+      "label": "字段O3有属性,属性有默认值",
       "required": false,
-      "defaultValue": {
-        "a": "xyz",
-        "b": 111
-      },
       "properties": [
         {
           "type": "TEXT",
           "name": "a",
           "label": "字段A",
-          "required": true
+          "required": true,
+          "defaultValue": {
+            "type": "static",
+            "value": "xyz"
+          }
         },
         {
           "type": "NUMBER",
-          "label": "b",
+          "name": "b",
           "precision": 0
         }
       ]

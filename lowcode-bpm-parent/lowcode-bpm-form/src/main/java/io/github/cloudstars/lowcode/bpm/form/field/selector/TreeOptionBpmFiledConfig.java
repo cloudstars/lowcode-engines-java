@@ -11,17 +11,17 @@ import io.github.cloudstars.lowcode.commons.value.type.TreeOptionValueTypeConfig
  * @author clouds
  *
  */
-@BpmFieldConfigClass(name = "TREE")
-public class TreeBpmFiledConfig extends AbstractSelectableSupportedBpmFieldConfig<TreeOptionValueTypeConfig> {
+@BpmFieldConfigClass(name = "TREE-OPTION")
+public class TreeOptionBpmFiledConfig extends AbstractSelectableSupportedBpmFieldConfig<TreeOptionValueTypeConfig> {
 
     private String keyField;
 
     private String labelField;
 
-    public TreeBpmFiledConfig() {
+    public TreeOptionBpmFiledConfig() {
     }
 
-    public TreeBpmFiledConfig(JsonObject configJson) {
+    public TreeOptionBpmFiledConfig(JsonObject configJson) {
         super(configJson);
 
         this.labelField = (String) configJson.get(GlobalAttrNames.ATTR_LABEL_FIELD);

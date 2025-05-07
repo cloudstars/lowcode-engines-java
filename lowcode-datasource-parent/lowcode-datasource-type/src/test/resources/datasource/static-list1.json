@@ -1,0 +1,21 @@
+{
+  "type": "STATIC",
+  "valueType": {
+    "type": "LIST",
+    "keyField": "__id"
+  },
+  "data": [
+    {
+      "__id": "xxx1",
+      "abc": "aaa1"
+    },
+    {
+      "__id": "xxx2",
+      "abc": "aaa2"
+    },
+    {
+      "__id": "xxx3",
+      "abc": "aaa3"
+    }
+  ]
+}

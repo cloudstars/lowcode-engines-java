@@ -9,7 +9,7 @@ import java.util.Arrays;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "ORG", valueClass = User.class)
+@ValueTypeConfigClass(name = "USER", valueClass = User.class)
 public class UserValueTypeConfig extends AbstractObjectValueTypeConfig {
 
     // 用户编号属性名称

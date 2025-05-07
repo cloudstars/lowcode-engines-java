@@ -1,0 +1,30 @@
+{
+  "type": "form",
+  "key": "ifke832fjdsk",
+  "name": "简单字段类型的表单",
+  "fields": [
+    {
+      "type": "OPTION",
+      "name": "o",
+      "labelField": "xyz",
+      "valueField": "abc",
+      "dataSource": {
+        "type": "STATIC",
+        "data": [
+          {
+            "xyz": "xxx1",
+            "abc": "aaa1"
+          },
+          {
+            "xyz": "xxx2",
+            "abc": "aaa2"
+          },
+          {
+            "xyz": "xxx3",
+            "abc": "aaa3"
+          }
+        ]
+      }
+    }
+  ]
+}

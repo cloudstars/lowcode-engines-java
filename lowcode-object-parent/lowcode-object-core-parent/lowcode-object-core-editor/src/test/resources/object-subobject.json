@@ -63,7 +63,7 @@
       ]
     },
     {
-      "type": "DETAIL_OBJECT",
+      "type": "DETAIL-OBJECT",
       "key": "q8jklfjewlj",
       "code": "subform1",
       "name": "子表单名称SubForm1",
@@ -94,7 +94,7 @@
       ]
     },
     {
-      "type": "DETAIL_OBJECT",
+      "type": "DETAIL-OBJECT",
       "key": "iuflme83200l",
       "code": "array2",
       "name": "子表单名称SubForm2",

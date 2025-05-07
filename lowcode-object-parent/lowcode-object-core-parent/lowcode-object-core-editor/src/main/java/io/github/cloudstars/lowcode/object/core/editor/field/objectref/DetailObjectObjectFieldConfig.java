@@ -9,7 +9,7 @@ import io.github.cloudstars.lowcode.object.core.editor.field.ObjectFieldConfigCl
  *
  * @author clouds
  */
-@ObjectFieldConfigClass(name = "DETAIL_OBJECT")
+@ObjectFieldConfigClass(name = "DETAIL-OBJECT")
 public class DetailObjectObjectFieldConfig extends AbstractObjectRefObjectFieldConfig {
 
     /**

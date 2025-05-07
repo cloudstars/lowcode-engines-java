@@ -14,6 +14,9 @@ import java.util.Arrays;
 @ValueTypeConfigClass(name = "TREE", valueClass = TreeNode.class)
 public class TreeValueTypeConfig extends AbstractObjectValueTypeConfig {
 
+    /**
+     * 标签字段名配置名称
+     */
     private String labelField;
 
     /**

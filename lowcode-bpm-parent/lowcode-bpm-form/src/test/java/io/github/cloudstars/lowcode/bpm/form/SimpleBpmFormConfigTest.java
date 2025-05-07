@@ -23,15 +23,15 @@ public class SimpleBpmFormConfigTest {
     }
 
     @Test
-    public void test0() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple-0.json");
+    public void test1() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple-1.json");
         BpmFormConfig bpmFormConfig = new BpmFormConfig(configJson);
         JsonTestUtils.assertEquals(configJson, bpmFormConfig.toJson());
     }
 
     @Test
-    public void test1() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple-1.json");
+    public void test2() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple-2.json");
         BpmFormConfig bpmFormConfig = new BpmFormConfig(configJson);
         JsonTestUtils.assertEquals(configJson, bpmFormConfig.toJson());
     }
@@ -40,8 +40,8 @@ public class SimpleBpmFormConfigTest {
      * 测试选项字段类型
      */
     @Test
-    public void test2() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple-2.json");
+    public void test3() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-simple-3.json");
         BpmFormConfig bpmFormConfig = new BpmFormConfig(configJson);
         JsonTestUtils.assertEquals(configJson, bpmFormConfig.toJson());
     }

@@ -2,9 +2,9 @@ package io.github.cloudstars.lowcode.bpm.form.field;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
-import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.value.type.SelectorValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 import java.util.ArrayList;
@@ -142,14 +142,15 @@ public abstract class AbstractBpmFieldConfig<T extends XValueTypeConfig> extends
         ConfigUtils.putIfNotNull(configJson, XBpmFieldConfig.ATTR_TITLE_SUPPORTED, this.titleSupported);
         ConfigUtils.putIfNotNull(configJson, XBpmFieldConfig.ATTR_DIGEST_SUPPORTED, this.digestSupported);
 
-        // 将数据格式的配置添加到当前配置上
-        if (this.valueType != null) {
-            JsonObject<String, Object> valueTypeConfigJson = this.valueType.toJson();
-            valueTypeConfigJson.forEach((k, v) -> {
-                if (!XTypedConfig.ATTR.equalsIgnoreCase(k)) { // 避免数据格式的类型覆盖字段类型
-                    configJson.put(k, v);
-                }
-            });
+        if (this.valueType != null) { // Other类型无valueType
+            // 将数据格式的配置合并到当前配置上（忽略同名属性，如：type）
+            if (this.valueType instanceof SelectorValueTypeConfig) {
+                // 选项数据格式直接将items的数据格式配置合并到当前字段上
+                XValueTypeConfig itemsValueType = ((SelectorValueTypeConfig) this.valueType).getItemsValueType();
+                ConfigUtils.putAllIgnorePresent(configJson, itemsValueType);
+            } else {
+                ConfigUtils.putAllIgnorePresent(configJson, this.valueType);
+            }
         }
 
         return configJson;

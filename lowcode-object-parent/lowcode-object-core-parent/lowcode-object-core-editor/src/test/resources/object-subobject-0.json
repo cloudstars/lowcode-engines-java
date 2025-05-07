@@ -4,7 +4,7 @@
   "name": "含子表单字段类型的表单1",
   "fields": [
     {
-      "type": "DETAIL_OBJECT",
+      "type": "DETAIL-OBJECT",
       "key": "q8jklfjewlj",
       "code": "subform1",
       "name": "子表单名称SubForm1",

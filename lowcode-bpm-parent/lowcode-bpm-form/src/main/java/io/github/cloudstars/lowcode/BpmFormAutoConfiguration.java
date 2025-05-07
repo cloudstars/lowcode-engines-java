@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode;
 import io.github.cloudstars.lowcode.bpm.form.field.*;
 import io.github.cloudstars.lowcode.bpm.form.field.selector.OptionBpmFiledConfig;
 import io.github.cloudstars.lowcode.bpm.form.field.selector.OrgBpmFiledConfig;
-import io.github.cloudstars.lowcode.bpm.form.field.selector.TreeBpmFiledConfig;
+import io.github.cloudstars.lowcode.bpm.form.field.selector.TreeOptionBpmFiledConfig;
 import io.github.cloudstars.lowcode.bpm.form.field.selector.UserBpmFiledConfig;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -21,7 +21,7 @@ public class BpmFormAutoConfiguration implements ApplicationRunner {
         BpmFieldConfigClassFactory.register(ObjectBpmFieldConfig.class);
         BpmFieldConfigClassFactory.register(ArrayBpmFieldConfig.class);
         BpmFieldConfigClassFactory.register(OptionBpmFiledConfig.class);
-        BpmFieldConfigClassFactory.register(TreeBpmFiledConfig.class);
+        BpmFieldConfigClassFactory.register(TreeOptionBpmFiledConfig.class);
         BpmFieldConfigClassFactory.register(UserBpmFiledConfig.class);
         BpmFieldConfigClassFactory.register(OrgBpmFiledConfig.class);
         BpmFieldConfigClassFactory.register(DetailFormBpmFieldConfig.class);

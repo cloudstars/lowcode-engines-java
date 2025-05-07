@@ -5,7 +5,6 @@ import io.github.cloudstars.lowcode.bpm.commons.config.ProcessConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,8 +21,7 @@ public class ProcessConfigParserTest {
     public void testSimple1() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple1.json");
         ProcessConfig processConfig = new ProcessConfig(configJson);
-        Assert.assertNotNull(processConfig);
-        JsonTestUtils.assertDerivedFrom(configJson.toJsonString(), processConfig.toJson().toJsonString());
+        JsonTestUtils.assertEquals(configJson, processConfig.toJson());
     }
 
 }

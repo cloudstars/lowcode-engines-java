@@ -41,7 +41,9 @@ public abstract class AbstractSelectableSupportedBpmFieldConfig<T extends XValue
             this.multiple = (Boolean) v;
         });
         ConfigUtils.consume(configJson, ATTR_DATASOURCE, (v) -> {
-            this.dataSource = DataSourceConfigFactory.newInstance((JsonObject) v);
+            JsonObject dataSourceConfigJson = (JsonObject) v;
+            // TODO 将field上面的字段配置放到dataSource上面
+            this.dataSource = DataSourceConfigFactory.newInstance(dataSourceConfigJson);
         });
     }
 
@@ -68,13 +70,16 @@ public abstract class AbstractSelectableSupportedBpmFieldConfig<T extends XValue
      */
     protected void setTargetValueType(XValueTypeConfig singleValueType) {
         SelectorValueTypeConfig<T> targetValueType = new SelectorValueTypeConfig(singleValueType);
-        targetValueType.setMultiple(this.multiple);
+        if (this.multiple != null) {
+            targetValueType.setMultiple(this.multiple);
+        }
+        this.setValueType(targetValueType);
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_MULTIPLE, this.dataSource);
+        ConfigUtils.putIfNotNull(configJson, ATTR_MULTIPLE, this.multiple);
         ConfigUtils.putJson(configJson, ATTR_DATASOURCE, this.dataSource);
 
         return configJson;

@@ -3,6 +3,7 @@ package io.github.cloudstars.lowcode.bpm.form.field.selector;
 import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.OrgValueTypeConfig;
 
 /**
  * 机构选择字段类型
@@ -11,7 +12,7 @@ import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
  *
  */
 @BpmFieldConfigClass(name = "ORG")
-public class OrgBpmFiledConfig extends AbstractSelectableSupportedBpmFieldConfig<ObjectValueTypeConfig> {
+public class OrgBpmFiledConfig extends AbstractSelectableSupportedBpmFieldConfig<OrgValueTypeConfig> {
 
     public OrgBpmFiledConfig() {
     }

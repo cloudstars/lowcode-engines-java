@@ -13,27 +13,25 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BpmFormTestApplication.class)
-public class SubFormBpmFormConfigTest {
-
-    @Test
-    public void test() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-subform.json");
-        BpmFormConfig bpmFormConfig = new BpmFormConfig(configJson);
-        JsonTestUtils.assertEquals(configJson, bpmFormConfig.toJson());
-        System.out.println(configJson.toJsonString());
-    }
-
-    @Test
-    public void test0() {
-        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-subform-0.json");
-        BpmFormConfig bpmFormConfig = new BpmFormConfig(configJson);
-        JsonTestUtils.assertEquals(configJson, bpmFormConfig.toJson());
-        System.out.println(bpmFormConfig.toJson().toJsonString());
-    }
+public class DetailFormBpmFormConfigTest {
 
     @Test
     public void test1() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-subform-1.json");
+        BpmFormConfig bpmFormConfig = new BpmFormConfig(configJson);
+        JsonTestUtils.assertEquals(configJson, bpmFormConfig.toJson());
+    }
+
+    @Test
+    public void test2() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-subform-2.json");
+        BpmFormConfig bpmFormConfig = new BpmFormConfig(configJson);
+        JsonTestUtils.assertEquals(configJson, bpmFormConfig.toJson());
+    }
+
+    @Test
+    public void test3() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("form-subform-3.json");
         BpmFormConfig bpmFormConfig = new BpmFormConfig(configJson);
         JsonTestUtils.assertEquals(configJson, bpmFormConfig.toJson());
     }
