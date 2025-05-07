@@ -1,8 +1,9 @@
 package io.github.cloudstars.lowcode.bpm.form.field.selector;
 
 import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.TreeOptionValueTypeConfig;
 
 /**
  * 树型字段类型
@@ -11,11 +12,11 @@ import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
  *
  */
 @BpmFieldConfigClass(name = "TREE")
-public class TreeBpmFiledConfig extends AbstractDataSourceSupportedBpmFieldConfig<ObjectValueTypeConfig> {
+public class TreeBpmFiledConfig extends AbstractSelectableSupportedBpmFieldConfig<TreeOptionValueTypeConfig> {
 
-    private String idField;
+    private String keyField;
 
-    private String parentIdField;
+    private String labelField;
 
     public TreeBpmFiledConfig() {
     }
@@ -23,23 +24,25 @@ public class TreeBpmFiledConfig extends AbstractDataSourceSupportedBpmFieldConfi
     public TreeBpmFiledConfig(JsonObject configJson) {
         super(configJson);
 
-        this.setValueType(new ObjectValueTypeConfig(configJson));
+        this.labelField = (String) configJson.get(GlobalAttrNames.ATTR_LABEL_FIELD);
+        this.keyField = (String) configJson.get(GlobalAttrNames.ATTR_KEY_FIELD);
+        this.setTargetValueType(new TreeOptionValueTypeConfig(configJson));
     }
 
-    public String getIdField() {
-        return idField;
+    public String getKeyField() {
+        return keyField;
     }
 
-    public void setIdField(String idField) {
-        this.idField = idField;
+    public void setKeyField(String keyField) {
+        this.keyField = keyField;
     }
 
-    public String getParentIdField() {
-        return parentIdField;
+    public String getLabelField() {
+        return labelField;
     }
 
-    public void setParentIdField(String parentIdField) {
-        this.parentIdField = parentIdField;
+    public void setLabelField(String labelField) {
+        this.labelField = labelField;
     }
 
     @Override

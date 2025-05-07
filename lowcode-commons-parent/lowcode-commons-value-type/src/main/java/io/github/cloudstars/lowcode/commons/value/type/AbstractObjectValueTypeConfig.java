@@ -29,10 +29,6 @@ public abstract class AbstractObjectValueTypeConfig extends AbstractValueTypeCon
         return properties;
     }
 
-    /*protected void setProperties(List<ObjectPropertyConfig> properties) {
-        this.properties = properties;
-    }*/
-
     @Override
     public DataTypeEnum getDataType() {
         return DataTypeEnum.OBJECT;

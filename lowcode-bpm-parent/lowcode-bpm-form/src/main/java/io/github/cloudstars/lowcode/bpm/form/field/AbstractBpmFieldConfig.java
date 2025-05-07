@@ -3,8 +3,12 @@ package io.github.cloudstars.lowcode.bpm.form.field;
 import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 抽象的字段配置
@@ -70,11 +74,6 @@ public abstract class AbstractBpmFieldConfig<T extends XValueTypeConfig> extends
         this.digestSupported = (Boolean) configJson.get(XBpmFieldConfig.ATTR_DIGEST_SUPPORTED);
     }
 
-    @Override
-    public boolean isRequired() {
-        return required != null && required;
-    }
-
     public String getKey() {
         return key;
     }
@@ -99,6 +98,7 @@ public abstract class AbstractBpmFieldConfig<T extends XValueTypeConfig> extends
         this.label = label;
     }
 
+    @Override
     public Boolean getRequired() {
         return required;
     }
@@ -155,4 +155,22 @@ public abstract class AbstractBpmFieldConfig<T extends XValueTypeConfig> extends
         return configJson;
     }
 
+    /**
+     * 解析字段列表配置
+     *
+     * @param fields 字段列表的JSON配置
+     * @return 字段列表配置
+     */
+    protected List<AbstractBpmFieldConfig> parseFields(JsonArray fields) {
+        List<AbstractBpmFieldConfig> fieldConfigs = new ArrayList<>();
+        fields.forEach((field) -> {
+            JsonObject fieldConfigJson = (JsonObject) field;
+            AbstractBpmFieldConfig fieldConfig = BpmFieldConfigFactory.newInstance(fieldConfigJson);
+            if (fieldConfig != null) {
+                fieldConfigs.add(fieldConfig);
+            }
+        });
+
+        return fieldConfigs;
+    }
 }

@@ -25,6 +25,9 @@ public interface GlobalAttrNames {
     // 标识字段名配置名称
     String ATTR_KEY_FIELD = "keyField";
 
+    // 上级标识字段名配置名称
+    String ATTR_PARENT_KEY_FIELD = "parentKeyField";
+
     // 表达式配置项名称
     String ATTR_EXPRESSION = "expression";
 

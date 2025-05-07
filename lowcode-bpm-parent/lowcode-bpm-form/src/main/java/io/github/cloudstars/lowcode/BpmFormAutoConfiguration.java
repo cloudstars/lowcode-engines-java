@@ -24,7 +24,7 @@ public class BpmFormAutoConfiguration implements ApplicationRunner {
         BpmFieldConfigClassFactory.register(TreeBpmFiledConfig.class);
         BpmFieldConfigClassFactory.register(UserBpmFiledConfig.class);
         BpmFieldConfigClassFactory.register(OrgBpmFiledConfig.class);
-        BpmFieldConfigClassFactory.register(SubFormBpmFieldConfig.class);
+        BpmFieldConfigClassFactory.register(DetailFormBpmFieldConfig.class);
         BpmFieldConfigClassFactory.register(OtherBpmFieldConfig.class);
     }
 

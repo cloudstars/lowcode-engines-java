@@ -11,7 +11,7 @@ import java.util.Arrays;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "OPTION", valueClass = OptionValue.class)
+@ValueTypeConfigClass(name = "OPTION", valueClass = Option.class)
 public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig {
 
     /**

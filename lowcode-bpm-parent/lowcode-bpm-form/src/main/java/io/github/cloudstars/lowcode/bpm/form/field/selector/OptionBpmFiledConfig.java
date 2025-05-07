@@ -1,9 +1,10 @@
 package io.github.cloudstars.lowcode.bpm.form.field.selector;
 
+import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.OptionValueTypeConfig;
-import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
 
 /**
  * 选项字段类型
@@ -12,7 +13,7 @@ import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
  *
  */
 @BpmFieldConfigClass(name = "OPTION")
-public class OptionBpmFiledConfig extends AbstractDataSourceSupportedBpmFieldConfig<OptionValueTypeConfig> {
+public class OptionBpmFiledConfig extends AbstractSelectableSupportedBpmFieldConfig<OptionValueTypeConfig> {
 
     // 标签配置名称
     private static final String ATTR_LABEL_FIELD = "labelField";
@@ -35,9 +36,9 @@ public class OptionBpmFiledConfig extends AbstractDataSourceSupportedBpmFieldCon
     public OptionBpmFiledConfig(JsonObject configJson) {
         super(configJson);
 
-        this.labelField = (String) configJson.get(ATTR_LABEL_FIELD);
-        this.valueField = (String) configJson.get(ATTR_VALUE_FIELD);
-        this.setValueType(new OptionValueTypeConfig(configJson));
+        this.labelField = (String) configJson.get(GlobalAttrNames.ATTR_LABEL_FIELD);
+        this.valueField = (String) configJson.get(GlobalAttrNames.ATTR_VALUE_FIELD);
+        this.setTargetValueType(new OptionValueTypeConfig(configJson));
     }
 
     public String getLabelField() {

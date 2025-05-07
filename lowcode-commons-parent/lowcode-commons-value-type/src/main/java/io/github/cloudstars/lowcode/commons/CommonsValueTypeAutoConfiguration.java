@@ -8,7 +8,7 @@ public class CommonsValueTypeAutoConfiguration implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        // 注册内置的数据格式配置类型
+        // 注册内置的输入性组件相关的数据格式配置类型
         ValueTypeConfigClassFactory.register(TextValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(NumberValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(BooleanValueTypeConfig.class);
@@ -16,7 +16,16 @@ public class CommonsValueTypeAutoConfiguration implements ApplicationRunner {
         ValueTypeConfigClassFactory.register(TimeValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(ObjectValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(OptionValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(TreeOptionValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(OrgValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(UserValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(ArrayValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(SelectorValueTypeConfig.class);
+
+        // 注册内置的非输入型组件相关的数据格式配置类型（一般用于数据源）
+        ValueTypeConfigClassFactory.register(ListValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(TreeValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(PageListValueTypeConfig.class);
     }
 
 }

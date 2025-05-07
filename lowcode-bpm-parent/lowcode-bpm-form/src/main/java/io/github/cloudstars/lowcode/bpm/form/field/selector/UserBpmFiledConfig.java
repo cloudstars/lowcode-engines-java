@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.bpm.form.field.selector;
 
 import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.UserValueTypeConfig;
 
 /**
  * 用户选择字段类型
@@ -11,7 +11,7 @@ import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
  *
  */
 @BpmFieldConfigClass(name = "USER")
-public class UserBpmFiledConfig extends AbstractDataSourceSupportedBpmFieldConfig<ObjectValueTypeConfig> {
+public class UserBpmFiledConfig extends AbstractSelectableSupportedBpmFieldConfig<UserValueTypeConfig> {
 
     public UserBpmFiledConfig() {
     }
@@ -19,7 +19,7 @@ public class UserBpmFiledConfig extends AbstractDataSourceSupportedBpmFieldConfi
     public UserBpmFiledConfig(JsonObject configJson) {
         super(configJson);
 
-        this.setValueType(new ObjectValueTypeConfig(configJson));
+        this.setTargetValueType(new UserValueTypeConfig(configJson));
     }
 
     @Override

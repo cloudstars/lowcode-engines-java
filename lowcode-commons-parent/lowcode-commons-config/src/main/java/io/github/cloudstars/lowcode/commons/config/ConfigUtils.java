@@ -23,7 +23,7 @@ public final class ConfigUtils {
      *
      * @param configJson 配置对象
      * @param key        键
-     * @return  Object值
+     * @return Object值
      */
     public static Object get(JsonObject configJson, String key) {
         return configJson.get(key);
@@ -49,6 +49,17 @@ public final class ConfigUtils {
      */
     public static Boolean getBoolean(JsonObject configJson, String key) {
         return (Boolean) get(configJson, key);
+    }
+
+    /**
+     * 取值并消费
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @param consumer   消费者
+     */
+    public static void consume(JsonObject configJson, String key, Consumer<Object> consumer) {
+        consumer.accept(configJson.get(key));
     }
 
     /**

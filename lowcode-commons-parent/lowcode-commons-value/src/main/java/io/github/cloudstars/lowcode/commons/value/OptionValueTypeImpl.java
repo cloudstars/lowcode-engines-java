@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.value;
 
 import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
-import io.github.cloudstars.lowcode.commons.value.type.OptionValue;
+import io.github.cloudstars.lowcode.commons.value.type.Option;
 import io.github.cloudstars.lowcode.commons.value.type.OptionValueTypeConfig;
 
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
  * @author clouds
  */
 @ValueTypeClass(name = "OPTION", valueTypeConfigClass = OptionValueTypeConfig.class)
-public class OptionValueTypeImpl extends AbstractValueTypeImpl<OptionValueTypeConfig, OptionValue> {
+public class OptionValueTypeImpl extends AbstractValueTypeImpl<OptionValueTypeConfig, Option> {
 
     // 标签配置名称
     private static final String DEFAULT_LABEL_FIELD = "labelField";
@@ -32,40 +32,40 @@ public class OptionValueTypeImpl extends AbstractValueTypeImpl<OptionValueTypeCo
     }
 
     @Override
-    public OptionValue parseDefaultValue() throws InvalidDataException {
+    public Option parseDefaultValue() throws InvalidDataException {
         return null;
     }
 
     @Override
-    public OptionValue mergeDefaultValue(Object rawValue) throws InvalidDataException {
+    public Option mergeDefaultValue(Object rawValue) throws InvalidDataException {
         if (rawValue instanceof Map) {
             Map defaultValueConfigMap = (Map) rawValue;
             String labelField = ObjectUtils.getOrDefault(valueTypeConfig.getLabelField(), DEFAULT_LABEL_FIELD);
             String valueField = ObjectUtils.getOrDefault(valueTypeConfig.getValueField(), DEFAULT_VALUE_FIELD);
-            OptionValue optionValue = new OptionValue();
-            optionValue.setLabel((String) defaultValueConfigMap.get(labelField));
-            optionValue.setValue((String) defaultValueConfigMap.get(valueField));
-            return optionValue;
+            Option option = new Option();
+            option.setLabel((String) defaultValueConfigMap.get(labelField));
+            option.setValue((String) defaultValueConfigMap.get(valueField));
+            return option;
         }
 
-        return (OptionValue) rawValue;
+        return (Option) rawValue;
     }
 
     @Override
-    public OptionValue parseValue(Object rawValue) {
+    public Option parseValue(Object rawValue) {
         if (rawValue instanceof Map) {
             Map<String, Object> valueMap = (Map<String, Object>) rawValue;
-            OptionValue optionValue = new OptionValue();
-            optionValue.setLabel((String) valueMap.get(this.labelField));
-            optionValue.setValue((String) valueMap.get(this.valueField));
-            return optionValue;
+            Option option = new Option();
+            option.setLabel((String) valueMap.get(this.labelField));
+            option.setValue((String) valueMap.get(this.valueField));
+            return option;
         }
 
-        return (OptionValue) rawValue;
+        return (Option) rawValue;
     }
 
     @Override
-    public void validate(OptionValue value) throws InvalidDataException {
+    public void validate(Option value) throws InvalidDataException {
 
     }
 

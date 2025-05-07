@@ -24,7 +24,7 @@ public interface XBpmFieldConfig extends XTypedConfig {
      *
      * @return
      */
-    boolean isRequired();
+    Boolean getRequired();
 
     /**
      * 获取字段的数据格式配置

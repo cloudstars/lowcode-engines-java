@@ -1,0 +1,5 @@
+{
+  "type": "TREE",
+  "keyField": "a",
+  "labelField": "b"
+}

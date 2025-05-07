@@ -63,7 +63,7 @@
       ]
     },
     {
-      "type": "SUBFORM",
+      "type": "DETAIL-FORM",
       "key": "q8jklfjewlj",
       "name": "subform1",
       "label": "子表单名称SubForm1",
@@ -94,7 +94,7 @@
       ]
     },
     {
-      "type": "SUBFORM",
+      "type": "DETAIL-FORM",
       "key": "iuflme83200l",
       "name": "array2",
       "label": "子表单名称SubForm2",

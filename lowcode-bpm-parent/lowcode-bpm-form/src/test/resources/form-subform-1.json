@@ -4,7 +4,7 @@
   "name": "含子表单字段类型的表单2",
   "fields": [
     {
-      "type": "SUBFORM",
+      "type": "DETAIL-FORM",
       "key": "iuflme83200l",
       "name": "array2",
       "label": "子表单名称SubForm2",

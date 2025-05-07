@@ -11,7 +11,7 @@ import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
  *
  */
 @BpmFieldConfigClass(name = "ORG")
-public class OrgBpmFiledConfig extends AbstractDataSourceSupportedBpmFieldConfig<ObjectValueTypeConfig> {
+public class OrgBpmFiledConfig extends AbstractSelectableSupportedBpmFieldConfig<ObjectValueTypeConfig> {
 
     public OrgBpmFiledConfig() {
     }
@@ -19,7 +19,7 @@ public class OrgBpmFiledConfig extends AbstractDataSourceSupportedBpmFieldConfig
     public OrgBpmFiledConfig(JsonObject configJson) {
         super(configJson);
 
-        this.setValueType(new ObjectValueTypeConfig(configJson));
+        this.setTargetValueType(new ObjectValueTypeConfig(configJson));
     }
 
     @Override

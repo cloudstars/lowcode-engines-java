@@ -1,0 +1,9 @@
+{
+  "type": "SELECTOR",
+  "multiple": true,
+  "items": {
+    "type": "TEXT",
+    "minLength": 100,
+    "maxLength": 200
+  }
+}
