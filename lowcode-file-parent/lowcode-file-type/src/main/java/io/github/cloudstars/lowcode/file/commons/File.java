@@ -1,13 +1,11 @@
 package io.github.cloudstars.lowcode.file.commons;
 
-import io.github.cloudstars.lowcode.commons.value.type.XObjectValue;
-
 /**
  * 文件格式的数据
  *
  * @author clouds
  */
-public class FileValue implements XObjectValue {
+public class File {
 
     private String key;
 

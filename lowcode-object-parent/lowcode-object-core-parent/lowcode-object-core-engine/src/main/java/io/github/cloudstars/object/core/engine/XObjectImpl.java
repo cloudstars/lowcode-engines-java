@@ -45,12 +45,12 @@ public class XObjectImpl implements XObject {
     }
 
     @Override
-    public Object get(String key) {
+    public Object getValue(String key) {
         return this.dataMap.get(key);
     }
 
     @Override
-    public void set(String key, Object value) {
+    public void setValue(String key, Object value) {
         // 校验key是否存在
         if (this.objectConfig.getField(key) == null) {
             throw new SystemException("模型[" + objectConfig.getKey() + "]中不存在字段[" + key + "]");

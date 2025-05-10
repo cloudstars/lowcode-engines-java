@@ -33,7 +33,7 @@ public class ObjectInsertOneMethodTest {
         ObjectInsertOneMethodConfig methodConfig = new ObjectInsertOneMethodConfig(configJson);
         ObjectInsertOneMethod methodImpl = new ObjectInsertOneMethod(methodConfig);
         XObject object = new XObjectImpl(objectConfig);
-        object.set("a", "aaa");
+        object.setValue("a", "aaa");
         int effectedRows = methodImpl.execute(object);
         Assert.assertEquals(1, effectedRows);
     }

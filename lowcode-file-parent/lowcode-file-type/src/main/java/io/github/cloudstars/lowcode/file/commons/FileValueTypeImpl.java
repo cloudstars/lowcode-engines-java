@@ -13,7 +13,7 @@ import java.util.Map;
  * @author clouds 
  */
 @ValueTypeClass(name = "FILE", valueTypeConfigClass = FileValueTypeConfig.class)
-public class FileValueTypeImpl extends AbstractValueTypeImpl<FileValueTypeConfig, FileValue> {
+public class FileValueTypeImpl extends AbstractValueTypeImpl<FileValueTypeConfig, File> {
 
     /**
      * 数据中的文件标识属性名
@@ -31,31 +31,31 @@ public class FileValueTypeImpl extends AbstractValueTypeImpl<FileValueTypeConfig
     }
 
     @Override
-    public FileValue parseDefaultValue() throws InvalidDataException {
+    public File parseDefaultValue() throws InvalidDataException {
         return null;
     }
 
     @Override
-    public FileValue mergeDefaultValue(Object rawValue) throws io.github.cloudstars.lowcode.commons.value.InvalidDataException {
+    public File mergeDefaultValue(Object rawValue) throws io.github.cloudstars.lowcode.commons.value.InvalidDataException {
         return null;
     }
 
     @Override
-    public FileValue parseValue(Object rawValue) throws InvalidDataException {
+    public File parseValue(Object rawValue) throws InvalidDataException {
         if (!(rawValue instanceof Map)) {
             throw new InvalidDataException("文件类型的数据格式不正确，必须是包括key、name属性的对象");
         }
 
         Map<String, Object> fileValueMap = (Map<String, Object>) rawValue;
-        FileValue fileValue = new FileValue();
-        fileValue.setKey((String) fileValueMap.get(ATTR_KEY));
-        fileValue.setName((String) fileValueMap.get(ATTR_NAME));
+        File file = new File();
+        file.setKey((String) fileValueMap.get(ATTR_KEY));
+        file.setName((String) fileValueMap.get(ATTR_NAME));
 
-        return fileValue;
+        return file;
     }
 
     @Override
-    public void validate(FileValue value) throws InvalidDataException {
+    public void validate(File value) throws InvalidDataException {
 
     }
 

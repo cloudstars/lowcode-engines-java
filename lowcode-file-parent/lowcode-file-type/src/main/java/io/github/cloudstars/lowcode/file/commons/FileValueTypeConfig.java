@@ -13,7 +13,7 @@ import java.util.Arrays;
  *
  * @author clouds
  */
-@ValueTypeConfigClass(name = "FILE", valueClass = FileValue.class)
+@ValueTypeConfigClass(name = "FILE", valueClass = File.class)
 public class FileValueTypeConfig extends AbstractObjectValueTypeConfig {
 
     public FileValueTypeConfig() {

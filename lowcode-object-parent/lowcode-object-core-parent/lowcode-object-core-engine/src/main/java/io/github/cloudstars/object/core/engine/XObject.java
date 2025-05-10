@@ -20,7 +20,7 @@ public interface XObject {
      * @param key
      * @return
      */
-    Object get(String key);
+    Object getValue(String key);
 
     /**
      * 设置某个键的值
@@ -28,7 +28,7 @@ public interface XObject {
      * @param key
      * @param value
      */
-    void set(String key, Object value);
+    void setValue(String key, Object value);
 
 
 }

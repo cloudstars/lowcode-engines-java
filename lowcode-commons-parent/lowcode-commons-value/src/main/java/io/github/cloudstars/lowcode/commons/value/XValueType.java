@@ -5,7 +5,7 @@ package io.github.cloudstars.lowcode.commons.value;
  * 数据格式
  *
  * @author clouds
- * @param <C> 配置类
+ * @param <C> 数据格式配置类
  * @param <V> 数据格式的值类型
  */
 public interface XValueType<C, V> {

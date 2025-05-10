@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = BpmCommonsTestApplication.class)
 public class ProcessConfigParserTest {
 
-
     @Test
     public void testSimple1() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("process/simple1.json");

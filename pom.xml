@@ -36,6 +36,7 @@
         <module>lowcode-object-parent</module>
         <module>lowcode-bpm-parent</module>
         <module>lowcode-excel-parent</module>
+        <module>lowcode-pdf-parent</module>
         <module>lowcode-file-parent</module>
         <module>lowcode-script-parent</module>
         <module>lowcode-flow-parent</module>

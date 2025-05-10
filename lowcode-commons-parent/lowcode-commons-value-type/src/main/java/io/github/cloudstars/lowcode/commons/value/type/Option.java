@@ -5,7 +5,7 @@ package io.github.cloudstars.lowcode.commons.value.type;
  *
  * @author clouds
  */
-public class Option implements XObjectValue {
+public class Option {
 
     /**
      * 选项值

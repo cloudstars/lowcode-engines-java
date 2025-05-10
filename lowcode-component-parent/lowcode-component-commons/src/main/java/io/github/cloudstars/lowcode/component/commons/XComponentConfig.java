@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.component.commons;
 
 import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
+import io.github.cloudstars.lowcode.component.commons.style.StyleConfig;
 
 /**
  * 组件配置接口
@@ -24,5 +25,12 @@ public interface XComponentConfig extends XTypedConfig {
      * @return 组件类型
      */
     String getType();
+
+    /**
+     * 获取样式配置
+     *
+     * @return 样式配置
+     */
+    StyleConfig getStyle();
 
 }

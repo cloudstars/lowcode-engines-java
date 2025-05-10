@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public abstract class AbstractObjectValueTypeConfig extends AbstractValueTypeConfig {
+public abstract class AbstractObjectValueTypeConfig extends AbstractValueTypeConfig implements XObjectValueTypeConfig {
 
     // 对象下的属性列表配置名称
     protected static final String ATTR_PROPERTIES = "properties";
@@ -25,6 +25,7 @@ public abstract class AbstractObjectValueTypeConfig extends AbstractValueTypeCon
         super(configJson);
     }
 
+    @Override
     public List<ObjectPropertyConfig> getProperties() {
         return properties;
     }
