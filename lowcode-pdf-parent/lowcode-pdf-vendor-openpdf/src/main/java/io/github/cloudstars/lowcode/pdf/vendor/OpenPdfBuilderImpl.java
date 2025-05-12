@@ -110,13 +110,9 @@ public class OpenPdfBuilderImpl implements PdfBuilder {
         // 依次生成每一个PDF元素
         for (XElementConfig elementConfig : elementConfigs) {
             int elementSize = ObjectUtils.getOrDefault(elementConfig.getSize(), perElementSize);
-            if (elementSize + currRowSize > PdfConstants.MAX_ELEMENT_SIZE) {
-                // 补足最后的空白区域
-                PdfPCell blankCell = this.buildBlankCell(PdfConstants.MAX_ELEMENT_SIZE - elementSize);
-                bodyTable.addCell(blankCell);
-                currRowSize = elementSize;
-            } else {
-                currRowSize += elementSize;
+            currRowSize += elementSize;
+            if (currRowSize >= PdfConstants.MAX_ELEMENT_SIZE) {
+                currRowSize = 0;
             }
 
             PdfPCell elementLabelCell = this.buildElementLabelCell(elementConfig, 2);
@@ -125,7 +121,7 @@ public class OpenPdfBuilderImpl implements PdfBuilder {
             bodyTable.addCell(elementContentCell);
         }
 
-        // 补足最后一行的空白区域（不补足会报错）
+        // 补足最后一行的空白区域（不补足会报错ExceptionConverter: java.io.IOException: The document has no pages.）
         if (currRowSize != 0 && currRowSize < PdfConstants.MAX_ELEMENT_SIZE) {
             PdfPCell blankCell = this.buildBlankCell(PdfConstants.MAX_ELEMENT_SIZE - currRowSize);
             bodyTable.addCell(blankCell);
@@ -145,7 +141,7 @@ public class OpenPdfBuilderImpl implements PdfBuilder {
     /**
      * 构建PDF标题元素
      *
-     * @param elementConfig PDF元素配置
+     * @param elementConfig    PDF元素配置
      * @param elementLabelSize PDF元素标题占比
      * @return PDF元素标题单元格
      */
@@ -164,7 +160,7 @@ public class OpenPdfBuilderImpl implements PdfBuilder {
     /**
      * 构建PDF元素内容
      *
-     * @param elementConfig PDF元素配置
+     * @param elementConfig      PDF元素配置
      * @param elementContentSize PDF元素内容占比
      * @return PDF元素内容单元格
      */
