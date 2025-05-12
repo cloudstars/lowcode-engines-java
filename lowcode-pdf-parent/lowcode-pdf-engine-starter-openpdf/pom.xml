@@ -25,7 +25,7 @@
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-test</artifactId>
+            <artifactId>lowcode-pdf-engine-testcase</artifactId>
         </dependency>
     </dependencies>
 

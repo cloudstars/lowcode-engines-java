@@ -63,6 +63,54 @@ public final class ConfigUtils {
     }
 
     /**
+     * 获取配置中指定键对应的枚举值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return 枚举值
+     */
+    public static <T extends Enum> T getEnum(JsonObject configJson, String key, Class<T> enumClass) {
+        String name = getString(configJson, key);
+        return (T) Enum.valueOf(enumClass, name);
+    }
+
+
+    /**
+     * 获取配置中指定键对应的Object值
+     *
+     * @param configJson
+     * @param key
+     * @param function
+     * @param <T>
+     * @return 对象值
+     */
+    public static <T extends XConfig> T getObject(JsonObject configJson, String key, Function<JsonObject, T> function) {
+        JsonObject valueObject = (JsonObject) configJson.get(key);
+        T config = function.apply(valueObject);
+        return config;
+    }
+
+
+    /**
+     * 获取配置中指定键对应的List值
+     *
+     * @param configJson
+     * @param key
+     * @param function
+     * @param <T>
+     * @return 列表值
+     */
+    public static <T extends XConfig> List<T> getList(JsonObject configJson, String key, Function<JsonObject, T> function) {
+        JsonArray valueArray = (JsonArray) configJson.get(key);
+        List<T> configList = new ArrayList<>();
+        for (Object valueItem : valueArray) {
+            T config = function.apply((JsonObject) valueItem);
+            configList.add(config);
+        }
+        return configList;
+    }
+
+    /**
      * 取值并消费
      *
      * @param configJson 配置对象
@@ -241,6 +289,7 @@ public final class ConfigUtils {
      * @param <T>       配置类型
      * @return JsonArray
      */
+    @Deprecated/* 请使用getList */
     public static <T extends XConfig> List<T> fromJsonArray(JsonArray jsonArray, Function<JsonObject, T> function) {
         List<T> configs = new ArrayList<>();
         jsonArray.forEach(jsonItem -> configs.add(function.apply((JsonObject) jsonItem)));

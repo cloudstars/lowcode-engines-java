@@ -21,7 +21,11 @@ public class StaticDataSourceLoader<V extends AbstractValueType<C, D>, C extends
     @Override
     public D loadData() {
         Object rawData = this.dataSourceConfig.getData();
-        D targetData = (D) this.valueType.parseValue(rawData);
-        return targetData;
+        if (this.valueType != null) {
+            D targetData = this.valueType.parseValue(rawData);
+            return targetData;
+        }
+
+        return (D) rawData;
     }
 }

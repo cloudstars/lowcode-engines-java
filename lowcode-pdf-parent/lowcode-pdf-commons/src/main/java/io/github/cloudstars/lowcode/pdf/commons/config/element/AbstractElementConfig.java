@@ -1,7 +1,10 @@
 package io.github.cloudstars.lowcode.pdf.commons.config.element;
 
-import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
-import io.github.cloudstars.lowcode.commons.datasource.config.AbstractDataSourceConfig;
+import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.datasource.config.DataSourceConfigFactory;
+import io.github.cloudstars.lowcode.commons.datasource.config.XDataSourceConfig;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 /**
@@ -9,12 +12,15 @@ import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
  *
  * @auau
  */
-public abstract class AbstractElementConfig<D extends XValueTypeConfig> extends AbstractConfig implements XElementConfig {
+public abstract class AbstractElementConfig<D extends XValueTypeConfig> extends AbstractTypedConfig implements XElementConfig {
+
+    private static final String ATTR_SIZE = "size";
+    private static final String ATTR_LABEL = "label";
 
     /**
      * 元素的栅格列数（基于24列栅格布局）
      */
-    private int size;
+    private Integer size;
 
     /**
      * 元素的标题
@@ -24,14 +30,25 @@ public abstract class AbstractElementConfig<D extends XValueTypeConfig> extends 
     /**
      * 数据源配置
      */
-    private AbstractDataSourceConfig<D> dataSource;
+    private XDataSourceConfig<D> dataSource;
+
+    public AbstractElementConfig() {
+    }
+
+    public AbstractElementConfig(JsonObject configJson) {
+        super(configJson);
+
+        this.size = ConfigUtils.getInteger(configJson, ATTR_SIZE);
+        this.label = ConfigUtils.getString(configJson, ATTR_LABEL);
+        this.dataSource = ConfigUtils.getObject(configJson, XDataSourceConfig.ATTR, (v) -> DataSourceConfigFactory.newInstance(v));
+    }
 
     @Override
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 
@@ -45,11 +62,22 @@ public abstract class AbstractElementConfig<D extends XValueTypeConfig> extends 
     }
 
     @Override
-    public AbstractDataSourceConfig<D> getDataSource() {
+    public XDataSourceConfig<D> getDataSource() {
         return dataSource;
     }
 
-    public void setDataSource(AbstractDataSourceConfig<D> dataSource) {
+    public void setDataSource(XDataSourceConfig<D> dataSource) {
         this.dataSource = dataSource;
     }
+
+    @Override
+    public JsonObject<String, Object> toJson() {
+        JsonObject configJson = super.toJson();
+        ConfigUtils.putIfNotNull(configJson, ATTR_SIZE, this.size);
+        ConfigUtils.putIfNotNull(configJson, ATTR_LABEL, this.label);
+        ConfigUtils.put(configJson, XDataSourceConfig.ATTR, this.dataSource);
+
+        return configJson;
+    }
+
 }

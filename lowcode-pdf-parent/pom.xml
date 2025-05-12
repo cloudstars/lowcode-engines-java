@@ -19,8 +19,10 @@
         <module>lowcode-pdf-commons</module>
         <module>lowcode-pdf-parser</module>
         <module>lowcode-pdf-engine</module>
+        <module>lowcode-pdf-engine-testcase</module>
+        <module>lowcode-pdf-vendor-api</module>
+        <module>lowcode-pdf-vendor-openpdf</module>
         <module>lowcode-pdf-engine-starter-openpdf</module>
-        <module>lowcode-pdf-vendor-parent</module>
     </modules>
 
     <dependencyManagement>
@@ -34,6 +36,12 @@
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-pdf-engine</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-pdf-engine-testcase</artifactId>
+                <version>${revision}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>

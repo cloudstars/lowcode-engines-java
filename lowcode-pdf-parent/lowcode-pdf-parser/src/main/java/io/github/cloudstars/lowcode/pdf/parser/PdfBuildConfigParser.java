@@ -54,7 +54,7 @@ public class PdfBuildConfigParser implements XConfigParser<PdfBuildConfig> {
         List<XElementConfig> elementConfigs =
                 ConfigUtils.fromJsonArray(elementsConfigJson, (elementConfigJson) -> {
                     String type = ConfigUtils.getString(elementConfigJson, XTypedConfig.ATTR);
-                    AbstractElementConfigParser<AbstractElementConfig> elementConfigParser = ElementConfigParserFactory.getInstance(type);
+                    AbstractElementConfigParser<AbstractElementConfig> elementConfigParser = PdfElementConfigParserFactory.getInstance(type);
                     XElementConfig elementConfig = elementConfigParser.parse(elementConfigJson);
                     return elementConfig;
                 });

@@ -15,7 +15,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class StaticDataSourceConfigTest {
 
     @Test
-    public void test1() {
+    public void testText() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datasource/static-text1.json");
+        StaticDataSourceConfig dataSourceConfig = new StaticDataSourceConfig(configJson);
+        JsonTestUtils.assertEquals(configJson, dataSourceConfig.toJson());
+    }
+
+
+    @Test
+    public void testList() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datasource/static-list1.json");
         StaticDataSourceConfig dataSourceConfig = new StaticDataSourceConfig(configJson);
         JsonTestUtils.assertEquals(configJson, dataSourceConfig.toJson());

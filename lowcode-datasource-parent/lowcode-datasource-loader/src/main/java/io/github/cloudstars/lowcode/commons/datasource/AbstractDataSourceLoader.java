@@ -15,7 +15,9 @@ public abstract class AbstractDataSourceLoader<S extends AbstractDataSourceConfi
     public AbstractDataSourceLoader(S dataSourceConfig) {
         this.dataSourceConfig = dataSourceConfig;
         C valueTypeConfig = this.dataSourceConfig.getValueType();
-        this.valueType = (V) ValueTypeFactory.newInstance(valueTypeConfig);
+        if (valueTypeConfig != null) {
+            this.valueType = (V) ValueTypeFactory.newInstance(valueTypeConfig);
+        }
     }
 
     @Override

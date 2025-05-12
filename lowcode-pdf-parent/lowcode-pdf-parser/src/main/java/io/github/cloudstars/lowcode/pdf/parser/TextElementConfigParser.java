@@ -8,6 +8,7 @@ public class TextElementConfigParser extends AbstractElementConfigParser<TextEle
     @Override
     public TextElementConfig parse(JsonObject configJson) {
         TextElementConfig config = new TextElementConfig();
+        config.setType("TEXT");
         super.parseCommons(config, configJson);
 
         return config;

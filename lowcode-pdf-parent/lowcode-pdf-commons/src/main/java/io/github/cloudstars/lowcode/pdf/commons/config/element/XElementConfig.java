@@ -22,9 +22,7 @@ public interface XElementConfig extends XConfig {
      *
      * @return 0-24间的整数
      */
-    default int getSize() {
-        return PdfConstants.MAX_ELEMENT_SIZE;
-    }
+    Integer getSize();
 
     /**
      * 获取标签

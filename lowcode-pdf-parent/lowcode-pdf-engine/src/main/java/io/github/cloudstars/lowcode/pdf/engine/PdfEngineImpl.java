@@ -17,7 +17,7 @@ public class PdfEngineImpl implements PdfEngine {
 
     @Override
     public void build(PdfBuildConfig config, Map<String, Object> dataMap, OutputStream os) {
-        PdfBuilder builder = factory.newInstance(config);
+        PdfBuilder builder = this.factory.newInstance(config);
         builder.build(dataMap, os);
     }
 

@@ -2,6 +2,8 @@ package io.github.cloudstars.lowcode.pdf.parser;
 
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.config.XConfigParser;
+import io.github.cloudstars.lowcode.commons.datasource.config.DataSourceConfigFactory;
+import io.github.cloudstars.lowcode.commons.datasource.config.XDataSourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.pdf.commons.config.element.AbstractElementConfig;
 
@@ -24,6 +26,7 @@ public abstract class AbstractElementConfigParser<T extends AbstractElementConfi
     protected void parseCommons(AbstractElementConfig config, JsonObject configJson) {
         config.setSize(ConfigUtils.getInteger(configJson, ATTR_SIZE));
         config.setLabel(ConfigUtils.getString(configJson, ATTR_LABEL));
+        config.setDataSource(ConfigUtils.getObject(configJson, XDataSourceConfig.ATTR, (v) -> DataSourceConfigFactory.newInstance(v)));
     }
 
 }

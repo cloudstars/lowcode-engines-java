@@ -1,7 +1,10 @@
 package io.github.cloudstars.lowcode.pdf.commons.config;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractResourceConfig;
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.pdf.commons.config.element.XElementConfig;
+import io.github.cloudstars.lowcode.pdf.commons.config.element.text.TextElementConfig;
 
 import java.util.List;
 
@@ -11,6 +14,15 @@ import java.util.List;
  * @author clouds
  */
 public class PdfBuildConfig extends AbstractResourceConfig {
+
+    // 纸张大小
+    private static final String ATTR_PAGE_SIZE = "pageSize";
+
+    // 分栏数
+    private static final String ATTR_COLUMN_SIZE = "columnSize";
+
+    // 元素列表
+    private static final String ATTR_ELEMENTS = "elements";
 
     /**
      * 纸张大小
@@ -26,6 +38,18 @@ public class PdfBuildConfig extends AbstractResourceConfig {
      * PDF元素列表
      */
     private List<XElementConfig> elements;
+
+
+    public PdfBuildConfig() {
+    }
+
+    public PdfBuildConfig(JsonObject configJson) {
+        super(configJson);
+
+        this.pageSize = ConfigUtils.getEnum(configJson, ATTR_PAGE_SIZE, PageSizeEnum.class);
+        this.columnSize = ConfigUtils.getInteger(configJson, ATTR_COLUMN_SIZE);
+        this.elements = ConfigUtils.getList(configJson, ATTR_ELEMENTS, (v) -> new TextElementConfig(v));
+    }
 
     public PageSizeEnum getPageSize() {
         return pageSize;
@@ -49,6 +73,16 @@ public class PdfBuildConfig extends AbstractResourceConfig {
 
     public void setElements(List<XElementConfig> elements) {
         this.elements = elements;
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject configJson = super.toJson();
+        ConfigUtils.putIfNotNull(configJson, ATTR_PAGE_SIZE, this.pageSize);
+        ConfigUtils.putIfNotNull(configJson, ATTR_COLUMN_SIZE, this.columnSize);
+        ConfigUtils.putArray(configJson, ATTR_ELEMENTS, this.elements);
+
+        return configJson;
     }
 
 }
