@@ -16,7 +16,7 @@ public interface XObjectMethod<R extends Object, P extends Object> {
      *
      * @return
      */
-    XObjectMethodConfig getObjectMethodConfig();
+    XObjectMethodConfig getConfig();
 
     /**
      * 执行

@@ -1,6 +1,9 @@
 package io.github.cloudstars.lowcode.pdf.commons.config;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractResourceConfig;
+import io.github.cloudstars.lowcode.pdf.commons.config.element.XElementConfig;
+
+import java.util.List;
 
 /**
  * PDF生成配置
@@ -12,26 +15,40 @@ public class PdfBuildConfig extends AbstractResourceConfig {
     /**
      * 纸张大小
      */
-    private PaperSize paperSize;
+    private PageSizeEnum pageSize;
 
     /**
-     * 表格配置
+     * 栏位数
      */
-    private PdfTableConfig table;
+    private Integer columnSize;
 
-    public PaperSize getPaperSize() {
-        return paperSize;
+    /**
+     * PDF元素列表
+     */
+    private List<XElementConfig> elements;
+
+    public PageSizeEnum getPageSize() {
+        return pageSize;
     }
 
-    public void setPaperSize(PaperSize paperSize) {
-        this.paperSize = paperSize;
+    public void setPageSize(PageSizeEnum pageSize) {
+        this.pageSize = pageSize;
     }
 
-    public PdfTableConfig getTable() {
-        return table;
+    public Integer getColumnSize() {
+        return columnSize;
     }
 
-    public void setTable(PdfTableConfig table) {
-        this.table = table;
+    public void setColumnSize(Integer columnSize) {
+        this.columnSize = columnSize;
     }
+
+    public List<XElementConfig> getElements() {
+        return elements;
+    }
+
+    public void setElements(List<XElementConfig> elements) {
+        this.elements = elements;
+    }
+
 }

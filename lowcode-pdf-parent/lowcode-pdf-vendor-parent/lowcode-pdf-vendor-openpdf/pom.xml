@@ -19,6 +19,10 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-datasource-loader</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-pdf-vendor-api</artifactId>
         </dependency>
         <dependency>

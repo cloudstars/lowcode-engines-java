@@ -17,6 +17,10 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-commons-config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-datasource-type</artifactId>
+        </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>

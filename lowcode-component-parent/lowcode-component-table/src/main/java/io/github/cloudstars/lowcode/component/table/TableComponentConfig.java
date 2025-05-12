@@ -1,10 +1,10 @@
 package io.github.cloudstars.lowcode.component.table;
 
-import io.github.cloudstars.lowcode.commons.config.AbstractResourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.component.commons.AbstractComponentConfig;
 import io.github.cloudstars.lowcode.component.commons.XComponentConfig;
 
-public class TableComponentConfig extends AbstractResourceConfig implements XComponentConfig {
+public class TableComponentConfig extends AbstractComponentConfig implements XComponentConfig {
 
     public TableComponentConfig() {
     }

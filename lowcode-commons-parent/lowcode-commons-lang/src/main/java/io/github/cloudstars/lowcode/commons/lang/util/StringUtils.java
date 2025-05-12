@@ -16,6 +16,11 @@ public final class StringUtils {
      */
     private static final Pattern VAR_PATTERN = Pattern.compile("\\$\\{([\\w_]+)\\}");
 
+    /**
+     * 空白串
+     */
+    public static final String EMPTY = "";
+
     private StringUtils() {
     }
 

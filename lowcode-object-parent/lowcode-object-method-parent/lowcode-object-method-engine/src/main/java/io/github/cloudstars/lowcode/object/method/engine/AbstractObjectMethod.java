@@ -10,18 +10,15 @@ import io.github.cloudstars.lowcode.object.method.editor.XObjectMethodConfig;
  */
 public abstract class AbstractObjectMethod<C extends XObjectMethodConfig, R extends Object, P extends Object> implements XObjectMethod<R, P> {
 
-    //protected XObjectConfigResolver objectConfigResolver;
-
     protected C methodConfig;
 
 
     public AbstractObjectMethod(/*XObjectConfigResolver objectConfigResolver, */C methodConfig) {
-        //this.objectConfigResolver = objectConfigResolver;
         this.methodConfig = methodConfig;
     }
 
     @Override
-    public XObjectMethodConfig getObjectMethodConfig() {
+    public XObjectMethodConfig getConfig() {
         return this.methodConfig;
     }
 

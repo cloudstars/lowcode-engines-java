@@ -137,6 +137,11 @@
                 <artifactId>lowcode-excel-engine</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-pdf-engine</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>

@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.commons.datasource.config;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 /**
  * 静态数据源配置
@@ -8,7 +9,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  * @author clouds
  */
 @DataSourceConfigClass(name = "STATIC")
-public class StaticDataSourceConfig extends AbstractDataSourceConfig {
+public class StaticDataSourceConfig<V extends XValueTypeConfig> extends AbstractDataSourceConfig<V> {
 
     // 静态数据配置名称
     private static final String ATTR_DATA = "data";

@@ -1,0 +1,16 @@
+{
+  "pageSize": "A4",
+  "columnSize": 3,
+  "elements": [
+    {
+      "type": "TEXT",
+      "label": "标题A",
+      "data": "这是A的内容"
+    },
+    {
+      "type": "TEXT",
+      "label": "标题B",
+      "data": "这是B的内容"
+    }
+  ]
+}

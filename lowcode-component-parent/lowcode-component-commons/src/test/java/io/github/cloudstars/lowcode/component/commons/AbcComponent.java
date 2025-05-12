@@ -70,4 +70,5 @@ public class AbcComponent extends AbstractComponentConfig {
 
         return configJson;
     }
+
 }

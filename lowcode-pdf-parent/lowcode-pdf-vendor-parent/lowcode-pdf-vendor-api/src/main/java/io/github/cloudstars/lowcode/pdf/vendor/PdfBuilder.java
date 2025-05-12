@@ -1,5 +1,7 @@
 package io.github.cloudstars.lowcode.pdf.vendor;
 
+import io.github.cloudstars.lowcode.pdf.commons.config.PdfBuildConfig;
+
 import java.io.OutputStream;
 import java.util.Map;
 
@@ -9,6 +11,13 @@ import java.util.Map;
  * @author clouds
  */
 public interface PdfBuilder {
+
+    /**
+     * 获取配置
+     *
+     * @return
+     */
+    PdfBuildConfig getConfig();
 
     /**
      * 构建PDF

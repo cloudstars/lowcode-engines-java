@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
  *
  * @author clouds
  */
-public interface XDataSourceConfig extends XConfig {
+public interface XDataSourceConfig<V extends XValueTypeConfig> extends XConfig {
 
     // 数据源配置名称
     String ATTR = "dataSource";
@@ -18,6 +18,6 @@ public interface XDataSourceConfig extends XConfig {
      *
      * @return
      */
-    XValueTypeConfig getValueType();
+    V getValueType();
 
 }

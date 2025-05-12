@@ -13,28 +13,28 @@ public class ValidationUtilsTest {
 
     @Test
     public void testString0() {
-        TextValueTypeImpl valueType = this.getTextValueType(5, 10);
+        TextValueType valueType = this.getTextValueType(5, 10);
         ValidationUtils.validate("12345", valueType);
         ValidationUtils.validate("1234567890", valueType);
     }
 
     @Test(expected = InvalidDataException.class)
     public void testString1() {
-        TextValueTypeImpl valueType = this.getTextValueType(5, 10);
+        TextValueType valueType = this.getTextValueType(5, 10);
         ValidationUtils.validate("1234", valueType);
     }
 
     @Test(expected = InvalidDataException.class)
     public void testString2() {
-        TextValueTypeImpl valueType = this.getTextValueType(5, 10);
+        TextValueType valueType = this.getTextValueType(5, 10);
         ValidationUtils.validate("01234567890", valueType);
     }
 
-    private TextValueTypeImpl getTextValueType(int minLength, int maxLength) {
+    private TextValueType getTextValueType(int minLength, int maxLength) {
         TextValueTypeConfig valueTypeConfig = new TextValueTypeConfig();
         valueTypeConfig.setMinLength(minLength);
         valueTypeConfig.setMaxLength(maxLength);
-        return new TextValueTypeImpl(valueTypeConfig);
+        return new TextValueType(valueTypeConfig);
     }
 
 }

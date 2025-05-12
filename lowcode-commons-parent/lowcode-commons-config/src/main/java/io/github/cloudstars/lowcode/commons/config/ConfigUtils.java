@@ -41,6 +41,17 @@ public final class ConfigUtils {
     }
 
     /**
+     * 获取配置中指定键对应的Integer值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return Integer值
+     */
+    public static Integer getInteger(JsonObject configJson, String key) {
+        return (Integer) get(configJson, key);
+    }
+
+    /**
      * 获取配置中指定键对应的Boolean值
      *
      * @param configJson 配置对象
@@ -164,7 +175,6 @@ public final class ConfigUtils {
     }
 
     /**
-     *
      * 添加来源配置中的全部属性（同名属性忽略）
      *
      * @param configJson

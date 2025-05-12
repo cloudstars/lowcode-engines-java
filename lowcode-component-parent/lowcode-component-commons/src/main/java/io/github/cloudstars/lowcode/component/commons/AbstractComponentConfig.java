@@ -3,6 +3,7 @@ package io.github.cloudstars.lowcode.component.commons;
 import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.component.commons.style.StyleConfig;
 
 /**
  * 抽象的组件配置，所有组件的配置都继承它
@@ -27,6 +28,11 @@ public abstract class AbstractComponentConfig extends AbstractTypedConfig implem
      */
     private String visibleOn;
 
+    /**
+     * 样式
+     */
+    private StyleConfig style;
+
     public AbstractComponentConfig() {
     }
 
@@ -35,6 +41,16 @@ public abstract class AbstractComponentConfig extends AbstractTypedConfig implem
 
         this.id = (String) configJson.get(ATTR_ID);
         this.visibleOn = (String) configJson.get(ATTR_VISIBLE_ON);
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public StyleConfig getStyle() {
+        return this.style;
     }
 
     @Override

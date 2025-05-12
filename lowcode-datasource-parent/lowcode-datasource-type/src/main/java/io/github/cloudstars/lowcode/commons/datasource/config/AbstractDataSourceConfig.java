@@ -11,12 +11,12 @@ import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
  *
  * @author clouds
  */
-public class AbstractDataSourceConfig<T extends XValueTypeConfig> extends AbstractTypedConfig implements XDataSourceConfig {
+public class AbstractDataSourceConfig<V extends XValueTypeConfig> extends AbstractTypedConfig implements XDataSourceConfig<V> {
 
     /**
      * 数据格式
      */
-    private T valueType;
+    private V valueType;
 
     public AbstractDataSourceConfig() {
     }
@@ -25,16 +25,16 @@ public class AbstractDataSourceConfig<T extends XValueTypeConfig> extends Abstra
         super(configJson);
 
         ConfigUtils.consumeIfPresent(configJson, XValueTypeConfig.ATTR, (v) -> {
-            this.valueType = (T) ValueTypeConfigFactory.newInstance((JsonObject) v);
+            this.valueType = (V) ValueTypeConfigFactory.newInstance((JsonObject) v);
         });
     }
 
     @Override
-    public T getValueType() {
+    public V getValueType() {
         return valueType;
     }
 
-    public void setValueType(T valueType) {
+    public void setValueType(V valueType) {
         this.valueType = valueType;
     }
 
