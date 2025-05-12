@@ -24,11 +24,6 @@ public abstract class AbstractPdfEngineTest {
         File file = new File("target/pdf-build1.pdf");
         if (file.exists()) {
             file.delete();
-            /* try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new SystemException("创建输出文件 pdf-build1.pdf 异常", e);
-            } */
         }
 
         try (FileOutputStream os = new FileOutputStream(file)) {

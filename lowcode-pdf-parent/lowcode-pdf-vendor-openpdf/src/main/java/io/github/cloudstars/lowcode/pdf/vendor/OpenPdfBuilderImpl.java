@@ -33,7 +33,6 @@ public class OpenPdfBuilderImpl implements PdfBuilder {
 
     private BaseFont bfChinese;
 
-
     public OpenPdfBuilderImpl(PdfBuildConfig config) {
         this.config = config;
         String fontName = "STSong-Light";

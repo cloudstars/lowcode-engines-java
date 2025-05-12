@@ -11,6 +11,13 @@ import io.github.cloudstars.lowcode.pdf.commons.config.element.XElementConfig;
 public interface XElementConvertor<T extends XElementConfig> {
 
     /**
+     * 获取PDF元素配置
+     *
+     * @return PDF元素配置
+     */
+    T getElementConfig();
+
+    /**
      * 将PDF配置转换为OpenPdf的元素
      *
      * @param elementConfig PDF元素配置

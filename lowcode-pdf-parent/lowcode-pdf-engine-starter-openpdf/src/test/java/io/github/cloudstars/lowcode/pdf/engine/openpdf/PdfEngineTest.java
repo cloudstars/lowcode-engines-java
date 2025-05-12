@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OpenPdfEngineTestApplication.class)
 public class PdfEngineTest extends AbstractPdfEngineTest {
+
     @Test
     @Override
     public void build1() {

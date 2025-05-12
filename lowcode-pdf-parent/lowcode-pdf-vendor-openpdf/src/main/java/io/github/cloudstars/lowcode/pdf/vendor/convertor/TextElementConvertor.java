@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.pdf.vendor.convertor;
 
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
 import io.github.cloudstars.lowcode.commons.datasource.DataSourceLoaderFactory;
@@ -22,7 +23,9 @@ public class TextElementConvertor extends AbstractElementConvertor<TextElementCo
         XDataSourceConfig<TextValueTypeConfig> dataSourceConfig = elementConfig.getDataSource();
         XDataSourceLoader dataSourceLoader = DataSourceLoaderFactory.newInstance(dataSourceConfig);
         Object data = dataSourceLoader.loadData();
-        Paragraph paragraph = new Paragraph(data != null ? data.toString() : StringUtils.EMPTY);
+        String content = data != null ? data.toString() : StringUtils.EMPTY;
+        Font contentFont = new Font(bfChinese, 18, Font.NORMAL);
+        Paragraph paragraph = new Paragraph(content, contentFont);
         PdfPCell cell = new PdfPCell(paragraph); // 建立一个单元格
         cell.setColspan(2);
         cell.setBorder(0);
