@@ -33,4 +33,20 @@ public abstract class AbstractPdfEngineTest {
         }
     }
 
+    protected void build2() {
+        JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("pdf-build2.json");
+        PdfBuildConfig config = new PdfBuildConfig(configJson);
+
+        File file = new File("target/pdf-build2.pdf");
+        if (file.exists()) {
+            file.delete();
+        }
+
+        try (FileOutputStream os = new FileOutputStream(file)) {
+            this.pdfEngine.build(config, new HashMap<>(), os);
+        } catch (IOException e) {
+            throw new SystemException("构建EXCEL pdf-build2.pdf 异常", e);
+        }
+    }
+
 }

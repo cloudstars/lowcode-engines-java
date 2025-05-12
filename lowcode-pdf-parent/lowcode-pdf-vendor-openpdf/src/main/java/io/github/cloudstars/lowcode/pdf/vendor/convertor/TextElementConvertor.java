@@ -10,6 +10,7 @@ import io.github.cloudstars.lowcode.commons.datasource.config.XDataSourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.util.StringUtils;
 import io.github.cloudstars.lowcode.commons.value.type.TextValueTypeConfig;
 import io.github.cloudstars.lowcode.pdf.commons.config.element.text.TextElementConfig;
+import io.github.cloudstars.lowcode.pdf.vendor.PdfStyle;
 
 @ElementConvertorClass(type = "TEXT", elementClass = TextElementConfig.class)
 public class TextElementConvertor extends AbstractElementConvertor<TextElementConfig> {
@@ -24,7 +25,7 @@ public class TextElementConvertor extends AbstractElementConvertor<TextElementCo
         XDataSourceLoader dataSourceLoader = DataSourceLoaderFactory.newInstance(dataSourceConfig);
         Object data = dataSourceLoader.loadData();
         String content = data != null ? data.toString() : StringUtils.EMPTY;
-        Font contentFont = new Font(bfChinese, 18, Font.NORMAL);
+        Font contentFont = new Font(PdfStyle.BASE_FONT, 18, Font.NORMAL);
         Paragraph paragraph = new Paragraph(content, contentFont);
         PdfPCell cell = new PdfPCell(paragraph); // 建立一个单元格
         cell.setColspan(2);

@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.pdf.vendor;
 
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -15,7 +14,6 @@ import io.github.cloudstars.lowcode.pdf.vendor.convertor.XElementConvertor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +29,8 @@ public class OpenPdfBuilderImpl implements PdfBuilder {
 
     private PdfBuildConfig config;
 
-    private BaseFont bfChinese;
-
     public OpenPdfBuilderImpl(PdfBuildConfig config) {
         this.config = config;
-        String fontName = "STSong-Light";
-        try {
-            this.bfChinese = BaseFont.createFont(fontName, "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
-        } catch (IOException e) {
-            LOGGER.error("加载PDF构建的字体{}失败", e);
-        }
     }
 
     @Override
@@ -160,7 +150,7 @@ public class OpenPdfBuilderImpl implements PdfBuilder {
      * @return PDF元素标题单元格
      */
     private PdfPCell buildElementLabelCell(XElementConfig elementConfig, int elementLabelSize) {
-        Font labelFont = new Font(bfChinese, 16, Font.BOLD);
+        Font labelFont = new Font(PdfStyle.BASE_FONT, 16, Font.BOLD);
         String label = elementConfig.getLabel();
         Paragraph paragraph = new Paragraph(label, labelFont);
         PdfPCell labelCell = new PdfPCell(paragraph);

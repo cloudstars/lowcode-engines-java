@@ -17,4 +17,10 @@ public class PdfEngineTest extends AbstractPdfEngineTest {
         super.build1();
     }
 
+    @Test
+    @Override
+    public void build2() {
+        super.build2();
+    }
+
 }
