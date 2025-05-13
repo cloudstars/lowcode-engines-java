@@ -28,10 +28,10 @@
 
     <modules>
         <module>lowcode-commons-parent</module>
+        <module>lowcode-value-parent</module>
         <module>lowcode-formula-parent</module>
         <module>lowcode-api-parent</module>
         <module>lowcode-datasource-parent</module>
-        <module>lowcode-dynamic-value-parent</module>
         <module>lowcode-predicate-parent</module>
         <module>lowcode-object-parent</module>
         <module>lowcode-bpm-parent</module>
@@ -62,12 +62,12 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-value-type</artifactId>
+                <artifactId>lowcode-value-type</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-commons-value</artifactId>
+                <artifactId>lowcode-value-loader</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

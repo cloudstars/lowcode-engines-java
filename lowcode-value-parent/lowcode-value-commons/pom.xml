@@ -4,19 +4,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.cloudstars</groupId>
-        <artifactId>lowcode-commons-parent</artifactId>
+        <artifactId>lowcode-value-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-commons-value</artifactId>
-    <description>公共动态值定义</description>
-
+    <artifactId>lowcode-value-commons</artifactId>
+    <description>低代码数据格式 commons</description>
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-value-type</artifactId>
+            <artifactId>lowcode-commons-lang</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

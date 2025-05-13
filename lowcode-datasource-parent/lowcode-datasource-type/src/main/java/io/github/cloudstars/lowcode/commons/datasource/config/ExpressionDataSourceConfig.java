@@ -35,9 +35,9 @@ public class ExpressionDataSourceConfig extends AbstractDataSourceConfig {
 
     @Override
     public JsonObject toJson() {
-        JsonObject configJson = new JsonObject();
+        JsonObject configJson = super.toJson();
         configJson.put(GlobalAttrNames.ATTR_EXPRESSION, this.expression);
 
-        return super.toJson();
+        return configJson;
     }
 }

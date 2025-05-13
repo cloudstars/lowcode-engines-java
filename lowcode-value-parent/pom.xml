@@ -8,28 +8,24 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-component-parent</artifactId>
+    <artifactId>lowcode-value-parent</artifactId>
     <packaging>pom</packaging>
-    <description>低代码平台前端 parent</description>
+    <description>低代码平台数据格式parent</description>
 
     <properties>
     </properties>
 
     <modules>
-        <module>lowcode-component-commons</module>
-        <module>lowcode-dynamic-value-parent</module>
-        <module>lowcode-component-layout</module>
-        <module>lowcode-component-page</module>
-        <module>lowcode-component-form</module>
-        <module>lowcode-component-table</module>
-        <module>lowcode-component-view</module>
+        <module>lowcode-value-commons</module>
+        <module>lowcode-value-type</module>
+        <module>lowcode-value-loader</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-component-commons</artifactId>
+                <artifactId>lowcode-value-commons</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

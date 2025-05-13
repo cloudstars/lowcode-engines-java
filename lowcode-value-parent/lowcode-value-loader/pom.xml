@@ -4,22 +4,19 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.cloudstars</groupId>
-        <artifactId>lowcode-api-parent</artifactId>
+        <artifactId>lowcode-value-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-api-executor</artifactId>
-    <description>低代码平台API执行器</description>
+    <artifactId>lowcode-value-loader</artifactId>
+    <description>低代码平台数据加载器</description>
+
 
     <dependencies>
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-api-type</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-value-loader</artifactId>
+            <artifactId>lowcode-value-type</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

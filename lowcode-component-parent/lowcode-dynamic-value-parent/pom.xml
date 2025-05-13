@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.cloudstars</groupId>
-        <artifactId>lowcode-parent</artifactId>
+        <artifactId>lowcode-component-parent</artifactId>
         <version>${revision}</version>
     </parent>
 

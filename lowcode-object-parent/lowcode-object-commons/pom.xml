@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-value-type</artifactId>
+            <artifactId>lowcode-value-type</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

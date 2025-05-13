@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CommonsDataSourceTestApplication {
+public class DataSourceTypeTestApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CommonsDataSourceTestApplication.class, args);
+        SpringApplication.run(DataSourceTypeTestApplication.class, args);
     }
 
 }

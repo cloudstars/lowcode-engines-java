@@ -5,7 +5,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CommonsDataSourceTestConfiguration implements ApplicationRunner {
+public class DataSourceTypeTestConfiguration implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

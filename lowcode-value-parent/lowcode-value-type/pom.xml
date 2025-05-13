@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.cloudstars</groupId>
-        <artifactId>lowcode-commons-parent</artifactId>
+        <artifactId>lowcode-value-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>lowcode-commons-value-type</artifactId>
+    <artifactId>lowcode-value-type</artifactId>
     <description>公共数据定义</description>
 
     <dependencies>
