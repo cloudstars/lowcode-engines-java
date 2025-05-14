@@ -22,6 +22,14 @@
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-value-type</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-datasource-type</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-dynamic-value-type</artifactId>
+        </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>

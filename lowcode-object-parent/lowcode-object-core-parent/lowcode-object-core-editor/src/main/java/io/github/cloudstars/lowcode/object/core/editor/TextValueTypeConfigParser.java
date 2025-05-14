@@ -1,0 +1,16 @@
+package io.github.cloudstars.lowcode.object.core.editor;
+
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.commons.value.type.TextValueTypeConfig;
+
+public class TextValueTypeConfigParser implements Spec1ValueTypeConfigParser<TextValueTypeConfig> {
+
+    @Override
+    public TextValueTypeConfig parse(JsonObject configJson) {
+        TextValueTypeConfig config = new TextValueTypeConfig();
+        config.setMaxLength(ConfigUtils.getInteger(configJson, "maxLength"));
+
+        return config;
+    }
+}

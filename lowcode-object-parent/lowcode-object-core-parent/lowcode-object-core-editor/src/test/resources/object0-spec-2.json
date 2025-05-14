@@ -1,0 +1,20 @@
+{
+  "type": "OBJECT",
+  "key": "4c78061209564f1a96",
+  "code": "SDFASDFA",
+  "fields": [
+    {
+      "name": "name",
+      "type": "TEXT",
+      "maxLength": 64
+    },
+    {
+      "name": "_id",
+      "type": "TEXT"
+    },
+    {
+      "name": "enterpriseKey",
+      "type": "TEXT"
+    }
+  ]
+}

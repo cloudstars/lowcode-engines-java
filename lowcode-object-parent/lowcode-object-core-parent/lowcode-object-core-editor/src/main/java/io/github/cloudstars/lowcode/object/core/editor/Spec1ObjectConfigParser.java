@@ -1,0 +1,49 @@
+package io.github.cloudstars.lowcode.object.core.editor;
+
+import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
+import io.github.cloudstars.lowcode.commons.config.XConfigParser;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.object.commons.FormBasedObjectConfig;
+import io.github.cloudstars.lowcode.object.commons.field.XObjectFieldConfig;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Spec1ObjectConfigParser implements XConfigParser<FormBasedObjectConfig> {
+
+    private final Map<String, Spec1ObjectFieldConfigParser> fieldConfigParserMap = new HashMap<>();
+
+    public Spec1ObjectConfigParser() {
+        this.fieldConfigParserMap.put("Input", new Spec1InputObjectFieldConfigParser());
+    }
+
+    @Override
+    public FormBasedObjectConfig parse(JsonObject configJson) {
+        FormBasedObjectConfig config = new FormBasedObjectConfig();
+        config.setType("OBJECT");
+        config.setKey(ConfigUtils.getString(configJson, "objectKey"));
+        config.setCode(ConfigUtils.getString(configJson, "objectCode"));
+        JsonArray fieldsConfigJson = ConfigUtils.getJsonArray(configJson, "body");
+        config.setFields(this.parseFields(fieldsConfigJson));
+
+        return config;
+    }
+
+    private List<XObjectFieldConfig> parseFields(JsonArray fieldsConfigJson) {
+        List<XObjectFieldConfig> fieldConfigs = new ArrayList<>();
+        for (Object object : fieldsConfigJson) {
+            JsonObject fieldConfigJson = (JsonObject) object;
+            String type = ConfigUtils.getString(fieldConfigJson, "type");
+            Spec1ObjectFieldConfigParser<XObjectFieldConfig> fieldConfigParser = this.fieldConfigParserMap.get(type);
+            if (fieldConfigParser != null) {
+                fieldConfigs.add(fieldConfigParser.parse(fieldConfigJson));
+            }
+        }
+
+        return fieldConfigs;
+    }
+
+}

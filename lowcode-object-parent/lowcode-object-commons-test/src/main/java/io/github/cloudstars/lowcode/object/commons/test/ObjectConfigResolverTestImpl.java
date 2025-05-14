@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.object.commons.test;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
-import io.github.cloudstars.lowcode.object.core.editor.FormBasedObjectConfig;
+import io.github.cloudstars.lowcode.object.core.editor.Spec1ObjectConfig;
 import io.github.cloudstars.lowcode.object.core.editor.ObjectConfigFactory;
 import io.github.cloudstars.lowcode.object.core.editor.XObjectConfigResolver;
 
@@ -15,9 +15,9 @@ import java.util.Map;
  *
  * @author clouds
  */
-public class ObjectConfigResolverTestImpl implements XObjectConfigResolver<FormBasedObjectConfig> {
+public class ObjectConfigResolverTestImpl implements XObjectConfigResolver<Spec1ObjectConfig> {
 
-    private final Map<String, FormBasedObjectConfig> configMap = new HashMap<>();
+    private final Map<String, Spec1ObjectConfig> configMap = new HashMap<>();
 
     private final String[] objectClassPaths = {"object/object-apply.json", "object/object-travel.json"};
 
@@ -25,13 +25,13 @@ public class ObjectConfigResolverTestImpl implements XObjectConfigResolver<FormB
     public void init() {
         for (String objectClassPath : objectClassPaths) {
             JsonObject applyObjectConfigJson = JsonUtils.loadJsonObjectFromClasspath(objectClassPath);
-            FormBasedObjectConfig applyObject = (FormBasedObjectConfig) ObjectConfigFactory.newInstance(applyObjectConfigJson);
+            Spec1ObjectConfig applyObject = (Spec1ObjectConfig) ObjectConfigFactory.newInstance(applyObjectConfigJson);
             this.configMap.put(applyObject.getKey(), applyObject);
         }
     }
 
     @Override
-    public FormBasedObjectConfig resolve(String objectKey) {
+    public Spec1ObjectConfig resolve(String objectKey) {
         return this.configMap.get(objectKey);
     }
 

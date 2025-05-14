@@ -14,11 +14,6 @@ import java.util.Map;
 public class XObjectImpl implements XObject {
 
     /**
-     * 模型配置解析器
-     */
-    //private XObjectConfigResolver objectConfigResolver;
-
-    /**
      * 模型配置
      */
     private XObjectConfig objectConfig;
@@ -28,9 +23,13 @@ public class XObjectImpl implements XObject {
      */
     private Map<String, Object> dataMap = new HashMap<>();
 
-    public XObjectImpl(/*XObjectConfigResolver objectConfigResolver, */XObjectConfig objectConfig) {
-        //this.objectConfigResolver = objectConfigResolver;
+    public XObjectImpl(XObjectConfig objectConfig) {
         this.objectConfig = objectConfig;
+    }
+
+    @Override
+    public XObjectConfig getObjectConfig() {
+        return this.objectConfig;
     }
 
     @Override

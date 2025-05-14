@@ -55,11 +55,21 @@ public final class ConfigUtils {
      * 获取配置中指定键对应的Boolean值
      *
      * @param configJson 配置对象
-     * @param key        键
-     * @return String值
+     * @param key        键* @return String值
      */
     public static Boolean getBoolean(JsonObject configJson, String key) {
         return (Boolean) get(configJson, key);
+    }
+
+    /**
+     * 获取配置中指定键对应的JsonArray值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return JsonArray值
+     */
+    public static JsonArray getJsonArray(JsonObject configJson, String key) {
+        return (JsonArray) get(configJson, key);
     }
 
     /**
@@ -73,7 +83,6 @@ public final class ConfigUtils {
         String name = getString(configJson, key);
         return (T) Enum.valueOf(enumClass, name);
     }
-
 
     /**
      * 获取配置中指定键对应的Object值
