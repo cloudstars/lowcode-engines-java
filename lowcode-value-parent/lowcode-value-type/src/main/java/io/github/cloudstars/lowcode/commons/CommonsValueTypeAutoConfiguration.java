@@ -14,7 +14,7 @@ public class CommonsValueTypeAutoConfiguration implements ApplicationRunner {
         ValueTypeConfigClassFactory.register(BooleanValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(DateValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(TimeValueTypeConfig.class);
-        ValueTypeConfigClassFactory.register(ObjectValueTypeConfig.class);
+        ValueTypeConfigClassFactory.register(MapValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(OptionValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(TreeOptionValueTypeConfig.class);
         ValueTypeConfigClassFactory.register(OrgValueTypeConfig.class);

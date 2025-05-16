@@ -29,6 +29,13 @@ public interface XObjectFieldConfig extends XResourceConfig {
     String getName();
 
     /**
+     * 获取地段的标题
+     *
+     * @return
+     */
+    String getTitle();
+
+    /**
      * 获取字段的列名
      *
      * @return

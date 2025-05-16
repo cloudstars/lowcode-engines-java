@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @author clouds
  */
 @ValueTypeConfigClass(name = "ORG", valueClass = Org.class)
-public class OrgValueTypeConfig extends AbstractObjectValueTypeConfig {
+public class OrgValueTypeConfig extends AbstractMapValueTypeConfig {
 
     private static final String ORG_KEY_FIELD_NAME = "key";
     private static final String ORG_NAME_FIELD_NAME = "name";
@@ -21,7 +21,7 @@ public class OrgValueTypeConfig extends AbstractObjectValueTypeConfig {
     public OrgValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        ObjectPropertyConfig keyPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig keyPropertyConfig = new MapPropertyConfig();
         {
             keyPropertyConfig.setName(ORG_KEY_FIELD_NAME);
             keyPropertyConfig.setLabel("机构编号");
@@ -29,7 +29,7 @@ public class OrgValueTypeConfig extends AbstractObjectValueTypeConfig {
             keyPropertyConfig.setValueType(keyValueTypeConfig);
         }
 
-        ObjectPropertyConfig namePropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig namePropertyConfig = new MapPropertyConfig();
         {
             namePropertyConfig.setName(ORG_NAME_FIELD_NAME);
             namePropertyConfig.setLabel("机构名称");

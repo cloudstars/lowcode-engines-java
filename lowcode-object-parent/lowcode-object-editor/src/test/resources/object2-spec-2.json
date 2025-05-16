@@ -1,0 +1,38 @@
+{
+  "type": "OBJECT",
+  "key": "4c78061209564f1a96",
+  "code": "SDFASDFA",
+  "fields": [
+    {
+      "type": "TEXT",
+      "key":"ef3644681b5244daa1",
+      "name": "name",
+      "title":"名称",
+      "description":"记录名称字段",
+      "systemField":false,
+      "defaultWidth":2,
+      "required":true,
+      "maxLength":64
+    },
+    {
+      "type": "TEXT",
+      "key":"84abdd1e73634d1986",
+      "name":"_id",
+      "title":"记录ID",
+      "description":"系统自动生成的ID字段",
+      "systemField":true,
+      "defaultWidth":2,
+      "required":true
+    },
+    {
+      "type": "TEXT",
+      "key":"8781d4324602482eb2",
+      "name":"enterpriseKey",
+      "title":"企业编号",
+      "description":"系统生成的企业编号字段",
+      "systemField":true,
+      "defaultWidth":2,
+      "required":true
+    }
+  ]
+}

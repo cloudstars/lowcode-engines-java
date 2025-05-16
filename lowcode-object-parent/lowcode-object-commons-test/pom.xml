@@ -16,7 +16,7 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-core-editor</artifactId>
+            <artifactId>lowcode-object-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>

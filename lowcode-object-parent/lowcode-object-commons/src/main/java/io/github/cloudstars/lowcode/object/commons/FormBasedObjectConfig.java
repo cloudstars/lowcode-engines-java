@@ -11,10 +11,12 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 public class FormBasedObjectConfig extends AbstractObjectConfig {
 
     public FormBasedObjectConfig() {
+        this.setType("OBJECT");
     }
 
     public FormBasedObjectConfig(JsonObject configJson) {
         super(configJson);
+        this.setType("OBJECT");
     }
 
     @Override

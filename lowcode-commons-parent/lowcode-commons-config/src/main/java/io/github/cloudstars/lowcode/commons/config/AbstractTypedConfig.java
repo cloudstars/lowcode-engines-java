@@ -38,7 +38,7 @@ public abstract class AbstractTypedConfig extends AbstractConfig implements XTyp
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(ATTR_TYPE, this.type);
+        configJson.put(ATTR_TYPE, this.getType());
 
         return configJson;
     }

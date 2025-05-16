@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-core-engine</artifactId>
+            <artifactId>lowcode-object-engine</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>

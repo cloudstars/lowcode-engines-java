@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author clouds
  */
 @ValueTypeConfigClass(name = "TREE-OPTION", valueClass = TreeOption.class)
-public class TreeOptionValueTypeConfig extends AbstractObjectValueTypeConfig {
+public class TreeOptionValueTypeConfig extends AbstractMapValueTypeConfig {
 
     /**
      * 标识字段配置名称
@@ -33,7 +33,7 @@ public class TreeOptionValueTypeConfig extends AbstractObjectValueTypeConfig {
         this.labelField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_LABEL_FIELD);
         this.keyField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_KEY_FIELD);
 
-        ObjectPropertyConfig labelPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig labelPropertyConfig = new MapPropertyConfig();
         {
             labelPropertyConfig.setName(this.labelField);
             labelPropertyConfig.setLabel("标签");
@@ -41,7 +41,7 @@ public class TreeOptionValueTypeConfig extends AbstractObjectValueTypeConfig {
             labelPropertyConfig.setValueType(labelValueTypeConfig);
         }
 
-        ObjectPropertyConfig keyPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig keyPropertyConfig = new MapPropertyConfig();
         {
             keyPropertyConfig.setName(this.keyField);
             keyPropertyConfig.setLabel("标识");

@@ -5,7 +5,7 @@ import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestBodyCon
 import io.github.cloudstars.lowcode.commons.api.config.request.ApiRequestConfig;
 import io.github.cloudstars.lowcode.commons.api.config.response.ApiResponseConfig;
 import io.github.cloudstars.lowcode.commons.value.type.NumberValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.MapValueTypeConfig;
 
 /**
  * 单条数据插入API配置模板
@@ -23,7 +23,7 @@ public class InsertOneApiConfigTemplate extends AbstractApiConfigTemplate<Insert
         // 入参由输入的属性列表决定
         ApiRequestConfig requestConfig = new ApiRequestConfig();
         requestConfig.setDescription("这是插入单条记录的API模板");
-        ObjectValueTypeConfig requestValueType = new ObjectValueTypeConfig();
+        MapValueTypeConfig requestValueType = new MapValueTypeConfig();
         //requestValueType.setProperties(params.getProperties());
         requestConfig.setBody(new ApiRequestBodyConfig(requestValueType));
 

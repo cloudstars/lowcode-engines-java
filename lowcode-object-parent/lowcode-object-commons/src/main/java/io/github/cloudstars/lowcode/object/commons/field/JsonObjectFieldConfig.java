@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.commons.field;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.MapValueTypeConfig;
 
 import java.util.List;
 
@@ -12,9 +12,6 @@ import java.util.List;
  */
 @ObjectFieldConfigClass(name = "JSON")
 public class JsonObjectFieldConfig extends AbstractObjectFieldConfig {
-
-    // 对象下属性列表的配置名称
-    private static final String ATTR_PROPERTIES = "properties";
 
     /**
      * 对象下的属性
@@ -44,7 +41,7 @@ public class JsonObjectFieldConfig extends AbstractObjectFieldConfig {
             });
         }*/
 
-        this.setValueType(new ObjectValueTypeConfig(configJson));
+        this.setValueType(new MapValueTypeConfig(configJson));
     }
 
 

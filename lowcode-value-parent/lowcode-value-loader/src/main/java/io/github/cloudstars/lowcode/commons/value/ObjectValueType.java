@@ -3,8 +3,8 @@ package io.github.cloudstars.lowcode.commons.value;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
-import io.github.cloudstars.lowcode.commons.value.type.ObjectPropertyConfig;
-import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.MapPropertyConfig;
+import io.github.cloudstars.lowcode.commons.value.type.MapValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 import java.util.HashMap;
@@ -16,10 +16,10 @@ import java.util.Map;
  *
  * @author clouds
  */
-@ValueTypeClass(name = "OBJECT", valueTypeConfigClass = ObjectValueTypeConfig.class)
-public class ObjectValueType extends AbstractValueType<ObjectValueTypeConfig, Map<String, Object>> {
+@ValueTypeClass(name = "OBJECT", valueTypeConfigClass = MapValueTypeConfig.class)
+public class ObjectValueType extends AbstractValueType<MapValueTypeConfig, Map<String, Object>> {
 
-    public ObjectValueType(ObjectValueTypeConfig valueTypeConfig) {
+    public ObjectValueType(MapValueTypeConfig valueTypeConfig) {
         super(valueTypeConfig);
     }
 
@@ -45,7 +45,7 @@ public class ObjectValueType extends AbstractValueType<ObjectValueTypeConfig, Ma
 
         if (rawValue instanceof Map) {
             Map rawValueMap = (Map) rawValue;
-            List<ObjectPropertyConfig> properties = this.valueTypeConfig.getProperties();
+            List<MapPropertyConfig> properties = this.valueTypeConfig.getProperties();
             if (properties != null && properties.size() > 0) {
                 Object defaultValueConfig = this.valueTypeConfig.getDefaultValue();
                 if (defaultValueConfig instanceof Map) {
@@ -65,7 +65,7 @@ public class ObjectValueType extends AbstractValueType<ObjectValueTypeConfig, Ma
      */
     private Map<String, Object> getDefaultValueFromMap(Map mapValue) {
         Map<String, Object> targetMap = mapValue;
-        List<ObjectPropertyConfig> properties = this.valueTypeConfig.getProperties();
+        List<MapPropertyConfig> properties = this.valueTypeConfig.getProperties();
         if (properties != null && properties.size() > 0) {
             targetMap = new HashMap<>();
             this.parsePropertyValuesToMap(mapValue, targetMap);
@@ -82,8 +82,8 @@ public class ObjectValueType extends AbstractValueType<ObjectValueTypeConfig, Ma
      */
     private void parsePropertyValuesToMap(Map<String, Object> valueMap, Map<String, Object> targetMap) {
         // 过滤掉没有定义的属性，并把属性的值转为正确的数据格式
-        List<ObjectPropertyConfig> properties = this.valueTypeConfig.getProperties();
-        for (ObjectPropertyConfig property : properties) {
+        List<MapPropertyConfig> properties = this.valueTypeConfig.getProperties();
+        for (MapPropertyConfig property : properties) {
             String propertyName = property.getName();
             if (valueMap.containsKey(propertyName)) {
                 Object rawPropertyValue = valueMap.get(propertyName);
@@ -100,13 +100,13 @@ public class ObjectValueType extends AbstractValueType<ObjectValueTypeConfig, Ma
      * @return 默认值
      */
     private Map<String, Object> getDefaultValueFromProperties() {
-        List<ObjectPropertyConfig> properties = this.valueTypeConfig.getProperties();
+        List<MapPropertyConfig> properties = this.valueTypeConfig.getProperties();
         if (properties == null || properties.size() == 0) {
             return null;
         }
 
         Map<String, Object> targetMap = null;
-        for (ObjectPropertyConfig property : properties) {
+        for (MapPropertyConfig property : properties) {
             String propertyName = property.getName();
             Object propertyDefaultValue = property.getValueType().getDefaultValue();
             if (propertyDefaultValue != null) { // 属性中配置了默认值
@@ -143,8 +143,8 @@ public class ObjectValueType extends AbstractValueType<ObjectValueTypeConfig, Ma
 
     @Override
     public void validate(Map<String, Object> value) throws InvalidDataException {
-        List<ObjectPropertyConfig> properties = this.valueTypeConfig.getProperties();
-        for (ObjectPropertyConfig property : properties) {
+        List<MapPropertyConfig> properties = this.valueTypeConfig.getProperties();
+        for (MapPropertyConfig property : properties) {
             String propertyName = property.getName();
             Object propertyValue = ObjectUtils.getFieldValue(value, propertyName);
             if (propertyValue != null) {

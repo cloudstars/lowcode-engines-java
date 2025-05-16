@@ -1,7 +1,8 @@
 package io.github.cloudstars.lowcode.object;
 
+import io.github.cloudstars.lowcode.object.commons.XObjectConfig;
+import io.github.cloudstars.lowcode.object.commons.XObjectConfigResolver;
 import io.github.cloudstars.lowcode.object.commons.test.ObjectConfigResolverTestImpl;
-import io.github.cloudstars.lowcode.object.core.editor.XObjectConfigResolver;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,7 @@ public class ObjectCommonsTestAutoConfiguration implements ApplicationRunner {
     }
 
     @Bean
-    public XObjectConfigResolver objectConfigResolver() {
+    public XObjectConfigResolver<XObjectConfig> objectConfigResolver() {
         return new ObjectConfigResolverTestImpl();
     }
 

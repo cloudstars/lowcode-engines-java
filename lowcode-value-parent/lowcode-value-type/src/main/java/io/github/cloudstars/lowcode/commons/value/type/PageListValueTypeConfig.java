@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author clouds
  */
 @ValueTypeConfigClass(name = "PAGE-LIST", valueClass = PageResult.class)
-public class PageListValueTypeConfig extends AbstractObjectValueTypeConfig {
+public class PageListValueTypeConfig extends AbstractMapValueTypeConfig {
 
     /**
      * 列表数据的标识字段名配置名称
@@ -28,7 +28,7 @@ public class PageListValueTypeConfig extends AbstractObjectValueTypeConfig {
 
         this.keyField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_KEY_FIELD);
 
-        ObjectPropertyConfig totalPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig totalPropertyConfig = new MapPropertyConfig();
         {
             totalPropertyConfig.setName("total");
             totalPropertyConfig.setLabel("数据总条数");
@@ -38,7 +38,7 @@ public class PageListValueTypeConfig extends AbstractObjectValueTypeConfig {
             totalPropertyConfig.setValueType(totalValueTypeConfig);
         }
 
-        ObjectPropertyConfig listPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig listPropertyConfig = new MapPropertyConfig();
         {
             listPropertyConfig.setName("list");
             listPropertyConfig.setLabel("当前页数据");

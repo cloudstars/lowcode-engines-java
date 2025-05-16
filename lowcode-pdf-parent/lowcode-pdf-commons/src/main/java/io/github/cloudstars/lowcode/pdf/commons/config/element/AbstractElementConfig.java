@@ -10,7 +10,7 @@ import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 /**
  * 抽象的PDF元素配置类
  *
- * @auau
+ * @author clouds
  */
 public abstract class AbstractElementConfig<D extends XValueTypeConfig> extends AbstractTypedConfig implements XElementConfig {
 

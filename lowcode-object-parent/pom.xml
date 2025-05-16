@@ -15,11 +15,16 @@
     <modules>
         <module>lowcode-object-commons</module>
         <module>lowcode-object-commons-test</module>
-        <module>lowcode-object-core-parent</module>
+        <module>lowcode-object-editor</module>
+        <module>lowcode-object-engine</module>
         <module>lowcode-object-method-parent</module>
+        <!--
+        <module>lowcode-object-view-parent</module>-->
+        <module>lowcode-object-form-parent</module>
+        <module>lowcode-object-table-parent</module>
         <module>lowcode-object-excel-parent</module>
+        <module>lowcode-object-pdf-parent</module>
         <module>lowcode-object-bpm-parent</module>
-        <module>lowcode-object-view-parent</module>
         <module>lowcode-object-oql-parent</module>
         <module>lowcode-object-repository-parent</module>
         <module>lowcode-object-datasource-parent</module>
@@ -39,12 +44,12 @@
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-object-core-editor</artifactId>
+                <artifactId>lowcode-object-editor</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-object-core-engine</artifactId>
+                <artifactId>lowcode-object-engine</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

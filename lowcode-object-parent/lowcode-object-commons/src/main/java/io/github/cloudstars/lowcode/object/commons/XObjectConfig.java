@@ -5,7 +5,6 @@ import io.github.cloudstars.lowcode.object.commons.field.XObjectFieldConfig;
 import io.github.cloudstars.lowcode.object.commons.field.objectref.XObjectRefObjectFieldConfig;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author clouds
@@ -57,13 +56,6 @@ public interface XObjectConfig<F extends XObjectFieldConfig, R extends XObjectRe
      * @return 主键字段的配置
      */
     R getMasterField();
-
-    /**
-     * 数据校验
-     *
-     * @param dataMap 数据
-     */
-    void validate(Map<String, Object> dataMap);
 
     /**
      * 获取表的名称

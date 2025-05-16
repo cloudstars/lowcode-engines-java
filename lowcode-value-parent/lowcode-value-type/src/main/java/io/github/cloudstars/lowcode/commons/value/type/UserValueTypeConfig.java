@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @author clouds
  */
 @ValueTypeConfigClass(name = "USER", valueClass = User.class)
-public class UserValueTypeConfig extends AbstractObjectValueTypeConfig {
+public class UserValueTypeConfig extends AbstractMapValueTypeConfig {
 
     // 用户编号属性名称
     private static final String USER_KEY_FIELD_NAME = "key";
@@ -23,7 +23,7 @@ public class UserValueTypeConfig extends AbstractObjectValueTypeConfig {
     public UserValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        ObjectPropertyConfig keyPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig keyPropertyConfig = new MapPropertyConfig();
         {
             keyPropertyConfig.setName(USER_KEY_FIELD_NAME);
             keyPropertyConfig.setLabel("用户编号");
@@ -31,7 +31,7 @@ public class UserValueTypeConfig extends AbstractObjectValueTypeConfig {
             keyPropertyConfig.setValueType(keyValueTypeConfig);
         }
 
-        ObjectPropertyConfig namePropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig namePropertyConfig = new MapPropertyConfig();
         {
             namePropertyConfig.setName(USER_NAME_FIELD_NAME);
             namePropertyConfig.setLabel("用户名称");

@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.file.commons;
 
-import io.github.cloudstars.lowcode.commons.value.type.AbstractObjectValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.ObjectPropertyConfig;
+import io.github.cloudstars.lowcode.commons.value.type.AbstractMapValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.MapPropertyConfig;
 import io.github.cloudstars.lowcode.commons.value.type.TextValueTypeConfig;
 import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
@@ -14,7 +14,7 @@ import java.util.Arrays;
  * @author clouds
  */
 @ValueTypeConfigClass(name = "FILE", valueClass = File.class)
-public class FileValueTypeConfig extends AbstractObjectValueTypeConfig {
+public class FileValueTypeConfig extends AbstractMapValueTypeConfig {
 
     public FileValueTypeConfig() {
     }
@@ -27,7 +27,7 @@ public class FileValueTypeConfig extends AbstractObjectValueTypeConfig {
      * 初始化文件数据格式配置下面的属性列表配置
      */
     private void initObjectProperties() {
-        ObjectPropertyConfig keyPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig keyPropertyConfig = new MapPropertyConfig();
         {
             keyPropertyConfig.setName("key");
             keyPropertyConfig.setLabel("文件标识");
@@ -35,7 +35,7 @@ public class FileValueTypeConfig extends AbstractObjectValueTypeConfig {
             keyPropertyConfig.setValueType(labelValueTypeConfig);
         }
 
-        ObjectPropertyConfig namePropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig namePropertyConfig = new MapPropertyConfig();
         {
             namePropertyConfig.setName("name");
             namePropertyConfig.setLabel("文件名称");

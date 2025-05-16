@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author clouds 
  */
 @ValueTypeConfigClass(name = "TREE", valueClass = TreeNode.class)
-public class TreeValueTypeConfig extends AbstractObjectValueTypeConfig {
+public class TreeValueTypeConfig extends AbstractMapValueTypeConfig {
 
     /**
      * 标签字段名配置名称
@@ -33,7 +33,7 @@ public class TreeValueTypeConfig extends AbstractObjectValueTypeConfig {
         this.keyField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_KEY_FIELD);
         this.labelField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_LABEL_FIELD);
 
-        ObjectPropertyConfig labelPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig labelPropertyConfig = new MapPropertyConfig();
         {
             labelPropertyConfig.setName(this.labelField);
             labelPropertyConfig.setLabel("标签");
@@ -41,7 +41,7 @@ public class TreeValueTypeConfig extends AbstractObjectValueTypeConfig {
             labelPropertyConfig.setValueType(labelValueTypeConfig);
         }
 
-        ObjectPropertyConfig keyPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig keyPropertyConfig = new MapPropertyConfig();
         {
             keyPropertyConfig.setName(this.keyField);
             keyPropertyConfig.setLabel("标识");
@@ -49,7 +49,7 @@ public class TreeValueTypeConfig extends AbstractObjectValueTypeConfig {
             keyPropertyConfig.setValueType(keyValueTypeConfig);
         }
 
-        ObjectPropertyConfig childrenPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig childrenPropertyConfig = new MapPropertyConfig();
         {
             childrenPropertyConfig.setName("children");
             childrenPropertyConfig.setLabel("儿子节点");

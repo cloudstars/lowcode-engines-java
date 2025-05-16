@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.form.field;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.ObjectValueTypeConfig;
+import io.github.cloudstars.lowcode.commons.value.type.MapValueTypeConfig;
 
 import java.util.List;
 
@@ -11,10 +11,7 @@ import java.util.List;
  * @author clouds
  */
 @BpmFieldConfigClass(name = "OBJECT")
-public class ObjectBpmFieldConfig extends AbstractBpmFieldConfig<ObjectValueTypeConfig> {
-
-    // 对象下属性列表的配置名称
-    private static final String ATTR_PROPERTIES = "properties";
+public class ObjectBpmFieldConfig extends AbstractBpmFieldConfig<MapValueTypeConfig> {
 
     /**
      * 对象下的属性
@@ -27,7 +24,7 @@ public class ObjectBpmFieldConfig extends AbstractBpmFieldConfig<ObjectValueType
     public ObjectBpmFieldConfig(JsonObject configJson) {
         super(configJson);
 
-        this.setValueType(new ObjectValueTypeConfig(configJson));
+        this.setValueType(new MapValueTypeConfig(configJson));
     }
 
     public List<AbstractBpmFieldConfig> getProperties() {

@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-core-editor</artifactId>
+            <artifactId>lowcode-object-editor</artifactId>
         </dependency>
 
         <!-- 测试时依赖 -->

@@ -28,7 +28,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
         apiRequestConfig.setServicePath("api://dict/{dictId}/item-list");
         apiRequestConfig.setContentType(RequestContentTypeEnum.APPLICATION_JSON);
 
-        ObjectPropertyConfig dictIdProperty = new ObjectPropertyConfig();
+        MapPropertyConfig dictIdProperty = new MapPropertyConfig();
         {
             dictIdProperty.setName("dictId");
             TextValueTypeConfig dictIdValueType = new TextValueTypeConfig();
@@ -36,7 +36,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
             dictIdProperty.setValueType(dictIdValueType);
         }
 
-        ObjectPropertyConfig valuesProperty = new ObjectPropertyConfig();
+        MapPropertyConfig valuesProperty = new MapPropertyConfig();
         {
             valuesProperty.setName("values");
             ArrayValueTypeConfig valuesValueType = new ArrayValueTypeConfig();
@@ -47,7 +47,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
             valuesProperty.setValueType(valuesValueType);
         }
 
-        ObjectValueTypeConfig requestValueType = new ObjectValueTypeConfig();
+        MapValueTypeConfig requestValueType = new MapValueTypeConfig();
         //requestValueType.setProperties(Arrays.asList(dictIdProperty, valuesProperty));
         requestValueType.setRequired(true);
         apiRequestConfig.setBody(new ApiRequestBodyConfig(requestValueType));
@@ -56,7 +56,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
         ApiResponseConfig responseConfig = new ApiResponseConfig();
         responseConfig.setContentType(ResponseContentTypeEnum.APPLICATION_JSON);
 
-        ObjectPropertyConfig labelProperty = new ObjectPropertyConfig();
+        MapPropertyConfig labelProperty = new MapPropertyConfig();
         {
             labelProperty.setName(params.getLabelField());
             TextValueTypeConfig labelValueType = new TextValueTypeConfig();
@@ -64,7 +64,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
             labelProperty.setValueType(labelValueType);
         }
 
-        ObjectPropertyConfig valueProperty = new ObjectPropertyConfig();
+        MapPropertyConfig valueProperty = new MapPropertyConfig();
         {
             valueProperty.setName(params.getValueField());
             AbstractValueTypeConfig valueValueType = null;
@@ -79,7 +79,7 @@ public class OptionListApiConfigTemplate extends AbstractApiConfigTemplate<Optio
             valueProperty.setValueType(valueValueType);
         }
 
-        ObjectValueTypeConfig optionValueType = new ObjectValueTypeConfig();
+        MapValueTypeConfig optionValueType = new MapValueTypeConfig();
         //optionValueType.setProperties(Arrays.asList(labelProperty, valueProperty));
         optionValueType.setRequired(true);
 

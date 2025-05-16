@@ -1,0 +1,1523 @@
+{
+    "objectCode": "SDFASDFA",
+    "nameField": {
+        "enable": true,
+        "name": "name",
+        "key": "ef3644681b5244daa1"
+    },
+    "description": null,
+    "slot": [],
+    "body": [
+        {
+            "defaultField": "name",
+            "fieldKey": "ef3644681b5244daa1",
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": true,
+            "description": "记录名称字段",
+            "primaryField": false,
+            "type": "$Input",
+            "title": "名称",
+            "defaultWidth": 2,
+            "required": true,
+            "systemField": false,
+            "name": "name",
+            "id": "7ceaabebb736",
+            "placeholder": "请输入",
+            "defaultValueConfig": {
+                "sourceType": "Static"
+            },
+            "maxLength": 64,
+            "properties": [],
+            "columnName": "name"
+        },
+        {
+            "visible": true,
+            "fieldKey": "5e7ab19a2f0a48d0ba",
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$TextEditor",
+            "title": "富文本",
+            "required": false,
+            "name": "yubPM7jm",
+            "disabled": false,
+            "id": "c0e0741ec68d",
+            "placeholder": "请输入",
+            "defaultValueConfig": null,
+            "properties": [],
+            "columnName": "yubPM7jm"
+        },
+        {
+            "visible": true,
+            "fieldKey": "90d4b69aecf04030a1",
+            "colSpan": 24,
+            "dataType": "BOOLEAN",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$Switch",
+            "title": "开关",
+            "required": false,
+            "name": "SdoT6ZCv",
+            "disabled": false,
+            "id": "ee0278d7042e",
+            "dataSource": {
+                "sourceType": "Static",
+                "source": [
+                    {
+                        "label": "是",
+                        "value": true
+                    },
+                    {
+                        "label": "否",
+                        "value": false
+                    }
+                ]
+            },
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static",
+                "source": true
+            },
+            "properties": [],
+            "columnName": "SdoT6ZCv"
+        },
+        {
+            "visible": true,
+            "fieldKey": "45cc497aaa45405ebf",
+            "colSpan": 24,
+            "dataType": "NUMBER",
+            "precision": 0,
+            "daemonField": false,
+            "range": {},
+            "nameField": false,
+            "primaryField": false,
+            "type": "$InputNumber",
+            "title": "数字",
+            "required": false,
+            "thousandSeparator": false,
+            "unit": {
+                "type": "$before",
+                "content": "$"
+            },
+            "name": "gdrVO7Bv",
+            "disabled": false,
+            "id": "0cf68d1b9547",
+            "placeholder": "请输入",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [],
+            "columnName": "gdrVO7Bv"
+        },
+        {
+            "visible": true,
+            "fieldKey": "90c1cf0e79554abfb7",
+            "colSpan": 24,
+            "custom": null,
+            "dataType": "DATE",
+            "format": "YYYY-MM-DD",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$DateTime",
+            "title": "日期",
+            "required": false,
+            "name": "GA9n0BUj",
+            "disabled": false,
+            "id": "299ef334df8a",
+            "placeholder": "请选择日期",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [],
+            "columnName": "GA9n0BUj"
+        },
+        {
+            "visible": true,
+            "fieldKey": "f1a2ff96151b44eda4",
+            "colSpan": 24,
+            "dataType": "TIME",
+            "format": "HH:mm:ss",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$TimeRangePicker",
+            "title": "时间范围",
+            "required": false,
+            "name": "waXY66yU",
+            "disabled": false,
+            "id": "314bb9cd30b4",
+            "placeholder": [
+                "开始时间",
+                "结束时间"
+            ],
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [
+                {
+                    "code": "_0",
+                    "array": false,
+                    "fieldKey": "f1a2ff96151b44eda4",
+                    "dataLength": null,
+                    "dataType": "TIME",
+                    "name": "左边界",
+                    "dataPrecision": null,
+                    "columnName": "waXY66yU_0"
+                },
+                {
+                    "code": "_1",
+                    "array": false,
+                    "fieldKey": "f1a2ff96151b44eda4",
+                    "dataLength": null,
+                    "dataType": "TIME",
+                    "name": "右边界",
+                    "dataPrecision": null,
+                    "columnName": "waXY66yU_1"
+                }
+            ],
+            "span": 1,
+            "columnName": "waXY66yU"
+        },
+        {
+            "visible": true,
+            "fieldKey": "75ced86ddb04467daa",
+            "colSpan": 24,
+            "custom": null,
+            "dataType": "DATE",
+            "format": "YYYY-MM-DD",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$DateTimeRange",
+            "title": "日期范围",
+            "required": false,
+            "name": "i_je7yBR",
+            "disabled": false,
+            "id": "1b1c832d1f14",
+            "placeholder": [
+                "开始日期",
+                "结束日期"
+            ],
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [
+                {
+                    "code": "_0",
+                    "array": false,
+                    "fieldKey": "75ced86ddb04467daa",
+                    "dataLength": null,
+                    "dataType": "DATE",
+                    "name": "左边界",
+                    "dataPrecision": null,
+                    "columnName": "i_je7yBR_0"
+                },
+                {
+                    "code": "_1",
+                    "array": false,
+                    "fieldKey": "75ced86ddb04467daa",
+                    "dataLength": null,
+                    "dataType": "DATE",
+                    "name": "右边界",
+                    "dataPrecision": null,
+                    "columnName": "i_je7yBR_1"
+                }
+            ],
+            "columnName": "i_je7yBR"
+        },
+        {
+            "visible": true,
+            "fieldKey": "9b0571cdca71422785",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$Email",
+            "title": "邮箱",
+            "required": false,
+            "name": "Ds_JlEXw",
+            "disabled": false,
+            "id": "3b6a175ccd1a",
+            "placeholder": "请输入",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [],
+            "columnName": "Ds_JlEXw"
+        },
+        {
+            "visible": true,
+            "fieldKey": "0040408ccc4444c0ac",
+            "colSpan": 24,
+            "dataType": "OBJECT",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$Cascader",
+            "title": "级联选择",
+            "required": false,
+            "name": "DnwbGV28",
+            "disabled": false,
+            "id": "1f55af322e70",
+            "placeholder": "请选择",
+            "dataSource": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static",
+                "source": [
+                    {
+                        "children": [
+                            {
+                                "label": "杭州",
+                                "value": "hangzhou"
+                            },
+                            {
+                                "label": "宁波",
+                                "value": "ningbo"
+                            }
+                        ],
+                        "label": "浙江",
+                        "value": "zhejiang"
+                    }
+                ]
+            },
+            "loadOnInit": true,
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [
+                {
+                    "code": "pathKey",
+                    "array": false,
+                    "fieldKey": "0040408ccc4444c0ac",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "路径编号",
+                    "dataPrecision": null,
+                    "columnName": "DnwbGV28_pathKey"
+                },
+                {
+                    "code": "pathName",
+                    "array": false,
+                    "fieldKey": "0040408ccc4444c0ac",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "路径名",
+                    "dataPrecision": null,
+                    "columnName": "DnwbGV28_pathName"
+                }
+            ],
+            "columnName": "DnwbGV28"
+        },
+        {
+            "visible": true,
+            "fieldKey": "62af78121f0a42be84",
+            "colSpan": 24,
+            "dataType": "NUMBER",
+            "precision": 0,
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$InputNumberRange",
+            "title": "数字范围",
+            "required": false,
+            "name": "m7su9yTm",
+            "disabled": false,
+            "id": "a846966cee8c",
+            "placeholder": [
+                "请输入",
+                "请输入"
+            ],
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [
+                {
+                    "code": "_0",
+                    "array": false,
+                    "fieldKey": "62af78121f0a42be84",
+                    "dataLength": null,
+                    "dataType": "NUMBER",
+                    "name": "左边界",
+                    "dataPrecision": null,
+                    "columnName": "m7su9yTm_0"
+                },
+                {
+                    "code": "_1",
+                    "array": false,
+                    "fieldKey": "62af78121f0a42be84",
+                    "dataLength": null,
+                    "dataType": "NUMBER",
+                    "name": "右边界",
+                    "dataPrecision": null,
+                    "columnName": "m7su9yTm_1"
+                }
+            ],
+            "columnName": "m7su9yTm"
+        },
+        {
+            "visible": true,
+            "fieldKey": "bf36d27ce33146778b",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$HorizontalSelect",
+            "title": "平铺选择",
+            "required": false,
+            "arrangement": "horizontal",
+            "name": "ox6Ly6AL",
+            "disabled": false,
+            "id": "acd6f6f3a737",
+            "optionValueType": "string",
+            "dataSource": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static",
+                "source": [
+                    {
+                        "label": "选项一",
+                        "value": "选项一"
+                    }
+                ]
+            },
+            "loadOnInit": true,
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "uniqueId": "sANfmOeb",
+            "properties": [],
+            "columnName": "ox6Ly6AL",
+            "submitValueOnly": true
+        },
+        {
+            "visible": true,
+            "fieldKey": "ed304e6b3fef46e4ac",
+            "colSpan": 24,
+            "dataType": "OBJECT",
+            "multiple": true,
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$YHTStaffModal",
+            "title": "人员选择",
+            "required": false,
+            "name": "uhc72woS",
+            "disabled": false,
+            "id": "bdcf54964387",
+            "placeholder": "请选择",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [
+                {
+                    "code": "name",
+                    "array": false,
+                    "fieldKey": "ed304e6b3fef46e4ac",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "名称",
+                    "dataPrecision": null,
+                    "columnName": "uhc72woS_name"
+                },
+                {
+                    "code": "openId",
+                    "array": false,
+                    "fieldKey": "ed304e6b3fef46e4ac",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "编号",
+                    "dataPrecision": null,
+                    "columnName": "uhc72woS_openid"
+                },
+                {
+                    "code": "key",
+                    "array": false,
+                    "fieldKey": "ed304e6b3fef46e4ac",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "KEY编号",
+                    "dataPrecision": null,
+                    "columnName": "uhc72woS_key"
+                }
+            ],
+            "columnName": "uhc72woS"
+        },
+        {
+            "visible": true,
+            "fieldKey": "4148510a2b9e4197af",
+            "colSpan": 24,
+            "dataType": "OBJECT",
+            "multiple": true,
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$YHTOrgModal",
+            "title": "机构选择",
+            "required": false,
+            "name": "_dm75QK2",
+            "disabled": false,
+            "id": "2138170cfbdd",
+            "placeholder": "请选择",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [
+                {
+                    "code": "pathName",
+                    "array": false,
+                    "fieldKey": "4148510a2b9e4197af",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "名称",
+                    "dataPrecision": null,
+                    "columnName": "_dm75QK2_pathName"
+                },
+                {
+                    "code": "orgId",
+                    "array": false,
+                    "fieldKey": "4148510a2b9e4197af",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "编号",
+                    "dataPrecision": null,
+                    "columnName": "_dm75QK2_orgId"
+                },
+                {
+                    "code": "pathKey",
+                    "array": false,
+                    "fieldKey": "4148510a2b9e4197af",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "KEY编号",
+                    "dataPrecision": null,
+                    "columnName": "_dm75QK2_pathKey"
+                }
+            ],
+            "columnName": "_dm75QK2"
+        },
+        {
+            "visible": true,
+            "fieldKey": "21f69c4ee76c460b99",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$DropSelect",
+            "title": "下拉选择",
+            "required": false,
+            "name": "HqFk_L6C",
+            "disabled": false,
+            "id": "1b25719045cb",
+            "placeholder": "请选择",
+            "optionValueType": "string",
+            "dataSource": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static",
+                "source": [
+                    {
+                        "label": "选项一",
+                        "value": "选项一"
+                    }
+                ]
+            },
+            "loadOnInit": true,
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "uniqueId": "YkUaQNlq",
+            "properties": [],
+            "columnName": "HqFk_L6C",
+            "submitValueOnly": true
+        },
+        {
+            "enableActions": true,
+            "visible": true,
+            "fieldKey": "3b7d328707ca447983",
+            "colSpan": 24,
+            "dataType": "OBJECT",
+            "daemonField": false,
+            "actionsConfig": {
+                "allowDownload": true,
+                "allowPreview": true
+            },
+            "nameField": false,
+            "primaryField": false,
+            "takePhoto": true,
+            "type": "$UploadImage",
+            "title": "图片上传",
+            "required": false,
+            "fileSize": 5,
+            "name": "ZYkGx4A1",
+            "disabled": false,
+            "id": "ae60677ffdba",
+            "defaultValueConfig": null,
+            "maxLength": 10,
+            "allowTypes": [
+                "noLimit"
+            ],
+            "properties": [
+                {
+                    "code": "name",
+                    "array": false,
+                    "fieldKey": "3b7d328707ca447983",
+                    "dataLength": 32,
+                    "dataType": "STRING",
+                    "name": "名称",
+                    "dataPrecision": null,
+                    "columnName": "ZYkGx4A1_name"
+                },
+                {
+                    "code": "key",
+                    "array": false,
+                    "fieldKey": "3b7d328707ca447983",
+                    "dataLength": 20,
+                    "dataType": "STRING",
+                    "name": "编号",
+                    "dataPrecision": null,
+                    "columnName": "ZYkGx4A1_key"
+                }
+            ],
+            "columnName": "ZYkGx4A1"
+        },
+        {
+            "enableActions": true,
+            "visible": true,
+            "fieldKey": "fc99e4fe8f2849d4ae",
+            "colSpan": 24,
+            "dataType": "OBJECT",
+            "daemonField": false,
+            "actionsConfig": {
+                "allowDownload": true,
+                "allowPreview": true
+            },
+            "nameField": false,
+            "primaryField": false,
+            "type": "$UploadFile",
+            "title": "文件上传",
+            "required": false,
+            "fileSize": 20,
+            "name": "r48luOqC",
+            "disabled": false,
+            "id": "fc8f58138eb4",
+            "text": "文件上传",
+            "defaultValueConfig": null,
+            "maxLength": 10,
+            "allowTypes": [
+                "noLimit"
+            ],
+            "properties": [
+                {
+                    "code": "name",
+                    "array": false,
+                    "fieldKey": "fc99e4fe8f2849d4ae",
+                    "dataLength": 32,
+                    "dataType": "STRING",
+                    "name": "名称",
+                    "dataPrecision": null,
+                    "columnName": "r48luOqC_name"
+                },
+                {
+                    "code": "key",
+                    "array": false,
+                    "fieldKey": "fc99e4fe8f2849d4ae",
+                    "dataLength": 20,
+                    "dataType": "STRING",
+                    "name": "编号",
+                    "dataPrecision": null,
+                    "columnName": "r48luOqC_key"
+                }
+            ],
+            "columnName": "r48luOqC"
+        },
+        {
+            "phoneType": "mobile",
+            "visible": true,
+            "fieldKey": "a7d0b0a99e48438bb2",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$Phone",
+            "title": "电话",
+            "required": false,
+            "name": "zP0tYd8T",
+            "disabled": false,
+            "id": "e5f3a494b41c",
+            "placeholder": "请输入",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [],
+            "columnName": "zP0tYd8T"
+        },
+        {
+            "visible": true,
+            "fieldKey": "163e396f2d064d1d93",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$Certificate",
+            "title": "证件",
+            "required": false,
+            "name": "JVbGROpc",
+            "disabled": false,
+            "id": "0271275ad57d",
+            "placeholder": "请输入",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [],
+            "OCR": false,
+            "columnName": "JVbGROpc"
+        },
+        {
+            "fieldKey": "291884a7905945c788",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": true,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$Formula",
+            "title": "公式",
+            "formulaExpr": {
+                "sourceType": "Expression",
+                "source": "{{11}}"
+            },
+            "valueType": "text",
+            "name": "RdBFX6Of",
+            "id": "a9be820bf7d8",
+            "defaultValueConfig": null,
+            "properties": [],
+            "columnName": "RdBFX6Of"
+        },
+        {
+            "visible": true,
+            "fieldKey": "17ff229f1c01405abe",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$Signature",
+            "title": "手写签名",
+            "required": false,
+            "syncOA": false,
+            "name": "gmHkspdh",
+            "disabled": false,
+            "id": "7f05064207ba",
+            "placeholder": "签名",
+            "defaultValueConfig": null,
+            "properties": null,
+            "columnName": "gmHkspdh"
+        },
+        {
+            "enableChange": true,
+            "visible": true,
+            "fieldKey": "350e9eccf84442a1bc",
+            "colSpan": 24,
+            "dataType": "OBJECT",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$Location",
+            "title": "定位",
+            "required": false,
+            "name": "m5z40MR1",
+            "disabled": false,
+            "id": "0da55a1a2470",
+            "placeholder": "请选择",
+            "radius": 500,
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "displayType": "currentLocation",
+                "sourceType": "Static",
+                "source": "currentLocation"
+            },
+            "properties": [
+                {
+                    "code": "location",
+                    "array": false,
+                    "fieldKey": "350e9eccf84442a1bc",
+                    "dataLength": null,
+                    "dataType": "OBJECT",
+                    "name": "经纬度",
+                    "dataPrecision": null,
+                    "columnName": "m5z40MR1_location"
+                },
+                {
+                    "code": "address",
+                    "array": false,
+                    "fieldKey": "350e9eccf84442a1bc",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "地址",
+                    "dataPrecision": null,
+                    "columnName": "m5z40MR1_address"
+                }
+            ],
+            "columnName": "m5z40MR1",
+            "limitLocation": false
+        },
+        {
+            "visible": true,
+            "fieldKey": "3b53d1b99a8a4a579c",
+            "colSpan": 24,
+            "dataType": "OBJECT",
+            "daemonField": false,
+            "districtType": 3,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$District",
+            "title": "地区",
+            "required": false,
+            "showSearch": true,
+            "name": "JpikXtyv",
+            "limit": false,
+            "disabled": false,
+            "id": "875986968a2e",
+            "placeholder": "请选择",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [
+                {
+                    "code": "pathKey",
+                    "array": false,
+                    "fieldKey": "3b53d1b99a8a4a579c",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "路径编号",
+                    "dataPrecision": null,
+                    "columnName": "JpikXtyv_pathKey"
+                },
+                {
+                    "code": "pathName",
+                    "array": false,
+                    "fieldKey": "3b53d1b99a8a4a579c",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "路径名",
+                    "dataPrecision": null,
+                    "columnName": "JpikXtyv_pathName"
+                }
+            ],
+            "columnName": "JpikXtyv"
+        },
+        {
+            "seqKey": "b544c27cdc824b5498",
+            "fieldKey": "620119930aa34200b8",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": true,
+            "resetAction": "auto",
+            "nameField": false,
+            "primaryField": false,
+            "numberRules": [
+                {
+                    "id": "Bac7jiwQ",
+                    "type": "$number",
+                    "value": 5
+                }
+            ],
+            "type": "$Sequence",
+            "title": "流水号",
+            "separator": "",
+            "resetPeriod": "year",
+            "name": "u2SLt1LE",
+            "id": "d845ac825c1f",
+            "defaultValueConfig": null,
+            "properties": null,
+            "columnName": "u2SLt1LE"
+        },
+        {
+            "fieldKey": "fc340af653664b469d",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$QRCode",
+            "title": "二维码",
+            "params": [
+                {
+                    "name": "ATEST",
+                    "value": "{{1}}"
+                }
+            ],
+            "target": {
+                "internalMenuKey": "6b52b585670945dab0",
+                "scanEntry": "xftapp"
+            },
+            "effectiveDateTime": {
+                "type": "$immediate"
+            },
+            "name": "Qnxq6Rzg",
+            "id": "8e6977d280a4",
+            "effectiveDuration": {
+                "type": "$forever"
+            },
+            "defaultValueConfig": null,
+            "properties": [],
+            "columnName": "Qnxq6Rzg"
+        },
+        {
+            "visible": true,
+            "fieldKey": "03ae598a6d1b4701bf",
+            "colSpan": 24,
+            "dataType": "TIME",
+            "format": "HH:mm",
+            "daemonField": false,
+            "nameField": false,
+            "primaryField": false,
+            "type": "$TimePicker",
+            "title": "时间",
+            "required": false,
+            "name": "nLl3P3v8",
+            "disabled": false,
+            "id": "67242571956f",
+            "placeholder": "请选择时间",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "properties": [],
+            "span": 1,
+            "columnName": "nLl3P3v8"
+        },
+        {
+            "auto": true,
+            "daemonField": false,
+            "nameField": false,
+            "isRefEachOther": false,
+            "type": "$RelateTable",
+            "title": "关联表",
+            "refObjectKey": "e066c60cace645a3a3",
+            "required": false,
+            "refObjectCode": "WAERAWE",
+            "path": "{{value ? meta.multiple ? PICKARRAY(value, \"_id\") : value._id : null}}",
+            "tableKey": "e066c60cace645a3a3",
+            "renderSchema": null,
+            "refReadViewKey": "aac18dfed5a04ed7b3",
+            "disabled": false,
+            "id": "503f255472e2",
+            "placeholder": "请选择",
+            "defaultValueConfig": null,
+            "showColumns": [
+                "name"
+            ],
+            "visible": true,
+            "fieldKey": "5cefd38ea09d4566be",
+            "colSpan": 24,
+            "dataType": "STRING",
+            "viewKey": "e05b035c87b74632a3",
+            "primaryField": false,
+            "way": "new",
+            "name": "Cbe0zg1S",
+            "properties": [],
+            "columnName": "Cbe0zg1S"
+        },
+        {
+            "columns": [
+                {
+                    "formatter": {
+                        "type": "$text"
+                    },
+                    "hoverTip": {
+                        "show": false
+                    },
+                    "visible": true,
+                    "name": "id",
+                    "title": "ID"
+                },
+                {
+                    "formatter": {
+                        "type": "$text"
+                    },
+                    "hoverTip": {
+                        "show": false
+                    },
+                    "visible": true,
+                    "name": "name",
+                    "title": "名称"
+                }
+            ],
+            "daemonField": false,
+            "nameField": false,
+            "externalData": {
+                "sourceType": "Static",
+                "source": {
+                    "list": [
+                        {
+                            "name": "张三",
+                            "id": "001"
+                        },
+                        {
+                            "name": "李四",
+                            "id": "002"
+                        }
+                    ]
+                }
+            },
+            "body": [
+                {
+                    "visible": true,
+                    "fieldKey": "9f2c89e56bf6439d92",
+                    "colSpan": 24,
+                    "dataType": "NUMBER",
+                    "precision": 0,
+                    "daemonField": false,
+                    "nameField": false,
+                    "primaryField": false,
+                    "type": "$InputNumber",
+                    "title": "数字",
+                    "required": false,
+                    "thousandSeparator": false,
+                    "name": "ckR9qOPl",
+                    "disabled": false,
+                    "id": "c2246093dd2a",
+                    "placeholder": "请输入",
+                    "defaultValueConfig": {
+                        "condition": {
+                            "type": "$deps"
+                        },
+                        "sourceType": "Static"
+                    },
+                    "properties": [],
+                    "columnName": "ckR9qOPl"
+                },
+                {
+                    "visible": true,
+                    "fieldKey": "69fdc497a7eb4a2ba8",
+                    "colSpan": 24,
+                    "dataType": "STRING",
+                    "daemonField": false,
+                    "nameField": false,
+                    "primaryField": false,
+                    "type": "$Input",
+                    "title": "文本",
+                    "manual": true,
+                    "required": false,
+                    "supportTextArea": false,
+                    "name": "pvy81qWL",
+                    "disabled": false,
+                    "id": "24775f471873",
+                    "placeholder": "请输入",
+                    "defaultValueConfig": {
+                        "condition": {
+                            "type": "$deps"
+                        },
+                        "sourceType": "Static"
+                    },
+                    "maxLength": 64,
+                    "properties": [],
+                    "columnName": "pvy81qWL"
+                },
+                {
+                    "defaultField": "_id",
+                    "auto": true,
+                    "fieldKey": "5247dec29b0a4ff8b8",
+                    "dataType": "STRING",
+                    "daemonField": true,
+                    "nameField": true,
+                    "description": "系统自动生成的ID字段",
+                    "primaryField": true,
+                    "type": "$Input",
+                    "title": "记录ID",
+                    "defaultWidth": 2,
+                    "required": true,
+                    "systemField": true,
+                    "name": "_id",
+                    "defaultValueConfig": null,
+                    "properties": [],
+                    "columnName": "_id"
+                },
+                {
+                    "defaultField": "enterpriseKey",
+                    "fieldKey": "ddb321e1f91746f4a0",
+                    "dataType": "STRING",
+                    "daemonField": true,
+                    "description": "系统生成的企业编号字段",
+                    "primaryField": false,
+                    "type": "$Input",
+                    "title": "企业编号",
+                    "defaultWidth": 2,
+                    "required": true,
+                    "systemField": true,
+                    "name": "enterpriseKey",
+                    "defaultValueConfig": {
+                        "displayType": "CurrentEnterprise",
+                        "sourceType": "Expression"
+                    },
+                    "properties": [],
+                    "columnName": "enterpriseKey"
+                },
+                {
+                    "defaultField": "creator",
+                    "fieldKey": "104c9b373766456e9e",
+                    "dataType": "OBJECT",
+                    "daemonField": true,
+                    "nameField": false,
+                    "description": "系统生成的创建人字段",
+                    "primaryField": false,
+                    "type": "$YHTStaffModal",
+                    "title": "创建人",
+                    "defaultWidth": 2,
+                    "required": true,
+                    "systemField": true,
+                    "name": "creator",
+                    "defaultValueConfig": {
+                        "displayType": "CurrentUser",
+                        "sourceType": "Expression"
+                    },
+                    "properties": [
+                        {
+                            "code": "name",
+                            "array": false,
+                            "fieldKey": "104c9b373766456e9e",
+                            "dataType": "STRING",
+                            "name": "名称",
+                            "columnName": "creator_name"
+                        },
+                        {
+                            "code": "key",
+                            "array": false,
+                            "fieldKey": "104c9b373766456e9e",
+                            "dataType": "STRING",
+                            "name": "编号",
+                            "columnName": "creator_key"
+                        },
+                        {
+                            "code": "openId",
+                            "array": false,
+                            "fieldKey": "104c9b373766456e9e",
+                            "dataType": "STRING",
+                            "name": "openId",
+                            "columnName": "creator_openid"
+                        }
+                    ],
+                    "columnName": "creator"
+                },
+                {
+                    "defaultField": "createdAt",
+                    "fieldKey": "74071705787f415497",
+                    "dataType": "DATE",
+                    "format": "YYYY-MM-DD HH:mm:ss",
+                    "daemonField": true,
+                    "nameField": false,
+                    "description": "系统生成的创建时间字段",
+                    "primaryField": false,
+                    "type": "$DateTime",
+                    "title": "创建时间",
+                    "defaultWidth": 2,
+                    "required": true,
+                    "systemField": true,
+                    "name": "createdAt",
+                    "defaultValueConfig": {
+                        "displayType": "Today",
+                        "sourceType": "Expression"
+                    },
+                    "properties": [],
+                    "columnName": "createdAt"
+                },
+                {
+                    "defaultField": "modifier",
+                    "fieldKey": "444d654db8684206b9",
+                    "dataType": "OBJECT",
+                    "daemonField": true,
+                    "nameField": false,
+                    "description": "系统生成的更新人字段",
+                    "primaryField": false,
+                    "type": "$YHTStaffModal",
+                    "title": "更新人",
+                    "defaultWidth": 2,
+                    "required": true,
+                    "systemField": true,
+                    "name": "modifier",
+                    "defaultValueConfig": {
+                        "displayType": "CurrentUser",
+                        "sourceType": "Expression"
+                    },
+                    "properties": [
+                        {
+                            "code": "name",
+                            "array": false,
+                            "fieldKey": "444d654db8684206b9",
+                            "dataType": "STRING",
+                            "name": "名称",
+                            "columnName": "modifier_name"
+                        },
+                        {
+                            "code": "key",
+                            "array": false,
+                            "fieldKey": "444d654db8684206b9",
+                            "dataType": "STRING",
+                            "name": "编号",
+                            "columnName": "modifier_key"
+                        },
+                        {
+                            "code": "openId",
+                            "array": false,
+                            "fieldKey": "444d654db8684206b9",
+                            "dataType": "STRING",
+                            "name": "openId",
+                            "columnName": "modifier_openid"
+                        }
+                    ],
+                    "columnName": "modifier"
+                },
+                {
+                    "defaultField": "modifiedAt",
+                    "fieldKey": "444f4ddf7f894d0480",
+                    "dataType": "DATE",
+                    "format": "YYYY-MM-DD HH:mm:ss",
+                    "daemonField": true,
+                    "nameField": false,
+                    "description": "系统生成的更新时间字段",
+                    "primaryField": false,
+                    "type": "$DateTime",
+                    "title": "更新时间",
+                    "defaultWidth": 2,
+                    "required": true,
+                    "systemField": true,
+                    "name": "modifiedAt",
+                    "defaultValueConfig": {
+                        "displayType": "Today",
+                        "sourceType": "Expression"
+                    },
+                    "properties": [],
+                    "columnName": "modifiedAt"
+                },
+                {
+                    "auto": true,
+                    "daemonField": false,
+                    "nameField": false,
+                    "type": "$RelateTable",
+                    "title": "主表记录ID",
+                    "refObjectKey": "4c78061209564f1a96",
+                    "required": true,
+                    "refObjectCode": "SDFASDFA",
+                    "path": "{{value ? meta.multiple ? PICKARRAY(value, \"_id\") : value._id : null}}",
+                    "tableKey": "4c78061209564f1a96",
+                    "systemField": true,
+                    "refReadViewKey": "8d09ad11193e4f8fa2",
+                    "disabled": false,
+                    "id": "PjAFUWgPbWQO",
+                    "placeholder": "请选择",
+                    "defaultValueConfig": null,
+                    "showColumns": [
+                        "_id"
+                    ],
+                    "defaultField": "masterId",
+                    "visible": true,
+                    "fieldKey": "c9f9eb10b7334243ab",
+                    "colSpan": 24,
+                    "dataType": "STRING",
+                    "viewKey": "8a219cf90b0d483dab",
+                    "multiple": false,
+                    "primaryField": false,
+                    "way": "new",
+                    "name": "masterId",
+                    "properties": [],
+                    "columnName": "masterId"
+                }
+            ],
+            "type": "$SubTable",
+            "title": "子表",
+            "refObjectKey": "1fb2634a3071468ebd",
+            "required": false,
+            "tableName": "CMB100001_a4c912f89bc14f3bbe_SDFASDFA_XIGBd3wR",
+            "refObjectCode": "SDFASDFA_XIGBd3wR",
+            "allowCreate": true,
+            "disabled": false,
+            "id": "64482deeaae6",
+            "defaultValueConfig": {
+                "condition": {
+                    "type": "$deps"
+                },
+                "sourceType": "Static"
+            },
+            "visible": true,
+            "fieldKey": "42dd48247f49438d89",
+            "dataType": "OBJECT",
+            "multiple": true,
+            "primaryField": false,
+            "queries": [],
+            "way": "inline",
+            "enableEnterprise": true,
+            "layout": "vertical",
+            "name": "XIGBd3wR",
+            "properties": [],
+            "columnName": "XIGBd3wR"
+        },
+        {
+            "defaultField": "_id",
+            "auto": true,
+            "fieldKey": "84abdd1e73634d1986",
+            "dataType": "STRING",
+            "daemonField": true,
+            "description": "系统自动生成的ID字段",
+            "primaryField": true,
+            "type": "$Input",
+            "title": "记录ID",
+            "defaultWidth": 2,
+            "required": true,
+            "systemField": true,
+            "name": "_id",
+            "id": "aa1610b35837",
+            "defaultValueConfig": null,
+            "properties": [],
+            "columnName": "_id"
+        },
+        {
+            "defaultField": "enterpriseKey",
+            "fieldKey": "8781d4324602482eb2",
+            "dataType": "STRING",
+            "daemonField": true,
+            "description": "系统生成的企业编号字段",
+            "primaryField": false,
+            "type": "$Input",
+            "title": "企业编号",
+            "defaultWidth": 2,
+            "required": true,
+            "systemField": true,
+            "name": "enterpriseKey",
+            "id": "a149659a3648",
+            "defaultValueConfig": {
+                "displayType": "CurrentEnterprise",
+                "sourceType": "Expression"
+            },
+            "properties": [],
+            "columnName": "enterpriseKey"
+        },
+        {
+            "defaultField": "creator",
+            "fieldKey": "5e82a030afe548fe8a",
+            "dataType": "OBJECT",
+            "daemonField": true,
+            "nameField": false,
+            "description": "系统生成的创建人字段",
+            "primaryField": false,
+            "type": "$YHTStaffModal",
+            "title": "创建人",
+            "defaultWidth": 2,
+            "required": true,
+            "systemField": true,
+            "name": "creator",
+            "id": "f23e68e1b1fb",
+            "defaultValueConfig": {
+                "displayType": "CurrentUser",
+                "sourceType": "Expression"
+            },
+            "properties": [
+                {
+                    "code": "name",
+                    "array": false,
+                    "fieldKey": "5e82a030afe548fe8a",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "名称",
+                    "dataPrecision": null,
+                    "columnName": "creator_name"
+                },
+                {
+                    "code": "key",
+                    "array": false,
+                    "fieldKey": "5e82a030afe548fe8a",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "编号",
+                    "dataPrecision": null,
+                    "columnName": "creator_key"
+                },
+                {
+                    "code": "openId",
+                    "array": false,
+                    "fieldKey": "5e82a030afe548fe8a",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "openId",
+                    "dataPrecision": null,
+                    "columnName": "creator_openid"
+                }
+            ],
+            "columnName": "creator"
+        },
+        {
+            "defaultField": "createdAt",
+            "fieldKey": "8ff96af5b39c45e0ac",
+            "dataType": "DATE",
+            "format": "YYYY-MM-DD HH:mm:ss",
+            "daemonField": true,
+            "nameField": false,
+            "description": "系统生成的创建时间字段",
+            "primaryField": false,
+            "type": "$DateTime",
+            "title": "创建时间",
+            "defaultWidth": 2,
+            "required": true,
+            "systemField": true,
+            "name": "createdAt",
+            "id": "494dbadac25b",
+            "defaultValueConfig": {
+                "displayType": "Today",
+                "sourceType": "Expression"
+            },
+            "properties": [],
+            "columnName": "createdAt"
+        },
+        {
+            "defaultField": "modifier",
+            "fieldKey": "a1d5ce778f454b39a5",
+            "dataType": "OBJECT",
+            "daemonField": true,
+            "nameField": false,
+            "description": "系统生成的更新人字段",
+            "primaryField": false,
+            "type": "$YHTStaffModal",
+            "title": "更新人",
+            "defaultWidth": 2,
+            "required": true,
+            "systemField": true,
+            "name": "modifier",
+            "id": "791535d41045",
+            "defaultValueConfig": {
+                "displayType": "CurrentUser",
+                "sourceType": "Expression"
+            },
+            "properties": [
+                {
+                    "code": "name",
+                    "array": false,
+                    "fieldKey": "a1d5ce778f454b39a5",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "名称",
+                    "dataPrecision": null,
+                    "columnName": "modifier_name"
+                },
+                {
+                    "code": "key",
+                    "array": false,
+                    "fieldKey": "a1d5ce778f454b39a5",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "编号",
+                    "dataPrecision": null,
+                    "columnName": "modifier_key"
+                },
+                {
+                    "code": "openId",
+                    "array": false,
+                    "fieldKey": "a1d5ce778f454b39a5",
+                    "dataLength": null,
+                    "dataType": "STRING",
+                    "name": "openId",
+                    "dataPrecision": null,
+                    "columnName": "modifier_openid"
+                }
+            ],
+            "columnName": "modifier"
+        },
+        {
+            "defaultField": "modifiedAt",
+            "fieldKey": "961db76f779b40d0a4",
+            "dataType": "DATE",
+            "format": "YYYY-MM-DD HH:mm:ss",
+            "daemonField": true,
+            "nameField": false,
+            "description": "系统生成的更新时间字段",
+            "primaryField": false,
+            "type": "$DateTime",
+            "title": "更新时间",
+            "defaultWidth": 2,
+            "required": true,
+            "systemField": true,
+            "name": "modifiedAt",
+            "id": "aade2a245819",
+            "defaultValueConfig": {
+                "displayType": "Today",
+                "sourceType": "Expression"
+            },
+            "properties": [],
+            "columnName": "modifiedAt"
+        }
+    ],
+    "type": "$Form",
+    "tableName": "CMB100001_a4c912f89bc14f3bbe_SDFASDFA",
+    "enableEnterprise": true,
+    "actionsEnabled": false,
+    "primaryFieldKey": "84abdd1e73634d1986",
+    "objectKey": "4c78061209564f1a96",
+    "slotEnabled": false,
+    "objectName": "TTTTT2",
+    "style": {
+        "padding": 0,
+        "height": "100%"
+    },
+    "hiddenTitle": true,
+    "id": "Form",
+    "primaryFieldCode": "_id"
+}

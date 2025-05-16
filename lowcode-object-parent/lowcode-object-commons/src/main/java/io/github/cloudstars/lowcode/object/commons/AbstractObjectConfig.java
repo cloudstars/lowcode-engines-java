@@ -8,7 +8,6 @@ import io.github.cloudstars.lowcode.object.commons.field.ObjectFieldConfigFactor
 import io.github.cloudstars.lowcode.object.commons.field.objectref.AbstractObjectRefObjectFieldConfig;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 抽象的模型配置
@@ -16,10 +15,6 @@ import java.util.Map;
  * @author clouds
  */
 public class AbstractObjectConfig<F extends AbstractObjectFieldConfig, RF extends AbstractObjectRefObjectFieldConfig> extends AbstractResourceConfig implements XObjectConfig<F, RF> {
-
-    //private static final String ATTR_OBJECT_CODE = "objectCode";
-
-    //private String objectCode;
 
     // 字段列表配置名称
     private static final String ATTR_FIELDS = "fields";
@@ -35,20 +30,7 @@ public class AbstractObjectConfig<F extends AbstractObjectFieldConfig, RF extend
     public AbstractObjectConfig(JsonObject configJson) {
         super(configJson);
 
-        //this.objectCode = ConfigUtils.getString(configJson, ATTR_OBJECT_CODE);
         this.fields = ConfigUtils.getList(configJson, ATTR_FIELDS, (v) -> (F) ObjectFieldConfigFactory.newInstance(v));
-
-        /*
-        List<F> fieldConfigs = new ArrayList<>();
-        JsonArray fields = (JsonArray) fieldsValue;
-        fields.forEach((field) -> {
-            JsonObject fieldConfigJson = (JsonObject) field;
-            F fieldConfig = (F) ObjectFieldConfigFactory.newInstance(fieldConfigJson);
-            if (fieldConfig != null) {
-                fieldConfigs.add(fieldConfig);
-            }
-        });
-        this.fields = fieldConfigs;*/
     }
 
     public List<F> getFields() {
@@ -80,11 +62,6 @@ public class AbstractObjectConfig<F extends AbstractObjectFieldConfig, RF extend
     }
 
     @Override
-    public void validate(Map<String, Object> dataMap) {
-
-    }
-
-    @Override
     public String getTableName() {
         return null;
     }
@@ -92,7 +69,6 @@ public class AbstractObjectConfig<F extends AbstractObjectFieldConfig, RF extend
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        //ConfigUtils.put(configJson, ATTR_OBJECT_CODE, this.objectCode);
         ConfigUtils.putArray(configJson, ATTR_FIELDS, this.fields);
 
         return configJson;

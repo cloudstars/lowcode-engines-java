@@ -23,7 +23,7 @@ public class ObjectValueTypeConfigTest {
     public void testTextObjectValueType() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/type/object/object-simple.json");
         XValueTypeConfig valueType = ValueTypeConfigFactory.newInstance(configJson);
-        Assert.assertEquals(ObjectValueTypeConfig.class, valueType.getClass());
+        Assert.assertEquals(MapValueTypeConfig.class, valueType.getClass());
         JsonTestUtils.assertEquals(configJson, valueType.toJson());
     }
 
@@ -35,7 +35,7 @@ public class ObjectValueTypeConfigTest {
     public void testObjectValueTypeWithArrayProperty() {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("value/type/object/object-with-array.json");
         XValueTypeConfig valueType = ValueTypeConfigFactory.newInstance(configJson);
-        Assert.assertEquals(ObjectValueTypeConfig.class, valueType.getClass());
+        Assert.assertEquals(MapValueTypeConfig.class, valueType.getClass());
         JsonTestUtils.assertEquals(configJson, valueType.toJson());
     }
 

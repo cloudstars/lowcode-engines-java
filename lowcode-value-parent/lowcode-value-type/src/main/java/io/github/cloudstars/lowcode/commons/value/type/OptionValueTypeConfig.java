@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author clouds
  */
 @ValueTypeConfigClass(name = "OPTION", valueClass = Option.class)
-public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig {
+public class OptionValueTypeConfig extends AbstractMapValueTypeConfig {
 
     /**
      * 标签配置名称
@@ -49,7 +49,7 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig {
         this.labelField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_LABEL_FIELD);
         this.valueField = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_VALUE_FIELD);
 
-        ObjectPropertyConfig labelPropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig labelPropertyConfig = new MapPropertyConfig();
         {
             labelPropertyConfig.setName(this.labelField);
             labelPropertyConfig.setLabel("标签");
@@ -57,7 +57,7 @@ public class OptionValueTypeConfig extends AbstractObjectValueTypeConfig {
             labelPropertyConfig.setValueType(labelValueTypeConfig);
         }
 
-        ObjectPropertyConfig valuePropertyConfig = new ObjectPropertyConfig();
+        MapPropertyConfig valuePropertyConfig = new MapPropertyConfig();
         {
             valuePropertyConfig.setName(this.valueField);
             valuePropertyConfig.setLabel("值");

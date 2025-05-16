@@ -31,4 +31,12 @@ public interface GlobalAttrNames {
     // 表达式配置项名称
     String ATTR_EXPRESSION = "expression";
 
+
+    // 标题配置名称
+    String ATTR_TITLE = "title";
+
+    // Map下属性列表的配置名称
+    String ATTR_PROPERTIES = "properties";
+
+
 }
