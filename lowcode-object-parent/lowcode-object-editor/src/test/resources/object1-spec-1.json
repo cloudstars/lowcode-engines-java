@@ -1,11 +1,26 @@
 {
+    "type": "$Form",
+    "objectKey": "4c78061209564f1a96",
     "objectCode": "SDFASDFA",
+    "objectName": "TTTTT2",
+    "description": null,
+    "tableName": "CMB100001_a4c912f89bc14f3bbe_SDFASDFA",
+    "primaryFieldKey": "84abdd1e73634d1986",
+    "enableEnterprise": true,
     "nameField": {
         "enable": true,
         "name": "name",
         "key": "ef3644681b5244daa1"
     },
-    "description": null,
+    "id": "Form",
+    "primaryFieldCode": "_id",
+    "slotEnabled": false,
+    "actionsEnabled": false,
+    "style": {
+        "padding": 0,
+        "height": "100%"
+    },
+    "hiddenTitle": true,
     "slot": [],
     "body": [
         {
@@ -1504,20 +1519,5 @@
             "properties": [],
             "columnName": "modifiedAt"
         }
-    ],
-    "type": "$Form",
-    "tableName": "CMB100001_a4c912f89bc14f3bbe_SDFASDFA",
-    "enableEnterprise": true,
-    "actionsEnabled": false,
-    "primaryFieldKey": "84abdd1e73634d1986",
-    "objectKey": "4c78061209564f1a96",
-    "slotEnabled": false,
-    "objectName": "TTTTT2",
-    "style": {
-        "padding": 0,
-        "height": "100%"
-    },
-    "hiddenTitle": true,
-    "id": "Form",
-    "primaryFieldCode": "_id"
+    ]
 }

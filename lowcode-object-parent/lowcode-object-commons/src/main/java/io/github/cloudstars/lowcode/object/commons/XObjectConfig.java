@@ -28,34 +28,20 @@ public interface XObjectConfig<F extends XObjectFieldConfig, R extends XObjectRe
     List<F> getFields();
 
     /**
-     * 根据字段名称获取字段
-     *
-     * @param fieldName 字段的名称
-     * @return 字段配置
-     */
-    F getField(String fieldName);
-
-    /**
      * 获取主键字段
      *
      * @return 主键字段的配置
      */
-    F getPrimaryField();
+    // F getPrimaryField();
+    String getPrimaryFieldKey();
 
     /**
-     * 根据关联模型的编号获取对应的字段
+     * 获取名称字段
      *
-     * @param refFieldName 引用的字段名称
-     * @return 引用的字段配置
+     * @return 名称字段的配置
      */
-    R getObjectRefField(String refFieldName);
-
-    /**
-     * 如果是一个子模型的话，返回引用的主模型字段
-     *
-     * @return 主键字段的配置
-     */
-    R getMasterField();
+    // F getNameField();
+    String getNameFieldKey();
 
     /**
      * 获取表的名称

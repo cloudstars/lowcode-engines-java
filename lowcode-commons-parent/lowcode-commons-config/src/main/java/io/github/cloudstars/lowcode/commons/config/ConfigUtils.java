@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.config;
 
+import io.github.cloudstars.lowcode.commons.lang.exception.SystemException;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
@@ -30,6 +31,20 @@ public final class ConfigUtils {
     }
 
     /**
+     * 获取配置中指定键对应的不为Null的值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return 不为Null的Object值
+     */
+    public static Object getNonNull(JsonObject configJson, String key) {
+        Object value = configJson.get(key);
+        checkNonNull(configJson, key, value);
+        return value;
+    }
+
+
+    /**
      * 获取配置中指定键对应的String值
      *
      * @param configJson 配置对象
@@ -38,6 +53,19 @@ public final class ConfigUtils {
      */
     public static String getString(JsonObject configJson, String key) {
         return (String) get(configJson, key);
+    }
+
+    /**
+     * 获取配置中指定键对应的不为Null的String值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return 不为Null的String值
+     */
+    public static String getNonNullString(JsonObject configJson, String key) {
+        String value = (String) get(configJson, key);
+        checkNonNull(configJson, key, value);
+        return value;
     }
 
     /**
@@ -52,6 +80,19 @@ public final class ConfigUtils {
     }
 
     /**
+     * 获取配置中指定键对应的Integer值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return 不为Null的Integer值
+     */
+    public static Integer getNonNullInteger(JsonObject configJson, String key) {
+        Integer value = (Integer) get(configJson, key);
+        checkNonNull(configJson, key, value);
+        return value;
+    }
+
+    /**
      * 获取配置中指定键对应的Boolean值
      *
      * @param configJson 配置对象
@@ -59,6 +100,20 @@ public final class ConfigUtils {
      */
     public static Boolean getBoolean(JsonObject configJson, String key) {
         return (Boolean) get(configJson, key);
+    }
+
+
+    /**
+     * 获取配置中指定键对应的不为Null的Boolean值
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @return 不为Null的String值
+     */
+    public static Boolean getNonNullBoolean(JsonObject configJson, String key) {
+        Boolean value = (Boolean) get(configJson, key);
+        checkNonNull(configJson, key, value);
+        return value;
     }
 
     /**
@@ -117,6 +172,21 @@ public final class ConfigUtils {
             configList.add(config);
         }
         return configList;
+    }
+
+    /**
+     * 校验配置中指定键对应的值不为Null
+     *
+     * @param configJson 配置对象
+     * @param key        键
+     * @param value      Object值
+     */
+    public static Object checkNonNull(JsonObject configJson, String key, Object value) {
+        if (value == null) {
+            throw new SystemException("配置下的属性[" + key + "]不能为空：" + configJson.toJsonString());
+        }
+
+        return value;
     }
 
     /**

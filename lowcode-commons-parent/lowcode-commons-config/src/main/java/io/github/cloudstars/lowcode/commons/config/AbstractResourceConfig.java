@@ -30,7 +30,7 @@ public abstract class AbstractResourceConfig extends AbstractTypedConfig impleme
     public AbstractResourceConfig(JsonObject configJson) {
         super(configJson);
 
-        this.key = (String) configJson.get(ATTR_KEY);
+        this.key = ConfigUtils.getNonNullString(configJson, ATTR_KEY);
         this.code = (String) configJson.get(ATTR_CODE);
         this.name = (String) configJson.get(ATTR_NAME);
     }
@@ -66,7 +66,7 @@ public abstract class AbstractResourceConfig extends AbstractTypedConfig impleme
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        configJson.put(ATTR_KEY, this.key);
+        ConfigUtils.put(configJson, ATTR_KEY, this.key);
         ConfigUtils.putIfNotNull(configJson, ATTR_CODE, this.code);
         ConfigUtils.putIfNotNull(configJson, ATTR_NAME, this.name);
 

@@ -11,29 +11,12 @@ import io.github.cloudstars.lowcode.dynamic.value.XDynamicValueConfig;
  */
 public interface XObjectFieldConfig extends XResourceConfig {
 
-    // 是否必填的属性名称
-    String ATTR_REQUIRED = "required";
-
-    /**
-     * 获取字段所属的模型mingc
-     *
-     * @return
-     */
-    // String getOwner();
-
-    /**
-     * 获取字段的名称
-     *
-     * @return
-     */
-    String getName();
-
     /**
      * 获取地段的标题
      *
      * @return
      */
-    String getTitle();
+    // String getTitle();
 
     /**
      * 获取字段的列名
@@ -41,14 +24,27 @@ public interface XObjectFieldConfig extends XResourceConfig {
      * @return
      */
     String getColumnName();
+
+    /**
+     * 是否主键字段
+     *
+     * @return 是否主键字段
+     */
+    Boolean getPrimaryField();
+
+    /**
+     * 是否名称字段
+     *
+     * @return 是否名称字段
+     */
+    Boolean getNameField();
+
     /**
      * 是否自动生成的字段
      *
      * @return
      */
-    default boolean isAutoGen() {
-        return false;
-    }
+    Boolean getAutoGen();
 
     /**
      * 获取字段的数据格式配置

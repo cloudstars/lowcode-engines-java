@@ -2,7 +2,6 @@ package io.github.cloudstars.lowcode.object.commons.field;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractResourceConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
-import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
@@ -16,18 +15,26 @@ import io.github.cloudstars.lowcode.dynamic.value.XDynamicValueConfig;
  */
 public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig implements XObjectFieldConfig {
 
+    // 字段列名称
     private static final String ATTR_COLUMN_NAME = "columnName";
-
+    // 是否主键字段
+    private static final String ATTR_PRIMARY_FIELD = "primaryField";
+    // 是否名称字段
+    private static final String ATTR_NAME_FIELD = "nameField";
+    // 是否自动生成字段
     private static final String ATTR_AUTO_GEN = "autoGen";
-
+    // 字段默认宽度
     private static final String ATTR_DEFAULT_WIDTH = "defaultWidth";
-
+    // 是否系统字段
     private static final String ATTR_SYSTEM_FIELD = "systemField";
+    // 是否后台计算字段
+    // private static final String ATTR_DEAMON_FIELD = "deamonField";
+
 
     /**
      * 字段标题
      */
-    private String title;
+    //private String title;
 
     /**
      * 字段的列名
@@ -35,9 +42,19 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
     private String columnName;
 
     /**
-     * 默认宽度
+     * 是否主键字段
      */
-    private Integer defaultWidth;
+    private Boolean primaryField;
+
+    /**
+     * 是否自动生成的字段
+     */
+    private Boolean autoGen;
+
+    /**
+     * 是否名称字段
+     */
+    private Boolean nameField;
 
     /**
      * 是否系统字段
@@ -45,9 +62,14 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
     private Boolean systemField;
 
     /**
-     * 是否自动生成的字段
+     * 是否后台计算字段
      */
-    private Boolean autoGen;
+    //private Boolean deamonField;
+
+    /**
+     * 默认宽度
+     */
+    private Integer defaultWidth;
 
     /**
      * 数据格式配置
@@ -65,19 +87,15 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
     protected AbstractObjectFieldConfig(JsonObject configJson) {
         super(configJson);
 
-        this.title = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_LABEL);
-        ConfigUtils.consumeIfPresent(configJson, ATTR_COLUMN_NAME, (v) -> {
-            this.columnName = (String) v;
-        });
-        this.defaultWidth = ConfigUtils.getInteger(configJson, ATTR_DEFAULT_WIDTH);
+        //this.title = ConfigUtils.getString(configJson, GlobalAttrNames.ATTR_LABEL);
+        this.columnName = ConfigUtils.getString(configJson, ATTR_COLUMN_NAME);
+        this.primaryField = ConfigUtils.getBoolean(configJson, ATTR_PRIMARY_FIELD);
+        this.autoGen = ConfigUtils.getBoolean(configJson, ATTR_AUTO_GEN);
+        this.nameField = ConfigUtils.getBoolean(configJson, ATTR_NAME_FIELD);
         this.systemField = ConfigUtils.getBoolean(configJson, ATTR_SYSTEM_FIELD);
-        ConfigUtils.consumeIfPresent(configJson, ATTR_AUTO_GEN, (v) -> {
-            this.autoGen = (Boolean) v;
-        });
-        JsonObject dynamicValueConfigJson = (JsonObject) configJson.get(XDynamicValueConfig.ATTR);
-        if (dynamicValueConfigJson != null) {
-            this.dynamicValue = DynamicValueConfigFactory.newInstance(dynamicValueConfigJson);
-        }
+        //this.deamonField = ConfigUtils.getBoolean(configJson, ATTR_DEAMON_FIELD);
+        this.defaultWidth = ConfigUtils.getInteger(configJson, ATTR_DEFAULT_WIDTH);
+        ConfigUtils.consume(configJson, XDynamicValueConfig.ATTR, (v) -> DynamicValueConfigFactory.newInstance((JsonObject) v));
     }
 
     @Override
@@ -85,14 +103,14 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
         return this.getClass().getAnnotation(ObjectFieldConfigClass.class).name();
     }
 
-    @Override
+    /*@Override
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
+    }*/
 
     @Override
     public String getColumnName() {
@@ -103,12 +121,30 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
         this.columnName = columnName;
     }
 
-    public Integer getDefaultWidth() {
-        return defaultWidth;
+    @Override
+    public Boolean getPrimaryField() {
+        return primaryField;
     }
 
-    public void setDefaultWidth(Integer defaultWidth) {
-        this.defaultWidth = defaultWidth;
+    public void setPrimaryField(Boolean primaryField) {
+        this.primaryField = primaryField;
+    }
+
+    public Boolean getAutoGen() {
+        return autoGen;
+    }
+
+    public void setAutoGen(Boolean autoGen) {
+        this.autoGen = autoGen;
+    }
+
+    @Override
+    public Boolean getNameField() {
+        return nameField;
+    }
+
+    public void setNameField(Boolean nameField) {
+        this.nameField = nameField;
     }
 
     public Boolean getSystemField() {
@@ -119,13 +155,22 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
         this.systemField = systemField;
     }
 
-    public Boolean getAutoGen() {
-        return autoGen;
+    /*public Boolean getDeamonField() {
+        return deamonField;
     }
 
-    public void setAutoGen(Boolean autoGen) {
-        this.autoGen = autoGen;
+    public void setDeamonField(Boolean deamonField) {
+        this.deamonField = deamonField;
+    }*/
+
+    public Integer getDefaultWidth() {
+        return defaultWidth;
     }
+
+    public void setDefaultWidth(Integer defaultWidth) {
+        this.defaultWidth = defaultWidth;
+    }
+
 
     @Override
     public XValueTypeConfig getValueType() {
@@ -148,11 +193,13 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_TITLE, this.title);
-        ConfigUtils.putIfNotNull(configJson, ATTR_DEFAULT_WIDTH, this.defaultWidth);
-        ConfigUtils.putIfNotNull(configJson, ATTR_SYSTEM_FIELD, this.systemField);
         ConfigUtils.putIfNotNull(configJson, ATTR_COLUMN_NAME, this.columnName);
+        ConfigUtils.putIfNotNull(configJson, ATTR_PRIMARY_FIELD, this.primaryField);
         ConfigUtils.putIfNotNull(configJson, ATTR_AUTO_GEN, this.autoGen);
+        ConfigUtils.putIfNotNull(configJson, ATTR_NAME_FIELD, this.nameField);
+        ConfigUtils.putIfNotNull(configJson, ATTR_SYSTEM_FIELD, this.systemField);
+        //ConfigUtils.putIfNotNull(configJson, ATTR_DEAMON_FIELD, this.deamonField);
+        ConfigUtils.putIfNotNull(configJson, ATTR_DEFAULT_WIDTH, this.defaultWidth);
 
         // 将数据格式的属性添加到当前字段上
         if (this.valueType != null) {

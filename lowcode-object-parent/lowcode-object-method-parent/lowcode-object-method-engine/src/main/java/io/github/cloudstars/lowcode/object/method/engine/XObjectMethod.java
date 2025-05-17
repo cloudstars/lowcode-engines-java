@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.method.engine;
 
 import io.github.cloudstars.lowcode.object.method.editor.XObjectMethodConfig;
-import io.github.cloudstars.object.core.engine.XObject;
+import io.github.cloudstars.object.engine.XObject;
 
 /**
  * 模型方法

@@ -22,12 +22,15 @@ public abstract class AbstractSpec1ObjectFieldConfigParser<T extends AbstractObj
     }
 
     protected void setCommons(AbstractObjectFieldConfig config, JsonObject configJson) {
+        config.setKey(ConfigUtils.getNonNullString(configJson,"fieldKey"));
+        config.setCode(ConfigUtils.getNonNullString(configJson, "name"));
+        config.setName(ConfigUtils.getNonNullString(configJson, "title"));
         config.setDescription(ConfigUtils.getString(configJson, "description"));
-        config.setKey(ConfigUtils.getString(configJson,"fieldKey"));
-        config.setName(ConfigUtils.getString(configJson, "name"));
-        config.setTitle(ConfigUtils.getString(configJson, "title"));
+        //config.setTitle(ConfigUtils.getNonNullString(configJson, "title"));
+        config.setColumnName(ConfigUtils.getString(configJson, "columnName"));
         config.setDefaultWidth(ConfigUtils.getInteger(configJson, "defaultWidth"));
         config.setSystemField(ConfigUtils.getBoolean(configJson, "systemField"));
+        //config.setDeamonField(ConfigUtils.getBoolean(configJson, "daemonField"));
     }
 
 }

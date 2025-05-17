@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.object.method.engine;
 
 import io.github.cloudstars.lowcode.object.commons.ObjectAttrNames;
 import io.github.cloudstars.lowcode.object.method.editor.ObjectInsertOneMethodConfig;
-import io.github.cloudstars.object.core.engine.XObject;
+import io.github.cloudstars.object.engine.XObject;
 
 import java.util.Map;
 
