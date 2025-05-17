@@ -16,7 +16,13 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-form-commons</artifactId>
+            <artifactId>lowcode-object-form-editor</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-object-view-engine</artifactId>
+            <version>${revision}</version>
         </dependency>
 
 

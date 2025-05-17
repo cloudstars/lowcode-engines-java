@@ -269,7 +269,7 @@ public final class ConfigUtils {
      * @param values     配置的列表
      * @param <T>        配置子项的类型
      */
-    public static <T extends XConfig> void putArray(JsonObject configJson, String key, List<T> values) {
+    public static <T extends XConfig> void putList(JsonObject configJson, String key, List<T> values) {
         configJson.put(key, toJsonArray(values));
     }
 

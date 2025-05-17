@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.object.view.editor;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
+import io.github.cloudstars.lowcode.object.commons.AbstractObjectConfig;
 import io.github.cloudstars.lowcode.object.commons.AbstractObjectResourceConfig;
 
 /**
@@ -15,6 +16,10 @@ public abstract class AbstractObjectViewConfig extends AbstractObjectResourceCon
 
     public AbstractObjectViewConfig(JsonObject configJson) {
         super(configJson);
+    }
+
+    public AbstractObjectViewConfig(AbstractObjectConfig objectConfig) {
+
     }
 
     @Override

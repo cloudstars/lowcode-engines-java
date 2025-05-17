@@ -18,8 +18,7 @@
         <module>lowcode-object-editor</module>
         <module>lowcode-object-engine</module>
         <module>lowcode-object-method-parent</module>
-        <!--
-        <module>lowcode-object-view-parent</module>-->
+        <module>lowcode-object-view-parent</module>
         <module>lowcode-object-form-parent</module>
         <module>lowcode-object-table-parent</module>
         <module>lowcode-object-excel-parent</module>
@@ -50,6 +49,11 @@
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-object-engine</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cloudstars</groupId>
+                <artifactId>lowcode-object-view-editor</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

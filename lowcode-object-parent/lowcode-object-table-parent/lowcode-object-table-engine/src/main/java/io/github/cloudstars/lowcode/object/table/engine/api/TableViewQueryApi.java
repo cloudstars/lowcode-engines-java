@@ -1,0 +1,31 @@
+package io.github.cloudstars.lowcode.object.table.engine.api;
+
+import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
+import io.github.cloudstars.lowcode.object.view.engine.ObjectViewApi;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 表格视图查询接口
+ *
+ * @author clouds
+ */
+public class TableViewQueryApi implements ObjectViewApi<TableViewQueryApiInput, List<Map<String, Object>>> {
+
+    @Override
+    public String getName() {
+        return "TableView.Query";
+    }
+
+    @Override
+    public ApiConfig getApiConfig() {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> execute(TableViewQueryApiInput input) {
+        return null;
+    }
+
+}

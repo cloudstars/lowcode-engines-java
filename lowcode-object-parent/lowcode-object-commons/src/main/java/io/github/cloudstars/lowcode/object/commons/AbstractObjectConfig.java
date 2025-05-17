@@ -116,7 +116,7 @@ public class AbstractObjectConfig<F extends AbstractObjectFieldConfig, RF extend
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putArray(configJson, ATTR_FIELDS, this.fields);
+        ConfigUtils.putList(configJson, ATTR_FIELDS, this.fields);
         ConfigUtils.put(configJson, ATTR_PRIMARY_FIELD_KEY, this.primaryFieldKey);
         //ConfigUtils.putIfNotNull(configJson, ATTR_NAME_FIELD_KEY, this.nameFieldKey);
         ConfigUtils.putIfNotNull(configJson, ATTR_TABLE_NAME, this.tableName);

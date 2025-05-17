@@ -1,6 +1,5 @@
 package io.github.cloudstars.object.engine;
 
-import io.github.cloudstars.lowcode.commons.lang.exception.SystemException;
 import io.github.cloudstars.lowcode.object.commons.XObjectConfig;
 
 import java.util.HashMap;
@@ -34,7 +33,7 @@ public class XObjectImpl implements XObject {
 
     @Override
     public String getId() {
-        String primaryFieldName = objectConfig.getPrimaryField().getName();
+        String primaryFieldName = objectConfig.getPrimaryFieldKey();
         Object primaryValue = this.dataMap.get(primaryFieldName);
         if (primaryValue instanceof String) {
             return (String) primaryValue;
@@ -51,9 +50,9 @@ public class XObjectImpl implements XObject {
     @Override
     public void setValue(String key, Object value) {
         // 校验key是否存在
-        if (this.objectConfig.getField(key) == null) {
-            throw new SystemException("模型[" + objectConfig.getKey() + "]中不存在字段[" + key + "]");
-        }
+        // if (this.objectConfig.getFields().getField(key) == null) {
+        //    throw new SystemException("模型[" + objectConfig.getKey() + "]中不存在字段[" + key + "]");
+        //}
 
         this.dataMap.put(key, value);
     }

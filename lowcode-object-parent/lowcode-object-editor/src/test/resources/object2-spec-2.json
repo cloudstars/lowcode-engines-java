@@ -17,7 +17,8 @@
       "systemField": false,
       "defaultWidth": 2,
       "required": true,
-      "maxLength": 64
+      "maxLength": 64,
+      "placeholder":"请输入"
     },
     {
       "type": "TEXT",

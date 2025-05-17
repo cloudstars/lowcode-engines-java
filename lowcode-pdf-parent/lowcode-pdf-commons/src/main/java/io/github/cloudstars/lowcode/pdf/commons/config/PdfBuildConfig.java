@@ -80,7 +80,7 @@ public class PdfBuildConfig extends AbstractResourceConfig {
         JsonObject configJson = super.toJson();
         ConfigUtils.putIfNotNull(configJson, ATTR_PAGE_SIZE, this.pageSize);
         ConfigUtils.putIfNotNull(configJson, ATTR_COLUMN_SIZE, this.columnSize);
-        ConfigUtils.putArray(configJson, ATTR_ELEMENTS, this.elements);
+        ConfigUtils.putList(configJson, ATTR_ELEMENTS, this.elements);
 
         return configJson;
     }

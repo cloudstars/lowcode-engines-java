@@ -16,12 +16,15 @@
         <!-- 编译时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-object-table-commons</artifactId>
+            <artifactId>lowcode-object-view-editor</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-descriptor</artifactId>
+            <artifactId>lowcode-component-table</artifactId>
+            <version>${revision}</version>
         </dependency>
+
 
         <!-- 测试时依赖 -->
         <dependency>
