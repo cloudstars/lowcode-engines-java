@@ -12,7 +12,6 @@ public abstract class AbstractObjectMethod<C extends XObjectMethodConfig, R exte
 
     protected C methodConfig;
 
-
     public AbstractObjectMethod(/*XObjectConfigResolver objectConfigResolver, */C methodConfig) {
         this.methodConfig = methodConfig;
     }

@@ -2,9 +2,9 @@ package io.github.cloudstars.lowcode.object.form.editor.view.insert;
 
 import io.github.cloudstars.lowcode.component.form.FormItemConfig;
 import io.github.cloudstars.lowcode.object.commons.FormBasedObjectConfig;
-import io.github.cloudstars.lowcode.object.view.editor.XObjectConfig2ViewConfigConvert;
+import io.github.cloudstars.lowcode.object.view.editor.convert.XObjectConfig2ViewConfigConvertor;
 
-public class ObjectConfig2InsertFormViewConfigConvertor implements XObjectConfig2ViewConfigConvert<FormBasedObjectConfig, ObjectInsertFormViewConfig> {
+public class ObjectConfig2InsertFormViewConfigConvertor implements XObjectConfig2ViewConfigConvertor<FormBasedObjectConfig, ObjectInsertFormViewConfig> {
 
     @Override
     public ObjectInsertFormViewConfig convert(FormBasedObjectConfig objectConfig) {

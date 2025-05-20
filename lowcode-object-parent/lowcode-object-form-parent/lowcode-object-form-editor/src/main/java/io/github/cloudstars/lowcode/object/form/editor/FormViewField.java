@@ -7,19 +7,41 @@ package io.github.cloudstars.lowcode.object.form.editor;
  */
 public class FormViewField {
 
+    /**
+     * 字段编号
+     */
     private String fieldKey;
 
-    private FormFieldMode mode;
+    /**
+     * 操作权限
+     */
+    private OpMode mode;
+
+    public String getFieldKey() {
+        return fieldKey;
+    }
+
+    public void setFieldKey(String fieldKey) {
+        this.fieldKey = fieldKey;
+    }
+
+    public OpMode getMode() {
+        return mode;
+    }
+
+    public void setMode(OpMode mode) {
+        this.mode = mode;
+    }
 
     /**
-     * 表单项操作模式
+     * 表单项操作权限
      *
      * @author clouds
      */
-    public enum FormFieldMode {
+    public enum OpMode {
 
-        EDIT,
-        READ;
+        EDIT, // 编辑
+        READ; // 只读
 
     }
 }

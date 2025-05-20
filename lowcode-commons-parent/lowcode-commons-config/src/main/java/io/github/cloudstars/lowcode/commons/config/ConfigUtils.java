@@ -150,7 +150,11 @@ public final class ConfigUtils {
      */
     public static <T extends XConfig> T getObject(JsonObject configJson, String key, Function<JsonObject, T> function) {
         JsonObject valueObject = (JsonObject) configJson.get(key);
-        T config = function.apply(valueObject);
+        T config = null;
+        if (valueObject != null) {
+            config = function.apply(valueObject);
+        }
+
         return config;
     }
 
@@ -166,11 +170,15 @@ public final class ConfigUtils {
      */
     public static <T extends XConfig> List<T> getList(JsonObject configJson, String key, Function<JsonObject, T> function) {
         JsonArray valueArray = (JsonArray) configJson.get(key);
-        List<T> configList = new ArrayList<>();
-        for (Object valueItem : valueArray) {
-            T config = function.apply((JsonObject) valueItem);
-            configList.add(config);
+        List<T> configList = null;
+        if (valueArray != null) {
+            configList = new ArrayList<>();
+            for (Object valueItem : valueArray) {
+                T config = function.apply((JsonObject) valueItem);
+                configList.add(config);
+            }
         }
+
         return configList;
     }
 
@@ -196,6 +204,7 @@ public final class ConfigUtils {
      * @param key        键
      * @param consumer   消费者
      */
+    @Deprecated/* 使用getXXX消费 */
     public static void consume(JsonObject configJson, String key, Consumer<Object> consumer) {
         consumer.accept(configJson.get(key));
     }
@@ -207,6 +216,7 @@ public final class ConfigUtils {
      * @param key        键
      * @param consumer   消费者
      */
+    @Deprecated/* 使用getXXX消费 */
     public static void consumeIfPresent(JsonObject configJson, String key, Consumer<Object> consumer) {
         if (configJson.containsKey(key)) {
             consumer.accept(configJson.get(key));

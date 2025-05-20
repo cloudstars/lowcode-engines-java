@@ -16,6 +16,8 @@ public class TimeBpmFieldConfig extends AbstractBpmFieldConfig<TimeValueTypeConf
 
     public TimeBpmFieldConfig(JsonObject configJson) {
         super(configJson);
+
+        this.setValueType(new TimeValueTypeConfig(configJson));
     }
 
     @Override

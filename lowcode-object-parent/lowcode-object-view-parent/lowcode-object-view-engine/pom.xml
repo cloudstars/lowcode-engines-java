@@ -17,14 +17,22 @@
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-object-view-editor</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-value-type</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-api-type</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-object-method-engine</artifactId>
+            <version>${revision}</version>
         </dependency>
 
 

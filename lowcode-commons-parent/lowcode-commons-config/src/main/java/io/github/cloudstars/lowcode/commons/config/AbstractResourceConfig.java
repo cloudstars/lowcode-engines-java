@@ -22,7 +22,7 @@ public abstract class AbstractResourceConfig extends AbstractTypedConfig impleme
     /**
      * 配置的名称
      */
-    private String name;
+    private String title;
 
     public AbstractResourceConfig() {
     }
@@ -32,7 +32,7 @@ public abstract class AbstractResourceConfig extends AbstractTypedConfig impleme
 
         this.key = ConfigUtils.getNonNullString(configJson, ATTR_KEY);
         this.code = (String) configJson.get(ATTR_CODE);
-        this.name = (String) configJson.get(ATTR_NAME);
+        this.title = (String) configJson.get(ATTR_NAME);
     }
 
 
@@ -56,11 +56,11 @@ public abstract class AbstractResourceConfig extends AbstractTypedConfig impleme
 
     @Override
     public String getName() {
-        return name;
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -68,7 +68,7 @@ public abstract class AbstractResourceConfig extends AbstractTypedConfig impleme
         JsonObject configJson = super.toJson();
         ConfigUtils.put(configJson, ATTR_KEY, this.key);
         ConfigUtils.putIfNotNull(configJson, ATTR_CODE, this.code);
-        ConfigUtils.putIfNotNull(configJson, ATTR_NAME, this.name);
+        ConfigUtils.putIfNotNull(configJson, ATTR_NAME, this.title);
 
         return configJson;
     }

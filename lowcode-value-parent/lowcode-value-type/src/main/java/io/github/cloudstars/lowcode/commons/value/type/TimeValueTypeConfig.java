@@ -13,11 +13,11 @@ import java.sql.Time;
 @ValueTypeConfigClass(name = "TIME", valueClass = Time.class)
 public class TimeValueTypeConfig extends AbstractValueTypeConfig {
 
-    // 日期格式配置名称
+    // 时间格式配置名称
     private static final String ATTR_FORMAT = "format";
 
     /**
-     * 日期格式
+     * 时间格式
      */
     private String format;
 

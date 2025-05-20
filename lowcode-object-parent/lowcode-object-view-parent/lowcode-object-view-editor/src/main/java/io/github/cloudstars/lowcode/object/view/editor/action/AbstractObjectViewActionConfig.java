@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public abstract class AbstractObjectViewActionConfig extends AbstractTypedConfig {
+public abstract class AbstractObjectViewActionConfig extends AbstractTypedConfig implements XObjectViewActionConfig {
 
     /**
      * 操作的名称

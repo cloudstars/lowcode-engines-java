@@ -12,6 +12,11 @@ import io.github.cloudstars.lowcode.component.form.FormItemComponentClass;
 @FormItemComponentClass(type = "TEXT", readonly = false)
 public class TextComponentConfig extends AbstractFormItemComponentConfig {
 
+    /**
+     * 文本组件的内容
+     */
+    private String content;
+
     public TextComponentConfig() {
         super();
     }
@@ -20,9 +25,18 @@ public class TextComponentConfig extends AbstractFormItemComponentConfig {
         super(configJson);
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public JsonObject toJson() {
-        return super.toJson();
+        JsonObject configJson = super.toJson();
+        return configJson;
     }
 
 }

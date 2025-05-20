@@ -2,7 +2,6 @@ package io.github.cloudstars.lowcode.object.method.engine;
 
 import io.github.cloudstars.lowcode.object.commons.ObjectAttrNames;
 import io.github.cloudstars.lowcode.object.method.editor.ObjectUpdateOneMethodConfig;
-import io.github.cloudstars.object.engine.XObject;
 
 import java.util.Map;
 
@@ -12,15 +11,14 @@ import java.util.Map;
  * @author clouds
  */
 @ObjectMethodClass(name = "UPDATE_ONE", configClass = ObjectUpdateOneMethodConfig.class)
-public class ObjectUpdateOneMethod extends AbstractObjectMethod<ObjectUpdateOneMethodConfig, Integer, Map<String, ObjectAttrNames>> {
+public class ObjectUpdateOneMethod extends AbstractObjectMethod<ObjectUpdateOneMethodConfig, Map<String, ObjectAttrNames>, Integer> {
 
     public ObjectUpdateOneMethod(ObjectUpdateOneMethodConfig methodConfig) {
         super(methodConfig);
     }
 
-
     @Override
-    public Integer execute(XObject object) {
+    public Integer execute(Map<String, ObjectAttrNames> methodParams) {
         return null;
     }
 

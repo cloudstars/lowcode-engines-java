@@ -17,16 +17,19 @@
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-object-bpm-commons</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>io.github.cloudstars</groupId>
-            <artifactId>lowcode-commons-descriptor</artifactId>
+            <artifactId>lowcode-object-method-editor</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-commons-test</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

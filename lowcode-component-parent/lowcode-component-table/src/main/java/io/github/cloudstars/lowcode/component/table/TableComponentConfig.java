@@ -4,6 +4,11 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.component.commons.AbstractComponentConfig;
 import io.github.cloudstars.lowcode.component.commons.XComponentConfig;
 
+/**
+ * 表格组件配置
+ *
+ * @author clouds
+ */
 public class TableComponentConfig extends AbstractComponentConfig implements XComponentConfig {
 
     public TableComponentConfig() {

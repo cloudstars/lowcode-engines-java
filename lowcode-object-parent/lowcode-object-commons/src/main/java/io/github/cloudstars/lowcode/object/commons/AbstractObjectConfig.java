@@ -79,6 +79,16 @@ public class AbstractObjectConfig<F extends AbstractObjectFieldConfig, RF extend
     }
 
     @Override
+    public F getFieldByKey(String key) {
+        return null;
+    }
+
+    @Override
+    public F getFieldByName(String name) {
+        return null;
+    }
+
+    @Override
     public String getPrimaryFieldKey() {
         return this.primaryFieldKey;
     }

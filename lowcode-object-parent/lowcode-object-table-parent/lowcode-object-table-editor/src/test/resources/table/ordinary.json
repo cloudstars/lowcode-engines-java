@@ -1,7 +1,9 @@
 {
-  "viewType": "ordinary",
-  "viewName": "这是一个普通的表格视图",
-  "objectName": "xxx",
+  "type": "ordinary",
+  "key": "l8fjfew83jj",
+  "code": "oridinary",
+  "name": "这是一个普通的表格视图",
+  "objectName": "Oridinary",
   "query": {
     "selectFields": [
       {"key": "k1", "code": "c1", "name": "n1"},

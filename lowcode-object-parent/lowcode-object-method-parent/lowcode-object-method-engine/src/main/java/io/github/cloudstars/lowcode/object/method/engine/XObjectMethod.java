@@ -1,29 +1,28 @@
 package io.github.cloudstars.lowcode.object.method.engine;
 
 import io.github.cloudstars.lowcode.object.method.editor.XObjectMethodConfig;
-import io.github.cloudstars.object.engine.XObject;
 
 /**
- * 模型方法
+ * 模型接口
  *
  * @param <R> 返回值类型
  * @param <P> 参数类型
  */
-public interface XObjectMethod<R extends Object, P extends Object> {
+public interface XObjectMethod<P extends Object, R extends Object> {
 
     /**
-     * 获取模型方法的配置
+     * 获取模型接口的配置
      *
      * @return
      */
     XObjectMethodConfig getConfig();
 
     /**
-     * 执行
+     * 执行模型接口
      *
-     * @param object 模型
-     * @return 影响行数
+     * @param methodParams 接口参数
+     * @return 接口执行结果
      */
-    R execute(XObject object);
+    R execute(P methodParams);
 
 }

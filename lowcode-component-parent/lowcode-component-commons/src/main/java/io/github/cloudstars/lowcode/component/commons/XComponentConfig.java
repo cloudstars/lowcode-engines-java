@@ -15,7 +15,7 @@ public interface XComponentConfig extends XTypedConfig {
      *
      * @return 组件ID（并非所有的组件都会定义ID）
      */
-    default String getId() {
+    default String getKey() {
         return null;
     }
 

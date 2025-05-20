@@ -87,7 +87,7 @@ class ConfigUtilsTest {
         });
         // 获取字符串类型
         Assert.assertThrows(ClassCastException.class, () -> {
-            ConfigUtils.getBoolean(configJson, "name");
+            ConfigUtils.getBoolean(configJson, XResourceConfig.ATTR_NAME);
         });
         // 获取数字类型
         Assert.assertThrows(ClassCastException.class, () -> {

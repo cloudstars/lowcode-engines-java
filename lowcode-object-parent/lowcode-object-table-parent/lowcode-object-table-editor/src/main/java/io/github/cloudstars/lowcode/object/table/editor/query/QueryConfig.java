@@ -18,7 +18,7 @@ public class QueryConfig extends AbstractConfig {
     /**
      * 展示列配置
      */
-    private List<QuerySelectFieldConfig> selectFields;
+    private List<QuerySelectFieldsConfig> selectFields;
 
     /**
      * 过滤条件
@@ -41,11 +41,11 @@ public class QueryConfig extends AbstractConfig {
     public QueryConfig(JsonObject configJson) {
         // 解析查询字段配置
         Object selectFieldsValue = configJson.get("selectFields");
-        List<QuerySelectFieldConfig> selectFieldConfigs = new ArrayList<>();
+        List<QuerySelectFieldsConfig> selectFieldConfigs = new ArrayList<>();
         JsonArray selectFieldsArray = (JsonArray) selectFieldsValue;
         for (Object selectField : selectFieldsArray) {
             JsonObject selectFieldJson = (JsonObject) selectField;
-            QuerySelectFieldConfig selectFieldConfig = new QuerySelectFieldConfig(selectFieldJson);
+            QuerySelectFieldsConfig selectFieldConfig = new QuerySelectFieldsConfig(selectFieldJson);
             selectFieldConfigs.add(selectFieldConfig);
         }
         this.setSelectFields(selectFieldConfigs);
@@ -68,11 +68,11 @@ public class QueryConfig extends AbstractConfig {
         }
     }
 
-    public List<QuerySelectFieldConfig> getSelectFields() {
+    public List<QuerySelectFieldsConfig> getSelectFields() {
         return selectFields;
     }
 
-    public void setSelectFields(List<QuerySelectFieldConfig> selectFields) {
+    public void setSelectFields(List<QuerySelectFieldsConfig> selectFields) {
         this.selectFields = selectFields;
     }
 

@@ -9,7 +9,7 @@ import io.github.cloudstars.lowcode.object.view.editor.AbstractObjectViewConfig;
  * @author clouds
  */
 public class AbstractObjectFormViewConfig extends AbstractObjectViewConfig {
-
+    
     public AbstractObjectFormViewConfig() {
     }
 

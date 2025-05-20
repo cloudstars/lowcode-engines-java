@@ -24,6 +24,11 @@
             <artifactId>lowcode-object-view-engine</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-object-method-engine</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
 
         <!-- 测试时依赖 -->

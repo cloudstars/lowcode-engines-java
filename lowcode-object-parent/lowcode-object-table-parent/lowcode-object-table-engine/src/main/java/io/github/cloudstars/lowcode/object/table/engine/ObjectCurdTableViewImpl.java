@@ -1,8 +1,7 @@
 package io.github.cloudstars.lowcode.object.table.engine;
 
+import io.github.cloudstars.lowcode.object.method.engine.XObjectMethod;
 import io.github.cloudstars.lowcode.object.table.editor.ObjectCrudTableViewConfig;
-import io.github.cloudstars.lowcode.object.table.engine.api.TableViewQueryApi;
-import io.github.cloudstars.lowcode.object.view.engine.ObjectViewApi;
 
 public class ObjectCurdTableViewImpl extends AbstractObjectTableViewImpl<ObjectCrudTableViewConfig> {
 
@@ -11,7 +10,7 @@ public class ObjectCurdTableViewImpl extends AbstractObjectTableViewImpl<ObjectC
     }
 
     @Override
-    protected ObjectViewApi resolveApi(String apiType) {
+    protected XObjectMethod resolveMethod(String methodType) {
         return null;
     }
 
@@ -43,9 +42,9 @@ public class ObjectCurdTableViewImpl extends AbstractObjectTableViewImpl<ObjectC
      *
      * @return
      */
-    private TableViewQueryApi loadTableViewQueryApi() {
+    /*private TableViewQueryApi loadTableViewQueryApi() {
         return null;
-    }
+    }*/
 
     /*public PageQueryOutput<Map<String, Object>> execute(TableViewPageQueryApiInput input) {
         TableViewPageQueryApi api = this.loadTableViewPageQueryApi();

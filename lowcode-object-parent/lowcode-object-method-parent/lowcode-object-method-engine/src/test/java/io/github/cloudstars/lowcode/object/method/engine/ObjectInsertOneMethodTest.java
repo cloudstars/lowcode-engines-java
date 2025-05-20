@@ -8,8 +8,6 @@ import io.github.cloudstars.lowcode.object.commons.ObjectConfigFactory;
 import io.github.cloudstars.lowcode.object.commons.XObjectConfig;
 import io.github.cloudstars.lowcode.object.commons.XObjectConfigResolver;
 import io.github.cloudstars.lowcode.object.method.editor.ObjectInsertOneMethodConfig;
-import io.github.cloudstars.object.engine.XObject;
-import io.github.cloudstars.object.engine.XObjectImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +30,9 @@ public class ObjectInsertOneMethodTest {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("object/method/insert/insert-one-1.json");
         ObjectInsertOneMethodConfig methodConfig = new ObjectInsertOneMethodConfig(configJson);
         ObjectInsertOneMethod methodImpl = new ObjectInsertOneMethod(methodConfig);
-        XObject object = new XObjectImpl(objectConfig);
-        object.setValue("a", "aaa");
-        int effectedRows = methodImpl.execute(object);
+        //XObject object = new XObjectImpl(objectConfig);
+        //object.setValue("a", "aaa");
+        int effectedRows = methodImpl.execute(null);
         Assert.assertEquals(1, effectedRows);
     }
 

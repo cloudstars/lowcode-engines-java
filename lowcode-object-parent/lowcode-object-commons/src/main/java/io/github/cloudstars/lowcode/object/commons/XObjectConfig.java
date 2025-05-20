@@ -28,6 +28,22 @@ public interface XObjectConfig<F extends XObjectFieldConfig, R extends XObjectRe
     List<F> getFields();
 
     /**
+     * 根据字段编号获取字段
+     *
+     * @param key 字段编号
+     * @return 字段配置
+     */
+    F getFieldByKey(String key);
+
+    /**
+     * 根据字段名称获取字段
+     *
+     * @param name 字段名称
+     * @return 字段配置
+     */
+    F getFieldByName(String name);
+
+    /**
      * 获取主键字段
      *
      * @return 主键字段的配置

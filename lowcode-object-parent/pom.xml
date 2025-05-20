@@ -16,7 +16,7 @@
         <module>lowcode-object-commons</module>
         <module>lowcode-object-commons-test</module>
         <module>lowcode-object-editor</module>
-        <module>lowcode-object-engine</module>
+        <module>lowcode-object-crud-parent</module>
         <module>lowcode-object-method-parent</module>
         <module>lowcode-object-view-parent</module>
         <module>lowcode-object-form-parent</module>
@@ -44,11 +44,6 @@
             <dependency>
                 <groupId>io.github.cloudstars</groupId>
                 <artifactId>lowcode-object-editor</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.cloudstars</groupId>
-                <artifactId>lowcode-object-engine</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

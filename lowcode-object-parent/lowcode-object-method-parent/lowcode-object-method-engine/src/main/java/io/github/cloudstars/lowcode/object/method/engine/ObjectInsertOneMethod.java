@@ -2,7 +2,6 @@ package io.github.cloudstars.lowcode.object.method.engine;
 
 import io.github.cloudstars.lowcode.object.commons.ObjectAttrNames;
 import io.github.cloudstars.lowcode.object.method.editor.ObjectInsertOneMethodConfig;
-import io.github.cloudstars.object.engine.XObject;
 
 import java.util.Map;
 
@@ -12,14 +11,14 @@ import java.util.Map;
  * @author clouds
  */
 @ObjectMethodClass(name = "INSERT_ONE", configClass = ObjectInsertOneMethodConfig.class)
-public class ObjectInsertOneMethod extends AbstractObjectMethod<ObjectInsertOneMethodConfig, Integer, Map<String, ObjectAttrNames>> {
+public class ObjectInsertOneMethod extends AbstractObjectMethod<ObjectInsertOneMethodConfig, Map<String, ObjectAttrNames>, Integer> {
 
     public ObjectInsertOneMethod(ObjectInsertOneMethodConfig methodConfig) {
         super(methodConfig);
     }
 
     @Override
-    public Integer execute(XObject object) {
+    public Integer execute(Map<String, ObjectAttrNames> methodParams) {
         return null;
     }
 
