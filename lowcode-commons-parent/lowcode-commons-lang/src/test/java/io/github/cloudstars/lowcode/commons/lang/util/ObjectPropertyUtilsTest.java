@@ -1,6 +1,5 @@
 package io.github.cloudstars.lowcode.commons.lang.util;
 
-import com.alibaba.fastjson.JSON;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.internal.runners.JUnit4ClassRunner;
@@ -26,7 +25,7 @@ public class ObjectPropertyUtilsTest {
         Object valueB = ObjectPropertyUtils.getPropertyValue(dataMap, "b");
         Assert.assertEquals(123, valueB);
         Object valueC = ObjectPropertyUtils.getPropertyValue(dataMap, "c");
-        Assert.assertEquals(JSON.toJSONString(dataCMap), JSON.toJSONString(valueC));
+        Assert.assertEquals(dataCMap, valueC);
         Object valueD = ObjectPropertyUtils.getPropertyValue(dataMap, "d");
         Assert.assertNull(valueD);
         Object valueCA = ObjectPropertyUtils.getPropertyValue(dataMap, "c.a");
@@ -67,13 +66,14 @@ public class ObjectPropertyUtilsTest {
         Object valueC = ObjectPropertyUtils.getPropertyValue(dataList, "c");
         Assert.assertEquals(Arrays.asList(data1CMap, data2CMap), valueC);
         Object valueD = ObjectPropertyUtils.getPropertyValue(dataList, "d");
-        Assert.assertEquals(Arrays.asList(null, null), valueD);
+        Assert.assertNull(valueD);
         Object valueCA = ObjectPropertyUtils.getPropertyValue(dataList, "c.a");
         Assert.assertEquals(Arrays.asList("AAA", "BBB"), valueCA);
         Object valueCB = ObjectPropertyUtils.getPropertyValue(dataList, "c.b");
         Assert.assertEquals(Arrays.asList(123, 456), valueCB);
         Object valueCC = ObjectPropertyUtils.getPropertyValue(dataList, "c.c");
-        Assert.assertEquals(Arrays.asList(null, null), valueCC);
+        Assert.assertNull(valueCC);
+
     }
 
 }

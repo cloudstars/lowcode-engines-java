@@ -76,7 +76,23 @@ public final class ObjectPropertyUtils {
             values.add(getPropertyValue(data, property));
         }
 
-        return values;
+        return isNullItemsList(values) ? null : values;
+    }
+
+    /**
+     * 是否是一个全为NULL元素的数组
+     *
+     * @param dataList 数据列表
+     * @return boolean值
+     */
+    private static boolean isNullItemsList(List<Object> dataList) {
+        for (Object data : dataList) {
+            if (data != null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
