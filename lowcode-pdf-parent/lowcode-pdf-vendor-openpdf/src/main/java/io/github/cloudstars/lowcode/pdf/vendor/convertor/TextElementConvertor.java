@@ -23,7 +23,7 @@ public class TextElementConvertor extends AbstractElementConvertor<TextElementCo
     public PdfPCell toPdfCellElement(TextElementConfig elementConfig) {
         XDataSourceConfig<TextValueTypeConfig> dataSourceConfig = elementConfig.getDataSource();
         XDataSourceLoader dataSourceLoader = DataSourceLoaderFactory.newInstance(dataSourceConfig);
-        Object data = dataSourceLoader.loadData();
+        Object data = dataSourceLoader.loadData(null);
         String content = data != null ? data.toString() : StringUtils.EMPTY;
         Font contentFont = new Font(PdfStyle.BASE_FONT, 18, Font.NORMAL);
         Paragraph paragraph = new Paragraph(content, contentFont);

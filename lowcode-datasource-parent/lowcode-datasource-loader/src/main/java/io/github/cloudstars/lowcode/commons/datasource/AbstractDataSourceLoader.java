@@ -6,7 +6,7 @@ import io.github.cloudstars.lowcode.commons.value.ValueTypeFactory;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
 
-public abstract class AbstractDataSourceLoader<S extends AbstractDataSourceConfig<C>, V extends AbstractValueType<C, D>, C extends XValueTypeConfig, D extends Object> implements XDataSourceLoader<S, V, C, D> {
+public abstract class AbstractDataSourceLoader<S extends AbstractDataSourceConfig<C>, V extends AbstractValueType<C, D>, C extends XValueTypeConfig, P extends Object, D extends Object> implements XDataSourceLoader<S, V, C, P, D> {
 
     protected S dataSourceConfig;
 

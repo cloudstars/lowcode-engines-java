@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = FormulaParserTestApplication.class)
 public class FormulaParserTest {
 
-    private static final String expr0 = "a + 1";
+    private static final String expr0 = "1 + 1";
 
     @Test
     public void test0() {

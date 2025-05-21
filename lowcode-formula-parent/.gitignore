@@ -31,4 +31,4 @@ target/
 hs_err_pid*
 
 # g4 auto generated Filed
-src/main/g4/io/
+/lowcode-formula-parser/src/main/g4/io/

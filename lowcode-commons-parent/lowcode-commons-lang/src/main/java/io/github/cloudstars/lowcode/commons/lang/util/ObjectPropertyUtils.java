@@ -1,5 +1,9 @@
 package io.github.cloudstars.lowcode.commons.lang.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +14,9 @@ import java.util.Map;
  * @author clouds
  */
 public final class ObjectPropertyUtils {
+
+    // SFL4J Logger
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectPropertyUtils.class);
 
     /**
      * 从对象中获取属性的值
@@ -78,6 +85,33 @@ public final class ObjectPropertyUtils {
 
         return isNullItemsList(values) ? null : values;
     }
+
+    /**
+     * 获取对象的属性值
+     *
+     * @param o
+     * @param fieldName
+     * @return
+     */
+    public static Object getFieldValue(Object o, String fieldName) {
+        if (o == null) {
+            return null;
+        }
+
+        try {
+            Field field = o.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(o);
+        } catch (NoSuchFieldException e) {
+            // 找不到属性时返回null
+            LOGGER.warn("获取对象下的属性{}失败", fieldName, e);
+            return null;
+        } catch (IllegalAccessException e) {
+            // 其它的异常情况，取值失败
+            throw new RuntimeException(e);
+        }
+    }
+
 
     /**
      * 是否是一个全为NULL元素的数组

@@ -8,6 +8,10 @@ options {
     superClass = FxLexerBase;
 }
 
+Plus                       : '+';
+Minus                      : '-';
+WS  :   [ \t\r\n]+ -> skip ; // 表示忽略空格
+
 StringLiteral:
     ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.ProcessStringLiteral();}
 ;

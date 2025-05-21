@@ -6,11 +6,12 @@ options {
 }
 
 fx
-    : fxStatement EOF
+    : singleExpression EOF
     ;
 
-fxStatement
-    : literal                                                              # LiteralExpression
+singleExpression
+    : singleExpression ('+' | '-') singleExpression                        # AdditiveExpression
+    | literal                                                              # LiteralExpression
     ;
 
 literal

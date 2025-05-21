@@ -1,4 +1,4 @@
-// Generated from D:/clouds/java/lowcode-parent/lowcode-formula-parent/lowcode-formula-parser/src/main/resources/g4/FxParser.g4 by ANTLR 4.13.1
+// Generated from D:/clouds/java/lowcode-parent/lowcode-formula-parent/lowcode-formula-parser/src/main/g4/FxParser.g4 by ANTLR 4.13.1
 package io.github.cloudstars.lowcode.formula.parser.g4;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -17,8 +17,15 @@ public interface FxParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFx(FxParser.FxContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code AdditiveExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAdditiveExpression(FxParser.AdditiveExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code LiteralExpression}
-	 * labeled alternative in {@link FxParser#fxStatement}.
+	 * labeled alternative in {@link FxParser#singleExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */

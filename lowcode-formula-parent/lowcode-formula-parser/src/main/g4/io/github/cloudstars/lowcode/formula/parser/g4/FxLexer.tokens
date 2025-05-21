@@ -1,2 +1,7 @@
-StringLiteral=1
-DecimalLiteral=2
+Plus=1
+Minus=2
+WS=3
+StringLiteral=4
+DecimalLiteral=5
+'+'=1
+'-'=2

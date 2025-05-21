@@ -70,6 +70,7 @@ public class ObjectPropertyUtilsTest {
         Object valueCA = ObjectPropertyUtils.getPropertyValue(dataList, "c.a");
         Assert.assertEquals(Arrays.asList("AAA", "BBB"), valueCA);
         Object valueCB = ObjectPropertyUtils.getPropertyValue(dataList, "c.b");
+
         Assert.assertEquals(Arrays.asList(123, 456), valueCB);
         Object valueCC = ObjectPropertyUtils.getPropertyValue(dataList, "c.c");
         Assert.assertNull(valueCC);

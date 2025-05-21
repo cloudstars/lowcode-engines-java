@@ -12,14 +12,14 @@ import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
  * @param <D> 数据类型
  */
 @DataSourceLoaderClass(type = "Static", dataSourceConfigClass = StaticDataSourceConfig.class)
-public class StaticDataSourceLoader<V extends AbstractValueType<C, D>, C extends XValueTypeConfig, D extends Object> extends AbstractDataSourceLoader<StaticDataSourceConfig<C>, V, C, D> {
+public class StaticDataSourceLoader<V extends AbstractValueType<C, D>, C extends XValueTypeConfig, D extends Object> extends AbstractDataSourceLoader<StaticDataSourceConfig<C>, V, C, Object, D> {
 
     public StaticDataSourceLoader(StaticDataSourceConfig dataSourceConfig) {
         super(dataSourceConfig);
     }
 
     @Override
-    public D loadData() {
+    public D loadData(Object param) {
         Object rawData = this.dataSourceConfig.getData();
         if (this.valueType != null) {
             D targetData = this.valueType.parseValue(rawData);

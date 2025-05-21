@@ -1,4 +1,4 @@
-// Generated from D:/clouds/java/lowcode-parent/lowcode-formula-parent/lowcode-formula-parser/src/main/resources/g4/FxParser.g4 by ANTLR 4.13.1
+// Generated from D:/clouds/java/lowcode-parent/lowcode-formula-parent/lowcode-formula-parser/src/main/g4/FxParser.g4 by ANTLR 4.13.1
 package io.github.cloudstars.lowcode.formula.parser.g4;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -18,14 +18,26 @@ public interface FxParserListener extends ParseTreeListener {
 	 */
 	void exitFx(FxParser.FxContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code AdditiveExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAdditiveExpression(FxParser.AdditiveExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AdditiveExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAdditiveExpression(FxParser.AdditiveExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code LiteralExpression}
-	 * labeled alternative in {@link FxParser#fxStatement}.
+	 * labeled alternative in {@link FxParser#singleExpression}.
 	 * @param ctx the parse tree
 	 */
 	void enterLiteralExpression(FxParser.LiteralExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code LiteralExpression}
-	 * labeled alternative in {@link FxParser#fxStatement}.
+	 * labeled alternative in {@link FxParser#singleExpression}.
 	 * @param ctx the parse tree
 	 */
 	void exitLiteralExpression(FxParser.LiteralExpressionContext ctx);

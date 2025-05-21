@@ -19,7 +19,7 @@ public class StaticDataSourceLoaderTest {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("datasource/static-text1.json");
         StaticDataSourceConfig dataSourceConfig = new StaticDataSourceConfig(configJson);
         StaticDataSourceLoader loader = new StaticDataSourceLoader(dataSourceConfig);
-        Object data = loader.loadData();
+        Object data = loader.loadData(null);
         Assert.assertEquals(String.class, data.getClass());
         Assert.assertEquals("这是B的内容", data);
     }
