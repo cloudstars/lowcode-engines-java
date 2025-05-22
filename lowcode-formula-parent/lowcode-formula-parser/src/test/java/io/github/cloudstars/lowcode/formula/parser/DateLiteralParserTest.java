@@ -10,14 +10,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FormulaParserTestApplication.class)
-public class LiteralParserTest {
+public class DateLiteralParserTest {
 
     private static final String expr1 = "1 + 2";
 
     private static final String expr2 = "2 * 3";
 
     private static final String expr3 = "(1 +2) * 3";
-
 
     @Test
     public void test1() {
