@@ -20,10 +20,9 @@ public class FormulaImpl implements Formula {
 
     @Override
     public Object execute() {
-        ObjectRef<Object> resultRef = new ObjectRef<>();
-        FormulaCalculateFxVisitor visitor = new FormulaCalculateFxVisitor(resultRef);
-        visitor.visitFx(this.context);
-        return resultRef.getRef();
+        FormulaCalculateFxVisitor visitor = new FormulaCalculateFxVisitor();
+        Object result = visitor.visitFx(this.context);
+        return result;
     }
 
     @Override

@@ -19,10 +19,17 @@ public class NumberLiteralFormulaTest {
     private FormulaExecutor executor;
 
     @Test
-    public void test() {
-        String fx0 = "123";
-        Object result = this.executor.execute(fx0);
+    public void testNumber() {
+        String fx = "123";
+        Object result = this.executor.execute(fx);
         Assert.assertEquals(123, result);
+    }
+
+    @Test
+    public void testNumberAdd() {
+        String fx = "1 + 1";
+        Object result = this.executor.execute(fx);
+        Assert.assertEquals(2, result);
     }
 
 }
