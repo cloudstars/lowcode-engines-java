@@ -1,6 +1,5 @@
 package io.github.cloudstars.lowcode.formula.engine;
 
-import io.github.cloudstars.lowcode.commons.lang.util.ObjectRef;
 import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 
 import java.util.Map;
@@ -26,7 +25,9 @@ public class FormulaImpl implements Formula {
     }
 
     @Override
-    public Object execute(Map<String, Object> context) {
-        return null;
+    public Object execute(Map<String, Object> dataMap) {
+        FormulaCalculateFxVisitor visitor = new FormulaCalculateFxVisitor(dataMap);
+        Object result = visitor.visitFx(this.context);
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.formula.engine;
 
 import io.github.cloudstars.lowcode.commons.lang.util.CalculateUtils;
+import io.github.cloudstars.lowcode.commons.lang.util.ObjectPropertyUtils;
 import io.github.cloudstars.lowcode.formula.parser.g4.FxLexer;
 import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
 import io.github.cloudstars.lowcode.formula.parser.g4.FxParserBaseVisitor;
@@ -10,6 +11,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -18,6 +20,11 @@ import java.util.Stack;
  * @author clouds
  */
 public class FormulaCalculateFxVisitor extends FxParserBaseVisitor<Object> {
+
+    /**
+     * 参数Map
+     */
+    private Map<String, Object> dataMap;
 
     /**
      * 访问的规则节点栈
@@ -35,6 +42,10 @@ public class FormulaCalculateFxVisitor extends FxParserBaseVisitor<Object> {
     private List<Integer> operators = Arrays.asList(FxLexer.Plus, FxLexer.Minus, FxLexer.Multiply, FxLexer.Divide, FxLexer.Modulus);
 
     public FormulaCalculateFxVisitor() {
+    }
+
+    public FormulaCalculateFxVisitor(Map<String, Object> dataMap) {
+        this.dataMap = dataMap;
     }
 
     @Override
@@ -66,6 +77,13 @@ public class FormulaCalculateFxVisitor extends FxParserBaseVisitor<Object> {
         }
 
         return nextResult != null ? nextResult : aggregate;
+    }
+
+    @Override
+    public Object visitIdentifier(FxParser.IdentifierContext ctx) {
+        String variable = ctx.getText();
+        Object result = ObjectPropertyUtils.getPropertyValue(dataMap, variable);
+        return result;
     }
 
     @Override

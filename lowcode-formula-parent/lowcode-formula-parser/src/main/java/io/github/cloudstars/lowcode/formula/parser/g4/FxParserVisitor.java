@@ -45,6 +45,13 @@ public interface FxParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiplicativeExpression(FxParser.MultiplicativeExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code IdentifierExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifierExpression(FxParser.IdentifierExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FxParser#literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -56,4 +63,10 @@ public interface FxParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNumericLiteral(FxParser.NumericLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FxParser#identifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(FxParser.IdentifierContext ctx);
 }

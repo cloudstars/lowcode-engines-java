@@ -8,6 +8,7 @@ Modulus=7
 WS=8
 StringLiteral=9
 DecimalLiteral=10
+Identifier=11
 '('=1
 ')'=2
 '+'=3

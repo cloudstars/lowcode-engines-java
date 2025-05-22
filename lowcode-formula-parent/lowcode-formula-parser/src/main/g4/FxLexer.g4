@@ -27,6 +27,8 @@ DecimalLiteral:
     | DecimalIntegerLiteral
 ;
 
+Identifier: IdentifierStart IdentifierPart*;
+
 // Fragment rules
 
 fragment DoubleStringCharacter: ~["\\\r\n] | '\\' EscapeSequence | LineContinuation;
@@ -46,4 +48,15 @@ fragment SingleEscapeCharacter: ['"\\bfnrtv];
 fragment NonEscapeCharacter: ~['"\\bfnrtv0-9xu\r\n];
 
 fragment LineContinuation: '\\' [\r\n\u2028\u2029]+;
+
+fragment IdentifierPart: IdentifierStart | [\p{Mn}] | [\p{Nd}] | [\p{Pc}] | '\u200C' | '\u200D';
+
+fragment IdentifierStart: [\p{L}] | [$_];
+
+fragment UnicodeEscapeSequence:
+    'u' HexDigit HexDigit HexDigit HexDigit
+    | 'u' '{' HexDigit HexDigit+ '}'
+;
+
+fragment HexDigit: [_0-9a-fA-F];
 

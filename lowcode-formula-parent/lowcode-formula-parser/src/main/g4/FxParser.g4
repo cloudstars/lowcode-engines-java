@@ -13,6 +13,7 @@ singleExpression
     : '(' singleExpression ')'                                             # ParenthesizedExpression
     | singleExpression ('*' | '/' | '%') singleExpression                  # MultiplicativeExpression
     | singleExpression ('+' | '-') singleExpression                        # AdditiveExpression
+    | identifier                                                           # IdentifierExpression
     | literal                                                              # LiteralExpression
     ;
 
@@ -23,4 +24,8 @@ literal
 
 numericLiteral
     : DecimalLiteral
+    ;
+
+identifier
+    : Identifier
     ;

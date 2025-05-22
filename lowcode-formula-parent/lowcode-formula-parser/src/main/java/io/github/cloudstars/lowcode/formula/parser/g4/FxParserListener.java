@@ -66,6 +66,18 @@ public interface FxParserListener extends ParseTreeListener {
 	 */
 	void exitMultiplicativeExpression(FxParser.MultiplicativeExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code IdentifierExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdentifierExpression(FxParser.IdentifierExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IdentifierExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdentifierExpression(FxParser.IdentifierExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FxParser#literal}.
 	 * @param ctx the parse tree
 	 */
@@ -85,4 +97,14 @@ public interface FxParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNumericLiteral(FxParser.NumericLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FxParser#identifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdentifier(FxParser.IdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FxParser#identifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdentifier(FxParser.IdentifierContext ctx);
 }
