@@ -18,6 +18,18 @@ public interface FxParserListener extends ParseTreeListener {
 	 */
 	void exitFx(FxParser.FxContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ParenthesizedExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterParenthesizedExpression(FxParser.ParenthesizedExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ParenthesizedExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitParenthesizedExpression(FxParser.ParenthesizedExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code AdditiveExpression}
 	 * labeled alternative in {@link FxParser#singleExpression}.
 	 * @param ctx the parse tree

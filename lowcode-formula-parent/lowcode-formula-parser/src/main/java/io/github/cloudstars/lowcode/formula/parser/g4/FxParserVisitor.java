@@ -17,6 +17,13 @@ public interface FxParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFx(FxParser.FxContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ParenthesizedExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenthesizedExpression(FxParser.ParenthesizedExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code AdditiveExpression}
 	 * labeled alternative in {@link FxParser#singleExpression}.
 	 * @param ctx the parse tree

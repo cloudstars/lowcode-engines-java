@@ -16,6 +16,9 @@ public class FormulaParserTest {
 
     private static final String expr2 = "2 * 3";
 
+    private static final String expr3 = "(1 +2) * 3";
+
+
     @Test
     public void test1() {
         FxParser.FxContext context = FormulaParser.parse(expr1);
@@ -25,6 +28,12 @@ public class FormulaParserTest {
     @Test
     public void test2() {
         FxParser.FxContext context = FormulaParser.parse(expr2);
+        Assert.assertNotNull(context);
+    }
+
+    @Test
+    public void test3() {
+        FxParser.FxContext context = FormulaParser.parse(expr3);
         Assert.assertNotNull(context);
     }
 

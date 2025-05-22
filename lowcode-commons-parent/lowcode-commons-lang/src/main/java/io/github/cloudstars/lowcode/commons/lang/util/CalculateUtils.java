@@ -35,12 +35,16 @@ public final class CalculateUtils {
      * @param v2 数2
      * @return 相加结果
      */
-    public static Object add(Object v1, Object v2) {
+    public static Object plus(Object v1, Object v2) {
         if (v1 == null) {
-            return v2 == null ? 0 : v2;
-        } else if (v2 == null) {
-            return v1;
-        } else if (v1 instanceof Integer) {
+            v1 = 0;
+        }
+
+        if (v1 == null) {
+            v2 = 0;
+        }
+
+        if (v1 instanceof Integer) {
             if (v2 instanceof Integer) {
                 return (Integer) v1 + (Integer) v2;
             } else if (v2 instanceof Float) {
@@ -66,8 +70,54 @@ public final class CalculateUtils {
             }
         }
 
-        return 0;
+        return null;
     }
+
+    /**
+     * 两数相减
+     *
+     * @param v1 数1
+     * @param v2 数2
+     * @return 相减结果
+     */
+    public static Object minus(Object v1, Object v2) {
+        if (v1 == null) {
+            v1 = 0;
+        }
+
+        if (v1 == null) {
+            v2 = 0;
+        }
+
+        if (v1 instanceof Integer) {
+            if (v2 instanceof Integer) {
+                return (Integer) v1 - (Integer) v2;
+            } else if (v2 instanceof Float) {
+                return (Integer) v1 - (Float) v2;
+            } else if (v2 instanceof Double) {
+                return (Integer) v1 - (Double) v2;
+            }
+        } else if (v1 instanceof Float) {
+            if (v2 instanceof Integer) {
+                return (Float) v1 - (Integer) v2;
+            } else if (v2 instanceof Float) {
+                return (Float) v1 - (Float) v2;
+            } else if (v2 instanceof Double) {
+                return (Float) v1 - (Double) v2;
+            }
+        } else if (v1 instanceof Double) {
+            if (v2 instanceof Integer) {
+                return (Double) v1 - (Integer) v2;
+            } else if (v2 instanceof Float) {
+                return (Double) v1 - (Float) v2;
+            } else if (v2 instanceof Double) {
+                return (Double) v1 - (Double) v2;
+            }
+        }
+
+        return null;
+    }
+
 
     /**
      * 两数相乘
@@ -78,10 +128,14 @@ public final class CalculateUtils {
      */
     public static Object multiply(Object v1, Object v2) {
         if (v1 == null) {
-            return v2 == null ? 0 : v2;
-        } else if (v2 == null) {
-            return v1;
-        } else if (v1 instanceof Integer) {
+            v1 = 0;
+        }
+
+        if (v1 == null) {
+            v2 = 0;
+        }
+
+        if (v1 instanceof Integer) {
             if (v2 instanceof Integer) {
                 return (Integer) v1 * (Integer) v2;
             } else if (v2 instanceof Float) {
@@ -107,7 +161,98 @@ public final class CalculateUtils {
             }
         }
 
+        return null;
+    }
+
+    /**
+     * 两数相除
+     *
+     * @param v1 数1
+     * @param v2 数2
+     * @return 相除结果
+     */
+    public static Object divide(Object v1, Object v2) {
+        if (v1 == null) {
+            v1 = 0;
+        }
+
+        if (v1 == null) {
+            v2 = 0;
+        }
+
+        if (v1 instanceof Integer) {
+            if (v2 instanceof Integer) {
+                return (Integer) v1 / (Integer) v2;
+            } else if (v2 instanceof Float) {
+                return (Integer) v1 / (Float) v2;
+            } else if (v2 instanceof Double) {
+                return (Integer) v1 / (Double) v2;
+            }
+        } else if (v1 instanceof Float) {
+            if (v2 instanceof Integer) {
+                return (Float) v1 / (Integer) v2;
+            } else if (v2 instanceof Float) {
+                return (Float) v1 / (Float) v2;
+            } else if (v2 instanceof Double) {
+                return (Float) v1 / (Double) v2;
+            }
+        } else if (v1 instanceof Double) {
+            if (v2 instanceof Integer) {
+                return (Double) v1 / (Integer) v2;
+            } else if (v2 instanceof Float) {
+                return (Double) v1 / (Float) v2;
+            } else if (v2 instanceof Double) {
+                return (Double) v1 / (Double) v2;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 两数计算（有问题，Number +- Number不允许）
+     *
+     * @param v1   数1
+     * @param v2   数2
+     * @param calc 计算方法
+     * @return 计算结果
+     */
+    private static Object calc(Object v1, Object v2, Calculator calc) {
+        if (v1 == null) {
+            return v2 == null ? 0 : v2;
+        } else if (v2 == null) {
+            return v1;
+        } else if (v1 instanceof Integer) {
+            if (v2 instanceof Integer) {
+                return calc.apply((Integer) v1, (Integer) v2);
+            } else if (v2 instanceof Float) {
+                return calc.apply((Integer) v1, (Float) v2);
+            } else if (v2 instanceof Double) {
+                return calc.apply((Integer) v1, (Double) v2);
+            }
+        } else if (v1 instanceof Float) {
+            if (v2 instanceof Integer) {
+                return calc.apply((Float) v1, (Integer) v2);
+            } else if (v2 instanceof Float) {
+                return calc.apply((Float) v1, (Float) v2);
+            } else if (v2 instanceof Double) {
+                return calc.apply((Float) v1, (Double) v2);
+            }
+        } else if (v1 instanceof Double) {
+            if (v2 instanceof Integer) {
+                return calc.apply((Double) v1, (Integer) v2);
+            } else if (v2 instanceof Float) {
+                return calc.apply((Double) v1, (Float) v2);
+            } else if (v2 instanceof Double) {
+                return calc.apply((Double) v1, (Double) v2);
+            }
+        }
+
         return 0;
+    }
+
+    interface Calculator {
+        Number apply(Number v1, Number v2);
     }
 
 }

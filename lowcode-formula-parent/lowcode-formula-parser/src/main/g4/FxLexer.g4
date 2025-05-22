@@ -8,6 +8,8 @@ options {
     superClass = FxLexerBase;
 }
 
+OpenParen                  : '(';
+CloseParen                 : ')';
 Plus                       : '+';
 Minus                      : '-';
 Multiply                   : '*';

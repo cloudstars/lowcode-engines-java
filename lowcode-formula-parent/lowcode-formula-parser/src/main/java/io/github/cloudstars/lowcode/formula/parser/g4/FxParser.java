@@ -17,8 +17,8 @@ public class FxParser extends FxParserBase {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		Plus=1, Minus=2, Multiply=3, Divide=4, Modulus=5, WS=6, StringLiteral=7, 
-		DecimalLiteral=8;
+		OpenParen=1, CloseParen=2, Plus=3, Minus=4, Multiply=5, Divide=6, Modulus=7, 
+		WS=8, StringLiteral=9, DecimalLiteral=10;
 	public static final int
 		RULE_fx = 0, RULE_singleExpression = 1, RULE_literal = 2, RULE_numericLiteral = 3;
 	private static String[] makeRuleNames() {
@@ -30,14 +30,14 @@ public class FxParser extends FxParserBase {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'+'", "'-'", "'*'", "'/'", "'%'"
+			null, "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'%'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "Plus", "Minus", "Multiply", "Divide", "Modulus", "WS", "StringLiteral", 
-			"DecimalLiteral"
+			null, "OpenParen", "CloseParen", "Plus", "Minus", "Multiply", "Divide", 
+			"Modulus", "WS", "StringLiteral", "DecimalLiteral"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -152,6 +152,28 @@ public class FxParser extends FxParserBase {
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
+	public static class ParenthesizedExpressionContext extends SingleExpressionContext {
+		public TerminalNode OpenParen() { return getToken(FxParser.OpenParen, 0); }
+		public SingleExpressionContext singleExpression() {
+			return getRuleContext(SingleExpressionContext.class,0);
+		}
+		public TerminalNode CloseParen() { return getToken(FxParser.CloseParen, 0); }
+		public ParenthesizedExpressionContext(SingleExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FxParserListener ) ((FxParserListener)listener).enterParenthesizedExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FxParserListener ) ((FxParserListener)listener).exitParenthesizedExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FxParserVisitor ) return ((FxParserVisitor<? extends T>)visitor).visitParenthesizedExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AdditiveExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -239,35 +261,57 @@ public class FxParser extends FxParserBase {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			{
-			_localctx = new LiteralExpressionContext(_localctx);
-			_ctx = _localctx;
-			_prevctx = _localctx;
+			setState(17);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case OpenParen:
+				{
+				_localctx = new ParenthesizedExpressionContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 
-			setState(12);
-			literal();
+				setState(12);
+				match(OpenParen);
+				setState(13);
+				singleExpression(0);
+				setState(14);
+				match(CloseParen);
+				}
+				break;
+			case StringLiteral:
+			case DecimalLiteral:
+				{
+				_localctx = new LiteralExpressionContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(16);
+				literal();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(22);
+			setState(27);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(20);
+					setState(25);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 					case 1:
 						{
 						_localctx = new MultiplicativeExpressionContext(new SingleExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_singleExpression);
-						setState(14);
+						setState(19);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(15);
+						setState(20);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 56L) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 224L) != 0)) ) {
 						_errHandler.recoverInline(this);
 						}
 						else {
@@ -275,7 +319,7 @@ public class FxParser extends FxParserBase {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(16);
+						setState(21);
 						singleExpression(4);
 						}
 						break;
@@ -283,9 +327,9 @@ public class FxParser extends FxParserBase {
 						{
 						_localctx = new AdditiveExpressionContext(new SingleExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_singleExpression);
-						setState(17);
+						setState(22);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(18);
+						setState(23);
 						_la = _input.LA(1);
 						if ( !(_la==Plus || _la==Minus) ) {
 						_errHandler.recoverInline(this);
@@ -295,16 +339,16 @@ public class FxParser extends FxParserBase {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(19);
+						setState(24);
 						singleExpression(3);
 						}
 						break;
 					}
 					} 
 				}
-				setState(24);
+				setState(29);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			}
 			}
 		}
@@ -348,20 +392,20 @@ public class FxParser extends FxParserBase {
 		LiteralContext _localctx = new LiteralContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_literal);
 		try {
-			setState(27);
+			setState(32);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case StringLiteral:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(25);
+				setState(30);
 				match(StringLiteral);
 				}
 				break;
 			case DecimalLiteral:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(26);
+				setState(31);
 				numericLiteral();
 				}
 				break;
@@ -408,7 +452,7 @@ public class FxParser extends FxParserBase {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(29);
+			setState(34);
 			match(DecimalLiteral);
 			}
 		}
@@ -441,28 +485,31 @@ public class FxParser extends FxParserBase {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\b \u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\n%\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0001\u0000\u0001\u0000\u0001"+
 		"\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0005\u0001\u0015\b\u0001\n"+
-		"\u0001\f\u0001\u0018\t\u0001\u0001\u0002\u0001\u0002\u0003\u0002\u001c"+
-		"\b\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0000\u0001\u0002\u0004\u0000"+
-		"\u0002\u0004\u0006\u0000\u0002\u0001\u0000\u0003\u0005\u0001\u0000\u0001"+
-		"\u0002\u001e\u0000\b\u0001\u0000\u0000\u0000\u0002\u000b\u0001\u0000\u0000"+
-		"\u0000\u0004\u001b\u0001\u0000\u0000\u0000\u0006\u001d\u0001\u0000\u0000"+
-		"\u0000\b\t\u0003\u0002\u0001\u0000\t\n\u0005\u0000\u0000\u0001\n\u0001"+
-		"\u0001\u0000\u0000\u0000\u000b\f\u0006\u0001\uffff\uffff\u0000\f\r\u0003"+
-		"\u0004\u0002\u0000\r\u0016\u0001\u0000\u0000\u0000\u000e\u000f\n\u0003"+
-		"\u0000\u0000\u000f\u0010\u0007\u0000\u0000\u0000\u0010\u0015\u0003\u0002"+
-		"\u0001\u0004\u0011\u0012\n\u0002\u0000\u0000\u0012\u0013\u0007\u0001\u0000"+
-		"\u0000\u0013\u0015\u0003\u0002\u0001\u0003\u0014\u000e\u0001\u0000\u0000"+
-		"\u0000\u0014\u0011\u0001\u0000\u0000\u0000\u0015\u0018\u0001\u0000\u0000"+
-		"\u0000\u0016\u0014\u0001\u0000\u0000\u0000\u0016\u0017\u0001\u0000\u0000"+
-		"\u0000\u0017\u0003\u0001\u0000\u0000\u0000\u0018\u0016\u0001\u0000\u0000"+
-		"\u0000\u0019\u001c\u0005\u0007\u0000\u0000\u001a\u001c\u0003\u0006\u0003"+
-		"\u0000\u001b\u0019\u0001\u0000\u0000\u0000\u001b\u001a\u0001\u0000\u0000"+
-		"\u0000\u001c\u0005\u0001\u0000\u0000\u0000\u001d\u001e\u0005\b\u0000\u0000"+
-		"\u001e\u0007\u0001\u0000\u0000\u0000\u0003\u0014\u0016\u001b";
+		"\u0001\u0003\u0001\u0012\b\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0005\u0001\u001a\b\u0001\n\u0001\f\u0001"+
+		"\u001d\t\u0001\u0001\u0002\u0001\u0002\u0003\u0002!\b\u0002\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0000\u0001\u0002\u0004\u0000\u0002\u0004\u0006"+
+		"\u0000\u0002\u0001\u0000\u0005\u0007\u0001\u0000\u0003\u0004$\u0000\b"+
+		"\u0001\u0000\u0000\u0000\u0002\u0011\u0001\u0000\u0000\u0000\u0004 \u0001"+
+		"\u0000\u0000\u0000\u0006\"\u0001\u0000\u0000\u0000\b\t\u0003\u0002\u0001"+
+		"\u0000\t\n\u0005\u0000\u0000\u0001\n\u0001\u0001\u0000\u0000\u0000\u000b"+
+		"\f\u0006\u0001\uffff\uffff\u0000\f\r\u0005\u0001\u0000\u0000\r\u000e\u0003"+
+		"\u0002\u0001\u0000\u000e\u000f\u0005\u0002\u0000\u0000\u000f\u0012\u0001"+
+		"\u0000\u0000\u0000\u0010\u0012\u0003\u0004\u0002\u0000\u0011\u000b\u0001"+
+		"\u0000\u0000\u0000\u0011\u0010\u0001\u0000\u0000\u0000\u0012\u001b\u0001"+
+		"\u0000\u0000\u0000\u0013\u0014\n\u0003\u0000\u0000\u0014\u0015\u0007\u0000"+
+		"\u0000\u0000\u0015\u001a\u0003\u0002\u0001\u0004\u0016\u0017\n\u0002\u0000"+
+		"\u0000\u0017\u0018\u0007\u0001\u0000\u0000\u0018\u001a\u0003\u0002\u0001"+
+		"\u0003\u0019\u0013\u0001\u0000\u0000\u0000\u0019\u0016\u0001\u0000\u0000"+
+		"\u0000\u001a\u001d\u0001\u0000\u0000\u0000\u001b\u0019\u0001\u0000\u0000"+
+		"\u0000\u001b\u001c\u0001\u0000\u0000\u0000\u001c\u0003\u0001\u0000\u0000"+
+		"\u0000\u001d\u001b\u0001\u0000\u0000\u0000\u001e!\u0005\t\u0000\u0000"+
+		"\u001f!\u0003\u0006\u0003\u0000 \u001e\u0001\u0000\u0000\u0000 \u001f"+
+		"\u0001\u0000\u0000\u0000!\u0005\u0001\u0000\u0000\u0000\"#\u0005\n\u0000"+
+		"\u0000#\u0007\u0001\u0000\u0000\u0000\u0004\u0011\u0019\u001b ";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

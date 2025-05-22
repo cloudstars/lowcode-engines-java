@@ -20,23 +20,55 @@ public class NumberLiteralFormulaTest {
 
     @Test
     public void testNumber() {
-        String fx = "123";
-        Object result = this.executor.execute(fx);
-        Assert.assertEquals(123, result);
+        String fx1 = "123";
+        Object result1 = this.executor.execute(fx1);
+        Assert.assertEquals(123, result1);
+
+        String fx2 = "0.5";
+        Object result2 = this.executor.execute(fx2);
+        Assert.assertEquals(0.5, result2);
     }
 
     @Test
-    public void testNumberAdd() {
+    public void testNumberPlus() {
         String fx = "1 + 2";
         Object result = this.executor.execute(fx);
         Assert.assertEquals(3, result);
     }
 
     @Test
-    public void testNumberMul() {
+    public void testNumberMinus() {
+        String fx = "1 - 2";
+        Object result = this.executor.execute(fx);
+        Assert.assertEquals(-1, result);
+    }
+
+    @Test
+    public void testNumberMultiply() {
         String fx = "2 * 3";
         Object result = this.executor.execute(fx);
         Assert.assertEquals(6, result);
+    }
+
+    @Test
+    public void testNumberDivide() {
+        String fx = "2 / 0.5";
+        Object result = this.executor.execute(fx);
+        Assert.assertEquals(4.0, result);
+    }
+
+    @Test
+    public void testParentheses1() {
+        String fx = "3 * (1 + 2)";
+        Object result = this.executor.execute(fx);
+        Assert.assertEquals(9, result);
+    }
+
+    @Test
+    public void testParentheses() {
+        String fx = "3 * (1 + 2) + (8 / 2)";
+        Object result = this.executor.execute(fx);
+        Assert.assertEquals(13, result);
     }
 
 }

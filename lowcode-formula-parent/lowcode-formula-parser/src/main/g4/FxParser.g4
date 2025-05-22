@@ -10,7 +10,8 @@ fx
     ;
 
 singleExpression
-    : singleExpression ('*' | '/' | '%') singleExpression                  # MultiplicativeExpression
+    : '(' singleExpression ')'                                             # ParenthesizedExpression
+    | singleExpression ('*' | '/' | '%') singleExpression                  # MultiplicativeExpression
     | singleExpression ('+' | '-') singleExpression                        # AdditiveExpression
     | literal                                                              # LiteralExpression
     ;
