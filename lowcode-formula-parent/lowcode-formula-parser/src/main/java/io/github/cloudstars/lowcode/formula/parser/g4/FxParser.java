@@ -17,7 +17,8 @@ public class FxParser extends FxParserBase {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		Plus=1, Minus=2, WS=3, StringLiteral=4, DecimalLiteral=5;
+		Plus=1, Minus=2, Multiply=3, Divide=4, Modulus=5, WS=6, StringLiteral=7, 
+		DecimalLiteral=8;
 	public static final int
 		RULE_fx = 0, RULE_singleExpression = 1, RULE_literal = 2, RULE_numericLiteral = 3;
 	private static String[] makeRuleNames() {
@@ -29,13 +30,14 @@ public class FxParser extends FxParserBase {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'+'", "'-'"
+			null, "'+'", "'-'", "'*'", "'/'", "'%'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "Plus", "Minus", "WS", "StringLiteral", "DecimalLiteral"
+			null, "Plus", "Minus", "Multiply", "Divide", "Modulus", "WS", "StringLiteral", 
+			"DecimalLiteral"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -194,6 +196,32 @@ public class FxParser extends FxParserBase {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class MultiplicativeExpressionContext extends SingleExpressionContext {
+		public List<SingleExpressionContext> singleExpression() {
+			return getRuleContexts(SingleExpressionContext.class);
+		}
+		public SingleExpressionContext singleExpression(int i) {
+			return getRuleContext(SingleExpressionContext.class,i);
+		}
+		public TerminalNode Multiply() { return getToken(FxParser.Multiply, 0); }
+		public TerminalNode Divide() { return getToken(FxParser.Divide, 0); }
+		public TerminalNode Modulus() { return getToken(FxParser.Modulus, 0); }
+		public MultiplicativeExpressionContext(SingleExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FxParserListener ) ((FxParserListener)listener).enterMultiplicativeExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FxParserListener ) ((FxParserListener)listener).exitMultiplicativeExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FxParserVisitor ) return ((FxParserVisitor<? extends T>)visitor).visitMultiplicativeExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 
 	public final SingleExpressionContext singleExpression() throws RecognitionException {
 		return singleExpression(0);
@@ -220,37 +248,63 @@ public class FxParser extends FxParserBase {
 			literal();
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(19);
+			setState(22);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					{
-					_localctx = new AdditiveExpressionContext(new SingleExpressionContext(_parentctx, _parentState));
-					pushNewRecursionContext(_localctx, _startState, RULE_singleExpression);
-					setState(14);
-					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-					setState(15);
-					_la = _input.LA(1);
-					if ( !(_la==Plus || _la==Minus) ) {
-					_errHandler.recoverInline(this);
-					}
-					else {
-						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-						_errHandler.reportMatch(this);
-						consume();
-					}
-					setState(16);
-					singleExpression(3);
+					setState(20);
+					_errHandler.sync(this);
+					switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
+					case 1:
+						{
+						_localctx = new MultiplicativeExpressionContext(new SingleExpressionContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_singleExpression);
+						setState(14);
+						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
+						setState(15);
+						_la = _input.LA(1);
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 56L) != 0)) ) {
+						_errHandler.recoverInline(this);
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
+							consume();
+						}
+						setState(16);
+						singleExpression(4);
+						}
+						break;
+					case 2:
+						{
+						_localctx = new AdditiveExpressionContext(new SingleExpressionContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_singleExpression);
+						setState(17);
+						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+						setState(18);
+						_la = _input.LA(1);
+						if ( !(_la==Plus || _la==Minus) ) {
+						_errHandler.recoverInline(this);
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
+							consume();
+						}
+						setState(19);
+						singleExpression(3);
+						}
+						break;
 					}
 					} 
 				}
-				setState(21);
+				setState(24);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 			}
 			}
 		}
@@ -294,20 +348,20 @@ public class FxParser extends FxParserBase {
 		LiteralContext _localctx = new LiteralContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_literal);
 		try {
-			setState(24);
+			setState(27);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case StringLiteral:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(22);
+				setState(25);
 				match(StringLiteral);
 				}
 				break;
 			case DecimalLiteral:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(23);
+				setState(26);
 				numericLiteral();
 				}
 				break;
@@ -354,7 +408,7 @@ public class FxParser extends FxParserBase {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(26);
+			setState(29);
 			match(DecimalLiteral);
 			}
 		}
@@ -379,31 +433,36 @@ public class FxParser extends FxParserBase {
 	private boolean singleExpression_sempred(SingleExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
+			return precpred(_ctx, 3);
+		case 1:
 			return precpred(_ctx, 2);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0005\u001d\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
-		"\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0001\u0000\u0001\u0000"+
-		"\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0005\u0001\u0012\b\u0001\n\u0001\f\u0001\u0015\t\u0001\u0001"+
-		"\u0002\u0001\u0002\u0003\u0002\u0019\b\u0002\u0001\u0003\u0001\u0003\u0001"+
-		"\u0003\u0000\u0001\u0002\u0004\u0000\u0002\u0004\u0006\u0000\u0001\u0001"+
-		"\u0000\u0001\u0002\u001a\u0000\b\u0001\u0000\u0000\u0000\u0002\u000b\u0001"+
-		"\u0000\u0000\u0000\u0004\u0018\u0001\u0000\u0000\u0000\u0006\u001a\u0001"+
-		"\u0000\u0000\u0000\b\t\u0003\u0002\u0001\u0000\t\n\u0005\u0000\u0000\u0001"+
-		"\n\u0001\u0001\u0000\u0000\u0000\u000b\f\u0006\u0001\uffff\uffff\u0000"+
-		"\f\r\u0003\u0004\u0002\u0000\r\u0013\u0001\u0000\u0000\u0000\u000e\u000f"+
-		"\n\u0002\u0000\u0000\u000f\u0010\u0007\u0000\u0000\u0000\u0010\u0012\u0003"+
-		"\u0002\u0001\u0003\u0011\u000e\u0001\u0000\u0000\u0000\u0012\u0015\u0001"+
-		"\u0000\u0000\u0000\u0013\u0011\u0001\u0000\u0000\u0000\u0013\u0014\u0001"+
-		"\u0000\u0000\u0000\u0014\u0003\u0001\u0000\u0000\u0000\u0015\u0013\u0001"+
-		"\u0000\u0000\u0000\u0016\u0019\u0005\u0004\u0000\u0000\u0017\u0019\u0003"+
-		"\u0006\u0003\u0000\u0018\u0016\u0001\u0000\u0000\u0000\u0018\u0017\u0001"+
-		"\u0000\u0000\u0000\u0019\u0005\u0001\u0000\u0000\u0000\u001a\u001b\u0005"+
-		"\u0005\u0000\u0000\u001b\u0007\u0001\u0000\u0000\u0000\u0002\u0013\u0018";
+		"\u0004\u0001\b \u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0001\u0000\u0001\u0000\u0001"+
+		"\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0005\u0001\u0015\b\u0001\n"+
+		"\u0001\f\u0001\u0018\t\u0001\u0001\u0002\u0001\u0002\u0003\u0002\u001c"+
+		"\b\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0000\u0001\u0002\u0004\u0000"+
+		"\u0002\u0004\u0006\u0000\u0002\u0001\u0000\u0003\u0005\u0001\u0000\u0001"+
+		"\u0002\u001e\u0000\b\u0001\u0000\u0000\u0000\u0002\u000b\u0001\u0000\u0000"+
+		"\u0000\u0004\u001b\u0001\u0000\u0000\u0000\u0006\u001d\u0001\u0000\u0000"+
+		"\u0000\b\t\u0003\u0002\u0001\u0000\t\n\u0005\u0000\u0000\u0001\n\u0001"+
+		"\u0001\u0000\u0000\u0000\u000b\f\u0006\u0001\uffff\uffff\u0000\f\r\u0003"+
+		"\u0004\u0002\u0000\r\u0016\u0001\u0000\u0000\u0000\u000e\u000f\n\u0003"+
+		"\u0000\u0000\u000f\u0010\u0007\u0000\u0000\u0000\u0010\u0015\u0003\u0002"+
+		"\u0001\u0004\u0011\u0012\n\u0002\u0000\u0000\u0012\u0013\u0007\u0001\u0000"+
+		"\u0000\u0013\u0015\u0003\u0002\u0001\u0003\u0014\u000e\u0001\u0000\u0000"+
+		"\u0000\u0014\u0011\u0001\u0000\u0000\u0000\u0015\u0018\u0001\u0000\u0000"+
+		"\u0000\u0016\u0014\u0001\u0000\u0000\u0000\u0016\u0017\u0001\u0000\u0000"+
+		"\u0000\u0017\u0003\u0001\u0000\u0000\u0000\u0018\u0016\u0001\u0000\u0000"+
+		"\u0000\u0019\u001c\u0005\u0007\u0000\u0000\u001a\u001c\u0003\u0006\u0003"+
+		"\u0000\u001b\u0019\u0001\u0000\u0000\u0000\u001b\u001a\u0001\u0000\u0000"+
+		"\u0000\u001c\u0005\u0001\u0000\u0000\u0000\u001d\u001e\u0005\b\u0000\u0000"+
+		"\u001e\u0007\u0001\u0000\u0000\u0000\u0003\u0014\u0016\u001b";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

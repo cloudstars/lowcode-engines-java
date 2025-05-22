@@ -28,6 +28,9 @@ public class FormulaCalculateFxVisitor extends FxParserBaseVisitor<Object> {
         if (topRuleNode instanceof FxParser.AdditiveExpressionContext) {
             return CalculateUtils.add(aggregate, nextResult);
         }
+        if (topRuleNode instanceof FxParser.MultiplicativeExpressionContext) {
+            return CalculateUtils.multiply(aggregate, nextResult);
+        }
 
         return nextResult != null ? nextResult : aggregate;
     }

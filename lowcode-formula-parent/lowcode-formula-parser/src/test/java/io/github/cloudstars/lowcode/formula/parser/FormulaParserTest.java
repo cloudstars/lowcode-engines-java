@@ -12,11 +12,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = FormulaParserTestApplication.class)
 public class FormulaParserTest {
 
-    private static final String expr0 = "1 + 1";
+    private static final String expr1 = "1 + 2";
+
+    private static final String expr2 = "2 * 3";
 
     @Test
-    public void test0() {
-        FxParser.FxContext context = FormulaParser.parse(expr0);
+    public void test1() {
+        FxParser.FxContext context = FormulaParser.parse(expr1);
+        Assert.assertNotNull(context);
+    }
+
+    @Test
+    public void test2() {
+        FxParser.FxContext context = FormulaParser.parse(expr2);
         Assert.assertNotNull(context);
     }
 

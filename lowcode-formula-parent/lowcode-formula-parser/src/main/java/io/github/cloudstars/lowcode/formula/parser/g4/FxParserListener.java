@@ -42,6 +42,18 @@ public interface FxParserListener extends ParseTreeListener {
 	 */
 	void exitLiteralExpression(FxParser.LiteralExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code MultiplicativeExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiplicativeExpression(FxParser.MultiplicativeExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code MultiplicativeExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiplicativeExpression(FxParser.MultiplicativeExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FxParser#literal}.
 	 * @param ctx the parse tree
 	 */

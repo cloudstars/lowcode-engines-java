@@ -1,7 +1,13 @@
 Plus=1
 Minus=2
-WS=3
-StringLiteral=4
-DecimalLiteral=5
+Multiply=3
+Divide=4
+Modulus=5
+WS=6
+StringLiteral=7
+DecimalLiteral=8
 '+'=1
 '-'=2
+'*'=3
+'/'=4
+'%'=5

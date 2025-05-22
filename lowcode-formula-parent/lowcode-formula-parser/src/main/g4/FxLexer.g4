@@ -10,6 +10,9 @@ options {
 
 Plus                       : '+';
 Minus                      : '-';
+Multiply                   : '*';
+Divide                     : '/';
+Modulus                    : '%';
 WS  :   [ \t\r\n]+ -> skip ; // 表示忽略空格
 
 StringLiteral:

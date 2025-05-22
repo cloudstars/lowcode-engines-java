@@ -27,9 +27,16 @@ public class NumberLiteralFormulaTest {
 
     @Test
     public void testNumberAdd() {
-        String fx = "1 + 1";
+        String fx = "1 + 2";
         Object result = this.executor.execute(fx);
-        Assert.assertEquals(2, result);
+        Assert.assertEquals(3, result);
+    }
+
+    @Test
+    public void testNumberMul() {
+        String fx = "2 * 3";
+        Object result = this.executor.execute(fx);
+        Assert.assertEquals(6, result);
     }
 
 }
