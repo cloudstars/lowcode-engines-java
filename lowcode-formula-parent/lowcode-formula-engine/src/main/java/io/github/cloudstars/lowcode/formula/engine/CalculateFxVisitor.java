@@ -75,6 +75,7 @@ public class CalculateFxVisitor extends FxParserBaseVisitor<Object> {
                 }
             }
             if (topRuleNode instanceof FxParser.UnaryMinusExpressionContext) {
+                this.visitOperatorStack.pop();
                 return CalculateUtils.negativeNumber(nextResult);
             }
         }

@@ -20,6 +20,7 @@ public final class CalculateUtils {
         if (text == null) {
             return null;
         }
+        text = text.trim();
 
         if (text.indexOf(".") >= 0) {
             return Double.parseDouble(text);
@@ -66,7 +67,7 @@ public final class CalculateUtils {
             v1 = 0;
         }
 
-        if (v1 == null) {
+        if (v2 == null) {
             v2 = 0;
         }
 
@@ -111,7 +112,7 @@ public final class CalculateUtils {
             v1 = 0;
         }
 
-        if (v1 == null) {
+        if (v2 == null) {
             v2 = 0;
         }
 
@@ -157,7 +158,7 @@ public final class CalculateUtils {
             v1 = 0;
         }
 
-        if (v1 == null) {
+        if (v2 == null) {
             v2 = 0;
         }
 
@@ -202,7 +203,7 @@ public final class CalculateUtils {
             v1 = 0;
         }
 
-        if (v1 == null) {
+        if (v2 == null) {
             v2 = 0;
         }
 
@@ -274,7 +275,7 @@ public final class CalculateUtils {
             }
         }
 
-        return 0;
+        return null;
     }
 
     interface Calculator {

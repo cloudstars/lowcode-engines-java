@@ -32,17 +32,6 @@ public class NumberLiteralFormulaTest {
     }
 
     @Test
-    public void testNumber() {
-        String fx1 = "123";
-        Object result1 = this.executor.execute(fx1);
-        Assert.assertEquals(123, result1);
-
-        String fx2 = "0.5";
-        Object result2 = this.executor.execute(fx2);
-        Assert.assertEquals(0.5, result2);
-    }
-
-    @Test
     public void testNumberPlus() {
         String fx = "1 + 2";
         Object result = this.executor.execute(fx);

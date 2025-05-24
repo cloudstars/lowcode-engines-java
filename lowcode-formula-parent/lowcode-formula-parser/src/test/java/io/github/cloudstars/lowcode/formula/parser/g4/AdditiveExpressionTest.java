@@ -7,6 +7,8 @@ import io.github.cloudstars.lowcode.formula.parser.SyntaxException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,11 +23,14 @@ import java.util.List;
 @SpringBootTest(classes = FormulaParserTestApplication.class)
 public class AdditiveExpressionTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdditiveExpressionTest.class);
+
     @Test
     public void test() {
         List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("additive.fx", true);
         for (String fx : fxs) {
-            FormulaParser.parse(fx);
+            LOGGER.info("当前公式为：{}", fx);
+            FormulaParser.parse(fx.split("=")[0]);
         }
     }
 
@@ -33,6 +38,7 @@ public class AdditiveExpressionTest {
     public void testErrors() {
         List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("additive-errors.fx", true);
         for (String fx : fxs) {
+            LOGGER.info("当前公式为：{}", fx);
             Assert.assertThrows(SyntaxException.class, () -> {
                 FormulaParser.parse(fx);
             });
