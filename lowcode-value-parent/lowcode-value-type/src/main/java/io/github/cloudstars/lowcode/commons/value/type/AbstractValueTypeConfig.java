@@ -54,8 +54,8 @@ public abstract class AbstractValueTypeConfig extends AbstractTypedConfig implem
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, XValueTypeConfig.ATTR_REQUIRED, this.required);
-        ConfigUtils.putIfNotNull(configJson, XValueTypeConfig.ATTR_DEFAULT_VALUE, this.defaultValue);
+        ConfigUtils.put(configJson, XValueTypeConfig.ATTR_REQUIRED, this.required);
+        ConfigUtils.put(configJson, XValueTypeConfig.ATTR_DEFAULT_VALUE, this.defaultValue);
         
         return configJson;
     }

@@ -64,8 +64,8 @@ public class SelectorValueTypeConfig<T extends XValueTypeConfig> extends Abstrac
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_MULTIPLE, this.multiple);
-        ConfigUtils.putJson(configJson, AbstractArrayValueTypeConfig.ATTR_ITEMS, this.itemsValueType);
+        ConfigUtils.put(configJson, ATTR_MULTIPLE, this.multiple);
+        ConfigUtils.putRequiredJsonObject(configJson, AbstractArrayValueTypeConfig.ATTR_ITEMS, this.itemsValueType);
         // 选项类型数据格式比较特殊，它的JSON结构不体现Array与否，是否Array已通过multiple体现
         // 故它把itemsValueType的配置打平到当前类型中（忽略同名属性，如：type）
         //ConfigUtils.putAllIgnorePresent(configJson, this.itemsValueType);

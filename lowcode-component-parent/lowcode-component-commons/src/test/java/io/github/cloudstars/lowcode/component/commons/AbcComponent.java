@@ -64,9 +64,9 @@ public class AbcComponent extends AbstractComponentConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_A, this.a);
-        ConfigUtils.putIfNotNull(configJson, ATTR_B, this.b);
-        ConfigUtils.putIfNotNull(configJson, ATTR_C, this.c);
+        ConfigUtils.put(configJson, ATTR_A, this.a);
+        ConfigUtils.put(configJson, ATTR_B, this.b);
+        ConfigUtils.put(configJson, ATTR_C, this.c);
 
         return configJson;
     }

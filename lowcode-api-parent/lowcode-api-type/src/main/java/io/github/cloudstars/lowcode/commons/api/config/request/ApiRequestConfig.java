@@ -2,7 +2,6 @@ package io.github.cloudstars.lowcode.commons.api.config.request;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
 
@@ -71,7 +70,7 @@ public class ApiRequestConfig extends AbstractConfig {
         });
         this.servicePath = ConfigUtils.getString(configJson, ATTR_SERVICE_PATH);
         ConfigUtils.consumeIfPresent(configJson, ATTR_QUERY_PARAMS, (v) -> {
-            this.queryParamConfigs = ConfigUtils.toList((JsonArray) v, ApiRequestQueryParamConfig.class);
+            this.queryParamConfigs = ConfigUtils.getList((JsonObject) v, ATTR_QUERY_PARAMS, (i) -> new ApiRequestQueryParamConfig(i));
         });
         ConfigUtils.consumeIfPresent(configJson, ATTR_CONTENT_TYPE, (v) -> {
             this.contentType = RequestContentTypeEnum.valueOf(((String) v).toUpperCase());
@@ -116,11 +115,11 @@ public class ApiRequestConfig extends AbstractConfig {
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_METHOD, this.method);
-        ConfigUtils.put(configJson, ATTR_SERVICE_PATH, this.servicePath);
-        ConfigUtils.putArrayIfNotNull(configJson, ATTR_QUERY_PARAMS, this.queryParamConfigs);
-        ConfigUtils.putIfNotNull(configJson, ATTR_CONTENT_TYPE, this.contentType);
-        ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.body);
+        ConfigUtils.put(configJson, ATTR_METHOD, this.method);
+        ConfigUtils.putRequired(configJson, ATTR_SERVICE_PATH, this.servicePath);
+        ConfigUtils.putJsonArray(configJson, ATTR_QUERY_PARAMS, this.queryParamConfigs);
+        ConfigUtils.put(configJson, ATTR_CONTENT_TYPE, this.contentType);
+        ConfigUtils.putJsonObject(configJson, XValueTypeConfig.ATTR, this.body);
 
         return configJson;
     }

@@ -40,7 +40,7 @@ public abstract class AbstractObjectMethodConfig extends AbstractObjectResourceC
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.put(configJson, ObjectAttrNames.ATTR_FIELD_KEYS, this.fieldKeys);
+        ConfigUtils.putRequired(configJson, ObjectAttrNames.ATTR_FIELD_KEYS, this.fieldKeys);
 
         return configJson;
     }

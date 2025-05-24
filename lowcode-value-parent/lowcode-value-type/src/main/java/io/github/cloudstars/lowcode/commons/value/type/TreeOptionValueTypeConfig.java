@@ -71,8 +71,8 @@ public class TreeOptionValueTypeConfig extends AbstractMapValueTypeConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_KEY_FIELD, this.keyField);
-        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_LABEL_FIELD, this.labelField);
+        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_KEY_FIELD, this.keyField);
+        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_LABEL_FIELD, this.labelField);
 
         return configJson;
     }

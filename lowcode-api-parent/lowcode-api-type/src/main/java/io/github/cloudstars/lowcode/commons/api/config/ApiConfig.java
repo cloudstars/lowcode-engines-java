@@ -60,8 +60,8 @@ public class ApiConfig extends AbstractConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putJson(configJson, ATTR_REQUEST, request);
-        ConfigUtils.putJson(configJson, ATTR_RESPONSE, response);
+        ConfigUtils.putRequiredJsonObject(configJson, ATTR_REQUEST, request);
+        ConfigUtils.putRequiredJsonObject(configJson, ATTR_RESPONSE, response);
 
         return configJson;
     }

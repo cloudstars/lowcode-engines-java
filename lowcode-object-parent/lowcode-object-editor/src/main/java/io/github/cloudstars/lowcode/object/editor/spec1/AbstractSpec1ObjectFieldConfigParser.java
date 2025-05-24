@@ -22,9 +22,9 @@ public abstract class AbstractSpec1ObjectFieldConfigParser<T extends AbstractObj
     }
 
     protected void setCommons(AbstractObjectFieldConfig config, JsonObject configJson) {
-        config.setKey(ConfigUtils.getNonNullString(configJson,"fieldKey"));
-        config.setCode(ConfigUtils.getNonNullString(configJson, "name"));
-        config.setTitle(ConfigUtils.getNonNullString(configJson, "title"));
+        config.setKey(ConfigUtils.getRequiredString(configJson,"fieldKey"));
+        config.setCode(ConfigUtils.getRequiredString(configJson, "name"));
+        config.setTitle(ConfigUtils.getRequiredString(configJson, "title"));
         config.setDescription(ConfigUtils.getString(configJson, "description"));
         //config.setTitle(ConfigUtils.getNonNullString(configJson, "title"));
         config.setColumnName(ConfigUtils.getString(configJson, "columnName"));

@@ -1,0 +1,39 @@
+{
+  "type": "logic",
+  "operator": "AND",
+  "expressions": [
+    {
+      "type": "binary",
+      "left": {
+        "type": "field",
+        "name": "a",
+        "title": "标题a"
+      },
+      "operator": "EQUAL",
+      "right": {
+        "type": "value",
+        "value": {
+          "type": "STATIC",
+          "content": "123"
+        }
+      }
+    },
+    {
+      "type": "binary",
+      "left": {
+        "type": "field",
+        "name": "b",
+        "title": "标题b"
+      },
+      "operator": "LESS_THAN",
+      "right": {
+        "type": "value",
+        "value": {
+          "type": "STATIC",
+          "dataType": "NUMBER",
+          "content": 456
+        }
+      }
+    }
+  ]
+}

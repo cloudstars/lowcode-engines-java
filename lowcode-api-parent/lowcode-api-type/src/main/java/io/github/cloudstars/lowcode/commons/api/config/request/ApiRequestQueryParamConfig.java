@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.api.config.request;
 
+import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.value.type.AbstractFieldConfig;
 
 /**
@@ -8,4 +9,11 @@ import io.github.cloudstars.lowcode.commons.value.type.AbstractFieldConfig;
  * @author clouds
  */
 public class ApiRequestQueryParamConfig extends AbstractFieldConfig {
+
+    public ApiRequestQueryParamConfig() {
+    }
+
+    public ApiRequestQueryParamConfig(JsonObject configJson) {
+        super(configJson);
+    }
 }

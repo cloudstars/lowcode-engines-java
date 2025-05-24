@@ -39,7 +39,7 @@ public class ArrayValueTypeConfig extends AbstractArrayValueTypeConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putJson(configJson, ATTR_ITEMS, this.itemsValueType);
+        ConfigUtils.putRequiredJsonObject(configJson, ATTR_ITEMS, this.itemsValueType);
 
         return configJson;
     }

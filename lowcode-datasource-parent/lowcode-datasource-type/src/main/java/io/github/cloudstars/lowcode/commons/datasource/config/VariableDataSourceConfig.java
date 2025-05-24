@@ -35,7 +35,7 @@ public class VariableDataSourceConfig<V extends XValueTypeConfig> extends Abstra
     public VariableDataSourceConfig(JsonObject configJson) {
         super(configJson);
 
-        this.variable = ConfigUtils.getNonNullString(configJson, ATTR_VARIABLE);
+        this.variable = ConfigUtils.getRequiredString(configJson, ATTR_VARIABLE);
     }
 
     @Override

@@ -59,7 +59,7 @@ public class AbstractObjectConfig<F extends AbstractObjectFieldConfig, RF extend
         super(configJson);
 
         this.fields = ConfigUtils.getList(configJson, ATTR_FIELDS, (v) -> (F) ObjectFieldConfigFactory.newInstance(v));
-        this.primaryFieldKey = ConfigUtils.getNonNullString(configJson, ATTR_PRIMARY_FIELD_KEY);
+        this.primaryFieldKey = ConfigUtils.getRequiredString(configJson, ATTR_PRIMARY_FIELD_KEY);
         //this.nameFieldKey = ConfigUtils.getNonNullString(configJson, ATTR_NAME_FIELD_KEY);
         this.tableName = ConfigUtils.getString(configJson, ATTR_TABLE_NAME);
         this.enableEnterprise = ConfigUtils.getBoolean(configJson, ATTR_ENABLE_ENTERPRISE);
@@ -126,11 +126,11 @@ public class AbstractObjectConfig<F extends AbstractObjectFieldConfig, RF extend
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putList(configJson, ATTR_FIELDS, this.fields);
-        ConfigUtils.put(configJson, ATTR_PRIMARY_FIELD_KEY, this.primaryFieldKey);
+        ConfigUtils.putJsonArray(configJson, ATTR_FIELDS, this.fields);
+        ConfigUtils.putRequired(configJson, ATTR_PRIMARY_FIELD_KEY, this.primaryFieldKey);
         //ConfigUtils.putIfNotNull(configJson, ATTR_NAME_FIELD_KEY, this.nameFieldKey);
-        ConfigUtils.putIfNotNull(configJson, ATTR_TABLE_NAME, this.tableName);
-        ConfigUtils.putIfNotNull(configJson, ATTR_ENABLE_ENTERPRISE, this.enableEnterprise);
+        ConfigUtils.put(configJson, ATTR_TABLE_NAME, this.tableName);
+        ConfigUtils.put(configJson, ATTR_ENABLE_ENTERPRISE, this.enableEnterprise);
 
         return configJson;
     }

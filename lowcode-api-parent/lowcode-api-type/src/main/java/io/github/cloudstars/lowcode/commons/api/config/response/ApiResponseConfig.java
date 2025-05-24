@@ -59,8 +59,8 @@ public class ApiResponseConfig extends AbstractConfig {
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_CONTENT_TYPE, this.contentType);
-        ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.valueType);
+        ConfigUtils.put(configJson, ATTR_CONTENT_TYPE, this.contentType);
+        ConfigUtils.putJsonObject(configJson, XValueTypeConfig.ATTR, this.valueType);
 
         return configJson;
     }

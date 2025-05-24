@@ -26,7 +26,7 @@ public abstract class AbstractMapObjectFieldConfig extends AbstractObjectFieldCo
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putArrayIfNotNull(configJson, GlobalAttrNames.ATTR_PROPERTIES, this.properties);
+        ConfigUtils.putJsonArray(configJson, GlobalAttrNames.ATTR_PROPERTIES, this.properties);
 
         return configJson;
     }

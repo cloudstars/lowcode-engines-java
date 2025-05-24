@@ -57,8 +57,8 @@ public abstract class AbstractComponentConfig extends AbstractTypedConfig implem
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, XResourceConfig.ATTR_KEY, this.key);
-        ConfigUtils.putIfNotNull(configJson, ATTR_VISIBLE_ON, this.visibleOn);
+        ConfigUtils.put(configJson, XResourceConfig.ATTR_KEY, this.key);
+        ConfigUtils.put(configJson, ATTR_VISIBLE_ON, this.visibleOn);
 
         return configJson;
     }

@@ -42,7 +42,7 @@ public class ArrayBpmFieldConfig extends AbstractBpmFieldConfig<ArrayValueTypeCo
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putJson(configJson, ATTR_ITEMS, this.items);
+        ConfigUtils.putRequiredJsonObject(configJson, ATTR_ITEMS, this.items);
 
         return configJson;
     }

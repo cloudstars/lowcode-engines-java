@@ -193,13 +193,13 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_COLUMN_NAME, this.columnName);
-        ConfigUtils.putIfNotNull(configJson, ATTR_PRIMARY_FIELD, this.primaryField);
-        ConfigUtils.putIfNotNull(configJson, ATTR_AUTO_GEN, this.autoGen);
-        ConfigUtils.putIfNotNull(configJson, ATTR_NAME_FIELD, this.nameField);
-        ConfigUtils.putIfNotNull(configJson, ATTR_SYSTEM_FIELD, this.systemField);
+        ConfigUtils.put(configJson, ATTR_COLUMN_NAME, this.columnName);
+        ConfigUtils.put(configJson, ATTR_PRIMARY_FIELD, this.primaryField);
+        ConfigUtils.put(configJson, ATTR_AUTO_GEN, this.autoGen);
+        ConfigUtils.put(configJson, ATTR_NAME_FIELD, this.nameField);
+        ConfigUtils.put(configJson, ATTR_SYSTEM_FIELD, this.systemField);
         //ConfigUtils.putIfNotNull(configJson, ATTR_DEAMON_FIELD, this.deamonField);
-        ConfigUtils.putIfNotNull(configJson, ATTR_DEFAULT_WIDTH, this.defaultWidth);
+        ConfigUtils.put(configJson, ATTR_DEFAULT_WIDTH, this.defaultWidth);
 
         // 将数据格式的属性添加到当前字段上
         if (this.valueType != null) {
@@ -211,7 +211,7 @@ public abstract class AbstractObjectFieldConfig extends AbstractResourceConfig i
             });
         }
 
-        ConfigUtils.putJsonIfNotNull(configJson, XDynamicValueConfig.ATTR, this.dynamicValue);
+        ConfigUtils.putJsonObject(configJson, XDynamicValueConfig.ATTR, this.dynamicValue);
 
         return configJson;
     }

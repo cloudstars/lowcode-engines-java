@@ -65,8 +65,8 @@ public class MapPropertyConfig extends AbstractConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_NAME, this.name);
-        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_LABEL, this.label);
+        ConfigUtils.putRequired(configJson, GlobalAttrNames.ATTR_NAME, this.name);
+        ConfigUtils.putRequired(configJson, GlobalAttrNames.ATTR_LABEL, this.label);
         ConfigUtils.putAll(configJson, this.valueType);
 
         return configJson;

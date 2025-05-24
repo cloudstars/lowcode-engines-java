@@ -1,6 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.commons.visitor;
 
 import io.github.cloudstars.lowcode.bpm.commons.config.end.EndNodeConfig;
+import io.github.cloudstars.lowcode.bpm.commons.config.gateway.AbstractGatewayNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.gateway.ConditionBranchNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.gateway.GatewayNodeConfig;
 import io.github.cloudstars.lowcode.bpm.commons.config.loop.LoopBranchNodeConfig;
@@ -141,7 +142,25 @@ public interface BpmNodeVisitor {
      */
     default void endVisit(LoopBranchNodeConfig nodeConfig) {
     }
-    
+
+    /**
+     * 是否允许访问 抽象网关节点
+     *
+     * @param nodeConfig 抽象网关节点配置
+     * @return 是否允许访问
+     */
+    default boolean visit(AbstractGatewayNodeConfig nodeConfig) {
+        return true;
+    }
+
+    /**
+     * 结束访问 抽象网关节点
+     *
+     * @param nodeConfig 抽象网关节点配置
+     */
+    default void endVisit(AbstractGatewayNodeConfig nodeConfig) {
+    }
+
     /**
      * 是否允许访问 网关节点
      *

@@ -49,7 +49,7 @@ public class DateValueTypeConfig extends AbstractValueTypeConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_FORMAT, this.format);
+        ConfigUtils.put(configJson, ATTR_FORMAT, this.format);
         return configJson;
     }
 

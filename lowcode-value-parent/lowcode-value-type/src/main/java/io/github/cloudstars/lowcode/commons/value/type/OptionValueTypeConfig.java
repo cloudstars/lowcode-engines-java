@@ -71,8 +71,8 @@ public class OptionValueTypeConfig extends AbstractMapValueTypeConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_LABEL_FIELD, this.labelField);
-        ConfigUtils.putIfNotNull(configJson, GlobalAttrNames.ATTR_VALUE_FIELD, this.valueField);
+        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_LABEL_FIELD, this.labelField);
+        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_VALUE_FIELD, this.valueField);
 
         return configJson;
     }

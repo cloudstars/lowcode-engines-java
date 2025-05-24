@@ -46,7 +46,7 @@ public class ApiRequestBodyConfig extends AbstractConfig {
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putAllIfNotNull(configJson, this.valueType);
+        ConfigUtils.putAllRequired(configJson, this.valueType);
 
         return configJson;
     }

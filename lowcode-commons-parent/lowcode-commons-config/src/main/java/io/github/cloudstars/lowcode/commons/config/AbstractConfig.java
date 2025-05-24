@@ -33,7 +33,7 @@ public abstract class AbstractConfig implements XConfig {
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject<String, Object> configJson = new JsonObject<>();
-        ConfigUtils.putIfNotNull(configJson, ATTR_DESCRIPTION, this.description);
+        ConfigUtils.put(configJson, ATTR_DESCRIPTION, this.description);
 
         return configJson;
     }

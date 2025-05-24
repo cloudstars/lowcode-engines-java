@@ -14,7 +14,6 @@ import java.util.List;
 public abstract class AbstractNodeConfig extends AbstractConfig implements NodeConfig {
 
     protected static final String ATTR_CONDITION = "condition";
-    protected static final String ATTR_BRANCHES = "branches";
     protected static final String ATTR_BRANCH = "branch";
 
     /**

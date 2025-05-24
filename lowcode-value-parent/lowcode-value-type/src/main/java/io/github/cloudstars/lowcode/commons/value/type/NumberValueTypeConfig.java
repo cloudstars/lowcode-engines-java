@@ -104,9 +104,9 @@ public class NumberValueTypeConfig extends AbstractValueTypeConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_PRECISION, this.precision);
-        ConfigUtils.putIfNotNull(configJson, ATTR_MIN_VALUE, this.minValue);
-        ConfigUtils.putIfNotNull(configJson, ATTR_MAX_VALUE, this.maxValue);
+        ConfigUtils.put(configJson, ATTR_PRECISION, this.precision);
+        ConfigUtils.put(configJson, ATTR_MIN_VALUE, this.minValue);
+        ConfigUtils.put(configJson, ATTR_MAX_VALUE, this.maxValue);
 
         return configJson;
     }

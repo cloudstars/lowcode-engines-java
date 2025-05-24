@@ -2,7 +2,6 @@ package io.github.cloudstars.lowcode.object.table.editor.action;
 
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.List;
@@ -37,15 +36,8 @@ public class ActionsConfig extends AbstractConfig {
     public ActionsConfig(JsonObject configJson) {
         super(configJson);
 
-        Object toolbarValue = configJson.get(ATTR_TOOLBAR);
-        if (toolbarValue != null) {
-            this.setToolbar(ConfigUtils.toList((JsonArray) toolbarValue, TableViewActionConfig.class));
-        }
-
-        Object rowValue = configJson.get(ATTR_ROW);
-        if (rowValue != null) {
-            this.setRow(ConfigUtils.toList((JsonArray) rowValue, TableViewActionConfig.class));
-        }
+        this.toolbar = ConfigUtils.getList(configJson, ATTR_TOOLBAR, (v) -> new TableViewActionConfig(v));
+        this.row = ConfigUtils.getList(configJson, ATTR_ROW, (v) -> new TableViewActionConfig(v));
     }
 
     public List<TableViewActionConfig> getToolbar() {
@@ -67,8 +59,8 @@ public class ActionsConfig extends AbstractConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putArrayIfNotNull(configJson, ATTR_TOOLBAR, this.toolbar);
-        ConfigUtils.putArrayIfNotNull(configJson, ATTR_ROW, this.row);
+        ConfigUtils.putJsonArray(configJson, ATTR_TOOLBAR, this.toolbar);
+        ConfigUtils.putJsonArray(configJson, ATTR_ROW, this.row);
 
         return configJson;
     }

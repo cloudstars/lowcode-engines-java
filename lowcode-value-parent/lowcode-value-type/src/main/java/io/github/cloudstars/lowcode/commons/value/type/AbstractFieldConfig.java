@@ -51,8 +51,8 @@ public abstract class AbstractFieldConfig extends AbstractConfig {
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_NAME, this.name);
-        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_LABEL, this.label);
+        ConfigUtils.putRequired(configJson, GlobalAttrNames.ATTR_NAME, this.name);
+        ConfigUtils.putRequired(configJson, GlobalAttrNames.ATTR_LABEL, this.label);
 
         return configJson;
     }

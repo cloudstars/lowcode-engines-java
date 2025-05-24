@@ -138,9 +138,9 @@ public abstract class AbstractBpmFieldConfig<T extends XValueTypeConfig> extends
         configJson.put(ATTR_KEY, this.key);
         configJson.put(ATTR_NAME, this.name);
         configJson.put(ATTR_LABEL, this.label);
-        ConfigUtils.putIfNotNull(configJson, XBpmFieldConfig.ATTR_REQUIRED, this.required);
-        ConfigUtils.putIfNotNull(configJson, XBpmFieldConfig.ATTR_TITLE_SUPPORTED, this.titleSupported);
-        ConfigUtils.putIfNotNull(configJson, XBpmFieldConfig.ATTR_DIGEST_SUPPORTED, this.digestSupported);
+        ConfigUtils.put(configJson, XBpmFieldConfig.ATTR_REQUIRED, this.required);
+        ConfigUtils.put(configJson, XBpmFieldConfig.ATTR_TITLE_SUPPORTED, this.titleSupported);
+        ConfigUtils.put(configJson, XBpmFieldConfig.ATTR_DIGEST_SUPPORTED, this.digestSupported);
 
         if (this.valueType != null) { // Other类型无valueType
             // 将数据格式的配置合并到当前配置上（忽略同名属性，如：type）

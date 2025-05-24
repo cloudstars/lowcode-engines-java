@@ -35,7 +35,7 @@ public class AbstractObjectResourceConfig extends AbstractResourceConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.put(configJson, ATTR_OBJECT_KEY, this.objectKey);
+        ConfigUtils.putRequired(configJson, ATTR_OBJECT_KEY, this.objectKey);
 
         return configJson;
     }

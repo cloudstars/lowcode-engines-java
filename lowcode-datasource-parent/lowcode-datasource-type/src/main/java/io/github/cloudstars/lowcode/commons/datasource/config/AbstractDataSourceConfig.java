@@ -41,7 +41,7 @@ public class AbstractDataSourceConfig<V extends XValueTypeConfig> extends Abstra
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putJsonIfNotNull(configJson, XValueTypeConfig.ATTR, this.valueType);
+        ConfigUtils.putJsonObject(configJson, XValueTypeConfig.ATTR, this.valueType);
 
         return configJson;
     }

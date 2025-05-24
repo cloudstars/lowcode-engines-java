@@ -26,8 +26,8 @@ public class FormItemConfig<T extends XFormItemComponentConfig> extends Abstract
     public FormItemConfig(JsonObject configJson) {
         super(configJson);
 
-        this.name = ConfigUtils.getNonNullString(configJson, GlobalAttrNames.ATTR_NAME);
-        this.label = ConfigUtils.getNonNullString(configJson, GlobalAttrNames.ATTR_LABEL);
+        this.name = ConfigUtils.getRequiredString(configJson, GlobalAttrNames.ATTR_NAME);
+        this.label = ConfigUtils.getRequiredString(configJson, GlobalAttrNames.ATTR_LABEL);
         // this.component =
     }
 
@@ -51,8 +51,8 @@ public class FormItemConfig<T extends XFormItemComponentConfig> extends Abstract
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
         ConfigUtils.putAll(configJson, this.component);
-        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_NAME, this.name);
-        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_LABEL, this.label);
+        ConfigUtils.putRequired(configJson, GlobalAttrNames.ATTR_NAME, this.name);
+        ConfigUtils.putRequired(configJson, GlobalAttrNames.ATTR_LABEL, this.label);
 
         return configJson;
     }

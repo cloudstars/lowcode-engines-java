@@ -40,7 +40,7 @@ public class FormComponentConfig extends AbstractComponentConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putList(configJson, ATTR_ITEMS, this.items);
+        ConfigUtils.putJsonArray(configJson, ATTR_ITEMS, this.items);
 
         return configJson;
     }

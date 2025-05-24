@@ -73,9 +73,9 @@ public abstract class AbstractElementConfig<D extends XValueTypeConfig> extends 
     @Override
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_SIZE, this.size);
-        ConfigUtils.putIfNotNull(configJson, ATTR_LABEL, this.label);
-        ConfigUtils.put(configJson, XDataSourceConfig.ATTR, this.dataSource);
+        ConfigUtils.put(configJson, ATTR_SIZE, this.size);
+        ConfigUtils.put(configJson, ATTR_LABEL, this.label);
+        ConfigUtils.putRequired(configJson, XDataSourceConfig.ATTR, this.dataSource);
 
         return configJson;
     }

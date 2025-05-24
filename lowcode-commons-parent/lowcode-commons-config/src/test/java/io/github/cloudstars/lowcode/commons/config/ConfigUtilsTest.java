@@ -1,7 +1,6 @@
 package io.github.cloudstars.lowcode.commons.config;
 
 import io.github.cloudstars.lowcode.commons.CommonsConfigTestApplication;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.test.util.JsonTestUtils;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ActiveProfiles("test")
@@ -132,7 +130,7 @@ class ConfigUtilsTest {
     public void put() {
         JsonObject oldConfigJson = JsonUtils.loadJsonObjectFromClasspath("config2.json");
         JsonObject newConfigJson = JsonUtils.loadJsonObjectFromClasspath("config3.json");
-        ConfigUtils.put(oldConfigJson, "test", "test");
+        ConfigUtils.putRequired(oldConfigJson, "test", "test");
         JsonTestUtils.assertEquals(newConfigJson, oldConfigJson);
     }
 
@@ -143,11 +141,11 @@ class ConfigUtilsTest {
         JsonObject configJson = JsonUtils.loadJsonObjectFromClasspath("config3.json");
 
         // 如果值为空
-        ConfigUtils.putIfNotNull(oldConfigJson, "test", null);
+        ConfigUtils.put(oldConfigJson, "test", null);
         JsonTestUtils.assertEquals(newConfigJson, oldConfigJson);
 
         // 如果值不为空
-        ConfigUtils.putIfNotNull(oldConfigJson, "test", "test");
+        ConfigUtils.put(oldConfigJson, "test", "test");
         Assert.assertNotEquals(newConfigJson, oldConfigJson);
         JsonTestUtils.assertEquals(configJson, oldConfigJson);
     }
@@ -166,12 +164,12 @@ class ConfigUtilsTest {
             @Override
             public JsonObject<String, Object> toJson() {
                 JsonObject<String, Object> configJson = new JsonObject<>();
-                ConfigUtils.putIfNotNull(configJson, ATTR_DESCRIPTION, getDescription());
+                ConfigUtils.put(configJson, ATTR_DESCRIPTION, getDescription());
 
                 return configJson;
             }
         };
-        ConfigUtils.putJson(oldConfigJson, "props", xConfig);
+        ConfigUtils.putRequiredJsonObject(oldConfigJson, "props", xConfig);
         JsonTestUtils.assertEquals(newConfigJson, oldConfigJson);
     }
 
@@ -180,7 +178,7 @@ class ConfigUtilsTest {
         JsonObject oldConfigJson3 = JsonUtils.loadJsonObjectFromClasspath("config3.json");
         JsonObject newConfigJson3 = JsonUtils.loadJsonObjectFromClasspath("config3.json");
         // 如果值为空
-        ConfigUtils.putJsonIfNotNull(oldConfigJson3, "props", null);
+        ConfigUtils.putJsonObject(oldConfigJson3, "props", null);
         JsonTestUtils.assertEquals(newConfigJson3, oldConfigJson3);
         // 如果值不为空
         JsonObject configJson4 = JsonUtils.loadJsonObjectFromClasspath("config4.json");
@@ -194,12 +192,12 @@ class ConfigUtilsTest {
             @Override
             public JsonObject<String, Object> toJson() {
                 JsonObject<String, Object> configJson = new JsonObject<>();
-                ConfigUtils.putIfNotNull(configJson, ATTR_DESCRIPTION, getDescription());
+                ConfigUtils.put(configJson, ATTR_DESCRIPTION, getDescription());
 
                 return configJson;
             }
         };
-        ConfigUtils.putJsonIfNotNull(oldConfigJson3, "props", xConfig);
+        ConfigUtils.putJsonObject(oldConfigJson3, "props", xConfig);
         JsonTestUtils.assertEquals(configJson4, oldConfigJson3);
 
     }
@@ -228,7 +226,7 @@ class ConfigUtilsTest {
     void toJsonArray() {
     }
 
-    @Test
+    /*@Test toList方法已删除
     public void toList() {
         JsonObject configJson6 = JsonUtils.loadJsonObjectFromClasspath("config6.json");
         JsonArray array6 = (JsonArray) configJson6.get("array");
@@ -245,8 +243,7 @@ class ConfigUtilsTest {
         configTest.setDescription("我是描述");
         expect.add(configTest);
         JsonTestUtils.assertEquals(expect, result);
-
-    }
+    }*/
 
     @Test
     void fromJsonArray() {

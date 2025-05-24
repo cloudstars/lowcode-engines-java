@@ -60,8 +60,8 @@ public class OptionBpmFiledConfig extends AbstractSelectableSupportedBpmFieldCon
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_LABEL_FIELD, this.labelField);
-        ConfigUtils.putIfNotNull(configJson, ATTR_VALUE_FIELD, this.valueField);
+        ConfigUtils.put(configJson, ATTR_LABEL_FIELD, this.labelField);
+        ConfigUtils.put(configJson, ATTR_VALUE_FIELD, this.valueField);
 
         return configJson;
     }

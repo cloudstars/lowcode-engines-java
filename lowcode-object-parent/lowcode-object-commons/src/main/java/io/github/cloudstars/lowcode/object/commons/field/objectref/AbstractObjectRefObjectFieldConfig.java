@@ -64,9 +64,9 @@ public abstract class AbstractObjectRefObjectFieldConfig extends AbstractObjectF
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.put(configJson, ATTR_REF_TYPE, this.refType.name());
-        ConfigUtils.put(configJson, ATTR_REF_OBJECT_NAME, this.refObjectName);
-        ConfigUtils.putIfNotNull(configJson, ATTR_IS_MULTI_REF, this.isMultiRef);
+        ConfigUtils.putRequired(configJson, ATTR_REF_TYPE, this.refType.name());
+        ConfigUtils.putRequired(configJson, ATTR_REF_OBJECT_NAME, this.refObjectName);
+        ConfigUtils.put(configJson, ATTR_IS_MULTI_REF, this.isMultiRef);
 
         return configJson;
     }

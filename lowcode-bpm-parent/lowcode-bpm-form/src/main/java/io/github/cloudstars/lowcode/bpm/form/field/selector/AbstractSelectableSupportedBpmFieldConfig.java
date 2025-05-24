@@ -79,8 +79,8 @@ public abstract class AbstractSelectableSupportedBpmFieldConfig<T extends XValue
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_MULTIPLE, this.multiple);
-        ConfigUtils.putJson(configJson, ATTR_DATASOURCE, this.dataSource);
+        ConfigUtils.put(configJson, ATTR_MULTIPLE, this.multiple);
+        ConfigUtils.putRequiredJsonObject(configJson, ATTR_DATASOURCE, this.dataSource);
 
         return configJson;
     }

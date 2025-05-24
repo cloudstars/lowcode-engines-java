@@ -10,6 +10,7 @@ import io.github.cloudstars.lowcode.pdf.commons.config.PdfBuildConfig;
 import io.github.cloudstars.lowcode.pdf.commons.config.element.AbstractElementConfig;
 import io.github.cloudstars.lowcode.pdf.commons.config.element.XElementConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,13 +52,14 @@ public class PdfBuildConfigParser implements XConfigParser<PdfBuildConfig> {
      * @return 元素列表
      */
     private List<XElementConfig> parseElements(JsonArray elementsConfigJson) {
-        List<XElementConfig> elementConfigs =
-                ConfigUtils.fromJsonArray(elementsConfigJson, (elementConfigJson) -> {
-                    String type = ConfigUtils.getString(elementConfigJson, XTypedConfig.ATTR);
-                    AbstractElementConfigParser<AbstractElementConfig> elementConfigParser = PdfElementConfigParserFactory.getInstance(type);
-                    XElementConfig elementConfig = elementConfigParser.parse(elementConfigJson);
-                    return elementConfig;
-                });
+        List<XElementConfig> elementConfigs = new ArrayList<>();
+        for (Object elementValue : elementsConfigJson) {
+            JsonObject elementConfigJson = (JsonObject) elementValue;
+            String type = ConfigUtils.getString(elementConfigJson, XTypedConfig.ATTR);
+            AbstractElementConfigParser<AbstractElementConfig> elementConfigParser = PdfElementConfigParserFactory.getInstance(type);
+            XElementConfig elementConfig = elementConfigParser.parse(elementConfigJson);
+            elementConfigs.add(elementConfig);
+        }
 
         return elementConfigs;
     }

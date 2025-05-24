@@ -32,7 +32,7 @@ public class AbstractObjectTableViewConfig extends AbstractObjectViewConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_QUERY, this.query);
+        ConfigUtils.put(configJson, ATTR_QUERY, this.query);
 
         return configJson;
     }

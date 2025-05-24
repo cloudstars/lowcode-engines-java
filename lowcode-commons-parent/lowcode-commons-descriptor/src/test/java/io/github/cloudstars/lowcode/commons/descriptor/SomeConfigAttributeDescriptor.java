@@ -21,7 +21,7 @@ public class SomeConfigAttributeDescriptor extends AbstractConfigDescriptor<Some
 
             @Override
             public void toJson(SomeConfigAttribute config, JsonObject configJson) {
-                ConfigUtils.putIfNotNull(configJson, ATTR_ATTR1, config.getAttr1());
+                ConfigUtils.put(configJson, ATTR_ATTR1, config.getAttr1());
             }
         };
 
@@ -33,7 +33,7 @@ public class SomeConfigAttributeDescriptor extends AbstractConfigDescriptor<Some
 
             @Override
             public void toJson(SomeConfigAttribute config, JsonObject configJson) {
-                ConfigUtils.putIfNotNull(configJson, ATTR_ATTR2, config.getAttr2());
+                ConfigUtils.put(configJson, ATTR_ATTR2, config.getAttr2());
             }
         };
 

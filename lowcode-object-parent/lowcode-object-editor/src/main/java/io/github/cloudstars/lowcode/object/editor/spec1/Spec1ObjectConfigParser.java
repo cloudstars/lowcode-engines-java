@@ -23,12 +23,12 @@ public class Spec1ObjectConfigParser implements XConfigParser<FormBasedObjectCon
     @Override
     public FormBasedObjectConfig parse(JsonObject configJson) {
         FormBasedObjectConfig config = new FormBasedObjectConfig();
-        config.setKey(ConfigUtils.getNonNullString(configJson, "objectKey"));
-        config.setCode(ConfigUtils.getNonNullString(configJson, "objectCode"));
-        config.setTitle(ConfigUtils.getNonNullString(configJson, "objectName"));
+        config.setKey(ConfigUtils.getRequiredString(configJson, "objectKey"));
+        config.setCode(ConfigUtils.getRequiredString(configJson, "objectCode"));
+        config.setTitle(ConfigUtils.getRequiredString(configJson, "objectName"));
         config.setDescription(ConfigUtils.getString(configJson, "description"));
-        config.setTableName(ConfigUtils.getNonNullString(configJson, "tableName"));
-        config.setPrimaryFieldKey(ConfigUtils.getNonNullString(configJson, "primaryFieldKey"));
+        config.setTableName(ConfigUtils.getRequiredString(configJson, "tableName"));
+        config.setPrimaryFieldKey(ConfigUtils.getRequiredString(configJson, "primaryFieldKey"));
         config.setEnableEnterprise(ConfigUtils.getBoolean(configJson, "enableEnterprise"));
         JsonArray fieldsConfigJson = ConfigUtils.getJsonArray(configJson, "body");
         config.setFields(this.parseFields(fieldsConfigJson));

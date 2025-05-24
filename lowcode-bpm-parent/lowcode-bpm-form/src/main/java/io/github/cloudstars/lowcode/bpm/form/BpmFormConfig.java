@@ -60,7 +60,7 @@ public class BpmFormConfig extends AbstractResourceConfig {
     public JsonObject<String, Object> toJson() {
         JsonObject configJson = super.toJson();
         // 添加字段列表配置
-        ConfigUtils.putList(configJson, ATTR_FIELDS, this.fields);
+        ConfigUtils.putJsonArray(configJson, ATTR_FIELDS, this.fields);
 
         return configJson;
     }

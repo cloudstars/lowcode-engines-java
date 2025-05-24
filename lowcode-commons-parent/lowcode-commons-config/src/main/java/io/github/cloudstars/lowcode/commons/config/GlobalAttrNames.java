@@ -31,6 +31,8 @@ public interface GlobalAttrNames {
     // 表达式配置项名称
     String ATTR_EXPRESSION = "expression";
 
+    // 公式配置项名称
+    String ATTR_FORMULA = "formula";
 
     // 标题配置名称
     String ATTR_TITLE = "title";

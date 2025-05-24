@@ -40,7 +40,7 @@ public class ListValueTypeConfig extends AbstractArrayValueTypeConfig{
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.put(configJson, GlobalAttrNames.ATTR_KEY_FIELD, this.keyField);
+        ConfigUtils.putRequired(configJson, GlobalAttrNames.ATTR_KEY_FIELD, this.keyField);
 
         return configJson;
     }

@@ -38,7 +38,7 @@ public class TextObjectFieldConfig extends AbstractObjectFieldConfig {
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putIfNotNull(configJson, ATTR_PLACEHOLDER, this.placeholder);
+        ConfigUtils.put(configJson, ATTR_PLACEHOLDER, this.placeholder);
 
         return configJson;
     }

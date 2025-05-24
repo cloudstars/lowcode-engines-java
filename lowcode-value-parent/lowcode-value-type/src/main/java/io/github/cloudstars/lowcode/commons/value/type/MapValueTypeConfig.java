@@ -2,7 +2,6 @@ package io.github.cloudstars.lowcode.commons.value.type;
 
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
-import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.Map;
@@ -21,18 +20,15 @@ public class MapValueTypeConfig extends AbstractMapValueTypeConfig {
     public MapValueTypeConfig(JsonObject configJson) {
         super(configJson);
 
-        this.properties = ConfigUtils.getList(configJson, GlobalAttrNames.ATTR_PROPERTIES, (v) -> new MapPropertyConfig(v));
-        ConfigUtils.consumeIfPresent(configJson, ATTR_PROPERTIES, (v) -> {
-            this.properties = ConfigUtils.fromJsonArray((JsonArray) v,
-                    (propertyConfigJson) -> new MapPropertyConfig(propertyConfigJson)
-            );
-        });
+        this.properties = ConfigUtils.getList(configJson, GlobalAttrNames.ATTR_PROPERTIES,
+                (v) -> new MapPropertyConfig(v)
+        );
     }
 
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putArrayIfNotNull(configJson, ATTR_PROPERTIES, this.properties);
+        ConfigUtils.putJsonArray(configJson, ATTR_PROPERTIES, this.properties);
 
         return configJson;
     }

@@ -22,7 +22,7 @@ public class SomeConfigDescriptor extends AbstractConfigDescriptor<SomeConfig> {
 
             @Override
             public void toJson(SomeConfig config, JsonObject configJson) {
-                ConfigUtils.putIfNotNull(configJson, ATTR_X, config.getX());
+                ConfigUtils.put(configJson, ATTR_X, config.getX());
             }
         };
 

@@ -67,8 +67,8 @@ public class DetailFormBpmFieldConfig extends AbstractBpmFieldConfig<ArrayValueT
     @Override
     public JsonObject toJson() {
         JsonObject configJson = super.toJson();
-        ConfigUtils.putList(configJson, ATTR_FIELDS, this.fields);
-        ConfigUtils.putIfNotNull(configJson, ATTR_ALLOW_NEWLINE, this.allowNewLine);
+        ConfigUtils.putJsonArray(configJson, ATTR_FIELDS, this.fields);
+        ConfigUtils.put(configJson, ATTR_ALLOW_NEWLINE, this.allowNewLine);
 
         return configJson;
     }
