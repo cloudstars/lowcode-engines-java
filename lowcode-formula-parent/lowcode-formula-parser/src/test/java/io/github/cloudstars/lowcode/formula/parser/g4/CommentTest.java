@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.formula.parser.rule;
+package io.github.cloudstars.lowcode.formula.parser.g4;
 
 import io.github.cloudstars.lowcode.FormulaParserTestApplication;
 import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
@@ -14,11 +14,11 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FormulaParserTestApplication.class)
-public class RelationalExpressionTest {
+public class CommentTest {
 
     @Test
     public void test() {
-        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("relational.fx", true);
+        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("comment.fx", true);
         for (String fx : fxs) {
             FormulaParser.parse(fx);
         }
@@ -26,12 +26,11 @@ public class RelationalExpressionTest {
 
     @Test
     public void testErrors() {
-        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("relational-errors.fx", true);
+        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("comment-errors.fx", true);
         for (String fx : fxs) {
             Assert.assertThrows(SyntaxException.class, () -> {
                 FormulaParser.parse(fx);
             });
         }
     }
-
 }

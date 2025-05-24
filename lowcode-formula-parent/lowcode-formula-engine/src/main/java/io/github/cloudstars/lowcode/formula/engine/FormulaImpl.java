@@ -19,14 +19,14 @@ public class FormulaImpl implements Formula {
 
     @Override
     public Object execute() {
-        FormulaCalculateFxVisitor visitor = new FormulaCalculateFxVisitor();
+        CalculateFxVisitor visitor = new CalculateFxVisitor();
         Object result = visitor.visitFx(this.context);
         return result;
     }
 
     @Override
     public Object execute(Map<String, Object> dataMap) {
-        FormulaCalculateFxVisitor visitor = new FormulaCalculateFxVisitor(dataMap);
+        CalculateFxVisitor visitor = new CalculateFxVisitor(dataMap);
         Object result = visitor.visitFx(this.context);
         return result;
     }

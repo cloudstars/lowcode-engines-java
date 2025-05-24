@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.formula.parser.rule;
+package io.github.cloudstars.lowcode.formula.parser.g4;
 
 import io.github.cloudstars.lowcode.FormulaParserTestApplication;
 import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
@@ -12,13 +12,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+/**
+ * 测试规则ParenthesizedExpression
+ *
+ * @author clouds
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FormulaParserTestApplication.class)
-public class NumericLiteralTest {
+public class ParenthesizedExpressionTest {
 
     @Test
     public void test() {
-        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("numeric-literal.fx", true);
+        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("parenthesized.fx", true);
         for (String fx : fxs) {
             FormulaParser.parse(fx);
         }
@@ -26,7 +31,7 @@ public class NumericLiteralTest {
 
     @Test
     public void testErrors() {
-        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("numeric-literal-errors.fx", true);
+        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("parenthesized-errors.fx", true);
         for (String fx : fxs) {
             Assert.assertThrows(SyntaxException.class, () -> {
                 FormulaParser.parse(fx);

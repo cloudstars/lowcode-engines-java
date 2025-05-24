@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.formula.parser.rule;
+package io.github.cloudstars.lowcode.formula.parser.g4;
 
 import io.github.cloudstars.lowcode.FormulaParserTestApplication;
 import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
@@ -12,18 +12,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-/**
- * 乘性的规则测试
- *
- * @author clouds
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FormulaParserTestApplication.class)
-public class MultiplicativeExpressionTest {
+public class RelationalExpressionTest {
 
     @Test
     public void test() {
-        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("multiplicative.fx", true);
+        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("relational.fx", true);
         for (String fx : fxs) {
             FormulaParser.parse(fx);
         }
@@ -31,7 +26,7 @@ public class MultiplicativeExpressionTest {
 
     @Test
     public void testErrors() {
-        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("multiplicative-errors.fx", true);
+        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("relational-errors.fx", true);
         for (String fx : fxs) {
             Assert.assertThrows(SyntaxException.class, () -> {
                 FormulaParser.parse(fx);

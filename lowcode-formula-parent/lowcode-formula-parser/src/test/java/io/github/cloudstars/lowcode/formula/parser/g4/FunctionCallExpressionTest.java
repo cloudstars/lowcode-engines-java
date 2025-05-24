@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.formula.parser.rule;
+package io.github.cloudstars.lowcode.formula.parser.g4;
 
 import io.github.cloudstars.lowcode.FormulaParserTestApplication;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;

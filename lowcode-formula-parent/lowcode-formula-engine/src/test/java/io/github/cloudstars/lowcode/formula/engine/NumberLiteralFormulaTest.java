@@ -1,6 +1,8 @@
 package io.github.cloudstars.lowcode.formula.engine;
 
 import io.github.cloudstars.lowcode.FormulaEngineTestApplication;
+import io.github.cloudstars.lowcode.commons.lang.util.CalculateUtils;
+import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -17,6 +20,16 @@ public class NumberLiteralFormulaTest {
 
     @Resource
     private FormulaExecutor executor;
+
+    @Test
+    public void test() {
+        List<String> lines = FileTestUtils.loadFileLinesFromClassPath("numeric-literal.fx", true);
+        for (String line : lines) {
+            Object result = this.executor.execute(line);
+            Object expectedResult = CalculateUtils.parseNumber(line);
+            Assert.assertEquals(expectedResult, result);
+        }
+    }
 
     @Test
     public void testNumber() {

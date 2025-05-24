@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.formula.parser.rule;
+package io.github.cloudstars.lowcode.formula.parser.g4;
 
 import io.github.cloudstars.lowcode.FormulaParserTestApplication;
 import io.github.cloudstars.lowcode.commons.test.util.FileTestUtils;
@@ -14,11 +14,11 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FormulaParserTestApplication.class)
-public class UnaryPlusMinusExpressionTest {
+public class NumericLiteralTest {
 
     @Test
     public void test() {
-        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("unary.fx", true);
+        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("numeric-literal.fx", true);
         for (String fx : fxs) {
             FormulaParser.parse(fx);
         }
@@ -26,7 +26,7 @@ public class UnaryPlusMinusExpressionTest {
 
     @Test
     public void testErrors() {
-        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("unary-errors.fx", true);
+        List<String> fxs = FileTestUtils.loadFileLinesFromClassPath("numeric-literal-errors.fx", true);
         for (String fx : fxs) {
             Assert.assertThrows(SyntaxException.class, () -> {
                 FormulaParser.parse(fx);

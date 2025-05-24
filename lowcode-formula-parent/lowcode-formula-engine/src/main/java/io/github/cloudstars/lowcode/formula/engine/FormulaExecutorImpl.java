@@ -37,8 +37,9 @@ public class FormulaExecutorImpl implements FormulaExecutor {
     }
 
     @Override
-    public Object execute(String fx, Map<String, Object> context) {
-        return null;
+    public Object execute(String fx, Map<String, Object> dataMap) {
+        Formula formula = compile(fx);
+        return formula.execute(dataMap);
     }
 
 }

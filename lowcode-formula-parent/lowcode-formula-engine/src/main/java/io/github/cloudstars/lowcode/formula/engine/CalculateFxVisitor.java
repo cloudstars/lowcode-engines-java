@@ -19,7 +19,7 @@ import java.util.Stack;
  *
  * @author clouds
  */
-public class FormulaCalculateFxVisitor extends FxParserBaseVisitor<Object> {
+public class CalculateFxVisitor extends FxParserBaseVisitor<Object> {
 
     /**
      * 参数Map
@@ -41,10 +41,10 @@ public class FormulaCalculateFxVisitor extends FxParserBaseVisitor<Object> {
      */
     private List<Integer> operators = Arrays.asList(FxLexer.Plus, FxLexer.Minus, FxLexer.Multiply, FxLexer.Divide, FxLexer.Modulus);
 
-    public FormulaCalculateFxVisitor() {
+    public CalculateFxVisitor() {
     }
 
-    public FormulaCalculateFxVisitor(Map<String, Object> dataMap) {
+    public CalculateFxVisitor(Map<String, Object> dataMap) {
         this.dataMap = dataMap;
     }
 
@@ -73,6 +73,9 @@ public class FormulaCalculateFxVisitor extends FxParserBaseVisitor<Object> {
                     this.visitOperatorStack.pop();
                     return CalculateUtils.divide(aggregate, nextResult);
                 }
+            }
+            if (topRuleNode instanceof FxParser.UnaryMinusExpressionContext) {
+                return CalculateUtils.negativeNumber(nextResult);
             }
         }
 

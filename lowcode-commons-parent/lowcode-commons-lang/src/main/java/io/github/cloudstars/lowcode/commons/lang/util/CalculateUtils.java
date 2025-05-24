@@ -29,6 +29,32 @@ public final class CalculateUtils {
     }
 
     /**
+     * 求一个数的负数
+     *
+     * @param number 输入的数
+     * @return 输入输的负数
+     */
+    public static Number negativeNumber(Object number) {
+        if (number == null) {
+            return null;
+        }
+
+        if (number instanceof Integer) {
+            return -((Integer) number);
+        }
+
+        if (number instanceof Float) {
+            return -((Float) number);
+        }
+
+        if (number instanceof Double) {
+            return -((Double) number);
+        }
+
+        return null;
+    }
+
+    /**
      * 两数相加
      *
      * @param v1 数1
