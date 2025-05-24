@@ -15,7 +15,7 @@ public class JsScriptUtilsTest {
 
     @Test
     public void testExecuteEs6() {
-        String script = FileTestUtils.loadTextFromClasspath("js/es6.js");
+        String script = FileTestUtils.loadFileTextFromClasspath("js/es6.js");
         Object result = JsScriptUtils.eval(script);
         assert (result instanceof List);
         Assert.assertTrue(((List) result).size() == 9);
@@ -23,7 +23,7 @@ public class JsScriptUtilsTest {
 
     @Test
     public void testExecuteIIFE() {
-        String script = FileTestUtils.loadTextFromClasspath("js/iife.js");
+        String script = FileTestUtils.loadFileTextFromClasspath("js/iife.js");
         Object result = JsScriptUtils.eval(script);
         assert (result != null && result instanceof Map);
         Map<String, Object> mapResult = (Map) result;
@@ -40,7 +40,7 @@ public class JsScriptUtilsTest {
 
     @Test
     public void testF() {
-        String script = FileTestUtils.loadTextFromClasspath("js/f.js");
+        String script = FileTestUtils.loadFileTextFromClasspath("js/f.js");
         Object result = JsScriptUtils.eval(script);
         Assert.assertTrue(result != null && result instanceof JsFunction);
         JsFunction function = (JsFunction) result;

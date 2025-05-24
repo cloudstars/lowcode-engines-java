@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.commons.descriptor;
+package io.github.cloudstars.lowcode.commons.descriptor.js;
 
 /**
  * 属性的数据类型

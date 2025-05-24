@@ -36,7 +36,7 @@ public class AviatorScriptTest {
     public void test2() {
         Map<String, Object> env = new HashMap<>();
         env.put("a", 30);
-        String script = FileTestUtils.loadTextFromClasspath("script/hello.av");
+        String script = FileTestUtils.loadFileTextFromClasspath("script/hello.av");
         Expression exp = AviatorEvaluator.getInstance().compile(script, true);
         Object result = exp.execute(env);
         assert (result instanceof Long && ((Long) result) == 10);
@@ -50,7 +50,7 @@ public class AviatorScriptTest {
     public void testLambda() {
         Map<String, Object> env = new HashMap<>();
         env.put("a", 30);
-        String script = FileTestUtils.loadTextFromClasspath("script/lambda.av");
+        String script = FileTestUtils.loadFileTextFromClasspath("script/lambda.av");
         Expression exp = AviatorEvaluator.getInstance().compile(script, true);
         Object result = exp.execute(env);
         assert (result instanceof Long && ((Long) result) == 3);

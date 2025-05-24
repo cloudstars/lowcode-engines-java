@@ -34,7 +34,7 @@ public final class JsonDataSetLoader {
         DefaultDataSet dataSet = new DefaultDataSet();
         for (int i = 0, l = tableFilePaths.length; i < l; i++) {
             String filePath = tableFilePaths[i];
-            String content = FileTestUtils.loadTextFromClasspath(filePath);
+            String content = FileTestUtils.loadFileTextFromClasspath(filePath);
             JSONObject tableJson = JSONObject.parseObject(content);
             String tableName = tableJson.getString("name");
 

@@ -30,7 +30,7 @@ public final class JsonTestUtils {
      */
     @Deprecated
     public static Map<String, Object> loadMapFromClasspath(String filePath) {
-        String content = FileTestUtils.loadTextFromClasspath(filePath);
+        String content = FileTestUtils.loadFileTextFromClasspath(filePath);
         return JSONObject.parseObject(content, HashMap.class);
     }
 
@@ -41,7 +41,7 @@ public final class JsonTestUtils {
      * @return List
      */
     public static List<Map<String, Object>> loadListFromClasspath(String filePath) {
-        String content = FileTestUtils.loadTextFromClasspath(filePath);
+        String content = FileTestUtils.loadFileTextFromClasspath(filePath);
         JSONArray jsonArray = JSONArray.parseArray(content);
         List<Map<String, Object>> list = new ArrayList<>();
         for (int i = 0, l = jsonArray.size(); i < l; i++) {

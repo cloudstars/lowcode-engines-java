@@ -10,8 +10,7 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 文件工具类
@@ -25,12 +24,12 @@ public final class FileTestUtils {
     private FileTestUtils() {}
 
     /**
-     * 从类路径下加载JSON对象
+     * 从类路径下加载Json文本
      *
      * @param filePath 文件路径
-     * @return
+     * @return JSON文本
      */
-    public static String loadTextFromClasspath(String filePath) {
+    public static String loadFileTextFromClasspath(String filePath) {
         ClassPathResource resource = new ClassPathResource(filePath);
         try {
             byte[] fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
@@ -44,9 +43,9 @@ public final class FileTestUtils {
      * 根据路径匹配加载多个文件内容
      *
      * @param filePattern 文件匹配格式
-     * @return
+     * @return 文件名到文件内容文本的映射
      */
-    public static Map<String, String> loadTextsFromClasspath(String filePattern) {
+    public static Map<String, String> loadFileTextsFromClasspath(String filePattern) {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
             Map<String, String> fileTextMap = new HashMap<>();
@@ -68,7 +67,7 @@ public final class FileTestUtils {
      *
      * @param filePath 文件路径
      */
-    public static String loadTextFromLocalPath(String filePath) {
+    public static String loadFileTextFromLocalPath(String filePath) {
         File file = new File(filePath);
         try {
             byte[] fileData = FileCopyUtils.copyToByteArray(file);
@@ -79,6 +78,33 @@ public final class FileTestUtils {
             throw new RuntimeException("读文件失败", e);
         }
     }
+
+
+    /**
+     * 从类路径下加载文件，并以行格式返回
+     *
+     * @param filePath 文件路径
+     * @return 文件行组成的文本列表
+     */
+    public static List<String> loadFileLinesFromClassPath(String filePath, boolean ignoreComments) {
+        String content = loadFileTextFromClasspath(filePath);
+        String[] lines = content.split(System.lineSeparator());
+        if (!ignoreComments) {
+            return Arrays.asList(lines);
+        } else {
+            List<String> lineList = new ArrayList<>();
+            for (String line : lines) {
+                if (line.startsWith("//")) {
+                    continue;
+                }
+
+                lineList.add(line);
+            }
+
+            return lineList;
+        }
+    }
+
 
     /**
      * 把内容写入本地文件
@@ -110,7 +136,7 @@ public final class FileTestUtils {
      * @return 字节数组
      * @throws Exception
      */
-    public static byte[] readStream(InputStream inStream) throws Exception {
+    public static byte[] readBytes(InputStream inStream) throws Exception {
         ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int len = -1;

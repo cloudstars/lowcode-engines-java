@@ -18,7 +18,7 @@ public class CalculatorParserTest {
 
     @Test
     public void test1() {
-        String func1 = FileTestUtils.loadTextFromClasspath("func/func1.cfjs");
+        String func1 = FileTestUtils.loadFileTextFromClasspath("func/func1.cfjs");
         CalculatorLexer lexer = new CalculatorLexer(CharStreams.fromString(func1));
         TokenStream tokenStream = new CommonTokenStream(lexer);
         CalculatorParser parser = new CalculatorParser(tokenStream);
@@ -32,7 +32,7 @@ public class CalculatorParserTest {
 
     @Test
     public void test2() {
-        String func1 = FileTestUtils.loadTextFromClasspath("func/func1.cfjs");
+        String func1 = FileTestUtils.loadFileTextFromClasspath("func/func1.cfjs");
         CalculatorLexer lexer = new CalculatorLexer(CharStreams.fromString(func1));
         TokenStream tokenStream = new CommonTokenStream(lexer);
         CalculatorParser parser = new CalculatorParser(tokenStream);

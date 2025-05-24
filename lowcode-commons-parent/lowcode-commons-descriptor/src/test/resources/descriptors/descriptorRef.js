@@ -8,7 +8,7 @@
     return {
         "name": "descriptorRef",
         "description": "这是规范Ref",
-        "configClassName": "io.github.cloudstars.lowcode.commons.descriptor.SomeAttribute",
+        "configClassName": "io.github.cloudstars.lowcode.commons.descriptor.SomeConfigAttribute",
         "attributes": [
             {
                 "name": "attr1",

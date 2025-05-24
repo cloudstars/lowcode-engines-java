@@ -1,4 +1,6 @@
-package io.github.cloudstars.lowcode.commons.descriptor;
+package io.github.cloudstars.lowcode.commons.descriptor.js;
+
+import io.github.cloudstars.lowcode.commons.descriptor.XConfigDescriptor;
 
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  *
  * @author clouds
  */
-public class Descriptor implements XDescriptor {
+public class JsDescriptor implements XConfigDescriptor {
 
     /**
      * 规范的名称
@@ -36,6 +38,17 @@ public class Descriptor implements XDescriptor {
     }
 
     @Override
+    public Class getConfigClass() {
+        Class<?> clz = null;
+        try {
+            clz = ClassLoader.getSystemClassLoader().loadClass(configClassName);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return clz;
+    }
+
     public String getConfigClassName() {
         return configClassName;
     }

@@ -25,6 +25,26 @@ public final class ObjectUtils {
     /**
      * 根据类名实例化一个对象
      *
+     * @param clazz
+     * @return
+     */
+    public static Object newInstance(Class<?> clazz) {
+        Object instance = null;
+        String className = clazz.getName();
+        try {
+            Constructor<?> constructor = clazz.getConstructor();
+            instance = constructor.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("类[" + className + "]实例化失败，必须包含一个public的无参构造函数", e);
+        }
+
+        return instance;
+    }
+
+
+    /**
+     * 根据类名实例化一个对象
+     *
      * @param className
      * @return
      */
@@ -43,9 +63,6 @@ public final class ObjectUtils {
         return instance;
     }
 
-
-
-
     /**
      * 克隆一个对象
      *
@@ -59,7 +76,7 @@ public final class ObjectUtils {
     /**
      * 克隆一个对象，并给新对象赋值
      *
-     * @param o 被克隆的对象
+     * @param o           被克隆的对象
      * @param fieldValues 给新对象赋的值
      * @return 克隆后的对象
      */
@@ -230,8 +247,8 @@ public final class ObjectUtils {
     /**
      * 设置对象的属性值
      *
-     * @param o 设值的对象
-     * @param fieldName 对象的属性名
+     * @param o          设值的对象
+     * @param fieldName  对象的属性名
      * @param fieldValue 对象的属性值
      */
     public static void setFieldValue(Object o, String fieldName, Object fieldValue) {

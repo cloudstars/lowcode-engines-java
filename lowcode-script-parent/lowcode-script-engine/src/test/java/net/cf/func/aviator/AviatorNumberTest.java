@@ -26,7 +26,7 @@ public class AviatorNumberTest {
      */
     @Test
     public void test1() {
-        String script = FileTestUtils.loadTextFromClasspath("script/bigint.av");
+        String script = FileTestUtils.loadFileTextFromClasspath("script/bigint.av");
         Expression exp = AviatorEvaluator.getInstance().compile(script, true);
         Object result = exp.execute();
         assert (result instanceof BigInteger && "10223372036854776807".equals(result.toString()));
@@ -43,7 +43,7 @@ public class AviatorNumberTest {
      */
     @Test
     public void test2() {
-        String script = FileTestUtils.loadTextFromClasspath("script/double.av");
+        String script = FileTestUtils.loadFileTextFromClasspath("script/double.av");
         Expression exp = AviatorEvaluator.getInstance().compile(script, true);
         Object result = exp.execute();
         assert (result instanceof DataOutput && "1.414213562373095".equals(result.toString()));
@@ -61,7 +61,7 @@ public class AviatorNumberTest {
      */
     @Test
     public void test3() {
-        String script = FileTestUtils.loadTextFromClasspath("script/decimal.av");
+        String script = FileTestUtils.loadFileTextFromClasspath("script/decimal.av");
         Expression exp = AviatorEvaluator.getInstance().compile(script, true);
         Object result = exp.execute();
         assert (result instanceof BigDecimal && "1.41421356237309504880168962350253".equals(result.toString()));
@@ -78,7 +78,7 @@ public class AviatorNumberTest {
      */
     @Test
     public void testDataConvert() {
-        String script = FileTestUtils.loadTextFromClasspath("script/dataConvert.av");
+        String script = FileTestUtils.loadFileTextFromClasspath("script/dataConvert.av");
         Expression exp = AviatorEvaluator.getInstance().compile(script, true);
         Object result = exp.execute();
         assert (result instanceof Double && ((Double) result) == 0.5);

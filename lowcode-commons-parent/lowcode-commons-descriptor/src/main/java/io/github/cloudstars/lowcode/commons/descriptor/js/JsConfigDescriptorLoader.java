@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.commons.descriptor;
+package io.github.cloudstars.lowcode.commons.descriptor.js;
 
 import io.github.cloudstars.lowcode.commons.js.JsFunction;
 import io.github.cloudstars.lowcode.commons.js.JsScriptUtils;
@@ -25,7 +25,7 @@ public final class JsConfigDescriptorLoader {
      * @param filePath 类路径
      * @return 规范定义
      */
-    public static Descriptor loadFromClassPath(String filePath) {
+    public static JsDescriptor loadFromClassPath(String filePath) {
         String content = FileUtils.loadTextFromClasspath(filePath);
         Object jsEvalResult = JsScriptUtils.eval(content);
         if (!(jsEvalResult instanceof JsFunction)) {
@@ -35,7 +35,7 @@ public final class JsConfigDescriptorLoader {
         // 生成基本信息
         JsFunction jsFunction = (JsFunction) jsEvalResult;
         JsonObject descriptorJson = (JsonObject) jsFunction.executeOnce();
-        Descriptor descriptor = new Descriptor();
+        JsDescriptor descriptor = new JsDescriptor();
         descriptor.setName(descriptorJson.get("name").toString());
         descriptor.setConfigClassName(descriptorJson.get("configClassName").toString());
 

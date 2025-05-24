@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  *
  * @author clouds
  */
-public class SomeAttribute extends AbstractConfig {
+public class SomeConfigAttribute extends AbstractConfig {
 
     private String attr1;
 
@@ -30,10 +30,10 @@ public class SomeAttribute extends AbstractConfig {
         this.attr2 = attr2;
     }
 
-    public SomeAttribute() {
+    public SomeConfigAttribute() {
     }
 
-    public SomeAttribute(JsonObject configJson) {
+    public SomeConfigAttribute(JsonObject configJson) {
         super(configJson);
     }
 

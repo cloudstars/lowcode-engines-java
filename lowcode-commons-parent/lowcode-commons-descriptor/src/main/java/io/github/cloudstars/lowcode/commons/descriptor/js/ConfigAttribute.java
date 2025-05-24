@@ -1,4 +1,4 @@
-package io.github.cloudstars.lowcode.commons.descriptor;
+package io.github.cloudstars.lowcode.commons.descriptor.js;
 
 /**
  * 配置的属性接口，表示某个属性

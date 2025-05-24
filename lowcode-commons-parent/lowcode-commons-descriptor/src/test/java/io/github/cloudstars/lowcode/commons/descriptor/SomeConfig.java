@@ -14,7 +14,7 @@ public class SomeConfig extends AbstractConfig {
 
     private String x;
 
-    private List<SomeAttribute> items;
+    private List<SomeConfigAttribute> items;
 
     public SomeConfig() {
     }
@@ -31,11 +31,11 @@ public class SomeConfig extends AbstractConfig {
         this.x = x;
     }
 
-    public List<SomeAttribute> getItems() {
+    public List<SomeConfigAttribute> getItems() {
         return items;
     }
 
-    public void setItems(List<SomeAttribute> items) {
+    public void setItems(List<SomeConfigAttribute> items) {
         this.items = items;
     }
 

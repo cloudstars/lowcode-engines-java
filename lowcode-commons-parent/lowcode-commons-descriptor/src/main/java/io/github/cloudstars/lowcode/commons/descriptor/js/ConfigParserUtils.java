@@ -1,6 +1,8 @@
-package io.github.cloudstars.lowcode.commons.descriptor;
+package io.github.cloudstars.lowcode.commons.descriptor.js;
 
 import io.github.cloudstars.lowcode.commons.config.XConfig;
+import io.github.cloudstars.lowcode.commons.descriptor.XConfigDescriptor;
+import io.github.cloudstars.lowcode.commons.descriptor.ConfigDescriptorFactory;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonUtils;
 import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
@@ -22,8 +24,8 @@ public class ConfigParserUtils {
      * @param configJson 配置JSON
      * @return 配置对象
      */
-    public static XConfig fromJson(XDescriptor descriptor, JsonObject configJson) {
-        Object configInstance = ObjectUtils.newInstance(descriptor.getConfigClassName());
+    public static XConfig fromJson(XConfigDescriptor descriptor, JsonObject configJson) {
+        Object configInstance = ObjectUtils.newInstance(descriptor.getConfigClass());
         if (!(configInstance instanceof XConfig)) {
             throw new RuntimeException("规范" + descriptor + "中包含的配置类名必须实现XConfig");
         }
@@ -48,7 +50,7 @@ public class ConfigParserUtils {
                         throw new RuntimeException("属性" + attrName + "的配置必须是一个数组，请检查：" + JsonUtils.toJsonString(attrValue));
                     }
 
-                    XDescriptor itemDescriptor = XDescriptorFactory.get(arrayItem.getDescriptor());
+                    XConfigDescriptor itemDescriptor = ConfigDescriptorFactory.get(arrayItem.getDescriptor());
                     List<XConfig> itemConfigs = new ArrayList<>();
                     List<Object> attrValueList = (List<Object>) attrValue;
                     for (Object attrValueItem : attrValueList) {

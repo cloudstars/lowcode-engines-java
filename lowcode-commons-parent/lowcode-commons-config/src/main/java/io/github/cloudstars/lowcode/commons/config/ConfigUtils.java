@@ -271,6 +271,27 @@ public final class ConfigUtils {
         }
     }
 
+
+    /**
+     * 添加一个配置列表
+     *
+     * @param configJson 目标的JSON配置
+     * @param key        配置的键
+     * @param values     配置的列表
+     * @param function   配置处理函数，接受配置并返回Json对象
+     * @param <T>        配置子项的类型
+     */
+    public static <T extends XConfig> void putList(JsonObject configJson, String key, List<T> values, Function<T, JsonObject> function) {
+        if (values != null) {
+            List<JsonObject> valuesConfigJson = new ArrayList<>();
+            for (T value : values) {
+                JsonObject valueConfigJson = function.apply(value);
+                valuesConfigJson.add(valueConfigJson);
+            }
+            configJson.put(key, valuesConfigJson);
+        }
+    }
+
     /**
      * 添加一个配置列表
      *
