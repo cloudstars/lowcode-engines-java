@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.bpm.form.field.selector;
 import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
 import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.TreeOptionValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.TreeOptionValueTypeConfig;
 
 /**
  * 树型字段类型

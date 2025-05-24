@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.cloudstars.lowcode.commons.CommonsValueTypeAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.cloudstars.lowcode.ValueTypeAutoConfiguration

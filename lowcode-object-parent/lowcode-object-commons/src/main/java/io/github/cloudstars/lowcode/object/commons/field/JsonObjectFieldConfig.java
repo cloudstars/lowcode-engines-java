@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.commons.field;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.MapValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.MapValueTypeConfig;
 
 import java.util.List;
 

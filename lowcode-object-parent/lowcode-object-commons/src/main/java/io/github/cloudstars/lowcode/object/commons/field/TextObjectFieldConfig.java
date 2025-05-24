@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.object.commons.field;
 
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.TextValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.TextValueTypeConfig;
 
 /**
  * 文本字段配置

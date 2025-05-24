@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.commons.api.config.request;
 import io.github.cloudstars.lowcode.commons.config.AbstractConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 
 import java.util.List;
 

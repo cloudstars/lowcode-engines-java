@@ -16,17 +16,28 @@
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-formula-commons</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-commons-config</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-value-type</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-            <version>4.13.1</version>
         </dependency>
 
         <!-- 测试时依赖 -->
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-commons-test</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

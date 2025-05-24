@@ -1,0 +1,4 @@
+{
+  "type": "FORMULA",
+  "formula": "a < 1 && (b >= a || c != a)"
+}

@@ -4,7 +4,7 @@ import io.github.cloudstars.lowcode.commons.config.AbstractResourceConfig;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.config.XTypedConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 import io.github.cloudstars.lowcode.dynamic.value.DynamicValueConfigFactory;
 import io.github.cloudstars.lowcode.dynamic.value.XDynamicValueConfig;
 

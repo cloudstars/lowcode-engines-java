@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.object.commons.field;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.MapPropertyConfig;
+import io.github.cloudstars.lowcode.value.type.MapPropertyConfig;
 
 import java.util.List;
 

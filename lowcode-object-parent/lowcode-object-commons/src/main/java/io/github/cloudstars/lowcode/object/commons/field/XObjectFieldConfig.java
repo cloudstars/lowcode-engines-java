@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.object.commons.field;
 
 import io.github.cloudstars.lowcode.commons.config.XResourceConfig;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 import io.github.cloudstars.lowcode.dynamic.value.XDynamicValueConfig;
 
 /**

@@ -18,6 +18,16 @@ public interface FxParserListener extends ParseTreeListener {
 	 */
 	void exitFx(FxParser.FxContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link FxParser#expressionSequence}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionSequence(FxParser.ExpressionSequenceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FxParser#expressionSequence}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionSequence(FxParser.ExpressionSequenceContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ParenthesizedExpression}
 	 * labeled alternative in {@link FxParser#singleExpression}.
 	 * @param ctx the parse tree
@@ -29,6 +39,18 @@ public interface FxParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParenthesizedExpression(FxParser.ParenthesizedExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code RelationalExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterRelationalExpression(FxParser.RelationalExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code RelationalExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitRelationalExpression(FxParser.RelationalExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code AdditiveExpression}
 	 * labeled alternative in {@link FxParser#singleExpression}.
@@ -42,6 +64,18 @@ public interface FxParserListener extends ParseTreeListener {
 	 */
 	void exitAdditiveExpression(FxParser.AdditiveExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code UnaryMinusExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryMinusExpression(FxParser.UnaryMinusExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code UnaryMinusExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryMinusExpression(FxParser.UnaryMinusExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code LiteralExpression}
 	 * labeled alternative in {@link FxParser#singleExpression}.
 	 * @param ctx the parse tree
@@ -53,6 +87,18 @@ public interface FxParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLiteralExpression(FxParser.LiteralExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code UnaryPlusExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryPlusExpression(FxParser.UnaryPlusExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code UnaryPlusExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryPlusExpression(FxParser.UnaryPlusExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code MultiplicativeExpression}
 	 * labeled alternative in {@link FxParser#singleExpression}.
@@ -66,6 +112,18 @@ public interface FxParserListener extends ParseTreeListener {
 	 */
 	void exitMultiplicativeExpression(FxParser.MultiplicativeExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code FunctionCallExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCallExpression(FxParser.FunctionCallExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionCallExpression}
+	 * labeled alternative in {@link FxParser#singleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCallExpression(FxParser.FunctionCallExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code IdentifierExpression}
 	 * labeled alternative in {@link FxParser#singleExpression}.
 	 * @param ctx the parse tree
@@ -77,6 +135,26 @@ public interface FxParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIdentifierExpression(FxParser.IdentifierExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FxParser#arguments}.
+	 * @param ctx the parse tree
+	 */
+	void enterArguments(FxParser.ArgumentsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FxParser#arguments}.
+	 * @param ctx the parse tree
+	 */
+	void exitArguments(FxParser.ArgumentsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FxParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgument(FxParser.ArgumentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FxParser#argument}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgument(FxParser.ArgumentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FxParser#literal}.
 	 * @param ctx the parse tree

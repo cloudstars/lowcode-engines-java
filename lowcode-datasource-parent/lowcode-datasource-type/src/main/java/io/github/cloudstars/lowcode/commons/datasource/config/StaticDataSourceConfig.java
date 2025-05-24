@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.datasource.config;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 
 /**
  * 静态数据源配置

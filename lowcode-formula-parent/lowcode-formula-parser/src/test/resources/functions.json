@@ -1,0 +1,84 @@
+[
+  {
+    "name": "a",
+    "params": [
+      {
+        "name": "_0",
+        "valueType": {
+          "type": "NUMBER"
+        },
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "abc"
+  },
+  {
+    "name": "$",
+    "params": [
+      {
+        "name": "_0",
+        "valueType": {
+          "type": "NUMBER"
+        },
+        "required": false
+      },
+      {
+        "name": "_1",
+        "valueType": {
+          "type": "NUMBER"
+        },
+        "required": false
+      },
+      {
+        "name": "_2",
+        "valueType": {
+          "type": "NUMBER"
+        },
+        "required": false
+      }
+    ]
+  },
+  {
+    "name": "_",
+    "params": [
+      {
+        "name": "_0",
+        "valueType": {
+          "type": "NUMBER"
+        },
+        "required": false
+      },
+      {
+        "name": "_1",
+        "valueType": {
+          "type": "NUMBER"
+        },
+        "required": false
+      }
+    ]
+  },
+  {
+    "name": "_b"
+  },
+  {
+    "name": "_abc",
+    "params": [
+      {
+        "name": "_0",
+        "valueType": {
+          "type": "NUMBER"
+        },
+        "required": true
+      },
+      {
+        "name": "_1",
+        "valueType": {
+          "type": "NUMBER"
+        },
+        "required": true
+      }
+    ]
+  }
+]

@@ -8,7 +8,7 @@ import io.github.cloudstars.lowcode.commons.datasource.DataSourceLoaderFactory;
 import io.github.cloudstars.lowcode.commons.datasource.XDataSourceLoader;
 import io.github.cloudstars.lowcode.commons.datasource.config.XDataSourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.util.StringUtils;
-import io.github.cloudstars.lowcode.commons.value.type.TextValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.TextValueTypeConfig;
 import io.github.cloudstars.lowcode.pdf.commons.config.element.text.TextElementConfig;
 import io.github.cloudstars.lowcode.pdf.vendor.PdfStyle;
 

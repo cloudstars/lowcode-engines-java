@@ -3,7 +3,7 @@ package io.github.cloudstars.lowcode.bpm.form.field;
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonArray;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.ArrayValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.ArrayValueTypeConfig;
 
 import java.util.List;
 

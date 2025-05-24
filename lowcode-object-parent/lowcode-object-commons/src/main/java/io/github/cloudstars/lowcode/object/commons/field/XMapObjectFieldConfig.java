@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.commons.field;
 
-import io.github.cloudstars.lowcode.commons.value.type.MapPropertyConfig;
+import io.github.cloudstars.lowcode.value.type.MapPropertyConfig;
 
 import java.util.List;
 

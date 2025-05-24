@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.pdf.commons.config.element.text;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.TextValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.TextValueTypeConfig;
 import io.github.cloudstars.lowcode.pdf.commons.config.element.AbstractElementConfig;
 
 /**

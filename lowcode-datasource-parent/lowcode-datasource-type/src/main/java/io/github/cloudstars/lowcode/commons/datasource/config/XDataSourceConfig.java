@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.datasource.config;
 
 import io.github.cloudstars.lowcode.commons.config.XConfig;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 
 /**
  * 数据源配置

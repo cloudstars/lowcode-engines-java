@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.bpm.form.field;
 
 import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.ArrayValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.ArrayValueTypeConfig;
 
 /**
  * 数组字段配置

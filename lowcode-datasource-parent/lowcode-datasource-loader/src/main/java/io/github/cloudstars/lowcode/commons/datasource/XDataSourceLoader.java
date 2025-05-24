@@ -1,8 +1,8 @@
 package io.github.cloudstars.lowcode.commons.datasource;
 
 import io.github.cloudstars.lowcode.commons.datasource.config.XDataSourceConfig;
-import io.github.cloudstars.lowcode.commons.value.XValueType;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.loader.XValueType;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 
 /**
  * 数据源加载器

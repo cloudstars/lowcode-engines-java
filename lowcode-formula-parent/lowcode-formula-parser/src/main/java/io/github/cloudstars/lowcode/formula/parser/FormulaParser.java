@@ -2,11 +2,11 @@ package io.github.cloudstars.lowcode.formula.parser;
 
 import io.github.cloudstars.lowcode.formula.parser.g4.FxLexer;
 import io.github.cloudstars.lowcode.formula.parser.g4.FxParser;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.TokenStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * 公式解析器
@@ -25,34 +25,44 @@ public final class FormulaParser {
      * @return 解析后的公式
      */
     public static FxParser.FxContext parse(String fx) {
-        return parse(fx, null);
-    }
-
-    /**
-     * 解析公式，并且输入了错误监听器列表
-     *
-     * @param fx 公式文本
-     * @param errorListeners 错误监听器列表
-     * @return 解析后的公式
-     */
-    public static FxParser.FxContext parse(String fx, List<BaseErrorListener> errorListeners) {
         LOGGER.debug("公式：{}解析开始。", fx);
 
+        // 生成错误监听器
+        FormulaParseErrorListener errorListener = new FormulaParseErrorListener();
+
+        // 生成词法解析器
         FxLexer lexer = new FxLexer(CharStreams.fromString(fx));
+        // 移除默认的错误监听器
+        lexer.removeErrorListeners();
+        // 添加新的错误监听器
+        lexer.addErrorListener(errorListener);
+
+        // 生成语法解析器
         TokenStream tokenStream = new CommonTokenStream(lexer);
         FxParser parser = new FxParser(tokenStream);
+        // 添加语法解析监听器
+        FormulaParseListener parserListener = new FormulaParseListener();
+        parser.addParseListener(parserListener);
+        // 移除默认的错误监听器
+        parser.removeErrorListeners();
+        // 添加新的错误监听器
+        parser.addErrorListener(errorListener);
+        FxParser.FxContext context = parser.fx();
 
-        // 添加自定义的监听器
-        if (errorListeners != null && errorListeners.size() > 0) {
-            for (BaseErrorListener errorListener : errorListeners) {
-                parser.addErrorListener(errorListener);
-            }
+        // 错误检查
+        String errors = errorListener.getErrors();
+        if (errors.length() > 0) {
+            LOGGER.debug("公式[{}]解析错误：{}", fx, errors);
+            throw new SyntaxException("公式[" + fx + "]语法错误：" + errors);
+        }
+        String parserErrors = parserListener.getErrors();
+        if (parserErrors.length() > 0) {
+            LOGGER.debug("公式[{}]解析错误：{}", fx, parserErrors);
+            throw new SyntaxException("公式[" + fx + "]语法错误：" + parserErrors);
         }
 
-        FxParser.FxContext  context = parser.fx();
         LOGGER.debug("公式：{}解析结束。", fx);
 
         return context;
-
     }
 }

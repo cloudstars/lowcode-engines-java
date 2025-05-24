@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.object.commons.field.property;
 
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 
 /**
  * 字段的数据子属性（当字段需要拆子属性存储时需要定义）

@@ -17,6 +17,12 @@
         <dependency>
             <groupId>io.github.cloudstars</groupId>
             <artifactId>lowcode-predicate-type</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cloudstars</groupId>
+            <artifactId>lowcode-formula-engine</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <!-- 测试时依赖 -->

@@ -1,9 +1,9 @@
 package io.github.cloudstars.lowcode.file.commons;
 
 
-import io.github.cloudstars.lowcode.commons.value.AbstractValueType;
-import io.github.cloudstars.lowcode.commons.value.InvalidDataException;
-import io.github.cloudstars.lowcode.commons.value.ValueTypeClass;
+import io.github.cloudstars.lowcode.value.loader.AbstractValueType;
+import io.github.cloudstars.lowcode.value.loader.InvalidDataException;
+import io.github.cloudstars.lowcode.value.loader.ValueTypeClass;
 
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public class FileValueType extends AbstractValueType<FileValueTypeConfig, File> 
     }
 
     @Override
-    public File mergeDefaultValue(Object rawValue) throws io.github.cloudstars.lowcode.commons.value.InvalidDataException {
+    public File mergeDefaultValue(Object rawValue) throws InvalidDataException {
         return null;
     }
 

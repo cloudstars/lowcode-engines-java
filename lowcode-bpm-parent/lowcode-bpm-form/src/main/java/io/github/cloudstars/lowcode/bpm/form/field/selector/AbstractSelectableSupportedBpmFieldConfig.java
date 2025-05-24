@@ -5,8 +5,8 @@ import io.github.cloudstars.lowcode.commons.config.ConfigUtils;
 import io.github.cloudstars.lowcode.commons.datasource.config.DataSourceConfigFactory;
 import io.github.cloudstars.lowcode.commons.datasource.config.XDataSourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.SelectorValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.SelectorValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 
 /**
  * 抽象的支持选择的字段配置

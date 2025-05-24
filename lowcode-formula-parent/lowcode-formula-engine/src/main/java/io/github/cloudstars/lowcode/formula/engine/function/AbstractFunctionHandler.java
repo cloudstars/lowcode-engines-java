@@ -1,6 +1,6 @@
 package io.github.cloudstars.lowcode.formula.engine.function;
 
-import io.github.cloudstars.lowcode.formula.parser.function.FunctionDescriptor;
+import io.github.cloudstars.lowcode.formula.parser.function.FunctionConfig;
 
 /**
  * 抽象的函数句柄
@@ -9,9 +9,9 @@ import io.github.cloudstars.lowcode.formula.parser.function.FunctionDescriptor;
  */
 public abstract class AbstractFunctionHandler implements FunctionHandler {
 
-    private FunctionDescriptor descriptor;
+    private FunctionConfig descriptor;
 
-    public AbstractFunctionHandler(FunctionDescriptor descriptor) {
+    public AbstractFunctionHandler(FunctionConfig descriptor) {
         this.descriptor = descriptor;
     }
 

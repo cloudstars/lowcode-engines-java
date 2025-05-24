@@ -1,9 +1,9 @@
 package io.github.cloudstars.lowcode.file.commons;
 
-import io.github.cloudstars.lowcode.commons.value.type.AbstractMapValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.MapPropertyConfig;
-import io.github.cloudstars.lowcode.commons.value.type.TextValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigClass;
+import io.github.cloudstars.lowcode.value.type.AbstractMapValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.MapPropertyConfig;
+import io.github.cloudstars.lowcode.value.type.TextValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.ValueTypeConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
 
 import java.util.Arrays;

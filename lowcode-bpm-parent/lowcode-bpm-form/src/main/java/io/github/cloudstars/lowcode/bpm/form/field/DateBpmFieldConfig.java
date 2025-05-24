@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.form.field;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.DateValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.DateValueTypeConfig;
 
 /**
  * 日期字段配置

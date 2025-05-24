@@ -4,8 +4,8 @@ import io.github.cloudstars.lowcode.commons.config.AbstractTypedConfig;
 import io.github.cloudstars.lowcode.commons.config.GlobalAttrNames;
 import io.github.cloudstars.lowcode.commons.config.XResourceConfig;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigFactory;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.ValueTypeConfigFactory;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 
 /**
  * 字段类型的二元操作项

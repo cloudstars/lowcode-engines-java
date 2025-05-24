@@ -10,11 +10,17 @@ options {
 
 OpenParen                  : '(';
 CloseParen                 : ')';
+Comma                      : ',';
+Assign                     : '=';
 Plus                       : '+';
 Minus                      : '-';
 Multiply                   : '*';
 Divide                     : '/';
 Modulus                    : '%';
+LessThan                   : '<';
+MoreThan                   : '>';
+LessThanEquals             : '<=';
+GreaterThanEquals          : '>=';
 WS  :   [ \t\r\n]+ -> skip ; // 表示忽略空格
 
 StringLiteral:
@@ -28,6 +34,10 @@ DecimalLiteral:
 ;
 
 Identifier: IdentifierStart IdentifierPart*;
+
+MultiLineComment  : '/*' .*? '*/'             -> channel(HIDDEN);
+SingleLineComment : '//' ~[\r\n\u2028\u2029]* -> channel(HIDDEN);
+
 
 // Fragment rules
 

@@ -1,9 +1,9 @@
 package io.github.cloudstars.lowcode.commons.datasource;
 
 import io.github.cloudstars.lowcode.commons.datasource.config.AbstractDataSourceConfig;
-import io.github.cloudstars.lowcode.commons.value.AbstractValueType;
-import io.github.cloudstars.lowcode.commons.value.ValueTypeFactory;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.loader.AbstractValueType;
+import io.github.cloudstars.lowcode.value.loader.ValueTypeFactory;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 
 
 public abstract class AbstractDataSourceLoader<S extends AbstractDataSourceConfig<C>, V extends AbstractValueType<C, D>, C extends XValueTypeConfig, P extends Object, D extends Object> implements XDataSourceLoader<S, V, C, P, D> {

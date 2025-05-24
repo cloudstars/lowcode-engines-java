@@ -2,7 +2,7 @@ package io.github.cloudstars.lowcode.bpm.form.field.selector;
 
 import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.UserValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.UserValueTypeConfig;
 
 /**
  * 用户选择字段类型

@@ -32,6 +32,18 @@ public final class JsonUtils {
     }
 
     /**
+     * 从类路径加载JSON文件并反序列化成JsonArray
+     *
+     * @param filePath
+     * @return JsonArray
+     */
+    public static JsonArray loadJsonArrayFromClasspath(String filePath) {
+        String content = FileUtils.loadTextFromClasspath(filePath);
+        JSONArray jsonArray = JSONArray.parseArray(content);
+        return FastJsonUtils.wrapJSONArray(jsonArray);
+    }
+
+    /**
      * 将JSON字符串转换为JSON对象
      *
      * @param jsonString JSON字符串

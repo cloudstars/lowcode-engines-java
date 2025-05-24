@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.bpm.form.field;
 
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.BooleanValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.BooleanValueTypeConfig;
 
 /**
  * 布尔字段配置

@@ -2,8 +2,8 @@ package io.github.cloudstars.lowcode.bpm.form.field.selector;
 
 import io.github.cloudstars.lowcode.bpm.form.field.BpmFieldConfigClass;
 import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
-import io.github.cloudstars.lowcode.commons.value.type.MapValueTypeConfig;
-import io.github.cloudstars.lowcode.commons.value.type.OrgValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.MapValueTypeConfig;
+import io.github.cloudstars.lowcode.value.type.OrgValueTypeConfig;
 
 /**
  * 机构选择字段类型

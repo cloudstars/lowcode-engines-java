@@ -1,5 +1,6 @@
 package io.github.cloudstars.lowcode.commons.test.util;
 
+import io.github.cloudstars.lowcode.commons.lang.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -94,7 +95,7 @@ public final class FileTestUtils {
         } else {
             List<String> lineList = new ArrayList<>();
             for (String line : lines) {
-                if (line.startsWith("//")) {
+                if (line.startsWith("//") || StringUtils.isBlank(line)) {
                     continue;
                 }
 

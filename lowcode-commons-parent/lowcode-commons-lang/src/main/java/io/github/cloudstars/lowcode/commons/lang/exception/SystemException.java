@@ -1,7 +1,7 @@
 package io.github.cloudstars.lowcode.commons.lang.exception;
 
 /**
- * 程序异常基类
+ * 系统异常基类（平台开发者可见的异常）
  *
  * @author clouds
  */

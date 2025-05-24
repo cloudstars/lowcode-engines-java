@@ -9,9 +9,9 @@ import io.github.cloudstars.lowcode.commons.api.config.ApiConfig;
 import io.github.cloudstars.lowcode.commons.api.config.request.*;
 import io.github.cloudstars.lowcode.commons.lang.exception.SystemException;
 import io.github.cloudstars.lowcode.commons.lang.util.ObjectUtils;
-import io.github.cloudstars.lowcode.commons.value.ValueTypeFactory;
-import io.github.cloudstars.lowcode.commons.value.XValueType;
-import io.github.cloudstars.lowcode.commons.value.type.XValueTypeConfig;
+import io.github.cloudstars.lowcode.value.loader.ValueTypeFactory;
+import io.github.cloudstars.lowcode.value.loader.XValueType;
+import io.github.cloudstars.lowcode.value.type.XValueTypeConfig;
 import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;

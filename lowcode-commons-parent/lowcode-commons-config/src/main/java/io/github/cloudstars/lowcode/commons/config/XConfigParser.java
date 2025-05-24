@@ -6,7 +6,10 @@ import io.github.cloudstars.lowcode.commons.lang.json.JsonObject;
  * 配置对象解析接口
  *
  * @author clouds
+ * @see XConfigDeserializer
+ * @see XConfigSerializer
  */
+@Deprecated
 public interface XConfigParser<T extends XConfig> {
 
     /**

@@ -1,7 +1,8 @@
 package io.github.cloudstars.lowcode;
 
 import io.github.cloudstars.lowcode.commons.value.*;
-import io.github.cloudstars.lowcode.commons.value.type.ValueTypeConfigClassFactory;
+import io.github.cloudstars.lowcode.value.loader.ValueTypeClassFactory;
+import io.github.cloudstars.lowcode.value.type.ValueTypeConfigClassFactory;
 import io.github.cloudstars.lowcode.file.commons.FileValueTypeConfig;
 import io.github.cloudstars.lowcode.file.commons.FileValueType;
 import org.springframework.boot.ApplicationArguments;
